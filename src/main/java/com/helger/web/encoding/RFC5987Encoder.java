@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CCharset;
@@ -30,7 +31,7 @@ import com.helger.commons.string.StringHelper;
 
 /**
  * RFC 5987 Encoder
- * 
+ *
  * @author Philip Helger
  */
 public class RFC5987Encoder implements IEncoder <String>
@@ -151,8 +152,9 @@ public class RFC5987Encoder implements IEncoder <String>
   }
 
   @Nonnull
-  public String encode (@Nonnull final String sSrc)
+  public String encode (@Nullable final String sSrc)
   {
+    ValueEnforcer.notNull (sSrc, "Src");
     return getRFC5987Encoded (sSrc, m_aCharset);
   }
 }

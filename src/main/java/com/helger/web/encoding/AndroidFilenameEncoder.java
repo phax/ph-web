@@ -18,6 +18,7 @@
 package com.helger.web.encoding;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.encode.IEncoder;
@@ -26,7 +27,7 @@ import com.helger.commons.encode.IEncoder;
  * Heuristic Android filename encoder based on <a href=
  * "http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788"
  * >Stack Overflow</a>
- * 
+ *
  * @author Philip Helger
  */
 public class AndroidFilenameEncoder implements IEncoder <String>
@@ -57,8 +58,9 @@ public class AndroidFilenameEncoder implements IEncoder <String>
   }
 
   @Nonnull
-  public String encode (@Nonnull final String sSrc)
+  public String encode (@Nullable final String sSrc)
   {
+    ValueEnforcer.notNull (sSrc, "Src");
     return getSafeAndroidFilename (sSrc);
   }
 }

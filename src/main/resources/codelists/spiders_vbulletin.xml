@@ -1,0 +1,1918 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright (C) 2006-2014 phloc systems (www.phloc.com)
+    Copyright (C) 2014 Philip Helger (www.helger.com)
+    philip[at]helger[dot]com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<searchspiders>
+  <spider ident="VoilaBot">
+    <name>Voila</name>
+  </spider>
+  <spider ident="searchdnabot">
+    <name>SearchDNA</name>
+  </spider>
+  <spider ident="kalooga/KaloogaBot">
+    <name>KaloogaBot</name>
+  </spider>
+  <spider ident="iajaBot">
+    <name>IajaBot</name>
+  </spider>
+  <spider ident="Girafabot">
+    <name>Girafa</name>
+  </spider>
+  <spider ident="Gigabot">
+    <name>Giga Blast</name>
+  </spider>
+  <spider ident="ExaBot">
+    <name>ExaLead Beta</name>
+  </spider>
+  <spider ident="Exabot">
+    <name>Exabot</name>
+  </spider>
+  <spider ident="EnaBot">
+    <name>EnaBall</name>
+  </spider>
+  <spider ident="DNAbot/1.0">
+    <name>DNAbot</name>
+  </spider>
+  <spider ident="facebookexternalhit">
+    <name>Facebook</name>
+  </spider>
+  <spider ident="Googlebot-Image">
+    <name>Google Images</name>
+  </spider>
+  <spider ident="ichiro">
+    <name>Ichiro Mobile</name>
+  </spider>
+  <spider ident="008/0.83">
+    <name>80legs</name>
+  </spider>
+  <spider ident="urlfan-bot">
+    <name>://URLFAN</name>
+  </spider>
+  <spider ident="abot">
+    <name>A Bot</name>
+  </spider>
+  <spider ident="ABACHOBot">
+    <name>ABACHOBot</name>
+  </spider>
+  <spider ident="ABCdatos">
+    <name>ABCdatos BotLink</name>
+  </spider>
+  <spider ident="Aboundex">
+    <name>Aboundex</name>
+  </spider>
+  <spider ident="AboutUsBot">
+    <name>AboutUs:Bot</name>
+  </spider>
+  <spider ident="Accelatech RSSCrawler">
+    <name>Accelatech RSS</name>
+  </spider>
+  <spider ident="Accoona-AI-Agent">
+    <name>Accoona</name>
+  </spider>
+  <spider ident="aconon Index">
+    <name>Aconon Index</name>
+  </spider>
+  <spider ident="AcoonBot">
+    <name>Acoon</name>
+  </spider>
+  <spider ident="AddThis">
+    <name>AddThis</name>
+  </spider>
+  <spider ident="Ahoy!">
+    <name>Ahoy!</name>
+  </spider>
+  <spider ident="AhrefsBot">
+    <name>AhrefsBot</name>
+  </spider>
+  <spider ident="AideRSS">
+    <name>AideRSS (PostRank.com)</name>
+  </spider>
+  <spider ident="ia_archiver">
+    <name>Alexa</name>
+  </spider>
+  <spider ident="bitlybot">
+    <name>Alexa Bitlybot</name>
+  </spider>
+  <spider ident="AlkalineBOT">
+    <name>Alkaline</name>
+  </spider>
+  <spider ident="scooter">
+    <name>AltaVista</name>
+  </spider>
+  <spider ident="crawler/3.0.0">
+    <name>Amazon AWS Cloud Based</name>
+  </spider>
+  <spider ident="JS-Kit URL Resolver">
+    <name>Amazon AWS Cloud Based</name>
+  </spider>
+  <spider ident="EMC Spider">
+    <name>Ananzi</name>
+  </spider>
+  <spider ident="Anthill">
+    <name>Anthill</name>
+  </spider>
+  <spider ident="Synapse">
+    <name>Apache Synapse ESB</name>
+  </spider>
+  <spider ident="Robot/v1.34">
+    <name>Apnoti Search Robot</name>
+  </spider>
+  <spider ident="Aport">
+    <name>Aport</name>
+  </spider>
+  <spider ident="AppleSyndication">
+    <name>Apple RSS</name>
+  </spider>
+  <spider ident="Arachnophilia">
+    <name>Arachnophilia</name>
+  </spider>
+  <spider ident="Araneo">
+    <name>Araneo</name>
+  </spider>
+  <spider ident="ArchitextSpider">
+    <name>Architext</name>
+  </spider>
+  <spider ident="arks/1.0">
+    <name>Arks</name>
+  </spider>
+  <spider ident="T312461">
+    <name>Artabus</name>
+  </spider>
+  <spider ident="Ask Jeeves">
+    <name>Ask.com</name>
+  </spider>
+  <spider ident="ASpider">
+    <name>ASpider</name>
+  </spider>
+  <spider ident="ATN_Worldwide">
+    <name>ATN Worldwide</name>
+  </spider>
+  <spider ident="Atomz">
+    <name>Atomz</name>
+  </spider>
+  <spider ident="atraxbot">
+    <name>Atrax Solutions</name>
+  </spider>
+  <spider ident="Attentio">
+    <name>Attentio</name>
+  </spider>
+  <spider ident="attributor/1.13.2">
+    <name>Attributor</name>
+  </spider>
+  <spider ident="AURESYS">
+    <name>Auresys</name>
+  </spider>
+  <spider ident="bbot">
+    <name>B Bot</name>
+  </spider>
+  <spider ident="BabalooSpider">
+    <name>Babaloo</name>
+  </spider>
+  <spider ident="BackRub">
+    <name>BackRub</name>
+  </spider>
+  <spider ident="BaiduMobaider">
+    <name>Baidu</name>
+  </spider>
+  <spider ident="BaiduImagespider">
+    <name>Baidu</name>
+  </spider>
+  <spider ident="Baiduspider">
+    <name>Baidu</name>
+  </spider>
+  <spider ident="BecomeBot">
+    <name>Become</name>
+  </spider>
+  <spider ident="Begun">
+    <name>Begun Robot Crawler</name>
+  </spider>
+  <spider ident="BejiBot">
+    <name>BejiBot</name>
+  </spider>
+  <spider ident="Big Brother">
+    <name>Big Brother</name>
+  </spider>
+  <spider ident="BigBoardsUpdater">
+    <name>Big-Boards.com</name>
+  </spider>
+  <spider ident="BigmirSpider">
+    <name>Bigmir</name>
+  </spider>
+  <spider ident="bingbot">
+    <name>Bing</name>
+  </spider>
+  <spider ident="Birubot">
+    <name>Birubot</name>
+  </spider>
+  <spider ident="Bitacle bot">
+    <name>Bitacle</name>
+  </spider>
+  <spider ident="Biz360 Spider">
+    <name>Biz 360</name>
+  </spider>
+  <spider ident="Bjaaland">
+    <name>Bjaaland</name>
+  </spider>
+  <spider ident="BlackWidow">
+    <name>Black Widow</name>
+  </spider>
+  <spider ident="BlogCrawler by Xango">
+    <name>BlogCrawler</name>
+  </spider>
+  <spider ident="blogdb">
+    <name>BlogDB RSS</name>
+  </spider>
+  <spider ident="blog search engine by BlogFan.ORG">
+    <name>BlogFan</name>
+  </spider>
+  <spider ident="Bloglines">
+    <name>Bloglines RSS</name>
+  </spider>
+  <spider ident="BlogPulse (ISSpider-3.0)">
+    <name>BlogPulse RSS</name>
+  </spider>
+  <spider ident="BlogSearch">
+    <name>BlogSearch RSS</name>
+  </spider>
+  <spider ident="BlogsNowBot">
+    <name>BlogsNow</name>
+  </spider>
+  <spider ident="BlogStreetBot">
+    <name>BlogStreet RSS</name>
+  </spider>
+  <spider ident="BoardTracker">
+    <name>Board Tracker</name>
+  </spider>
+  <spider ident="BoardPulse">
+    <name>BoardPulse</name>
+  </spider>
+  <spider ident="BoardReader">
+    <name>BoardReader</name>
+  </spider>
+  <spider ident="BoardViewer">
+    <name>BoardViewer</name>
+  </spider>
+  <spider ident="boitho.com-robot">
+    <name>Boitho</name>
+  </spider>
+  <spider ident="boitho.com-dc">
+    <name>Boitho Web Crawler</name>
+  </spider>
+  <spider ident="borg-bot">
+    <name>Borg</name>
+  </spider>
+  <spider ident="BotOnParade">
+    <name>BotOnParade</name>
+  </spider>
+  <spider ident="BOTW Spider">
+    <name>BotW</name>
+  </spider>
+  <spider ident="BDFetch">
+    <name>BrandProtect</name>
+  </spider>
+  <spider ident="BSpider">
+    <name>BSpider</name>
+  </spider>
+  <spider ident="Bulkfeeds">
+    <name>Bulkfeeds</name>
+  </spider>
+  <spider ident="Butterfly">
+    <name>Butterfly Topsy Crawler</name>
+  </spider>
+  <spider ident="CACTVS Chemistry Spider">
+    <name>CACTVS Chemistry</name>
+  </spider>
+  <spider ident="Calif">
+    <name>Calif</name>
+  </spider>
+  <spider ident="CaRP/3.6Evolution">
+    <name>CaRP RSS</name>
+  </spider>
+  <spider ident="CatchBot">
+    <name>Catch</name>
+  </spider>
+  <spider ident="mxbot">
+    <name>Chainn</name>
+  </spider>
+  <spider ident="ChangeDetection">
+    <name>ChangeDetection</name>
+  </spider>
+  <spider ident="Charlotte">
+    <name>Charlotte</name>
+  </spider>
+  <spider ident="Checkbot">
+    <name>Checkbot</name>
+  </spider>
+  <spider ident="ChitikaBot">
+    <name>ChitikaBot</name>
+  </spider>
+  <spider ident="ChristCrawler.com">
+    <name>Christ Crawler</name>
+  </spider>
+  <spider ident="www.cienciaficcion.net">
+    <name>cIeNcIaFiCcIoN</name>
+  </spider>
+  <spider ident="CipinetBot">
+    <name>Cipinet</name>
+  </spider>
+  <spider ident="CJNetworkQuality">
+    <name>CJ</name>
+  </spider>
+  <spider ident="YesupBot">
+    <name>Clicksor.com</name>
+  </spider>
+  <spider ident="CligooRobot">
+    <name>Cligoo</name>
+  </spider>
+  <spider ident="CLX.ru Bot">
+    <name>CLX.ru</name>
+  </spider>
+  <spider ident="CMC/0.01">
+    <name>CMC/0.01</name>
+  </spider>
+  <spider ident="ColdFusion">
+    <name>ColdFusion</name>
+  </spider>
+  <spider ident="combine">
+    <name>Combine System</name>
+  </spider>
+  <spider ident="Crawler (cometsearch@cometsystems.com)">
+    <name>Comet Systems</name>
+  </spider>
+  <spider ident="CCBot">
+    <name>CommonCrawl</name>
+  </spider>
+  <spider ident="COMODOspider">
+    <name>COMODO</name>
+  </spider>
+  <spider ident="ComputingSite Robi">
+    <name>ComputingSite Robi</name>
+  </spider>
+  <spider ident="conceptbot">
+    <name>ConceptBot</name>
+  </spider>
+  <spider ident="Cooby.de Crawler">
+    <name>Cooby</name>
+  </spider>
+  <spider ident="CoolBot">
+    <name>CoolBot</name>
+  </spider>
+  <spider ident="Covario">
+    <name>Covario</name>
+  </spider>
+  <spider ident="twiceler.">
+    <name>Cuil</name>
+  </spider>
+  <spider ident="Twiceler-0.9">
+    <name>Cuil</name>
+  </spider>
+  <spider ident="Cusco">
+    <name>Cusco</name>
+  </spider>
+  <spider ident="CyberSpyder">
+    <name>CyberSpyder</name>
+  </spider>
+  <spider ident="daumoa">
+    <name>Daum</name>
+  </spider>
+  <spider ident="daypopbot">
+    <name>Daypop RSS</name>
+  </spider>
+  <spider ident="DeadLinkCheck">
+    <name>Dead Link Check</name>
+  </spider>
+  <spider ident="Deepnet Explorer">
+    <name>Deepnet Explorer</name>
+  </spider>
+  <spider ident="DesertRealm.com">
+    <name>Desert Realm</name>
+  </spider>
+  <spider ident="Deweb">
+    <name>Deweb</name>
+  </spider>
+  <spider ident="Die Blinde Kuh">
+    <name>Die Blinde Kuh</name>
+  </spider>
+  <spider ident="dienstspider">
+    <name>Dienst</name>
+  </spider>
+  <spider ident="Diffbot">
+    <name>Diffbot</name>
+  </spider>
+  <spider ident="Digger/1.0 JDK/1.3.0">
+    <name>Digger</name>
+  </spider>
+  <spider ident="Digimarc WebReader">
+    <name>Digimarc MarcSpider</name>
+  </spider>
+  <spider ident="Digimarc CGIReader">
+    <name>Digimarc Marcspider/CGI</name>
+  </spider>
+  <spider ident="DIIbot">
+    <name>Digital Integrity Robot</name>
+  </spider>
+  <spider ident="grabber">
+    <name>Direct Hit Grabber</name>
+  </spider>
+  <spider ident="discobot">
+    <name>Discobot</name>
+  </spider>
+  <spider ident="DLE_Spider">
+    <name>DLE</name>
+  </spider>
+  <spider ident="Dolphin">
+    <name>Dolphin</name>
+  </spider>
+  <spider ident="Domnutch-Bot">
+    <name>Domnutch-Bot</name>
+  </spider>
+  <spider ident="DotBot">
+    <name>DotBot</name>
+  </spider>
+  <spider ident="DotBot/1.1">
+    <name>dotnetdotcom.org</name>
+  </spider>
+  <spider ident="DotTK SiteCheck">
+    <name>DotTK SiteCheck</name>
+  </spider>
+  <spider ident="DragonBot/1.0 libwww/5.0">
+    <name>DragonBot</name>
+  </spider>
+  <spider ident="Drupal">
+    <name>Drupal</name>
+  </spider>
+  <spider ident="DWCP/2.0">
+    <name><![CDATA[DWCP (Dridus' Web Cataloging Project)]]></name>
+  </spider>
+  <spider ident="e-SocietyRobot">
+    <name>e-Society</name>
+  </spider>
+  <spider ident="EbiNess/0.01a">
+    <name>EbiNess</name>
+  </spider>
+  <spider ident="dragonfly(ebingbong@playstarmusic.com)">
+    <name>eBingBong</name>
+  </spider>
+  <spider ident="edgeio-retriever">
+    <name>Edgeio</name>
+  </spider>
+  <spider ident="EIT-Link-Verifier-Robot/0.2">
+    <name>EIT Link Verifier Robot</name>
+  </spider>
+  <spider ident="elfinbot">
+    <name>Elfin Bot</name>
+  </spider>
+  <spider ident="abby">
+    <name>Ellerdale Project</name>
+  </spider>
+  <spider ident="Emacs-w3/v[0-9\.]+">
+    <name>Emacs-w3 Search Engine</name>
+  </spider>
+  <spider ident="Embedly">
+    <name>Embedly</name>
+  </spider>
+  <spider ident="envolk">
+    <name>envolk</name>
+  </spider>
+  <spider ident="ESISmartSpider">
+    <name>ESI Smart</name>
+  </spider>
+  <spider ident="esther">
+    <name>Esther</name>
+  </spider>
+  <spider ident="eSyndiCat Bot">
+    <name>eSyndiCat Bot</name>
+  </spider>
+  <spider ident="EuripBot">
+    <name>EuripBot</name>
+  </spider>
+  <spider ident="Eurobot/1.1">
+    <name>Eurobot</name>
+  </spider>
+  <spider ident="EventGuruBot">
+    <name>EventGuruBot</name>
+  </spider>
+  <spider ident="Evliya Celebi">
+    <name>Evliya Celebi</name>
+  </spider>
+  <spider ident="exactseek-pagereaper">
+    <name>Exact Seek</name>
+  </spider>
+  <spider ident="ExactSeek_Spider">
+    <name>Exact Seek</name>
+  </spider>
+  <spider ident="NG/2.0">
+    <name>ExaLead</name>
+  </spider>
+  <spider ident="Ezooms">
+    <name>Ezooms</name>
+  </spider>
+  <spider ident="Facebook">
+    <name>Facebook share follower</name>
+  </spider>
+  <spider ident="factbot">
+    <name>FactBites</name>
+  </spider>
+  <spider ident="fast-webcrawler">
+    <name>FAST / AlltheWeb</name>
+  </spider>
+  <spider ident="FastCrawler">
+    <name>FastCrawler</name>
+  </spider>
+  <spider ident="Feed24.com">
+    <name>Feed 24 RSS</name>
+  </spider>
+  <spider ident="FeedBlitz">
+    <name>Feed Blitz</name>
+  </spider>
+  <spider ident="UniversalFeedParser">
+    <name>Feed Parser</name>
+  </spider>
+  <spider ident="FeedBurner">
+    <name>FeedBurner RSS</name>
+  </spider>
+  <spider ident="FeedHub MetaDataFetcher">
+    <name>FeedHub</name>
+  </spider>
+  <spider ident="Feedster Crawler">
+    <name>Feedster Inc.</name>
+  </spider>
+  <spider ident="Feedtrace-bot">
+    <name>Feedtrace</name>
+  </spider>
+  <spider ident="FeedValidator/">
+    <name>FeedValidator</name>
+  </spider>
+  <spider ident="FEHLSTART Superspider">
+    <name>Fehlstart</name>
+  </spider>
+  <spider ident="FelixIDE">
+    <name>Felix IDE</name>
+  </spider>
+  <spider ident="ESIRover">
+    <name>FetchRover</name>
+  </spider>
+  <spider ident="fido">
+    <name>Fido</name>
+  </spider>
+  <spider ident="findlinks">
+    <name>FindLinks</name>
+  </spider>
+  <spider ident="FindoryBot">
+    <name>Findroy</name>
+  </spider>
+  <spider ident="Firebat">
+    <name>Firebat</name>
+  </spider>
+  <spider ident="Fish-Search-Robot">
+    <name>Fish Search</name>
+  </spider>
+  <spider ident="Mozilla/4.0 (compatible: FDSE robot)">
+    <name>Fluid Dynamics</name>
+  </spider>
+  <spider ident="FollowSite Bot">
+    <name>FollowSite Bot</name>
+  </spider>
+  <spider ident="libwww-perl/5.810">
+    <name>Forexitalia</name>
+  </spider>
+  <spider ident="fouineur.9bit.qc.ca">
+    <name>Fouineur</name>
+  </spider>
+  <spider ident="Freecrawl">
+    <name>Freecrawl</name>
+  </spider>
+  <spider ident="FreeWebMonitoring">
+    <name>FreeWebMonitoring</name>
+  </spider>
+  <spider ident="FunnelWeb">
+    <name>FunnelWeb</name>
+  </spider>
+  <spider ident="GaisBot">
+    <name>Gais</name>
+  </spider>
+  <spider ident="gamekitbot">
+    <name>Gamekit</name>
+  </spider>
+  <spider ident="gamma">
+    <name>gammaSpider</name>
+  </spider>
+  <spider ident="GarlikCrawler">
+    <name>Garlik Crawler</name>
+  </spider>
+  <spider ident="gazz">
+    <name>Gazz</name>
+  </spider>
+  <spider ident="gcreep">
+    <name>GCreep</name>
+  </spider>
+  <spider ident="genieBot">
+    <name>Genie Bot</name>
+  </spider>
+  <spider ident="GeoHasher">
+    <name>GeoHasher</name>
+  </spider>
+  <spider ident="geourl">
+    <name>GeoURL</name>
+  </spider>
+  <spider ident="GetterroboPlus">
+    <name>GetterroboPlus Puu</name>
+  </spider>
+  <spider ident="GetURL.rexx">
+    <name>GetURL</name>
+  </spider>
+  <spider ident="GingerCrawler">
+    <name>GingerCrawler</name>
+  </spider>
+  <spider ident="UnwindFetchor">
+    <name>GNIP</name>
+  </spider>
+  <spider ident="Goku">
+    <name>Goku</name>
+  </spider>
+  <spider ident="Golem">
+    <name>Golem</name>
+  </spider>
+  <spider ident="gonzo">
+    <name>Gonzo</name>
+  </spider>
+  <spider ident="gooblogsearch">
+    <name>Goo Blog Search</name>
+  </spider>
+  <spider ident="Googlebot">
+    <name>Google</name>
+  </spider>
+  <spider ident="Mediapartners-Google">
+    <name>Google AdSense</name>
+  </spider>
+  <spider ident="Adsbot-Google">
+    <name>Google Adwords</name>
+  </spider>
+  <spider ident="AppEngine-Google">
+    <name>Google AppEngine</name>
+  </spider>
+  <spider ident="FeedFetcher-Google">
+    <name>Google FeedFetcher</name>
+  </spider>
+  <spider ident="kw-lp-suggest">
+    <name>Google LP Keyword Checker Bot</name>
+  </spider>
+  <spider ident="Googlebot-Mobile">
+    <name>Google Mobile</name>
+  </spider>
+  <spider ident="PageFetcher-Google-CoOp">
+    <name>Google PageFetcher CoOp</name>
+  </spider>
+  <spider ident="Google-Sitemaps/1.0">
+    <name>Google Sitemaps</name>
+  </spider>
+  <spider ident="Googlebot-Video">
+    <name>Google Video</name>
+  </spider>
+  <spider ident="Google Web Preview">
+    <name>Google Web Preview</name>
+  </spider>
+  <spider ident="Google Wireless Transcoder">
+    <name>Google Wireless Transcoder</name>
+  </spider>
+  <spider ident="GosoSpider">
+    <name>Goso</name>
+  </spider>
+  <spider ident="Gpostbot">
+    <name>Gpost</name>
+  </spider>
+  <spider ident="griffon">
+    <name>Griffon</name>
+  </spider>
+  <spider ident="Gromit">
+    <name>Gromit</name>
+  </spider>
+  <spider ident="http://grub.org">
+    <name>Grub Client</name>
+  </spider>
+  <spider ident="Gulper Web Bot">
+    <name>Gulper</name>
+  </spider>
+  <spider ident="GurujiBot">
+    <name>Guruji</name>
+  </spider>
+  <spider ident="H?m?h?kki">
+    <name>H?m?h?kki</name>
+  </spider>
+  <spider ident="havIndex">
+    <name>HavIndex</name>
+  </spider>
+  <spider ident="HeinrichderMiragoRobot">
+    <name>Heinrichder Mirago</name>
+  </spider>
+  <spider ident="HenryTheMiragoRobot">
+    <name>Henry The Mirago Robot</name>
+  </spider>
+  <spider ident="archive.org_bot">
+    <name>Heritrix</name>
+  </spider>
+  <spider ident="HKU WWW Robot">
+    <name>HKU WWW Octopus</name>
+  </spider>
+  <spider ident="HolyCowDude">
+    <name>HolyCowDude RSS</name>
+  </spider>
+  <spider ident="Hometown">
+    <name>Hometown</name>
+  </spider>
+  <spider ident="HostTracker.com/1.0">
+    <name>HostTracker</name>
+  </spider>
+  <spider ident="htdig">
+    <name>ht://Dig</name>
+  </spider>
+  <spider ident="HTMLgobble">
+    <name>HTML Gobble</name>
+  </spider>
+  <spider ident="AITCSRobot">
+    <name>HTML Index</name>
+  </spider>
+  <spider ident="HuaweiSymantecSpider">
+    <name>Huawei Symantec</name>
+  </spider>
+  <spider ident="I Robot">
+    <name>I, Robot</name>
+  </spider>
+  <spider ident="http://www.almaden.ibm.com/cs/crawler">
+    <name>IBM Almaden</name>
+  </spider>
+  <spider ident="IBM_Planetwide">
+    <name>IBM Planetwide</name>
+  </spider>
+  <spider ident="+http://www.icerocket.com/">
+    <name>IceRocket</name>
+  </spider>
+  <spider ident="ichiro">
+    <name>Ichiro</name>
+  </spider>
+  <spider ident="igde">
+    <name>igdeSpyder</name>
+  </spider>
+  <spider ident="IlTrovatore-Setaccio">
+    <name>IlTrovatore Setaccio</name>
+  </spider>
+  <spider ident="Mozilla 3.01 PBWF (Win95)">
+    <name>Imagelock</name>
+  </spider>
+  <spider ident="IncyWincy">
+    <name>IncyWincy</name>
+  </spider>
+  <spider ident="Indy Library">
+    <name>Indy Library</name>
+  </spider>
+  <spider ident="Informant">
+    <name>Informant</name>
+  </spider>
+  <spider ident="InfoSeek Robot">
+    <name>InfoSeek Robot 1.0</name>
+  </spider>
+  <spider ident="Infoseek Sidewinder">
+    <name>Infoseek Sidewinder</name>
+  </spider>
+  <spider ident="infoSpider">
+    <name>infoSpider</name>
+  </spider>
+  <spider ident="INGRID">
+    <name>Ingrid</name>
+  </spider>
+  <spider ident="slurp@inktomi">
+    <name>Inktomi</name>
+  </spider>
+  <spider ident="Insitor">
+    <name>Insitor</name>
+  </spider>
+  <spider ident="inspectorwww">
+    <name>Inspector Web</name>
+  </spider>
+  <spider ident="IAGENT">
+    <name>IntelliAgent</name>
+  </spider>
+  <spider ident="Intelliseek">
+    <name>Intelliseek</name>
+  </spider>
+  <spider ident="Internet Cruiser Robot">
+    <name>Internet Cruiser</name>
+  </spider>
+  <spider ident="SCHOOLCARE; SV1; InfoPath.1">
+    <name>Internet for learning</name>
+  </spider>
+  <spider ident="InternetLinkAgent">
+    <name>Internet Link Agent</name>
+  </spider>
+  <spider ident="3GSE bot">
+    <name>Internet Research Institute UK</name>
+  </spider>
+  <spider ident="internetseer">
+    <name>Internet Seer</name>
+  </spider>
+  <spider ident="sharp-info-agent">
+    <name>Internet Shinchakubin</name>
+  </spider>
+  <spider ident="Pogodak">
+    <name>Interseek</name>
+  </spider>
+  <spider ident="Iron33">
+    <name>Iron33</name>
+  </spider>
+  <spider ident="IsraeliSearch">
+    <name>Israeli Search</name>
+  </spider>
+  <spider ident="itchBot">
+    <name>Itch</name>
+  </spider>
+  <spider ident="JavaBee">
+    <name>JavaBee</name>
+  </spider>
+  <spider ident="JBot">
+    <name>JBot</name>
+  </spider>
+  <spider ident="JCrawler">
+    <name>JCrawler</name>
+  </spider>
+  <spider ident="JetBot">
+    <name>JetEye</name>
+  </spider>
+  <spider ident="JoBo">
+    <name>JoBo</name>
+  </spider>
+  <spider ident="Jobot">
+    <name>Jobot</name>
+  </spider>
+  <spider ident="JoeBot">
+    <name>JoeBot</name>
+  </spider>
+  <spider ident="JSpider">
+    <name>JSpider</name>
+  </spider>
+  <spider ident="jumpstation">
+    <name>JumpStation</name>
+  </spider>
+  <spider ident="Jyxobot">
+    <name>Jyxo</name>
+  </spider>
+  <spider ident="image.kapsi.net">
+    <name>Kapsi Images</name>
+  </spider>
+  <spider ident="Katipo">
+    <name>Katipo</name>
+  </spider>
+  <spider ident="KDD-Explorer">
+    <name>KDD Explorer</name>
+  </spider>
+  <spider ident="KIT-Fireball">
+    <name>KIT Fireball</name>
+  </spider>
+  <spider ident="kmbot">
+    <name>knowmore</name>
+  </spider>
+  <spider ident="KO_Yappo_Robot">
+    <name>KO Yappo</name>
+  </spider>
+  <spider ident="LabelGrab">
+    <name>LabelGrabber</name>
+  </spider>
+  <spider ident="larbin">
+    <name>Larbin</name>
+  </spider>
+  <spider ident="LeapTag">
+    <name>LeapTag News Reader</name>
+  </spider>
+  <spider ident="LexxeBot">
+    <name>Lexxe</name>
+  </spider>
+  <spider ident="lwp-trivial">
+    <name>libwww-perl</name>
+  </spider>
+  <spider ident="linkalarm">
+    <name>Link Alarm</name>
+  </spider>
+  <spider ident="Linkidator">
+    <name>Link Validator</name>
+  </spider>
+  <spider ident="LinkedInBot">
+    <name>LinkedIn</name>
+  </spider>
+  <spider ident="LinkScan Server">
+    <name>LinkScan</name>
+  </spider>
+  <spider ident="LinkWalker">
+    <name>LinkWalker</name>
+  </spider>
+  <spider ident="livedoorCheckers/">
+    <name>Livedoor Checkers</name>
+  </spider>
+  <spider ident="Lockon">
+    <name>Lockon</name>
+  </spider>
+  <spider ident="logo.gif crawler">
+    <name>logo.gif</name>
+  </spider>
+  <spider ident="LuminateBot">
+    <name>LuminateBot</name>
+  </spider>
+  <spider ident="Lycos">
+    <name>Lycos</name>
+  </spider>
+  <spider ident="Apple-PubSub/59">
+    <name>Mac OS X RSS</name>
+  </spider>
+  <spider ident="Magpie">
+    <name>Magpie</name>
+  </spider>
+  <spider ident="magpie-crawler">
+    <name>Magpie Crawler</name>
+  </spider>
+  <spider ident="Mail.Ru">
+    <name>Mail.Ru</name>
+  </spider>
+  <spider ident="MJ12bot">
+    <name>Majestics MJ12bot</name>
+  </spider>
+  <spider ident="Mammoth">
+    <name>Mammoth</name>
+  </spider>
+  <spider ident="Marvin">
+    <name>Marvin</name>
+  </spider>
+  <spider ident="marvin/infoseek">
+    <name>marvin/infoseek</name>
+  </spider>
+  <spider ident="M/3.8">
+    <name>Mattie</name>
+  </spider>
+  <spider ident="MediaFox">
+    <name>MediaFox</name>
+  </spider>
+  <spider ident="mercator">
+    <name>Mercator</name>
+  </spider>
+  <spider ident="MerzScope">
+    <name>MerzScope</name>
+  </spider>
+  <spider ident="METASpider">
+    <name>Meta</name>
+  </spider>
+  <spider ident="Metaeuro">
+    <name>MetaEuro</name>
+  </spider>
+  <spider ident="MetaGer-LinkChecker">
+    <name>MetaGer</name>
+  </spider>
+  <spider ident="MetaURI">
+    <name>MetaURI</name>
+  </spider>
+  <spider ident="MSR-ISRCCrawler">
+    <name>Microsoft Research</name>
+  </spider>
+  <spider ident="MindCrawler">
+    <name>MindCrawler</name>
+  </spider>
+  <spider ident="Miva">
+    <name>Miva</name>
+  </spider>
+  <spider ident="MLBot">
+    <name>MLBot</name>
+  </spider>
+  <spider ident="UdmSearch">
+    <name>MNO GoSearch</name>
+  </spider>
+  <spider ident="mnoGoSearch">
+    <name>mnoGoSearch</name>
+  </spider>
+  <spider ident="moget">
+    <name>Moget</name>
+  </spider>
+  <spider ident="MOMspider">
+    <name>MOM</name>
+  </spider>
+  <spider ident="Monster">
+    <name>Monster</name>
+  </spider>
+  <spider ident="Moreoverbot">
+    <name>Moreover</name>
+  </spider>
+  <spider ident="Mp3Bot">
+    <name>Mp3Realm</name>
+  </spider>
+  <spider ident="msnbot">
+    <name>MSNBot</name>
+  </spider>
+  <spider ident="msnbot-media">
+    <name>MSNBot (Media Search)</name>
+  </spider>
+  <spider ident="msnbot-mobile">
+    <name>MSNBot (Mobile)</name>
+  </spider>
+  <spider ident="msnbot-newsblogs">
+    <name>MSNBot (News Search)</name>
+  </spider>
+  <spider ident="msnbot-products">
+    <name>MSNBot (Product Search)</name>
+  </spider>
+  <spider ident="MSRBOT">
+    <name>MSRBot</name>
+  </spider>
+  <spider ident="MuscatFerret">
+    <name>Muscat Ferret</name>
+  </spider>
+  <spider ident="MwdSearch">
+    <name>Mwd.Search</name>
+  </spider>
+  <spider ident="Najdi.si">
+    <name>Najdi.si</name>
+  </spider>
+  <spider ident="NPBot">
+    <name>NameProtect</name>
+  </spider>
+  <spider ident="NaverBot">
+    <name>NaverBot</name>
+  </spider>
+  <spider ident="NEC-MeshExplorer">
+    <name>NEC MeshExplorer</name>
+  </spider>
+  <spider ident="Nederland.zoek">
+    <name>Nederland.zoek</name>
+  </spider>
+  <spider ident="NerdByNature.Bot">
+    <name>NerdByNature</name>
+  </spider>
+  <spider ident="NetCarta CyberPilot Pro">
+    <name>NetCarta WebMap</name>
+  </spider>
+  <spider ident="Netcraft">
+    <name>Netcraft Web Server Survey</name>
+  </spider>
+  <spider ident="NetMechanic">
+    <name>NetMechanic</name>
+  </spider>
+  <spider ident="NetNewsWire">
+    <name>NetNewsWire RSS</name>
+  </spider>
+  <spider ident="NetScoop">
+    <name>NetScoop</name>
+  </spider>
+  <spider ident="NIF">
+    <name>News is Free RSS</name>
+  </spider>
+  <spider ident="newscan-online">
+    <name>Newscan Online</name>
+  </spider>
+  <spider ident="(X11; compatible; crawler@newstin.com; HTTPClient 3.1">
+    <name>Newstin</name>
+  </spider>
+  <spider ident="NextGenSearchBot 1">
+    <name>NextGen Search Bot</name>
+  </spider>
+  <spider ident="NHSEWalker">
+    <name>NHSE Web Forager</name>
+  </spider>
+  <spider ident="NimbleCrawler">
+    <name>NimbleCrawler</name>
+  </spider>
+  <spider ident="NjuiceBot">
+    <name>NjuiceBot</name>
+  </spider>
+  <spider ident="Nomad">
+    <name>Nomad</name>
+  </spider>
+  <spider ident="Norbert the Spider">
+    <name>Norbert</name>
+  </spider>
+  <spider ident="Gulliver">
+    <name>Northern Light</name>
+  </spider>
+  <spider ident="Nutch">
+    <name>Nutch</name>
+  </spider>
+  <spider ident="explorersearch">
+    <name>NZ Explorer</name>
+  </spider>
+  <spider ident="Occam">
+    <name>Occam</name>
+  </spider>
+  <spider ident="Ocelli">
+    <name>Ocelli</name>
+  </spider>
+  <spider ident="omgilibot">
+    <name>Omgili</name>
+  </spider>
+  <spider ident="omgilibot/0.3 +http://www.omgili.com/Crawler.html">
+    <name>omgilibot</name>
+  </spider>
+  <spider ident="OneRiot">
+    <name>OneRiot</name>
+  </spider>
+  <spider ident="Me.dium">
+    <name>OneRiot.com</name>
+  </spider>
+  <spider ident="LargeSmall">
+    <name>OneSpot</name>
+  </spider>
+  <spider ident="Online24-Bot">
+    <name>Online24-Bot</name>
+  </spider>
+  <spider ident="OOZBOT">
+    <name>OOZBOT</name>
+  </spider>
+  <spider ident="Openbot">
+    <name>Openfind</name>
+  </spider>
+  <spider ident="Openfind">
+    <name>Openfind data gatherer</name>
+  </spider>
+  <spider ident="OpenISearch">
+    <name>OpenISearch</name>
+  </spider>
+  <spider ident="Orbsearch">
+    <name>Orb Search</name>
+  </spider>
+  <spider ident="OWPBot">
+    <name>OWPBot</name>
+  </spider>
+  <spider ident="PackRat">
+    <name>Pack Rat</name>
+  </spider>
+  <spider ident="PageBoy">
+    <name>PageBoy</name>
+  </spider>
+  <spider ident="panscient.com">
+    <name>Panscient</name>
+  </spider>
+  <spider ident="ParaSite">
+    <name>ParaSite</name>
+  </spider>
+  <spider ident="ParchBot">
+    <name>ParchmentHill</name>
+  </spider>
+  <spider ident="Patric">
+    <name>Patric</name>
+  </spider>
+  <spider ident="PEGASUS">
+    <name>Pegasus</name>
+  </spider>
+  <spider ident="PerlCrawler/1.0 Xavatoria/2.0">
+    <name>PerlCrawler 1.0</name>
+  </spider>
+  <spider ident="PGP-KA">
+    <name>PGP Key Agent</name>
+  </spider>
+  <spider ident="Duppies">
+    <name>Phantom</name>
+  </spider>
+  <spider ident="phpdig">
+    <name>PhpDig</name>
+  </spider>
+  <spider ident="psbot/0.1 (+http://www.picsearch.com/bot.html) (51dc65875976ac434c09274f7e46dec6)">
+    <name>Picsearch</name>
+  </spider>
+  <spider ident="PiltdownMan">
+    <name>Piltdown Man</name>
+  </spider>
+  <spider ident="Pimptrain's robot">
+    <name>Pimptrain</name>
+  </spider>
+  <spider ident="pingalink">
+    <name>Ping A Link</name>
+  </spider>
+  <spider ident="pingdom.com_bot">
+    <name>Pingdom.com Bot</name>
+  </spider>
+  <spider ident="Pioneer">
+    <name>Pioneer</name>
+  </spider>
+  <spider ident="PluckFeedCrawler">
+    <name>Pluck</name>
+  </spider>
+  <spider ident="Plukkie">
+    <name>Plukkie</name>
+  </spider>
+  <spider ident="PlumtreeWebAccessor">
+    <name>Plumtree Web Accessor</name>
+  </spider>
+  <spider ident="PodNova">
+    <name>Pod Nova</name>
+  </spider>
+  <spider ident="Pompos">
+    <name>Pompos</name>
+  </spider>
+  <spider ident="Poppi">
+    <name>Poppi</name>
+  </spider>
+  <spider ident="gestaltIconoclast">
+    <name>Popular Iconoclast</name>
+  </spider>
+  <spider ident="PortalBSpider">
+    <name>Portal B</name>
+  </spider>
+  <spider ident="PortalJuice.com">
+    <name>Portal Juice</name>
+  </spider>
+  <spider ident="PostRank">
+    <name>PostRank</name>
+  </spider>
+  <spider ident="psbot">
+    <name>PSBot</name>
+  </spider>
+  <spider ident="PycURL">
+    <name>PycURL</name>
+  </spider>
+  <spider ident="Qango.com Web Directory">
+    <name>Qango</name>
+  </spider>
+  <spider ident="R6_FeedFetcher">
+    <name>Radian6</name>
+  </spider>
+  <spider ident="R6_CommentReader">
+    <name>Radian6</name>
+  </spider>
+  <spider ident="R6_CommentReader">
+    <name>Radian6 Comment Reader</name>
+  </spider>
+  <spider ident="R6_FeedFetcher">
+    <name>Radian6 FeedFetcher</name>
+  </spider>
+  <spider ident="R6_FeedFetcher">
+    <name>Radian6 FeedFetcher</name>
+  </spider>
+  <spider ident="StackRambler">
+    <name>Rambler</name>
+  </spider>
+  <spider ident="Raven">
+    <name>Raven Search</name>
+  </spider>
+  <spider ident="RixBot">
+    <name>REBOL IndeXer</name>
+  </spider>
+  <spider ident="rdfbot">
+    <name>Rediff</name>
+  </spider>
+  <spider ident="Resume Robot">
+    <name>Resume Robot</name>
+  </spider>
+  <spider ident="Road Runner: ImageScape Robot">
+    <name>Road Runner: ImageScape Robot</name>
+  </spider>
+  <spider ident="RHCS">
+    <name>RoadHouse Crawling System</name>
+  </spider>
+  <spider ident="Robbie">
+    <name>Robbie</name>
+  </spider>
+  <spider ident="RoboCrawl">
+    <name>RoboCrawl</name>
+  </spider>
+  <spider ident="Robofox">
+    <name>RoboFox</name>
+  </spider>
+  <spider ident="Robot du CRIM 1.0a">
+    <name>Robot Francoroute</name>
+  </spider>
+  <spider ident="Robozilla">
+    <name>Robozilla</name>
+  </spider>
+  <spider ident="Roverbot">
+    <name>Roverbot</name>
+  </spider>
+  <spider ident="RSS-SPIDER">
+    <name>RSS Feed Seeker</name>
+  </spider>
+  <spider ident="RuLeS">
+    <name>RuLeS</name>
+  </spider>
+  <spider ident="SafetyNet Robot">
+    <name>SafetyNet</name>
+  </spider>
+  <spider ident="SBIder">
+    <name>SBIder RSS</name>
+  </spider>
+  <spider ident="Scarlett">
+    <name>Scarlett</name>
+  </spider>
+  <spider ident="Scharia">
+    <name>Scharia</name>
+  </spider>
+  <spider ident="Science-Index">
+    <name>Science Index</name>
+  </spider>
+  <spider ident="ScooperBot">
+    <name>ScooperBot</name>
+  </spider>
+  <spider ident="ScoutJet">
+    <name>ScoutJet</name>
+  </spider>
+  <spider ident="Scrubby/3.0">
+    <name>Scrubby</name>
+  </spider>
+  <spider ident="SearchNZ">
+    <name>Search NZ</name>
+  </spider>
+  <spider ident="search17">
+    <name>Search17</name>
+  </spider>
+  <spider ident="searchprocess">
+    <name>SearchProcess</name>
+  </spider>
+  <spider ident="SBSearch">
+    <name>Secret Search Engine Labs</name>
+  </spider>
+  <spider ident="Seekbot">
+    <name>Seekbot</name>
+  </spider>
+  <spider ident="SemrushBot">
+    <name>SemrushBot</name>
+  </spider>
+  <spider ident="SemtoBot">
+    <name>SemtoBot</name>
+  </spider>
+  <spider ident="Senrigan">
+    <name>Senrigan</name>
+  </spider>
+  <spider ident="Sensis Web Crawler">
+    <name>Sensis</name>
+  </spider>
+  <spider ident="spbot">
+    <name>SEOprofiler</name>
+  </spider>
+  <spider ident="ServiceUptime.robot">
+    <name>ServiceUptime</name>
+  </spider>
+  <spider ident="SeznamBot">
+    <name>Seznam Fulltext Blog</name>
+  </spider>
+  <spider ident="SG-Scout">
+    <name>SG Scout</name>
+  </spider>
+  <spider ident="Shagseeker">
+    <name>ShagSeeker</name>
+  </spider>
+  <spider ident="Shai'Hulud">
+    <name><![CDATA[Shai'Hulud]]></name>
+  </spider>
+  <spider ident="SheenBot">
+    <name>SheenBot</name>
+  </spider>
+  <spider ident="ShopWiki">
+    <name><![CDATA[Shopwiki [Bot]]]></name>
+  </spider>
+  <spider ident="SimilarPages/Nutch">
+    <name><![CDATA[SimilarPages/Nutch [Crawler]]]></name>
+  </spider>
+  <spider ident="SimBot/1.0">
+    <name>Simmany Robot Ver 1.0</name>
+  </spider>
+  <spider ident="ssearcher100">
+    <name>Site Searcher</name>
+  </spider>
+  <spider ident="Site Valet">
+    <name>Site Valet</name>
+  </spider>
+  <spider ident="http://www.site-list.net">
+    <name>Site-List RSS</name>
+  </spider>
+  <spider ident="SiteBot">
+    <name>SiteBot</name>
+  </spider>
+  <spider ident="SiteTech-Rover">
+    <name>SiteTech-Rover</name>
+  </spider>
+  <spider ident="SiteUptime.com">
+    <name>SiteUptime</name>
+  </spider>
+  <spider ident="SiteVibeBot">
+    <name>SiteVibeBot</name>
+  </spider>
+  <spider ident="+SitiDi.net/SitiDiBot/">
+    <name>SitiDi</name>
+  </spider>
+  <spider ident="SkimBot">
+    <name>SkimBot</name>
+  </spider>
+  <spider ident="aWapClient">
+    <name>Skymob</name>
+  </spider>
+  <spider ident="SLCrawler">
+    <name>SLCrawler</name>
+  </spider>
+  <spider ident="Sleek Spider">
+    <name>Sleek</name>
+  </spider>
+  <spider ident="Snapbot">
+    <name>Snap Shots</name>
+  </spider>
+  <spider ident="Snapbot/1.0">
+    <name>Snapbot</name>
+  </spider>
+  <spider ident="SnapPreviewBot">
+    <name>SnapPreviewBot</name>
+  </spider>
+  <spider ident="Snooper">
+    <name>Snooper</name>
+  </spider>
+  <spider ident="socbot">
+    <name>SocBot</name>
+  </spider>
+  <spider ident="Sogou web spider">
+    <name>Sogou</name>
+  </spider>
+  <spider ident="sohu-search">
+    <name>Sohu Search</name>
+  </spider>
+  <spider ident="Solbot">
+    <name>Solbot</name>
+  </spider>
+  <spider ident="Sosospider">
+    <name>Soso</name>
+  </spider>
+  <spider ident="www.entireweb.com/speedy.html">
+    <name>Speedy</name>
+  </spider>
+  <spider ident="Speedy">
+    <name>Speedy</name>
+  </spider>
+  <spider ident="Sphere Scout">
+    <name>Sphere</name>
+  </spider>
+  <spider ident="Sphider2">
+    <name>Sphider</name>
+  </spider>
+  <spider ident="mouse.house">
+    <name>Spider Monkey</name>
+  </spider>
+  <spider ident="SpiderBot">
+    <name>SpiderBot</name>
+  </spider>
+  <spider ident="spiderline">
+    <name>Spiderline Crawler</name>
+  </spider>
+  <spider ident="SpiderMan">
+    <name>SpiderMan</name>
+  </spider>
+  <spider ident="SpiderPig">
+    <name>SpiderPig</name>
+  </spider>
+  <spider ident="SpiderView">
+    <name>SpiderView</name>
+  </spider>
+  <spider ident="Spinn3r">
+    <name>Spinn3r</name>
+  </spider>
+  <spider ident="squadbot">
+    <name>SQuADbot</name>
+  </spider>
+  <spider ident="suke">
+    <name>Suke</name>
+  </spider>
+  <spider ident="suntek">
+    <name>Suntek Search Engine</name>
+  </spider>
+  <spider ident="superbot.com">
+    <name>Super.info Search Bot</name>
+  </spider>
+  <spider ident="Superfeedr">
+    <name>Superfeedr</name>
+  </spider>
+  <spider ident="Synthesio">
+    <name>Synthesio</name>
+  </spider>
+  <spider ident="Szukacz">
+    <name>Szukacz</name>
+  </spider>
+  <spider ident="Black Widow">
+    <name>TACH Black Widow</name>
+  </spider>
+  <spider ident="Tagoobot">
+    <name>Tagoo.ru</name>
+  </spider>
+  <spider ident="tailsweepblogcrawler">
+    <name>Tailsweep</name>
+  </spider>
+  <spider ident="Tarantula">
+    <name>Tarantula</name>
+  </spider>
+  <spider ident="tarspider">
+    <name>TarSpider</name>
+  </spider>
+  <spider ident="dlw3robot">
+    <name>Tcl W3 Robot</name>
+  </spider>
+  <spider ident="TechBOT">
+    <name>TechBOT</name>
+  </spider>
+  <spider ident="Technoratibot">
+    <name>Technorati</name>
+  </spider>
+  <spider ident="Templeton">
+    <name>Templeton</name>
+  </spider>
+  <spider ident="teoma">
+    <name>Teoma/Ask Jeeves</name>
+  </spider>
+  <spider ident="JubiiRobot">
+    <name>The Jubii</name>
+  </spider>
+  <spider ident="NorthStar">
+    <name>The NorthStar Robot</name>
+  </spider>
+  <spider ident="w3index">
+    <name>The NWI Robot</name>
+  </spider>
+  <spider ident="Peregrinator-Mathematics">
+    <name>The Peregrinator</name>
+  </spider>
+  <spider ident="thumbshots-de-Bot">
+    <name>Thumbshots</name>
+  </spider>
+  <spider ident="T-H-U-N-D-E-R-S-T-O-N-E">
+    <name>Thunderstone</name>
+  </spider>
+  <spider ident="TinEye">
+    <name>TinEye</name>
+  </spider>
+  <spider ident="TITAN">
+    <name>Titan</name>
+  </spider>
+  <spider ident="TitIn">
+    <name>TitIn</name>
+  </spider>
+  <spider ident="TLSpider">
+    <name>TLSpider</name>
+  </spider>
+  <spider ident="turnitinbot">
+    <name>Turn it in</name>
+  </spider>
+  <spider ident="slysearch">
+    <name>Turn it in slysearch</name>
+  </spider>
+  <spider ident="TurtleScanner">
+    <name>Turtle</name>
+  </spider>
+  <spider ident="Tweetmeme">
+    <name>Tweetmeme.com</name>
+  </spider>
+  <spider ident="Twiceler">
+    <name>Twiceler (Cuill.com)</name>
+  </spider>
+  <spider ident="Twingbot">
+    <name>Twingbot</name>
+  </spider>
+  <spider ident="Twingly">
+    <name>Twingly</name>
+  </spider>
+  <spider ident="Twitterbot">
+    <name>Twitterbot</name>
+  </spider>
+  <spider ident="Twitturls">
+    <name>Twitturls.com</name>
+  </spider>
+  <spider ident="Python-urllib">
+    <name>Twitturls.com (Python-urllib)</name>
+  </spider>
+  <spider ident="UCSD-Crawler">
+    <name>UCSD Crawl</name>
+  </spider>
+  <spider ident="UMBC-memeta-Bot">
+    <name>UMBC RSS</name>
+  </spider>
+  <spider ident="Unpartisan">
+    <name>Unpartisan RSS</name>
+  </spider>
+  <spider ident="urlck">
+    <name>URL Check</name>
+  </spider>
+  <spider ident="URL Spider Pro">
+    <name>URL Spider Pro</name>
+  </spider>
+  <spider ident="Valkyrie">
+    <name>Valkyrie</name>
+  </spider>
+  <spider ident="ClickSense">
+    <name>ValueClick LM</name>
+  </spider>
+  <spider ident="Mozilla/4.0 (vBSEO; http://www.vbseo.com)">
+    <name>vBSEO</name>
+  </spider>
+  <spider ident="Verticrawl">
+    <name>Verticrawl</name>
+  </spider>
+  <spider ident="Victoria">
+    <name>Victoria</name>
+  </spider>
+  <spider ident="vision-search">
+    <name>Vision Search</name>
+  </spider>
+  <spider ident="Visions Search">
+    <name>Visions</name>
+  </spider>
+  <spider ident="voyager/1.0">
+    <name>Voyager</name>
+  </spider>
+  <spider ident="VWbot_K">
+    <name>VWbot</name>
+  </spider>
+  <spider ident="W3C-checklink">
+    <name>W3C</name>
+  </spider>
+  <spider ident="W3C_CSS_Validator">
+    <name>W3C CSS Validator</name>
+  </spider>
+  <spider ident="W3C_Validator">
+    <name>W3C Validator</name>
+  </spider>
+  <spider ident="Unicorn">
+    <name><![CDATA[W3C's United Validator]]></name>
+  </spider>
+  <spider ident="W3M2">
+    <name>W3M2</name>
+  </spider>
+  <spider ident="w3mir">
+    <name>W3mir</name>
+  </spider>
+  <spider ident="w@pspider">
+    <name>w@p</name>
+  </spider>
+  <spider ident="appie">
+    <name>Walhello Appie</name>
+  </spider>
+  <spider ident="CrawlPaper">
+    <name>WallPaper</name>
+  </spider>
+  <spider ident="root">
+    <name>Web Core / Roots</name>
+  </spider>
+  <spider ident="WebMoose">
+    <name>Web Moose</name>
+  </spider>
+  <spider ident="WebAlta Crawler">
+    <name>WebAlta</name>
+  </spider>
+  <spider ident="WebAlta">
+    <name>WebAlta</name>
+  </spider>
+  <spider ident="WebBandit">
+    <name>WebBandit</name>
+  </spider>
+  <spider ident="WebCatcher">
+    <name>WebCatcher</name>
+  </spider>
+  <spider ident="Webclipping">
+    <name>Webclipping</name>
+  </spider>
+  <spider ident="WebCopy">
+    <name>WebCopy</name>
+  </spider>
+  <spider ident="WebFetcher">
+    <name>WebFetcher</name>
+  </spider>
+  <spider ident="weblayers">
+    <name>WebLayers</name>
+  </spider>
+  <spider ident="WebLinker">
+    <name>WebLinker</name>
+  </spider>
+  <spider ident="wlm">
+    <name>Weblog Monitor</name>
+  </spider>
+  <spider ident="WebQuest">
+    <name>WebQuest</name>
+  </spider>
+  <spider ident="WebReaper">
+    <name>WebReaper</name>
+  </spider>
+  <spider ident="webs@recruit.co.jp">
+    <name>Webs</name>
+  </spider>
+  <spider ident="websearchbench">
+    <name>WebSearchBench</name>
+  </spider>
+  <spider ident="WOLP">
+    <name>WebStolperer</name>
+  </spider>
+  <spider ident="webvac">
+    <name>WebVac</name>
+  </spider>
+  <spider ident="webwalk">
+    <name>WebWalk</name>
+  </spider>
+  <spider ident="WebWalker">
+    <name>WebWalker</name>
+  </spider>
+  <spider ident="WebWatch">
+    <name>WebWatch</name>
+  </spider>
+  <spider ident="www.WebWombat.com.au">
+    <name>WebWombat</name>
+  </spider>
+  <spider ident="Wget">
+    <name>Wget</name>
+  </spider>
+  <spider ident="whatUseek_winona">
+    <name>What U Seek Winona</name>
+  </spider>
+  <spider ident="Whitevector Crawler">
+    <name>Whitevector Crawler</name>
+  </spider>
+  <spider ident="www.whoisde.de">
+    <name>Whois DE</name>
+  </spider>
+  <spider ident="SurveyBot">
+    <name>Whois Source</name>
+  </spider>
+  <spider ident="wikiwix">
+    <name>Wikiwix</name>
+  </spider>
+  <spider ident="Hazel's Ferret Web hopper">
+    <name>Wild Ferret Web Hopper</name>
+  </spider>
+  <spider ident="Willow Internet Crawler by Twotrees">
+    <name>Willow</name>
+  </spider>
+  <spider ident="Windows-Live-Social-Object-Extractor-Engine">
+    <name>Windows Live SOEE</name>
+  </spider>
+  <spider ident="Windows-RSS-Platform/1.0">
+    <name>Windows RSS Platform 1.0</name>
+  </spider>
+  <spider ident="Windows-RSS-Platform/2.0">
+    <name>Windows RSS Platform 2.0</name>
+  </spider>
+  <spider ident="WinHTTP">
+    <name>WinHTTP</name>
+  </spider>
+  <spider ident="wired-digital-newsbot">
+    <name>Wired Digital</name>
+  </spider>
+  <spider ident="Vagabondo">
+    <name>Wise-Guys</name>
+  </spider>
+  <spider ident="Bilbo">
+    <name>Wise-Guys</name>
+  </spider>
+  <spider ident="zyborg">
+    <name>WiseNut</name>
+  </spider>
+  <spider ident="WordPress">
+    <name>WordPress</name>
+  </spider>
+  <spider ident="woriobot">
+    <name>Worio</name>
+  </spider>
+  <spider ident="OmniExplorer_Bot">
+    <name>WorldIndexer</name>
+  </spider>
+  <spider ident="Project Kolinka Forum Search">
+    <name>www.kolinka.com</name>
+  </spider>
+  <spider ident="WWWC">
+    <name>WWWC</name>
+  </spider>
+  <spider ident="WWWeasel Robot">
+    <name>WWWeasel</name>
+  </spider>
+  <spider ident="wwwster">
+    <name>WWWSter</name>
+  </spider>
+  <spider ident="WWWWanderer">
+    <name>WWWWanderer</name>
+  </spider>
+  <spider ident="TECOMAC-Crawler">
+    <name>X-Crawler</name>
+  </spider>
+  <spider ident="Xenu">
+    <name>Xenu Link Sleuth</name>
+  </spider>
+  <spider ident="XGET">
+    <name>XGET</name>
+  </spider>
+  <spider ident="cosmos">
+    <name>XYLEME Robot</name>
+  </spider>
+  <spider ident="yacybot">
+    <name>YaCy</name>
+  </spider>
+  <spider ident="YahooYSMcm">
+    <name>Yahoo Publisher Network</name>
+  </spider>
+  <spider ident="Yahoo-Blogs">
+    <name>Yahoo! Blogs</name>
+  </spider>
+  <spider ident="YahooFeedSeeker">
+    <name>Yahoo! FeedSeeker</name>
+  </spider>
+  <spider ident="Yahoo-MMCrawler">
+    <name>Yahoo! Image Search</name>
+  </spider>
+  <spider ident="YahooSeeker/M1A1-R2D2">
+    <name>Yahoo! Mobile</name>
+  </spider>
+  <spider ident="Yahoo! Slurp">
+    <name>Yahoo! Slurp</name>
+  </spider>
+  <spider ident="Yahoo-VerticalCrawler">
+    <name>Yahoo! Vertical Crawler</name>
+  </spider>
+  <spider ident="YandexAntivirus">
+    <name>Yandex Antivirus</name>
+  </spider>
+  <spider ident="YandexBlog">
+    <name>Yandex Blog</name>
+  </spider>
+  <spider ident="YandexBot">
+    <name>Yandex Bot</name>
+  </spider>
+  <spider ident="YandexCatalog">
+    <name>Yandex Catalog</name>
+  </spider>
+  <spider ident="YandexDirect">
+    <name>Yandex Direct</name>
+  </spider>
+  <spider ident="YandexFavicon">
+    <name>Yandex Favicon</name>
+  </spider>
+  <spider ident="YandexImageResizer">
+    <name>Yandex ImageResizer</name>
+  </spider>
+  <spider ident="YandexImages">
+    <name>Yandex Images</name>
+  </spider>
+  <spider ident="YandexMedia">
+    <name>Yandex Media</name>
+  </spider>
+  <spider ident="YandexMetrika">
+    <name>Yandex Metrika</name>
+  </spider>
+  <spider ident="YandexNews">
+    <name>Yandex News</name>
+  </spider>
+  <spider ident="YandexPagechecker">
+    <name>Yandex Pagechecker</name>
+  </spider>
+  <spider ident="YandexVideo">
+    <name>Yandex Video</name>
+  </spider>
+  <spider ident="YandexWebmaster">
+    <name>Yandex Webmaster</name>
+  </spider>
+  <spider ident="YandexZakladki">
+    <name>Yandex Zakladki</name>
+  </spider>
+  <spider ident="Yanga WorldSearch Bot">
+    <name>Yanga</name>
+  </spider>
+  <spider ident="Yanga WorldSearch Bot">
+    <name>Yanga WorldSearch Bot</name>
+  </spider>
+  <spider ident="YebolBot">
+    <name>YebolBot</name>
+  </spider>
+  <spider ident="yeti">
+    <name>Yeti</name>
+  </spider>
+  <spider ident="Yeti">
+    <name>Yeti</name>
+  </spider>
+  <spider ident="Yeti/1.0">
+    <name>Yeti/1.0</name>
+  </spider>
+  <spider ident="YodaoBot">
+    <name>Yodao</name>
+  </spider>
+  <spider ident="YoudaoBot">
+    <name>Youdao</name>
+  </spider>
+  <spider ident="YRSpider">
+    <name>YunRang</name>
+  </spider>
+  <spider ident="zeus">
+    <name>Zeus Internet Marketing</name>
+  </spider>
+  <spider ident="http://www.zorkk.com">
+    <name>Zork RSS</name>
+  </spider>
+</searchspiders>
+
+<!-- There are a total of 630 spiders in this list.
+You downloaded this list on Monday 10th September 2012 at 10:25 AM.
+This vBulletin Spiders List was generated by Wolfshead Solutions' Spider List Generator.
+The Spiders List Database was last updated on: Saturday 14th July 2012 at 05:43 AM.
+Visit the Wolfshead Solutions' Spider List @ http://www.wolfshead-solutions.com/spiders-list -->

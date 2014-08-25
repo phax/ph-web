@@ -35,7 +35,7 @@ import com.helger.web.servlet.request.RequestHelper;
 /**
  * This singleton instance represents default server information for locations
  * where no request context is available (e.g. in scheduled tasks)
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -76,7 +76,7 @@ public class StaticServerInfo implements Serializable
   }
 
   /**
-   * @return The server name without scheme. E.g. "www.phloc.com"
+   * @return The server name without scheme. E.g. "www.helger.com"
    */
   @Nonnull
   public String getServerName ()

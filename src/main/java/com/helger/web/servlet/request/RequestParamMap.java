@@ -57,7 +57,7 @@ import com.helger.commons.string.ToStringGenerator;
  * problem with JS expressions, {@link #setSeparators(char, char)} and
  * {@link #setSeparators(String, String)} offer the possibility to set different
  * separator separators that are not special.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -82,7 +82,7 @@ public final class RequestParamMap implements IRequestParamMap
   /**
    * This constructor is private, because it does not call the
    * {@link #put(String, Object)} method which does the main string parsing!
-   * 
+   *
    * @param aMap
    *        The map to use. May not be <code>null</code>.
    */
@@ -150,7 +150,7 @@ public final class RequestParamMap implements IRequestParamMap
 
   /**
    * Iterate the root map down to the map specified by the passed path.
-   * 
+   *
    * @param aPath
    *        The path to iterate. May neither be <code>null</code> nor empty.
    * @return The map. May be <code>null</code> if the path did not find such a
@@ -193,11 +193,8 @@ public final class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  @ReturnsMutableCopy
-  public IRequestParamMap getMap (@Nonnull @Nonempty final String... aPath)
+  private Map <String, Object> _getResolvedMap (@Nonnull final String... aPath)
   {
-    ValueEnforcer.notEmpty (aPath, "Path");
-
     Map <String, Object> aMap = m_aMap;
     for (final String sPath : aPath)
     {
@@ -205,6 +202,27 @@ public final class RequestParamMap implements IRequestParamMap
       if (aMap == null)
         return null;
     }
+    return aMap;
+  }
+
+  @Nullable
+  public Map <String, String> getValueMap (@Nonnull @Nonempty final String... aPath)
+  {
+    final Map <String, Object> aMap = _getResolvedMap (aPath);
+    if (aMap == null)
+      return null;
+    return getAsValueMap (aMap);
+  }
+
+  @Nullable
+  @ReturnsMutableCopy
+  public IRequestParamMap getMap (@Nonnull @Nonempty final String... aPath)
+  {
+    ValueEnforcer.notEmpty (aPath, "Path");
+
+    final Map <String, Object> aMap = _getResolvedMap (aPath);
+    if (aMap == null)
+      return null;
     return new RequestParamMap (aMap);
   }
 
@@ -247,12 +265,20 @@ public final class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String> getAsValueMap () throws ClassCastException
+  public static Map <String, String> getAsValueMap (final Map <String, Object> aMap) throws ClassCastException
   {
-    final Map <String, String> ret = new HashMap <String, String> (m_aMap.size ());
-    for (final Map.Entry <String, Object> aEntry : m_aMap.entrySet ())
+    ValueEnforcer.notNull (aMap, "Map");
+    final Map <String, String> ret = new HashMap <String, String> (aMap.size ());
+    for (final Map.Entry <String, Object> aEntry : aMap.entrySet ())
       ret.put (aEntry.getKey (), (String) aEntry.getValue ());
     return ret;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public Map <String, String> getAsValueMap () throws ClassCastException
+  {
+    return getAsValueMap (m_aMap);
   }
 
   @Override
@@ -299,7 +325,7 @@ public final class RequestParamMap implements IRequestParamMap
   /**
    * This method doesn't make sense but it should stay, so that it's easy to
    * spot usage of this invalid method.
-   * 
+   *
    * @param sBaseName
    *        Base name
    * @return Base name as is.
@@ -348,7 +374,7 @@ public final class RequestParamMap implements IRequestParamMap
 
   /**
    * Set the separator chars to use.
-   * 
+   *
    * @param cOpen
    *        Open char
    * @param cClose
@@ -364,7 +390,7 @@ public final class RequestParamMap implements IRequestParamMap
 
   /**
    * Set the separators to use.
-   * 
+   *
    * @param sOpen
    *        Open string. May neither be <code>null</code> nor empty.
    * @param sClose

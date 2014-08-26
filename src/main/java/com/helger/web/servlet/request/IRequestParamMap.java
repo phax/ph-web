@@ -31,7 +31,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 /**
  * A request parameter map. It handles complex request parameters and lets you
  * iterate the structure.
- * 
+ *
  * @author Philip Helger
  */
 public interface IRequestParamMap extends IHasSize
@@ -44,9 +44,12 @@ public interface IRequestParamMap extends IHasSize
   @Nullable
   String getString (@Nonnull @Nonempty String... aPath);
 
+  @Nullable
+  Map <String, String> getValueMap (@Nonnull @Nonempty String... aPath);
+
   /**
    * Get a nested map for the specified path.
-   * 
+   *
    * @param aPath
    *        The path to be resolved
    * @return <code>null</code> if the path could not be resolved.
@@ -57,7 +60,7 @@ public interface IRequestParamMap extends IHasSize
   /**
    * Check if this map, contains the passed key. This will be true both for
    * nested maps as well as for values.
-   * 
+   *
    * @param sKey
    *        The key to check.
    * @return <code>true</code> if such a key is contained, <code>false</code> if

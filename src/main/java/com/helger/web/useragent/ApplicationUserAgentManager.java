@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -39,7 +38,7 @@ public final class ApplicationUserAgentManager
 
   static
   {
-    _readListPhloc ("codelists/appuseragents-phloc.xml");
+    _readList ("codelists/appuseragents.xml");
   }
 
   @PresentForCodeCoverage
@@ -49,7 +48,7 @@ public final class ApplicationUserAgentManager
   private ApplicationUserAgentManager ()
   {}
 
-  private static void _readListPhloc (@Nonnull @Nonempty final String sPath)
+  private static void _readList (@Nonnull @Nonempty final String sPath)
   {
     final List <String> aList = new ArrayList <String> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())

@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -20,15 +19,16 @@ package com.helger.web.supplementary.main;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collections.ContainerHelper;
-import com.helger.commons.collections.multimap.IMultiMapListBased;
-import com.helger.commons.collections.multimap.MultiHashMapArrayListBased;
+import com.helger.commons.collections.multimap.IMultiMapSetBased;
+import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.streams.StreamUtils;
-import com.helger.commons.mime.MimeTypeDeterminator;
+import com.helger.commons.mime.MimeTypeInfo;
+import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.vendor.VendorInfo;
 import com.helger.datetime.PDTFactory;
@@ -38,7 +38,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
   /**
    * Create the mime.types file that is read by javax.activation. See class
    * javax.annotation.MimetypesFileTypeMap
-   * 
+   *
    * @param args
    *        ignore
    * @throws Exception
@@ -50,15 +50,17 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     Writer w = null;
     try
     {
-      // build map
-      final IMultiMapListBased <String, String> aMap = new MultiHashMapArrayListBased <String, String> ();
-      for (final Map.Entry <String, String> aEntry : MimeTypeDeterminator.getAllKnownMimeTypeFilenameMappings ()
-                                                                         .entrySet ())
-      {
-        // Skip the one empty extension!
-        if (aEntry.getKey ().length () > 0)
-          aMap.putSingle (aEntry.getValue (), aEntry.getKey ());
-      }
+      // build map from MimeType to list of extensions
+      final IMultiMapSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <String, String> ();
+
+      for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
+        for (final String sExt : aInfo.getAllExtensions ())
+        {
+          // Skip the one empty extension!
+          if (sExt.length () > 0)
+            for (final String sMimeType : aInfo.getAllMimeTypeStrings ())
+              aMap.putSingle (sMimeType, sExt);
+        }
 
       // write file in format iso-8859-1!
       w = new PrintWriter (new File (sDestPath), CCharset.CHARSET_ISO_8859_1);
@@ -72,7 +74,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, List <String>> aEntry : ContainerHelper.getSortedByKey (aMap).entrySet ())
+      for (final Map.Entry <String, Set <String>> aEntry : ContainerHelper.getSortedByKey (aMap).entrySet ())
         w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (",", aEntry.getValue ()) + "\n");
 
       // done

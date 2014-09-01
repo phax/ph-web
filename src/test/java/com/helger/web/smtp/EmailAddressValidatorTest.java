@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -30,8 +29,8 @@ import com.helger.commons.random.VerySecureRandom;
 public final class EmailAddressValidatorTest
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAddressValidatorTest.class);
-  private static final String [] VALID = new String [] { "ph@phloc.com" };
-  private static final String [] INVALID = new String [] { "ph@phloc", "karin@gmx-net" };
+  private static final String [] VALID = new String [] { "ph@helger.com" };
+  private static final String [] INVALID = new String [] { "ph@helger", "karin@gmx-net" };
 
   @Test
   public void testWithoutMXCheck ()

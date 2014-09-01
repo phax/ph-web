@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -32,7 +31,7 @@ public final class MockXMLSitemapProviderMultiFileSPI implements IXMLSitemapProv
   {
     final XMLSitemapURLSet ret = new XMLSitemapURLSet ();
     for (int i = 0; i < XMLSitemapURLSet.MAX_URLS_PER_FILE + 1; ++i)
-      ret.addURL (new XMLSitemapURL (new SimpleURL ("http://www.phloc.com?xx=" + i)));
+      ret.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?xx=" + i)));
     return ret;
   }
 }

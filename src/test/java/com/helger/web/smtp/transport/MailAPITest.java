@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -44,7 +43,7 @@ import com.helger.web.smtp.transport.listener.LoggingTransportListener;
 
 /**
  * Test class for class {@link MailAPI}.
- * 
+ *
  * @author Philip Helger
  */
 public final class MailAPITest
@@ -75,10 +74,10 @@ public final class MailAPITest
                                                                                         .getDocumentElement (),
                                                                              SMTPSettings.class);
       final IEmailData aMailData = new EmailData (EEmailType.TEXT);
-      aMailData.setTo (new EmailAddress ("ph@phloc.com"));
-      aMailData.setFrom (new EmailAddress ("auto@phloc.com"));
+      aMailData.setTo (new EmailAddress ("ph@helger.com"));
+      aMailData.setFrom (new EmailAddress ("auto@helger.com"));
       aMailData.setSubject ("JÜnit test with späcial käräktärs");
-      aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: phloc-web");
+      aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-web");
       MailAPI.queueMail (aSMTPSettings, aMailData);
       MailAPI.stop ();
 
@@ -106,10 +105,10 @@ public final class MailAPITest
                                                                                         .getDocumentElement (),
                                                                              SMTPSettings.class);
       final IEmailData aMailData = new EmailData (EEmailType.TEXT);
-      aMailData.setTo (new EmailAddress ("ph@phloc.com"));
-      aMailData.setFrom (new EmailAddress ("auto@phloc.com"));
+      aMailData.setTo (new EmailAddress ("ph@helger.com"));
+      aMailData.setFrom (new EmailAddress ("auto@helger.com"));
       aMailData.setSubject ("JÜnit test with späcial käräktärs");
-      aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: phloc-web");
+      aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-web");
 
       final List <IEmailData> aMails = new ArrayList <IEmailData> ();
       for (int i = 0; i < 10; ++i)

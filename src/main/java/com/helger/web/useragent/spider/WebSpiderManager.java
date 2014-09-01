@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -31,7 +30,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.ReturnsImmutableObject;
+import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.microdom.IMicroDocument;
@@ -42,7 +41,7 @@ import com.helger.commons.microdom.utils.MicroUtils;
 
 /**
  * Provides a list of known web spiders.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -60,7 +59,7 @@ public final class WebSpiderManager
   {
     _readSpiderList ("codelists/spiderlist.xml");
     _readSearchSpiders ("codelists/spiders_vbulletin.xml");
-    _readListPhloc ("codelists/spiderlist-phloc.xml");
+    _readSpiderList2 ("codelists/spiderlist2.xml");
   }
 
   @Nonnull
@@ -102,11 +101,11 @@ public final class WebSpiderManager
     }
   }
 
-  private void _readListPhloc (final String sPath)
+  private void _readSpiderList2 (final String sPath)
   {
     final List <String> aList = new ArrayList <String> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
-      throw new IllegalStateException ("Failed to read spiderlist-phloc from " + sPath);
+      throw new IllegalStateException ("Failed to read spiderlist2 from " + sPath);
     for (final String sSpider : aList)
     {
       final String sID = _getUnifiedID (sSpider);
@@ -119,16 +118,17 @@ public final class WebSpiderManager
     }
   }
 
+  @Nonnull
   public static WebSpiderManager getInstance ()
   {
     return SingletonHolder.s_aInstance;
   }
 
   @Nonnull
-  @ReturnsImmutableObject
+  @ReturnsMutableCopy
   public Collection <WebSpiderInfo> getAllKnownSpiders ()
   {
-    return ContainerHelper.makeUnmodifiable (m_aMap.values ());
+    return ContainerHelper.newList (m_aMap.values ());
   }
 
   @Nullable

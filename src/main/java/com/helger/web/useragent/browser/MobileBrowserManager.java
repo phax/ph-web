@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -39,7 +38,7 @@ public final class MobileBrowserManager
 
   static
   {
-    _readListPhloc ("codelists/mobileuseragents-phloc.xml");
+    _readList ("codelists/mobileuseragents.xml");
   }
 
   @PresentForCodeCoverage
@@ -55,7 +54,7 @@ public final class MobileBrowserManager
     return sItem.toLowerCase (Locale.US);
   }
 
-  private static void _readListPhloc (@Nonnull final String sPath)
+  private static void _readList (@Nonnull final String sPath)
   {
     final List <String> aList = new ArrayList <String> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())

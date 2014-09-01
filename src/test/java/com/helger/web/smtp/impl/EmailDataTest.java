@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -32,7 +31,7 @@ public final class EmailDataTest
   public void testBasic ()
   {
     final EmailData aEmailData = new EmailData (EEmailType.TEXT);
-    final EmailAddress aMA = new EmailAddress ("ph@phloc.com", "Philip");
+    final EmailAddress aMA = new EmailAddress ("ph@helger.com", "Philip");
 
     aEmailData.setFrom (aMA);
     assertEquals (aMA, aEmailData.getFrom ());

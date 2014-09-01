@@ -1,5 +1,4 @@
 /**
- * Copyright (C) 2006-2014 phloc systems (www.phloc.com)
  * Copyright (C) 2014 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
@@ -39,7 +38,7 @@ import com.helger.web.servlet.server.StaticServerInfo;
 
 /**
  * Test class for class {@link XMLSitemapIndex}.
- * 
+ *
  * @author Philip Helger
  */
 public final class XMLSitemapIndexTest
@@ -78,7 +77,7 @@ public final class XMLSitemapIndexTest
     assertNotNull (x.getAsDocument ());
 
     final XMLSitemapURLSet s1 = new XMLSitemapURLSet ();
-    s1.addURL (new XMLSitemapURL (new SimpleURL ("http://www.phloc.com")));
+    s1.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com")));
     x.addURLSet (s1);
     assertEquals (1, x.getURLSetCount ());
     assertNotNull (x.getAsDocument ());
@@ -105,7 +104,7 @@ public final class XMLSitemapIndexTest
     // Create a very large URL set
     final XMLSitemapURLSet s = new XMLSitemapURLSet ();
     for (int i = 0; i < XMLSitemapURLSet.MAX_URLS_PER_FILE + 1; ++i)
-      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.phloc.com?x=" + i)));
+      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?x=" + i)));
 
     // And this must split up into 2 URL sets!
     x.addURLSet (s);
@@ -122,7 +121,7 @@ public final class XMLSitemapIndexTest
     // Create a very large URL set
     final XMLSitemapURLSet s = new XMLSitemapURLSet ();
     for (int i = 0; i < XMLSitemapURLSet.MAX_URLS_PER_FILE * 2; ++i)
-      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.phloc.com?x=" + i)));
+      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?x=" + i)));
 
     // And this must split up into 2 URL sets!
     x.addURLSet (s);

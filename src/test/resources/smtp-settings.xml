@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 
-    Copyright (C) 2006-2014 phloc systems (www.phloc.com)
     Copyright (C) 2014 Philip Helger (www.helger.com)
     philip[at]helger[dot]com
 
@@ -18,4 +17,4 @@
     limitations under the License.
 
 -->
-<smtp-settings host="mail.ebox.at" port="465" user="auto@phloc.com" password="phlocauto" charset="UTF-8" sslenabled="false" starttlsenabled="true" />
+<smtp-settings host="mail.ebox.at" port="465" user="auto@helger.com" password="password" charset="UTF-8" sslenabled="false" starttlsenabled="true" />

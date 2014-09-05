@@ -37,6 +37,9 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.commons.url.ISimpleURL;
+import com.helger.commons.url.SimpleURL;
+import com.helger.commons.url.URLData;
 import com.helger.commons.url.URLUtils;
 import com.helger.web.CWeb;
 import com.helger.web.http.CHTTPHeader;
@@ -48,7 +51,7 @@ import com.helger.web.port.DefaultNetworkPorts;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -70,13 +73,16 @@ public final class RequestHelper
 
   /**
    * Get the passed string without an eventually contained session ID like in
-   * "test.html;JSESSIONID=1234".
-   * 
+   * "test.html;JSESSIONID=1234".<br>
+   * Attention: this methods does not consider eventually present request
+   * parameters. If parameters are present, they are most likely be stripped
+   * away!
+   *
    * @param sValue
    *        The value to strip the session ID from
    * @return The value without a session ID or the original string.
    */
-  @Nullable
+  @Nonnull
   public static String getWithoutSessionID (@Nonnull final String sValue)
   {
     ValueEnforcer.notNull (sValue, "Value");
@@ -84,6 +90,23 @@ public final class RequestHelper
     // Strip session ID parameter
     final int nIndex = sValue.indexOf (';');
     return nIndex == -1 ? sValue : sValue.substring (0, nIndex);
+  }
+
+  /**
+   * Get the passed string without an eventually contained session ID like in
+   * "test.html;JSESSIONID=1234?param=value".
+   *
+   * @param aURL
+   *        The value to strip the session ID from the path
+   * @return The value without a session ID or the original string.
+   */
+  @Nonnull
+  public static SimpleURL getWithoutSessionID (@Nonnull final ISimpleURL aURL)
+  {
+    ValueEnforcer.notNull (aURL, "URL");
+    // Strip the parameter from the path, but keep parameters and anchor intact!
+    // Note: using URLData avoid parsing, since the data was already parsed!
+    return new SimpleURL (new URLData (getWithoutSessionID (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ()));
   }
 
   /**
@@ -106,7 +129,7 @@ public final class RequestHelper
    * <td>/xyz</td>
    * </tr>
    * </table>
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request
    * @return The request URI without the optional session ID
@@ -126,7 +149,7 @@ public final class RequestHelper
   /**
    * Get the request path info without an eventually appended session
    * (";jsessionid=...")
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request
    * @return Returns any extra path information associated with the URL the
@@ -148,7 +171,7 @@ public final class RequestHelper
 
   /**
    * Return the URI of the request within the servlet context.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request. May not be <code>null</code>.
    * @return the path within the web application and never <code>null</code>. By
@@ -188,7 +211,7 @@ public final class RequestHelper
    * E.g.: servlet mapping = "/test"; request URI = "/test" -> "".
    * <p>
    * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -> "".
-   * 
+   *
    * @param aHttpRequest
    *        current HTTP request
    * @return the path within the servlet mapping, or ""
@@ -211,11 +234,11 @@ public final class RequestHelper
 
   /**
    * Get the full URL (incl. protocol) and parameters of the passed request.<br>
-   * 
+   *
    * <pre>
    * http://hostname.com/mywebapp/servlet/MyServlet/a/b;c=123?d=789
    * </pre>
-   * 
+   *
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URL.
@@ -236,11 +259,11 @@ public final class RequestHelper
   /**
    * Get the full URI (excl. protocol) and parameters of the passed request.<br>
    * Example:
-   * 
+   *
    * <pre>
    * /mywebapp/servlet/MyServlet/a/b;c=123?d=789
    * </pre>
-   * 
+   *
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
@@ -323,7 +346,7 @@ public final class RequestHelper
 
   /**
    * Get the HTTP version associated with the given HTTP request
-   * 
+   *
    * @param aHttpRequest
    *        The http request to query. May not be <code>null</code>.
    * @return <code>null</code> if no supported HTTP version is contained
@@ -339,7 +362,7 @@ public final class RequestHelper
 
   /**
    * Get the HTTP method associated with the given HTTP request
-   * 
+   *
    * @param aHttpRequest
    *        The http request to query. May not be <code>null</code>.
    * @return <code>null</code> if no supported HTTP method is contained
@@ -355,7 +378,7 @@ public final class RequestHelper
 
   /**
    * Get a complete request header map as a copy.
-   * 
+   *
    * @param aHttpRequest
    *        The source HTTP request. May not be <code>null</code>.
    * @return Never <code>null</code>.
@@ -384,7 +407,7 @@ public final class RequestHelper
   /**
    * This is a utility method which avoids that all map values are enclosed in
    * an array. Jetty seems to create String arrays out of simple string values
-   * 
+   *
    * @param aHttpRequest
    *        The source HTTP request. May not be <code>null</code>.
    * @return A Map containing pure strings instead of string arrays with one
@@ -448,7 +471,7 @@ public final class RequestHelper
    * Get the content length of the passed request. This is not done using
    * <code>request.getContentLength()</code> but instead parsing the HTTP header
    * field {@link CHTTPHeader#CONTENT_LENGTH} manually!
-   * 
+   *
    * @param aHttpRequest
    *        Source HTTP request. May not be <code>null</code>.
    * @return -1 if no or an invalid content length is set in the header
@@ -471,7 +494,7 @@ public final class RequestHelper
   /**
    * Get all request headers of the passed request in a correctly typed
    * {@link Enumeration}.
-   * 
+   *
    * @param aHttpRequest
    *        Source HTTP request. May not be <code>null</code>.
    * @param sName
@@ -490,7 +513,7 @@ public final class RequestHelper
   /**
    * Get all all request header names of the passed request in a correctly typed
    * {@link Enumeration}.
-   * 
+   *
    * @param aHttpRequest
    *        Source HTTP request. May not be <code>null</code>.
    * @return Never <code>null</code>.
@@ -561,7 +584,7 @@ public final class RequestHelper
 
   /**
    * Get the client certificates provided by a HTTP servlet request.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP servlet request to extract the information from. May not be
    *        <code>null</code>.

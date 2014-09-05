@@ -20,14 +20,16 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SMap;
+import com.helger.commons.url.SimpleURL;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
 
 /**
  * Test class for class {@link RequestHelper}.
- * 
+ *
  * @author Philip Helger
  */
 public final class RequestHelperTest
@@ -47,5 +49,16 @@ public final class RequestHelperTest
   {
     assertEquals ("http://server:517/context/servlet/index.xyz?x=1",
                   RequestHelper.getFullServerNameAndPath ("http", "server", 517, "/context/servlet/index.xyz", "x=1"));
+  }
+
+  @Test
+  public void testGetWithoutSessionID ()
+  {
+    final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
+    final ISimpleURL aBaseURL = new SimpleURL (sURL);
+    // Just a sanity check that parsing works :)
+    assertEquals (sURL, aBaseURL.getAsString ());
+    final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
+    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top", aStrippedURL.getAsString ());
   }
 }

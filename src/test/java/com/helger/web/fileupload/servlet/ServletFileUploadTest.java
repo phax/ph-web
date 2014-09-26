@@ -32,7 +32,7 @@ import com.helger.web.fileupload.IFileItem;
 
 /**
  * Unit tests
- * 
+ *
  * @author <a href="mailto:jmcnally@apache.org">John McNally</a>
  * @author Sean C. Sullivan
  */
@@ -105,6 +105,9 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   /**
    * This is what the browser does if you submit the form without choosing a
    * file.
+   * 
+   * @throws FileUploadException
+   *         In case of error
    */
   @Test
   public void testEmptyFile () throws FileUploadException
@@ -126,6 +129,9 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
    * Internet Explorer 5 for the Mac has a bug where the carriage return is
    * missing on any boundary line immediately preceding an input with
    * type=image. (type=submit does not have the bug.)
+   * 
+   * @throws FileUploadException
+   *         In case of error
    */
   @Test
   public void testIE5MacBug () throws FileUploadException
@@ -176,6 +182,9 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   /**
    * Test for <a
    * href="http://issues.apache.org/jira/browse/FILEUPLOAD-62">FILEUPLOAD-62</a>
+   * 
+   * @throws Exception
+   *         In case of error
    */
   @Test
   public void testFILEUPLOAD62 () throws Exception
@@ -222,6 +231,9 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
    * Test for <a
    * href="http://issues.apache.org/jira/browse/FILEUPLOAD-111">FILEUPLOAD
    * -111</a>
+   * 
+   * @throws FileUploadException
+   *         In case of error
    */
   @Test
   public void testFoldedHeaders () throws FileUploadException

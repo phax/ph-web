@@ -44,6 +44,11 @@ public final class FuncTestSizes extends AbstractFileUploadTestCase
 {
   /**
    * Runs a test with varying file sizes.
+   *
+   * @throws IOException
+   *         In case of error
+   * @throws FileUploadException
+   *         In case of error
    */
   @Test
   public void testFileUpload () throws IOException, FileUploadException
@@ -95,6 +100,9 @@ public final class FuncTestSizes extends AbstractFileUploadTestCase
 
   /**
    * Checks, whether limiting the file size works.
+   * 
+   * @throws FileUploadException
+   *         In case of error
    */
   @Test
   public void testFileSizeLimit () throws FileUploadException

@@ -51,9 +51,12 @@ public final class FuncTestStreaming
 {
   /**
    * Tests a file upload with varying file sizes.
+   *
+   * @throws Exception
+   *         In case of error
    */
   @Test
-  public void testFileUpload () throws IOException, FileUploadException
+  public void testFileUpload () throws Exception
   {
     final byte [] request = _newRequest ();
     final List <IFileItem> fileItems = _parseUploadToList (request);
@@ -80,9 +83,12 @@ public final class FuncTestStreaming
 
   /**
    * Tests, whether an invalid request throws a proper exception.
+   *
+   * @throws Exception
+   *         In case of error
    */
   @Test
-  public void testFileUploadException () throws IOException, FileUploadException
+  public void testFileUploadException () throws Exception
   {
     final byte [] request = _newRequest ();
     final byte [] invalidRequest = new byte [request.length - 11];
@@ -100,6 +106,9 @@ public final class FuncTestStreaming
 
   /**
    * Tests, whether an IOException is properly delegated.
+   *
+   * @throws IOException
+   *         In case of error
    */
   @Test
   public void testIOException () throws IOException
@@ -148,9 +157,12 @@ public final class FuncTestStreaming
 
   /**
    * Test for FILEUPLOAD-135
+   *
+   * @throws Exception
+   *         In case of error
    */
   @Test
-  public void testFILEUPLOAD135 () throws IOException, FileUploadException
+  public void testFILEUPLOAD135 () throws Exception
   {
     final byte [] request = _newShortRequest ();
     final ByteArrayInputStream bais = new ByteArrayInputStream (request);
@@ -278,6 +290,9 @@ public final class FuncTestStreaming
 
   /**
    * Tests, whether an {@link InvalidFileNameException} is thrown.
+   * 
+   * @throws Exception
+   *         In case of error
    */
   @Test
   public void testInvalidFileNameException () throws Exception

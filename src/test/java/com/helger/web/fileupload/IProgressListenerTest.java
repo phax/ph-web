@@ -72,6 +72,9 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
 
   /**
    * Parse a very long file upload by using a progress listener.
+   * 
+   * @throws Exception
+   *         In case of error
    */
   @Test
   public void testProgressListener () throws Exception

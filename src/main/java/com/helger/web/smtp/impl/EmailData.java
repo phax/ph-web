@@ -491,16 +491,17 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
    *        The mail body text.
    * @param aAttachments
    *        Any attachments to use. May be <code>null</code>.
+   * @return The created {@link EmailData} and never <code>null</code>.
    */
   @Nonnull
-  public static IEmailData createEmailData (@Nonnull final EEmailType eEmailType,
-                                            @Nullable final IEmailAddress aSender,
-                                            @Nullable final IEmailAddress aReceiver,
-                                            @Nullable final String sSubject,
-                                            @Nullable final String sBody,
-                                            @Nullable final IEmailAttachmentList aAttachments)
+  public static EmailData createEmailData (@Nonnull final EEmailType eEmailType,
+                                           @Nullable final IEmailAddress aSender,
+                                           @Nullable final IEmailAddress aReceiver,
+                                           @Nullable final String sSubject,
+                                           @Nullable final String sBody,
+                                           @Nullable final IEmailAttachmentList aAttachments)
   {
-    final IEmailData aEmailData = new EmailData (eEmailType);
+    final EmailData aEmailData = new EmailData (eEmailType);
     aEmailData.setFrom (aSender);
     aEmailData.setTo (aReceiver);
     aEmailData.setSubject (sSubject);

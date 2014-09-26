@@ -41,7 +41,7 @@ import com.helger.web.smtp.failed.FailedMailQueue;
 /**
  * This class collects instances of {@link IEmailData} and tries to transmit
  * them using the specified SMTP settings.
- * 
+ *
  * @author Philip Helger
  */
 final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IEmailData> implements IThrowingRunnableWithParameter <List <IEmailData>>
@@ -53,7 +53,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IEmailData> im
 
   /**
    * Constructor
-   * 
+   *
    * @param nMaxQueueSize
    *        Maximum objects to queue
    * @param nMaxPerformCount
@@ -104,7 +104,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IEmailData> im
 
   /**
    * This is the callback to be invoked everytime something is in the queue.
-   * 
+   *
    * @param aMessages
    *        The non-null and non-empty list of messages to be send
    */
@@ -145,13 +145,12 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IEmailData> im
 
   /**
    * Stop this queue
-   * 
+   *
    * @param bStopImmediately
    *        <code>true</code> if all mails currently in the queue should be
    *        removed and put in the failed mail queue. Only the emails currently
    *        in sending are continued to be sent out.
    * @return {@link ESuccess}
-   * @see #stopQueuingNewObjects()
    */
   @Nonnull
   public ESuccess stopQueuingNewObjects (final boolean bStopImmediately)

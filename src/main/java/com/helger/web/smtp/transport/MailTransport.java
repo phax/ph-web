@@ -56,7 +56,7 @@ import com.helger.web.smtp.ISMTPSettings;
 
 /**
  * The wrapper around the main javax.mail transport
- * 
+ *
  * @author Philip Helger
  */
 final class MailTransport
@@ -149,10 +149,12 @@ final class MailTransport
 
   /**
    * Actually send the given array of MimeMessages via JavaMail.
-   * 
+   *
    * @param aMessages
    *        Email data objects to send. May be <code>null</code>.
    * @return A non-<code>null</code> map of the failed messages
+   * @throws MailSendException
+   *         If anything goes wrong
    */
   @Nonnull
   public Map <IEmailData, MessagingException> send (@Nullable final Collection <IEmailData> aMessages) throws MailSendException

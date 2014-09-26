@@ -34,7 +34,7 @@ import com.helger.web.http.HTTPStringHelper;
  * Helper class to build the value of the
  * {@link com.helger.web.http.CHTTPHeader#WWW_AUTHENTICATE} value send from the
  * server to client.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -57,7 +57,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * the authentication and might additionally indicate the collection of users
    * who might have access. An example might be
    * "registered_users@gotham.news.com".
-   * 
+   *
    * @param sRealm
    *        The realm to be used. May not be <code>null</code> and should not be
    *        empty.
@@ -86,7 +86,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * This directive is not meaningful in Proxy-Authenticate headers, for which
    * the protection space is always the entire proxy; if present it should be
    * ignored.
-   * 
+   *
    * @param aURL
    *        The absolute or relative path which is protected. May not be
    *        <code>null</code>.
@@ -133,7 +133,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * PUT requests and a time-stamp for GET requests. For more details on the
    * issues involved see section 4. of this document.<br>
    * The nonce is opaque to the client.
-   * 
+   *
    * @param sNonce
    *        The nonce value to be set. May not be <code>null</code>.
    * @return this
@@ -153,7 +153,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * client unchanged in the Authorization header of subsequent requests with
    * URIs in the same protection space. It is recommended that this string be
    * base64 or hexadecimal data.
-   * 
+   *
    * @param sOpaque
    *        The opaque value. May not be <code>null</code>.
    * @return this
@@ -178,7 +178,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * client knows the correct username/password). If stale is FALSE, or anything
    * other than TRUE, or the stale directive is not present, the username and/or
    * password are invalid, and new values must be obtained.
-   * 
+   *
    * @param eStale
    *        Stale value. May not be <code>null</code>.
    * @return this
@@ -208,8 +208,9 @@ public final class DigestAuthServerBuilder implements Serializable
    * concatenated with the data. The "MD5-sess" algorithm is intended to allow
    * efficient 3rd party authentication servers; for the difference in usage,
    * see the description in section 3.2.2.2.
-   * 
+   *
    * @param sAlgorithm
+   *        Algorithm name
    * @return this
    */
   @Nonnull
@@ -231,7 +232,7 @@ public final class DigestAuthServerBuilder implements Serializable
    * indicates authentication with integrity protection; see the descriptions
    * below for calculating the response directive value for the application of
    * this choice. Unrecognized options MUST be ignored.
-   * 
+   *
    * @param sQOP
    *        The qop-option to add. May not be <code>null</code>.
    * @return this

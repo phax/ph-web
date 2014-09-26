@@ -52,7 +52,7 @@ import com.helger.web.fileupload.util.Streams;
  * How the data for individual parts is stored is determined by the factory used
  * to create them; a given part may be in memory, on disk, or somewhere else.
  * </p>
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
@@ -74,7 +74,7 @@ public abstract class AbstractFileUploadBase
    * Unfortunately, since this method is static, it is not possible to provide
    * its replacement until this method is removed.
    * </p>
-   * 
+   *
    * @param ctx
    *        The request context to be evaluated. Must be non-null.
    * @return <code>true</code> if the request is multipart; <code>false</code>
@@ -158,7 +158,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Returns the factory class used when creating file items.
-   * 
+   *
    * @return The factory class for new file items.
    */
   public abstract IFileItemFactory getFileItemFactory ();
@@ -166,7 +166,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Returns the maximum allowed size of a complete request, as opposed to
    * {@link #getFileSizeMax()}.
-   * 
+   *
    * @return The maximum allowed size, in bytes. The default value of -1
    *         indicates, that there is no limit.
    * @see #setSizeMax(long)
@@ -179,7 +179,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Sets the maximum allowed size of a complete request, as opposed to
    * {@link #setFileSizeMax(long)}.
-   * 
+   *
    * @param sizeMax
    *        The maximum allowed size, in bytes. The default value of -1
    *        indicates, that there is no limit.
@@ -193,7 +193,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Returns the maximum allowed size of a single uploaded file, as opposed to
    * {@link #getSizeMax()}.
-   * 
+   *
    * @see #setFileSizeMax(long)
    * @return Maximum size of a single uploaded file.
    */
@@ -205,7 +205,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Sets the maximum allowed size of a single uploaded file, as opposed to
    * {@link #getSizeMax()}.
-   * 
+   *
    * @see #getFileSizeMax()
    * @param fileSizeMax
    *        Maximum size of a single uploaded file.
@@ -220,7 +220,7 @@ public abstract class AbstractFileUploadBase
    * individual part. When not specified, or <code>null</code>, the request
    * encoding is used. If that is also not specified, or <code>null</code>, the
    * platform default encoding is used.
-   * 
+   *
    * @return The encoding used to read part headers.
    */
   public String getHeaderEncoding ()
@@ -233,7 +233,7 @@ public abstract class AbstractFileUploadBase
    * individual part. When not specified, or <code>null</code>, the request
    * encoding is used. If that is also not specified, or <code>null</code>, the
    * platform default encoding is used.
-   * 
+   *
    * @param encoding
    *        The encoding used to read part headers.
    */
@@ -245,7 +245,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
-   * 
+   *
    * @param ctx
    *        The context for the request to be parsed.
    * @return An iterator to instances of <code>FileItemStream</code> parsed from
@@ -266,7 +266,7 @@ public abstract class AbstractFileUploadBase
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
-   * 
+   *
    * @param ctx
    *        The context for the request to be parsed.
    * @return A list of <code>FileItem</code> instances parsed from the request,
@@ -352,7 +352,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Retrieves the boundary from the <code>Content-type</code> header.
-   * 
+   *
    * @param contentType
    *        The value of the content type header from which to extract the
    *        boundary value.
@@ -374,7 +374,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Retrieves the file name from the <code>Content-disposition</code> header.
-   * 
+   *
    * @param headers
    *        The HTTP headers object.
    * @return The file name for the current <code>encapsulation</code>.
@@ -386,7 +386,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Returns the given content-disposition headers file name.
-   * 
+   *
    * @param pContentDisposition
    *        The content-disposition headers value.
    * @return The file name
@@ -425,7 +425,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Retrieves the field name from the <code>Content-disposition</code> header.
-   * 
+   *
    * @param headers
    *        A <code>Map</code> containing the HTTP request headers.
    * @return The field name for the current <code>encapsulation</code>.
@@ -437,7 +437,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Returns the field name, which is given by the content-disposition header.
-   * 
+   *
    * @param pContentDisposition
    *        The content-dispositions header value.
    * @return The field jake
@@ -466,7 +466,7 @@ public abstract class AbstractFileUploadBase
    * <p>
    * If there are multiple headers of the same names, the name will map to a
    * comma-separated list containing the values.
-   * 
+   *
    * @param headerPart
    *        The <code>header-part</code> of the current
    *        <code>encapsulation</code>.
@@ -515,7 +515,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Creates a new instance of {@link IFileItemHeaders}.
-   * 
+   *
    * @return The new instance.
    */
   protected FileItemHeadersImpl newFileItemHeaders ()
@@ -525,7 +525,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Skips bytes until the end of the current line.
-   * 
+   *
    * @param headerPart
    *        The headers, which are being parsed.
    * @param end
@@ -552,7 +552,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Reads the next header line.
-   * 
+   *
    * @param headers
    *        String with all headers.
    * @param header
@@ -609,7 +609,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Creates a new instance.
-       * 
+       *
        * @param pName
        *        The items file name, or null.
        * @param pFieldName
@@ -676,7 +676,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns the items content type, or null.
-       * 
+       *
        * @return Content type, if known, or null.
        */
       public String getContentType ()
@@ -686,7 +686,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns the items field name.
-       * 
+       *
        * @return Field name.
        */
       public String getFieldName ()
@@ -696,7 +696,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns the items file name.
-       * 
+       *
        * @return File name, if known, or null.
        * @throws InvalidFileNameException
        *         The file name contains a NUL character, which might be an
@@ -711,7 +711,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns, whether this is a form field.
-       * 
+       *
        * @return True, if the item is a form field, otherwise false.
        */
       public boolean isFormField ()
@@ -721,7 +721,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns an input stream, which may be used to read the items contents.
-       * 
+       *
        * @return Opened input stream.
        * @throws IOException
        *         An I/O error occurred.
@@ -736,7 +736,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Closes the file item.
-       * 
+       *
        * @throws IOException
        *         An I/O error occurred.
        */
@@ -747,7 +747,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Returns the file item headers.
-       * 
+       *
        * @return The items header object
        */
       public IFileItemHeaders getHeaders ()
@@ -757,7 +757,7 @@ public abstract class AbstractFileUploadBase
 
       /**
        * Sets the file item headers.
-       * 
+       *
        * @param pHeaders
        *        The items header object
        */
@@ -802,7 +802,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param ctx
      *        The request context.
      * @throws FileUploadException
@@ -885,7 +885,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Called for finding the nex item, if any.
-     * 
+     *
      * @return True, if an next item was found, otherwise false.
      * @throws IOException
      *         An I/O error occurred.
@@ -979,7 +979,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Returns, whether another instance of {@link IFileItemStream} is
      * available.
-     * 
+     *
      * @throws FileUploadException
      *         Parsing or processing the file item failed.
      * @throws IOException
@@ -998,7 +998,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Returns the next available {@link IFileItemStream}.
-     * 
+     *
      * @throws java.util.NoSuchElementException
      *         No more items are available. Use {@link #hasNext()} to prevent
      *         this exception.
@@ -1031,7 +1031,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Creates a <code>FileUploadIOException</code> with the given cause.
-     * 
+     *
      * @param pCause
      *        The exceptions cause, if any, or null.
      */
@@ -1063,7 +1063,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Constructs an <code>InvalidContentTypeException</code> with the specified
      * detail message.
-     * 
+     *
      * @param message
      *        The detail message.
      */
@@ -1085,7 +1085,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Creates a new instance with the given cause.
-     * 
+     *
      * @param pMsg
      *        The detail message.
      * @param pException
@@ -1116,7 +1116,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param message
      *        The detail message.
      * @param actual
@@ -1133,7 +1133,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Retrieves the actual size of the request.
-     * 
+     *
      * @return The actual size of the request.
      */
     public long getActualSize ()
@@ -1143,7 +1143,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Retrieves the permitted size of the request.
-     * 
+     *
      * @return The permitted size of the request.
      */
     public long getPermittedSize ()
@@ -1165,7 +1165,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Constructs a <code>SizeExceededException</code> with the specified detail
      * message, and actual and permitted sizes.
-     * 
+     *
      * @param message
      *        The detail message.
      * @param actual
@@ -1202,7 +1202,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Constructs a <code>SizeExceededException</code> with the specified detail
      * message, and actual and permitted sizes.
-     * 
+     *
      * @param message
      *        The detail message.
      * @param actual
@@ -1217,7 +1217,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Returns the file name of the item, which caused the exception.
-     * 
+     *
      * @return File name, if known, or null.
      */
     public String getFileName ()
@@ -1227,6 +1227,9 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Sets the file name of the item, which caused the exception.
+     * 
+     * @param pFileName
+     *        File name
      */
     public void setFileName (final String pFileName)
     {
@@ -1235,7 +1238,7 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Returns the field name of the item, which caused the exception.
-     * 
+     *
      * @return Field name, if known, or null.
      */
     public String getFieldName ()
@@ -1245,6 +1248,9 @@ public abstract class AbstractFileUploadBase
 
     /**
      * Sets the field name of the item, which caused the exception.
+     *
+     * @param pFieldName
+     *        Field name
      */
     public void setFieldName (final String pFieldName)
     {
@@ -1254,7 +1260,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Returns the progress listener.
-   * 
+   *
    * @return The progress listener, if any, or null.
    */
   public IProgressListener getProgressListener ()
@@ -1264,7 +1270,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * Sets the progress listener.
-   * 
+   *
    * @param pListener
    *        The progress listener, if any. Defaults to null.
    */

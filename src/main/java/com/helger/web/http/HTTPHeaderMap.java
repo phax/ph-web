@@ -43,7 +43,7 @@ import com.helger.web.datetime.PDTWebDateUtils;
 
 /**
  * Abstracts HTTP header interface for external usage.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -154,33 +154,11 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     return ContainerHelper.newOrderedMap (m_aHeaders);
   }
 
-  /**
-   * @deprecated Use {@link #getHeaderValues(String)} instead
-   */
-  @Deprecated
-  @Nonnull
-  @ReturnsMutableCopy
-  public List <String> getHeaders (@Nullable final String sName)
-  {
-    return getHeaderValues (sName);
-  }
-
   @Nonnull
   @ReturnsMutableCopy
   public List <String> getHeaderValues (@Nullable final String sName)
   {
     return ContainerHelper.newList (m_aHeaders.get (sName));
-  }
-
-  /**
-   * @deprecated Use {@link #getHeaderValuesCaseInsensitive(String)} instead
-   */
-  @Deprecated
-  @Nonnull
-  @ReturnsMutableCopy
-  public List <String> getHeaderValuesCaseInsenstive (@Nullable final String sName)
-  {
-    return getHeaderValuesCaseInsensitive (sName);
   }
 
   @Nonnull

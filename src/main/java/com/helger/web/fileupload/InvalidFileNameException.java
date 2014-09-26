@@ -31,7 +31,7 @@ public final class InvalidFileNameException extends RuntimeException
 
   /**
    * Creates a new instance.
-   * 
+   *
    * @param pName
    *        The file name causing the exception.
    * @param pMessage
@@ -44,7 +44,7 @@ public final class InvalidFileNameException extends RuntimeException
   }
 
   /**
-   * Returns the invalid file name.
+   * @return the invalid file name.
    */
   public String getName ()
   {

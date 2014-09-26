@@ -30,7 +30,7 @@ import com.helger.commons.codec.RFC1522QCodec;
 
 /**
  * RFC 2047 Helper
- * 
+ *
  * @author Apache Abdera
  */
 @Immutable
@@ -65,11 +65,14 @@ public final class RFC2047Helper
 
   /**
    * Used to encode a string as specified by RFC 2047
-   * 
+   *
    * @param sValue
    *        The string to encode
    * @param aCharset
    *        The character set to use for the encoding
+   * @param eCodec
+   *        Codec type
+   * @return Encoded String
    */
   @Nullable
   public static String encode (@Nullable final String sValue, @Nonnull final Charset aCharset, final ECodec eCodec)
@@ -96,9 +99,10 @@ public final class RFC2047Helper
 
   /**
    * Used to decode a string as specified by RFC 2047
-   * 
+   *
    * @param sValue
    *        The encoded string
+   * @return Decoded String
    */
   @Nullable
   public static String decode (@Nullable final String sValue)

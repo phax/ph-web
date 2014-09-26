@@ -145,6 +145,8 @@ public class MockServletContext implements ServletContext
    *        the WAR root directory (should not end with a slash)
    * @param aResourceLoader
    *        the IReadableResourceProvider to use (or null for the default)
+   * @param aInitParams
+   *        Optional map with initialization parameters
    */
   public MockServletContext (@Nullable final String sContextPath,
                              @Nullable final String sResourceBasePath,

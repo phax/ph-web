@@ -67,7 +67,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * the parent stream (see {@link #setBoundary(byte[])}).
  * <p>
  * Here is an example of usage of this class.<br>
- * 
+ *
  * <pre>
  * try
  * {
@@ -92,7 +92,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  *   // a read or write error occurred
  * }
  * </pre>
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @author Sean C. Sullivan
@@ -125,7 +125,7 @@ public final class MultipartStream
 
     /**
      * Creates a new instance with the given listener and content length.
-     * 
+     *
      * @param pListener
      *        The listener to invoke.
      * @param pContentLength
@@ -141,7 +141,7 @@ public final class MultipartStream
 
     /**
      * Called to indicate that bytes have been read.
-     * 
+     *
      * @param pBytes
      *        Number of bytes, which have been read.
      */
@@ -292,7 +292,7 @@ public final class MultipartStream
    * Note that the buffer must be at least big enough to contain the boundary
    * string, plus 4 characters for CR/LF and double dash, plus at least one byte
    * of data. Too small a buffer size setting will degrade performance.
-   * 
+   *
    * @param input
    *        The <code>InputStream</code> to serve as a data source.
    * @param boundary
@@ -328,7 +328,7 @@ public final class MultipartStream
   /**
    * <p>
    * Constructs a <code>MultipartStream</code> with a default size buffer.
-   * 
+   *
    * @param input
    *        The <code>InputStream</code> to serve as a data source.
    * @param boundary
@@ -350,7 +350,7 @@ public final class MultipartStream
    * Retrieves the character encoding used when reading the headers of an
    * individual part. When not specified, or <code>null</code>, the platform
    * default encoding is used.
-   * 
+   *
    * @return The encoding used to read part headers.
    */
   @Nullable
@@ -363,7 +363,7 @@ public final class MultipartStream
    * Specifies the character encoding to be used when reading the headers of
    * individual parts. When not specified, or <code>null</code>, the platform
    * default encoding is used.
-   * 
+   *
    * @param encoding
    *        The encoding used to read part headers.
    */
@@ -374,7 +374,7 @@ public final class MultipartStream
 
   /**
    * Reads a byte from the <code>buffer</code>, and refills it as necessary.
-   * 
+   *
    * @return The next byte from the input stream.
    * @throws IOException
    *         if there is no more data available.
@@ -403,7 +403,7 @@ public final class MultipartStream
   /**
    * Skips a <code>boundary</code> token, and checks whether more
    * <code>encapsulations</code> are contained in the stream.
-   * 
+   *
    * @return <code>true</code> if there are more encapsulations in this stream;
    *         <code>false</code> otherwise.
    * @throws MalformedStreamException
@@ -463,7 +463,7 @@ public final class MultipartStream
    * <p>
    * Restoring the parent stream boundary token after processing of a nested
    * stream is left to the application.
-   * 
+   *
    * @param boundary
    *        The boundary to be used for parsing of the nested stream.
    * @throws IllegalBoundaryException
@@ -489,7 +489,7 @@ public final class MultipartStream
    * <p>
    * <strong>TODO</strong> allow limiting maximum header size to protect against
    * abuse.
-   * 
+   *
    * @return The <code>header-part</code> of the current encapsulation.
    * @throws MalformedStreamException
    *         if the stream ends unexpectedly.
@@ -557,7 +557,7 @@ public final class MultipartStream
    * constant size buffer. (see
    * {@link #MultipartStream(InputStream,byte[],int, MultipartStream.ProgressNotifier)
    * constructor}).
-   * 
+   *
    * @param output
    *        The <code>Stream</code> to write data into. May be null, in which
    *        case this method is equivalent to {@link #discardBodyData()}.
@@ -567,6 +567,7 @@ public final class MultipartStream
    * @throws IOException
    *         if an i/o error occurs.
    */
+  @SuppressWarnings ("javadoc")
   public int readBodyData (final OutputStream output) throws MalformedStreamException, IOException
   {
     final InputStream istream = newInputStream ();
@@ -575,7 +576,7 @@ public final class MultipartStream
 
   /**
    * Creates a new {@link ItemInputStream}.
-   * 
+   *
    * @return A new instance of {@link ItemInputStream}.
    */
   @Nonnull
@@ -590,7 +591,7 @@ public final class MultipartStream
    * and discards it.
    * <p>
    * Use this method to skip encapsulations you don't need or don't understand.
-   * 
+   *
    * @return The amount of data discarded.
    * @throws MalformedStreamException
    *         if the stream ends unexpectedly.
@@ -604,7 +605,7 @@ public final class MultipartStream
 
   /**
    * Finds the beginning of the first <code>encapsulation</code>.
-   * 
+   *
    * @return <code>true</code> if an <code>encapsulation</code> was found in the
    *         stream.
    * @throws IOException
@@ -641,7 +642,7 @@ public final class MultipartStream
   /**
    * Compares <code>count</code> first bytes in the arrays <code>a</code> and
    * <code>b</code>.
-   * 
+   *
    * @param a
    *        The first array to compare.
    * @param b
@@ -666,7 +667,7 @@ public final class MultipartStream
   /**
    * Searches for a byte of specified value in the <code>buffer</code>, starting
    * at the specified <code>position</code>.
-   * 
+   *
    * @param value
    *        The value to find.
    * @param pos
@@ -690,7 +691,7 @@ public final class MultipartStream
   /**
    * Searches for the <code>boundary</code> in the <code>buffer</code> region
    * delimited by <code>head</code> and <code>tail</code>.
-   * 
+   *
    * @return The position of the boundary found, counting from the beginning of
    *         the <code>buffer</code>, or <code>-1</code> if not found.
    */
@@ -739,7 +740,7 @@ public final class MultipartStream
     /**
      * Constructs an <code>MalformedStreamException</code> with the specified
      * detail message.
-     * 
+     *
      * @param message
      *        The detail message.
      */
@@ -751,7 +752,7 @@ public final class MultipartStream
     /**
      * Constructs an <code>MalformedStreamException</code> with the specified
      * detail message.
-     * 
+     *
      * @param message
      *        The detail message.
      * @param aCause
@@ -780,7 +781,7 @@ public final class MultipartStream
     /**
      * Constructs an <code>IllegalBoundaryException</code> with the specified
      * detail message.
-     * 
+     *
      * @param message
      *        The detail message.
      */
@@ -838,7 +839,7 @@ public final class MultipartStream
 
     /**
      * Returns the number of bytes, which have been read by the stream.
-     * 
+     *
      * @return Number of bytes, which have been read so far.
      */
     public long getBytesRead ()
@@ -849,7 +850,7 @@ public final class MultipartStream
     /**
      * Returns the number of bytes, which are currently available, without
      * blocking.
-     * 
+     *
      * @throws IOException
      *         An I/O error occurs.
      * @return Number of bytes in the buffer.
@@ -869,7 +870,7 @@ public final class MultipartStream
 
     /**
      * Returns the next byte in the stream.
-     * 
+     *
      * @return The next byte in the stream, as a non-negative integer, or -1 for
      *         EOF.
      * @throws IOException
@@ -895,7 +896,7 @@ public final class MultipartStream
 
     /**
      * Reads bytes into the given buffer.
-     * 
+     *
      * @param b
      *        The destination buffer, where to write to.
      * @param off
@@ -931,7 +932,7 @@ public final class MultipartStream
 
     /**
      * Closes the input stream.
-     * 
+     *
      * @throws IOException
      *         An I/O error occurred.
      */
@@ -943,7 +944,7 @@ public final class MultipartStream
 
     /**
      * Closes the input stream.
-     * 
+     *
      * @param pCloseUnderlying
      *        Whether to close the underlying stream (hard close)
      * @throws IOException
@@ -979,7 +980,7 @@ public final class MultipartStream
 
     /**
      * Skips the given number of bytes.
-     * 
+     *
      * @param bytes
      *        Number of bytes to skip.
      * @return The number of bytes, which have actually been skipped.
@@ -1006,7 +1007,7 @@ public final class MultipartStream
 
     /**
      * Attempts to read more data.
-     * 
+     *
      * @return Number of available bytes
      * @throws IOException
      *         An I/O error occurred.
@@ -1050,7 +1051,7 @@ public final class MultipartStream
 
     /**
      * Returns, whether the stream is closed.
-     * 
+     *
      * @return True, if the stream is closed, otherwise false.
      */
     public boolean isClosed ()

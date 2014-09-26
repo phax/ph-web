@@ -39,7 +39,7 @@ import com.helger.web.http.CHTTPHeader;
  * Misc. helper methods on {@link HttpServletResponse} objects.<br>
  * Most method got deprecated by the activation of the {@link UnifiedResponse}
  * and the respective servlet and filter.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -59,11 +59,12 @@ public final class ResponseHelper
    * deflate or compress, the result will be a
    * {@link EResponseStreamType#DEFLATE}. If none of that matches, the regular
    * value {@link EResponseStreamType#PLAIN} will be returned.
-   * 
+   *
    * @param aHttpRequest
    *        request
    * @return The best matching output stream type. Never <code>null</code>.
    * @throws IOException
+   *         In case of IO error
    * @see ResponseHelperSettings
    */
   @Nonnull
@@ -105,13 +106,14 @@ public final class ResponseHelper
    * {@link GZIPOutputStream}, if the request supports deflate or compress, the
    * result will be a {@link ZipOutputStream}. If none of that matches, the
    * regular response output stream is used
-   * 
+   *
    * @param aHttpRequest
    *        request
    * @param aHttpResponse
    *        Response
    * @return The best matching output stream
    * @throws IOException
+   *         In case of IO error
    * @see ResponseHelperSettings
    */
   @Nonnull
@@ -177,7 +179,7 @@ public final class ResponseHelper
    * Set the content length of an HTTP response. If the passed content length is
    * a valid integer, <code>aHttpResponse.setContentLength</code> is invoked,
    * else the HTTP header {@link CHTTPHeader#CONTENT_LENGTH} is set manually.
-   * 
+   *
    * @param aHttpResponse
    *        The response to set the content length to
    * @param nContentLength

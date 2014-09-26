@@ -58,7 +58,7 @@ import com.helger.web.CWeb;
 // ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpServletResponse}.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -116,8 +116,9 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * Set whether {@link #getOutputStream()} access is allowed.
    * <p>
    * Default is <code>true</code>.
-   * 
+   *
    * @param bOutputStreamAccessAllowed
+   *        <code>true</code> to enabled
    */
   public void setOutputStreamAccessAllowed (final boolean bOutputStreamAccessAllowed)
   {
@@ -136,6 +137,9 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * Set whether {@link #getWriter()} access is allowed.
    * <p>
    * Default is <code>true</code>.
+   * 
+   * @param bWriterAccessAllowed
+   *        <code>true</code> to enabled
    */
   public void setWriterAccessAllowed (final boolean bWriterAccessAllowed)
   {
@@ -390,7 +394,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   /**
    * Return the names of all specified headers as a Set of Strings.
-   * 
+   *
    * @return the <code>Set</code> of header name <code>Strings</code>, or an
    *         empty <code>Set</code> if none
    */
@@ -405,7 +409,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * Return the primary value for the given header, if any.
    * <p>
    * Will return the first value in case of multiple values.
-   * 
+   *
    * @param sName
    *        the name of the header
    * @return the associated header value, or <code>null<code> if none
@@ -419,7 +423,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   /**
    * Return all values for the given header as a List of value objects.
-   * 
+   *
    * @param sName
    *        the name of the header
    * @return the associated header values, or an empty List if none
@@ -433,7 +437,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   /**
    * The default implementation returns the given URL String as-is. Use
    * {@link #setEncodeUrlSuffix(String)} to define a suffix to be appended.
-   * 
+   *
    * @return the encoded URL
    */
   @Nullable
@@ -448,7 +452,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * The default implementation returns the given URL String as-is. Use
    * {@link #setEncodeRedirectUrlSuffix(String)} to define a suffix to be
    * appended.
-   * 
+   *
    * @return the encoded URL
    */
   @Nullable
@@ -629,7 +633,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
     }
 
     @Override
-    public void write (final char aBuf[], final int nOff, final int nLen)
+    public void write (final char aBuf [], final int nOff, final int nLen)
     {
       super.write (aBuf, nOff, nLen);
       super.flush ();

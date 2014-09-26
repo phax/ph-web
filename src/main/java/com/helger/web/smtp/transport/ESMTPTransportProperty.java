@@ -27,7 +27,7 @@ import com.helger.commons.annotations.Nonempty;
  * <a href=
  * "https://javamail.java.net/nonav/docs/api/com/sun/mail/smtp/package-summary.html"
  * >Source</a>
- * 
+ *
  * @author Philip Helger
  */
 public enum ESMTPTransportProperty
@@ -370,6 +370,8 @@ public enum ESMTPTransportProperty
   }
 
   /**
+   * @param bForSMTPS
+   *        <code>true</code> for "SMTPS", if <code>false</code> for "SMTP"
    * @return The property name for regular SMTP transfer. Neither
    *         <code>null</code> nor empty.
    */

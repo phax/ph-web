@@ -79,7 +79,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 /**
  * This class encapsulates all things required to build a HTTP response. It
  * offer warnings and consistency checks if something is missing.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -160,7 +160,7 @@ public class UnifiedResponse
 
   /**
    * Constructor
-   * 
+   *
    * @param aHttpRequest
    *        The main HTTP request
    */
@@ -171,7 +171,7 @@ public class UnifiedResponse
 
   /**
    * Constructor
-   * 
+   *
    * @param eHTTPVersion
    *        HTTP version of this request (1.0 or 1.1)
    * @param eHTTPMethod
@@ -357,7 +357,7 @@ public class UnifiedResponse
 
   /**
    * Utility method to set an empty response content.
-   * 
+   *
    * @return this
    */
   @Nonnull
@@ -368,7 +368,7 @@ public class UnifiedResponse
 
   /**
    * Utility method to set content and charset at once.
-   * 
+   *
    * @param sContent
    *        The response content string. May not be <code>null</code>.
    * @param aCharset
@@ -387,7 +387,7 @@ public class UnifiedResponse
   /**
    * Set the response content. To return an empty response pass in a new empty
    * array, but not <code>null</code>.
-   * 
+   *
    * @param aContent
    *        The content to be returned. Is <b>not</b> copied inside! May not be
    *        <code>null</code> but maybe empty.
@@ -407,7 +407,7 @@ public class UnifiedResponse
 
   /**
    * Set the response content provider.
-   * 
+   *
    * @param aISP
    *        The content provider to be used. May not be <code>null</code>.
    * @return this
@@ -465,7 +465,7 @@ public class UnifiedResponse
   /**
    * Set an ETag for the response. The ETag must be a quoted value (being
    * surrounded by double quotes).
-   * 
+   *
    * @param sETag
    *        The quoted ETag to be set. May neither be <code>null</code> nor
    *        empty.
@@ -490,7 +490,7 @@ public class UnifiedResponse
    * Set an ETag for the response if this is an HTTP/1.1 response. HTTP/1.0 does
    * not support ETags. The ETag must be a quoted value (being surrounded by
    * double quotes).
-   * 
+   *
    * @param sETag
    *        The quoted ETag to be set. May neither be <code>null</code> nor
    *        empty.
@@ -578,7 +578,7 @@ public class UnifiedResponse
   /**
    * Utility method for setting the MimeType application/force-download and set
    * the respective content disposition filename.
-   * 
+   *
    * @param sFilename
    *        The filename to be used.
    * @return this
@@ -622,7 +622,7 @@ public class UnifiedResponse
 
   /**
    * A utility method that disables caching for this response.
-   * 
+   *
    * @return this
    */
   @Nonnull
@@ -669,7 +669,7 @@ public class UnifiedResponse
 
   /**
    * Enable caching of this resource for the specified number of seconds.
-   * 
+   *
    * @param nSeconds
    *        The number of seconds caching is allowed. Must be &gt; 0.
    * @return this
@@ -713,7 +713,7 @@ public class UnifiedResponse
 
   /**
    * Set the status code to be returned from the response.
-   * 
+   *
    * @param nStatusCode
    *        The status code to be set. Must be a valid HTTP response code.
    * @return this
@@ -727,7 +727,7 @@ public class UnifiedResponse
 
   /**
    * Special handling for returning status code 401 UNAUTHORIZED.
-   * 
+   *
    * @param sAuthenticate
    *        The string to be used for the {@link CHTTPHeader#WWW_AUTHENTICATE}
    *        response header. May be <code>null</code> or empty.
@@ -789,7 +789,7 @@ public class UnifiedResponse
    * header to prevent certain browsers from MIME-sniffing a response away from
    * the declared content-type. When passing <code>true</code>, that header is
    * removed.
-   * 
+   *
    * @param bAllow
    *        Whether or not sniffing should be allowed (default is
    *        <code>true</code>).
@@ -811,7 +811,7 @@ public class UnifiedResponse
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
-   * 
+   *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
    * @param sValue
@@ -830,10 +830,11 @@ public class UnifiedResponse
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
-   * 
+   *
    * @param sName
    *        Name of the header to be removed. May neither be <code>null</code>
    *        nor empty.
+   * @return {@link EChange#CHANGED} in header was removed.
    */
   @Nonnull
   public EChange removeCustomResponseHeaders (@Nonnull @Nonempty final String sName)
@@ -848,7 +849,7 @@ public class UnifiedResponse
    * header to prevent certain browsers from MIME-sniffing a response away from
    * the declared content-type. When passing <code>true</code>, that header is
    * removed.
-   * 
+   *
    * @param nMaxAgeSeconds
    *        number of seconds, after the reception of the STS header field,
    *        during which the UA regards the host (from whom the message was

@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.annotations.Translatable;
 import com.helger.commons.name.IHasDisplayText;
-import com.helger.commons.text.ITextProvider;
 import com.helger.commons.text.impl.TextProvider;
 import com.helger.commons.text.resolve.DefaultTextResolver;
 
@@ -43,7 +42,7 @@ public enum EBrowserText implements IHasDisplayText
   APPLICATION ("Anwendung oder API", "Application or API"),
   IE_COMPATIBILITY_MODE (" (Kompatibilitätsmodus)", " (compatibility mode)");
 
-  private final ITextProvider m_aTP;
+  private final TextProvider m_aTP;
 
   private EBrowserText (final String sDE, final String sEN)
   {

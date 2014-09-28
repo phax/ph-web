@@ -1,7 +1,6 @@
-ph-web
-======
+#ph-web
 
-Java library with common web stuff
+Java library with common web stuff.
 
 #Maven usage
 Add the following to your pom.xml to use this artifact:
@@ -12,3 +11,7 @@ Add the following to your pom.xml to use this artifact:
   <version>6.0.0</version>
 </dependency>
 ```
+
+---
+
+On Twitter: <a href="https://twitter.com/philiphelger">Follow @philiphelger</a>

@@ -17,7 +17,7 @@
     limitations under the License.
 
 -->
-<translationitems count="13">
+<translationitems count="13" hashcode="03aff2a1">
   <item id="com.helger.web.useragent.browser.EBrowserText.APPLICATION">
     <de>Anwendung oder API</de>
     <en>Application or API</en>

@@ -34,7 +34,7 @@ import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ArrayHelper;
 import com.helger.commons.collections.ContainerHelper;
-import com.helger.commons.collections.attrs.AbstractReadonlyAttributeContainer;
+import com.helger.commons.collections.attrs.AbstractGenericReadonlyAttributeContainer;
 import com.helger.commons.collections.attrs.IReadonlyAttributeContainer;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.lang.CGStringHelper;
@@ -188,7 +188,7 @@ public final class RequestParamMap implements IRequestParamMap
   public String getString (@Nonnull @Nonempty final String... aPath)
   {
     final Object aValue = getObject (aPath);
-    return AbstractReadonlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
+    return AbstractGenericReadonlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   @Nullable

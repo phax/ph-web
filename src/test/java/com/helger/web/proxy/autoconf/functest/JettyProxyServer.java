@@ -61,7 +61,7 @@ public class JettyProxyServer
       {
         // Only accept valid URL protocols
         final String sRequestURI = ((HttpServletRequest) req).getRequestURI ();
-        if (!URLProtocolRegistry.hasKnownProtocol (sRequestURI) || sRequestURI.contains ("//localhost"))
+        if (!URLProtocolRegistry.getInstance ().hasKnownProtocol (sRequestURI) || sRequestURI.contains ("//localhost"))
           ((HttpServletResponse) res).setStatus (HttpServletResponse.SC_NOT_FOUND);
         else
           super.service (req, res);

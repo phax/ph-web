@@ -171,7 +171,8 @@ public final class ProxyAutoConfigHelper
                 {
                   final String sProxyHost = aParts[0];
                   final String sProxyPort = aParts[1];
-                  final EHttpProxyType eProxyType = EHttpProxyType.getFromURLProtocolOrDefault (URLProtocolRegistry.getProtocol (sProxyHost),
+                  final EHttpProxyType eProxyType = EHttpProxyType.getFromURLProtocolOrDefault (URLProtocolRegistry.getInstance ()
+                                                                                                                   .getProtocol (sProxyHost),
                                                                                                 EHttpProxyType.HTTP);
                   final int nProxyPort = StringParser.parseInt (sProxyPort, eProxyType.getDefaultPort ());
                   ret.add (new HttpProxyConfig (eProxyType, sProxyHost, nProxyPort));

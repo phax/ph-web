@@ -34,7 +34,7 @@ import com.helger.commons.url.URLProtocolRegistry;
 /**
  * This class converts an user agent string to an {@link IUserAgent} object if
  * possible.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -51,7 +51,7 @@ public final class UserAgentDecryptor
 
   /**
    * Parse the passed user agent.
-   * 
+   *
    * @param sUserAgent
    *        The user agent string to parse.
    * @return A list than can contain {@link ReadonlyPair}, {@link String} and
@@ -78,7 +78,7 @@ public final class UserAgentDecryptor
           final String sValue = aSS.skip (1).getUntilWhiteSpace ();
           final String sFullValue = sKey + "/" + sValue;
           // Special handling of URLs :)
-          if (URLProtocolRegistry.hasKnownProtocol (sFullValue))
+          if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sFullValue))
             ret.add (sFullValue);
           else
             ret.add (ReadonlyPair.create (sKey, sValue));
@@ -132,7 +132,7 @@ public final class UserAgentDecryptor
 
   /**
    * Decrypt the passed user agent string.
-   * 
+   *
    * @param sUserAgent
    *        The user agent string to decrypt. May not be <code>null</code>.
    * @return The user agent object. Never <code>null</code>.

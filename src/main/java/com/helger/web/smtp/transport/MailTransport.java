@@ -33,7 +33,6 @@ import javax.mail.event.ConnectionListener;
 import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
 import javax.mail.internet.MimeMessage;
-import javax.net.ssl.SSLSocketFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +98,7 @@ final class MailTransport
     if (m_bSMTPS)
     {
       m_aMailProperties.setProperty (ESMTPTransportProperty.SSL_SOCKETFACTORY_CLASS.getPropertyName (m_bSMTPS),
-                                     SSLSocketFactory.class.getName ());
+                                     com.sun.mail.util.MailSSLSocketFactory.class.getName ());
       m_aMailProperties.setProperty (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (m_bSMTPS),
                                      Integer.toString (aSettings.getPort ()));
     }

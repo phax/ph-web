@@ -190,7 +190,8 @@ public final class RequestHelper
       return "/";
     }
 
-    final String sContextPath = aHttpRequest.getContextPath ();
+    // In some rare scenarios, Tomcat 7 may return null here!
+    final String sContextPath = StringHelper.getNotNull (aHttpRequest.getContextPath (), "");
     if (!sRequestURI.startsWith (sContextPath))
       return sRequestURI;
 

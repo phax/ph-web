@@ -58,12 +58,12 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
   @ContainsSoftMigration
   public EmailAttachment convertToNative (@Nonnull final IMicroElement eAttachment)
   {
-    final String sFilename = eAttachment.getAttribute (ATTR_FILENAME);
+    final String sFilename = eAttachment.getAttributeValue (ATTR_FILENAME);
 
-    final String sCharset = eAttachment.getAttribute (ATTR_CHARSET);
+    final String sCharset = eAttachment.getAttributeValue (ATTR_CHARSET);
     final Charset aCharset = sCharset == null ? null : CharsetManager.getCharsetFromName (sCharset);
 
-    final String sDisposition = eAttachment.getAttribute (ATTR_DISPOSITION);
+    final String sDisposition = eAttachment.getAttributeValue (ATTR_DISPOSITION);
     EEmailAttachmentDisposition eDisposition = EEmailAttachmentDisposition.getFromIDOrNull (sDisposition);
     // migration
     if (eDisposition == null)

@@ -112,8 +112,8 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
   @Nonnull
   private static IEmailAddress _readEmailAddress (@Nonnull final IMicroElement eElement)
   {
-    final String sAddress = eElement.getAttribute (ATTR_ADDRESS);
-    final String sPersonal = eElement.getAttribute (ATTR_PERSONAL);
+    final String sAddress = eElement.getAttributeValue (ATTR_ADDRESS);
+    final String sPersonal = eElement.getAttributeValue (ATTR_PERSONAL);
     return new EmailAddress (sAddress, sPersonal);
   }
 
@@ -121,7 +121,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
   @ContainsSoftMigration
   public EmailData convertToNative (@Nonnull final IMicroElement eEmailData)
   {
-    final String sEmailType = eEmailData.getAttribute (ATTR_TYPE);
+    final String sEmailType = eEmailData.getAttributeValue (ATTR_TYPE);
     final EEmailType eEmailType = EEmailType.getFromIDOrNull (sEmailType);
     final EmailData aEmailData = new EmailData (eEmailType);
 
@@ -148,7 +148,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
       aBccs.add (_readEmailAddress (eBcc));
     aEmailData.setBcc (aBccs);
 
-    final String sSentDate = eEmailData.getAttribute (ELEMENT_SENTDATE);
+    final String sSentDate = eEmailData.getAttributeValue (ELEMENT_SENTDATE);
     if (sSentDate != null)
     {
       final DateTime aDT = PDTWebDateUtils.getDateTimeFromXSD (sSentDate);
@@ -156,7 +156,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
         aEmailData.setSentDate (aDT.withChronology (PDTConfig.getDefaultChronology ()));
     }
 
-    aEmailData.setSubject (eEmailData.getAttribute (ATTR_SUBJECT));
+    aEmailData.setSubject (eEmailData.getAttributeValue (ATTR_SUBJECT));
     aEmailData.setBody (MicroUtils.getChildTextContent (eEmailData, ELEMENT_BODY));
 
     final IMicroElement eAttachments = eEmailData.getFirstChildElement (ELEMENT_ATTACHMENTS);
@@ -176,7 +176,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
     }
 
     for (final IMicroElement eCustom : eEmailData.getAllChildElements (ELEMENT_CUSTOM))
-      aEmailData.setAttribute (eCustom.getAttribute (ATTR_ID), eCustom.getTextContent ());
+      aEmailData.setAttribute (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
 
     return aEmailData;
   }

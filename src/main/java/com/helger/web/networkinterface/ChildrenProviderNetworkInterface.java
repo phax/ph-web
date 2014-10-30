@@ -32,7 +32,7 @@ import com.helger.commons.string.ToStringGenerator;
 /**
  * Default implementation of {@link IChildrenProvider} for
  * {@link NetworkInterface}.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -50,7 +50,14 @@ public class ChildrenProviderNetworkInterface implements IChildrenProvider <Netw
   }
 
   @Nullable
+  @Deprecated
   public Collection <NetworkInterface> getChildren (@Nonnull final NetworkInterface aCurrent)
+  {
+    return getAllChildren (aCurrent);
+  }
+
+  @Nullable
+  public Collection <NetworkInterface> getAllChildren (@Nonnull final NetworkInterface aCurrent)
   {
     final Enumeration <NetworkInterface> aSubIFs = aCurrent.getSubInterfaces ();
     return aSubIFs.hasMoreElements () ? ContainerHelper.newList (aSubIFs) : null;

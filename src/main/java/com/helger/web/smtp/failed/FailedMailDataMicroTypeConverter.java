@@ -80,7 +80,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
   @Nullable
   public FailedMailData convertToNative (@Nonnull final IMicroElement eFailedMail)
   {
-    final String sID = eFailedMail.getAttribute (ATTR_ID);
+    final String sID = eFailedMail.getAttributeValue (ATTR_ID);
     if (sID == null)
     {
       s_aLogger.error ("Failed to read ID");
@@ -88,7 +88,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
     }
 
     // Read error date/time
-    final String sErrorDT = eFailedMail.getAttribute (ATTR_ERRORDT);
+    final String sErrorDT = eFailedMail.getAttributeValue (ATTR_ERRORDT);
     if (sErrorDT == null)
     {
       s_aLogger.error ("Failed to read error date/time");
@@ -104,7 +104,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
     }
 
     // read original sent date/time
-    final String sOriginalSentDT = eFailedMail.getAttribute (ATTR_ORIGINALSENTDT);
+    final String sOriginalSentDT = eFailedMail.getAttributeValue (ATTR_ORIGINALSENTDT);
     DateTime aOriginalSentDT = null;
     if (sOriginalSentDT != null)
     {

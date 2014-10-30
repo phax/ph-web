@@ -76,36 +76,36 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
   @ContainsSoftMigration
   public static SMTPSettings convertToSMTPSettings (@Nonnull final IMicroElement eSMTPSettings)
   {
-    String sHost = eSMTPSettings.getAttribute (ATTR_HOST);
+    String sHost = eSMTPSettings.getAttributeValue (ATTR_HOST);
     if (sHost == null)
-      sHost = eSMTPSettings.getAttribute ("hostname");
+      sHost = eSMTPSettings.getAttributeValue ("hostname");
 
-    final String sPort = eSMTPSettings.getAttribute (ATTR_PORT);
+    final String sPort = eSMTPSettings.getAttributeValue (ATTR_PORT);
     final int nPort = StringParser.parseInt (sPort, CWeb.DEFAULT_PORT_SMTP);
 
-    String sUser = eSMTPSettings.getAttribute (ATTR_USER);
+    String sUser = eSMTPSettings.getAttributeValue (ATTR_USER);
     if (sUser == null)
-      sUser = eSMTPSettings.getAttribute ("username");
+      sUser = eSMTPSettings.getAttributeValue ("username");
 
-    final String sPassword = eSMTPSettings.getAttribute (ATTR_PASSWORD);
+    final String sPassword = eSMTPSettings.getAttributeValue (ATTR_PASSWORD);
 
-    String sCharset = eSMTPSettings.getAttribute (ATTR_CHARSET);
+    String sCharset = eSMTPSettings.getAttributeValue (ATTR_CHARSET);
     if (sCharset == null)
       sCharset = CWebCharset.CHARSET_SMTP;
-    String sSSLEnabled = eSMTPSettings.getAttribute (ATTR_SSLENABLED);
+    String sSSLEnabled = eSMTPSettings.getAttributeValue (ATTR_SSLENABLED);
 
     if (sSSLEnabled == null)
-      sSSLEnabled = eSMTPSettings.getAttribute ("usessl");
+      sSSLEnabled = eSMTPSettings.getAttributeValue ("usessl");
     final boolean bSSLEnabled = StringParser.parseBool (sSSLEnabled, EmailGlobalSettings.isUseSSL ());
 
-    final String sSTARTTLSEnabled = eSMTPSettings.getAttribute (ATTR_STARTTLSENABLED);
+    final String sSTARTTLSEnabled = eSMTPSettings.getAttributeValue (ATTR_STARTTLSENABLED);
     final boolean bSTARTTLSEnabled = StringParser.parseBool (sSTARTTLSEnabled, EmailGlobalSettings.isUseSTARTTLS ());
 
-    final String sConnectionTimeoutMilliSecs = eSMTPSettings.getAttribute (ATTR_CONNECTIONTIMEOUT);
+    final String sConnectionTimeoutMilliSecs = eSMTPSettings.getAttributeValue (ATTR_CONNECTIONTIMEOUT);
     final long nConnectionTimeoutMilliSecs = StringParser.parseLong (sConnectionTimeoutMilliSecs,
                                                                      EmailGlobalSettings.getConnectionTimeoutMilliSecs ());
 
-    final String sTimeoutMilliSecs = eSMTPSettings.getAttribute (ATTR_TIMEOUT);
+    final String sTimeoutMilliSecs = eSMTPSettings.getAttributeValue (ATTR_TIMEOUT);
     final long nTimeoutMilliSecs = StringParser.parseLong (sTimeoutMilliSecs,
                                                            EmailGlobalSettings.getTimeoutMilliSecs ());
 

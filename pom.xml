@@ -25,7 +25,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ph-web</artifactId>
-  <version>6.0.4-SNAPSHOT</version>
+  <version>6.0.3-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ph-web</name>
   <description>Java library with basic web functionality</description>

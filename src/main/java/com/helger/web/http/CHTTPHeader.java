@@ -23,7 +23,7 @@ import com.helger.commons.annotations.PresentForCodeCoverage;
 // ESCA-JAVA0116:
 /**
  * HTTP header constants.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -101,6 +101,10 @@ public final class CHTTPHeader
   public static final String ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method";
   public static final String ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
   public static final String ORIGIN = "Origin";
+
+  // CSP
+  public static final String CONTENT_SECURITY_POLICY = "Content-Security-Policy";
+  public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "Content-Security-Policy-Report-Only";
 
   public static final String VALUE_NOSNIFF = "nosniff";
   public static final String VALUE_INCLUDE_SUBDMOAINS = "includeSubDomains";

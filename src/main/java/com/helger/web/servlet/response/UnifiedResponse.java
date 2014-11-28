@@ -231,18 +231,27 @@ public class UnifiedResponse
     _showRequestInfo ();
   }
 
+  /**
+   * @return The HTTP version of the request. Never <code>null</code>.
+   */
   @Nonnull
   public final EHTTPVersion getHTTPVersion ()
   {
     return m_eHTTPVersion;
   }
 
+  /**
+   * @return The HTTP method of the request. Never <code>null</code>.
+   */
   @Nonnull
   public final EHTTPMethod getHTTPMethod ()
   {
     return m_eHTTPMethod;
   }
 
+  /**
+   * @return The browser info of the request. Never <code>null</code>.
+   */
   @Nullable
   public BrowserInfo getRequestBrowserInfo ()
   {

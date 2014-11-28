@@ -129,6 +129,7 @@ public class UnifiedResponse
   private final HTTPHeaderMap m_aResponseHeaderMap = new HTTPHeaderMap ();
   private int m_nStatusCode = CGlobal.ILLEGAL_UINT;
   private String m_sRedirectTargetUrl;
+  private ERedirectMode m_eRedirectMode;
   private Map <String, Cookie> m_aCookies;
 
   // Internal status members
@@ -747,17 +748,35 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
-    return setRedirect (aRedirectTargetUrl.getAsString ());
+    return setRedirect (aRedirectTargetUrl, ERedirectMode.DEFAULT);
+  }
+
+  @Nonnull
+  public UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl,
+                                      @Nonnull final ERedirectMode eRedirectMode)
+  {
+    ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
+
+    return setRedirect (aRedirectTargetUrl.getAsString (), eRedirectMode);
   }
 
   @Nonnull
   public UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl)
   {
+    return setRedirect (sRedirectTargetUrl, ERedirectMode.DEFAULT);
+  }
+
+  @Nonnull
+  public UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl,
+                                      @Nonnull final ERedirectMode eRedirectMode)
+  {
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
+    ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
     if (m_sRedirectTargetUrl != null)
       _info ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + m_sRedirectTargetUrl + "'");
     m_sRedirectTargetUrl = sRedirectTargetUrl;
+    m_eRedirectMode = eRedirectMode;
     return this;
   }
 
@@ -983,7 +1002,30 @@ public class UnifiedResponse
 
       // Note: After using this method, the response should be
       // considered to be committed and should not be written to.
-      aHttpResponse.sendRedirect (aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl));
+      final String sRealTargetURL = aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl);
+      switch (m_eRedirectMode)
+      {
+        case DEFAULT:
+          aHttpResponse.sendRedirect (sRealTargetURL);
+          break;
+        case POST_REDIRECT_GET:
+          switch (m_eHTTPVersion)
+          {
+            case HTTP_10:
+              // For HTTP 1.0 send 302
+              aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);
+              break;
+            case HTTP_11:
+              // For HTTP 1.1 send 303
+              aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
+              break;
+          }
+          // Set the location header
+          aHttpResponse.addHeader (CHTTPHeader.LOCATION, sRealTargetURL);
+          break;
+        default:
+          throw new IllegalStateException ("Unimplemented redirect mode " + m_eRedirectMode + "!");
+      }
 
       if (!m_bAllowContentOnRedirect)
         return;

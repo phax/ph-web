@@ -143,7 +143,12 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>com.helger.web.*</Export-Package>
+            <Export-Package>
+              com.helger.web.*
+            </Export-Package>
+            <Import-Package>
+              !javax.annotation.*,*
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

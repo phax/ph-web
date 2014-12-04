@@ -63,31 +63,38 @@ public final class MailAPITest
     final IReadableResource aRes = new ClassPathResource ("smtp-settings.xml");
     if (aRes.exists ())
     {
+      final boolean bOldIsDebug = GlobalDebug.isDebugMode ();
       GlobalDebug.setDebugModeDirect (true);
-      EmailGlobalSettings.enableJavaxMailDebugging (GlobalDebug.isDebugMode ());
+      try
+      {
+        EmailGlobalSettings.enableJavaxMailDebugging (GlobalDebug.isDebugMode ());
 
-      // Setup debug listeners
-      EmailGlobalSettings.setConnectionListener (new LoggingConnectionListener ());
-      EmailGlobalSettings.setTransportListener (new LoggingTransportListener ());
+        // Setup debug listeners
+        EmailGlobalSettings.setConnectionListener (new LoggingConnectionListener ());
+        EmailGlobalSettings.setTransportListener (new LoggingTransportListener ());
 
-      final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
-                                                                                        .getDocumentElement (),
-                                                                             SMTPSettings.class);
-      final IEmailData aMailData = new EmailData (EEmailType.TEXT);
-      aMailData.setTo (new EmailAddress ("ph@helger.com"));
-      aMailData.setFrom (new EmailAddress ("auto@helger.com"));
-      aMailData.setSubject ("JÜnit test with späcial käräktärs");
-      aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-web");
-      MailAPI.queueMail (aSMTPSettings, aMailData);
-      MailAPI.stop ();
+        final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
+                                                                                          .getDocumentElement (),
+                                                                               SMTPSettings.class);
+        final IEmailData aMailData = new EmailData (EEmailType.TEXT);
+        aMailData.setTo (new EmailAddress ("ph@helger.com"));
+        aMailData.setFrom (new EmailAddress ("auto@helger.com"));
+        aMailData.setSubject ("JÜnit test with späcial käräktärs");
+        aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-web");
+        MailAPI.queueMail (aSMTPSettings, aMailData);
+        MailAPI.stop ();
 
-      // try to queue again after MailAPI was stopped - should end up in failed
-      // mail queue
-      assertEquals (0, MailAPI.getFailedMailQueue ().size ());
-      MailAPI.queueMail (aSMTPSettings, aMailData);
-      assertEquals (1, MailAPI.getFailedMailQueue ().size ());
-
-      GlobalDebug.setDebugModeDirect (false);
+        // try to queue again after MailAPI was stopped - should end up in
+        // failed
+        // mail queue
+        assertEquals (0, MailAPI.getFailedMailQueue ().size ());
+        MailAPI.queueMail (aSMTPSettings, aMailData);
+        assertEquals (1, MailAPI.getFailedMailQueue ().size ());
+      }
+      finally
+      {
+        GlobalDebug.setDebugModeDirect (bOldIsDebug);
+      }
     }
   }
 

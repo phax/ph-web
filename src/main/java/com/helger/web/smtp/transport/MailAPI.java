@@ -276,7 +276,9 @@ public final class MailAPI
                            "'" +
                            (aEmailData.getCcCount () > 0 ? " and CC '" + aEmailData.getCc () + "'" : "") +
                            (aEmailData.getBccCount () > 0 ? " and BCC '" + aEmailData.getBcc () + "'" : "") +
-                           " because at least one address is not targeted to the vendor domain");
+                           " because at least one address is not targeted to the vendor domain '" +
+                           VendorInfo.getVendorEmailSuffix () +
+                           "'");
           bCanQueue = false;
         }
       }

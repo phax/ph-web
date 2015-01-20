@@ -26,6 +26,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.url.ISimpleURL;
 
+@Deprecated
 public class ServletRedirectIndicatorException extends RuntimeException
 {
   private final ISimpleURL m_aURL;

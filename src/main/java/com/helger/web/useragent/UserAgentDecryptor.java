@@ -28,7 +28,7 @@ import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.collections.pair.ReadonlyPair;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.commons.text.utils.StringScanner;
+import com.helger.commons.string.utils.StringScanner;
 import com.helger.commons.url.URLProtocolRegistry;
 
 /**

@@ -19,6 +19,12 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="ph-web">
+  <release date="2015-01-29" version="6.0.4" />
+  <entry date="2015-01-29" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to ph-commons 5.3.0</text>
+    </change>
+  </entry>
   <release date="2014-11-28" version="6.0.3" />
   <entry date="2014-11-28" category="api" action="add">
     <change>

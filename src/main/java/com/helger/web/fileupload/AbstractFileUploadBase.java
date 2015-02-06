@@ -880,7 +880,7 @@ public abstract class AbstractFileUploadBase
       m_aMulti.setHeaderEncoding (charEncoding);
 
       m_bSkipPreamble = true;
-      findNextItem ();
+      _findNextItem ();
     }
 
     /**
@@ -890,7 +890,7 @@ public abstract class AbstractFileUploadBase
      * @throws IOException
      *         An I/O error occurred.
      */
-    private boolean findNextItem () throws IOException
+    private boolean _findNextItem () throws IOException
     {
       if (m_bEof)
         return false;
@@ -946,7 +946,7 @@ public abstract class AbstractFileUploadBase
                                                      fieldName,
                                                      headers.getHeader (CONTENT_TYPE),
                                                      fileName == null,
-                                                     getContentLength (headers));
+                                                     _getContentLength (headers));
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;
@@ -961,7 +961,7 @@ public abstract class AbstractFileUploadBase
                                                      m_sCurrentFieldName,
                                                      headers.getHeader (CONTENT_TYPE),
                                                      false,
-                                                     getContentLength (headers));
+                                                     _getContentLength (headers));
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;
@@ -971,7 +971,7 @@ public abstract class AbstractFileUploadBase
       }
     }
 
-    private long getContentLength (final IFileItemHeaders pHeaders)
+    private long _getContentLength (final IFileItemHeaders pHeaders)
     {
       return StringParser.parseLong (pHeaders.getHeader (CONTENT_LENGTH), -1L);
     }
@@ -993,7 +993,7 @@ public abstract class AbstractFileUploadBase
         return false;
       if (m_bItemValid)
         return true;
-      return findNextItem ();
+      return _findNextItem ();
     }
 
     /**

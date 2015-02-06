@@ -26,7 +26,7 @@ import com.helger.commons.string.StringHelper;
 
 /**
  * HTTP string utils. Based on RFC 1945 http://tools.ietf.org/html/rfc1945
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -212,7 +212,6 @@ public final class HTTPStringHelper
   }
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final HTTPStringHelper s_aInstance = new HTTPStringHelper ();
 
   private HTTPStringHelper ()

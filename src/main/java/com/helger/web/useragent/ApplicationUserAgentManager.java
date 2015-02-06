@@ -42,7 +42,6 @@ public final class ApplicationUserAgentManager
   }
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final ApplicationUserAgentManager s_aInstance = new ApplicationUserAgentManager ();
 
   private ApplicationUserAgentManager ()

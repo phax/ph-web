@@ -44,7 +44,6 @@ public final class RFC2047Helper
 
   public static final Charset DEFAULT_CHARSET = CCharset.CHARSET_UTF_8_OBJ;
 
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final RFC2047Helper s_aInstance = new RFC2047Helper ();
 

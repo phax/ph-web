@@ -28,7 +28,7 @@ import com.helger.commons.string.StringParser;
 
 /**
  * Handler for the request HTTP header field "Accept-Charset"
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -40,7 +40,6 @@ public final class AcceptCharsetHandler
   public static final String DEFAULT_CHARSET = CCharset.CHARSET_ISO_8859_1;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final AcceptCharsetHandler s_aInstance = new AcceptCharsetHandler ();
 
   private AcceptCharsetHandler ()

@@ -30,7 +30,7 @@ import com.helger.commons.collections.ContainerHelper;
 /**
  * A list of default ports between 0 and 1024. Created from the IANA port list.
  * http://www.iana.org/assignments/port-numbers
- * 
+ *
  * @author Philip Helger
  */
 @CodingStyleguideUnaware ("Concerning the constants used in this class")
@@ -3906,7 +3906,6 @@ public final class DefaultNetworkPorts
     return aPort;
   }
 
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final DefaultNetworkPorts s_aInstance = new DefaultNetworkPorts ();
 
@@ -3916,7 +3915,7 @@ public final class DefaultNetworkPorts
   /**
    * Check of the passed port number is theoretically valid. Valid ports must be
    * in the range of 0-65535.
-   * 
+   *
    * @param nPort
    *        The port number to be tested.
    * @return <code>true</code> if the port number is valid, <code>false</code>

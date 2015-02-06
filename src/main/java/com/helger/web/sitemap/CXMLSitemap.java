@@ -26,7 +26,7 @@ import com.helger.commons.xml.serialize.XMLWriterSettings;
 
 /**
  * Constants for handling sitemaps.org sitemaps consistently.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -49,7 +49,6 @@ public final class CXMLSitemap
                                                                                        .setIncorrectCharacterHandling (EXMLIncorrectCharacterHandling.DO_NOT_WRITE_LOG_WARNING);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final CXMLSitemap s_aInstance = new CXMLSitemap ();
 
   private CXMLSitemap ()

@@ -22,7 +22,7 @@ import com.helger.commons.annotations.PresentForCodeCoverage;
 
 /**
  * Constants for network port handling.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -38,7 +38,6 @@ public final class CNetworkPort
   /** Largest valid port number */
   public static final int MAXIMUM_PORT_NUMBER = 65535;
 
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final CNetworkPort s_aInstance = new CNetworkPort ();
 

@@ -54,7 +54,7 @@ import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * Central cache for known UAProfiles.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -83,7 +83,6 @@ public final class UAProfileDatabase
   private static INonThrowingRunnableWithParameter <UAProfile> s_aNewUAProfileCallback;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final UAProfileDatabase s_aInstance = new UAProfileDatabase ();
 
   private UAProfileDatabase ()
@@ -362,7 +361,7 @@ public final class UAProfileDatabase
 
   /**
    * Get the user agent object from the given HTTP request.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request to extract the information from.
    * @return A non-<code>null</code> user agent object.

@@ -27,14 +27,13 @@ import com.helger.commons.annotations.PresentForCodeCoverage;
 
 /**
  * Small utility class to deal with exceptions.
- * 
+ *
  * @author helger
  */
 @Immutable
 public final class WebExceptionHelper
 {
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final WebExceptionHelper s_aInstance = new WebExceptionHelper ();
 
   private WebExceptionHelper ()

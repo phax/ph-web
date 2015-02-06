@@ -42,7 +42,6 @@ public final class MobileBrowserManager
   }
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final MobileBrowserManager s_aInstance = new MobileBrowserManager ();
 
   private MobileBrowserManager ()

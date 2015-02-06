@@ -30,13 +30,12 @@ import com.helger.commons.annotations.UsedViaReflection;
 
 /**
  * A simple DNS resolver, using the dnsjava library.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
 public final class DNSResolver
 {
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final DNSResolver s_aInstance = new DNSResolver ();
 
@@ -58,7 +57,7 @@ public final class DNSResolver
 
   /**
    * JavaScript callback function! Do not rename!
-   * 
+   *
    * @param sHostName
    *        The host name.
    * @return The resolved IP address as String or <code>null</code> if the host
@@ -75,7 +74,7 @@ public final class DNSResolver
 
   /**
    * This method must be present for the proxy-auto configuration setup!
-   * 
+   *
    * @return My IP address
    * @see #getMyIpAddress()
    */

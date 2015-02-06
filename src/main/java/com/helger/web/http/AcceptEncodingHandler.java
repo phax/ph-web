@@ -30,7 +30,7 @@ import com.helger.commons.string.StringParser;
 
 /**
  * Handler for the request HTTP header field "Accept-Encoding"
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -55,7 +55,6 @@ public final class AcceptEncodingHandler
   private static final Logger s_aLogger = LoggerFactory.getLogger (AcceptEncodingHandler.class);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final AcceptEncodingHandler s_aInstance = new AcceptEncodingHandler ();
 
   private AcceptEncodingHandler ()

@@ -47,7 +47,6 @@ public final class AcceptMimeTypeHandler
   private static final Logger s_aLogger = LoggerFactory.getLogger (AcceptMimeTypeHandler.class);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final AcceptMimeTypeHandler s_aInstance = new AcceptMimeTypeHandler ();
 
   private AcceptMimeTypeHandler ()

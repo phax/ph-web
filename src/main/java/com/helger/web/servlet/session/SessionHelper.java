@@ -35,7 +35,7 @@ import com.helger.commons.state.EChange;
 
 /**
  * HTTP session utilities.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -44,7 +44,6 @@ public final class SessionHelper
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionHelper.class);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final SessionHelper s_aInstance = new SessionHelper ();
 
   private SessionHelper ()
@@ -52,7 +51,7 @@ public final class SessionHelper
 
   /**
    * Invalidate the session if the session is still active.
-   * 
+   *
    * @param aSession
    *        The session to be invalidated. May be <code>null</code>.
    * @return {@link EChange#CHANGED} if the session was invalidated,
@@ -78,7 +77,7 @@ public final class SessionHelper
 
   /**
    * Get all attribute names present in the specified session.
-   * 
+   *
    * @param aSession
    *        The session to use. May not be <code>null</code>.
    * @return Never <code>null</code>.
@@ -102,7 +101,7 @@ public final class SessionHelper
   /**
    * Invalidate the session of the specified request (if any) and create a new
    * session.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request to use. May not be <code>null</code>.
    * @return The new {@link HttpSession} to use. Never <code>null</code>.

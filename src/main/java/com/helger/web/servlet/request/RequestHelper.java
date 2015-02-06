@@ -65,7 +65,6 @@ public final class RequestHelper
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestHelper.class);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final RequestHelper s_aInstance = new RequestHelper ();
 
   private RequestHelper ()

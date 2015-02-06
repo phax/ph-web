@@ -43,7 +43,6 @@ public final class UserAgentDecryptor
   private static final String SKIP_PREFIX = "User-Agent: ";
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final UserAgentDecryptor s_aInstance = new UserAgentDecryptor ();
 
   private UserAgentDecryptor ()

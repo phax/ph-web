@@ -27,7 +27,7 @@ import com.helger.commons.string.StringParser;
 
 /**
  * Handler for the request HTTP header field "Accept-Language"
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -37,7 +37,6 @@ public final class AcceptLanguageHandler
   public static final String ANY_LANGUAGE = "*";
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final AcceptLanguageHandler s_aInstance = new AcceptLanguageHandler ();
 
   private AcceptLanguageHandler ()

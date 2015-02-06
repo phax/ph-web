@@ -110,7 +110,6 @@ public final class CHTTPHeader
   public static final String VALUE_INCLUDE_SUBDMOAINS = "includeSubDomains";
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final CHTTPHeader s_aInstance = new CHTTPHeader ();
 
   private CHTTPHeader ()

@@ -43,7 +43,7 @@ import com.helger.web.http.HTTPHeaderMap;
 
 /**
  * Helper class to debug information passed to a JSP page or a servlet.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -55,7 +55,6 @@ public final class RequestLogger
   private static final AnnotationUsageCache s_aOfflineCache = new AnnotationUsageCache (IsOffline.class);
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final RequestLogger s_aInstance = new RequestLogger ();
 
   private RequestLogger ()
@@ -125,7 +124,7 @@ public final class RequestLogger
   /**
    * Debug log the most interesting parts of the HTTP request. It logs
    * everything but the HTTP headers.
-   * 
+   *
    * @param aHttpRequest
    *        the {@link HttpServletRequest} to debug
    */
@@ -177,7 +176,7 @@ public final class RequestLogger
   /**
    * Debug log information about the HTTP header send with a
    * {@link HttpServletRequest}.
-   * 
+   *
    * @param aHttpRequest
    *        the servlet request to debug the HTTP headers from
    */

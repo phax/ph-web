@@ -23,7 +23,7 @@ import com.helger.web.port.DefaultNetworkPorts;
 
 /**
  * Contains some global web constants
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -54,7 +54,6 @@ public final class CWeb
   public static final String SCHEME_HTTPS = "https";
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final CWeb s_aInstance = new CWeb ();
 
   private CWeb ()

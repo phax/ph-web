@@ -48,7 +48,7 @@ import com.helger.datetime.format.PDTFromString;
  * mask for each one of the possible formats.
  * <p/>
  * Original work Copyright 2004 Sun Microsystems, Inc.
- * 
+ *
  * @author Alejandro Abdelnur (original; mainly the formatting masks)
  * @author Philip Helger (major modification)
  */
@@ -107,7 +107,6 @@ public final class PDTWebDateUtils
   private static final Locale LOCALE_TO_USE = Locale.US;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final PDTWebDateUtils s_aInstance = new PDTWebDateUtils ();
 
   private PDTWebDateUtils ()
@@ -118,7 +117,7 @@ public final class PDTWebDateUtils
    * <p/>
    * It uses the masks in order until one of them succeeds or all fail.
    * <p/>
-   * 
+   *
    * @param aMasks
    *        array of masks to use for parsing the string
    * @param sDate
@@ -167,7 +166,7 @@ public final class PDTWebDateUtils
 
   /**
    * Extract the time zone from the passed string. UTC and GMT are supported.
-   * 
+   *
    * @param sDate
    *        The date string.
    * @return A non-<code>null</code> pair, where the first element is the
@@ -208,7 +207,7 @@ public final class PDTWebDateUtils
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
    * <p/>
-   * 
+   *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
    * @return the Date represented by the given RFC822 string. It returns
@@ -244,7 +243,7 @@ public final class PDTWebDateUtils
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
    * <p/>
-   * 
+   *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
    * @return the Date represented by the given RFC822 string. It returns
@@ -277,7 +276,7 @@ public final class PDTWebDateUtils
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
    * <p/>
-   * 
+   *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
    * @return the Date represented by the given W3C date-time string. It returns
@@ -309,7 +308,7 @@ public final class PDTWebDateUtils
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
    * <p/>
-   * 
+   *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
    * @return the Date represented by the given W3C date-time string. It returns
@@ -330,7 +329,7 @@ public final class PDTWebDateUtils
    * Parses a Date out of a String with a date in W3C date-time format or in a
    * RFC822 format.
    * <p>
-   * 
+   *
    * @param sDate
    *        string to parse for a date.
    * @return the Date represented by the given W3C date-time string. It returns
@@ -350,7 +349,7 @@ public final class PDTWebDateUtils
    * Parses a Date out of a String with a date in W3C date-time format or in a
    * RFC822 format.
    * <p>
-   * 
+   *
    * @param sDate
    *        string to parse for a date.
    * @return the Date represented by the given W3C date-time string. It returns
@@ -368,7 +367,7 @@ public final class PDTWebDateUtils
 
   /**
    * create a RFC822 representation of a date.
-   * 
+   *
    * @param aDateTime
    *        Date to parse. If <code>null</code> the current date and time is
    *        used.
@@ -384,7 +383,7 @@ public final class PDTWebDateUtils
 
   /**
    * create a RFC822 representation of a date time using UTC date time zone.
-   * 
+   *
    * @param aDateTime
    *        Date to parse. If <code>null</code> the current date and time is
    *        used.
@@ -400,7 +399,7 @@ public final class PDTWebDateUtils
 
   /**
    * create a W3C Date Time representation of a date.
-   * 
+   *
    * @param aDateTime
    *        Date to parse. If <code>null</code> the current date and time is
    *        used.
@@ -418,7 +417,7 @@ public final class PDTWebDateUtils
   /**
    * create a W3C Date Time representation of a date time using UTC date time
    * zone.
-   * 
+   *
    * @param aDateTime
    *        Date to parse. If <code>null</code> the current date and time is
    *        used.

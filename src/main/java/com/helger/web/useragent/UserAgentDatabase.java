@@ -40,7 +40,7 @@ import com.helger.web.http.CHTTPHeader;
 /**
  * Central cache for known user agents (see HTTP header field
  * {@link CHTTPHeader#USER_AGENT}).
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -55,7 +55,6 @@ public final class UserAgentDatabase
   private static INonThrowingRunnableWithParameter <IUserAgent> s_aNewUserAgentCallback;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final UserAgentDatabase s_aInstance = new UserAgentDatabase ();
 
   private UserAgentDatabase ()
@@ -76,7 +75,7 @@ public final class UserAgentDatabase
 
   /**
    * Get the user agent from the given request.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request to get the UA from.
    * @return <code>null</code> if no user agent string is present
@@ -120,7 +119,7 @@ public final class UserAgentDatabase
 
   /**
    * Get the user agent object from the given HTTP request.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request to extract the information from.
    * @return A non-<code>null</code> user agent object.

@@ -30,13 +30,12 @@ import com.helger.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
 
 /**
  * Some utility methods for {@link NetworkInterface}
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
 public final class NetworkInterfaceUtils
 {
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final NetworkInterfaceUtils s_aInstance = new NetworkInterfaceUtils ();
 
@@ -45,7 +44,7 @@ public final class NetworkInterfaceUtils
 
   /**
    * Create a hierarchical tree of the network interfaces.
-   * 
+   *
    * @return The created tree and never <code>null</code>.
    * @throws IllegalStateException
    *         In case an internal error occurred.

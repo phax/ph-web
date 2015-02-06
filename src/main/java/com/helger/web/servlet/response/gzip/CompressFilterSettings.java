@@ -30,7 +30,7 @@ import com.helger.commons.state.EChange;
 
 /**
  * Contains the settings for the CompressFilter class.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -45,7 +45,6 @@ public final class CompressFilterSettings
   private static boolean s_bDebugModeEnabled = false;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final CompressFilterSettings s_aInstance = new CompressFilterSettings ();
 
   private CompressFilterSettings ()
@@ -87,7 +86,7 @@ public final class CompressFilterSettings
 
   /**
    * Enable or disable the overall compression.
-   * 
+   *
    * @param bResponseCompressionEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -130,7 +129,7 @@ public final class CompressFilterSettings
   /**
    * Enable or disable Gzip compression. This only has an effect if
    * {@link #isResponseCompressionEnabled()} is <code>true</code>
-   * 
+   *
    * @param bResponseGzipEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -173,7 +172,7 @@ public final class CompressFilterSettings
   /**
    * Enable or disable Deflate compression. This only has an effect if
    * {@link #isResponseCompressionEnabled()} is <code>true</code>
-   * 
+   *
    * @param bResponseDeflateEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -215,7 +214,7 @@ public final class CompressFilterSettings
 
   /**
    * Set all parameters at once as an atomic transaction
-   * 
+   *
    * @param bResponseCompressionEnabled
    *        <code>true</code> to overall enable the usage
    * @param bResponseGzipEnabled
@@ -261,7 +260,7 @@ public final class CompressFilterSettings
 
   /**
    * Enable or disable debug mode
-   * 
+   *
    * @param bDebugModeEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}

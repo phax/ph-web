@@ -27,7 +27,7 @@ import com.helger.commons.xml.serialize.XMLWriterSettings;
 
 /**
  * Contains the preferred charsets to be used for web stuff.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -55,7 +55,6 @@ public final class CWebCharset
   public static final Charset CHARSET_SMTP_OBJ = CCharset.CHARSET_UTF_8_OBJ;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final CWebCharset s_aInstance = new CWebCharset ();
 
   private CWebCharset ()

@@ -35,7 +35,7 @@ import com.helger.web.datetime.PDTWebDateUtils;
 
 /**
  * Contains the settings for the {@link ResponseHelper} class.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -71,7 +71,6 @@ public final class ResponseHelperSettings
   private static boolean s_bResponseDeflateEnabled = DEFAULT_RESPONSE_DERFLATE_ENABLED;
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final ResponseHelperSettings s_aInstance = new ResponseHelperSettings ();
 
   private ResponseHelperSettings ()
@@ -79,7 +78,7 @@ public final class ResponseHelperSettings
 
   /**
    * Enable or disable the overall compression.
-   * 
+   *
    * @param bResponseCompressionEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -122,7 +121,7 @@ public final class ResponseHelperSettings
   /**
    * Enable or disable Gzip compression. This only has an effect if
    * {@link #isResponseCompressionEnabled()} is <code>true</code>
-   * 
+   *
    * @param bResponseGzipEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -165,7 +164,7 @@ public final class ResponseHelperSettings
   /**
    * Enable or disable Deflate compression. This only has an effect if
    * {@link #isResponseCompressionEnabled()} is <code>true</code>
-   * 
+   *
    * @param bResponseDeflateEnabled
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
@@ -207,7 +206,7 @@ public final class ResponseHelperSettings
 
   /**
    * Set all parameters at once as an atomic transaction
-   * 
+   *
    * @param bResponseCompressionEnabled
    *        <code>true</code> to overall enable the usage
    * @param bResponseGzipEnabled
@@ -254,7 +253,7 @@ public final class ResponseHelperSettings
   /**
    * Set the default expiration settings to be used for objects that should use
    * HTTP caching
-   * 
+   *
    * @param nExpirationSeconds
    *        The number of seconds for which the response should be cached
    * @return {@link EChange}

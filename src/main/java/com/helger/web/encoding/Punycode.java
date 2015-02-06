@@ -30,7 +30,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Implementation of the Punycode encoding scheme used by IDNA
- * 
+ *
  * @author Apache Abdera
  */
 @Immutable
@@ -46,7 +46,6 @@ public final class Punycode
   private static final int DELIMITER = 0x2D; // 0x2D
 
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final Punycode s_aInstance = new Punycode ();
 
   private Punycode ()

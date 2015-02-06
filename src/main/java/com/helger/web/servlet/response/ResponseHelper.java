@@ -46,7 +46,6 @@ import com.helger.web.http.CHTTPHeader;
 public final class ResponseHelper
 {
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final ResponseHelper s_aInstance = new ResponseHelper ();
 
   private ResponseHelper ()

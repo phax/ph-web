@@ -38,7 +38,6 @@ public final class RhinoUtils
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RhinoUtils.class);
 
-  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final RhinoUtils s_aInstance = new RhinoUtils ();
 

@@ -23,14 +23,13 @@ import com.jcraft.jsch.JSch;
 
 /**
  * Initialize JSch with some suggested settings.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
 public final class JSchInit
 {
   @PresentForCodeCoverage
-  @SuppressWarnings ("unused")
   private static final JSchInit s_aInstance = new JSchInit ();
 
   private JSchInit ()

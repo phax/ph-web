@@ -18,10 +18,13 @@ package com.helger.web.servlet.response;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.Cookie;
 
 import com.helger.commons.ValueEnforcer;
@@ -35,15 +38,18 @@ import com.helger.web.http.HTTPHeaderMap;
 
 /**
  * This class encapsulates default settings to be applied to all
- * {@link UnifiedResponse}.
+ * {@link UnifiedResponse} objects.
  *
  * @author Philip Helger
  */
-@NotThreadSafe
+@ThreadSafe
 public class UnifiedResponseDefaultSettings
 {
+  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  @GuardedBy ("s_aRWLock")
   private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
-  private static Map <String, Cookie> s_aCookies = new LinkedHashMap <String, Cookie> ();
+  @GuardedBy ("s_aRWLock")
+  private static final Map <String, Cookie> s_aCookies = new LinkedHashMap <String, Cookie> ();
 
   private UnifiedResponseDefaultSettings ()
   {}
@@ -55,7 +61,15 @@ public class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static HTTPHeaderMap getResponseHeaderMap ()
   {
-    return s_aResponseHeaderMap.getClone ();
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_aResponseHeaderMap.getClone ();
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
   }
 
   /**
@@ -63,7 +77,15 @@ public class UnifiedResponseDefaultSettings
    */
   public static boolean hasCookies ()
   {
-    return ContainerHelper.isNotEmpty (s_aCookies);
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.isNotEmpty (s_aCookies);
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
   }
 
   /**
@@ -74,7 +96,15 @@ public class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static Map <String, Cookie> getAllCookies ()
   {
-    return ContainerHelper.newMap (s_aCookies);
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.newMap (s_aCookies);
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
   }
 
   public static void addCookie (@Nonnull final Cookie aCookie)
@@ -82,13 +112,47 @@ public class UnifiedResponseDefaultSettings
     ValueEnforcer.notNull (aCookie, "Cookie");
 
     final String sKey = aCookie.getName ();
-    s_aCookies.put (sKey, aCookie);
+
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_aCookies.put (sKey, aCookie);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
   }
 
   @Nonnull
   public static EChange removeCookie (@Nullable final String sName)
   {
-    return EChange.valueOf (s_aCookies.remove (sName) != null);
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      return EChange.valueOf (s_aCookies.remove (sName) != null);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  @Nonnull
+  public static EChange removeAllCookies ()
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      if (s_aCookies.isEmpty ())
+        return EChange.UNCHANGED;
+      s_aCookies.clear ();
+      return EChange.CHANGED;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
   }
 
   /**
@@ -104,9 +168,9 @@ public class UnifiedResponseDefaultSettings
   public static void setAllowMimeSniffing (final boolean bAllow)
   {
     if (bAllow)
-      s_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+      removeCustomResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     else
-      s_aResponseHeaderMap.addHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+      addCustomResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
   }
 
   /**
@@ -124,9 +188,9 @@ public class UnifiedResponseDefaultSettings
   public static void setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
-      s_aResponseHeaderMap.addHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+      addCustomResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
     else
-      s_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_XSS_PROTECTION);
+      removeCustomResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
   }
 
   /**
@@ -145,10 +209,9 @@ public class UnifiedResponseDefaultSettings
    */
   public static void setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
-    s_aResponseHeaderMap.addHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
-                                    new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds)
-                                                              .getAsHTTPHeaderValue () +
-                                        (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+    addCustomResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+                             new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
+                                 (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
   }
 
   /**
@@ -170,7 +233,15 @@ public class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
 
-    s_aResponseHeaderMap.addHeader (sName, sValue);
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_aResponseHeaderMap.addHeader (sName, sValue);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
   }
 
   /**
@@ -190,6 +261,14 @@ public class UnifiedResponseDefaultSettings
   {
     ValueEnforcer.notEmpty (sName, "Name");
 
-    return s_aResponseHeaderMap.removeHeaders (sName);
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      return s_aResponseHeaderMap.removeHeaders (sName);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
   }
 }

@@ -30,6 +30,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.joda.time.DateTime;
 
+import com.helger.commons.ICloneable;
 import com.helger.commons.IHasSize;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
@@ -47,12 +48,27 @@ import com.helger.web.datetime.PDTWebDateUtils;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, List <String>>>, Serializable
+public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, List <String>>>, ICloneable <HTTPHeaderMap>, Serializable
 {
   private final Map <String, List <String>> m_aHeaders = new LinkedHashMap <String, List <String>> ();
 
+  /**
+   * Default constructor.
+   */
   public HTTPHeaderMap ()
   {}
+
+  /**
+   * Copy constructor.
+   *
+   * @param aOther
+   *        Map to copy from. May not be <code>null</code>.
+   */
+  public HTTPHeaderMap (@Nonnull final HTTPHeaderMap aOther)
+  {
+    ValueEnforcer.notNull (aOther, "Other");
+    m_aHeaders.putAll (aOther.m_aHeaders);
+  }
 
   public void reset ()
   {
@@ -61,7 +77,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
 
   @Nonnull
   @ReturnsMutableCopy
-  private List <String> _getOrCreateHeaderList (final String sName)
+  private List <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
   {
     List <String> aValues = m_aHeaders.get (sName);
     if (aValues == null)
@@ -147,6 +163,15 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     _addHeader (sName, Integer.toString (nValue));
   }
 
+  public void addAllHeaders (@Nonnull final HTTPHeaderMap aOther)
+  {
+    ValueEnforcer.notNull (aOther, "Other");
+
+    for (final Map.Entry <String, List <String>> aEntry : aOther.m_aHeaders.entrySet ())
+      for (final String sValue : aEntry.getValue ())
+        _addHeader (aEntry.getKey (), sValue);
+  }
+
   @Nonnull
   @ReturnsMutableCopy
   public Map <String, List <String>> getAllHeaders ()
@@ -202,6 +227,13 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   public int size ()
   {
     return m_aHeaders.size ();
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public HTTPHeaderMap getClone ()
+  {
+    return new HTTPHeaderMap (this);
   }
 
   @Override

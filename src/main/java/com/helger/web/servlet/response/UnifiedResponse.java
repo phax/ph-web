@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,6 +42,7 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.GlobalDebug;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
@@ -91,13 +92,15 @@ public class UnifiedResponse
   public static final boolean DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE = false;
   /** Default content disposition type is Attachment */
   public static final EContentDispositionType DEFAULT_CONTENT_DISPOSITION_TYPE = EContentDispositionType.ATTACHMENT;
+  /** By default a warning is emitted on duplicate cookies */
+  public static final boolean DEFAULT_WARN_ON_DUPLICATE_COOKIES = true;
   /** Maximum KB a CSS file might have in IE */
   public static final int MAX_CSS_KB_FOR_IE = 288;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (UnifiedResponse.class);
   private static final AtomicInteger s_aRequestNum = new AtomicInteger (0);
 
-  // Input fields
+  // Input fields set from request
   private final EHTTPVersion m_eHTTPVersion;
   private final EHTTPMethod m_eHTTPMethod;
   private final HttpServletRequest m_aHttpRequest;
@@ -130,6 +133,7 @@ public class UnifiedResponse
   private int m_nStatusCode = CGlobal.ILLEGAL_UINT;
   private String m_sRedirectTargetUrl;
   private ERedirectMode m_eRedirectMode;
+  private boolean m_bWarnOnDuplicateCookies = DEFAULT_WARN_ON_DUPLICATE_COOKIES;
   private Map <String, Cookie> m_aCookies;
 
   // Internal status members
@@ -137,7 +141,7 @@ public class UnifiedResponse
    * Unique internal ID for each response, so that error messages can be more
    * easily aggregated.
    */
-  private final int m_nID = s_aRequestNum.incrementAndGet ();
+  private final int m_nResponseID = s_aRequestNum.incrementAndGet ();
 
   /**
    * The request URL, lazily initialized.
@@ -148,7 +152,7 @@ public class UnifiedResponse
    * Just avoid emitting the request headers more than once, as they wont change
    * from error to error.
    */
-  private boolean m_bEmittedRequestHeaders = false;
+  private boolean m_bAlreadyEmittedRequestHeaders = false;
 
   /** This maps keeps all the response headers for later emitting. */
   private final HTTPHeaderMap m_aRequestHeaderMap;
@@ -158,6 +162,13 @@ public class UnifiedResponse
    * filename can be ISO-8859-1 encoded.
    */
   private CharsetEncoder m_aContentDispositionEncoder;
+
+  @Nonnull
+  @ReturnsMutableCopy
+  private static Map <String, Cookie> _createCookieMap ()
+  {
+    return new LinkedHashMap <String, Cookie> ();
+  }
 
   /**
    * Constructor
@@ -190,15 +201,29 @@ public class UnifiedResponse
     m_aAcceptCharsetList = AcceptCharsetHandler.getAcceptCharsets (aHttpRequest);
     m_aAcceptMimeTypeList = AcceptMimeTypeHandler.getAcceptMimeTypes (aHttpRequest);
     m_aRequestHeaderMap = RequestHelper.getRequestHeaderMap (aHttpRequest);
+    // Copy all default settings
+    m_aResponseHeaderMap.addAllHeaders (UnifiedResponseDefaultSettings.getResponseHeaderMap ());
+    if (UnifiedResponseDefaultSettings.hasCookies ())
+    {
+      m_aCookies = _createCookieMap ();
+      m_aCookies.putAll (UnifiedResponseDefaultSettings.getAllCookies ());
+    }
+  }
+
+  @Nonnull
+  @Nonempty
+  private String _getRequestURL ()
+  {
+    if (m_sRequestURL == null)
+      m_sRequestURL = RequestHelper.getURL (m_aHttpRequest);
+    return m_sRequestURL;
   }
 
   @Nonnull
   @Nonempty
   private String _getPrefix ()
   {
-    if (m_sRequestURL == null)
-      m_sRequestURL = RequestHelper.getURL (m_aHttpRequest);
-    return "UnifiedResponse[" + m_nID + "] to [" + m_sRequestURL + "]: ";
+    return "UnifiedResponse[" + m_nResponseID + "] to [" + _getRequestURL () + "]: ";
   }
 
   private void _info (@Nonnull final String sMsg)
@@ -208,14 +233,14 @@ public class UnifiedResponse
 
   private void _showRequestInfo ()
   {
-    if (!m_bEmittedRequestHeaders)
+    if (!m_bAlreadyEmittedRequestHeaders)
     {
       s_aLogger.warn ("  Request Headers: " +
                       ContainerHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap)));
       if (!m_aResponseHeaderMap.isEmpty ())
         s_aLogger.warn ("  Response Headers: " +
                         ContainerHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)));
-      m_bEmittedRequestHeaders = true;
+      m_bAlreadyEmittedRequestHeaders = true;
     }
   }
 
@@ -631,6 +656,15 @@ public class UnifiedResponse
   }
 
   /**
+   * @return The non-<code>null</code> header map.
+   */
+  @Nonnull
+  protected HTTPHeaderMap getResponseHeaderMap ()
+  {
+    return m_aResponseHeaderMap;
+  }
+
+  /**
    * A utility method that disables caching for this response.
    *
    * @return this
@@ -789,6 +823,37 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * @return <code>true</code> if warning on duplicated cookies is enabled,
+   *         <code>false</code> if it is disabled.
+   */
+  public boolean isWarnOnDuplicateCookies ()
+  {
+    return m_bWarnOnDuplicateCookies;
+  }
+
+  /**
+   * Enable or disable warning message on duplicated cookie names.
+   *
+   * @param bWarnOnDuplicateCookies
+   *        <code>true</code> to enable warnings, <code>false</code> to disable
+   *        them.
+   * @return this
+   */
+  @Nonnull
+  public UnifiedResponse setWarnOnDuplicateCookies (final boolean bWarnOnDuplicateCookies)
+  {
+    m_bWarnOnDuplicateCookies = bWarnOnDuplicateCookies;
+    return this;
+  }
+
+  /**
+   * Add the passed cookie.
+   *
+   * @param aCookie
+   *        The cookie to be added. May not be <code>null</code>.
+   * @return this
+   */
   @Nonnull
   public UnifiedResponse addCookie (@Nonnull final Cookie aCookie)
   {
@@ -796,20 +861,48 @@ public class UnifiedResponse
 
     final String sKey = aCookie.getName ();
     if (m_aCookies == null)
-      m_aCookies = new HashMap <String, Cookie> ();
+      m_aCookies = _createCookieMap ();
     else
-      if (m_aCookies.containsKey (sKey))
+    {
+      if (m_bWarnOnDuplicateCookies && m_aCookies.containsKey (sKey))
         _warn ("Overwriting cookie '" + sKey + "' with the new value '" + aCookie.getValue () + "'");
+    }
     m_aCookies.put (sKey, aCookie);
     return this;
   }
 
+  /**
+   * Remove the cookie with the specified name.
+   *
+   * @param sName
+   *        The name of the cookie to be removed. May be <code>null</code>.
+   * @return this
+   */
   @Nonnull
   public UnifiedResponse removeCookie (@Nullable final String sName)
   {
     if (m_aCookies != null)
       m_aCookies.remove (sName);
     return this;
+  }
+
+  /**
+   * @return <code>true</code> if at least one cookie is present.
+   */
+  public boolean hasCookies ()
+  {
+    return ContainerHelper.isNotEmpty (m_aCookies);
+  }
+
+  /**
+   * @return A copy of all contained cookies. Never <code>null</code> but maybe
+   *         empty.
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  protected Map <String, Cookie> getAllCookies ()
+  {
+    return ContainerHelper.newMap (m_aCookies);
   }
 
   /**
@@ -830,6 +923,54 @@ public class UnifiedResponse
       m_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     else
       m_aResponseHeaderMap.addHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+    return this;
+  }
+
+  /**
+   * This header enables the Cross-site scripting (XSS) filter built into most
+   * recent web browsers. It's usually enabled by default anyway, so the role of
+   * this header is to re-enable the filter for this particular website if it
+   * was disabled by the user. This header is supported in IE 8+, and in Chrome
+   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
+   * unknown if that version honored this header.
+   *
+   * @param bEnable
+   *        <code>true</code> to enable the header, <code>false</code> to
+   *        disable it.
+   * @return this
+   */
+  @Nonnull
+  public UnifiedResponse setEnableXSSFilter (final boolean bEnable)
+  {
+    if (bEnable)
+      m_aResponseHeaderMap.addHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+    else
+      m_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_XSS_PROTECTION);
+    return this;
+  }
+
+  /**
+   * When specifying <code>false</code>, this method uses a special response
+   * header to prevent certain browsers from MIME-sniffing a response away from
+   * the declared content-type. When passing <code>true</code>, that header is
+   * removed.
+   *
+   * @param nMaxAgeSeconds
+   *        number of seconds, after the reception of the STS header field,
+   *        during which the UA regards the host (from whom the message was
+   *        received) as a Known HSTS Host.
+   * @param bIncludeSubdomains
+   *        if enabled, this signals the UA that the HSTS Policy applies to this
+   *        HSTS Host as well as any sub-domains of the host's domain name.
+   * @return this
+   */
+  @Nonnull
+  public UnifiedResponse setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
+  {
+    m_aResponseHeaderMap.addHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+                                    new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds)
+                                                              .getAsHTTPHeaderValue () +
+                                        (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
     return this;
   }
 
@@ -870,31 +1011,6 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sName, "Name");
 
     return m_aResponseHeaderMap.removeHeaders (sName);
-  }
-
-  /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
-   *
-   * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
-   * @param bIncludeSubdomains
-   *        if enabled, this signals the UA that the HSTS Policy applies to this
-   *        HSTS Host as well as any sub-domains of the host's domain name.
-   * @return this
-   */
-  @Nonnull
-  public UnifiedResponse setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
-  {
-    m_aResponseHeaderMap.addHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
-                                    new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds)
-                                                              .getAsHTTPHeaderValue () +
-                                        (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDMOAINS : ""));
-    return this;
   }
 
   private void _verifyCachingIntegrity ()
@@ -967,6 +1083,114 @@ public class UnifiedResponse
       aSB.append (aEntry.getKey ()).append ('=').append (aEntry.getValue ().getQuality ());
     }
     return aSB.append ("}").toString ();
+  }
+
+  private void _applyLengthChecks (final long nContentLength)
+  {
+    // Source:
+    // http://joshua.perina.com/africa/gambia/fajara/post/internet-explorer-css-file-size-limit
+    if (m_aMimeType != null &&
+        m_aMimeType.equals (CMimeType.TEXT_CSS) &&
+        nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
+    {
+      _warn ("Internet Explorer has problems handling CSS files > " +
+             MAX_CSS_KB_FOR_IE +
+             "KB and this one has " +
+             nContentLength +
+             " bytes!");
+    }
+  }
+
+  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
+  {
+    if (m_aContent != null)
+    {
+      // We're having a fixed byte array of content
+      final int nContentLength = m_aContent.length;
+
+      // Determine the response stream type to use
+      final EResponseStreamType eResponseStreamType = ResponseHelper.getBestSuitableOutputStreamType (m_aHttpRequest);
+      if (eResponseStreamType.isUncompressed ())
+      {
+        // Must be set before the content itself arrives
+        // Note: Set it only if the content is uncompressed, because we cannot
+        // determine the length of the compressed text in advance without
+        // computational overhead
+        ResponseHelper.setContentLength (aHttpResponse, nContentLength);
+      }
+
+      // Don't emit empty content or content for HEAD method
+      if (nContentLength > 0 && m_eHTTPMethod.isContentAllowed ())
+      {
+        // Create the correct stream
+        final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse);
+
+        // Emit main content to stream
+        aOS.write (m_aContent, 0, nContentLength);
+        aOS.flush ();
+        aOS.close ();
+
+        _applyLengthChecks (nContentLength);
+      }
+      // Don't send 204, as this is most likely not handled correctly on the
+      // client side
+    }
+    else
+      if (m_aContentISP != null)
+      {
+        // We have a dynamic content input stream
+        // -> no content length can be determined!
+        final InputStream aContentIS = m_aContentISP.getInputStream ();
+        if (aContentIS == null)
+        {
+          s_aLogger.error ("Failed to open input stream from " + m_aContentISP);
+
+          // Handle it gracefully with a 404 and not with a 500
+          aHttpResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);
+        }
+        else
+        {
+          // Don't emit content for HEAD method
+          if (m_eHTTPMethod.isContentAllowed ())
+          {
+            // We do have an input stream
+            // -> copy it to the response
+            final OutputStream aOS = aHttpResponse.getOutputStream ();
+            final MutableLong aByteCount = new MutableLong ();
+
+            if (StreamUtils.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
+            {
+              // Copying succeeded
+              final long nBytesCopied = aByteCount.longValue ();
+
+              // Don't apply additional Content-Length header after the resource
+              // was streamed!
+              _applyLengthChecks (nBytesCopied);
+            }
+            else
+            {
+              // Copying failed -> this is a 500
+              final boolean bResponseCommitted = aHttpResponse.isCommitted ();
+              _error ("Copying from " +
+                      m_aContentISP +
+                      " failed after " +
+                      aByteCount.longValue () +
+                      " bytes! Response is committed: " +
+                      bResponseCommitted);
+
+              if (!bResponseCommitted)
+                aHttpResponse.sendError (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+          }
+        }
+      }
+      else
+      {
+        // Set status 204 - no content; this is most likely a programming
+        // error
+        aHttpResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
+        _warn ("No content present for the response");
+      }
   }
 
   public void applyToResponse (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
@@ -1226,119 +1450,5 @@ public class UnifiedResponse
 
     // Write the body to the response
     _applyContent (aHttpResponse);
-  }
-
-  @Nonnull
-  protected HTTPHeaderMap getResponseHeaderMap ()
-  {
-    return m_aResponseHeaderMap;
-  }
-
-  private void _applyLengthChecks (final long nContentLength)
-  {
-    // Source:
-    // http://joshua.perina.com/africa/gambia/fajara/post/internet-explorer-css-file-size-limit
-    if (m_aMimeType != null &&
-        m_aMimeType.equals (CMimeType.TEXT_CSS) &&
-        nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
-    {
-      _warn ("Internet Explorer has problems handling CSS files > " +
-             MAX_CSS_KB_FOR_IE +
-             "KB and this one has " +
-             nContentLength +
-             " bytes!");
-    }
-  }
-
-  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
-  {
-    if (m_aContent != null)
-    {
-      // We're having a fixed byte array of content
-      final int nContentLength = m_aContent.length;
-
-      // Determine the response stream type to use
-      final EResponseStreamType eResponseStreamType = ResponseHelper.getBestSuitableOutputStreamType (m_aHttpRequest);
-      if (eResponseStreamType.isUncompressed ())
-      {
-        // Must be set before the content itself arrives
-        // Note: Set it only if the content is uncompressed, because we cannot
-        // determine the length of the compressed text in advance without
-        // computational overhead
-        ResponseHelper.setContentLength (aHttpResponse, nContentLength);
-      }
-
-      // Don't emit empty content or content for HEAD method
-      if (nContentLength > 0 && m_eHTTPMethod.isContentAllowed ())
-      {
-        // Create the correct stream
-        final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse);
-
-        // Emit main content to stream
-        aOS.write (m_aContent, 0, nContentLength);
-        aOS.flush ();
-        aOS.close ();
-
-        _applyLengthChecks (nContentLength);
-      }
-      // Don't send 204, as this is most likely not handled correctly on the
-      // client side
-    }
-    else
-      if (m_aContentISP != null)
-      {
-        // We have a dynamic content input stream
-        // -> no content length can be determined!
-        final InputStream aContentIS = m_aContentISP.getInputStream ();
-        if (aContentIS == null)
-        {
-          s_aLogger.error ("Failed to open input stream from " + m_aContentISP);
-
-          // Handle it gracefully with a 404 and not with a 500
-          aHttpResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);
-        }
-        else
-        {
-          // Don't emit content for HEAD method
-          if (m_eHTTPMethod.isContentAllowed ())
-          {
-            // We do have an input stream
-            // -> copy it to the response
-            final OutputStream aOS = aHttpResponse.getOutputStream ();
-            final MutableLong aByteCount = new MutableLong ();
-
-            if (StreamUtils.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
-            {
-              // Copying succeeded
-              final long nBytesCopied = aByteCount.longValue ();
-
-              // Don't apply additional Content-Length header after the resource
-              // was streamed!
-              _applyLengthChecks (nBytesCopied);
-            }
-            else
-            {
-              // Copying failed -> this is a 500
-              final boolean bResponseCommitted = aHttpResponse.isCommitted ();
-              _error ("Copying from " +
-                      m_aContentISP +
-                      " failed after " +
-                      aByteCount.longValue () +
-                      " bytes! Response is committed: " +
-                      bResponseCommitted);
-
-              if (!bResponseCommitted)
-                aHttpResponse.sendError (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-          }
-        }
-      }
-      else
-      {
-        // Set status 204 - no content; this is most likely a programming
-        // error
-        aHttpResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
-        _warn ("No content present for the response");
-      }
   }
 }

@@ -63,6 +63,21 @@ public final class CHTTPHeader
   public static final String STRICT_TRANSPORT_SECURITY = "Strict-Transport-Security";
   /**
    * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * e.g. X-Frame-Options: deny
+   */
+  public static final String X_FRAME_OPTIONS = "X-Frame-Options";
+  /**
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * e.g. Frame-Options: deny
+   */
+  public static final String FRAME_OPTIONS = "Frame-Options";
+  /**
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * e.g. X-XSS-Protection: 1; mode=block
+   */
+  public static final String X_XSS_PROTECTION = "X-XSS-Protection";
+  /**
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
    * e.g. X-Content-Type-Options: nosniff
    */
   public static final String X_CONTENT_TYPE_OPTIONS = "X-Content-Type-Options";
@@ -104,10 +119,18 @@ public final class CHTTPHeader
 
   // CSP
   public static final String CONTENT_SECURITY_POLICY = "Content-Security-Policy";
+  public static final String X_CONTENT_SECURITY_POLICY = "X-Content-Security-Policy";
+  public static final String X_WEBKIT_CSP = "X-WebKit-CSP";
   public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "Content-Security-Policy-Report-Only";
 
+  // Special values
+  public static final String VALUE_ALLOW_FROM = "ALLOW-FROM";
+  public static final String VALUE_DENY = "DENY";
+  public static final String VALUE_INCLUDE_SUBDOMAINS = "includeSubDomains";
+  @Deprecated
+  public static final String VALUE_INCLUDE_SUBDMOAINS = VALUE_INCLUDE_SUBDOMAINS;
   public static final String VALUE_NOSNIFF = "nosniff";
-  public static final String VALUE_INCLUDE_SUBDMOAINS = "includeSubDomains";
+  public static final String VALUE_SAMEORIGIN = "SAMEORIGIN";
 
   @PresentForCodeCoverage
   private static final CHTTPHeader s_aInstance = new CHTTPHeader ();

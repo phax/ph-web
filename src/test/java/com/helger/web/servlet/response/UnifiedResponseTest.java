@@ -30,7 +30,7 @@ import com.helger.web.mock.MockHttpServletRequest;
 
 /**
  * Test class for class {@link UnifiedResponse}.
- * 
+ *
  * @author Boris Gregorcic
  */
 public class UnifiedResponseTest
@@ -47,7 +47,7 @@ public class UnifiedResponseTest
     final List <String> aValues = aResponse.getResponseHeaderMap ()
                                            .getHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
     Assert.assertEquals (1, aValues.size ());
-    Assert.assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHTTPHeader.VALUE_INCLUDE_SUBDMOAINS, aValues.get (0));
+    Assert.assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
   }
 
   @Test

@@ -41,6 +41,7 @@ import com.helger.web.http.HTTPHeaderMap;
  * {@link UnifiedResponse} objects.
  *
  * @author Philip Helger
+ * @since 6.0.5
  */
 @ThreadSafe
 public class UnifiedResponseDefaultSettings
@@ -194,10 +195,7 @@ public class UnifiedResponseDefaultSettings
     s_aRWLock.writeLock ().lock ();
     try
     {
-      if (s_aResponseHeaderMap.isEmpty ())
-        return EChange.UNCHANGED;
-      s_aResponseHeaderMap.reset ();
-      return EChange.CHANGED;
+      return s_aResponseHeaderMap.clear ();
     }
     finally
     {

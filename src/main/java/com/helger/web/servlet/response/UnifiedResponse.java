@@ -92,7 +92,11 @@ public class UnifiedResponse
   public static final boolean DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE = false;
   /** Default content disposition type is Attachment */
   public static final EContentDispositionType DEFAULT_CONTENT_DISPOSITION_TYPE = EContentDispositionType.ATTACHMENT;
-  /** By default a warning is emitted on duplicate cookies */
+  /**
+   * By default a warning is emitted on duplicate cookies
+   *
+   * @since 6.0.5
+   */
   public static final boolean DEFAULT_WARN_ON_DUPLICATE_COOKIES = true;
   /** Maximum KB a CSS file might have in IE */
   public static final int MAX_CSS_KB_FOR_IE = 288;
@@ -828,6 +832,7 @@ public class UnifiedResponse
   /**
    * @return <code>true</code> if warning on duplicated cookies is enabled,
    *         <code>false</code> if it is disabled.
+   * @since 6.0.5
    */
   public boolean isWarnOnDuplicateCookies ()
   {
@@ -841,6 +846,7 @@ public class UnifiedResponse
    *        <code>true</code> to enable warnings, <code>false</code> to disable
    *        them.
    * @return this
+   * @since 6.0.5
    */
   @Nonnull
   public UnifiedResponse setWarnOnDuplicateCookies (final boolean bWarnOnDuplicateCookies)
@@ -892,6 +898,7 @@ public class UnifiedResponse
    * Remove all cookies.
    *
    * @return {@link EChange#CHANGED} if at least one cookie was removed.
+   * @since 6.0.5
    */
   @Nonnull
   public EChange removeAllCookies ()
@@ -904,6 +911,7 @@ public class UnifiedResponse
 
   /**
    * @return <code>true</code> if at least one cookie is present.
+   * @since 6.0.5
    */
   public boolean hasCookies ()
   {
@@ -913,6 +921,7 @@ public class UnifiedResponse
   /**
    * @return A copy of all contained cookies. Never <code>null</code> but maybe
    *         empty.
+   * @since 6.0.5
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -954,6 +963,7 @@ public class UnifiedResponse
    *        <code>true</code> to enable the header, <code>false</code> to
    *        disable it.
    * @return this
+   * @since 6.0.5
    */
   @Nonnull
   public UnifiedResponse setEnableXSSFilter (final boolean bEnable)
@@ -1038,7 +1048,7 @@ public class UnifiedResponse
     final boolean bETag = m_aResponseHeaderMap.containsHeaders (CHTTPHeader.ETAG);
 
     if (bExpires && bIsHttp11)
-      _info ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getHeaderValues (CHTTPHeader.EXPIRES));
+      _info ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getAllHeaderValues (CHTTPHeader.EXPIRES));
 
     if (bExpires && bCacheControl)
       _warn ("Expires and Cache-Control are both present. Cache-Control takes precedence!");

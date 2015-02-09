@@ -29,12 +29,15 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import com.helger.commons.ICloneable;
 import com.helger.commons.IHasSize;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotations.ReturnsMutableObject;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
@@ -63,6 +66,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    *
    * @param aOther
    *        Map to copy from. May not be <code>null</code>.
+   * @since 6.0.5
    */
   public HTTPHeaderMap (@Nonnull final HTTPHeaderMap aOther)
   {
@@ -70,13 +74,29 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     m_aHeaders.putAll (aOther.m_aHeaders);
   }
 
+  @Deprecated
   public void reset ()
   {
+    clear ();
+  }
+
+  /**
+   * Remove all contained headers.
+   *
+   * @return {@link EChange}.
+   * @since 6.0.5
+   */
+  @Nonnull
+  public EChange clear ()
+  {
+    if (m_aHeaders.isEmpty ())
+      return EChange.UNCHANGED;
     m_aHeaders.clear ();
+    return EChange.CHANGED;
   }
 
   @Nonnull
-  @ReturnsMutableCopy
+  @ReturnsMutableObject (reason = "design")
   private List <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
   {
     List <String> aValues = m_aHeaders.get (sName);
@@ -119,50 +139,209 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   @Nonnull
   public static String getDateTimeAsString (@Nonnull final DateTime aDT)
   {
+    ValueEnforcer.notNull (aDT, "DateTime");
+
     // This method internally converts the date to UTC
     return PDTWebDateUtils.getAsStringRFC822 (aDT);
   }
 
+  /**
+   * Set the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nMillis
+   *        The milliseconds to set as a date.
+   */
   public void setDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    _setHeader (sName, getDateTimeAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
+    setDateHeader (sName, PDTFactory.createDateTimeFromMillis (nMillis));
   }
 
+  /**
+   * Set the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aLD
+   *        The LocalDate to set as a date. The time is set to start of day. May
+   *        not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDate aLD)
+  {
+    setDateHeader (sName, PDTFactory.createDateTime (aLD));
+  }
+
+  /**
+   * Set the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aLDT
+   *        The LocalDateTime to set as a date. May not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDateTime aLDT)
+  {
+    setDateHeader (sName, PDTFactory.createDateTime (aLDT));
+  }
+
+  /**
+   * Set the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aDT
+   *        The DateTime to set as a date. May not be <code>null</code>.
+   */
   public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
   {
     _setHeader (sName, getDateTimeAsString (aDT));
   }
 
+  /**
+   * Add the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nMillis
+   *        The milliseconds to set as a date.
+   */
   public void addDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    _addHeader (sName, getDateTimeAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
+    addDateHeader (sName, PDTFactory.createDateTimeFromMillis (nMillis));
   }
 
+  /**
+   * Add the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aLD
+   *        The LocalDate to set as a date. The time is set to start of day. May
+   *        not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDate aLD)
+  {
+    addDateHeader (sName, PDTFactory.createDateTime (aLD));
+  }
+
+  /**
+   * Add the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aLDT
+   *        The LocalDateTime to set as a date. May not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDateTime aLDT)
+  {
+    addDateHeader (sName, PDTFactory.createDateTime (aLDT));
+  }
+
+  /**
+   * Add the passed header as a date header.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param aDT
+   *        The DateTime to set as a date. May not be <code>null</code>.
+   */
   public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
   {
     _addHeader (sName, getDateTimeAsString (aDT));
   }
 
+  /**
+   * Set the passed header as is.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param sValue
+   *        The value to be set. May not be <code>null</code>.
+   */
   public void setHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
   {
     _setHeader (sName, sValue);
   }
 
+  /**
+   * Add the passed header as is.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param sValue
+   *        The value to be set. May not be <code>null</code>.
+   */
   public void addHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
   {
     _addHeader (sName, sValue);
   }
 
+  /**
+   * Set the passed header as a number.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nValue
+   *        The value to be set. May not be <code>null</code>.
+   */
   public void setIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
   {
     _setHeader (sName, Integer.toString (nValue));
   }
 
+  /**
+   * Add the passed header as a number.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nValue
+   *        The value to be set. May not be <code>null</code>.
+   */
   public void addIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
   {
     _addHeader (sName, Integer.toString (nValue));
   }
 
+  /**
+   * Set the passed header as a number.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nValue
+   *        The value to be set. May not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void setLongHeader (@Nonnull @Nonempty final String sName, final long nValue)
+  {
+    _setHeader (sName, Long.toString (nValue));
+  }
+
+  /**
+   * Add the passed header as a number.
+   *
+   * @param sName
+   *        Header name. May neither be <code>null</code> nor empty.
+   * @param nValue
+   *        The value to be set. May not be <code>null</code>.
+   * @since 6.0.5
+   */
+  public void addLongHeader (@Nonnull @Nonempty final String sName, final long nValue)
+  {
+    _addHeader (sName, Long.toString (nValue));
+  }
+
+  /**
+   * Add all headers from the passed map.
+   *
+   * @param aOther
+   *        The header map to add. May not be <code>null</code>.
+   * @since 6.0.5
+   */
   public void addAllHeaders (@Nonnull final HTTPHeaderMap aOther)
   {
     ValueEnforcer.notNull (aOther, "Other");
@@ -179,16 +358,68 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     return ContainerHelper.newOrderedMap (m_aHeaders);
   }
 
+  /**
+   * Get all header values doing a case sensitive match
+   *
+   * @param sName
+   *        The name to be searched.
+   * @return The list with all matching values. Never <code>null</code> but
+   *         maybe empty.
+   * @deprecated Use {@link #getAllHeaderValues(String)} instead
+   */
+  @Deprecated
   @Nonnull
   @ReturnsMutableCopy
   public List <String> getHeaderValues (@Nullable final String sName)
   {
+    return getAllHeaderValues (sName);
+  }
+
+  /**
+   * Get all header values doing a case sensitive match
+   *
+   * @param sName
+   *        The name to be searched.
+   * @return The list with all matching values. Never <code>null</code> but
+   *         maybe empty.
+   * @since 6.0.5
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <String> getAllHeaderValues (@Nullable final String sName)
+  {
     return ContainerHelper.newList (m_aHeaders.get (sName));
   }
 
+  /**
+   * Get all header values doing a case insensitive match
+   *
+   * @param sName
+   *        The name to be searched.
+   * @return The list with all matching values. Never <code>null</code> but
+   *         maybe empty.
+   * @deprecated Use {@link #getAllHeaderValuesCaseInsensitive(String)} instead
+   */
+  @Deprecated
   @Nonnull
   @ReturnsMutableCopy
   public List <String> getHeaderValuesCaseInsensitive (@Nullable final String sName)
+  {
+    return getAllHeaderValuesCaseInsensitive (sName);
+  }
+
+  /**
+   * Get all header values doing a case insensitive match
+   *
+   * @param sName
+   *        The name to be searched.
+   * @return The list with all matching values. Never <code>null</code> but
+   *         maybe empty.
+   * @since 6.0.5
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <String> getAllHeaderValuesCaseInsensitive (@Nullable final String sName)
   {
     final List <String> ret = new ArrayList <String> ();
     if (StringHelper.hasText (sName))
@@ -204,6 +435,15 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   public boolean containsHeaders (@Nullable final String sName)
   {
     return m_aHeaders.containsKey (sName);
+  }
+
+  public boolean containsHeadersCaseInsensitive (@Nullable final String sName)
+  {
+    if (StringHelper.hasText (sName))
+      for (final String sHeaderName : m_aHeaders.keySet ())
+        if (sName.equalsIgnoreCase (sHeaderName))
+          return true;
+    return false;
   }
 
   @Nonnull
@@ -229,6 +469,9 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     return m_aHeaders.size ();
   }
 
+  /**
+   * @since 6.0.5
+   */
   @Nonnull
   @ReturnsMutableCopy
   public HTTPHeaderMap getClone ()

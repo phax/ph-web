@@ -29,7 +29,7 @@ import com.helger.web.http.HTTPHeaderMap;
 /**
  * A special {@link HttpServletResponseWrapper} that tracks the used status
  * codes as well as the set HTTP response headers.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -93,7 +93,7 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   public void reset ()
   {
     super.reset ();
-    m_aHeaderMap.reset ();
+    m_aHeaderMap.clear ();
   }
 
   @Override

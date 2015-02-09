@@ -45,7 +45,7 @@ public class UnifiedResponseTest
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
     Assert.assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY));
     final List <String> aValues = aResponse.getResponseHeaderMap ()
-                                           .getHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
+                                           .getAllHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
     Assert.assertEquals (1, aValues.size ());
     Assert.assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
   }
@@ -60,7 +60,7 @@ public class UnifiedResponseTest
     aResponse.setAllowMimeSniffing (false);
     Assert.assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
     final List <String> aValues = aResponse.getResponseHeaderMap ()
-                                           .getHeaderValues (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+                                           .getAllHeaderValues (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     Assert.assertEquals (1, aValues.size ());
     Assert.assertEquals (CHTTPHeader.VALUE_NOSNIFF, aValues.get (0));
   }
@@ -76,14 +76,14 @@ public class UnifiedResponseTest
     {
       aResponse.addCustomResponseHeader (sName, sValue);
       assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final List <String> aValues = aResponse.getResponseHeaderMap ().getHeaderValues (sName);
+      final List <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (1, aValues.size ());
       assertEquals (sValue, aValues.get (0));
     }
     {
       aResponse.addCustomResponseHeader (sName, sValue2);
       assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final List <String> aValues = aResponse.getResponseHeaderMap ().getHeaderValues (sName);
+      final List <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (2, aValues.size ());
       assertEquals (sValue, aValues.get (0));
       assertEquals (sValue2, aValues.get (1));

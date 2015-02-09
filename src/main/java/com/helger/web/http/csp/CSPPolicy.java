@@ -24,11 +24,14 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.IHasStringRepresentation;
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.string.ToStringGenerator;
 
 /**
- * CSP policy. See http://www.w3.org/TR/CSP/
- * 
+ * CSP 1.0 policy. See http://www.w3.org/TR/CSP/
+ *
  * @author Philip Helger
+ * @since 6.0.3
  */
 public class CSPPolicy implements IHasStringRepresentation
 {
@@ -62,5 +65,29 @@ public class CSPPolicy implements IHasStringRepresentation
       aSB.append (aDirective.getAsString ());
     }
     return aSB.toString ();
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final CSPPolicy rhs = (CSPPolicy) o;
+    return m_aList.equals (rhs.m_aList);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_aList).getHashCode ();
+  }
+
+  @Override
+  @Nonnull
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("list", m_aList).toString ();
   }
 }

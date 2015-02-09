@@ -25,9 +25,17 @@ import javax.annotation.Nonnull;
 import com.helger.commons.IHasStringRepresentation;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 
+/**
+ * A source list to be used in a CSP 1.0 directive.
+ *
+ * @author Philip Helger
+ * @since 6.0.3
+ */
 public class CSPSourceList implements IHasStringRepresentation
 {
   public static final String KEYWORD_SELF = "'self'";
@@ -140,5 +148,29 @@ public class CSPSourceList implements IHasStringRepresentation
   public String getAsString ()
   {
     return StringHelper.getImploded (' ', m_aList);
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final CSPSourceList rhs = (CSPSourceList) o;
+    return m_aList.equals (rhs.m_aList);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_aList).getHashCode ();
+  }
+
+  @Override
+  @Nonnull
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("list", m_aList).toString ();
   }
 }

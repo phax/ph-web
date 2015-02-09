@@ -22,10 +22,18 @@ import javax.annotation.Nullable;
 import com.helger.commons.IHasStringRepresentation;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.equals.EqualsUtils;
+import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.name.IHasName;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
+/**
+ * A single CSP 1.0 directive.
+ *
+ * @author Philip Helger
+ * @since 6.0.3
+ */
 public final class CSPDirective implements IHasName, IHasStringRepresentation
 {
   private final String m_sName;
@@ -43,9 +51,9 @@ public final class CSPDirective implements IHasName, IHasStringRepresentation
     if (StringHelper.hasText (sValue))
     {
       if (sValue.indexOf (',') >= 0)
-        throw new IllegalArgumentException ("Value may not contain a comma (,)");
+        throw new IllegalArgumentException ("Value may not contain a comma (,): " + sValue);
       if (sValue.indexOf (';') >= 0)
-        throw new IllegalArgumentException ("Value may not contain a semicolon (;)");
+        throw new IllegalArgumentException ("Value may not contain a semicolon (;): " + sValue);
     }
   }
 
@@ -72,6 +80,23 @@ public final class CSPDirective implements IHasName, IHasStringRepresentation
   public String getAsString ()
   {
     return StringHelper.getConcatenatedOnDemand (m_sName, " ", m_sValue);
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final CSPDirective rhs = (CSPDirective) o;
+    return m_sName.equals (rhs.m_sName) && EqualsUtils.equals (m_sValue, rhs.m_sValue);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_sName).append (m_sValue).getHashCode ();
   }
 
   @Override
@@ -151,7 +176,7 @@ public final class CSPDirective implements IHasName, IHasStringRepresentation
   /**
    * he report-uri directive specifies a URI to which the user agent sends
    * reports about policy violation.
-   * 
+   *
    * @param sValue
    *        Report URI
    * @return new directive

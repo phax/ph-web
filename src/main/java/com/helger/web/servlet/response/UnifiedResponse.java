@@ -201,6 +201,7 @@ public class UnifiedResponse
     m_aAcceptCharsetList = AcceptCharsetHandler.getAcceptCharsets (aHttpRequest);
     m_aAcceptMimeTypeList = AcceptMimeTypeHandler.getAcceptMimeTypes (aHttpRequest);
     m_aRequestHeaderMap = RequestHelper.getRequestHeaderMap (aHttpRequest);
+
     // Copy all default settings
     m_aResponseHeaderMap.addAllHeaders (UnifiedResponseDefaultSettings.getResponseHeaderMap ());
     if (UnifiedResponseDefaultSettings.hasCookies ())
@@ -221,14 +222,14 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private String _getPrefix ()
+  private String _getLogPrefix ()
   {
     return "UnifiedResponse[" + m_nResponseID + "] to [" + _getRequestURL () + "]: ";
   }
 
   private void _info (@Nonnull final String sMsg)
   {
-    s_aLogger.info (_getPrefix () + sMsg);
+    s_aLogger.info (_getLogPrefix () + sMsg);
   }
 
   private void _showRequestInfo ()
@@ -246,13 +247,13 @@ public class UnifiedResponse
 
   private void _warn (@Nonnull final String sMsg)
   {
-    s_aLogger.warn (_getPrefix () + sMsg);
+    s_aLogger.warn (_getLogPrefix () + sMsg);
     _showRequestInfo ();
   }
 
   private void _error (@Nonnull final String sMsg)
   {
-    s_aLogger.error (_getPrefix () + sMsg);
+    s_aLogger.error (_getLogPrefix () + sMsg);
     _showRequestInfo ();
   }
 
@@ -884,6 +885,20 @@ public class UnifiedResponse
     if (m_aCookies != null)
       m_aCookies.remove (sName);
     return this;
+  }
+
+  /**
+   * Remove all cookies.
+   *
+   * @return {@link EChange#CHANGED} if at least one cookie was removed.
+   */
+  @Nonnull
+  public EChange removeAllCookies ()
+  {
+    if (m_aCookies == null || m_aCookies.isEmpty ())
+      return EChange.UNCHANGED;
+    m_aCookies.clear ();
+    return EChange.CHANGED;
   }
 
   /**

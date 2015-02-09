@@ -117,7 +117,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   }
 
   @Nonnull
-  private static String _getAsString (@Nonnull final DateTime aDT)
+  public static String getDateTimeAsString (@Nonnull final DateTime aDT)
   {
     // This method internally converts the date to UTC
     return PDTWebDateUtils.getAsStringRFC822 (aDT);
@@ -125,22 +125,22 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
 
   public void setDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    _setHeader (sName, _getAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
+    _setHeader (sName, getDateTimeAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
   }
 
   public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
   {
-    _setHeader (sName, _getAsString (aDT));
+    _setHeader (sName, getDateTimeAsString (aDT));
   }
 
   public void addDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    _addHeader (sName, _getAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
+    _addHeader (sName, getDateTimeAsString (PDTFactory.createDateTimeFromMillis (nMillis)));
   }
 
   public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
   {
-    _addHeader (sName, _getAsString (aDT));
+    _addHeader (sName, getDateTimeAsString (aDT));
   }
 
   public void setHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)

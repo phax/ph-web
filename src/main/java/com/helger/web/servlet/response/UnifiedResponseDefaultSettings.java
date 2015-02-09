@@ -73,6 +73,139 @@ public class UnifiedResponseDefaultSettings
   }
 
   /**
+   * When specifying <code>false</code>, this method uses a special response
+   * header to prevent certain browsers from MIME-sniffing a response away from
+   * the declared content-type. When passing <code>true</code>, that header is
+   * removed.
+   *
+   * @param bAllow
+   *        Whether or not sniffing should be allowed (default is
+   *        <code>true</code>).
+   */
+  public static void setAllowMimeSniffing (final boolean bAllow)
+  {
+    if (bAllow)
+      removeResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+    else
+      addResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+  }
+
+  /**
+   * This header enables the Cross-site scripting (XSS) filter built into most
+   * recent web browsers. It's usually enabled by default anyway, so the role of
+   * this header is to re-enable the filter for this particular website if it
+   * was disabled by the user. This header is supported in IE 8+, and in Chrome
+   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
+   * unknown if that version honored this header.
+   *
+   * @param bEnable
+   *        <code>true</code> to enable the header, <code>false</code> to
+   *        disable it.
+   */
+  public static void setEnableXSSFilter (final boolean bEnable)
+  {
+    if (bEnable)
+      addResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+    else
+      removeResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
+  }
+
+  /**
+   * When specifying <code>false</code>, this method uses a special response
+   * header to prevent certain browsers from MIME-sniffing a response away from
+   * the declared content-type. When passing <code>true</code>, that header is
+   * removed.
+   *
+   * @param nMaxAgeSeconds
+   *        number of seconds, after the reception of the STS header field,
+   *        during which the UA regards the host (from whom the message was
+   *        received) as a Known HSTS Host.
+   * @param bIncludeSubdomains
+   *        if enabled, this signals the UA that the HSTS Policy applies to this
+   *        HSTS Host as well as any sub-domains of the host's domain name.
+   */
+  public static void setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
+  {
+    addResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+                       new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
+                           (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+  }
+
+  /**
+   * Adds a response header to the response according to the passed name and
+   * value.<br/>
+   * <b>ATTENTION:</b> You should only use the APIs that
+   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
+   * only in emergency and make sure you validate the header field and allowed
+   * value!
+   *
+   * @param sName
+   *        Name of the header. May neither be <code>null</code> nor empty.
+   * @param sValue
+   *        Value of the header. May neither be <code>null</code> nor empty.
+   */
+  public static void addResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  {
+    ValueEnforcer.notEmpty (sName, "Name");
+    ValueEnforcer.notEmpty (sValue, "Value");
+
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_aResponseHeaderMap.addHeader (sName, sValue);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * Removes the response headers matching the passed name from the response.<br/>
+   * <b>ATTENTION:</b> You should only use the APIs that
+   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
+   * only in emergency and make sure you validate the header field and allowed
+   * value!
+   *
+   * @param sName
+   *        Name of the header to be removed. May neither be <code>null</code>
+   *        nor empty.
+   * @return {@link EChange#CHANGED} in header was removed.
+   */
+  @Nonnull
+  public static EChange removeResponseHeaders (@Nonnull @Nonempty final String sName)
+  {
+    ValueEnforcer.notEmpty (sName, "Name");
+
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      return s_aResponseHeaderMap.removeHeaders (sName);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  @Nonnull
+  public static EChange removeAllResponseHeaders ()
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      if (s_aResponseHeaderMap.isEmpty ())
+        return EChange.UNCHANGED;
+      s_aResponseHeaderMap.reset ();
+      return EChange.CHANGED;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
    * @return <code>true</code> if at least one cookie is present.
    */
   public static boolean hasCookies ()
@@ -148,123 +281,6 @@ public class UnifiedResponseDefaultSettings
         return EChange.UNCHANGED;
       s_aCookies.clear ();
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
-   *
-   * @param bAllow
-   *        Whether or not sniffing should be allowed (default is
-   *        <code>true</code>).
-   */
-  public static void setAllowMimeSniffing (final boolean bAllow)
-  {
-    if (bAllow)
-      removeCustomResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
-    else
-      addCustomResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
-  }
-
-  /**
-   * This header enables the Cross-site scripting (XSS) filter built into most
-   * recent web browsers. It's usually enabled by default anyway, so the role of
-   * this header is to re-enable the filter for this particular website if it
-   * was disabled by the user. This header is supported in IE 8+, and in Chrome
-   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
-   * unknown if that version honored this header.
-   *
-   * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to
-   *        disable it.
-   */
-  public static void setEnableXSSFilter (final boolean bEnable)
-  {
-    if (bEnable)
-      addCustomResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
-    else
-      removeCustomResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
-  }
-
-  /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
-   *
-   * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
-   * @param bIncludeSubdomains
-   *        if enabled, this signals the UA that the HSTS Policy applies to this
-   *        HSTS Host as well as any sub-domains of the host's domain name.
-   */
-  public static void setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
-  {
-    addCustomResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
-                             new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                 (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
-  }
-
-  /**
-   * Adds a response header to the response according to the passed name and
-   * value.<br/>
-   * <b>ATTENTION:</b> You should only use the APIs that
-   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
-   * only in emergency and make sure you validate the header field and allowed
-   * value!
-   *
-   * @param sName
-   *        Name of the header. May neither be <code>null</code> nor empty.
-   * @param sValue
-   *        Value of the header. May neither be <code>null</code> nor empty.
-   */
-  public static void addCustomResponseHeader (@Nonnull @Nonempty final String sName,
-                                              @Nonnull @Nonempty final String sValue)
-  {
-    ValueEnforcer.notEmpty (sName, "Name");
-    ValueEnforcer.notEmpty (sValue, "Value");
-
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
-      s_aResponseHeaderMap.addHeader (sName, sValue);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  /**
-   * Removes the response headers matching the passed name from the response.<br/>
-   * <b>ATTENTION:</b> You should only use the APIs that
-   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
-   * only in emergency and make sure you validate the header field and allowed
-   * value!
-   *
-   * @param sName
-   *        Name of the header to be removed. May neither be <code>null</code>
-   *        nor empty.
-   * @return {@link EChange#CHANGED} in header was removed.
-   */
-  @Nonnull
-  public static EChange removeCustomResponseHeaders (@Nonnull @Nonempty final String sName)
-  {
-    ValueEnforcer.notEmpty (sName, "Name");
-
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
-      return s_aResponseHeaderMap.removeHeaders (sName);
     }
     finally
     {

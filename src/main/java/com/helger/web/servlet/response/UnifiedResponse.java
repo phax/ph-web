@@ -660,6 +660,7 @@ public class UnifiedResponse
    * @return The non-<code>null</code> header map.
    */
   @Nonnull
+  @ReturnsMutableObject (reason = "design")
   protected HTTPHeaderMap getResponseHeaderMap ()
   {
     return m_aResponseHeaderMap;

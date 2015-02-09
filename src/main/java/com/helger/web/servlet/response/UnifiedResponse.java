@@ -945,9 +945,9 @@ public class UnifiedResponse
   public UnifiedResponse setAllowMimeSniffing (final boolean bAllow)
   {
     if (bAllow)
-      m_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+      removeCustomResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     else
-      m_aResponseHeaderMap.addHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+      setCustomResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
     return this;
   }
 
@@ -969,9 +969,9 @@ public class UnifiedResponse
   public UnifiedResponse setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
-      m_aResponseHeaderMap.addHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+      setCustomResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
     else
-      m_aResponseHeaderMap.removeHeaders (CHTTPHeader.X_XSS_PROTECTION);
+      removeCustomResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
     return this;
   }
 
@@ -993,16 +993,77 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
-    m_aResponseHeaderMap.addHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
-                                    new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds)
-                                                              .getAsHTTPHeaderValue () +
-                                        (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+    setCustomResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+                             new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
+                                 (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+    return this;
+  }
+
+  /**
+   * Remove the X-Frame-Options HTTP header if it is present.
+   *
+   * @return this
+   * @since 6.0.5
+   */
+  @Nonnull
+  public UnifiedResponse removeStrictTransportSecurity ()
+  {
+    removeCustomResponseHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
+    return this;
+  }
+
+  /**
+   * The X-Frame-Options HTTP response header can be used to indicate whether or
+   * not a browser should be allowed to render a page in a &lt;frame&gt;,
+   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
+   * attacks, by ensuring that their content is not embedded into other sites.
+   * Example:
+   *
+   * <pre>
+   * X-Frame-Options: DENY
+   * X-Frame-Options: SAMEORIGIN
+   * X-Frame-Options: ALLOW-FROM https://example.com/
+   * </pre>
+   *
+   * @param eType
+   *        The X-Frame-Options type to be set. May not be <code>null</code>.
+   * @param aDomain
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
+   *        for the other cases.
+   * @return this
+   * @since 6.0.5
+   */
+  @Nonnull
+  public UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  {
+    ValueEnforcer.notNull (eType, "Type");
+    if (eType.isURLRequired ())
+      ValueEnforcer.notNull (aDomain, "Domain");
+
+    if (eType.isURLRequired ())
+      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsString ());
+    else
+      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
+    return this;
+  }
+
+  /**
+   * Remove the X-Frame-Options HTTP header if it is present.
+   *
+   * @return this
+   * @since 6.0.5
+   */
+  @Nonnull
+  public UnifiedResponse removeXFrameOptions ()
+  {
+    removeCustomResponseHeaders (CHTTPHeader.X_FRAME_OPTIONS);
     return this;
   }
 
   /**
    * Adds a response header to the response according to the passed name and
-   * value.<br/>
+   * value. If an existing header with the same is present, the value is added
+   * to the list so that the header is emitted more than once.<br/>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
@@ -1018,6 +1079,26 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sValue, "Value");
 
     m_aResponseHeaderMap.addHeader (sName, sValue);
+  }
+
+  /**
+   * Sets a response header to the response according to the passed name and
+   * value. An existing header entry with the same name is overridden.<br/>
+   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
+   * directly offers. Use this method only in emergency and make sure you
+   * validate the header field and allowed value!
+   *
+   * @param sName
+   *        Name of the header. May neither be <code>null</code> nor empty.
+   * @param sValue
+   *        Value of the header. May neither be <code>null</code> nor empty.
+   */
+  public void setCustomResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  {
+    ValueEnforcer.notEmpty (sName, "Name");
+    ValueEnforcer.notEmpty (sValue, "Value");
+
+    m_aResponseHeaderMap.setHeader (sName, sValue);
   }
 
   /**

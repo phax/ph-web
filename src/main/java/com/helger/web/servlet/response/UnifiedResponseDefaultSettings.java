@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
@@ -32,6 +33,8 @@ import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.state.EChange;
+import com.helger.commons.string.StringHelper;
+import com.helger.commons.url.ISimpleURL;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.CacheControlBuilder;
 import com.helger.web.http.HTTPHeaderMap;
@@ -88,7 +91,7 @@ public class UnifiedResponseDefaultSettings
     if (bAllow)
       removeResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     else
-      addResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+      setResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
   }
 
   /**
@@ -106,7 +109,7 @@ public class UnifiedResponseDefaultSettings
   public static void setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
-      addResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+      setResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
     else
       removeResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
   }
@@ -125,20 +128,73 @@ public class UnifiedResponseDefaultSettings
    *        if enabled, this signals the UA that the HSTS Policy applies to this
    *        HSTS Host as well as any sub-domains of the host's domain name.
    */
-  public static void setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
+  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
-    addResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+    setResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
                        new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
                            (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
   }
 
   /**
+   * The X-Frame-Options HTTP response header can be used to indicate whether or
+   * not a browser should be allowed to render a page in a &lt;frame&gt;,
+   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
+   * attacks, by ensuring that their content is not embedded into other sites.
+   * Example:
+   *
+   * <pre>
+   * X-Frame-Options: DENY
+   * X-Frame-Options: SAMEORIGIN
+   * X-Frame-Options: ALLOW-FROM https://example.com/
+   * </pre>
+   *
+   * @param eType
+   *        The X-Frame-Options type to be set. May not be <code>null</code>.
+   * @param aDomain
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
+   *        for the other cases.
+   */
+  public static void setXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  {
+    ValueEnforcer.notNull (eType, "Type");
+    if (eType.isURLRequired ())
+      ValueEnforcer.notNull (aDomain, "Domain");
+
+    if (eType.isURLRequired ())
+      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsString ());
+    else
+      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
+  }
+
+  /**
+   * Sets a response header to the response according to the passed name and
+   * value. An existing header entry with the same name is overridden.
+   *
+   * @param sName
+   *        Name of the header. May neither be <code>null</code> nor empty.
+   * @param sValue
+   *        Value of the header. May neither be <code>null</code> nor empty.
+   */
+  public static void setResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  {
+    ValueEnforcer.notEmpty (sName, "Name");
+    ValueEnforcer.notEmpty (sValue, "Value");
+
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_aResponseHeaderMap.setHeader (sName, sValue);
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
    * Adds a response header to the response according to the passed name and
-   * value.<br/>
-   * <b>ATTENTION:</b> You should only use the APIs that
-   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
-   * only in emergency and make sure you validate the header field and allowed
-   * value!
+   * value. If an existing header with the same is present, the value is added
+   * to the list so that the header is emitted more than once.
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -189,6 +245,11 @@ public class UnifiedResponseDefaultSettings
     }
   }
 
+  /**
+   * Remove all response headers currently present.
+   *
+   * @return {@link EChange}
+   */
   @Nonnull
   public static EChange removeAllResponseHeaders ()
   {
@@ -238,6 +299,12 @@ public class UnifiedResponseDefaultSettings
     }
   }
 
+  /**
+   * Add the passed cookie.
+   *
+   * @param aCookie
+   *        The cookie to be added. May not be <code>null</code>.
+   */
   public static void addCookie (@Nonnull final Cookie aCookie)
   {
     ValueEnforcer.notNull (aCookie, "Cookie");
@@ -255,9 +322,19 @@ public class UnifiedResponseDefaultSettings
     }
   }
 
+  /**
+   * Remove the cookie with the specified name.
+   *
+   * @param sName
+   *        The name of the cookie to be removed. May be <code>null</code>.
+   * @return {@link EChange}
+   */
   @Nonnull
   public static EChange removeCookie (@Nullable final String sName)
   {
+    if (StringHelper.hasNoText (sName))
+      return EChange.UNCHANGED;
+
     s_aRWLock.writeLock ().lock ();
     try
     {
@@ -269,6 +346,11 @@ public class UnifiedResponseDefaultSettings
     }
   }
 
+  /**
+   * Remove all cookies.
+   *
+   * @return {@link EChange#CHANGED} if at least one cookie was removed.
+   */
   @Nonnull
   public static EChange removeAllCookies ()
   {

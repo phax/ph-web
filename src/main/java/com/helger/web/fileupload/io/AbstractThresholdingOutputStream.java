@@ -22,6 +22,8 @@ import java.io.OutputStream;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
+
 /**
  * An output stream which triggers an event when a specified number of bytes of
  * data have been written to it. The event can be used, for example, to throw an
@@ -42,9 +44,6 @@ import javax.annotation.Nonnull;
  */
 public abstract class AbstractThresholdingOutputStream extends OutputStream
 {
-
-  // ----------------------------------------------------------- Data members
-
   /**
    * The threshold at which the event will be triggered.
    */
@@ -60,8 +59,6 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    */
   private boolean m_bThresholdExceeded;
 
-  // ----------------------------------------------------------- Constructors
-
   /**
    * Constructs an instance of this class which will trigger an event at the
    * specified threshold.
@@ -69,12 +66,10 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * @param nThreshold
    *        The number of bytes at which to trigger an event.
    */
-  public AbstractThresholdingOutputStream (final int nThreshold)
+  public AbstractThresholdingOutputStream (@Nonnegative final int nThreshold)
   {
-    m_nThreshold = nThreshold;
+    m_nThreshold = ValueEnforcer.isGT0 (nThreshold, "Threshold");
   }
-
-  // --------------------------------------------------- OutputStream methods
 
   /**
    * Writes the specified byte to this output stream.
@@ -164,13 +159,12 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
     getStream ().close ();
   }
 
-  // --------------------------------------------------------- Public methods
-
   /**
    * Returns the threshold, in bytes, at which an event will be triggered.
    *
    * @return The threshold point, in bytes.
    */
+  @Nonnegative
   public int getThreshold ()
   {
     return m_nThreshold;
@@ -216,21 +210,19 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
     if (!m_bThresholdExceeded && (m_nWritten + nCount > m_nThreshold))
     {
       m_bThresholdExceeded = true;
-      thresholdReached ();
+      onThresholdReached ();
     }
   }
 
   /**
    * Resets the byteCount to zero. You can call this from
-   * {@link #thresholdReached()} if you want the event to be triggered again.
+   * {@link #onThresholdReached()} if you want the event to be triggered again.
    */
   protected void resetByteCount ()
   {
     m_bThresholdExceeded = false;
     m_nWritten = 0;
   }
-
-  // ------------------------------------------------------- Abstract methods
 
   /**
    * Returns the underlying output stream, to which the corresponding
@@ -251,5 +243,5 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * @exception IOException
    *            if an error occurs.
    */
-  protected abstract void thresholdReached () throws IOException;
+  protected abstract void onThresholdReached () throws IOException;
 }

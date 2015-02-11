@@ -69,7 +69,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
    * @throws IOException
    *         The called method is expected to raise an IOException.
    */
-  protected abstract void raiseError (@Nonnegative long nSizeMax, @Nonnegative long nCount) throws IOException;
+  protected abstract void onLimitExceeded (@Nonnegative long nSizeMax, @Nonnegative long nCount) throws IOException;
 
   /**
    * Called to check, whether the input streams limit is reached.
@@ -80,7 +80,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
   private void _checkLimit () throws IOException
   {
     if (m_nCount > m_nSizeMax)
-      raiseError (m_nSizeMax, m_nCount);
+      onLimitExceeded (m_nSizeMax, m_nCount);
   }
 
   /**

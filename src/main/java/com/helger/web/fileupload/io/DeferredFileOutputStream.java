@@ -22,10 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.WillNotClose;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
@@ -71,8 +73,6 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    */
   private boolean m_bClosed = false;
 
-  // ----------------------------------------------------------- Constructors
-
   /**
    * Constructs an instance of this class which will trigger an event at the
    * specified threshold, and save data to a file beyond that point.
@@ -82,16 +82,14 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * @param aOutputFile
    *        The file to which data is saved beyond the threshold.
    */
-  public DeferredFileOutputStream (final int nThreshold, @Nonnull final File aOutputFile)
+  public DeferredFileOutputStream (@Nonnegative final int nThreshold, @Nonnull final File aOutputFile)
   {
     super (nThreshold);
-    m_aOutputFile = aOutputFile;
+    m_aOutputFile = ValueEnforcer.notNull (aOutputFile, "OutputFile");
 
     m_aMemoryOutputStream = new NonBlockingByteArrayOutputStream ();
     m_aCurrentOutputStream = m_aMemoryOutputStream;
   }
-
-  // --------------------------------------- ThresholdingOutputStream methods
 
   /**
    * Returns the current output stream. This may be memory based or disk based,
@@ -117,7 +115,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    *            if an error occurs.
    */
   @Override
-  protected void thresholdReached () throws IOException
+  protected void onThresholdReached () throws IOException
   {
     FileOutputStream aFOS = null;
     try
@@ -134,8 +132,6 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
     }
   }
 
-  // --------------------------------------------------------- Public methods
-
   /**
    * Determines whether or not the data for this output stream has been retained
    * in memory.
@@ -145,7 +141,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    */
   public boolean isInMemory ()
   {
-    return !isThresholdExceeded ();
+    return m_aMemoryOutputStream != null;
   }
 
   /**
@@ -166,6 +162,22 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   }
 
   /**
+   * Returns the length of the data for this output stream as number of bytes,
+   * assuming that the data has been retained in memory. If the data was written
+   * to disk, this method returns <code>0</code>.
+   *
+   * @return The length of the data for this output stream, or <code>0</code> if
+   *         no such data is available.
+   */
+  @Nonnegative
+  public int getDataLength ()
+  {
+    if (m_aMemoryOutputStream != null)
+      return m_aMemoryOutputStream.size ();
+    return 0;
+  }
+
+  /**
    * Returns either the output file specified in the constructor or the
    * temporary file created or null.
    * <p>
@@ -179,6 +191,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * @return The file for this output stream, or <code>null</code> if no such
    *         file exists.
    */
+  @Nonnull
   public File getFile ()
   {
     return m_aOutputFile;
@@ -209,7 +222,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   public void writeTo (@Nonnull @WillNotClose final OutputStream aOS) throws IOException
   {
     // we may only need to check if this is closed if we are working with a file
-    // but we should force the habit of closing wether we are working with
+    // but we should force the habit of closing whether we are working with
     // a file or memory.
     if (!m_bClosed)
       throw new IOException ("Stream not closed");

@@ -30,6 +30,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.VisibleForTesting;
 import com.helger.commons.collections.ContainerHelper;
@@ -39,12 +40,12 @@ import com.helger.web.fileupload.IFileItemFactory;
 
 /**
  * <p>
- * The default {@link com.helger.web.fileupload.IFileItemFactory} implementation.
- * This implementation creates {@link DiskFileItem} instances which keep their
- * content either in memory, for smaller items, or in a temporary file on disk,
- * for larger items. The size threshold, above which content will be stored on
- * disk, is configurable, as is the directory in which temporary files will be
- * created.
+ * The default {@link com.helger.web.fileupload.IFileItemFactory}
+ * implementation. This implementation creates {@link DiskFileItem} instances
+ * which keep their content either in memory, for smaller items, or in a
+ * temporary file on disk, for larger items. The size threshold, above which
+ * content will be stored on disk, is configurable, as is the directory in which
+ * temporary files will be created.
  * </p>
  * <p>
  * If not otherwise configured, the default configuration values are as follows:
@@ -58,7 +59,7 @@ import com.helger.web.fileupload.IFileItemFactory;
  * Temporary files, which are created for file items, should be deleted later
  * on.
  * </p>
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @author Philip Helger
  */
@@ -89,7 +90,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   /**
    * Constructs a preconfigured instance of this class.
-   * 
+   *
    * @param nSizeThreshold
    *        The threshold, in bytes, below which items will be retained in
    *        memory and above which they will be stored as a file.
@@ -99,8 +100,10 @@ public class DiskFileItemFactory implements IFileItemFactory
    */
   public DiskFileItemFactory (@Nonnegative final int nSizeThreshold, @Nullable final File aRepository)
   {
+    ValueEnforcer.isGT0 (nSizeThreshold, "SizeThreshold");
+
     m_nSizeThreshold = nSizeThreshold;
-    m_aRepository = aRepository;
+    setRepository (aRepository);
   }
 
   public void setRepository (@Nullable final File aRepository)
@@ -122,9 +125,9 @@ public class DiskFileItemFactory implements IFileItemFactory
   }
 
   /**
-   * Create a new {@link com.helger.web.fileupload.io.DiskFileItem} instance from
-   * the supplied parameters and the local factory configuration.
-   * 
+   * Create a new {@link com.helger.web.fileupload.io.DiskFileItem} instance
+   * from the supplied parameters and the local factory configuration.
+   *
    * @param sFieldName
    *        The name of the form field.
    * @param sContentType

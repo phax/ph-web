@@ -96,6 +96,8 @@ public interface IFileItem extends Serializable, DataSource
   @Nullable
   String getName () throws InvalidFileNameException;
 
+  // ------------------------------------------------------- FileItem methods
+
   /**
    * Returns the original filename in the client's filesystem, as provided by
    * the browser (or other client software). In most cases, this will be the
@@ -107,12 +109,22 @@ public interface IFileItem extends Serializable, DataSource
    *
    * @return The original filename in the client's filesystem without invalid
    *         characters.
-   * @since 6.0.6
+   * @since 6.1.0
    */
   @Nullable
   String getNameSecure ();
 
-  // ------------------------------------------------------- FileItem methods
+  /**
+   * Returns the original filename in the client's filesystem, as provided by
+   * the browser (or other client software). In most cases, this will be the
+   * base file name, without path information. However, some clients, such as
+   * the Opera browser, do include path information.
+   *
+   * @return The original filename in the client's filesystem.
+   * @since 6.1.0
+   */
+  @Nullable
+  String getNameUnchecked ();
 
   /**
    * Provides a hint as to whether or not the file contents will be read from
@@ -142,14 +154,15 @@ public interface IFileItem extends Serializable, DataSource
    * encoding. This method uses {@link #get()} to retrieve the contents of the
    * item.
    *
-   * @param encoding
+   * @param sEncoding
    *        The character encoding to use.
    * @return The contents of the item, as a string.
    * @throws UnsupportedEncodingException
    *         if the requested character encoding is not available.
    */
   @Nonnull
-  String getString (String encoding) throws UnsupportedEncodingException;
+  @Deprecated
+  String getString (String sEncoding) throws UnsupportedEncodingException;
 
   /**
    * Returns the contents of the file item as a String, using the specified

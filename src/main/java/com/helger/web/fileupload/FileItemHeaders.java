@@ -33,6 +33,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
 
 /**
@@ -173,5 +174,11 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     {
       m_aRWLock.writeLock ().unlock ();
     }
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("headerNameToValueListMap", m_aHeaderNameToValueListMap).toString ();
   }
 }

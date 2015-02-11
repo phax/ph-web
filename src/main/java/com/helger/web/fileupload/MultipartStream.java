@@ -18,7 +18,6 @@ package com.helger.web.fileupload;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import javax.annotation.CheckForSigned;
@@ -32,7 +31,6 @@ import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.fileupload.exception.ItemSkippedException;
 import com.helger.web.fileupload.io.ICloseable;
-import com.helger.web.fileupload.io.Streams;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -480,10 +478,20 @@ public final class MultipartStream
    *         if an i/o error occurs.
    */
   @SuppressWarnings ("javadoc")
-  public int readBodyData (final OutputStream aOS) throws MalformedStreamException, IOException
+  public int readBodyData () throws MalformedStreamException, IOException
   {
     final InputStream aIS = createInputStream ();
-    return (int) Streams.copy (aIS, aOS, false);
+    final byte [] aBuffer = new byte [8192];
+    int nTotalBytesRead = 0;
+    int nBytesRead;
+    do
+    {
+      // Blocking read
+      nBytesRead = aIS.read (aBuffer);
+      if (nBytesRead > 0)
+        nTotalBytesRead += nBytesRead;
+    } while (nBytesRead >= 0);
+    return nTotalBytesRead;
   }
 
   /**
@@ -512,7 +520,7 @@ public final class MultipartStream
    */
   public int discardBodyData () throws MalformedStreamException, IOException
   {
-    return readBodyData (null);
+    return readBodyData ();
   }
 
   /**

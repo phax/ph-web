@@ -19,6 +19,8 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nullable;
+
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 import com.helger.web.fileupload.exception.ItemSkippedException;
 
@@ -87,8 +89,21 @@ public interface IFileItemStream extends IFileItemHeadersSupport
    * {@link InvalidFileNameException}.
    *
    * @return The original filename in the client's filesystem.
+   * @since 6.1.0
    */
   String getNameSecure ();
+
+  /**
+   * Returns the original filename in the client's filesystem, as provided by
+   * the browser (or other client software). In most cases, this will be the
+   * base file name, without path information. However, some clients, such as
+   * the Opera browser, do include path information.
+   *
+   * @return The original filename in the client's filesystem.
+   * @since 6.1.0
+   */
+  @Nullable
+  String getNameUnchecked ();
 
   /**
    * Returns the name of the field in the multipart form corresponding to this

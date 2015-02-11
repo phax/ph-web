@@ -354,5 +354,6 @@ public final class FuncTestStreaming
       assertTrue (e.getMessage ().indexOf (sFilename) == -1);
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
     }
+    assertEquals ("foo.exe", fileItem.getNameSecure ());
   }
 }

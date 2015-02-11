@@ -35,7 +35,7 @@ final class FileItemStream implements IFileItemStream, Closeable
   /**
    * The file items file name.
    */
-  final String m_sName;
+  private final String m_sName;
   /**
    * Whether the file item is a form field.
    */
@@ -99,7 +99,7 @@ final class FileItemStream implements IFileItemStream, Closeable
       aIS = new AbstractLimitedInputStream (aIS, nFileSizeMax)
       {
         @Override
-        protected void raiseError (final long nSizeMax, final long nCount) throws IOException
+        protected void onLimitExceeded (final long nSizeMax, final long nCount) throws IOException
         {
           aItemIS.close (true);
           final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
@@ -139,14 +139,22 @@ final class FileItemStream implements IFileItemStream, Closeable
     return m_sFieldName;
   }
 
+  @Nullable
   public String getName ()
   {
     return Streams.checkFileName (m_sName);
   }
 
+  @Nullable
   public String getNameSecure ()
   {
     return FilenameHelper.getAsSecureValidFilename (m_sName);
+  }
+
+  @Nullable
+  public String getNameUnchecked ()
+  {
+    return m_sName;
   }
 
   /**

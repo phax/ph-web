@@ -18,6 +18,7 @@ package com.helger.web.fileupload;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,10 +29,14 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.string.StringParser;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
@@ -39,7 +44,6 @@ import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidContentTypeException;
 import com.helger.web.fileupload.exception.SizeLimitExceededException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
-import com.helger.web.fileupload.io.Streams;
 
 /**
  * <p>
@@ -89,6 +93,8 @@ public abstract class AbstractFileUploadBase
    * HTTP content type header for multiple uploads.
    */
   public static final String MULTIPART_MIXED = MULTIPART + "mixed";
+
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractFileUploadBase.class);
 
   // ----------------------------------------------------------- Data members
 
@@ -297,15 +303,24 @@ public abstract class AbstractFileUploadBase
       {
         final IFileItemStream aFileItemStream = aItemIter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
-        final String sFilename = ((FileItemStream) aFileItemStream).m_sName;
         final IFileItem aFileItem = aFileItemFactory.createItem (aFileItemStream.getFieldName (),
                                                                  aFileItemStream.getContentType (),
                                                                  aFileItemStream.isFormField (),
-                                                                 sFilename);
+                                                                 aFileItemStream.getNameUnchecked ());
         aItems.add (aFileItem);
+        InputStream aIS = null;
+        OutputStream aOS = null;
         try
         {
-          Streams.copy (aFileItemStream.openStream (), aFileItem.getOutputStream (), true);
+          aIS = aFileItemStream.openStream ();
+          aOS = aFileItem.getOutputStream ();
+          final byte [] aBuffer = new byte [8192];
+          int nBytesRead;
+          // potentially blocking read
+          while ((nBytesRead = aIS.read (aBuffer, 0, aBuffer.length)) > -1)
+          {
+            aOS.write (aBuffer, 0, nBytesRead);
+          }
         }
         catch (final FileUploadIOException ex)
         {
@@ -317,6 +332,11 @@ public abstract class AbstractFileUploadBase
                                            MULTIPART_FORM_DATA +
                                            " request failed. " +
                                            ex.getMessage (), ex);
+        }
+        finally
+        {
+          StreamUtils.close (aIS);
+          StreamUtils.close (aOS);
         }
         if (aFileItem instanceof IFileItemHeadersSupport)
         {
@@ -339,22 +359,22 @@ public abstract class AbstractFileUploadBase
     {
       if (!bSuccessful)
       {
+        // Delete all file items
         for (final IFileItem aFileItem : aItems)
         {
           try
           {
             aFileItem.delete ();
           }
-          catch (final Throwable e)
+          catch (final Throwable t)
           {
             // ignore it
+            s_aLogger.error ("Failed to delete fileItem " + aFileItem, t);
           }
         }
       }
     }
   }
-
-  // ------------------------------------------------------ Protected methods
 
   /**
    * Retrieves the boundary from the <code>Content-type</code> header.
@@ -367,15 +387,13 @@ public abstract class AbstractFileUploadBase
   @Nullable
   protected byte [] getBoundary (@Nonnull final String sContentType)
   {
-    final ParameterParser parser = new ParameterParser ();
-    parser.setLowerCaseNames (true);
+    final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
     // Parameter parser can handle null input
-    final Map <String, String> params = parser.parse (sContentType, new char [] { ';', ',' });
-    final String boundaryStr = params.get ("boundary");
-
-    if (boundaryStr == null)
+    final Map <String, String> aParams = aParser.parse (sContentType, new char [] { ';', ',' });
+    final String sBoundaryStr = aParams.get ("boundary");
+    if (sBoundaryStr == null)
       return null;
-    return CharsetManager.getAsBytes (boundaryStr, CCharset.CHARSET_ISO_8859_1_OBJ);
+    return CharsetManager.getAsBytes (sBoundaryStr, CCharset.CHARSET_ISO_8859_1_OBJ);
   }
 
   /**
@@ -388,7 +406,7 @@ public abstract class AbstractFileUploadBase
   @Nullable
   protected String getFileName (@Nonnull final IFileItemHeaders aHeaders)
   {
-    return _getFileName (aHeaders.getHeaderContentDisposition ());
+    return _getFilename (aHeaders.getHeaderContentDisposition ());
   }
 
   /**
@@ -399,7 +417,7 @@ public abstract class AbstractFileUploadBase
    * @return The file name or <code>null</code>.
    */
   @Nullable
-  private static String _getFileName (@Nullable final String sContentDisposition)
+  private static String _getFilename (@Nullable final String sContentDisposition)
   {
     String sFilename = null;
     if (sContentDisposition != null)
@@ -407,9 +425,9 @@ public abstract class AbstractFileUploadBase
       final String sContentDispositionLC = sContentDisposition.toLowerCase (Locale.US);
       if (sContentDispositionLC.startsWith (FORM_DATA) || sContentDispositionLC.startsWith (ATTACHMENT))
       {
-        final ParameterParser parser = new ParameterParser ().setLowerCaseNames (true);
+        final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
         // Parameter parser can handle null input
-        final Map <String, String> aParams = parser.parse (sContentDisposition, ';');
+        final Map <String, String> aParams = aParser.parse (sContentDisposition, ';');
         if (aParams.containsKey ("filename"))
         {
           sFilename = aParams.get ("filename");
@@ -566,6 +584,7 @@ public abstract class AbstractFileUploadBase
     if (nColonOffset == -1)
     {
       // This header line is malformed, skip it.
+      s_aLogger.warn ("Found malformed HTTP header line '" + sHeader + "'");
       return;
     }
     final String sHeaderName = sHeader.substring (0, nColonOffset).trim ();
@@ -648,7 +667,7 @@ public abstract class AbstractFileUploadBase
           aIS = new AbstractLimitedInputStream (aIS, m_nSizeMax)
           {
             @Override
-            protected void raiseError (final long nSizeMax, final long nCount) throws IOException
+            protected void onLimitExceeded (final long nSizeMax, final long nCount) throws IOException
             {
               final FileUploadException ex = new SizeLimitExceededException ("the request was rejected because its size (" +
                                                                                  nCount +
@@ -693,7 +712,7 @@ public abstract class AbstractFileUploadBase
     }
 
     /**
-     * Called for finding the nex item, if any.
+     * Called for finding the next item, if any.
      *
      * @return True, if an next item was found, otherwise false.
      * @throws IOException
@@ -731,13 +750,14 @@ public abstract class AbstractFileUploadBase
           continue;
         }
         final IFileItemHeaders aFileItemHeaders = getParsedHeaders (m_aMulti.readHeaders ());
+        final String sSubContentType = aFileItemHeaders.getHeaderContentType ();
+
         if (m_sCurrentFieldName == null)
         {
           // We're parsing the outer multipart
           final String sFieldName = getFieldName (aFileItemHeaders);
           if (sFieldName != null)
           {
-            final String sSubContentType = aFileItemHeaders.getHeaderContentType ();
             if (sSubContentType != null && sSubContentType.toLowerCase (Locale.US).startsWith (MULTIPART_MIXED))
             {
               m_sCurrentFieldName = sFieldName;
@@ -749,12 +769,12 @@ public abstract class AbstractFileUploadBase
             }
             final String sFilename = getFileName (aFileItemHeaders);
             m_aCurrentItem = new FileItemStream (sFilename,
-                                                     sFieldName,
-                                                     sSubContentType,
-                                                     sFilename == null,
-                                                     _getContentLength (aFileItemHeaders),
-                                                     m_aMulti,
-                                                     m_nFileSizeMax);
+                                                 sFieldName,
+                                                 sSubContentType,
+                                                 sFilename == null,
+                                                 _getContentLength (aFileItemHeaders),
+                                                 m_aMulti,
+                                                 m_nFileSizeMax);
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;
@@ -766,12 +786,12 @@ public abstract class AbstractFileUploadBase
           if (sFilename != null)
           {
             m_aCurrentItem = new FileItemStream (sFilename,
-                                                     m_sCurrentFieldName,
-                                                     aFileItemHeaders.getHeaderContentType (),
-                                                     false,
-                                                     _getContentLength (aFileItemHeaders),
-                                                     m_aMulti,
-                                                     m_nFileSizeMax);
+                                                 m_sCurrentFieldName,
+                                                 sSubContentType,
+                                                 false,
+                                                 _getContentLength (aFileItemHeaders),
+                                                 m_aMulti,
+                                                 m_nFileSizeMax);
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;

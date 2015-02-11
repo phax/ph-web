@@ -16,16 +16,9 @@
  */
 package com.helger.web.fileupload.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.WillClose;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.io.streams.StreamUtils;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
@@ -40,76 +33,6 @@ public final class Streams
    */
   private Streams ()
   {}
-
-  /**
-   * Default buffer size for use in
-   * {@link #copy(InputStream, OutputStream, boolean)}.
-   */
-  private static final int DEFAULT_BUFFER_SIZE = 8192;
-
-  /**
-   * Copies the contents of the given {@link InputStream} to the given
-   * {@link OutputStream}. Shortcut for
-   *
-   * <pre>
-   * copy (pInputStream, pOutputStream, new byte [8192]);
-   * </pre>
-   *
-   * @param aIS
-   *        The input stream, which is being read. It is guaranteed, that
-   *        {@link InputStream#close()} is called on the stream.
-   * @param aOS
-   *        The output stream, to which data should be written. May be null, in
-   *        which case the input streams contents are simply discarded.
-   * @param bClose
-   *        <code>true</code> guarantees, that {@link OutputStream#close()} is
-   *        called on the stream. <code>false</code> indicates, that only
-   *        {@link OutputStream#flush()} should be called finally.
-   * @return Number of bytes, which have been copied.
-   * @throws IOException
-   *         An I/O error occurred.
-   */
-  public static long copy (@Nonnull @WillClose final InputStream aIS,
-                           @Nonnull final OutputStream aOS,
-                           final boolean bClose) throws IOException
-  {
-    final byte [] pBuffer = new byte [DEFAULT_BUFFER_SIZE];
-    OutputStream out = aOS;
-    InputStream in = aIS;
-    try
-    {
-      long nTotal = 0;
-      for (;;)
-      {
-        final int nBytesRead = in.read (pBuffer);
-        if (nBytesRead == -1)
-          break;
-        if (nBytesRead > 0)
-        {
-          nTotal += nBytesRead;
-          if (out != null)
-            out.write (pBuffer, 0, nBytesRead);
-        }
-      }
-      if (out != null)
-      {
-        if (bClose)
-          out.close ();
-        else
-          out.flush ();
-        out = null;
-      }
-      in.close ();
-      in = null;
-      return nTotal;
-    }
-    finally
-    {
-      StreamUtils.close (in);
-      if (bClose)
-        StreamUtils.close (out);
-    }
-  }
 
   /**
    * Checks, whether the given file name is valid in the sense, that it doesn't

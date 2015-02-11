@@ -19,11 +19,14 @@ package com.helger.web.fileupload.io;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.WillNotClose;
 
+import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.streams.StreamUtils;
@@ -37,7 +40,7 @@ import com.helger.commons.io.streams.StreamUtils;
  * know in advance the size of the file being uploaded. If the file is small you
  * want to store it in memory (for speed), but if the file is large you want to
  * store it to file (to avoid memory issues).
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @author gaxzerow
  * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z
@@ -46,8 +49,8 @@ import com.helger.commons.io.streams.StreamUtils;
 public final class DeferredFileOutputStream extends AbstractThresholdingOutputStream
 {
   /**
-   * The output stream to which data will be written prior to the theshold being
-   * reached.
+   * The output stream to which data will be written prior to the threshold
+   * being reached.
    */
   private NonBlockingByteArrayOutputStream m_aMemoryOutputStream;
 
@@ -73,16 +76,16 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   /**
    * Constructs an instance of this class which will trigger an event at the
    * specified threshold, and save data to a file beyond that point.
-   * 
-   * @param threshold
+   *
+   * @param nThreshold
    *        The number of bytes at which to trigger an event.
-   * @param outputFile
+   * @param aOutputFile
    *        The file to which data is saved beyond the threshold.
    */
-  public DeferredFileOutputStream (final int threshold, @Nonnull final File outputFile)
+  public DeferredFileOutputStream (final int nThreshold, @Nonnull final File aOutputFile)
   {
-    super (threshold);
-    m_aOutputFile = outputFile;
+    super (nThreshold);
+    m_aOutputFile = aOutputFile;
 
     m_aMemoryOutputStream = new NonBlockingByteArrayOutputStream ();
     m_aCurrentOutputStream = m_aMemoryOutputStream;
@@ -93,7 +96,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   /**
    * Returns the current output stream. This may be memory based or disk based,
    * depending on the current state with respect to the threshold.
-   * 
+   *
    * @return The underlying output stream.
    * @exception IOException
    *            if an error occurs.
@@ -109,24 +112,24 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * that is backed by disk. This is the point at which we realise that too much
    * data is being written to keep in memory, so we elect to switch to
    * disk-based storage.
-   * 
+   *
    * @exception IOException
    *            if an error occurs.
    */
   @Override
   protected void thresholdReached () throws IOException
   {
-    FileOutputStream fos = null;
+    FileOutputStream aFOS = null;
     try
     {
-      fos = new FileOutputStream (m_aOutputFile);
-      m_aMemoryOutputStream.writeTo (fos);
-      m_aCurrentOutputStream = fos;
+      aFOS = new FileOutputStream (m_aOutputFile);
+      m_aMemoryOutputStream.writeTo (aFOS);
+      m_aCurrentOutputStream = aFOS;
       m_aMemoryOutputStream = null;
     }
     catch (final IOException ex)
     {
-      StreamUtils.close (fos);
+      StreamUtils.close (aFOS);
       throw ex;
     }
   }
@@ -136,7 +139,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   /**
    * Determines whether or not the data for this output stream has been retained
    * in memory.
-   * 
+   *
    * @return <code>true</code> if the data is available in memory;
    *         <code>false</code> otherwise.
    */
@@ -149,17 +152,16 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * Returns the data for this output stream as an array of bytes, assuming that
    * the data has been retained in memory. If the data was written to disk, this
    * method returns <code>null</code>.
-   * 
+   *
    * @return The data for this output stream, or <code>null</code> if no such
    *         data is available.
    */
   @Nullable
+  @ReturnsMutableCopy
   public byte [] getData ()
   {
     if (m_aMemoryOutputStream != null)
-    {
       return m_aMemoryOutputStream.toByteArray ();
-    }
     return null;
   }
 
@@ -168,12 +170,12 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * temporary file created or null.
    * <p>
    * If the constructor specifying the file is used then it returns that same
-   * output file, even when threashold has not been reached.
+   * output file, even when threshold has not been reached.
    * <p>
    * If constructor specifying a temporary file prefix/suffix is used then the
-   * temporary file created once the threashold is reached is returned If the
+   * temporary file created once the threshold is reached is returned If the
    * threshold was not reached then <code>null</code> is returned.
-   * 
+   *
    * @return The file for this output stream, or <code>null</code> if no such
    *         file exists.
    */
@@ -184,7 +186,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
 
   /**
    * Closes underlying output stream, and mark this as closed
-   * 
+   *
    * @exception IOException
    *            if an error occurs.
    */
@@ -198,13 +200,13 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   /**
    * Writes the data from this output stream to the specified output stream,
    * after it has been closed.
-   * 
-   * @param out
+   *
+   * @param aOS
    *        output stream to write to.
    * @exception IOException
    *            if this stream is not yet closed or an error occurs.
    */
-  public void writeTo (@Nonnull final OutputStream out) throws IOException
+  public void writeTo (@Nonnull @WillNotClose final OutputStream aOS) throws IOException
   {
     // we may only need to check if this is closed if we are working with a file
     // but we should force the habit of closing wether we are working with
@@ -214,11 +216,12 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
 
     if (isInMemory ())
     {
-      m_aMemoryOutputStream.writeTo (out);
+      m_aMemoryOutputStream.writeTo (aOS);
     }
     else
     {
-      StreamUtils.copyInputStreamToOutputStream (FileUtils.getInputStream (m_aOutputFile), out);
+      final InputStream aIS = FileUtils.getInputStream (m_aOutputFile);
+      StreamUtils.copyInputStreamToOutputStream (aIS, aOS);
     }
   }
 }

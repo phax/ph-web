@@ -28,19 +28,24 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.web.fileupload.IFileItemHeaders;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.
- * 
+ *
  * @author Michael C. Macaluso
  * @since 1.3
  */
+@ThreadSafe
 public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
 {
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+
   /**
    * Map of <code>String</code> keys to a <code>List</code> of
    * <code>String</code> instances.
@@ -56,12 +61,34 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
   @Nullable
   public String getHeader (@Nonnull final String sName)
   {
+    ValueEnforcer.notNull (sName, "HeaderName");
+
+    final String sNameLower = sName.toLowerCase (Locale.US);
+
     m_aRWLock.readLock ().lock ();
     try
     {
-      final String sNameLower = sName.toLowerCase (Locale.US);
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       return ContainerHelper.getFirstElement (aHeaderValueList);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  @Nonnull
+  public Iterator <String> getHeaders (@Nonnull final String sName)
+  {
+    ValueEnforcer.notNull (sName, "HeaderName");
+
+    final String sNameLower = sName.toLowerCase (Locale.US);
+
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      return ContainerHelper.getIterator (aHeaderValueList);
     }
     finally
     {
@@ -84,14 +111,13 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
   }
 
   @Nonnull
-  public Iterator <String> getHeaders (@Nonnull final String name)
+  @ReturnsMutableCopy
+  public List <String> getAllHeaderNames ()
   {
     m_aRWLock.readLock ().lock ();
     try
     {
-      final String sNameLower = name.toLowerCase (Locale.US);
-      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return ContainerHelper.getIterator (aHeaderValueList);
+      return ContainerHelper.newList (m_aHeaderNameList);
     }
     finally
     {
@@ -101,18 +127,21 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
 
   /**
    * Method to add header values to this instance.
-   * 
-   * @param name
+   *
+   * @param sName
    *        name of this header
-   * @param value
+   * @param sValue
    *        value of this header
    */
-  public void addHeader (@Nonnull final String name, @Nullable final String value)
+  public void addHeader (@Nonnull final String sName, @Nullable final String sValue)
   {
+    ValueEnforcer.notNull (sName, "HeaderName");
+
+    final String sNameLower = sName.toLowerCase (Locale.US);
+
     m_aRWLock.writeLock ().lock ();
     try
     {
-      final String sNameLower = name.toLowerCase (Locale.US);
       List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {
@@ -120,7 +149,7 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
         m_aHeaderNameToValueListMap.put (sNameLower, aHeaderValueList);
         m_aHeaderNameList.add (sNameLower);
       }
-      aHeaderValueList.add (value);
+      aHeaderValueList.add (sValue);
     }
     finally
     {

@@ -19,6 +19,7 @@ package com.helger.web.fileupload.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 /**
@@ -34,7 +35,7 @@ import javax.annotation.Nonnull;
  * NOTE: This implementation may trigger the event <em>before</em> the threshold
  * is actually reached, since it triggers when a pending write operation would
  * cause the threshold to be exceeded.
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z
  *          niallp $
@@ -64,20 +65,20 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Constructs an instance of this class which will trigger an event at the
    * specified threshold.
-   * 
-   * @param threshold
+   *
+   * @param nThreshold
    *        The number of bytes at which to trigger an event.
    */
-  public AbstractThresholdingOutputStream (final int threshold)
+  public AbstractThresholdingOutputStream (final int nThreshold)
   {
-    m_nThreshold = threshold;
+    m_nThreshold = nThreshold;
   }
 
   // --------------------------------------------------- OutputStream methods
 
   /**
    * Writes the specified byte to this output stream.
-   * 
+   *
    * @param b
    *        The byte to be written.
    * @exception IOException
@@ -94,14 +95,14 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Writes <code>b.length</code> bytes from the specified byte array to this
    * output stream.
-   * 
+   *
    * @param b
    *        The array of bytes to be written.
    * @exception IOException
    *            if an error occurs.
    */
   @Override
-  public void write (final byte [] b) throws IOException
+  public void write (@Nonnull final byte [] b) throws IOException
   {
     checkThreshold (b.length);
     getStream ().write (b);
@@ -111,7 +112,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Writes <code>len</code> bytes from the specified byte array starting at
    * offset <code>off</code> to this output stream.
-   * 
+   *
    * @param b
    *        The byte array from which the data will be written.
    * @param off
@@ -122,7 +123,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (final byte [] b, final int off, final int len) throws IOException
+  public void write (@Nonnull final byte [] b, @Nonnegative final int off, @Nonnegative final int len) throws IOException
   {
     checkThreshold (len);
     getStream ().write (b, off, len);
@@ -132,7 +133,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Flushes this output stream and forces any buffered output bytes to be
    * written out.
-   * 
+   *
    * @exception IOException
    *            if an error occurs.
    */
@@ -145,7 +146,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Closes this output stream and releases any system resources associated with
    * this stream.
-   * 
+   *
    * @exception IOException
    *            if an error occurs.
    */
@@ -167,7 +168,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
 
   /**
    * Returns the threshold, in bytes, at which an event will be triggered.
-   * 
+   *
    * @return The threshold point, in bytes.
    */
   public int getThreshold ()
@@ -177,7 +178,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
 
   /**
    * Returns the number of bytes that have been written to this output stream.
-   * 
+   *
    * @return The number of bytes written.
    */
   public long getByteCount ()
@@ -188,7 +189,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Determines whether or not the configured threshold has been exceeded for
    * this output stream.
-   * 
+   *
    * @return <code>true</code> if the threshold has been reached;
    *         <code>false</code> otherwise.
    */
@@ -203,16 +204,16 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * Checks to see if writing the specified number of bytes would cause the
    * configured threshold to be exceeded. If so, triggers an event to allow a
    * concrete implementation to take action on
-   * 
-   * @param count
+   *
+   * @param nCount
    *        The number of bytes about to be written to the underlying output
    *        stream.
    * @exception IOException
    *            if an error occurs.
    */
-  protected void checkThreshold (final int count) throws IOException
+  protected void checkThreshold (final int nCount) throws IOException
   {
-    if (!m_bThresholdExceeded && (m_nWritten + count > m_nThreshold))
+    if (!m_bThresholdExceeded && (m_nWritten + nCount > m_nThreshold))
     {
       m_bThresholdExceeded = true;
       thresholdReached ();
@@ -234,7 +235,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Returns the underlying output stream, to which the corresponding
    * <code>OutputStream</code> methods in this class will ultimately delegate.
-   * 
+   *
    * @return The underlying output stream.
    * @exception IOException
    *            if an error occurs.
@@ -246,7 +247,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * Indicates that the configured threshold has been reached, and that a
    * subclass should take whatever action necessary on this event. This may
    * include changing the underlying output stream.
-   * 
+   *
    * @exception IOException
    *            if an error occurs.
    */

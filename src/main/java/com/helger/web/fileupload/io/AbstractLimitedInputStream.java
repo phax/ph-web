@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.util;
+package com.helger.web.fileupload.io;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -24,6 +24,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.web.fileupload.util.ICloseable;
 
 /**
  * An input stream, which limits its data size. This stream is used, if the
@@ -46,43 +47,41 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
 
   /**
    * Creates a new instance.
-   * 
-   * @param pIn
+   *
+   * @param aIS
    *        The input stream, which shall be limited.
-   * @param pSizeMax
+   * @param nSizeMax
    *        The limit; no more than this number of bytes shall be returned by
    *        the source stream.
    */
-  public AbstractLimitedInputStream (final InputStream pIn, final long pSizeMax)
+  public AbstractLimitedInputStream (@Nonnull final InputStream aIS, @Nonnegative final long nSizeMax)
   {
-    super (pIn);
-    m_nSizeMax = pSizeMax;
+    super (aIS);
+    m_nSizeMax = ValueEnforcer.isGE0 (nSizeMax, "SizeMax");
   }
 
   /**
    * Called to indicate, that the input streams limit has been exceeded.
-   * 
-   * @param pSizeMax
+   *
+   * @param nSizeMax
    *        The input streams limit, in bytes.
-   * @param pCount
+   * @param nCount
    *        The actual number of bytes.
    * @throws IOException
    *         The called method is expected to raise an IOException.
    */
-  protected abstract void raiseError (long pSizeMax, long pCount) throws IOException;
+  protected abstract void raiseError (@Nonnegative long nSizeMax, @Nonnegative long nCount) throws IOException;
 
   /**
    * Called to check, whether the input streams limit is reached.
-   * 
+   *
    * @throws IOException
    *         The given limit is exceeded.
    */
   private void _checkLimit () throws IOException
   {
     if (m_nCount > m_nSizeMax)
-    {
       raiseError (m_nSizeMax, m_nCount);
-    }
   }
 
   /**
@@ -94,7 +93,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
    * exception is thrown.
    * <p>
    * This method simply performs <code>in.read()</code> and returns the result.
-   * 
+   *
    * @return the next byte of data, or <code>-1</code> if the end of the stream
    *         is reached.
    * @exception IOException
@@ -121,7 +120,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
    * <p>
    * This method simply performs <code>in.read(b, off, len)</code> and returns
    * the result.
-   * 
+   *
    * @param b
    *        the buffer into which the data is read.
    * @param nOfs
@@ -153,7 +152,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
 
   /**
    * Returns, whether this stream is already closed.
-   * 
+   *
    * @return True, if the stream is closed, otherwise false.
    * @throws IOException
    *         An I/O error occurred.
@@ -166,7 +165,7 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
   /**
    * Closes this input stream and releases any system resources associated with
    * the stream. This method simply performs <code>in.close()</code>.
-   * 
+   *
    * @exception IOException
    *            if an I/O error occurs.
    * @see java.io.FilterInputStream

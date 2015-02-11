@@ -290,38 +290,41 @@ public final class FuncTestStreaming
 
   /**
    * Tests, whether an {@link InvalidFileNameException} is thrown.
-   * 
+   *
    * @throws Exception
    *         In case of error
    */
   @Test
   public void testInvalidFileNameException () throws Exception
   {
-    final String fileName = "foo.exe\u0000.png";
-    final String request = "-----1234\r\n" +
-                           "Content-Disposition: form-data; name=\"file\"; filename=\"" +
-                           fileName +
-                           "\"\r\n" +
-                           "Content-Type: text/whatever\r\n" +
-                           "\r\n" +
-                           "This is the content of the file\n" +
-                           "\r\n" +
-                           "-----1234\r\n" +
-                           "Content-Disposition: form-data; name=\"field\"\r\n" +
-                           "\r\n" +
-                           "fieldValue\r\n" +
-                           "-----1234\r\n" +
-                           "Content-Disposition: form-data; name=\"multi\"\r\n" +
-                           "\r\n" +
-                           "value1\r\n" +
-                           "-----1234\r\n" +
-                           "Content-Disposition: form-data; name=\"multi\"\r\n" +
-                           "\r\n" +
-                           "value2\r\n" +
-                           "-----1234--\r\n";
-    final byte [] reqBytes = request.getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final String sFilename = "foo.exe\u0000.png";
+    assertTrue (sFilename.length () == 12);
+    assertTrue (sFilename.toCharArray ().length == 12);
+    assertTrue (sFilename.toCharArray ()[7] == 0);
+    final String aRequest = "-----1234\r\n" +
+                            "Content-Disposition: form-data; name=\"file\"; filename=\"" +
+                            sFilename +
+                            "\"\r\n" +
+                            "Content-Type: text/whatever\r\n" +
+                            "\r\n" +
+                            "This is the content of the file\n" +
+                            "\r\n" +
+                            "-----1234\r\n" +
+                            "Content-Disposition: form-data; name=\"field\"\r\n" +
+                            "\r\n" +
+                            "fieldValue\r\n" +
+                            "-----1234\r\n" +
+                            "Content-Disposition: form-data; name=\"multi\"\r\n" +
+                            "\r\n" +
+                            "value1\r\n" +
+                            "-----1234\r\n" +
+                            "Content-Disposition: form-data; name=\"multi\"\r\n" +
+                            "\r\n" +
+                            "value2\r\n" +
+                            "-----1234--\r\n";
+    final byte [] aReqBytes = aRequest.getBytes (CCharset.CHARSET_US_ASCII_OBJ);
 
-    final IFileItemIterator fileItemIter = _parseUploadToIterator (reqBytes);
+    final IFileItemIterator fileItemIter = _parseUploadToIterator (aReqBytes);
     final IFileItemStream fileItemStream = fileItemIter.next ();
     try
     {
@@ -330,12 +333,13 @@ public final class FuncTestStreaming
     }
     catch (final InvalidFileNameException e)
     {
-      assertEquals (fileName, e.getName ());
-      assertTrue (e.getMessage ().indexOf (fileName) == -1);
+      assertEquals (sFilename, e.getName ());
+      assertTrue (e.getMessage ().indexOf (sFilename) == -1);
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
     }
+    assertEquals ("foo.exe", fileItemStream.getNameSecure ());
 
-    final List <IFileItem> fileItems = _parseUploadToList (reqBytes);
+    final List <IFileItem> fileItems = _parseUploadToList (aReqBytes);
     final IFileItem fileItem = fileItems.get (0);
     try
     {
@@ -344,8 +348,8 @@ public final class FuncTestStreaming
     }
     catch (final InvalidFileNameException e)
     {
-      assertEquals (fileName, e.getName ());
-      assertTrue (e.getMessage ().indexOf (fileName) == -1);
+      assertEquals (sFilename, e.getName ());
+      assertTrue (e.getMessage ().indexOf (sFilename) == -1);
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
     }
   }

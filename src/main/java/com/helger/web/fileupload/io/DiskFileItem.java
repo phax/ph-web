@@ -32,11 +32,16 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.annotations.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.equals.EqualsUtils;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileUtils;
+import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.SimpleFileIO;
 import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.streams.StreamUtils;
@@ -59,7 +64,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * once using {@link #get()} or request an {@link java.io.InputStream
  * InputStream} with {@link #getInputStream()} and process the file without
  * attempting to load it into memory, which may come handy with large files.
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
@@ -73,6 +78,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
   // Because of transient field
   private static final long serialVersionUID = 1379943273879417L;
+
+  private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItem.class);
 
   /**
    * Default content charset to be used when no explicit charset parameter is
@@ -164,48 +171,45 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Constructs a new <code>DiskFileItem</code> instance.
-   * 
-   * @param fieldName
+   *
+   * @param sFieldName
    *        The name of the form field.
-   * @param contentType
+   * @param sContentType
    *        The content type passed by the browser or <code>null</code> if not
    *        specified.
-   * @param isFormField
+   * @param bIsFormField
    *        Whether or not this item is a plain form field, as opposed to a file
    *        upload.
-   * @param fileName
+   * @param sFilename
    *        The original filename in the user's filesystem, or <code>null</code>
    *        if not specified.
-   * @param sizeThreshold
+   * @param nSizeThreshold
    *        The threshold, in bytes, below which items will be retained in
    *        memory and above which they will be stored as a file.
-   * @param repository
+   * @param aRepository
    *        The data repository, which is the directory in which files will be
    *        created, should the item size exceed the threshold.
    */
-  public DiskFileItem (final String fieldName,
-                       @Nullable final String contentType,
-                       final boolean isFormField,
-                       @Nullable final String fileName,
-                       final int sizeThreshold,
-                       @Nullable final File repository)
+  public DiskFileItem (final String sFieldName,
+                       @Nullable final String sContentType,
+                       final boolean bIsFormField,
+                       @Nullable final String sFilename,
+                       final int nSizeThreshold,
+                       @Nullable final File aRepository)
   {
-    m_sFieldName = fieldName;
-    m_sContentType = contentType;
-    m_bIsFormField = isFormField;
-    m_sFilename = fileName;
-    m_nSizeThreshold = sizeThreshold;
-    m_aRepository = repository;
+    m_sFieldName = sFieldName;
+    m_sContentType = sContentType;
+    m_bIsFormField = bIsFormField;
+    m_sFilename = sFilename;
+    m_nSizeThreshold = nSizeThreshold;
+    m_aRepository = aRepository;
   }
 
   // ------------------------------- Methods from javax.activation.DataSource
 
   /**
-   * Returns an {@link java.io.InputStream InputStream} that can be used to
-   * retrieve the contents of the file.
-   * 
-   * @return An {@link java.io.InputStream InputStream} that can be used to
-   *         retrieve the contents of the file.
+   * @return An {@link InputStream} that can be used to retrieve the contents of
+   *         the file.
    */
   @Nonnull
   public InputStream getInputStream ()
@@ -219,13 +223,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     return new NonBlockingByteArrayInputStream (m_aCachedContent);
   }
 
-  /**
-   * Returns the content type passed by the agent or <code>null</code> if not
-   * defined.
-   * 
-   * @return The content type passed by the agent or <code>null</code> if not
-   *         defined.
-   */
   @Nullable
   public String getContentType ()
   {
@@ -235,39 +232,45 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Returns the content charset passed by the agent or <code>null</code> if not
    * defined.
-   * 
+   *
    * @return The content charset passed by the agent or <code>null</code> if not
    *         defined.
    */
   @Nullable
   public String getCharSet ()
   {
-    final ParameterParser parser = new ParameterParser ();
-    parser.setLowerCaseNames (true);
+    final ParameterParser aParser = new ParameterParser ();
+    aParser.setLowerCaseNames (true);
     // Parameter parser can handle null input
-    final Map <String, String> params = parser.parse (getContentType (), ';');
+    final Map <String, String> params = aParser.parse (getContentType (), ';');
     return params.get ("charset");
   }
 
-  /**
-   * Returns the original filename in the client's filesystem.
-   * 
-   * @return The original filename in the client's filesystem.
-   * @throws com.helger.web.fileupload.InvalidFileNameException
-   *         The file name contains a NUL character, which might be an indicator
-   *         of a security attack. If you intend to use the file name anyways,
-   *         catch the exception and use InvalidFileNameException#getName().
-   */
+  @Nullable
+  public String getNameUnchecked ()
+  {
+    return m_sFilename;
+  }
+
   @Nullable
   public String getName ()
   {
     return Streams.checkFileName (m_sFilename);
   }
 
+  @Nullable
+  public String getNameSecure ()
+  {
+    final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
+    if (!EqualsUtils.equals (sSecureName, m_sFilename))
+      s_aLogger.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
+    return sSecureName;
+  }
+
   /**
    * Provides a hint as to whether or not the file contents will be read from
    * memory.
-   * 
+   *
    * @return <code>true</code> if the file contents will be read from memory;
    *         <code>false</code> otherwise.
    */
@@ -278,7 +281,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Returns the size of the file.
-   * 
+   *
    * @return The size of the file, in bytes.
    */
   @Nonnegative
@@ -297,7 +300,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * Returns the contents of the file as an array of bytes. If the contents of
    * the file were not yet cached in memory, they will be loaded from the disk
    * storage and cached.
-   * 
+   *
    * @return The contents of the file as an array of bytes.
    */
   @ReturnsMutableObject (reason = "Speed")
@@ -318,23 +321,23 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Returns the contents of the file as a String, using the specified encoding.
    * This method uses {@link #get()} to retrieve the contents of the file.
-   * 
-   * @param charset
+   *
+   * @param sCharset
    *        The charset to use.
    * @return The contents of the file, as a string.
    * @throws UnsupportedEncodingException
    *         if the requested character encoding is not available.
    */
   @Nonnull
-  public String getString (final String charset) throws UnsupportedEncodingException
+  public String getString (final String sCharset) throws UnsupportedEncodingException
   {
-    return new String (get (), charset);
+    return new String (get (), sCharset);
   }
 
   /**
    * Returns the contents of the file as a String, using the specified encoding.
    * This method uses {@link #get()} to retrieve the contents of the file.
-   * 
+   *
    * @param aCharset
    *        The charset to use.
    * @return The contents of the file, as a string.
@@ -349,7 +352,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * Returns the contents of the file as a String, using the default character
    * encoding. This method uses {@link #get()} to retrieve the contents of the
    * file.
-   * 
+   *
    * @return The contents of the file, as a string.
    */
   @Nonnull
@@ -375,7 +378,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * invoked for a particular item. This is because, in the event that the
    * method renames a temporary file, that file will no longer be available to
    * copy or rename again at a later time.
-   * 
+   *
    * @param aFile
    *        The <code>File</code> into which the uploaded item should be stored.
    * @throws FileUploadException
@@ -426,7 +429,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Returns the name of the field in the multipart form corresponding to this
    * file item.
-   * 
+   *
    * @return The name of the form field.
    * @see #setFieldName(java.lang.String)
    */
@@ -437,7 +440,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Sets the field name used to reference this file item.
-   * 
+   *
    * @param fieldName
    *        The name of the form field.
    * @see #getFieldName()
@@ -450,7 +453,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Determines whether or not a <code>FileItem</code> instance represents a
    * simple form field.
-   * 
+   *
    * @return <code>true</code> if the instance represents a simple form field;
    *         <code>false</code> if it represents an uploaded file.
    * @see #setFormField(boolean)
@@ -463,7 +466,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Specifies whether or not a <code>FileItem</code> instance represents a
    * simple form field.
-   * 
+   *
    * @param state
    *        <code>true</code> if the instance represents a simple form field;
    *        <code>false</code> if it represents an uploaded file.
@@ -474,13 +477,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_bIsFormField = state;
   }
 
-  /**
-   * Returns an {@link java.io.OutputStream OutputStream} that can be used for
-   * storing the contents of the file.
-   * 
-   * @return An {@link java.io.OutputStream OutputStream} that can be used for
-   *         storing the contents of the file.
-   */
   @Nonnull
   public DeferredFileOutputStream getOutputStream ()
   {
@@ -502,7 +498,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * {@link java.io.File#renameTo(java.io.File)} to move the file to new
    * location without copying the data, if the source and destination locations
    * reside within the same logical volume.
-   * 
+   *
    * @return The data file, or <code>null</code> if the data is stored in
    *         memory.
    */
@@ -516,7 +512,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Removes the file contents from the temporary storage.
-   * 
+   *
    * @throws Throwable
    *         as declared by super.finalize()
    */
@@ -534,7 +530,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * named temporary file in the configured repository path. The lifetime of the
    * file is tied to the lifetime of the <code>FileItem</code> instance; the
    * file will be deleted when the instance is garbage collected.
-   * 
+   *
    * @return The {@link java.io.File File} to be used for temporary storage.
    */
   @Nonnull
@@ -557,7 +553,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Returns an identifier that is unique within the class loader used to load
    * this class, but does not have random-like apearance.
-   * 
+   *
    * @return A String with the non-random looking instance identifier.
    */
   @Nonnull
@@ -578,7 +574,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Returns a string representation of this object.
-   * 
+   *
    * @return a string representation of this object.
    */
   @Override
@@ -601,7 +597,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Writes the state of this object during serialization.
-   * 
+   *
    * @param out
    *        The stream to which the state should be written.
    * @throws IOException
@@ -626,7 +622,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Reads the state of this object during deserialization.
-   * 
+   *
    * @param in
    *        The stream from which the state should be read.
    * @throws IOException
@@ -658,7 +654,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Returns the file item headers.
-   * 
+   *
    * @return The file items headers.
    */
   public IFileItemHeaders getHeaders ()
@@ -668,7 +664,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Sets the file item headers.
-   * 
+   *
    * @param pHeaders
    *        The file items headers.
    */

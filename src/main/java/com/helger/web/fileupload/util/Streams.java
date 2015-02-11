@@ -20,7 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.WillClose;
+import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.web.fileupload.InvalidFileNameException;
@@ -28,6 +31,7 @@ import com.helger.web.fileupload.InvalidFileNameException;
 /**
  * Utility class for working with streams.
  */
+@Immutable
 public final class Streams
 {
   /**
@@ -35,9 +39,7 @@ public final class Streams
    * methods.
    */
   private Streams ()
-  {
-    // Does nothing
-  }
+  {}
 
   /**
    * Default buffer size for use in
@@ -48,67 +50,63 @@ public final class Streams
   /**
    * Copies the contents of the given {@link InputStream} to the given
    * {@link OutputStream}. Shortcut for
-   * 
+   *
    * <pre>
    * copy (pInputStream, pOutputStream, new byte [8192]);
    * </pre>
-   * 
-   * @param pInputStream
+   *
+   * @param aIS
    *        The input stream, which is being read. It is guaranteed, that
    *        {@link InputStream#close()} is called on the stream.
-   * @param pOutputStream
+   * @param aOS
    *        The output stream, to which data should be written. May be null, in
    *        which case the input streams contents are simply discarded.
-   * @param pClose
-   *        True guarantees, that {@link OutputStream#close()} is called on the
-   *        stream. False indicates, that only {@link OutputStream#flush()}
-   *        should be called finally.
+   * @param bClose
+   *        <code>true</code> guarantees, that {@link OutputStream#close()} is
+   *        called on the stream. <code>false</code> indicates, that only
+   *        {@link OutputStream#flush()} should be called finally.
    * @return Number of bytes, which have been copied.
    * @throws IOException
    *         An I/O error occurred.
    */
-  public static long copy (final InputStream pInputStream, final OutputStream pOutputStream, final boolean pClose) throws IOException
+  public static long copy (@Nonnull @WillClose final InputStream aIS,
+                           @Nonnull final OutputStream aOS,
+                           final boolean bClose) throws IOException
   {
     final byte [] pBuffer = new byte [DEFAULT_BUFFER_SIZE];
-    OutputStream out = pOutputStream;
-    InputStream in = pInputStream;
+    OutputStream out = aOS;
+    InputStream in = aIS;
     try
     {
-      long total = 0;
+      long nTotal = 0;
       for (;;)
       {
-        final int res = in.read (pBuffer);
-        if (res == -1)
+        final int nBytesRead = in.read (pBuffer);
+        if (nBytesRead == -1)
           break;
-        if (res > 0)
+        if (nBytesRead > 0)
         {
-          total += res;
+          nTotal += nBytesRead;
           if (out != null)
-          {
-            out.write (pBuffer, 0, res);
-          }
+            out.write (pBuffer, 0, nBytesRead);
         }
       }
       if (out != null)
       {
-        if (pClose)
-        {
+        if (bClose)
           out.close ();
-        }
         else
-        {
           out.flush ();
-        }
         out = null;
       }
       in.close ();
       in = null;
-      return total;
+      return nTotal;
     }
     finally
     {
       StreamUtils.close (in);
-      if (pClose)
+      if (bClose)
         StreamUtils.close (out);
     }
   }
@@ -118,35 +116,26 @@ public final class Streams
    * contain any NUL characters. If the file name is valid, it will be returned
    * without any modifications. Otherwise, an {@link InvalidFileNameException}
    * is raised.
-   * 
-   * @param pFileName
+   *
+   * @param sFilename
    *        The file name to check
    * @return Unmodified file name, if valid.
    * @throws InvalidFileNameException
    *         The file name was found to be invalid.
    */
   @Nullable
-  public static String checkFileName (@Nullable final String pFileName)
+  public static String checkFileName (@Nullable final String sFilename) throws InvalidFileNameException
   {
-    if (pFileName != null && pFileName.indexOf ('\u0000') != -1)
+    if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {
-      // pFileName.replace("\u0000", "\\0")
-      final StringBuilder sb = new StringBuilder ();
-      for (int i = 0; i < pFileName.length (); i++)
-      {
-        final char c = pFileName.charAt (i);
-        switch (c)
-        {
-          case 0:
-            sb.append ("\\0");
-            break;
-          default:
-            sb.append (c);
-            break;
-        }
-      }
-      throw new InvalidFileNameException (pFileName, "Invalid file name: " + sb);
+      final StringBuilder aSB = new StringBuilder ();
+      for (final char c : sFilename.toCharArray ())
+        if (c == 0)
+          aSB.append ("\\0");
+        else
+          aSB.append (c);
+      throw new InvalidFileNameException (sFilename, "Invalid filename: " + aSB.toString ());
     }
-    return pFileName;
+    return sFilename;
   }
 }

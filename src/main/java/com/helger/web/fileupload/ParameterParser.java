@@ -35,7 +35,7 @@ import com.helger.commons.string.StringHelper;
  * <p>
  * <code>param1 = value; param2 = "anything goes; really"; param3</code>
  * </p>
- * 
+ *
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
 public final class ParameterParser
@@ -78,7 +78,7 @@ public final class ParameterParser
 
   /**
    * Are there any characters left to parse?
-   * 
+   *
    * @return <tt>true</tt> if there are unparsed characters, <tt>false</tt>
    *         otherwise.
    */
@@ -90,7 +90,7 @@ public final class ParameterParser
   /**
    * A helper method to process the parsed token. This method removes leading
    * and trailing blanks as well as enclosing quotation marks, when necessary.
-   * 
+   *
    * @param quoted
    *        <tt>true</tt> if quotation marks are expected, <tt>false</tt>
    *        otherwise.
@@ -128,7 +128,7 @@ public final class ParameterParser
 
   /**
    * Parses out a token until any of the given terminators is encountered.
-   * 
+   *
    * @param cTerminator1
    *        the first terminating character. Any when encountered signify the
    *        end of the token
@@ -157,7 +157,7 @@ public final class ParameterParser
   /**
    * Parses out a token until any of the given terminators is encountered
    * outside the quotation marks.
-   * 
+   *
    * @param cTerminator
    *        the terminating character. Any of these characters when encountered
    *        outside the quotation marks signify the end of the token
@@ -189,7 +189,7 @@ public final class ParameterParser
   /**
    * Returns <tt>true</tt> if parameter names are to be converted to lower case
    * when name/value pairs are parsed.
-   * 
+   *
    * @return <tt>true</tt> if parameter names are to be converted to lower case
    *         when name/value pairs are parsed. Otherwise returns <tt>false</tt>
    */
@@ -201,7 +201,7 @@ public final class ParameterParser
   /**
    * Sets the flag if parameter names are to be converted to lower case when
    * name/value pairs are parsed.
-   * 
+   *
    * @param b
    *        <tt>true</tt> if parameter names are to be converted to lower case
    *        when name/value pairs are parsed. <tt>false</tt> otherwise.
@@ -215,7 +215,7 @@ public final class ParameterParser
    * Extracts a map of name/value pairs from the given string. Names are
    * expected to be unique. Multiple separators may be specified and the
    * earliest found in the input string is used.
-   * 
+   *
    * @param sStr
    *        the string that contains a sequence of name/value pairs
    * @param aSeparators
@@ -250,7 +250,7 @@ public final class ParameterParser
   /**
    * Extracts a map of name/value pairs from the given string. Names are
    * expected to be unique.
-   * 
+   *
    * @param str
    *        the string that contains a sequence of name/value pairs
    * @param separator
@@ -277,12 +277,13 @@ public final class ParameterParser
         sParamValue = null;
         if (_hasChar () && chars[m_nPos] == '=')
         {
-          m_nPos++; // skip '='
+          // skip '='
+          m_nPos++;
           sParamValue = _parseQuotedToken (separator);
         }
         if (_hasChar () && chars[m_nPos] == separator)
-        {
-          m_nPos++; // skip separator
+        {// skip separator
+          m_nPos++;
         }
         if (StringHelper.hasText (sParamName))
         {

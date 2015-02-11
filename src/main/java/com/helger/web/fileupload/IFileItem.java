@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 
 import javax.activation.DataSource;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.state.ISuccessIndicator;
 
@@ -46,7 +47,7 @@ import com.helger.commons.state.ISuccessIndicator;
  * are specifically defined with the same signatures as methods in that
  * interface. This allows an implementation of this interface to also implement
  * <code>javax.activation.DataSource</code> with minimal additional work.
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
@@ -58,30 +59,24 @@ public interface IFileItem extends Serializable, DataSource
   // ------------------------------- Methods from javax.activation.DataSource
 
   /**
-   * Returns an {@link java.io.InputStream InputStream} that can be used to
-   * retrieve the contents of the file.
-   * 
-   * @return An {@link java.io.InputStream InputStream} that can be used to
-   *         retrieve the contents of the file.
+   * @return An {@link InputStream} that can be used to retrieve the contents of
+   *         the file.
    */
+  @Nonnull
   InputStream getInputStream ();
 
   /**
-   * Returns an {@link java.io.OutputStream OutputStream} that can be used for
-   * storing the contents of the file.
-   * 
-   * @return An {@link java.io.OutputStream OutputStream} that can be used for
-   *         storing the contensts of the file.
+   * @return An {@link OutputStream} that can be used for storing the contents
+   *         of the file.
    */
+  @Nonnull
   OutputStream getOutputStream ();
 
   /**
-   * Returns the content type passed by the browser or <code>null</code> if not
-   * defined.
-   * 
-   * @return The content type passed by the browser or <code>null</code> if not
-   *         defined.
+   * @return The content type passed by the user agent or <code>null</code> if
+   *         not defined.
    */
+  @Nullable
   String getContentType ();
 
   /**
@@ -89,21 +84,38 @@ public interface IFileItem extends Serializable, DataSource
    * the browser (or other client software). In most cases, this will be the
    * base file name, without path information. However, some clients, such as
    * the Opera browser, do include path information.
-   * 
+   *
    * @return The original filename in the client's filesystem.
    * @throws InvalidFileNameException
    *         The file name contains a NUL character, which might be an indicator
    *         of a security attack. If you intend to use the file name anyways,
    *         catch the exception and use InvalidFileNameException#getName().
    */
-  String getName ();
+  @Nullable
+  String getName () throws InvalidFileNameException;
+
+  /**
+   * Returns the original filename in the client's filesystem, as provided by
+   * the browser (or other client software). In most cases, this will be the
+   * base file name, without path information. However, some clients, such as
+   * the Opera browser, do include path information. Compared to
+   * {@link #getName()} this method automatically removes everything and
+   * including a NUL byte and therefore does not throw an
+   * {@link InvalidFileNameException}.
+   *
+   * @return The original filename in the client's filesystem without invalid
+   *         characters.
+   * @since 6.0.6
+   */
+  @Nullable
+  String getNameSecure ();
 
   // ------------------------------------------------------- FileItem methods
 
   /**
    * Provides a hint as to whether or not the file contents will be read from
    * memory.
-   * 
+   *
    * @return <code>true</code> if the file contents will be read from memory;
    *         <code>false</code> otherwise.
    */
@@ -111,14 +123,14 @@ public interface IFileItem extends Serializable, DataSource
 
   /**
    * Returns the size of the file item.
-   * 
+   *
    * @return The size of the file item, in bytes.
    */
   long getSize ();
 
   /**
    * Returns the contents of the file item as an array of bytes.
-   * 
+   *
    * @return The contents of the file item as an array of bytes.
    */
   byte [] get ();
@@ -127,7 +139,7 @@ public interface IFileItem extends Serializable, DataSource
    * Returns the contents of the file item as a String, using the specified
    * encoding. This method uses {@link #get()} to retrieve the contents of the
    * item.
-   * 
+   *
    * @param encoding
    *        The character encoding to use.
    * @return The contents of the item, as a string.
@@ -141,7 +153,7 @@ public interface IFileItem extends Serializable, DataSource
    * Returns the contents of the file item as a String, using the specified
    * encoding. This method uses {@link #get()} to retrieve the contents of the
    * item.
-   * 
+   *
    * @param aEncoding
    *        The character encoding to use.
    * @return The contents of the item, as a string.
@@ -153,7 +165,7 @@ public interface IFileItem extends Serializable, DataSource
    * Returns the contents of the file item as a String, using the default
    * character encoding. This method uses {@link #get()} to retrieve the
    * contents of the item.
-   * 
+   *
    * @return The contents of the item, as a string.
    */
   String getString ();
@@ -168,7 +180,7 @@ public interface IFileItem extends Serializable, DataSource
    * same item. This allows a particular implementation to use, for example,
    * file renaming, where possible, rather than copying all of the underlying
    * data, thus gaining a significant performance benefit.
-   * 
+   *
    * @param file
    *        The <code>File</code> into which the uploaded item should be stored.
    * @return Never null
@@ -190,14 +202,14 @@ public interface IFileItem extends Serializable, DataSource
   /**
    * Returns the name of the field in the multipart form corresponding to this
    * file item.
-   * 
+   *
    * @return The name of the form field.
    */
   String getFieldName ();
 
   /**
    * Sets the field name used to reference this file item.
-   * 
+   *
    * @param name
    *        The name of the form field.
    */
@@ -206,7 +218,7 @@ public interface IFileItem extends Serializable, DataSource
   /**
    * Determines whether or not a <code>FileItem</code> instance represents a
    * simple form field.
-   * 
+   *
    * @return <code>true</code> if the instance represents a simple form field;
    *         <code>false</code> if it represents an uploaded file.
    */
@@ -215,7 +227,7 @@ public interface IFileItem extends Serializable, DataSource
   /**
    * Specifies whether or not a <code>FileItem</code> instance represents a
    * simple form field.
-   * 
+   *
    * @param state
    *        <code>true</code> if the instance represents a simple form field;
    *        <code>false</code> if it represents an uploaded file.

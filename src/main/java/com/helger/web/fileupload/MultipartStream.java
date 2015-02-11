@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.fileupload.util.ICloseable;
 import com.helger.web.fileupload.util.Streams;
@@ -126,33 +127,42 @@ public final class MultipartStream
     /**
      * Creates a new instance with the given listener and content length.
      *
-     * @param pListener
+     * @param aListener
      *        The listener to invoke.
-     * @param pContentLength
+     * @param nContentLength
      *        The expected content length.
      */
-    ProgressNotifier (@Nullable final IProgressListener pListener, final long pContentLength)
+    ProgressNotifier (@Nullable final IProgressListener aListener, final long nContentLength)
     {
-      if (pListener != null)
-        s_aLogger.info ("setting listener " + pListener.getClass ().getName ());
-      m_aListener = pListener;
-      m_nContentLength = pContentLength;
+      if (aListener != null && s_aLogger.isDebugEnabled ())
+        s_aLogger.debug ("setting listener " + aListener.getClass ().getName ());
+      m_aListener = aListener;
+      m_nContentLength = nContentLength;
+    }
+
+    /**
+     * Called for notifying the listener.
+     */
+    private void _notifyListener ()
+    {
+      if (m_aListener != null)
+        m_aListener.update (m_nBytesRead, m_nContentLength, m_nItems);
     }
 
     /**
      * Called to indicate that bytes have been read.
      *
-     * @param pBytes
+     * @param nBytes
      *        Number of bytes, which have been read.
      */
-    void noteBytesRead (@Nonnegative final int pBytes)
+    void noteBytesRead (@Nonnegative final int nBytes)
     {
-      ValueEnforcer.isGE0 (pBytes, "Bytes");
+      ValueEnforcer.isGE0 (nBytes, "Bytes");
       /*
        * Indicates, that the given number of bytes have been read from the input
        * stream.
        */
-      m_nBytesRead += pBytes;
+      m_nBytesRead += nBytes;
       _notifyListener ();
     }
 
@@ -163,17 +173,6 @@ public final class MultipartStream
     {
       ++m_nItems;
       _notifyListener ();
-    }
-
-    /**
-     * Called for notifying the listener.
-     */
-    private void _notifyListener ()
-    {
-      if (m_aListener != null)
-      {
-        m_aListener.update (m_nBytesRead, m_nContentLength, m_nItems);
-      }
     }
   }
 
@@ -293,33 +292,33 @@ public final class MultipartStream
    * string, plus 4 characters for CR/LF and double dash, plus at least one byte
    * of data. Too small a buffer size setting will degrade performance.
    *
-   * @param input
+   * @param aIS
    *        The <code>InputStream</code> to serve as a data source.
-   * @param boundary
+   * @param aBoundary
    *        The token used for dividing the stream into
    *        <code>encapsulations</code>.
-   * @param bufSize
+   * @param nBufSize
    *        The size of the buffer to be used, in bytes.
-   * @param pNotifier
+   * @param aNotifier
    *        The notifier, which is used for calling the progress listener, if
    *        any.
    * @see #MultipartStream(InputStream, byte[],
    *      MultipartStream.ProgressNotifier)
    */
-  MultipartStream (final InputStream input, final byte [] boundary, final int bufSize, final ProgressNotifier pNotifier)
+  MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final ProgressNotifier aNotifier)
   {
-    m_aInput = input;
-    m_nBufSize = bufSize;
-    m_aBuffer = new byte [bufSize];
-    m_aNotifier = pNotifier;
+    m_aInput = aIS;
+    m_nBufSize = nBufSize;
+    m_aBuffer = new byte [nBufSize];
+    m_aNotifier = aNotifier;
 
     // We prepend CR/LF to the boundary to chop trailng CR/LF from
     // body-data tokens.
-    m_aBoundary = new byte [boundary.length + BOUNDARY_PREFIX.length];
-    m_nBoundaryLength = boundary.length + BOUNDARY_PREFIX.length;
+    m_aBoundary = new byte [aBoundary.length + BOUNDARY_PREFIX.length];
+    m_nBoundaryLength = aBoundary.length + BOUNDARY_PREFIX.length;
     m_nKeepRegion = m_aBoundary.length;
     System.arraycopy (BOUNDARY_PREFIX, 0, m_aBoundary, 0, BOUNDARY_PREFIX.length);
-    System.arraycopy (boundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
+    System.arraycopy (aBoundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, aBoundary.length);
 
     m_nHead = 0;
     m_nTail = 0;
@@ -329,19 +328,19 @@ public final class MultipartStream
    * <p>
    * Constructs a <code>MultipartStream</code> with a default size buffer.
    *
-   * @param input
+   * @param aIS
    *        The <code>InputStream</code> to serve as a data source.
-   * @param boundary
+   * @param aBoundary
    *        The token used for dividing the stream into
    *        <code>encapsulations</code>.
-   * @param pNotifier
+   * @param aNotifier
    *        An object for calling the progress listener, if any.
    * @see #MultipartStream(InputStream, byte[], int,
    *      MultipartStream.ProgressNotifier)
    */
-  MultipartStream (final InputStream input, final byte [] boundary, final ProgressNotifier pNotifier)
+  MultipartStream (final InputStream aIS, final byte [] aBoundary, final ProgressNotifier aNotifier)
   {
-    this (input, boundary, DEFAULT_BUFSIZE, pNotifier);
+    this (aIS, aBoundary, DEFAULT_BUFSIZE, aNotifier);
   }
 
   // --------------------------------------------------------- Public methods
@@ -364,12 +363,12 @@ public final class MultipartStream
    * individual parts. When not specified, or <code>null</code>, the platform
    * default encoding is used.
    *
-   * @param encoding
+   * @param sHeaderEncoding
    *        The encoding used to read part headers.
    */
-  public void setHeaderEncoding (@Nullable final String encoding)
+  public void setHeaderEncoding (@Nullable final String sHeaderEncoding)
   {
-    m_sHeaderEncoding = encoding;
+    m_sHeaderEncoding = sHeaderEncoding;
   }
 
   /**
@@ -407,13 +406,12 @@ public final class MultipartStream
    * @return <code>true</code> if there are more encapsulations in this stream;
    *         <code>false</code> otherwise.
    * @throws MalformedStreamException
-   *         if the stream ends unexpecetedly or fails to follow required
-   *         syntax.
+   *         if the stream ends unexpectedly or fails to follow required syntax.
    */
   public boolean readBoundary () throws MalformedStreamException
   {
     final byte [] marker = new byte [2];
-    boolean nextChunk = false;
+    boolean bNextChunk = false;
 
     m_nHead += m_nBoundaryLength;
     try
@@ -433,23 +431,23 @@ public final class MultipartStream
       marker[1] = readByte ();
       if (arrayequals (marker, STREAM_TERMINATOR, 2))
       {
-        nextChunk = false;
+        bNextChunk = false;
       }
       else
         if (arrayequals (marker, FIELD_SEPARATOR, 2))
         {
-          nextChunk = true;
+          bNextChunk = true;
         }
         else
         {
           throw new MalformedStreamException ("Unexpected characters follow a boundary");
         }
     }
-    catch (final IOException e)
+    catch (final IOException ex)
     {
-      throw new MalformedStreamException ("Stream ended unexpectedly", e);
+      throw new MalformedStreamException ("Stream ended unexpectedly", ex);
     }
-    return nextChunk;
+    return bNextChunk;
   }
 
   /**
@@ -464,19 +462,18 @@ public final class MultipartStream
    * Restoring the parent stream boundary token after processing of a nested
    * stream is left to the application.
    *
-   * @param boundary
+   * @param aBoundary
    *        The boundary to be used for parsing of the nested stream.
    * @throws IllegalBoundaryException
    *         if the <code>boundary</code> has a different length than the one
    *         being currently parsed.
    */
-  public void setBoundary (final byte [] boundary) throws IllegalBoundaryException
+  public void setBoundary (@Nonnull final byte [] aBoundary) throws IllegalBoundaryException
   {
-    if (boundary.length != m_nBoundaryLength - BOUNDARY_PREFIX.length)
-    {
+    ValueEnforcer.notNull (aBoundary, "Boundary");
+    if (aBoundary.length != m_nBoundaryLength - BOUNDARY_PREFIX.length)
       throw new IllegalBoundaryException ("The length of a boundary token can not be changed");
-    }
-    System.arraycopy (boundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
+    System.arraycopy (aBoundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, aBoundary.length);
   }
 
   /**
@@ -496,15 +493,15 @@ public final class MultipartStream
    */
   public String readHeaders () throws MalformedStreamException
   {
-    int i = 0;
-    byte b;
     // to support multi-byte characters
-    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
+    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ();
     try
     {
-      int size = 0;
-      while (i < HEADER_SEPARATOR.length)
+      int nHeaderSepIndex = 0;
+      int nSize = 0;
+      while (nHeaderSepIndex < HEADER_SEPARATOR.length)
       {
+        byte b;
         try
         {
           b = readByte ();
@@ -513,38 +510,29 @@ public final class MultipartStream
         {
           throw new MalformedStreamException ("Stream ended unexpectedly", e);
         }
-        if (++size > HEADER_PART_SIZE_MAX)
+        if (++nSize > HEADER_PART_SIZE_MAX)
         {
           throw new MalformedStreamException ("Header section has more than " +
                                               HEADER_PART_SIZE_MAX +
                                               " bytes (maybe it is not properly terminated)");
         }
-        if (b == HEADER_SEPARATOR[i])
-        {
-          i++;
-        }
+        if (b == HEADER_SEPARATOR[nHeaderSepIndex])
+          nHeaderSepIndex++;
         else
-        {
-          i = 0;
-        }
-        baos.write (b);
+          nHeaderSepIndex = 0;
+        aBAOS.write (b);
       }
 
-      String headers = null;
+      String sHeaders;
       if (m_sHeaderEncoding != null)
-      {
-        headers = baos.getAsString (CharsetManager.getCharsetFromName (m_sHeaderEncoding));
-      }
+        sHeaders = aBAOS.getAsString (CharsetManager.getCharsetFromName (m_sHeaderEncoding));
       else
-      {
-        headers = baos.getAsString (SystemHelper.getSystemCharset ());
-      }
-
-      return headers;
+        sHeaders = aBAOS.getAsString (SystemHelper.getSystemCharset ());
+      return sHeaders;
     }
     finally
     {
-      baos.close ();
+      StreamUtils.close (aBAOS);
     }
   }
 
@@ -558,7 +546,7 @@ public final class MultipartStream
    * {@link #MultipartStream(InputStream,byte[],int, MultipartStream.ProgressNotifier)
    * constructor}).
    *
-   * @param output
+   * @param aOS
    *        The <code>Stream</code> to write data into. May be null, in which
    *        case this method is equivalent to {@link #discardBodyData()}.
    * @return the amount of data written.
@@ -568,10 +556,10 @@ public final class MultipartStream
    *         if an i/o error occurs.
    */
   @SuppressWarnings ("javadoc")
-  public int readBodyData (final OutputStream output) throws MalformedStreamException, IOException
+  public int readBodyData (final OutputStream aOS) throws MalformedStreamException, IOException
   {
     final InputStream istream = newInputStream ();
-    return (int) Streams.copy (istream, output, false);
+    return (int) Streams.copy (istream, aOS, false);
   }
 
   /**

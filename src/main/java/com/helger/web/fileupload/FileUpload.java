@@ -49,13 +49,13 @@ public class FileUpload extends AbstractFileUploadBase
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
    * 
-   * @param fileItemFactory
+   * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
-  public FileUpload (final IFileItemFactory fileItemFactory)
+  public FileUpload (final IFileItemFactory aFileItemFactory)
   {
     super ();
-    m_aFileItemFactory = fileItemFactory;
+    m_aFileItemFactory = aFileItemFactory;
   }
 
   // ----------------------------------------------------- Property accessors

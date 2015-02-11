@@ -82,25 +82,25 @@ public class DiskFileItemFactory implements IFileItemFactory
   private final List <File> m_aTempFiles = new ArrayList <File> ();
 
   @VisibleForTesting
-  public DiskFileItemFactory (@Nonnegative final int sizeThreshold)
+  public DiskFileItemFactory (@Nonnegative final int nSizeThreshold)
   {
-    this (sizeThreshold, null);
+    this (nSizeThreshold, null);
   }
 
   /**
    * Constructs a preconfigured instance of this class.
    * 
-   * @param sizeThreshold
+   * @param nSizeThreshold
    *        The threshold, in bytes, below which items will be retained in
    *        memory and above which they will be stored as a file.
-   * @param repository
+   * @param aRepository
    *        The data repository, which is the directory in which files will be
    *        created, should the item size exceed the threshold.
    */
-  public DiskFileItemFactory (@Nonnegative final int sizeThreshold, @Nullable final File repository)
+  public DiskFileItemFactory (@Nonnegative final int nSizeThreshold, @Nullable final File aRepository)
   {
-    m_nSizeThreshold = sizeThreshold;
-    m_aRepository = repository;
+    m_nSizeThreshold = nSizeThreshold;
+    m_aRepository = aRepository;
   }
 
   public void setRepository (@Nullable final File aRepository)

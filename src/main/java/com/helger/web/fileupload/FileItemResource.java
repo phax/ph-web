@@ -38,7 +38,7 @@ import com.helger.commons.string.ToStringGenerator;
 /**
  * Implementation of the {@link IReadableResource} interface for uploaded
  * {@link IFileItem} objects.
- * 
+ *
  * @author Philip Helger
  */
 public final class FileItemResource implements IReadableResource
@@ -62,7 +62,7 @@ public final class FileItemResource implements IReadableResource
   @Nonnull
   public String getPath ()
   {
-    return m_aFileItem.getName ();
+    return m_aFileItem.getNameSecure ();
   }
 
   @Nullable

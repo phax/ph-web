@@ -18,7 +18,7 @@ package com.helger.web.fileupload;
 
 /**
  * Exception for errors encountered while processing the request.
- * 
+ *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id: FileUploadException.java 551000 2007-06-27 00:59:16Z jochen $
  */
@@ -35,26 +35,26 @@ public class FileUploadException extends Exception
   /**
    * Constructs a new <code>FileUploadException</code> with specified detail
    * message.
-   * 
-   * @param msg
+   *
+   * @param sMsg
    *        the error message.
    */
-  public FileUploadException (final String msg)
+  public FileUploadException (final String sMsg)
   {
-    this (msg, null);
+    this (sMsg, null);
   }
 
   /**
    * Creates a new <code>FileUploadException</code> with the given detail
    * message and cause.
-   * 
-   * @param msg
+   *
+   * @param sMsg
    *        The exceptions detail message.
-   * @param cause
+   * @param aCause
    *        The exceptions cause.
    */
-  public FileUploadException (final String msg, final Throwable cause)
+  public FileUploadException (final String sMsg, final Throwable aCause)
   {
-    super (msg, cause);
+    super (sMsg, aCause);
   }
 }

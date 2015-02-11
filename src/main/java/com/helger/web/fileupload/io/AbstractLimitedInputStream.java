@@ -24,7 +24,6 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.web.fileupload.util.ICloseable;
 
 /**
  * An input stream, which limits its data size. This stream is used, if the

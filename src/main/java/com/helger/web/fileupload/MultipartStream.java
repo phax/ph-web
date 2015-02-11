@@ -32,8 +32,8 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.fileupload.util.ICloseable;
-import com.helger.web.fileupload.util.Streams;
+import com.helger.web.fileupload.io.ICloseable;
+import com.helger.web.fileupload.io.Streams;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

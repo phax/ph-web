@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.util;
+package com.helger.web.fileupload;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
-import com.helger.web.fileupload.IFileItemHeaders;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.
@@ -42,7 +41,7 @@ import com.helger.web.fileupload.IFileItemHeaders;
  * @since 1.3
  */
 @ThreadSafe
-public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
+public class FileItemHeaders implements IFileItemHeaders, Serializable
 {
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
 

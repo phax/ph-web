@@ -36,9 +36,8 @@ import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.web.fileupload.MultipartStream.ItemInputStream;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
-import com.helger.web.fileupload.util.FileItemHeadersImpl;
-import com.helger.web.fileupload.util.ICloseable;
-import com.helger.web.fileupload.util.Streams;
+import com.helger.web.fileupload.io.ICloseable;
+import com.helger.web.fileupload.io.Streams;
 
 /**
  * <p>
@@ -476,7 +475,7 @@ public abstract class AbstractFileUploadBase
   protected IFileItemHeaders getParsedHeaders (@Nonnull final String sHeaderPart)
   {
     final int nLen = sHeaderPart.length ();
-    final FileItemHeadersImpl aHeaders = newFileItemHeaders ();
+    final FileItemHeaders aHeaders = newFileItemHeaders ();
     int start = 0;
     for (;;)
     {
@@ -520,9 +519,9 @@ public abstract class AbstractFileUploadBase
    * @return The new instance.
    */
   @Nonnull
-  protected FileItemHeadersImpl newFileItemHeaders ()
+  protected FileItemHeaders newFileItemHeaders ()
   {
-    return new FileItemHeadersImpl ();
+    return new FileItemHeaders ();
   }
 
   /**
@@ -557,7 +556,7 @@ public abstract class AbstractFileUploadBase
    * @param sHeader
    *        Map where to store the current header.
    */
-  private static void _parseHeaderLine (@Nonnull final FileItemHeadersImpl aHeaders, @Nonnull final String sHeader)
+  private static void _parseHeaderLine (@Nonnull final FileItemHeaders aHeaders, @Nonnull final String sHeader)
   {
     final int nColonOffset = sHeader.indexOf (':');
     if (nColonOffset == -1)

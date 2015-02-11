@@ -29,7 +29,7 @@ public class FileUploadException extends Exception
    */
   public FileUploadException ()
   {
-    this (null, null);
+    super ();
   }
 
   /**
@@ -41,7 +41,7 @@ public class FileUploadException extends Exception
    */
   public FileUploadException (final String sMsg)
   {
-    this (sMsg, null);
+    super (sMsg);
   }
 
   /**

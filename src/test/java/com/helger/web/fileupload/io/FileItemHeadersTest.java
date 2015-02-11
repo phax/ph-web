@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.util;
+package com.helger.web.fileupload.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,14 +26,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.helger.web.fileupload.FileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeaders;
 
 /**
- * Unit tests {@link IFileItemHeaders} and {@link FileItemHeadersImpl}.
+ * Unit tests {@link IFileItemHeaders} and {@link FileItemHeaders}.
  *
  * @author Michael C. Macaluso
  */
-public final class FileItemHeadersImplTest
+public final class FileItemHeadersTest
 {
   /**
    * @throws Exception
@@ -42,7 +43,7 @@ public final class FileItemHeadersImplTest
   @Test
   public void testFileItemHeaders () throws Exception
   {
-    final FileItemHeadersImpl aMutableFileItemHeaders = new FileItemHeadersImpl ();
+    final FileItemHeaders aMutableFileItemHeaders = new FileItemHeaders ();
     aMutableFileItemHeaders.addHeader ("Content-Disposition", "form-data; name=\"FileItem\"; filename=\"file1.txt\"");
     aMutableFileItemHeaders.addHeader ("Content-Type", "text/plain");
 

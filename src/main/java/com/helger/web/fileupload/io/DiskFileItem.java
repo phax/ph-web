@@ -52,7 +52,6 @@ import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.ParameterParser;
-import com.helger.web.fileupload.util.Streams;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

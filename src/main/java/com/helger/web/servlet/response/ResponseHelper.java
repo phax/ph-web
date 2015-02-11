@@ -28,7 +28,6 @@ import javax.annotation.concurrent.Immutable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.GlobalDebug;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.web.http.AcceptEncodingHandler;
@@ -128,11 +127,6 @@ public final class ResponseHelper
 
       // Inform caches that responses may vary according to Accept-Encoding
       aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);
-      if (GlobalDebug.isDebugMode ())
-      {
-        // ResponseHelper used
-        aHttpResponse.setHeader ("X-P", "RH");
-      }
 
       final String sGZipEncoding = aAcceptEncodings.getUsedGZIPEncoding ();
       if (sGZipEncoding != null && ResponseHelperSettings.isResponseGzipEnabled ())

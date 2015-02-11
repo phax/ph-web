@@ -43,7 +43,7 @@ import com.helger.web.servlet.response.gzip.GZIPResponse;
  * This is a generic filter that first tries to find whether "GZip" is
  * supported, and if this fails, whether "Deflate" is supported. If none is
  * supported, no compression will happen in this filter.
- * 
+ *
  * @author Philip Helger
  */
 public class CompressFilter implements Filter
@@ -104,8 +104,6 @@ public class CompressFilter implements Filter
       // Inform caches that responses may vary according to
       // Accept-Encoding
       aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);
-      // Compression filter used
-      aHttpResponse.setHeader ("X-P", "CF");
 
       final AcceptEncodingList aAEL = AcceptEncodingHandler.getAcceptEncodings (aHttpRequest);
 

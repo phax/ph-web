@@ -1,0 +1,198 @@
+package com.helger.web.fileupload;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.annotation.CheckForSigned;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
+
+import com.helger.commons.io.file.FilenameHelper;
+import com.helger.web.fileupload.MultipartStream.ItemInputStream;
+import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
+import com.helger.web.fileupload.exception.FileUploadIOException;
+import com.helger.web.fileupload.exception.ItemSkippedException;
+import com.helger.web.fileupload.io.AbstractLimitedInputStream;
+import com.helger.web.fileupload.io.ICloseable;
+import com.helger.web.fileupload.io.Streams;
+
+/**
+ * Default implementation of {@link IFileItemStream}.
+ */
+@NotThreadSafe
+final class FileItemStream implements IFileItemStream, Closeable
+{
+  /**
+   * The file items content type.
+   */
+  private final String m_sContentType;
+  /**
+   * The file items field name.
+   */
+  private final String m_sFieldName;
+  /**
+   * The file items file name.
+   */
+  final String m_sName;
+  /**
+   * Whether the file item is a form field.
+   */
+  private final boolean m_bFormField;
+  /**
+   * The file items input stream.
+   */
+  private final InputStream m_aIS;
+  /**
+   * The headers, if any.
+   */
+  private IFileItemHeaders m_aHeaders;
+
+  /**
+   * Creates a new instance.
+   *
+   * @param sName
+   *        The items file name, or null.
+   * @param sFieldName
+   *        The items field name.
+   * @param sContentType
+   *        The items content type, or null.
+   * @param bFormField
+   *        Whether the item is a form field.
+   * @param nContentLength
+   *        The items content length, if known, or -1
+   * @throws IOException
+   *         Creating the file item failed.
+   */
+  FileItemStream (final String sName,
+                  final String sFieldName,
+                  final String sContentType,
+                  final boolean bFormField,
+                  @CheckForSigned final long nContentLength,
+                  @Nonnull final MultipartStream aMulti,
+                  final long nFileSizeMax) throws IOException
+  {
+    m_sName = sName;
+    m_sFieldName = sFieldName;
+    m_sContentType = sContentType;
+    m_bFormField = bFormField;
+    final ItemInputStream aItemIS = aMulti.createInputStream ();
+    InputStream aIS = aItemIS;
+    if (nFileSizeMax > 0)
+    {
+      if (nContentLength >= 0 && nContentLength > nFileSizeMax)
+      {
+        final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
+                                                                                          m_sFieldName +
+                                                                                          " exceeds its maximum permitted " +
+                                                                                          " size of " +
+                                                                                          nFileSizeMax +
+                                                                                          " bytes.",
+                                                                                      nContentLength,
+                                                                                      nFileSizeMax);
+        ex.setFileName (sName);
+        ex.setFieldName (sFieldName);
+        throw new FileUploadIOException (ex);
+      }
+
+      aIS = new AbstractLimitedInputStream (aIS, nFileSizeMax)
+      {
+        @Override
+        protected void raiseError (final long nSizeMax, final long nCount) throws IOException
+        {
+          aItemIS.close (true);
+          final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
+                                                                                            m_sFieldName +
+                                                                                            " exceeds its maximum permitted " +
+                                                                                            " size of " +
+                                                                                            nSizeMax +
+                                                                                            " bytes.",
+                                                                                        nCount,
+                                                                                        nSizeMax);
+          ex.setFieldName (m_sFieldName);
+          ex.setFileName (m_sName);
+          throw new FileUploadIOException (ex);
+        }
+      };
+    }
+    m_aIS = aIS;
+  }
+
+  /**
+   * Returns the items content type, or null.
+   *
+   * @return Content type, if known, or null.
+   */
+  public String getContentType ()
+  {
+    return m_sContentType;
+  }
+
+  /**
+   * Returns the items field name.
+   *
+   * @return Field name.
+   */
+  public String getFieldName ()
+  {
+    return m_sFieldName;
+  }
+
+  public String getName ()
+  {
+    return Streams.checkFileName (m_sName);
+  }
+
+  public String getNameSecure ()
+  {
+    return FilenameHelper.getAsSecureValidFilename (m_sName);
+  }
+
+  /**
+   * Returns, whether this is a form field.
+   *
+   * @return True, if the item is a form field, otherwise false.
+   */
+  public boolean isFormField ()
+  {
+    return m_bFormField;
+  }
+
+  /**
+   * Returns an input stream, which may be used to read the items contents.
+   *
+   * @return Opened input stream.
+   * @throws IOException
+   *         An I/O error occurred.
+   */
+  @Nonnull
+  public InputStream openStream () throws IOException
+  {
+    if (((ICloseable) m_aIS).isClosed ())
+      throw new ItemSkippedException ();
+    return m_aIS;
+  }
+
+  /**
+   * Closes the file item.
+   *
+   * @throws IOException
+   *         An I/O error occurred.
+   */
+  public void close () throws IOException
+  {
+    m_aIS.close ();
+  }
+
+  @Nullable
+  public IFileItemHeaders getHeaders ()
+  {
+    return m_aHeaders;
+  }
+
+  public void setHeaders (@Nullable final IFileItemHeaders aHeaders)
+  {
+    m_aHeaders = aHeaders;
+  }
+}

@@ -93,13 +93,13 @@ public final class ParameterParser
    * A helper method to process the parsed token. This method removes leading
    * and trailing blanks as well as enclosing quotation marks, when necessary.
    *
-   * @param quoted
+   * @param bQuoted
    *        <tt>true</tt> if quotation marks are expected, <tt>false</tt>
    *        otherwise.
    * @return the token
    */
   @Nullable
-  private String _getToken (final boolean quoted)
+  private String _getToken (final boolean bQuoted)
   {
     // Trim leading white spaces
     while (m_nIndex1 < m_nIndex2 && Character.isWhitespace (m_aChars[m_nIndex1]))
@@ -112,7 +112,7 @@ public final class ParameterParser
       m_nIndex2--;
     }
     // Strip away quotation marks if necessary
-    if (quoted)
+    if (bQuoted)
     {
       if ((m_nIndex2 - m_nIndex1) >= 2 && m_aChars[m_nIndex1] == '"' && m_aChars[m_nIndex2 - 1] == '"')
       {
@@ -120,12 +120,12 @@ public final class ParameterParser
         m_nIndex2--;
       }
     }
-    String result = null;
+    String ret = null;
     if (m_nIndex2 > m_nIndex1)
     {
-      result = new String (m_aChars, m_nIndex1, m_nIndex2 - m_nIndex1);
+      ret = new String (m_aChars, m_nIndex1, m_nIndex2 - m_nIndex1);
     }
-    return result;
+    return ret;
   }
 
   /**

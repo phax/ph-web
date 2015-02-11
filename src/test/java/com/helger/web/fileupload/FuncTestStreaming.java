@@ -40,6 +40,7 @@ import com.helger.commons.charset.CCharset;
 import com.helger.commons.mock.MockIOException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
+import com.helger.web.fileupload.exception.InvalidFileNameException;
 import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;

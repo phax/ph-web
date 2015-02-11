@@ -16,7 +16,6 @@
  */
 package com.helger.web.fileupload;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,18 +32,13 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.string.StringParser;
-import com.helger.web.fileupload.MultipartStream.ItemInputStream;
-import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidContentTypeException;
-import com.helger.web.fileupload.exception.ItemSkippedException;
 import com.helger.web.fileupload.exception.SizeLimitExceededException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
-import com.helger.web.fileupload.io.ICloseable;
 import com.helger.web.fileupload.io.Streams;
 
 /**
@@ -303,7 +297,7 @@ public abstract class AbstractFileUploadBase
       {
         final IFileItemStream aFileItemStream = aItemIter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
-        final String sFilename = ((AbstractFileUploadBase.FileItemIterator.FileItemStreamImpl) aFileItemStream).m_sName;
+        final String sFilename = ((FileItemStream) aFileItemStream).m_sName;
         final IFileItem aFileItem = aFileItemFactory.createItem (aFileItemStream.getFieldName (),
                                                                  aFileItemStream.getContentType (),
                                                                  aFileItemStream.isFormField (),
@@ -586,191 +580,6 @@ public abstract class AbstractFileUploadBase
   private final class FileItemIterator implements IFileItemIterator
   {
     /**
-     * Default implementation of {@link IFileItemStream}.
-     */
-    final class FileItemStreamImpl implements IFileItemStream, Closeable
-    {
-      /**
-       * The file items content type.
-       */
-      private final String m_sContentType;
-      /**
-       * The file items field name.
-       */
-      private final String m_sFieldName;
-      /**
-       * The file items file name.
-       */
-      private final String m_sName;
-      /**
-       * Whether the file item is a form field.
-       */
-      private final boolean m_bFormField;
-      /**
-       * The file items input stream.
-       */
-      private final InputStream m_aIS;
-      /**
-       * The headers, if any.
-       */
-      private IFileItemHeaders m_aHeaders;
-
-      /**
-       * Creates a new instance.
-       *
-       * @param sName
-       *        The items file name, or null.
-       * @param sFieldName
-       *        The items field name.
-       * @param sContentType
-       *        The items content type, or null.
-       * @param bFormField
-       *        Whether the item is a form field.
-       * @param nContentLength
-       *        The items content length, if known, or -1
-       * @throws IOException
-       *         Creating the file item failed.
-       */
-      FileItemStreamImpl (final String sName,
-                          final String sFieldName,
-                          final String sContentType,
-                          final boolean bFormField,
-                          final long nContentLength) throws IOException
-      {
-        m_sName = sName;
-        m_sFieldName = sFieldName;
-        m_sContentType = sContentType;
-        m_bFormField = bFormField;
-        final ItemInputStream aItemIS = m_aMulti.createInputStream ();
-        InputStream aIS = aItemIS;
-        if (m_nFileSizeMax > 0)
-        {
-          if (nContentLength != -1 && nContentLength > m_nFileSizeMax)
-          {
-            final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
-                                                                                              m_sFieldName +
-                                                                                              " exceeds its maximum permitted " +
-                                                                                              " size of " +
-                                                                                              m_nFileSizeMax +
-                                                                                              " bytes.",
-                                                                                          nContentLength,
-                                                                                          m_nFileSizeMax);
-            ex.setFileName (sName);
-            ex.setFieldName (sFieldName);
-            throw new FileUploadIOException (ex);
-          }
-          aIS = new AbstractLimitedInputStream (aIS, m_nFileSizeMax)
-          {
-            @Override
-            protected void raiseError (final long nSizeMax, final long nCount) throws IOException
-            {
-              aItemIS.close (true);
-              final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
-                                                                                                m_sFieldName +
-                                                                                                " exceeds its maximum permitted " +
-                                                                                                " size of " +
-                                                                                                nSizeMax +
-                                                                                                " bytes.",
-                                                                                            nCount,
-                                                                                            nSizeMax);
-              ex.setFieldName (m_sFieldName);
-              ex.setFileName (m_sName);
-              throw new FileUploadIOException (ex);
-            }
-          };
-        }
-        m_aIS = aIS;
-      }
-
-      /**
-       * Returns the items content type, or null.
-       *
-       * @return Content type, if known, or null.
-       */
-      public String getContentType ()
-      {
-        return m_sContentType;
-      }
-
-      /**
-       * Returns the items field name.
-       *
-       * @return Field name.
-       */
-      public String getFieldName ()
-      {
-        return m_sFieldName;
-      }
-
-      public String getName ()
-      {
-        return Streams.checkFileName (m_sName);
-      }
-
-      public String getNameSecure ()
-      {
-        return FilenameHelper.getAsSecureValidFilename (m_sName);
-      }
-
-      /**
-       * Returns, whether this is a form field.
-       *
-       * @return True, if the item is a form field, otherwise false.
-       */
-      public boolean isFormField ()
-      {
-        return m_bFormField;
-      }
-
-      /**
-       * Returns an input stream, which may be used to read the items contents.
-       *
-       * @return Opened input stream.
-       * @throws IOException
-       *         An I/O error occurred.
-       */
-      @Nonnull
-      public InputStream openStream () throws IOException
-      {
-        if (((ICloseable) m_aIS).isClosed ())
-          throw new ItemSkippedException ();
-        return m_aIS;
-      }
-
-      /**
-       * Closes the file item.
-       *
-       * @throws IOException
-       *         An I/O error occurred.
-       */
-      public void close () throws IOException
-      {
-        m_aIS.close ();
-      }
-
-      /**
-       * Returns the file item headers.
-       *
-       * @return The items header object
-       */
-      public IFileItemHeaders getHeaders ()
-      {
-        return m_aHeaders;
-      }
-
-      /**
-       * Sets the file item headers.
-       *
-       * @param aHeaders
-       *        The items header object
-       */
-      public void setHeaders (final IFileItemHeaders aHeaders)
-      {
-        m_aHeaders = aHeaders;
-      }
-    }
-
-    /**
      * The multi part stream to process.
      */
     private final MultipartStream m_aMulti;
@@ -785,7 +594,7 @@ public abstract class AbstractFileUploadBase
     /**
      * The item, which we currently process.
      */
-    private FileItemStreamImpl m_aCurrentItem;
+    private FileItemStream m_aCurrentItem;
     /**
      * The current items field name.
      */
@@ -939,11 +748,13 @@ public abstract class AbstractFileUploadBase
               continue;
             }
             final String sFilename = getFileName (aFileItemHeaders);
-            m_aCurrentItem = new FileItemStreamImpl (sFilename,
+            m_aCurrentItem = new FileItemStream (sFilename,
                                                      sFieldName,
                                                      sSubContentType,
                                                      sFilename == null,
-                                                     _getContentLength (aFileItemHeaders));
+                                                     _getContentLength (aFileItemHeaders),
+                                                     m_aMulti,
+                                                     m_nFileSizeMax);
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;
@@ -954,11 +765,13 @@ public abstract class AbstractFileUploadBase
           final String sFilename = getFileName (aFileItemHeaders);
           if (sFilename != null)
           {
-            m_aCurrentItem = new FileItemStreamImpl (sFilename,
+            m_aCurrentItem = new FileItemStream (sFilename,
                                                      m_sCurrentFieldName,
                                                      aFileItemHeaders.getHeaderContentType (),
                                                      false,
-                                                     _getContentLength (aFileItemHeaders));
+                                                     _getContentLength (aFileItemHeaders),
+                                                     m_aMulti,
+                                                     m_nFileSizeMax);
             m_aNotifier.noteItem ();
             m_bItemValid = true;
             return true;

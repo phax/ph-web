@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload;
+package com.helger.web.fileupload.exception;
 
 /**
  * This exception is thrown in case of an invalid file name. A file name is

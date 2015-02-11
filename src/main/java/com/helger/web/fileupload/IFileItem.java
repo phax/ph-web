@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
+import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
  * <p>

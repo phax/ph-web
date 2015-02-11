@@ -26,7 +26,7 @@ import javax.annotation.WillClose;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.io.streams.StreamUtils;
-import com.helger.web.fileupload.InvalidFileNameException;
+import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
  * Utility class for working with streams.

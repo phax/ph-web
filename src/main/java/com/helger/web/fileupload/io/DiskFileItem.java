@@ -149,7 +149,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Output stream for this item.
    */
-  private transient DeferredFileOutputStream m_aDfos;
+  private transient DeferredFileOutputStream m_aDFOS;
 
   /**
    * The temporary file to use.
@@ -214,10 +214,10 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public InputStream getInputStream ()
   {
     if (!isInMemory ())
-      return FileUtils.getInputStream (m_aDfos.getFile ());
+      return FileUtils.getInputStream (m_aDFOS.getFile ());
 
     if (m_aCachedContent == null)
-      m_aCachedContent = m_aDfos.getData ();
+      m_aCachedContent = m_aDFOS.getData ();
 
     return new NonBlockingByteArrayInputStream (m_aCachedContent);
   }
@@ -275,7 +275,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    */
   public boolean isInMemory ()
   {
-    return m_aCachedContent != null || m_aDfos.isInMemory ();
+    return m_aCachedContent != null || m_aDFOS.isInMemory ();
   }
 
   /**
@@ -290,9 +290,9 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       return m_nSize;
     if (m_aCachedContent != null)
       return m_aCachedContent.length;
-    if (m_aDfos.isInMemory ())
-      return m_aDfos.getData ().length;
-    return m_aDfos.getFile ().length ();
+    if (m_aDFOS.isInMemory ())
+      return m_aDFOS.getData ().length;
+    return m_aDFOS.getFile ().length ();
   }
 
   /**
@@ -310,11 +310,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     if (isInMemory ())
     {
       if (m_aCachedContent == null)
-        m_aCachedContent = m_aDfos.getData ();
+        m_aCachedContent = m_aDFOS.getData ();
       return m_aCachedContent;
     }
 
-    return SimpleFileIO.readFileBytes (m_aDfos.getFile ());
+    return SimpleFileIO.readFileBytes (m_aDFOS.getFile ());
   }
 
   /**
@@ -328,7 +328,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *         if the requested character encoding is not available.
    */
   @Nonnull
-  public String getString (final String sCharset) throws UnsupportedEncodingException
+  public String getString (@Nonnull final String sCharset) throws UnsupportedEncodingException
   {
     return new String (get (), sCharset);
   }
@@ -357,10 +357,10 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nonnull
   public String getString ()
   {
-    final byte [] rawdata = get ();
-    final String charset = getCharSet ();
-    final Charset aCharset = charset == null ? DEFAULT_CHARSET_OBJ : CharsetManager.getCharsetFromName (charset);
-    return CharsetManager.getAsString (rawdata, aCharset);
+    final byte [] aRawData = get ();
+    final String asCharset = getCharSet ();
+    final Charset aCharset = asCharset == null ? DEFAULT_CHARSET_OBJ : CharsetManager.getCharsetFromName (asCharset);
+    return CharsetManager.getAsString (aRawData, aCharset);
   }
 
   /**
@@ -420,9 +420,9 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public void delete ()
   {
     m_aCachedContent = null;
-    final File outputFile = getStoreLocation ();
-    if (outputFile != null && outputFile.exists ())
-      FileOperations.deleteFile (outputFile);
+    final File aStoreFile = getStoreLocation ();
+    if (aStoreFile != null && aStoreFile.exists ())
+      FileOperations.deleteFile (aStoreFile);
   }
 
   /**
@@ -440,13 +440,13 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Sets the field name used to reference this file item.
    *
-   * @param fieldName
+   * @param sFieldName
    *        The name of the form field.
    * @see #getFieldName()
    */
-  public void setFieldName (final String fieldName)
+  public void setFieldName (final String sFieldName)
   {
-    m_sFieldName = fieldName;
+    m_sFieldName = sFieldName;
   }
 
   /**
@@ -466,25 +466,25 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * Specifies whether or not a <code>FileItem</code> instance represents a
    * simple form field.
    *
-   * @param state
+   * @param bIsFormField
    *        <code>true</code> if the instance represents a simple form field;
    *        <code>false</code> if it represents an uploaded file.
    * @see #isFormField()
    */
-  public void setFormField (final boolean state)
+  public void setFormField (final boolean bIsFormField)
   {
-    m_bIsFormField = state;
+    m_bIsFormField = bIsFormField;
   }
 
   @Nonnull
   public DeferredFileOutputStream getOutputStream ()
   {
-    if (m_aDfos == null)
+    if (m_aDFOS == null)
     {
-      final File outputFile = getTempFile ();
-      m_aDfos = new DeferredFileOutputStream (m_nSizeThreshold, outputFile);
+      final File aTempFile = getTempFile ();
+      m_aDFOS = new DeferredFileOutputStream (m_nSizeThreshold, aTempFile);
     }
-    return m_aDfos;
+    return m_aDFOS;
   }
 
   // --------------------------------------------------------- Public methods
@@ -504,7 +504,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nullable
   public File getStoreLocation ()
   {
-    return m_aDfos == null ? null : m_aDfos.getFile ();
+    return m_aDFOS == null ? null : m_aDFOS.getFile ();
   }
 
   // ------------------------------------------------------ Protected methods
@@ -518,7 +518,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Override
   protected void finalize () throws Throwable
   {
-    final File outputFile = m_aDfos.getFile ();
+    final File outputFile = m_aDFOS.getFile ();
     if (outputFile != null && outputFile.exists ())
       FileOperations.deleteFile (outputFile);
     super.finalize ();
@@ -605,14 +605,14 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   private void writeObject (final ObjectOutputStream out) throws IOException
   {
     // Read the data
-    if (m_aDfos.isInMemory ())
+    if (m_aDFOS.isInMemory ())
     {
       m_aCachedContent = get ();
     }
     else
     {
       m_aCachedContent = null;
-      m_aDfosFile = m_aDfos.getFile ();
+      m_aDfosFile = m_aDFOS.getFile ();
     }
 
     // write out values
@@ -634,41 +634,31 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     // read values
     in.defaultReadObject ();
 
-    final OutputStream output = getOutputStream ();
+    final OutputStream aOS = getOutputStream ();
     if (m_aCachedContent != null)
     {
-      output.write (m_aCachedContent);
+      aOS.write (m_aCachedContent);
     }
     else
     {
-      final InputStream input = FileUtils.getInputStream (m_aDfosFile);
-      StreamUtils.copyInputStreamToOutputStream (input, output);
+      final InputStream aIS = FileUtils.getInputStream (m_aDfosFile);
+      StreamUtils.copyInputStreamToOutputStream (aIS, aOS);
       FileOperations.deleteFile (m_aDfosFile);
       m_aDfosFile = null;
     }
-    output.close ();
+    aOS.close ();
 
     m_aCachedContent = null;
   }
 
-  /**
-   * Returns the file item headers.
-   *
-   * @return The file items headers.
-   */
+  @Nullable
   public IFileItemHeaders getHeaders ()
   {
     return m_aHeaders;
   }
 
-  /**
-   * Sets the file item headers.
-   *
-   * @param pHeaders
-   *        The file items headers.
-   */
-  public void setHeaders (final IFileItemHeaders pHeaders)
+  public void setHeaders (@Nullable final IFileItemHeaders aHeaders)
   {
-    m_aHeaders = pHeaders;
+    m_aHeaders = aHeaders;
   }
 }

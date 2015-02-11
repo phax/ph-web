@@ -30,10 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.web.fileupload.AbstractFileUploadBase;
 import com.helger.web.fileupload.AbstractFileUploadTestCase;
-import com.helger.web.fileupload.FileUploadException;
 import com.helger.web.fileupload.IFileItem;
+import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
+import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.mock.MockHttpServletRequest;
 
@@ -142,7 +142,7 @@ public final class FuncTestSizes extends AbstractFileUploadTestCase
       upload.parseRequest (req);
       fail ("Expected exception.");
     }
-    catch (final AbstractFileUploadBase.FileSizeLimitExceededException e)
+    catch (final FileSizeLimitExceededException e)
     {
       assertEquals (30, e.getPermittedSize ());
     }

@@ -51,6 +51,15 @@ public interface IFileItemHeaders
   @Nullable
   String getHeader (@Nonnull String sName);
 
+  @Nullable
+  String getHeaderContentDisposition ();
+
+  @Nullable
+  String getHeaderContentType ();
+
+  @Nullable
+  String getHeaderContentLength ();
+
   /**
    * <p>
    * Returns all the values of the specified item header as an

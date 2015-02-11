@@ -43,7 +43,7 @@ public final class MultipartStreamTest
     final MultipartStream ms = new MultipartStream (input,
                                                     boundary,
                                                     iBufSize,
-                                                    new MultipartStream.ProgressNotifier (null, contents.length));
+                                                    new MultipartProgressNotifier (null, contents.length));
     assertNotNull (ms);
   }
 
@@ -56,7 +56,7 @@ public final class MultipartStreamTest
     final byte [] boundary = BOUNDARY_TEXT.getBytes ();
     final MultipartStream ms = new MultipartStream (input,
                                                     boundary,
-                                                    new MultipartStream.ProgressNotifier (null, contents.length));
+                                                    new MultipartProgressNotifier (null, contents.length));
     assertNotNull (ms);
   }
 }

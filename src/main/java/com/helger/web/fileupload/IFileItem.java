@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.state.ISuccessIndicator;
+import com.helger.web.fileupload.exception.FileUploadException;
 
 /**
  * <p>

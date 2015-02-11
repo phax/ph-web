@@ -25,7 +25,7 @@ import java.io.InputStream;
  * interfsace should be implemented for each type of request that may be handled
  * by FileUpload, such as servlets and portlets.
  * </p>
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @since FileUpload 1.1
  * @version $Id: RequestContext.java 479262 2006-11-26 03:09:24Z niallp $
@@ -34,28 +34,29 @@ public interface IRequestContext
 {
   /**
    * Retrieve the character encoding for the request.
-   * 
+   *
    * @return The character encoding for the request.
    */
   String getCharacterEncoding ();
 
   /**
    * Retrieve the content type of the request.
-   * 
+   *
    * @return The content type of the request.
    */
   String getContentType ();
 
   /**
    * Retrieve the content length of the request.
-   * 
-   * @return The content length of the request.
+   *
+   * @return The content length of the request. My be -1 to indicate an unknown
+   *         content length.
    */
   long getContentLength ();
 
   /**
    * Retrieve the input stream for the request.
-   * 
+   *
    * @return The input stream for the request.
    * @throws IOException
    *         if a problem occurs.

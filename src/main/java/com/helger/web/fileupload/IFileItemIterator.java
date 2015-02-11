@@ -18,6 +18,10 @@ package com.helger.web.fileupload;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
+import com.helger.web.fileupload.exception.FileUploadException;
+
 /**
  * An iterator, as returned by
  * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
@@ -26,7 +30,7 @@ public interface IFileItemIterator
 {
   /**
    * Returns, whether another instance of {@link IFileItemStream} is available.
-   * 
+   *
    * @throws FileUploadException
    *         Parsing or processing the file item failed.
    * @throws IOException
@@ -38,7 +42,7 @@ public interface IFileItemIterator
 
   /**
    * Returns the next available {@link IFileItemStream}.
-   * 
+   *
    * @throws java.util.NoSuchElementException
    *         No more items are available. Use {@link #hasNext()} to prevent this
    *         exception.
@@ -49,5 +53,6 @@ public interface IFileItemIterator
    * @return FileItemStream instance, which provides access to the next file
    *         item.
    */
+  @Nonnull
   IFileItemStream next () throws FileUploadException, IOException;
 }

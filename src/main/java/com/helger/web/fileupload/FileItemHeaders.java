@@ -33,6 +33,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
+import com.helger.web.http.CHTTPHeader;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.
@@ -74,6 +75,24 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     {
       m_aRWLock.readLock ().unlock ();
     }
+  }
+
+  @Nullable
+  public String getHeaderContentDisposition ()
+  {
+    return getHeader (CHTTPHeader.CONTENT_DISPOSITION);
+  }
+
+  @Nullable
+  public String getHeaderContentType ()
+  {
+    return getHeader (CHTTPHeader.CONTENT_TYPE);
+  }
+
+  @Nullable
+  public String getHeaderContentLength ()
+  {
+    return getHeader (CHTTPHeader.CONTENT_LENGTH);
   }
 
   @Nonnull

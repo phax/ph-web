@@ -19,19 +19,18 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
-import javax.annotation.Nonnegative;
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.system.SystemHelper;
+import com.helger.web.fileupload.exception.ItemSkippedException;
 import com.helger.web.fileupload.io.ICloseable;
 import com.helger.web.fileupload.io.Streams;
 
@@ -101,81 +100,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 public final class MultipartStream
 {
-  /**
-   * Internal class, which is used to invoke the {@link IProgressListener}.
-   */
-  public static final class ProgressNotifier
-  {
-    private static final Logger s_aLogger = LoggerFactory.getLogger (MultipartStream.ProgressNotifier.class);
-    /**
-     * The listener to invoke.
-     */
-    private final IProgressListener m_aListener;
-    /**
-     * Number of expected bytes, if known, or -1.
-     */
-    private final long m_nContentLength;
-    /**
-     * Number of bytes, which have been read so far.
-     */
-    private long m_nBytesRead;
-    /**
-     * Number of items, which have been read so far.
-     */
-    private int m_nItems;
-
-    /**
-     * Creates a new instance with the given listener and content length.
-     *
-     * @param aListener
-     *        The listener to invoke.
-     * @param nContentLength
-     *        The expected content length.
-     */
-    ProgressNotifier (@Nullable final IProgressListener aListener, final long nContentLength)
-    {
-      if (aListener != null && s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("setting listener " + aListener.getClass ().getName ());
-      m_aListener = aListener;
-      m_nContentLength = nContentLength;
-    }
-
-    /**
-     * Called for notifying the listener.
-     */
-    private void _notifyListener ()
-    {
-      if (m_aListener != null)
-        m_aListener.update (m_nBytesRead, m_nContentLength, m_nItems);
-    }
-
-    /**
-     * Called to indicate that bytes have been read.
-     *
-     * @param nBytes
-     *        Number of bytes, which have been read.
-     */
-    void noteBytesRead (@Nonnegative final int nBytes)
-    {
-      ValueEnforcer.isGE0 (nBytes, "Bytes");
-      /*
-       * Indicates, that the given number of bytes have been read from the input
-       * stream.
-       */
-      m_nBytesRead += nBytes;
-      _notifyListener ();
-    }
-
-    /**
-     * Called to indicate, that a new file item has been detected.
-     */
-    void noteItem ()
-    {
-      ++m_nItems;
-      _notifyListener ();
-    }
-  }
-
   // ----------------------------------------------------- Manifest constants
 
   /**
@@ -280,7 +204,7 @@ public final class MultipartStream
   /**
    * The progress notifier, if any, or null.
    */
-  private final ProgressNotifier m_aNotifier;
+  private final MultipartProgressNotifier m_aNotifier;
 
   // ----------------------------------------------------------- Constructors
 
@@ -303,9 +227,12 @@ public final class MultipartStream
    *        The notifier, which is used for calling the progress listener, if
    *        any.
    * @see #MultipartStream(InputStream, byte[],
-   *      MultipartStream.ProgressNotifier)
+   *      MultipartStream.MultipartProgressNotifier)
    */
-  MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final ProgressNotifier aNotifier)
+  MultipartStream (final InputStream aIS,
+                   final byte [] aBoundary,
+                   final int nBufSize,
+                   final MultipartProgressNotifier aNotifier)
   {
     m_aInput = aIS;
     m_nBufSize = nBufSize;
@@ -336,9 +263,9 @@ public final class MultipartStream
    * @param aNotifier
    *        An object for calling the progress listener, if any.
    * @see #MultipartStream(InputStream, byte[], int,
-   *      MultipartStream.ProgressNotifier)
+   *      MultipartStream.MultipartProgressNotifier)
    */
-  MultipartStream (final InputStream aIS, final byte [] aBoundary, final ProgressNotifier aNotifier)
+  MultipartStream (final InputStream aIS, final byte [] aBoundary, final MultipartProgressNotifier aNotifier)
   {
     this (aIS, aBoundary, DEFAULT_BUFSIZE, aNotifier);
   }
@@ -508,7 +435,7 @@ public final class MultipartStream
         }
         catch (final IOException e)
         {
-          throw new MalformedStreamException ("Stream ended unexpectedly", e);
+          throw new MalformedStreamException ("Stream ended unexpectedly after " + nSize + " bytes", e);
         }
         if (++nSize > HEADER_PART_SIZE_MAX)
         {
@@ -523,12 +450,9 @@ public final class MultipartStream
         aBAOS.write (b);
       }
 
-      String sHeaders;
-      if (m_sHeaderEncoding != null)
-        sHeaders = aBAOS.getAsString (CharsetManager.getCharsetFromName (m_sHeaderEncoding));
-      else
-        sHeaders = aBAOS.getAsString (SystemHelper.getSystemCharset ());
-      return sHeaders;
+      final Charset aCharsetToUse = m_sHeaderEncoding != null ? CharsetManager.getCharsetFromName (m_sHeaderEncoding)
+                                                             : SystemHelper.getSystemCharset ();
+      return aBAOS.getAsString (aCharsetToUse);
     }
     finally
     {
@@ -543,8 +467,8 @@ public final class MultipartStream
    * <p>
    * Arbitrary large amounts of data can be processed by this method using a
    * constant size buffer. (see
-   * {@link #MultipartStream(InputStream,byte[],int, MultipartStream.ProgressNotifier)
-   * constructor}).
+   * {@link #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)}
+   * ).
    *
    * @param aOS
    *        The <code>Stream</code> to write data into. May be null, in which
@@ -558,8 +482,8 @@ public final class MultipartStream
   @SuppressWarnings ("javadoc")
   public int readBodyData (final OutputStream aOS) throws MalformedStreamException, IOException
   {
-    final InputStream istream = newInputStream ();
-    return (int) Streams.copy (istream, aOS, false);
+    final InputStream aIS = createInputStream ();
+    return (int) Streams.copy (aIS, aOS, false);
   }
 
   /**
@@ -568,7 +492,7 @@ public final class MultipartStream
    * @return A new instance of {@link ItemInputStream}.
    */
   @Nonnull
-  ItemInputStream newInputStream ()
+  ItemInputStream createInputStream ()
   {
     return new ItemInputStream ();
   }
@@ -656,23 +580,19 @@ public final class MultipartStream
    * Searches for a byte of specified value in the <code>buffer</code>, starting
    * at the specified <code>position</code>.
    *
-   * @param value
+   * @param nValue
    *        The value to find.
-   * @param pos
+   * @param nPos
    *        The starting position for searching.
    * @return The position of byte found, counting from beginning of the
    *         <code>buffer</code>, or <code>-1</code> if not found.
    */
-  protected int findByte (final byte value, final int pos)
+  @CheckForSigned
+  protected int findByte (final byte nValue, final int nPos)
   {
-    for (int i = pos; i < m_nTail; i++)
-    {
-      if (m_aBuffer[i] == value)
-      {
+    for (int i = nPos; i < m_nTail; i++)
+      if (m_aBuffer[i] == nValue)
         return i;
-      }
-    }
-
     return -1;
   }
 
@@ -784,6 +704,12 @@ public final class MultipartStream
    */
   public final class ItemInputStream extends InputStream implements ICloseable
   {
+
+    /**
+     * Offset when converting negative bytes to integers.
+     */
+    private static final int BYTE_POSITIVE_OFFSET = 256;
+
     /**
      * The number of bytes, which have been read so far.
      */
@@ -852,11 +778,6 @@ public final class MultipartStream
     }
 
     /**
-     * Offset when converting negative bytes to integers.
-     */
-    private static final int BYTE_POSITIVE_OFFSET = 256;
-
-    /**
      * Returns the next byte in the stream.
      *
      * @return The next byte in the stream, as a non-negative integer, or -1 for
@@ -868,7 +789,7 @@ public final class MultipartStream
     public int read () throws IOException
     {
       if (m_bClosed)
-        throw new IFileItemStream.ItemSkippedException ();
+        throw new ItemSkippedException ();
 
       if (available () == 0)
         if (_makeAvailable () == 0)
@@ -899,7 +820,7 @@ public final class MultipartStream
     public int read (final byte [] b, final int off, final int len) throws IOException
     {
       if (m_bClosed)
-        throw new IFileItemStream.ItemSkippedException ();
+        throw new ItemSkippedException ();
 
       if (len == 0)
         return 0;
@@ -979,7 +900,7 @@ public final class MultipartStream
     public long skip (final long bytes) throws IOException
     {
       if (m_bClosed)
-        throw new IFileItemStream.ItemSkippedException ();
+        throw new ItemSkippedException ();
 
       int av = available ();
       if (av == 0)

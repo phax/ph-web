@@ -47,11 +47,11 @@ import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.state.ISuccessIndicator;
-import com.helger.web.fileupload.FileUploadException;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.ParameterParser;
+import com.helger.web.fileupload.exception.FileUploadException;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

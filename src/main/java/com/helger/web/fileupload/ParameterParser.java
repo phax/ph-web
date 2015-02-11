@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ArrayHelper;
@@ -38,6 +39,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
+@NotThreadSafe
 public final class ParameterParser
 {
   /**
@@ -202,13 +204,16 @@ public final class ParameterParser
    * Sets the flag if parameter names are to be converted to lower case when
    * name/value pairs are parsed.
    *
-   * @param b
+   * @param bLowerCaseNames
    *        <tt>true</tt> if parameter names are to be converted to lower case
    *        when name/value pairs are parsed. <tt>false</tt> otherwise.
+   * @return this
    */
-  public void setLowerCaseNames (final boolean b)
+  @Nonnull
+  public ParameterParser setLowerCaseNames (final boolean bLowerCaseNames)
   {
-    m_bLowerCaseNames = b;
+    m_bLowerCaseNames = bLowerCaseNames;
+    return this;
   }
 
   /**
@@ -251,37 +256,35 @@ public final class ParameterParser
    * Extracts a map of name/value pairs from the given string. Names are
    * expected to be unique.
    *
-   * @param str
+   * @param sStr
    *        the string that contains a sequence of name/value pairs
-   * @param separator
+   * @param cSeparator
    *        the name/value pairs separator
    * @return a map of name/value pairs
    */
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String> parse (@Nullable final String str, final char separator)
+  public Map <String, String> parse (@Nullable final String sStr, final char cSeparator)
   {
-    final HashMap <String, String> params = new HashMap <String, String> ();
-    if (str != null)
+    final Map <String, String> ret = new HashMap <String, String> ();
+    if (sStr != null)
     {
-      final char [] chars = str.toCharArray ();
-      m_aChars = chars;
+      final char [] aChars = sStr.toCharArray ();
+      m_aChars = aChars;
       m_nPos = 0;
-      m_nLen = str.length ();
+      m_nLen = sStr.length ();
 
-      String sParamName = null;
-      String sParamValue = null;
       while (_hasChar ())
       {
-        sParamName = _parseToken ('=', separator);
-        sParamValue = null;
-        if (_hasChar () && chars[m_nPos] == '=')
+        String sParamName = _parseToken ('=', cSeparator);
+        String sParamValue = null;
+        if (_hasChar () && aChars[m_nPos] == '=')
         {
           // skip '='
           m_nPos++;
-          sParamValue = _parseQuotedToken (separator);
+          sParamValue = _parseQuotedToken (cSeparator);
         }
-        if (_hasChar () && chars[m_nPos] == separator)
+        if (_hasChar () && aChars[m_nPos] == cSeparator)
         {// skip separator
           m_nPos++;
         }
@@ -289,10 +292,10 @@ public final class ParameterParser
         {
           if (m_bLowerCaseNames)
             sParamName = sParamName.toLowerCase (Locale.US);
-          params.put (sParamName, sParamValue);
+          ret.put (sParamName, sParamValue);
         }
       }
     }
-    return params;
+    return ret;
   }
 }

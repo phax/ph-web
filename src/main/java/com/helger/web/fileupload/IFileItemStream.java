@@ -19,6 +19,8 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.helger.web.fileupload.exception.ItemSkippedException;
+
 /**
  * <p>
  * This interface provides access to a file or form item that was received
@@ -38,22 +40,6 @@ import java.io.InputStream;
  */
 public interface IFileItemStream extends IFileItemHeadersSupport
 {
-  /**
-   * This exception is thrown, if an attempt is made to read data from the
-   * {@link InputStream}, which has been returned by
-   * {@link IFileItemStream#openStream()}, after
-   * {@link java.util.Iterator#hasNext()} has been invoked on the iterator,
-   * which created the {@link IFileItemStream}.
-   */
-  class ItemSkippedException extends IOException
-  {
-    /**
-     * The exceptions serial version UID, which is being used when serializing
-     * an exception instance.
-     */
-    private static final long serialVersionUID = -7280778431581963740L;
-  }
-
   /**
    * Creates an {@link InputStream}, which allows to read the items contents.
    *

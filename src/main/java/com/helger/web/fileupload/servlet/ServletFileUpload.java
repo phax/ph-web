@@ -18,17 +18,16 @@ package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.web.fileupload.FileUpload;
-import com.helger.web.fileupload.FileUploadException;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemIterator;
+import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.servlet.request.RequestHelper;
 
@@ -48,7 +47,7 @@ import com.helger.web.servlet.request.RequestHelper;
  * How the data for individual parts is stored is determined by the factory used
  * to create them; a given part may be in memory, on disk, or somewhere else.
  * </p>
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
@@ -62,41 +61,37 @@ public class ServletFileUpload extends FileUpload
   /**
    * Utility method that determines whether the request contains multipart
    * content.
-   * 
-   * @param request
+   *
+   * @param aHttpRequest
    *        The servlet request to be evaluated. Must be non-null.
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest request)
+  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    if (RequestHelper.getHttpMethod (request) != EHTTPMethod.POST)
+    if (RequestHelper.getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
       return false;
 
-    final String sContentType = request.getContentType ();
-    if (sContentType == null)
-      return false;
-
-    return sContentType.toLowerCase (Locale.US).startsWith (MULTIPART);
+    return isMultipartContent (aHttpRequest.getContentType ());
   }
 
   /**
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
-   * 
-   * @param fileItemFactory
+   *
+   * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
-  public ServletFileUpload (final IFileItemFactory fileItemFactory)
+  public ServletFileUpload (final IFileItemFactory aFileItemFactory)
   {
-    super (fileItemFactory);
+    super (aFileItemFactory);
   }
 
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
-   * 
-   * @param request
+   *
+   * @param aHttpRequest
    *        The servlet request to be parsed.
    * @return A list of <code>FileItem</code> instances parsed from the request,
    *         in the order that they were transmitted.
@@ -105,16 +100,16 @@ public class ServletFileUpload extends FileUpload
    */
   @Nonnull
   @ReturnsMutableCopy
-  public List <IFileItem> parseRequest (@Nonnull final HttpServletRequest request) throws FileUploadException
+  public List <IFileItem> parseRequest (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException
   {
-    return parseRequest (new ServletRequestContext (request));
+    return parseRequest (new ServletRequestContext (aHttpRequest));
   }
 
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
-   * 
-   * @param request
+   *
+   * @param aHttpRequest
    *        The servlet request to be parsed.
    * @return An iterator to instances of <code>FileItemStream</code> parsed from
    *         the request, in the order that they were transmitted.
@@ -126,9 +121,9 @@ public class ServletFileUpload extends FileUpload
    *         uploaded content.
    */
   @Nonnull
-  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest request) throws FileUploadException,
-                                                                                      IOException
+  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException,
+                                                                                           IOException
   {
-    return super.getItemIterator (new ServletRequestContext (request));
+    return super.getItemIterator (new ServletRequestContext (aHttpRequest));
   }
 }

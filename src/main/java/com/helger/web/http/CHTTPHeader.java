@@ -20,7 +20,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotations.PresentForCodeCoverage;
 
-// ESCA-JAVA0116:
 /**
  * HTTP header constants.
  *
@@ -39,6 +38,7 @@ public final class CHTTPHeader
   public static final String CONTENT_DISPOSITION = "Content-Disposition";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String CONTENT_TYPE = "Content-Type";
+  public static final String COOKIE = "Cookie";
   public static final String DATE = "Date";
   public static final String ETAG = "ETag";
   public static final String EXPIRES = "Expires";

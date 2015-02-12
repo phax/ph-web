@@ -38,8 +38,6 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.io.file.FileUtils;
-import com.helger.commons.io.file.SimpleFileIO;
-import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
 import com.helger.commons.microdom.impl.MicroDocument;
@@ -47,8 +45,6 @@ import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.xml.serialize.IXMLWriterSettings;
-import com.helger.commons.xml.serialize.XMLWriterSettings;
-import com.helger.web.CWebCharset;
 import com.helger.web.datetime.PDTWebDateUtils;
 import com.helger.web.servlet.server.StaticServerInfo;
 
@@ -56,7 +52,7 @@ import com.helger.web.servlet.server.StaticServerInfo;
  * Contains a set of {@link XMLSitemapURLSet} objects. Necessary to group
  * multiple sitemaps when the number of URLs or the total size of a single URL
  * set is exceeded.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -82,7 +78,7 @@ public final class XMLSitemapIndex implements Serializable
 
   /**
    * Constructor
-   * 
+   *
    * @param bUseGZip
    *        If <code>true</code> all contained URL sets are written to disk
    *        using the GZip algorithm
@@ -152,7 +148,7 @@ public final class XMLSitemapIndex implements Serializable
 
   /**
    * Get the name of the sitemap file at the specified index
-   * 
+   *
    * @param nIndex
    *        The index to be used. Should be ge; 0.
    * @return The name of the sitemap file. Neither <code>null</code> nor empty.
@@ -236,11 +232,11 @@ public final class XMLSitemapIndex implements Serializable
     }
 
     // Write base file
-    if (SimpleFileIO.writeFile (new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
-                                getAsXMLString (),
-                                CWebCharset.CHARSET_XML_OBJ).isFailure ())
+    if (MicroWriter.writeToFile (getAsDocument (),
+                                 new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
+                                 getXMLWriterSettings ()).isFailure ())
     {
-      s_aLogger.error ("Failed to write sitemap.xml file!");
+      s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
       return ESuccess.FAILURE;
     }
 
@@ -251,8 +247,7 @@ public final class XMLSitemapIndex implements Serializable
       final String sFilename = getSitemapFilename (nIndex);
       final File aFile = new File (aBaseDir, sFilename);
       final OutputStream aOS = _createOutputStream (aFile);
-      if (StreamUtils.writeStream (aOS, aURLSet.getAsXMLString (), XMLWriterSettings.DEFAULT_XML_CHARSET_OBJ)
-                     .isFailure ())
+      if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, getXMLWriterSettings ()).isFailure ())
       {
         s_aLogger.error ("Failed to write single sitemap file " + aFile);
         return ESuccess.FAILURE;

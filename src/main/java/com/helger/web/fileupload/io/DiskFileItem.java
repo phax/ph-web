@@ -214,8 +214,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     if (!FileUtils.existsDir (m_aTempDir))
       throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " +
                                           m_aTempDir.getAbsolutePath ());
-    if (!FileUtils.canReadAndWriteFile (m_aTempDir))
-      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read or write: " +
+    if (!FileUtils.canRead (m_aTempDir))
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " +
+                                          m_aTempDir.getAbsolutePath ());
+    if (!FileUtils.canWrite (m_aTempDir))
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " +
                                           m_aTempDir.getAbsolutePath ());
   }
 

@@ -96,8 +96,6 @@ public abstract class AbstractFileUploadBase
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractFileUploadBase.class);
 
-  // ----------------------------------------------------------- Data members
-
   /**
    * The maximum size permitted for the complete request, as opposed to
    * {@link #m_nFileSizeMax}. A value of -1 indicates no maximum.
@@ -138,8 +136,6 @@ public abstract class AbstractFileUploadBase
   {
     return sContentType != null && sContentType.toLowerCase (Locale.US).startsWith (MULTIPART);
   }
-
-  // ----------------------------------------------------- Property accessors
 
   /**
    * Returns the factory class used when creating file items.

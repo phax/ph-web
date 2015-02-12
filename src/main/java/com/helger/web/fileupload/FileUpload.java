@@ -29,7 +29,7 @@ package com.helger.web.fileupload;
  * How the data for individual parts is stored is determined by the factory used
  * to create them; a given part may be in memory, on disk, or somewhere else.
  * </p>
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
@@ -48,7 +48,7 @@ public class FileUpload extends AbstractFileUploadBase
   /**
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
-   * 
+   *
    * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
@@ -58,11 +58,9 @@ public class FileUpload extends AbstractFileUploadBase
     m_aFileItemFactory = aFileItemFactory;
   }
 
-  // ----------------------------------------------------- Property accessors
-
   /**
    * Returns the factory class used when creating file items.
-   * 
+   *
    * @return The factory class for new file items.
    */
   @Override

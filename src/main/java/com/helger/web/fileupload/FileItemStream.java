@@ -13,7 +13,7 @@ import com.helger.commons.io.file.FilenameHelper;
 import com.helger.web.fileupload.MultipartStream.ItemInputStream;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
-import com.helger.web.fileupload.exception.ItemSkippedException;
+import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.fileupload.io.ICloseable;
 import com.helger.web.fileupload.io.Streams;
@@ -90,9 +90,9 @@ final class FileItemStream implements IFileItemStream, Closeable
                                                                                           nFileSizeMax +
                                                                                           " bytes.",
                                                                                       nContentLength,
-                                                                                      nFileSizeMax);
-        ex.setFileName (sName);
-        ex.setFieldName (sFieldName);
+                                                                                      nFileSizeMax,
+                                                                                      sFieldName,
+                                                                                      sName);
         throw new FileUploadIOException (ex);
       }
 
@@ -109,9 +109,10 @@ final class FileItemStream implements IFileItemStream, Closeable
                                                                                             nSizeMax +
                                                                                             " bytes.",
                                                                                         nCount,
-                                                                                        nSizeMax);
-          ex.setFieldName (m_sFieldName);
-          ex.setFileName (m_sName);
+                                                                                        nSizeMax,
+                                                                                        m_sFieldName,
+                                                                                        m_sFieldName);
+          // Wrap as IO exception ;|
           throw new FileUploadIOException (ex);
         }
       };
@@ -178,7 +179,7 @@ final class FileItemStream implements IFileItemStream, Closeable
   public InputStream openStream () throws IOException
   {
     if (((ICloseable) m_aIS).isClosed ())
-      throw new ItemSkippedException ();
+      throw new MultipartItemSkippedException ();
     return m_aIS;
   }
 

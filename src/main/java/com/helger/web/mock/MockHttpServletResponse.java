@@ -137,7 +137,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * Set whether {@link #getWriter()} access is allowed.
    * <p>
    * Default is <code>true</code>.
-   * 
+   *
    * @param bWriterAccessAllowed
    *        <code>true</code> to enabled
    */
@@ -352,10 +352,6 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   {
     return m_aLocale;
   }
-
-  // ---------------------------------------------------------------------
-  // HttpServletResponse interface
-  // ---------------------------------------------------------------------
 
   public void addCookie (@Nonnull final Cookie aCookie)
   {

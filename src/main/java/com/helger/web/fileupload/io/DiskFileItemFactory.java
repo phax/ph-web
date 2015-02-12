@@ -142,20 +142,20 @@ public class DiskFileItemFactory implements IFileItemFactory
    */
   @Nonnull
   public DiskFileItem createItem (final String sFieldName,
-                                  final String sContentType,
+                                  @Nullable final String sContentType,
                                   final boolean bIsFormField,
-                                  final String sFileName)
+                                  @Nullable final String sFileName)
   {
-    final DiskFileItem result = new DiskFileItem (sFieldName,
-                                                  sContentType,
-                                                  bIsFormField,
-                                                  sFileName,
-                                                  m_nSizeThreshold,
-                                                  m_aRepository);
+    final DiskFileItem aFileItem = new DiskFileItem (sFieldName,
+                                                     sContentType,
+                                                     bIsFormField,
+                                                     sFileName,
+                                                     m_nSizeThreshold,
+                                                     m_aRepository);
     // Add the temp file - may be non-existing if the size is below the
     // threshold
-    _addTempFile (result.getTempFile ());
-    return result;
+    _addTempFile (aFileItem.getTempFile ());
+    return aFileItem;
   }
 
   @Nonnull
@@ -187,13 +187,13 @@ public class DiskFileItemFactory implements IFileItemFactory
       m_aRWLock.writeLock ().unlock ();
     }
 
-    for (final File aFile : aTempFiles)
+    for (final File aTempFile : aTempFiles)
     {
-      final FileIOError aIOError = FileOperations.deleteFileIfExisting (aFile);
+      final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
       {
-        s_aLogger.error ("Failed to delete temporary file " + aFile + " with error " + aIOError.toString ());
-        _addTempFile (aFile);
+        s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        _addTempFile (aTempFile);
       }
     }
   }

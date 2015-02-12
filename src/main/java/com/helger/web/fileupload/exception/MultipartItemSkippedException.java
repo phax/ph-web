@@ -12,8 +12,8 @@ import com.helger.web.fileupload.IFileItemStream;
  * {@link java.util.Iterator#hasNext()} has been invoked on the iterator, which
  * created the {@link IFileItemStream}.
  */
-public class ItemSkippedException extends IOException
+public class MultipartItemSkippedException extends IOException
 {
-  public ItemSkippedException ()
+  public MultipartItemSkippedException ()
   {}
 }

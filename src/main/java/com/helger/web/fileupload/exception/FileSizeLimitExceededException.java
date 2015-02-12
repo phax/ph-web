@@ -8,29 +8,39 @@ import javax.annotation.Nullable;
 public class FileSizeLimitExceededException extends AbstractSizeException
 {
   /**
-   * File name of the item, which caused the exception.
-   */
-  private String m_sFilename;
-
-  /**
    * Field name of the item, which caused the exception.
    */
-  private String m_sFieldName;
+  private final String m_sFieldName;
+
+  /**
+   * File name of the item, which caused the exception.
+   */
+  private final String m_sFilename;
 
   /**
    * Constructs a <code>SizeExceededException</code> with the specified detail
    * message, and actual and permitted sizes.
    *
-   * @param message
+   * @param sMsg
    *        The detail message.
-   * @param actual
+   * @param nActual
    *        The actual request size.
-   * @param permitted
+   * @param nPermitted
    *        The maximum permitted request size.
+   * @param sFieldName
+   *        Field name of the item, which caused the exception.
+   * @param sFilename
+   *        File name of the item, which caused the exception.
    */
-  public FileSizeLimitExceededException (final String message, final long actual, final long permitted)
+  public FileSizeLimitExceededException (final String sMsg,
+                                         final long nActual,
+                                         final long nPermitted,
+                                         @Nullable final String sFieldName,
+                                         @Nullable final String sFilename)
   {
-    super (message, actual, permitted);
+    super (sMsg, nActual, nPermitted);
+    m_sFieldName = sFieldName;
+    m_sFilename = sFilename;
   }
 
   /**
@@ -45,17 +55,6 @@ public class FileSizeLimitExceededException extends AbstractSizeException
   }
 
   /**
-   * Sets the file name of the item, which caused the exception.
-   *
-   * @param sFilename
-   *        File name
-   */
-  public void setFileName (@Nullable final String sFilename)
-  {
-    m_sFilename = sFilename;
-  }
-
-  /**
    * Returns the field name of the item, which caused the exception.
    *
    * @return Field name, if known, or null.
@@ -64,16 +63,5 @@ public class FileSizeLimitExceededException extends AbstractSizeException
   public String getFieldName ()
   {
     return m_sFieldName;
-  }
-
-  /**
-   * Sets the field name of the item, which caused the exception.
-   *
-   * @param sFieldName
-   *        Field name
-   */
-  public void setFieldName (@Nullable final String sFieldName)
-  {
-    m_sFieldName = sFieldName;
   }
 }

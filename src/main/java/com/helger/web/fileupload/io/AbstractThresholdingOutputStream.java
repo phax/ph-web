@@ -192,8 +192,6 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
     return m_nWritten > m_nThreshold;
   }
 
-  // ------------------------------------------------------ Protected methods
-
   /**
    * Checks to see if writing the specified number of bytes would cause the
    * configured threshold to be exceeded. If so, triggers an event to allow a

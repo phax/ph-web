@@ -44,6 +44,7 @@ import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collections.ArrayHelper;
 import com.helger.commons.equals.EqualsUtils;
+import com.helger.commons.io.file.FileIOError;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.io.file.FilenameHelper;
@@ -111,7 +112,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Counter used in unique identifier generation.
    */
-  private static final AtomicInteger s_aCounter = new AtomicInteger (0);
+  private static final AtomicInteger s_aTempFileCounter = new AtomicInteger (0);
 
   /**
    * The name of the form field as provided by the browser.
@@ -273,6 +274,37 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     aOS.close ();
 
     m_aCachedContent = null;
+  }
+
+  /**
+   * @return The base directory for all temporary files.
+   */
+  @Nonnull
+  public final File getTempDirectory ()
+  {
+    return m_aTempDir;
+  }
+
+  /**
+   * Creates and returns a {@link File} representing a uniquely named temporary
+   * file in the configured repository path. The lifetime of the file is tied to
+   * the lifetime of the <code>FileItem</code> instance; the file will be
+   * deleted when the instance is garbage collected.
+   *
+   * @return The {@link File} to be used for temporary storage.
+   */
+  @Nonnull
+  protected File getTempFile ()
+  {
+    if (m_aTempFile == null)
+    {
+      // If you manage to get more than 100 million of ids, you'll
+      // start getting ids longer than 8 characters.
+      final String sUniqueID = StringHelper.getLeadingZero (s_aTempFileCounter.getAndIncrement (), 8);
+      final String sTempFileName = "upload_" + UID + "_" + sUniqueID + ".tmp";
+      m_aTempFile = new File (m_aTempDir, sTempFileName);
+    }
+    return m_aTempFile;
   }
 
   private void _ensureCachedContentIsPresent ()
@@ -509,9 +541,13 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public void delete ()
   {
     m_aCachedContent = null;
-    final File aStoreFile = getStoreLocation ();
-    if (aStoreFile != null && aStoreFile.exists ())
-      FileOperations.deleteFile (aStoreFile);
+    final File aTempFile = getStoreLocation ();
+    if (aTempFile != null)
+    {
+      final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
+      if (aIOError.isFailure ())
+        s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+    }
   }
 
   /**
@@ -615,39 +651,10 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Override
   protected void finalize () throws Throwable
   {
-    final File outputFile = m_aDFOS.getFile ();
-    if (outputFile != null && outputFile.exists ())
-      FileOperations.deleteFile (outputFile);
+    FileOperations.deleteFileIfExisting (m_aDFOS.getFile ());
     super.finalize ();
   }
 
-  /**
-   * Creates and returns a {@link java.io.File File} representing a uniquely
-   * named temporary file in the configured repository path. The lifetime of the
-   * file is tied to the lifetime of the <code>FileItem</code> instance; the
-   * file will be deleted when the instance is garbage collected.
-   *
-   * @return The {@link java.io.File File} to be used for temporary storage.
-   */
-  @Nonnull
-  protected File getTempFile ()
-  {
-    if (m_aTempFile == null)
-    {
-      // If you manage to get more than 100 million of ids, you'll
-      // start getting ids longer than 8 characters.
-      final String sUniqueID = StringHelper.getLeadingZero (s_aCounter.getAndIncrement (), 8);
-      final String sTempFileName = "upload_" + UID + "_" + sUniqueID + ".tmp";
-      m_aTempFile = new File (m_aTempDir, sTempFileName);
-    }
-    return m_aTempFile;
-  }
-
-  /**
-   * Returns a string representation of this object.
-   *
-   * @return a string representation of this object.
-   */
   @Override
   public String toString ()
   {

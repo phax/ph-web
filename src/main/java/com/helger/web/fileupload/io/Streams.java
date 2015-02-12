@@ -19,6 +19,7 @@ package com.helger.web.fileupload.io;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.string.StringHelper;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
@@ -51,13 +52,8 @@ public final class Streams
   {
     if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {
-      final StringBuilder aSB = new StringBuilder ();
-      for (final char c : sFilename.toCharArray ())
-        if (c == 0)
-          aSB.append ("\\0");
-        else
-          aSB.append (c);
-      throw new InvalidFileNameException (sFilename, "Invalid filename: " + aSB.toString ());
+      throw new InvalidFileNameException (sFilename, "Invalid filename: " +
+                                                     StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
     }
     return sFilename;
   }

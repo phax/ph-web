@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import javax.activation.DataSource;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -58,8 +59,6 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  */
 public interface IFileItem extends Serializable, DataSource
 {
-  // ------------------------------- Methods from javax.activation.DataSource
-
   /**
    * @return An {@link InputStream} that can be used to retrieve the contents of
    *         the file.
@@ -95,8 +94,6 @@ public interface IFileItem extends Serializable, DataSource
    */
   @Nullable
   String getName () throws InvalidFileNameException;
-
-  // ------------------------------------------------------- FileItem methods
 
   /**
    * Returns the original filename in the client's filesystem, as provided by
@@ -136,15 +133,12 @@ public interface IFileItem extends Serializable, DataSource
   boolean isInMemory ();
 
   /**
-   * Returns the size of the file item.
-   *
    * @return The size of the file item, in bytes.
    */
+  @Nonnegative
   long getSize ();
 
   /**
-   * Returns the contents of the file item as an array of bytes.
-   *
    * @return The contents of the file item as an array of bytes.
    */
   byte [] get ();
@@ -183,6 +177,7 @@ public interface IFileItem extends Serializable, DataSource
    *
    * @return The contents of the item, as a string.
    */
+  @Nonnull
   String getString ();
 
   /**
@@ -196,14 +191,14 @@ public interface IFileItem extends Serializable, DataSource
    * file renaming, where possible, rather than copying all of the underlying
    * data, thus gaining a significant performance benefit.
    *
-   * @param file
+   * @param aDstFile
    *        The <code>File</code> into which the uploaded item should be stored.
    * @return Never null
    * @throws FileUploadException
    *         if an error occurs.
    */
   @Nonnull
-  ISuccessIndicator write (@Nonnull File file) throws FileUploadException;
+  ISuccessIndicator write (@Nonnull File aDstFile) throws FileUploadException;
 
   /**
    * Deletes the underlying storage for a file item, including deleting any
@@ -225,10 +220,10 @@ public interface IFileItem extends Serializable, DataSource
   /**
    * Sets the field name used to reference this file item.
    *
-   * @param name
+   * @param sFieldName
    *        The name of the form field.
    */
-  void setFieldName (String name);
+  void setFieldName (String sFieldName);
 
   /**
    * Determines whether or not a <code>FileItem</code> instance represents a
@@ -243,9 +238,9 @@ public interface IFileItem extends Serializable, DataSource
    * Specifies whether or not a <code>FileItem</code> instance represents a
    * simple form field.
    *
-   * @param state
+   * @param bIsFormField
    *        <code>true</code> if the instance represents a simple form field;
    *        <code>false</code> if it represents an uploaded file.
    */
-  void setFormField (boolean state);
+  void setFormField (boolean bIsFormField);
 }

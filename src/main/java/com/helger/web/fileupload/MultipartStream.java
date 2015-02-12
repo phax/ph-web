@@ -29,7 +29,9 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.fileupload.exception.ItemSkippedException;
+import com.helger.web.fileupload.exception.MultipartItemSkippedException;
+import com.helger.web.fileupload.exception.MultipartIllegalBoundaryException;
+import com.helger.web.fileupload.exception.MultipartMalformedStreamException;
 import com.helger.web.fileupload.io.ICloseable;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -98,8 +100,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 public final class MultipartStream
 {
-  // ----------------------------------------------------- Manifest constants
-
   /**
    * The Carriage Return ASCII character value.
    */
@@ -148,8 +148,6 @@ public final class MultipartStream
    * A byte sequence that precedes a boundary (<code>CRLF--</code>).
    */
   private static final byte [] BOUNDARY_PREFIX = { CR, LF, DASH, DASH };
-
-  // ----------------------------------------------------------- Data members
 
   /**
    * The input stream from which data is read.
@@ -203,8 +201,6 @@ public final class MultipartStream
    * The progress notifier, if any, or null.
    */
   private final MultipartProgressNotifier m_aNotifier;
-
-  // ----------------------------------------------------------- Constructors
 
   /**
    * <p>
@@ -268,8 +264,6 @@ public final class MultipartStream
     this (aIS, aBoundary, DEFAULT_BUFSIZE, aNotifier);
   }
 
-  // --------------------------------------------------------- Public methods
-
   /**
    * Retrieves the character encoding used when reading the headers of an
    * individual part. When not specified, or <code>null</code>, the platform
@@ -330,10 +324,10 @@ public final class MultipartStream
    *
    * @return <code>true</code> if there are more encapsulations in this stream;
    *         <code>false</code> otherwise.
-   * @throws MalformedStreamException
+   * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly or fails to follow required syntax.
    */
-  public boolean readBoundary () throws MalformedStreamException
+  public boolean readBoundary () throws MultipartMalformedStreamException
   {
     final byte [] marker = new byte [2];
     boolean bNextChunk = false;
@@ -365,12 +359,12 @@ public final class MultipartStream
         }
         else
         {
-          throw new MalformedStreamException ("Unexpected characters follow a boundary");
+          throw new MultipartMalformedStreamException ("Unexpected characters follow a boundary");
         }
     }
     catch (final IOException ex)
     {
-      throw new MalformedStreamException ("Stream ended unexpectedly", ex);
+      throw new MultipartMalformedStreamException ("Stream ended unexpectedly", ex);
     }
     return bNextChunk;
   }
@@ -389,15 +383,15 @@ public final class MultipartStream
    *
    * @param aBoundary
    *        The boundary to be used for parsing of the nested stream.
-   * @throws IllegalBoundaryException
+   * @throws MultipartIllegalBoundaryException
    *         if the <code>boundary</code> has a different length than the one
    *         being currently parsed.
    */
-  public void setBoundary (@Nonnull final byte [] aBoundary) throws IllegalBoundaryException
+  public void setBoundary (@Nonnull final byte [] aBoundary) throws MultipartIllegalBoundaryException
   {
     ValueEnforcer.notNull (aBoundary, "Boundary");
     if (aBoundary.length != m_nBoundaryLength - BOUNDARY_PREFIX.length)
-      throw new IllegalBoundaryException ("The length of a boundary token can not be changed");
+      throw new MultipartIllegalBoundaryException ("The length of a boundary token can not be changed");
     System.arraycopy (aBoundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, aBoundary.length);
   }
 
@@ -413,10 +407,10 @@ public final class MultipartStream
    * abuse.
    *
    * @return The <code>header-part</code> of the current encapsulation.
-   * @throws MalformedStreamException
+   * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    */
-  public String readHeaders () throws MalformedStreamException
+  public String readHeaders () throws MultipartMalformedStreamException
   {
     // to support multi-byte characters
     final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ();
@@ -433,13 +427,13 @@ public final class MultipartStream
         }
         catch (final IOException e)
         {
-          throw new MalformedStreamException ("Stream ended unexpectedly after " + nSize + " bytes", e);
+          throw new MultipartMalformedStreamException ("Stream ended unexpectedly after " + nSize + " bytes", e);
         }
         if (++nSize > HEADER_PART_SIZE_MAX)
         {
-          throw new MalformedStreamException ("Header section has more than " +
-                                              HEADER_PART_SIZE_MAX +
-                                              " bytes (maybe it is not properly terminated)");
+          throw new MultipartMalformedStreamException ("Header section has more than " +
+                                                       HEADER_PART_SIZE_MAX +
+                                                       " bytes (maybe it is not properly terminated)");
         }
         if (b == HEADER_SEPARATOR[nHeaderSepIndex])
           nHeaderSepIndex++;
@@ -472,13 +466,13 @@ public final class MultipartStream
    *        The <code>Stream</code> to write data into. May be null, in which
    *        case this method is equivalent to {@link #discardBodyData()}.
    * @return the amount of data written.
-   * @throws MalformedStreamException
+   * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    * @throws IOException
    *         if an i/o error occurs.
    */
   @SuppressWarnings ("javadoc")
-  public int readBodyData () throws MalformedStreamException, IOException
+  public int readBodyData () throws MultipartMalformedStreamException, IOException
   {
     final InputStream aIS = createInputStream ();
     final byte [] aBuffer = new byte [8192];
@@ -513,12 +507,12 @@ public final class MultipartStream
    * Use this method to skip encapsulations you don't need or don't understand.
    *
    * @return The amount of data discarded.
-   * @throws MalformedStreamException
+   * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    * @throws IOException
    *         if an i/o error occurs.
    */
-  public int discardBodyData () throws MalformedStreamException, IOException
+  public int discardBodyData () throws MultipartMalformedStreamException, IOException
   {
     return readBodyData ();
   }
@@ -545,7 +539,7 @@ public final class MultipartStream
       // encapsulation.
       return readBoundary ();
     }
-    catch (final MalformedStreamException e)
+    catch (final MultipartMalformedStreamException e)
     {
       return false;
     }
@@ -639,80 +633,10 @@ public final class MultipartStream
   }
 
   /**
-   * Thrown to indicate that the input stream fails to follow the required
-   * syntax.
-   */
-  public static final class MalformedStreamException extends IOException
-  {
-    /**
-     * Constructs a <code>MalformedStreamException</code> with no detail
-     * message.
-     */
-    public MalformedStreamException ()
-    {
-      super ();
-    }
-
-    /**
-     * Constructs an <code>MalformedStreamException</code> with the specified
-     * detail message.
-     *
-     * @param message
-     *        The detail message.
-     */
-    public MalformedStreamException (final String message)
-    {
-      super (message);
-    }
-
-    /**
-     * Constructs an <code>MalformedStreamException</code> with the specified
-     * detail message.
-     *
-     * @param message
-     *        The detail message.
-     * @param aCause
-     *        The cause of the exception
-     */
-    public MalformedStreamException (final String message, final Throwable aCause)
-    {
-      super (message, aCause);
-    }
-  }
-
-  /**
-   * Thrown upon attempt of setting an invalid boundary token.
-   */
-  public static final class IllegalBoundaryException extends IOException
-  {
-    /**
-     * Constructs an <code>IllegalBoundaryException</code> with no detail
-     * message.
-     */
-    public IllegalBoundaryException ()
-    {
-      super ();
-    }
-
-    /**
-     * Constructs an <code>IllegalBoundaryException</code> with the specified
-     * detail message.
-     *
-     * @param message
-     *        The detail message.
-     */
-    public IllegalBoundaryException (final String message)
-    {
-      super (message);
-    }
-  }
-
-  /**
    * An {@link InputStream} for reading an items contents.
    */
   public final class ItemInputStream extends InputStream implements ICloseable
   {
-
     /**
      * Offset when converting negative bytes to integers.
      */
@@ -797,7 +721,7 @@ public final class MultipartStream
     public int read () throws IOException
     {
       if (m_bClosed)
-        throw new ItemSkippedException ();
+        throw new MultipartItemSkippedException ();
 
       if (available () == 0)
         if (_makeAvailable () == 0)
@@ -828,7 +752,7 @@ public final class MultipartStream
     public int read (final byte [] b, final int off, final int len) throws IOException
     {
       if (m_bClosed)
-        throw new ItemSkippedException ();
+        throw new MultipartItemSkippedException ();
 
       if (len == 0)
         return 0;
@@ -898,17 +822,17 @@ public final class MultipartStream
     /**
      * Skips the given number of bytes.
      *
-     * @param bytes
+     * @param nBytes
      *        Number of bytes to skip.
      * @return The number of bytes, which have actually been skipped.
      * @throws IOException
      *         An I/O error occurred.
      */
     @Override
-    public long skip (final long bytes) throws IOException
+    public long skip (final long nBytes) throws IOException
     {
       if (m_bClosed)
-        throw new ItemSkippedException ();
+        throw new MultipartItemSkippedException ();
 
       int av = available ();
       if (av == 0)
@@ -917,7 +841,7 @@ public final class MultipartStream
         if (av == 0)
           return 0;
       }
-      final long res = Math.min (av, bytes);
+      final long res = Math.min (av, nBytes);
       m_nHead += res;
       return res;
     }
@@ -950,12 +874,10 @@ public final class MultipartStream
           // The last pad amount is left in the buffer.
           // Boundary can't be in there so signal an error
           // condition.
-          throw new MalformedStreamException ("Stream ended unexpectedly");
+          throw new MultipartMalformedStreamException ("Stream ended unexpectedly");
         }
         if (m_aNotifier != null)
-        {
           m_aNotifier.noteBytesRead (nBytesRead);
-        }
         m_nTail += nBytesRead;
 
         _findSeparator ();

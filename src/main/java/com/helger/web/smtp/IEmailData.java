@@ -39,7 +39,13 @@ public interface IEmailData extends IReadonlyEmailData, IAttributeContainer
   IEmailData setEmailType (@Nonnull EEmailType eType);
 
   @Nonnull
+  IEmailData setFrom (@Nullable String sFromAddress);
+
+  @Nonnull
   IEmailData setFrom (@Nullable IEmailAddress aFrom);
+
+  @Nonnull
+  IEmailData setReplyTo (@Nullable String sReplyToAddress);
 
   @Nonnull
   IEmailData setReplyTo (@Nullable IEmailAddress aReplyTo);
@@ -51,6 +57,9 @@ public interface IEmailData extends IReadonlyEmailData, IAttributeContainer
   IEmailData setReplyTo (@Nullable List <? extends IEmailAddress> aTo);
 
   @Nonnull
+  IEmailData setTo (@Nullable String sToAddress);
+
+  @Nonnull
   IEmailData setTo (@Nullable IEmailAddress aTo);
 
   @Nonnull
@@ -60,6 +69,9 @@ public interface IEmailData extends IReadonlyEmailData, IAttributeContainer
   IEmailData setTo (@Nullable List <? extends IEmailAddress> aTo);
 
   @Nonnull
+  IEmailData setCc (@Nullable String sCcAddress);
+
+  @Nonnull
   IEmailData setCc (@Nullable IEmailAddress aCc);
 
   @Nonnull
@@ -67,6 +79,9 @@ public interface IEmailData extends IReadonlyEmailData, IAttributeContainer
 
   @Nonnull
   IEmailData setCc (@Nullable List <? extends IEmailAddress> aCc);
+
+  @Nonnull
+  IEmailData setBcc (@Nullable String sBccAddress);
 
   @Nonnull
   IEmailData setBcc (@Nullable IEmailAddress aBcc);

@@ -34,6 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ContainerHelper;
 import com.helger.commons.collections.attrs.MapBasedAttributeContainer;
+import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsUtils;
 import com.helger.commons.hash.HashCodeGenerator;
@@ -84,6 +85,12 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
   }
 
   @Nonnull
+  public final EmailData setFrom (@Nullable final String sFromAddress)
+  {
+    return setFrom (sFromAddress == null ? null : new EmailAddress (sFromAddress));
+  }
+
+  @Nonnull
   public final EmailData setFrom (@Nullable final IEmailAddress sFrom)
   {
     m_aFrom = sFrom;
@@ -94,6 +101,12 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
   public IEmailAddress getFrom ()
   {
     return m_aFrom;
+  }
+
+  @Nonnull
+  public EmailData setReplyTo (@Nullable final String sReplyToAddress)
+  {
+    return setReplyTo (sReplyToAddress == null ? null : new EmailAddress (sReplyToAddress));
   }
 
   @Nonnull
@@ -184,6 +197,12 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
   }
 
   @Nonnull
+  public final EmailData setTo (@Nullable final String sToAddress)
+  {
+    return setTo (sToAddress == null ? null : new EmailAddress (sToAddress));
+  }
+
+  @Nonnull
   public final EmailData setTo (@Nullable final IEmailAddress aTo)
   {
     m_aTo.clear ();
@@ -244,6 +263,12 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
   }
 
   @Nonnull
+  public final EmailData setCc (@Nullable final String sCcAddress)
+  {
+    return setCc (sCcAddress == null ? null : new EmailAddress (sCcAddress));
+  }
+
+  @Nonnull
   public final EmailData setCc (@Nullable final IEmailAddress aCc)
   {
     m_aCc.clear ();
@@ -301,6 +326,12 @@ public class EmailData extends MapBasedAttributeContainer implements IEmailData
   public int getCcCount ()
   {
     return m_aCc.size ();
+  }
+
+  @Nonnull
+  public final EmailData setBcc (@Nullable final String sBccAddress)
+  {
+    return setBcc (sBccAddress == null ? null : new EmailAddress (sBccAddress));
   }
 
   @Nonnull

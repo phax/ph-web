@@ -20,10 +20,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.scopes.ScopeUtils;
-import com.helger.scopes.domain.ISessionScope;
-import com.helger.scopes.mgr.ScopeManager;
-import com.helger.scopes.spi.ScopeSPIManager;
+import com.helger.commons.scopes.ScopeUtils;
+import com.helger.commons.scopes.domain.ISessionScope;
+import com.helger.commons.scopes.mgr.ScopeManager;
+import com.helger.commons.scopes.spi.ScopeSPIManager;
 import com.helger.webscopes.mock.WebScopeAwareTestSetup;
 
 /**

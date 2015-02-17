@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotations.Nonempty;
-import com.helger.scopes.impl.ApplicationScope;
+import com.helger.commons.scopes.impl.ApplicationScope;
 import com.helger.webscopes.domain.IApplicationWebScope;
 
 /**

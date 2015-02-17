@@ -31,8 +31,8 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import com.helger.scopes.IScopeRenewalAware;
-import com.helger.scopes.mgr.ScopeSessionManager;
+import com.helger.commons.scopes.IScopeRenewalAware;
+import com.helger.commons.scopes.mgr.ScopeSessionManager;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.webscopes.domain.ISessionApplicationWebScope;
 import com.helger.webscopes.domain.ISessionWebScope;

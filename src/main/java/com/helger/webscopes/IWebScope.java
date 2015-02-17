@@ -16,7 +16,7 @@
  */
 package com.helger.webscopes;
 
-import com.helger.scopes.IScope;
+import com.helger.commons.scopes.IScope;
 
 /**
  * Base interface for web scopes. This is only a marker interface and offers no

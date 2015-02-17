@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.DevelopersNote;
 import com.helger.commons.lang.CGStringHelper;
-import com.helger.scopes.ScopeUtils;
-import com.helger.scopes.domain.ISessionApplicationScope;
+import com.helger.commons.scopes.ScopeUtils;
+import com.helger.commons.scopes.domain.ISessionApplicationScope;
 import com.helger.webscopes.domain.ISessionWebScope;
 import com.helger.webscopes.mgr.WebScopeManager;
 

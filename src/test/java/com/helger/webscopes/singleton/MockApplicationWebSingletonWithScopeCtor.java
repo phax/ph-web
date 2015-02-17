@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.UsedViaReflection;
 import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.scopes.IScope;
+import com.helger.commons.scopes.IScope;
 
 /**
  * Mock implementation of {@link ApplicationWebSingleton}

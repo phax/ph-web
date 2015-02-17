@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import com.helger.commons.annotations.Nonempty;
-import com.helger.scopes.domain.ISessionScope;
+import com.helger.commons.scopes.domain.ISessionScope;
 import com.helger.webscopes.IWebScope;
 
 /**

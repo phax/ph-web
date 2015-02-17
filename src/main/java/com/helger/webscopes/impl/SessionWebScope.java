@@ -28,10 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.scopes.impl.SessionScope;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.scopes.impl.SessionScope;
 import com.helger.webscopes.MetaWebScopeFactory;
 import com.helger.webscopes.domain.ISessionApplicationWebScope;
 import com.helger.webscopes.domain.ISessionWebScope;

@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.scopes.impl.SessionApplicationScope;
 import com.helger.commons.state.EChange;
-import com.helger.scopes.impl.SessionApplicationScope;
 import com.helger.webscopes.domain.ISessionApplicationWebScope;
 
 /**

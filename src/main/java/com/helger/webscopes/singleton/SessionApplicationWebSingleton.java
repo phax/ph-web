@@ -25,7 +25,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.scopes.AbstractSingleton;
+import com.helger.commons.scopes.AbstractSingleton;
 import com.helger.webscopes.domain.ISessionApplicationWebScope;
 import com.helger.webscopes.mgr.WebScopeManager;
 

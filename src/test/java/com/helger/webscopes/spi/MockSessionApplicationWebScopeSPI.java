@@ -17,8 +17,8 @@
 package com.helger.webscopes.spi;
 
 import com.helger.commons.annotations.IsSPIImplementation;
-import com.helger.scopes.domain.ISessionApplicationScope;
-import com.helger.scopes.spi.ISessionApplicationScopeSPI;
+import com.helger.commons.scopes.domain.ISessionApplicationScope;
+import com.helger.commons.scopes.spi.ISessionApplicationScopeSPI;
 
 @IsSPIImplementation
 public final class MockSessionApplicationWebScopeSPI extends AbstractWebScopeSPI implements ISessionApplicationScopeSPI

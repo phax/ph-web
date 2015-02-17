@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotations.MustImplementEqualsAndHashcode;
-import com.helger.scopes.AbstractSingleton;
+import com.helger.commons.scopes.AbstractSingleton;
 import com.helger.webscopes.domain.ISessionWebScope;
 import com.helger.webscopes.mgr.WebScopeManager;
 

@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.scopes.domain.ISessionScope;
-import com.helger.scopes.mgr.ScopeSessionManager;
+import com.helger.commons.scopes.domain.ISessionScope;
+import com.helger.commons.scopes.mgr.ScopeSessionManager;
 import com.helger.webscopes.domain.ISessionWebScope;
 
 /**

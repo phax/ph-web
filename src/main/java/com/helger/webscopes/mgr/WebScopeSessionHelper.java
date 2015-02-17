@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.scopes.IScopeRenewalAware;
+import com.helger.commons.scopes.domain.ISessionApplicationScope;
+import com.helger.commons.scopes.mgr.ScopeSessionManager;
 import com.helger.commons.state.EChange;
-import com.helger.scopes.IScopeRenewalAware;
-import com.helger.scopes.domain.ISessionApplicationScope;
-import com.helger.scopes.mgr.ScopeSessionManager;
 import com.helger.webscopes.domain.ISessionApplicationWebScope;
 import com.helger.webscopes.domain.ISessionWebScope;
 

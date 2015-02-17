@@ -48,13 +48,6 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
                                                                       "https://developer.mozilla.org/de/docs/Rhino",
                                                                       true);
 
-  public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("JavaMail",
-                                                                           "Oracle",
-                                                                           ELicense.BSD,
-                                                                           new Version (1, 5, 2),
-                                                                           "http://javamail.java.net/",
-                                                                           true);
-
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
                                                                      "JCraft Inc.",
                                                                      ELicense.BSD,
@@ -65,6 +58,6 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()
   {
-    return new IThirdPartyModule [] { DNSJAVA, RHINO, JAVAX_MAIL, JSCH };
+    return new IThirdPartyModule [] { DNSJAVA, RHINO, JSCH };
   }
 }

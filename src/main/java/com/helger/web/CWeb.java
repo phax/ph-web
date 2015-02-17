@@ -35,18 +35,6 @@ public final class CWeb
   public static final int DEFAULT_PORT_HTTP = DefaultNetworkPorts.TCP_80_http.getPort ();
   /** Default HTTPS port */
   public static final int DEFAULT_PORT_HTTPS = DefaultNetworkPorts.TCP_443_https.getPort ();
-  /** Default SMTP port */
-  public static final int DEFAULT_PORT_SMTP = DefaultNetworkPorts.TCP_25_smtp.getPort ();
-  /** Default POP3 port */
-  public static final int DEFAULT_PORT_POP3 = DefaultNetworkPorts.TCP_110_pop3.getPort ();
-  /** Default SSMTP port */
-  public static final int DEFAULT_PORT_SECURE_SMTP = 465;
-  /** Default secure IMAP4-SSL port */
-  public static final int DEFAULT_PORT_SECURE_IMAP = 585;
-  /** Default IMAP4 over SSL port */
-  public static final int DEFAULT_PORT_IMAP_SSL = 993;
-  /** Default Secure POP3 port */
-  public static final int DEFAULT_PORT_SECURE_POP3 = 995;
 
   /** The scheme for HTTP */
   public static final String SCHEME_HTTP = "http";

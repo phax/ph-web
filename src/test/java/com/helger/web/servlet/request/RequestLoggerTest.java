@@ -27,7 +27,7 @@ import com.helger.web.mock.MockServletContext;
 
 /**
  * Test class for class {@link RequestLogger}.
- * 
+ *
  * @author Philip Helger
  */
 public final class RequestLoggerTest
@@ -35,8 +35,16 @@ public final class RequestLoggerTest
   @Test
   public void testBasic ()
   {
-    final HttpServletRequest aHttpRequest = new MockHttpServletRequest (new MockServletContext ());
-    assertNotNull (RequestLogger.getRequestFieldMap (aHttpRequest));
-    assertNotNull (RequestLogger.getHTTPHeaderMap (aHttpRequest));
+    final MockServletContext aSC = new MockServletContext ();
+    try
+    {
+      final HttpServletRequest aHttpRequest = new MockHttpServletRequest (aSC);
+      assertNotNull (RequestLogger.getRequestFieldMap (aHttpRequest));
+      assertNotNull (RequestLogger.getHTTPHeaderMap (aHttpRequest));
+    }
+    finally
+    {
+      aSC.invalidate ();
+    }
   }
 }

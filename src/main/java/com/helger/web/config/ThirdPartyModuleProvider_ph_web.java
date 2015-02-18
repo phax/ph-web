@@ -44,8 +44,8 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
   public static final IThirdPartyModule RHINO = new ThirdPartyModule ("Rhino",
                                                                       "Mozilla",
                                                                       ELicense.MPL20,
-                                                                      new Version ("1.7R4"),
-                                                                      "https://developer.mozilla.org/de/docs/Rhino",
+                                                                      new Version ("1.7R5"),
+                                                                      "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino",
                                                                       true);
 
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",

@@ -19,7 +19,17 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="ph-web">
-  <release date="2015-02-13" version="6.2.0" />
+  <entry date="2015-02-18" category="api" action="update" incompatible="true">
+    <change>
+      <text locale="en">Fixed webscopes package names to match the standard naming</text>
+    </change>
+  </entry>
+  <entry date="2015-02-18" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to Rhino 1.7R5</text>
+    </change>
+  </entry>
+  <release date="2015-02-18" version="6.2.0" />
   <entry date="2015-02-18" category="tech" action="update">
     <change>
       <text locale="en">Updated to ph-commons 5.5.0</text>

@@ -1,2 +1,2 @@
-com.helger.webscopes.spi.MockApplicationWebScopeSPI
-com.helger.webscopes.spi.MockThrowingApplicationWebScopeSPI
+com.helger.web.scopes.spi.MockApplicationWebScopeSPI
+com.helger.web.scopes.spi.MockThrowingApplicationWebScopeSPI

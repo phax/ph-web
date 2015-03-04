@@ -58,8 +58,7 @@ public class CompressFilter implements Filter
     CompressFilterSettings.markFilterLoaded ();
 
     // As compression is done in the filter, no compression in
-    // ResponseHelper is
-    // required there
+    // ResponseHelper is required there
     ResponseHelperSettings.setResponseCompressionEnabled (false);
   }
 

@@ -365,23 +365,6 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    *        The name to be searched.
    * @return The list with all matching values. Never <code>null</code> but
    *         maybe empty.
-   * @deprecated Use {@link #getAllHeaderValues(String)} instead
-   */
-  @Deprecated
-  @Nonnull
-  @ReturnsMutableCopy
-  public List <String> getHeaderValues (@Nullable final String sName)
-  {
-    return getAllHeaderValues (sName);
-  }
-
-  /**
-   * Get all header values doing a case sensitive match
-   *
-   * @param sName
-   *        The name to be searched.
-   * @return The list with all matching values. Never <code>null</code> but
-   *         maybe empty.
    * @since 6.0.5
    */
   @Nonnull
@@ -389,23 +372,6 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   public List <String> getAllHeaderValues (@Nullable final String sName)
   {
     return ContainerHelper.newList (m_aHeaders.get (sName));
-  }
-
-  /**
-   * Get all header values doing a case insensitive match
-   *
-   * @param sName
-   *        The name to be searched.
-   * @return The list with all matching values. Never <code>null</code> but
-   *         maybe empty.
-   * @deprecated Use {@link #getAllHeaderValuesCaseInsensitive(String)} instead
-   */
-  @Deprecated
-  @Nonnull
-  @ReturnsMutableCopy
-  public List <String> getHeaderValuesCaseInsensitive (@Nullable final String sName)
-  {
-    return getAllHeaderValuesCaseInsensitive (sName);
   }
 
   /**

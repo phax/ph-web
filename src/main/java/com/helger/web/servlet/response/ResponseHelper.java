@@ -36,8 +36,8 @@ import com.helger.web.http.CHTTPHeader;
 
 /**
  * Misc. helper methods on {@link HttpServletResponse} objects.<br>
- * Most method got deprecated by the activation of the {@link UnifiedResponse}
- * and the respective servlet and filter.
+ * Consider using the {@link UnifiedResponse} for easy and consistent HTTP
+ * response handling.
  *
  * @author Philip Helger
  */

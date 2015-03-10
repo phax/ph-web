@@ -18,8 +18,6 @@ package com.helger.web.servlet.request;
 
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -404,54 +402,6 @@ public final class RequestHelper
     return ret;
   }
 
-  /**
-   * This is a utility method which avoids that all map values are enclosed in
-   * an array. Jetty seems to create String arrays out of simple string values
-   *
-   * @param aHttpRequest
-   *        The source HTTP request. May not be <code>null</code>.
-   * @return A Map containing pure strings instead of string arrays with one
-   *         item
-   */
-  @Nonnull
-  @ReturnsMutableCopy
-  public static Map <String, Object> getParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    final Map <String, Object> aResult = new HashMap <String, Object> ();
-    @SuppressWarnings ("unchecked")
-    final Map <String, Object> aOriginalMap = aHttpRequest.getParameterMap ();
-
-    // For all parameters
-    for (final Map.Entry <String, Object> aEntry : aOriginalMap.entrySet ())
-    {
-      final String sKey = aEntry.getKey ();
-      final Object aValue = aEntry.getValue ();
-      if (aValue instanceof String [])
-      {
-        // It's an array value
-        final String [] aArrayValue = (String []) aValue;
-        if (aArrayValue.length > 1)
-          aResult.put (sKey, aArrayValue);
-        else
-          if (aArrayValue.length == 1)
-          {
-            // Flatten array to String
-            aResult.put (sKey, aArrayValue[0]);
-          }
-          else
-            aResult.put (sKey, "");
-      }
-      else
-      {
-        // It's a single value
-        aResult.put (sKey, aValue);
-      }
-    }
-    return aResult;
-  }
-
   @Nonnull
   public static IRequestParamMap getRequestParamMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
@@ -461,7 +411,7 @@ public final class RequestHelper
     IRequestParamMap aValue = (IRequestParamMap) aHttpRequest.getAttribute (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP);
     if (aValue == null)
     {
-      aValue = RequestParamMap.create (getParameterMap (aHttpRequest));
+      aValue = RequestParamMap.createFromRequest (aHttpRequest);
       aHttpRequest.setAttribute (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP, aValue);
     }
     return aValue;

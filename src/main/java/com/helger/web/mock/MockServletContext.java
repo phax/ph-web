@@ -21,20 +21,29 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRegistration.Dynamic;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
+import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -53,7 +62,6 @@ import com.helger.commons.string.StringHelper;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-//ESCA-JAVA0116:
 /**
  * Mock implementation of the {@link ServletContext} interface.
  *
@@ -62,8 +70,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @NotThreadSafe
 public class MockServletContext implements ServletContext
 {
-  public static final int SERVLET_SPEC_MAJOR_VERSION = 2;
-  public static final int SERVLET_SPEC_MINOR_VERSION = 5;
+  public static final int SERVLET_SPEC_MAJOR_VERSION = 3;
+  public static final int SERVLET_SPEC_MINOR_VERSION = 0;
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
   public static final String DEFAULT_SERVLET_CONTEXT_PATH = "";
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletContext.class);
@@ -72,7 +80,7 @@ public class MockServletContext implements ServletContext
   private final String m_sResourceBasePath;
   private String m_sContextPath = DEFAULT_SERVLET_CONTEXT_PATH;
   private final Map <String, ServletContext> m_aContexts = new HashMap <String, ServletContext> ();
-  private final Properties m_aInitParameters = new Properties ();
+  private final Map <String, String> m_aInitParameters = new LinkedHashMap <String, String> ();
   private final Map <String, Object> m_aAttributes = new HashMap <String, Object> ();
   private String m_sServletContextName = DEFAULT_SERVLET_CONTEXT_NAME;
   private final MockServletPool m_aServletPool;
@@ -287,16 +295,16 @@ public class MockServletContext implements ServletContext
 
   @Deprecated
   @Nonnull
-  public Enumeration <Object> getServlets ()
+  public Enumeration <Servlet> getServlets ()
   {
-    return ContainerHelper.<Object> getEmptyEnumeration ();
+    return ContainerHelper.<Servlet> getEmptyEnumeration ();
   }
 
   @Deprecated
   @Nonnull
-  public Enumeration <Object> getServletNames ()
+  public Enumeration <String> getServletNames ()
   {
-    return ContainerHelper.<Object> getEmptyEnumeration ();
+    return ContainerHelper.<String> getEmptyEnumeration ();
   }
 
   public void log (@Nullable final String message)
@@ -339,20 +347,20 @@ public class MockServletContext implements ServletContext
   public String getInitParameter (@Nonnull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return m_aInitParameters.getProperty (sName);
+    return m_aInitParameters.get (sName);
   }
 
   public final void addInitParameter (@Nonnull final String sName, @Nonnull final String sValue)
   {
     ValueEnforcer.notNull (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
-    m_aInitParameters.setProperty (sName, sValue);
+    m_aInitParameters.put (sName, sValue);
   }
 
   @Nonnull
-  public Enumeration <Object> getInitParameterNames ()
+  public Enumeration <String> getInitParameterNames ()
   {
-    return m_aInitParameters.keys ();
+    return ContainerHelper.getEnumeration (m_aInitParameters.keySet ());
   }
 
   @Nullable
@@ -476,5 +484,161 @@ public class MockServletContext implements ServletContext
       aListener.contextDestroyed (aSCE);
 
     m_aAttributes.clear ();
+  }
+
+  // Servlet 3.0 API
+
+  public int getEffectiveMajorVersion ()
+  {
+    return SERVLET_SPEC_MAJOR_VERSION;
+  }
+
+  public int getEffectiveMinorVersion ()
+  {
+    return SERVLET_SPEC_MINOR_VERSION;
+  }
+
+  public boolean setInitParameter (final String sName, final String sValue)
+  {
+    addInitParameter (sName, sValue);
+    return true;
+  }
+
+  @UnsupportedOperation
+  public Dynamic addServlet (final String servletName, final String className)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Dynamic addServlet (final String servletName, final Servlet servlet)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Dynamic addServlet (final String servletName, final Class <? extends Servlet> servletClass)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public <T extends Servlet> T createServlet (final Class <T> clazz) throws ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public ServletRegistration getServletRegistration (final String servletName)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Map <String, ? extends ServletRegistration> getServletRegistrations ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName, final String className)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName, final Filter filter)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName,
+                                                             final Class <? extends Filter> filterClass)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public <T extends Filter> T createFilter (final Class <T> clazz) throws ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public FilterRegistration getFilterRegistration (final String filterName)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Map <String, ? extends FilterRegistration> getFilterRegistrations ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public SessionCookieConfig getSessionCookieConfig ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public void setSessionTrackingModes (final Set <SessionTrackingMode> sessionTrackingModes)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Set <SessionTrackingMode> getDefaultSessionTrackingModes ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Set <SessionTrackingMode> getEffectiveSessionTrackingModes ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public void addListener (final String className)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public <T extends EventListener> void addListener (final T t)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public void addListener (final Class <? extends EventListener> listenerClass)
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public <T extends EventListener> T createListener (final Class <T> clazz) throws ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public JspConfigDescriptor getJspConfigDescriptor ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public ClassLoader getClassLoader ()
+  {
+    return getClass ().getClassLoader ();
+  }
+
+  @UnsupportedOperation
+  public void declareRoles (final String... roleNames)
+  {
+    throw new UnsupportedOperationException ();
   }
 }

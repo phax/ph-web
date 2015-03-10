@@ -25,6 +25,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -318,6 +319,16 @@ public final class RequestParamMap implements IRequestParamMap
     final RequestParamMap ret = new RequestParamMap ();
     for (final String sName : aAttrCont.getAllAttributeNames ())
       ret.put (sName, aAttrCont.getAttributeObject (sName));
+    return ret;
+  }
+
+  @Nonnull
+  public static IRequestParamMap createFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    final RequestParamMap ret = new RequestParamMap ();
+    for (final Map.Entry <String, String []> aEntry : aHttpRequest.getParameterMap ().entrySet ())
+      if (aEntry.getValue ().length > 0)
+        ret.put (aEntry.getKey (), aEntry.getValue ()[0]);
     return ret;
   }
 

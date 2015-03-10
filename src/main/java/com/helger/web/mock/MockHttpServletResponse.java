@@ -55,7 +55,6 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.CWeb;
 
-// ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpServletResponse}.
  *
@@ -100,7 +99,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   // HttpServletResponse properties
   private final List <Cookie> m_aCookies = new ArrayList <Cookie> ();
-  private final IMultiMapSetBased <String, Object> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, Object> ();
+  private final IMultiMapSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, String> ();
   private int m_nStatus = HttpServletResponse.SC_OK;
   private String m_sErrorMessage;
   private String m_sRedirectedUrl;
@@ -411,9 +410,9 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * @return the associated header value, or <code>null<code> if none
    */
   @Nullable
-  public Object getHeader (@Nullable final String sName)
+  public String getHeader (@Nullable final String sName)
   {
-    final List <Object> aList = getHeaders (sName);
+    final List <String> aList = getHeaders (sName);
     return ContainerHelper.getFirstElement (aList);
   }
 
@@ -425,7 +424,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * @return the associated header values, or an empty List if none
    */
   @Nonnull
-  public List <Object> getHeaders (@Nullable final String sName)
+  public List <String> getHeaders (@Nullable final String sName)
   {
     return ContainerHelper.newList (m_aHeaders.get (_unifyHeaderName (sName)));
   }
@@ -505,12 +504,12 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   public void setDateHeader (@Nullable final String sName, final long nValue)
   {
-    _setHeaderValue (sName, Long.valueOf (nValue));
+    _setHeaderValue (sName, Long.toString (nValue));
   }
 
   public void addDateHeader (@Nullable final String sName, final long nValue)
   {
-    _addHeaderValue (sName, Long.valueOf (nValue));
+    _addHeaderValue (sName, Long.toString (nValue));
   }
 
   public void setHeader (@Nullable final String sName, @Nullable final String sValue)
@@ -525,25 +524,25 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   public void setIntHeader (@Nullable final String sName, final int nValue)
   {
-    _setHeaderValue (sName, Integer.valueOf (nValue));
+    _setHeaderValue (sName, Integer.toString (nValue));
   }
 
   public void addIntHeader (@Nullable final String sName, final int nValue)
   {
-    _addHeaderValue (sName, Integer.valueOf (nValue));
+    _addHeaderValue (sName, Integer.toString (nValue));
   }
 
-  private void _setHeaderValue (@Nullable final String sName, @Nullable final Object aValue)
+  private void _setHeaderValue (@Nullable final String sName, @Nullable final String aValue)
   {
     _doAddHeaderValue (sName, aValue, true);
   }
 
-  private void _addHeaderValue (@Nullable final String sName, @Nullable final Object aValue)
+  private void _addHeaderValue (@Nullable final String sName, @Nullable final String aValue)
   {
     _doAddHeaderValue (sName, aValue, false);
   }
 
-  private void _doAddHeaderValue (@Nullable final String sName, @Nullable final Object aValue, final boolean bReplace)
+  private void _doAddHeaderValue (@Nullable final String sName, @Nullable final String aValue, final boolean bReplace)
   {
     if (bReplace || !m_aHeaders.containsSingle (_unifyHeaderName (sName), aValue))
       m_aHeaders.putSingle (_unifyHeaderName (sName), aValue);

@@ -16,7 +16,6 @@
  */
 package com.helger.web.servlet.request;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,21 +184,14 @@ public final class RequestLogger
     s_aLogger.info (getRequestHeader (aHttpRequest).toString ());
   }
 
-  @SuppressWarnings ("unchecked")
-  @Nonnull
-  public static Map <String, String []> getRequestParameterMapTypes (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return aHttpRequest.getParameterMap ();
-  }
-
   @Nonnull
   public static Map <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final Map <String, String> ret = new LinkedHashMap <String, String> ();
-    for (final Map.Entry <String, String []> aEntry : ContainerHelper.getSortedByKey (getRequestParameterMapTypes (aHttpRequest),
+    for (final Map.Entry <String, String []> aEntry : ContainerHelper.getSortedByKey (aHttpRequest.getParameterMap (),
                                                                                       new ComparatorAsString ())
                                                                      .entrySet ())
-      ret.put (aEntry.getKey (), Arrays.toString (aEntry.getValue ()));
+      ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
     return ret;
   }
 

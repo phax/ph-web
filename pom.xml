@@ -25,7 +25,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ph-web</artifactId>
-  <version>6.3.1-SNAPSHOT</version>
+  <version>6.4.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ph-web</name>
   <description>Java library with basic web functionality</description>
@@ -75,7 +75,7 @@
 
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
@@ -111,13 +111,13 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>8.1.15.v20140411</version>
+      <version>8.1.16.v20140903</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlets</artifactId>
-      <version>8.1.15.v20140411</version>
+      <version>8.1.16.v20140903</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

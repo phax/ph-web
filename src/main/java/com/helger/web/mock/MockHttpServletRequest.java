@@ -17,6 +17,7 @@
 package com.helger.web.mock;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
@@ -37,13 +38,20 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +80,6 @@ import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
 import com.helger.web.servlet.request.RequestHelper;
 
-// ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpServletRequest}.
  *
@@ -115,7 +122,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private int m_nLocalPort = DEFAULT_SERVER_PORT;
   private String m_sAuthType;
   private Cookie [] m_aCookies;
-  private final IMultiMapSetBased <String, Object> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, Object> ();
+  private final IMultiMapSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, String> ();
   private EHTTPMethod m_eMethod;
   private String m_sPathInfo;
   private String m_sContextPath = "";
@@ -670,7 +677,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   /**
    * Clear all of this request's attributes.
-   * 
+   *
    * @return this
    */
   @Nonnull
@@ -840,7 +847,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #getIntHeader
    */
   @Nonnull
-  public final MockHttpServletRequest addHeader (@Nullable final String sName, @Nullable final Object aValue)
+  public final MockHttpServletRequest addHeader (@Nullable final String sName, @Nullable final String aValue)
   {
     m_aHeaders.putSingle (_getUnifiedHeaderName (sName), aValue);
     return this;
@@ -870,15 +877,15 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final Collection <Object> aValue = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    final Set <String> aValue = m_aHeaders.get (_getUnifiedHeaderName (sName));
     return aValue == null || aValue.isEmpty () ? null : String.valueOf (aValue.iterator ().next ());
   }
 
   @Nonnull
-  public Enumeration <Object> getHeaders (@Nullable final String sName)
+  public Enumeration <String> getHeaders (@Nullable final String sName)
   {
-    final Collection <Object> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
-    return ContainerHelper.getEnumeration (vals != null ? vals : ContainerHelper.newUnmodifiableList ());
+    final Set <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    return ContainerHelper.getEnumeration (vals != null ? vals : ContainerHelper.<String> newUnmodifiableList ());
   }
 
   @Nonnull
@@ -1133,6 +1140,72 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public boolean isRequestedSessionIdFromUrl ()
   {
     return isRequestedSessionIdFromURL ();
+  }
+
+  // Servlet 3.0 API
+
+  @UnsupportedOperation
+  public AsyncContext startAsync () throws IllegalStateException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public AsyncContext startAsync (final ServletRequest servletRequest, final ServletResponse servletResponse) throws IllegalStateException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public boolean isAsyncStarted ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public boolean isAsyncSupported ()
+  {
+    return false;
+  }
+
+  @UnsupportedOperation
+  public AsyncContext getAsyncContext ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public DispatcherType getDispatcherType ()
+  {
+    return DispatcherType.REQUEST;
+  }
+
+  @UnsupportedOperation
+  public boolean authenticate (final HttpServletResponse response) throws IOException, ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public void login (final String username, final String password) throws ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public void logout () throws ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Collection <Part> getParts () throws IOException, ServletException
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  @UnsupportedOperation
+  public Part getPart (final String name) throws IOException, ServletException
+  {
+    throw new UnsupportedOperationException ();
   }
 
   /**

@@ -53,7 +53,7 @@ import com.helger.commons.SystemProperties;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.io.IReadableResource;
 import com.helger.commons.io.IReadableResourceProvider;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
@@ -297,14 +297,14 @@ public class MockServletContext implements ServletContext
   @Nonnull
   public Enumeration <Servlet> getServlets ()
   {
-    return ContainerHelper.<Servlet> getEmptyEnumeration ();
+    return CollectionHelper.<Servlet> getEmptyEnumeration ();
   }
 
   @Deprecated
   @Nonnull
   public Enumeration <String> getServletNames ()
   {
-    return ContainerHelper.<String> getEmptyEnumeration ();
+    return CollectionHelper.<String> getEmptyEnumeration ();
   }
 
   public void log (@Nullable final String message)
@@ -360,7 +360,7 @@ public class MockServletContext implements ServletContext
   @Nonnull
   public Enumeration <String> getInitParameterNames ()
   {
-    return ContainerHelper.getEnumeration (m_aInitParameters.keySet ());
+    return CollectionHelper.getEnumeration (m_aInitParameters.keySet ());
   }
 
   @Nullable
@@ -373,7 +373,7 @@ public class MockServletContext implements ServletContext
   @Nonnull
   public Enumeration <String> getAttributeNames ()
   {
-    return ContainerHelper.getEnumeration (m_aAttributes.keySet ());
+    return CollectionHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   public final void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)

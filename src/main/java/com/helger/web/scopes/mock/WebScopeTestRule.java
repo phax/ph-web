@@ -28,7 +28,7 @@ import org.junit.rules.ExternalResource;
 
 import com.helger.commons.annotations.OverrideOnDemand;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;
@@ -37,7 +37,7 @@ import com.helger.web.mock.MockServletPool;
 
 /**
  * JUnit test rule for unit tests requiring web scopes.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -85,7 +85,7 @@ public class WebScopeTestRule extends ExternalResource
   @ReturnsMutableCopy
   public final Map <String, String> getServletContextInitParameters ()
   {
-    return ContainerHelper.newMap (m_aServletContextInitParameters);
+    return CollectionHelper.newMap (m_aServletContextInitParameters);
   }
 
   /**
@@ -101,7 +101,7 @@ public class WebScopeTestRule extends ExternalResource
 
   /**
    * Create a new mock servlet context
-   * 
+   *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param aInitParams
@@ -119,7 +119,7 @@ public class WebScopeTestRule extends ExternalResource
 
   /**
    * Create a new mock request
-   * 
+   *
    * @param aServletContext
    *        The servlet context to use. Never <code>null</code>.
    * @return May be <code>null</code> to indicate that the request is added

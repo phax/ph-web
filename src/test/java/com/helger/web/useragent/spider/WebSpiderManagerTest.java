@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.id.ComparatorHasIDString;
 import com.helger.commons.mock.AbstractPHTestCase;
 
@@ -34,7 +34,7 @@ public final class WebSpiderManagerTest extends AbstractPHTestCase
   @Test
   public void testAll ()
   {
-    for (final WebSpiderInfo aWSI : ContainerHelper.getSorted (WebSpiderManager.getInstance ().getAllKnownSpiders (),
+    for (final WebSpiderInfo aWSI : CollectionHelper.getSorted (WebSpiderManager.getInstance ().getAllKnownSpiders (),
                                                                new ComparatorHasIDString <WebSpiderInfo> ()))
     {
       assertNotNull (aWSI);

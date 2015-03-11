@@ -32,7 +32,7 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
 
@@ -70,7 +70,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     try
     {
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return ContainerHelper.getFirstElement (aHeaderValueList);
+      return CollectionHelper.getFirstElement (aHeaderValueList);
     }
     finally
     {
@@ -107,7 +107,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     try
     {
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return ContainerHelper.getIterator (aHeaderValueList);
+      return CollectionHelper.getIterator (aHeaderValueList);
     }
     finally
     {
@@ -136,7 +136,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     m_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newList (m_aHeaderNameList);
+      return CollectionHelper.newList (m_aHeaderNameList);
     }
     finally
     {

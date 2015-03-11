@@ -31,7 +31,7 @@ import javax.servlet.http.Cookie;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
@@ -272,7 +272,7 @@ public class UnifiedResponseDefaultSettings
     s_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.isNotEmpty (s_aCookies);
+      return CollectionHelper.isNotEmpty (s_aCookies);
     }
     finally
     {
@@ -291,7 +291,7 @@ public class UnifiedResponseDefaultSettings
     s_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newMap (s_aCookies);
+      return CollectionHelper.newMap (s_aCookies);
     }
     finally
     {

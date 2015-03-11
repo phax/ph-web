@@ -36,7 +36,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.UnsupportedOperation;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.idfactory.GlobalIDFactory;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -164,7 +164,7 @@ public class MockHttpSession implements HttpSession
   @Nonnull
   public Enumeration <String> getAttributeNames ()
   {
-    return ContainerHelper.getEnumeration (m_aAttributes.keySet ());
+    return CollectionHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   @Deprecated

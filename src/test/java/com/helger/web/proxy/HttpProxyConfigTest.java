@@ -26,13 +26,13 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Test class for class {@link HttpProxyConfig}.
- * 
+ *
  * @author Philip Helger
  */
 public final class HttpProxyConfigTest
@@ -116,21 +116,21 @@ public final class HttpProxyConfigTest
       assertTrue (aPC.getNonProxyHosts ().isEmpty ());
       aPC.activateGlobally ();
 
-      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, ContainerHelper.newList ("localhost"));
+      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, CollectionHelper.newList ("localhost"));
       assertNotNull (aPC.getNonProxyHosts ());
       assertEquals (1, aPC.getNonProxyHosts ().size ());
       assertTrue (aPC.getNonProxyHosts ().contains ("localhost"));
       assertFalse (aPC.getNonProxyHosts ().contains ("127.0.0.1"));
       aPC.activateGlobally ();
 
-      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, ContainerHelper.newList ("localhost", "127.0.0.1"));
+      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, CollectionHelper.newList ("localhost", "127.0.0.1"));
       assertNotNull (aPC.getNonProxyHosts ());
       assertEquals (2, aPC.getNonProxyHosts ().size ());
       assertTrue (aPC.getNonProxyHosts ().contains ("localhost"));
       assertTrue (aPC.getNonProxyHosts ().contains ("127.0.0.1"));
       aPC.activateGlobally ();
 
-      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, ContainerHelper.newList (null,
+      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, CollectionHelper.newList (null,
                                                                                              "localhost",
                                                                                              "",
                                                                                              "127.0.0.1",

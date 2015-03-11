@@ -46,7 +46,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.io.IInputStreamProvider;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.streams.StreamUtils;
@@ -241,10 +241,10 @@ public class UnifiedResponse
     if (!m_bAlreadyEmittedRequestHeaders)
     {
       s_aLogger.warn ("  Request Headers: " +
-                      ContainerHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap)));
+                      CollectionHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap)));
       if (!m_aResponseHeaderMap.isEmpty ())
         s_aLogger.warn ("  Response Headers: " +
-                        ContainerHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)));
+                        CollectionHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)));
       m_bAlreadyEmittedRequestHeaders = true;
     }
   }
@@ -915,7 +915,7 @@ public class UnifiedResponse
    */
   public boolean hasCookies ()
   {
-    return ContainerHelper.isNotEmpty (m_aCookies);
+    return CollectionHelper.isNotEmpty (m_aCookies);
   }
 
   /**
@@ -927,7 +927,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   protected Map <String, Cookie> getAllCookies ()
   {
-    return ContainerHelper.newMap (m_aCookies);
+    return CollectionHelper.newMap (m_aCookies);
   }
 
   /**
@@ -1169,7 +1169,7 @@ public class UnifiedResponse
   private static String _getAsStringMimeTypes (@Nonnull final Map <IMimeType, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
-    for (final Map.Entry <IMimeType, QValue> aEntry : ContainerHelper.getSortedByValue (aMap).entrySet ())
+    for (final Map.Entry <IMimeType, QValue> aEntry : CollectionHelper.getSortedByValue (aMap).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");
@@ -1183,7 +1183,7 @@ public class UnifiedResponse
   private static String _getAsStringText (@Nonnull final Map <String, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
-    for (final Map.Entry <String, QValue> aEntry : ContainerHelper.getSortedByValue (aMap).entrySet ())
+    for (final Map.Entry <String, QValue> aEntry : CollectionHelper.getSortedByValue (aMap).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");

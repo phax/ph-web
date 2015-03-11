@@ -36,7 +36,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.UsedViaReflection;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.collections.multimap.IMultiMapListBased;
 import com.helger.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.io.streams.StreamUtils;
@@ -206,7 +206,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         {
           // Convert list of String to value (String or array of String)
           final List <String> aValues = aEntry.getValue ();
-          final Object aValue = aValues.size () == 1 ? ContainerHelper.getFirstElement (aValues)
+          final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
                                                     : ArrayHelper.newArray (aValues, String.class);
           setAttribute (aEntry.getKey (), aValue);
         }
@@ -217,7 +217,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         {
           // Convert list of String to value (String or array of String)
           final List <IFileItem> aValues = aEntry.getValue ();
-          final Object aValue = aValues.size () == 1 ? ContainerHelper.getFirstElement (aValues)
+          final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
                                                     : ArrayHelper.newArray (aValues, IFileItem.class);
           setAttribute (aEntry.getKey (), aValue);
         }

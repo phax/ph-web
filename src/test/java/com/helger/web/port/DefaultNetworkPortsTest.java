@@ -25,7 +25,7 @@ import java.io.File;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.compare.AbstractComparator;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -35,7 +35,7 @@ import com.helger.commons.string.StringHelper;
 
 /**
  * Test class for class {@link DefaultNetworkPorts}.
- * 
+ *
  * @author Philip Helger
  */
 public final class DefaultNetworkPortsTest
@@ -60,7 +60,7 @@ public final class DefaultNetworkPortsTest
   {
     final IMicroDocument aDoc = new MicroDocument ();
     final IMicroElement ePorts = aDoc.appendElement ("ports");
-    for (final INetworkPort aPort : ContainerHelper.getSorted (DefaultNetworkPorts.getAllPorts (),
+    for (final INetworkPort aPort : CollectionHelper.getSorted (DefaultNetworkPorts.getAllPorts (),
                                                                new AbstractComparator <NetworkPort> ()
                                                                {
                                                                  @Override

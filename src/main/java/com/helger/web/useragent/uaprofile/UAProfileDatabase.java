@@ -46,7 +46,7 @@ import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64Helper;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
@@ -410,7 +410,7 @@ public final class UAProfileDatabase
     s_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newSet (s_aUniqueUAProfiles);
+      return CollectionHelper.newSet (s_aUniqueUAProfiles);
     }
     finally
     {

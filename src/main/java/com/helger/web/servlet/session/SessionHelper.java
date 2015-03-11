@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.state.EChange;
 
@@ -94,7 +94,7 @@ public final class SessionHelper
     catch (final IllegalStateException ex)
     {
       // Session no longer valid
-      return ContainerHelper.<String> getEmptyEnumeration ();
+      return CollectionHelper.<String> getEmptyEnumeration ();
     }
   }
 

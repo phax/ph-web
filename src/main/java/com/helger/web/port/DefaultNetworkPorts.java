@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import com.helger.commons.annotations.CodingStyleguideUnaware;
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 
 /**
  * A list of default ports between 0 and 1024. Created from the IANA port list.
@@ -3933,7 +3933,7 @@ public final class DefaultNetworkPorts
   @ReturnsMutableCopy
   public static List <NetworkPort> getAllPorts ()
   {
-    return ContainerHelper.newList (s_aPortList);
+    return CollectionHelper.newList (s_aPortList);
   }
 
   @Nonnull

@@ -28,13 +28,13 @@ import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Mock implementation of the {@link ServletConfig} interface.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -46,7 +46,7 @@ public class MockServletConfig implements ServletConfig
 
   /**
    * Constructor without servlet init parameters.
-   * 
+   *
    * @param aSC
    *        Base servlet context. May not be <code>null</code>.
    * @param sServletName
@@ -59,7 +59,7 @@ public class MockServletConfig implements ServletConfig
 
   /**
    * Constructor
-   * 
+   *
    * @param aSC
    *        Base servlet context. May not be <code>null</code>.
    * @param sServletName
@@ -100,7 +100,7 @@ public class MockServletConfig implements ServletConfig
   @Nonnull
   public Enumeration <String> getInitParameterNames ()
   {
-    return ContainerHelper.getEnumeration (m_aServletInitParams.keySet ());
+    return CollectionHelper.getEnumeration (m_aServletInitParams.keySet ());
   }
 
   public void addInitParameter (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
@@ -120,7 +120,7 @@ public class MockServletConfig implements ServletConfig
   @Nonempty
   public Map <String, String> getAllInitParameters ()
   {
-    return ContainerHelper.newMap (m_aServletInitParams);
+    return CollectionHelper.newMap (m_aServletInitParams);
   }
 
   @Override

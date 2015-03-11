@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.microdom.IMicroDocument;
@@ -103,7 +103,7 @@ public final class XMLSitemapIndex implements Serializable
   @ReturnsMutableCopy
   public List <XMLSitemapURLSet> getAllURLSets ()
   {
-    return ContainerHelper.newList (m_aURLSets);
+    return CollectionHelper.newList (m_aURLSets);
   }
 
   public void addURLSet (@Nonnull final XMLSitemapURLSet aURLSet)

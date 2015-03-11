@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.url.ISimpleURL;
 
 @Deprecated
@@ -54,6 +54,6 @@ public class ServletRedirectIndicatorException extends RuntimeException
   @ReturnsMutableCopy
   public Map <String, Object> getRequestParams ()
   {
-    return ContainerHelper.newMap (m_aRequestParams);
+    return CollectionHelper.newMap (m_aRequestParams);
   }
 }

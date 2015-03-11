@@ -29,14 +29,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotations.ReturnsImmutableObject;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.equals.EqualsUtils;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * This class represents a single UA profile.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -57,15 +57,15 @@ public class UAProfile implements Serializable
   public UAProfile (@Nullable final List <String> aProfileUrls,
                     @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
   {
-    final int nUrls = ContainerHelper.getSize (aProfileUrls);
-    final int nDiffs = ContainerHelper.getSize (aProfileDiffData);
+    final int nUrls = CollectionHelper.getSize (aProfileUrls);
+    final int nDiffs = CollectionHelper.getSize (aProfileDiffData);
     if (nUrls == 0 && nDiffs == 0)
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
 
     if (nUrls > 1)
       s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
-    m_sProfileUrl = ContainerHelper.getFirstElement (aProfileUrls);
-    m_aProfileDiffData = ContainerHelper.isEmpty (aProfileDiffData) ? null
+    m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
+    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null
                                                                    : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
   }
 
@@ -82,14 +82,14 @@ public class UAProfile implements Serializable
   @Nonnegative
   public int getDiffCount ()
   {
-    return ContainerHelper.getSize (m_aProfileDiffData);
+    return CollectionHelper.getSize (m_aProfileDiffData);
   }
 
   @Nullable
   @ReturnsImmutableObject
   public Map <Integer, UAProfileDiff> getProfileDiffData ()
   {
-    return ContainerHelper.makeUnmodifiable (m_aProfileDiffData);
+    return CollectionHelper.makeUnmodifiable (m_aProfileDiffData);
   }
 
   public boolean isSet ()

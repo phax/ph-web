@@ -29,12 +29,12 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.WorkInProgress;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.web.CWeb;
 
 /**
  * This class is not yet working!
- * 
+ *
  * @author Philip Helger
  */
 @WorkInProgress
@@ -71,7 +71,7 @@ public class MyProxySelector extends ProxySelector
       return m_aWrappedProxySelector.select (aURI);
 
     // Don't use a proxy
-    return ContainerHelper.newList (Proxy.NO_PROXY);
+    return CollectionHelper.newList (Proxy.NO_PROXY);
   }
 
   @Override

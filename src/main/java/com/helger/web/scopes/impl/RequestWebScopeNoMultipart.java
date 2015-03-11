@@ -40,7 +40,7 @@ import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.OverrideOnDemand;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.equals.EqualsUtils;
 import com.helger.commons.idfactory.GlobalIDFactory;
 import com.helger.commons.lang.CGStringHelper;
@@ -193,12 +193,12 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (aValue instanceof String [])
     {
       // multiple values passed in the request
-      return ContainerHelper.newList ((String []) aValue);
+      return CollectionHelper.newList ((String []) aValue);
     }
     if (aValue instanceof String)
     {
       // single value passed in the request
-      return ContainerHelper.newList ((String) aValue);
+      return CollectionHelper.newList ((String) aValue);
     }
     // E.g. for file items
     return aDefault;

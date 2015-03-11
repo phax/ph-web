@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.tree.withid.DefaultTreeItemWithID;
 import com.helger.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
 
@@ -58,7 +58,7 @@ public final class NetworkInterfaceUtils
     final List <NetworkInterface> aNonRootNIs = new ArrayList <NetworkInterface> ();
     try
     {
-      for (final NetworkInterface aNI : ContainerHelper.getIterator (NetworkInterface.getNetworkInterfaces ()))
+      for (final NetworkInterface aNI : CollectionHelper.getIterator (NetworkInterface.getNetworkInterfaces ()))
         if (aNI.getParent () == null)
           ret.getRootItem ().createChildItem (aNI.getName (), aNI);
         else

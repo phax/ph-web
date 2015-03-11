@@ -42,7 +42,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.collections.multimap.IMultiMapSetBased;
 import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
@@ -397,7 +397,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   @ReturnsMutableCopy
   public Set <String> getHeaderNames ()
   {
-    return ContainerHelper.newSet (m_aHeaders.keySet ());
+    return CollectionHelper.newSet (m_aHeaders.keySet ());
   }
 
   /**
@@ -413,7 +413,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   public String getHeader (@Nullable final String sName)
   {
     final List <String> aList = getHeaders (sName);
-    return ContainerHelper.getFirstElement (aList);
+    return CollectionHelper.getFirstElement (aList);
   }
 
   /**
@@ -426,7 +426,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   @Nonnull
   public List <String> getHeaders (@Nullable final String sName)
   {
-    return ContainerHelper.newList (m_aHeaders.get (_unifyHeaderName (sName)));
+    return CollectionHelper.newList (m_aHeaders.get (_unifyHeaderName (sName)));
   }
 
   /**

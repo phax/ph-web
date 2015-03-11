@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.collections.multimap.IMultiMapSetBased;
 import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.streams.StreamUtils;
@@ -74,7 +74,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, Set <String>> aEntry : ContainerHelper.getSortedByKey (aMap).entrySet ())
+      for (final Map.Entry <String, Set <String>> aEntry : CollectionHelper.getSortedByKey (aMap).entrySet ())
         w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (",", aEntry.getValue ()) + "\n");
 
       // done

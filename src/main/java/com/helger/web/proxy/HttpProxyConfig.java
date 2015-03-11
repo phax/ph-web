@@ -31,7 +31,7 @@ import com.helger.commons.SystemProperties;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.port.DefaultNetworkPorts;
@@ -41,7 +41,7 @@ import com.helger.web.port.DefaultNetworkPorts;
  * Attention when using userName and password, make sure to call
  * <code>Authenticator.setDefault (...)</code> with the same username and
  * password as well!
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -123,7 +123,7 @@ public final class HttpProxyConfig implements IProxyConfig
   @ReturnsMutableCopy
   public List <String> getNonProxyHosts ()
   {
-    return ContainerHelper.newList (m_aNonProxyHosts);
+    return CollectionHelper.newList (m_aNonProxyHosts);
   }
 
   @Nullable

@@ -26,7 +26,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.StringHelper;
@@ -199,7 +199,7 @@ public class RequestFieldData implements Serializable
     List <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
-      aDefault = ContainerHelper.newList (sDefaultValue);
+      aDefault = CollectionHelper.newList (sDefaultValue);
     return getScope ().getAttributeValues (m_sFieldName, aDefault);
   }
 

@@ -24,12 +24,12 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Represents a base class for all QValue'd stuff
- * 
+ *
  * @author Philip Helger
  * @param <KEYTYPE>
  *        The key type for the map. Must implement Serializable.
@@ -46,7 +46,7 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @ReturnsMutableCopy
   public Map <KEYTYPE, QValue> getAllQValues ()
   {
-    return ContainerHelper.newMap (m_aMap);
+    return CollectionHelper.newMap (m_aMap);
   }
 
   @Nonnull

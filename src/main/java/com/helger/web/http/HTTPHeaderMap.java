@@ -38,7 +38,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.ReturnsMutableObject;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -355,7 +355,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   @ReturnsMutableCopy
   public Map <String, List <String>> getAllHeaders ()
   {
-    return ContainerHelper.newOrderedMap (m_aHeaders);
+    return CollectionHelper.newOrderedMap (m_aHeaders);
   }
 
   /**
@@ -371,7 +371,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   @ReturnsMutableCopy
   public List <String> getAllHeaderValues (@Nullable final String sName)
   {
-    return ContainerHelper.newList (m_aHeaders.get (sName));
+    return CollectionHelper.newList (m_aHeaders.get (sName));
   }
 
   /**

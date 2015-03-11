@@ -63,7 +63,7 @@ import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.annotations.UnsupportedOperation;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.collections.multimap.IMultiMapSetBased;
 import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
@@ -289,7 +289,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getAttributeNames ()
   {
     checkActive ();
-    return ContainerHelper.getEnumeration (m_aAttributes.keySet ());
+    return CollectionHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   public void setCharacterEncoding (@Nullable final String sCharacterEncoding)
@@ -550,7 +550,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public Enumeration <String> getParameterNames ()
   {
-    return ContainerHelper.getEnumeration (m_aParameters.keySet ());
+    return CollectionHelper.getEnumeration (m_aParameters.keySet ());
   }
 
   @Nullable
@@ -565,7 +565,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @ReturnsMutableCopy
   public Map <String, String []> getParameterMap ()
   {
-    return ContainerHelper.newMap (m_aParameters);
+    return CollectionHelper.newMap (m_aParameters);
   }
 
   @Nonnull
@@ -713,7 +713,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonempty
   public Enumeration <Locale> getLocales ()
   {
-    return ContainerHelper.getEnumeration (m_aLocales);
+    return CollectionHelper.getEnumeration (m_aLocales);
   }
 
   @Nonnull
@@ -885,13 +885,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
     final Set <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
-    return ContainerHelper.getEnumeration (vals != null ? vals : ContainerHelper.<String> newUnmodifiableList ());
+    return CollectionHelper.getEnumeration (vals != null ? vals : CollectionHelper.<String> newUnmodifiableList ());
   }
 
   @Nonnull
   public Enumeration <String> getHeaderNames ()
   {
-    return ContainerHelper.getEnumeration (m_aHeaders.keySet ());
+    return CollectionHelper.getEnumeration (m_aHeaders.keySet ());
   }
 
   @Nonnull

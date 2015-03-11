@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -42,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
  * This class holds the different listeners ({@link ServletContextListener},
  * {@link HttpSessionListener} and {@link ServletRequestListener}) used by
  * {@link MockHttpListener}
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -58,7 +58,7 @@ public class MockEventListenerList
 
   /**
    * Set all listeners from the passed list to this list
-   * 
+   *
    * @param aList
    *        The other list. May not be <code>null</code>.
    * @return {@link EChange}
@@ -93,7 +93,7 @@ public class MockEventListenerList
 
   /**
    * Add a new listener.
-   * 
+   *
    * @param aListener
    *        The listener to be added. May not be <code>null</code>.
    * @return {@link EChange}.
@@ -133,7 +133,7 @@ public class MockEventListenerList
       try
       {
         // Create a copy of the list
-        for (final EventListener aListener : ContainerHelper.newList (m_aListener))
+        for (final EventListener aListener : CollectionHelper.newList (m_aListener))
           if (aListener.getClass ().equals (aListenerClass))
             ret = ret.or (EChange.valueOf (m_aListener.remove (aListener)));
       }
@@ -169,7 +169,7 @@ public class MockEventListenerList
     m_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newList (m_aListener);
+      return CollectionHelper.newList (m_aListener);
     }
     finally
     {

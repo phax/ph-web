@@ -34,7 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.cache.AnnotationUsageCache;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.compare.ComparatorAsString;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotations.IsOffline;
@@ -188,7 +188,7 @@ public final class RequestLogger
   public static Map <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final Map <String, String> ret = new LinkedHashMap <String, String> ();
-    for (final Map.Entry <String, String []> aEntry : ContainerHelper.getSortedByKey (aHttpRequest.getParameterMap (),
+    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap (),
                                                                                       new ComparatorAsString ())
                                                                      .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));

@@ -34,7 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.collections.attrs.AbstractGenericReadonlyAttributeContainer;
 import com.helger.commons.collections.attrs.IReadonlyAttributeContainer;
 import com.helger.commons.hash.HashCodeGenerator;
@@ -246,21 +246,21 @@ public final class RequestParamMap implements IRequestParamMap
   @ReturnsMutableCopy
   public Set <String> keySet ()
   {
-    return ContainerHelper.newSet (m_aMap.keySet ());
+    return CollectionHelper.newSet (m_aMap.keySet ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public Collection <Object> values ()
   {
-    return ContainerHelper.newList (m_aMap.values ());
+    return CollectionHelper.newList (m_aMap.values ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public Map <String, Object> getAsObjectMap ()
   {
-    return ContainerHelper.newMap (m_aMap);
+    return CollectionHelper.newMap (m_aMap);
   }
 
   @Nonnull

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -40,7 +40,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * A pool for registered servlets inside a {@link MockServletContext}.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -48,7 +48,7 @@ public class MockServletPool
 {
   /**
    * Contains a single servlet item
-   * 
+   *
    * @author Philip Helger
    */
   private static final class ServletItem
@@ -127,7 +127,7 @@ public class MockServletPool
 
   /**
    * Register a new servlet without servlet init parameters
-   * 
+   *
    * @param aServletClass
    *        The class of the servlet to be registered. May not be
    *        <code>null</code>.
@@ -146,7 +146,7 @@ public class MockServletPool
 
   /**
    * Register a new servlet
-   * 
+   *
    * @param aServletClass
    *        The class of the servlet to be registered. May not be
    *        <code>null</code>.
@@ -208,7 +208,7 @@ public class MockServletPool
 
   /**
    * Find the servlet matching the specified path.
-   * 
+   *
    * @param sPath
    *        The path, relative to the servlet context. May be <code>null</code>.
    * @return <code>null</code> if no {@link Servlet} matching the specified path
@@ -228,7 +228,7 @@ public class MockServletPool
       return null;
     if (nMatchingItems > 1)
       s_aLogger.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
-    return ContainerHelper.getFirstElement (aMatchingItems).getServlet ();
+    return CollectionHelper.getFirstElement (aMatchingItems).getServlet ();
   }
 
   /**

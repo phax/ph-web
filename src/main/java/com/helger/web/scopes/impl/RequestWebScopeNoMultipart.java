@@ -69,8 +69,8 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   private static final long serialVersionUID = 78563987233146L;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
-  private static final String REQUEST_ATTR_SCOPE_INITED = "$ph.request.scope.inited";
-  private static final String REQUEST_ATTR_REQUESTPARAMMAP = "$ph.request.scope.requestparammap";
+  private static final String REQUEST_ATTR_SCOPE_INITED = "$ph.requestscope.inited";
+  private static final String REQUEST_ATTR_REQUESTPARAMMAP = "$ph.requestscope.requestparammap";
 
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;

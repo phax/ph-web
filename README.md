@@ -7,7 +7,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>6.3.0</version>
+  <version>6.4.1</version>
 </dependency>
 ```
 

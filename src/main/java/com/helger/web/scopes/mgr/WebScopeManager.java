@@ -61,7 +61,8 @@ public final class WebScopeManager
 {
   // For backward compatibility passivation is disabled
   public static final boolean DEFAULT_SESSION_PASSIVATION_ALLOWED = false;
-  private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = "$ph.sessionwebscope.activator";
+  private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                                     "sessionwebscope.activator";
   private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeManager.class);
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 

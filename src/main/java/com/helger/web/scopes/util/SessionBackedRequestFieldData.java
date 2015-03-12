@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.scopes.IScope;
+import com.helger.commons.scopes.mgr.ScopeManager;
 import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
@@ -54,7 +55,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
   @Nonempty
   public String getSessionFieldName ()
   {
-    return "$ph.requestfield." + getFieldName ();
+    return ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "requestfield." + getFieldName ();
   }
 
   private void _init ()

@@ -46,6 +46,7 @@ import com.helger.commons.idfactory.GlobalIDFactory;
 import com.helger.commons.lang.CGStringHelper;
 import com.helger.commons.scopes.AbstractMapBasedScope;
 import com.helger.commons.scopes.ScopeUtils;
+import com.helger.commons.scopes.mgr.ScopeManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
@@ -69,8 +70,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   private static final long serialVersionUID = 78563987233146L;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
-  private static final String REQUEST_ATTR_SCOPE_INITED = "$ph.requestscope.inited";
-  private static final String REQUEST_ATTR_REQUESTPARAMMAP = "$ph.requestscope.requestparammap";
+  private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                          "requestscope.inited";
+  private static final String REQUEST_ATTR_REQUESTPARAMMAP = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                             "requestscope.requestparammap";
 
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;

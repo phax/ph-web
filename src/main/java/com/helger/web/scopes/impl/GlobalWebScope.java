@@ -23,6 +23,9 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
 import com.helger.commons.hash.HashCodeGenerator;
@@ -42,17 +45,34 @@ import com.helger.web.scopes.domain.IGlobalWebScope;
 @ThreadSafe
 public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
-  public interface IContextPathProvider extends Serializable
+  public static interface IContextPathProvider extends Serializable
   {
     @Nonnull
     String getContextPath ();
   }
 
+  static final class ConstantContextPathProvider implements IContextPathProvider
+  {
+    private final String m_sContextPath;
+
+    public ConstantContextPathProvider (@Nonnull final String sContextPath)
+    {
+      m_sContextPath = ValueEnforcer.notNull (sContextPath, "ContextPath");
+    }
+
+    @Nonnull
+    public String getContextPath ()
+    {
+      return m_sContextPath;
+    }
+  }
+
   // Because of transient field
   private static final long serialVersionUID = 15665138713664L;
+  private static final Logger s_aLogger = LoggerFactory.getLogger (GlobalWebScope.class);
 
   private final transient ServletContext m_aSC;
-  private final IContextPathProvider m_aContextPathProvider;
+  private IContextPathProvider m_aContextPathProvider;
 
   @Nonnull
   @Nonempty
@@ -108,13 +128,29 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     return m_aSC;
   }
 
+  /**
+   * Manually change the context path to be used. Normally there is no need to
+   * call the method, because the context path is automatically determined from
+   * the {@link ServletContext} or from the underlying request. This method is
+   * only needed, if a web application is proxied by e.g. an Apache httpd and
+   * the context path between httpd and Java web application server is
+   * different!
+   *
+   * @param sContextPath
+   *        The context path of the web application, or "" for the default
+   *        (root) context. May not be <code>null</code>.
+   */
+  public void setContextPath (@Nonnull final String sContextPath)
+  {
+    ValueEnforcer.notNull (sContextPath, "ContextPath");
+    m_aContextPathProvider = new ConstantContextPathProvider (sContextPath);
+    s_aLogger.info ("The context path was manually overridden to use '" + sContextPath + "'!");
+  }
+
   @Override
   @Nonnull
   public String getContextPath ()
   {
-    // Must invoke the provider on demand, because with servlet-api < 2.5 there
-    // is no method ServletContext.getContextPath and therefore it must be taken
-    // from the request scope!!
     return m_aContextPathProvider.getContextPath ();
   }
 

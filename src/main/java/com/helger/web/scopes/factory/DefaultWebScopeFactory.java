@@ -38,10 +38,10 @@ import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 import com.helger.web.scopes.domain.ISessionWebScope;
 import com.helger.web.scopes.impl.ApplicationWebScope;
 import com.helger.web.scopes.impl.GlobalWebScope;
+import com.helger.web.scopes.impl.GlobalWebScope.IContextPathProvider;
 import com.helger.web.scopes.impl.RequestWebScope;
 import com.helger.web.scopes.impl.SessionApplicationWebScope;
 import com.helger.web.scopes.impl.SessionWebScope;
-import com.helger.web.scopes.impl.GlobalWebScope.IContextPathProvider;
 import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
@@ -79,13 +79,14 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
     }
   }
 
-  private static final class ContextPathProviderFromRequest implements IContextPathProvider
+  private static final class ContextPathProviderFromRequestScope implements IContextPathProvider
   {
     private String m_sContextPath;
 
-    public ContextPathProviderFromRequest ()
+    public ContextPathProviderFromRequestScope ()
     {}
 
+    @Nonnull
     public String getContextPath ()
     {
       if (m_sContextPath == null)
@@ -112,8 +113,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
   @Nonnull
   public IGlobalWebScope createGlobalScope (@Nonnull final ServletContext aServletContext)
   {
-    if (aServletContext == null)
-      throw new NullPointerException ("servletContext");
+    ValueEnforcer.notNull (aServletContext, "ServletContext");
 
     IContextPathProvider aContextPathProvider = null;
 
@@ -144,7 +144,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
     {
       // e.g. Servlet API < 2.5
       // -> Take from request scope on first call
-      aContextPathProvider = new ContextPathProviderFromRequest ();
+      aContextPathProvider = new ContextPathProviderFromRequestScope ();
     }
 
     return new GlobalWebScope (aServletContext, aContextPathProvider);

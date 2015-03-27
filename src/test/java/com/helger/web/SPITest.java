@@ -20,7 +20,12 @@ import org.junit.Test;
 
 import com.helger.commons.mock.PHTestUtils;
 
-public class SPITest
+/**
+ * Test SPI configuration consistency.
+ * 
+ * @author Philip Helger
+ */
+public final class SPITest
 {
   @Test
   public void testBasic () throws Exception

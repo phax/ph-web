@@ -16,8 +16,6 @@
  */
 package com.helger.web.scopes.factory;
 
-import java.lang.reflect.Method;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
@@ -25,12 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scopes.domain.IApplicationWebScope;
 import com.helger.web.scopes.domain.IGlobalWebScope;
 import com.helger.web.scopes.domain.IRequestWebScope;
@@ -38,11 +31,9 @@ import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 import com.helger.web.scopes.domain.ISessionWebScope;
 import com.helger.web.scopes.impl.ApplicationWebScope;
 import com.helger.web.scopes.impl.GlobalWebScope;
-import com.helger.web.scopes.impl.GlobalWebScope.IContextPathProvider;
 import com.helger.web.scopes.impl.RequestWebScope;
 import com.helger.web.scopes.impl.SessionApplicationWebScope;
 import com.helger.web.scopes.impl.SessionWebScope;
-import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
  * Web version of the scope factory.
@@ -52,102 +43,13 @@ import com.helger.web.scopes.mgr.WebScopeManager;
 @NotThreadSafe
 public class DefaultWebScopeFactory implements IWebScopeFactory
 {
-  private static final int SERVLET_SPEC_GETCONTEXTPATH_MAJOR = 2;
-  private static final int SERVLET_SPEC_GETCONTEXTPATH_MINOR = 5;
-
-  private static final class ConstantContextPathProvider implements IContextPathProvider
-  {
-    // Store in member to avoid dependency to outer method
-    private final String m_sContextPath;
-
-    public ConstantContextPathProvider (@Nonnull final String sContextPath)
-    {
-      // May not be null, but maybe an empty String!
-      m_sContextPath = ValueEnforcer.notNull (sContextPath, "ContextPath");
-    }
-
-    @Nonnull
-    public String getContextPath ()
-    {
-      return m_sContextPath;
-    }
-
-    @Override
-    public String toString ()
-    {
-      return new ToStringGenerator (this).append ("contextPath", m_sContextPath).toString ();
-    }
-  }
-
-  private static final class ContextPathProviderFromRequestScope implements IContextPathProvider
-  {
-    private String m_sContextPath;
-
-    public ContextPathProviderFromRequestScope ()
-    {}
-
-    @Nonnull
-    public String getContextPath ()
-    {
-      if (m_sContextPath == null)
-      {
-        // Get the context path from the request scope
-        // May throw an exception if no request scope is present so far
-        m_sContextPath = WebScopeManager.getRequestScope ().getContextPath ();
-      }
-      return m_sContextPath;
-    }
-
-    @Override
-    public String toString ()
-    {
-      return new ToStringGenerator (this).append ("contextPath", m_sContextPath).toString ();
-    }
-  }
-
-  private static final Logger s_aLogger = LoggerFactory.getLogger (DefaultWebScopeFactory.class);
-
   public DefaultWebScopeFactory ()
   {}
 
   @Nonnull
   public IGlobalWebScope createGlobalScope (@Nonnull final ServletContext aServletContext)
   {
-    ValueEnforcer.notNull (aServletContext, "ServletContext");
-
-    IContextPathProvider aContextPathProvider = null;
-
-    // Using getContextPath for Servlet API >= 2.5:
-    if ((aServletContext.getMajorVersion () == SERVLET_SPEC_GETCONTEXTPATH_MAJOR && aServletContext.getMinorVersion () >= SERVLET_SPEC_GETCONTEXTPATH_MINOR) ||
-        aServletContext.getMajorVersion () > SERVLET_SPEC_GETCONTEXTPATH_MAJOR)
-    {
-      try
-      {
-        final Method m = aServletContext.getClass ().getMethod ("getContextPath");
-        // Servlet API >= 2.5 -> invoke once and store in member
-        final String sContextPath = (String) m.invoke (aServletContext);
-        aContextPathProvider = new ConstantContextPathProvider (sContextPath);
-      }
-      catch (final NoSuchMethodException ex)
-      {
-        // Ignore
-        s_aLogger.error ("Failed to find Method getContextPath on " + aServletContext);
-      }
-      catch (final Exception ex)
-      {
-        // Ignore
-        s_aLogger.error ("Failed to invoke getContextPath on " + aServletContext, ex);
-      }
-    }
-
-    if (aContextPathProvider == null)
-    {
-      // e.g. Servlet API < 2.5
-      // -> Take from request scope on first call
-      aContextPathProvider = new ContextPathProviderFromRequestScope ();
-    }
-
-    return new GlobalWebScope (aServletContext, aContextPathProvider);
+    return new GlobalWebScope (aServletContext);
   }
 
   @Nonnull

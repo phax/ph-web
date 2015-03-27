@@ -25,7 +25,7 @@ import com.helger.web.scopes.IWebScope;
 
 /**
  * Interface for a global web scope.
- * 
+ *
  * @author Philip Helger
  */
 public interface IGlobalWebScope extends IGlobalScope, IWebScope
@@ -38,6 +38,26 @@ public interface IGlobalWebScope extends IGlobalScope, IWebScope
    */
   @Nonnull
   ServletContext getServletContext ();
+
+  /**
+   * Manually change the context path to be used. Normally there is no need to
+   * call the method, because the context path is automatically determined from
+   * the {@link ServletContext} or from the underlying request. This method is
+   * only needed, if a web application is proxied by e.g. an Apache httpd and
+   * the context path between httpd and Java web application server is
+   * different!
+   *
+   * @param sContextPath
+   *        The context path of the web application, or "" for the default
+   *        (root) context. May not be <code>null</code>.
+   */
+  void setCustomContextPath (@Nonnull String sContextPath);
+
+  /**
+   * @return <code>true</code> if a custom context path was set.
+   * @see #setCustomContextPath(String)
+   */
+  boolean hasCustomContextPath ();
 
   /**
    * Returns the context path of the web application.
@@ -53,7 +73,7 @@ public interface IGlobalWebScope extends IGlobalScope, IWebScope
    * context path used by the request and it may differ from the path returned
    * by this method. The context path returned by this method should be
    * considered as the prime or preferred context path of the application.
-   * 
+   *
    * @return The context path of the web application, or "" for the default
    *         (root) context
    */

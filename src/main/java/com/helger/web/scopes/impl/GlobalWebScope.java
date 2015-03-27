@@ -16,8 +16,6 @@
  */
 package com.helger.web.scopes.impl;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -45,44 +43,23 @@ import com.helger.web.scopes.domain.IGlobalWebScope;
 @ThreadSafe
 public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
-  public static interface IContextPathProvider extends Serializable
-  {
-    @Nonnull
-    String getContextPath ();
-  }
-
-  static final class ConstantContextPathProvider implements IContextPathProvider
-  {
-    private final String m_sContextPath;
-
-    public ConstantContextPathProvider (@Nonnull final String sContextPath)
-    {
-      m_sContextPath = ValueEnforcer.notNull (sContextPath, "ContextPath");
-    }
-
-    @Nonnull
-    public String getContextPath ()
-    {
-      return m_sContextPath;
-    }
-  }
-
   // Because of transient field
   private static final long serialVersionUID = 15665138713664L;
   private static final Logger s_aLogger = LoggerFactory.getLogger (GlobalWebScope.class);
 
   private final transient ServletContext m_aSC;
-  private IContextPathProvider m_aContextPathProvider;
+  private String m_sCustomContextPath;
 
   @Nonnull
   @Nonempty
   private static String _createScopeID (@Nonnull final ServletContext aServletContext)
   {
+    ValueEnforcer.notNull (aServletContext, "ServletContext");
     String ret = aServletContext.getServletContextName ();
     if (ret == null)
     {
       // <display-name> element is missing in web.xml
-      ret = "ph-webscopes-global";
+      ret = "ph-global-web-scope";
     }
     return ret;
   }
@@ -93,18 +70,12 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
    *
    * @param aServletContext
    *        The servlet context to use. May not be <code>null</code>.
-   * @param aContextPathProvider
-   *        The context path provider. This is so weird, because the method
-   *        <code>aServletContext.getContextPath ()</code> is only available in
-   *        Servlet API &ge; 2.5. May not be <code>null</code>.
    */
-  public GlobalWebScope (@Nonnull final ServletContext aServletContext,
-                         @Nonnull final IContextPathProvider aContextPathProvider)
+  public GlobalWebScope (@Nonnull final ServletContext aServletContext)
   {
     super (_createScopeID (aServletContext));
 
     m_aSC = aServletContext;
-    m_aContextPathProvider = ValueEnforcer.notNull (aContextPathProvider, "ContextPathProvider");
   }
 
   @Override
@@ -140,18 +111,30 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
    *        The context path of the web application, or "" for the default
    *        (root) context. May not be <code>null</code>.
    */
-  public void setContextPath (@Nonnull final String sContextPath)
+  public void setCustomContextPath (@Nonnull final String sContextPath)
   {
     ValueEnforcer.notNull (sContextPath, "ContextPath");
-    m_aContextPathProvider = new ConstantContextPathProvider (sContextPath);
+    m_sCustomContextPath = sContextPath;
     s_aLogger.info ("The context path was manually overridden to use '" + sContextPath + "'!");
+  }
+
+  /**
+   * @return <code>true</code> if a custom context path was set.
+   * @see #setCustomContextPath(String)
+   */
+  public boolean hasCustomContextPath ()
+  {
+    return m_sCustomContextPath != null;
   }
 
   @Override
   @Nonnull
   public String getContextPath ()
   {
-    return m_aContextPathProvider.getContextPath ();
+    String ret = m_sCustomContextPath;
+    if (ret == null)
+      ret = m_aSC.getContextPath ();
+    return ret;
   }
 
   @Override
@@ -175,8 +158,8 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   public String toString ()
   {
     return ToStringGenerator.getDerived (super.toString ())
-                            .append ("servletContext", m_aSC)
-                            .append ("contextPathProvider", m_aContextPathProvider)
+                            .append ("ServletContext", m_aSC)
+                            .appendIfNotNull ("CustomContextPath", m_sCustomContextPath)
                             .toString ();
   }
 }

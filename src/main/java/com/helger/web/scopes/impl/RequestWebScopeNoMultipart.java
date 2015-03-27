@@ -55,6 +55,7 @@ import com.helger.web.fileupload.IFileItem;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
 import com.helger.web.scopes.domain.IRequestWebScope;
+import com.helger.web.scopes.mgr.WebScopeManager;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestHelper;
 import com.helger.web.servlet.request.RequestParamMap;
@@ -443,6 +444,12 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String getContextPath ()
   {
+    if (true)
+    {
+      // Always use the context path from the global web scope because it can be
+      // customized!
+      return WebScopeManager.getGlobalScope ().getContextPath ();
+    }
     // In some rare scenarios, Tomcat 7 may return null here!
     return StringHelper.getNotNull (m_aHttpRequest.getContextPath (), "");
   }

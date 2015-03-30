@@ -79,12 +79,13 @@ public final class RequestLogger
       ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
       ret.put ("ContentType", aHttpRequest.getContentType ());
       ret.put ("ContextPath", aHttpRequest.getContextPath ());
-      ret.put ("ContextPathGlobal", WebScopeManager.getGlobalScope ().getContextPath ());
+      ret.put ("ContextPath2", WebScopeManager.getGlobalScope ().getContextPath ());
       ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
       ret.put ("LocalName", aHttpRequest.getLocalName ());
       ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
       ret.put ("Method", aHttpRequest.getMethod ());
       ret.put ("PathInfo", aHttpRequest.getPathInfo ());
+      ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
       ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
       ret.put ("Protocol", aHttpRequest.getProtocol ());
       ret.put ("QueryString", aHttpRequest.getQueryString ());
@@ -94,7 +95,9 @@ public final class RequestLogger
       ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
       ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
       ret.put ("RequestURI", aHttpRequest.getRequestURI ());
+      ret.put ("RequestURI2", RequestHelper.getRequestURI (aHttpRequest));
       ret.put ("RequestURL", aHttpRequest.getRequestURL ().toString ());
+      ret.put ("RequestURL2", RequestHelper.getRequestURL (aHttpRequest).toString ());
       ret.put ("Scheme", aHttpRequest.getScheme ());
       ret.put ("ServerName", aHttpRequest.getServerName ());
       ret.put ("ServerPort", Integer.toString (aHttpRequest.getServerPort ()));

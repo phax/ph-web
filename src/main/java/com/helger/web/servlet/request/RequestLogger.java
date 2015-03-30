@@ -39,6 +39,7 @@ import com.helger.commons.compare.ComparatorAsString;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotations.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
+import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
  * Helper class to debug information passed to a JSP page or a servlet.
@@ -78,6 +79,7 @@ public final class RequestLogger
       ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
       ret.put ("ContentType", aHttpRequest.getContentType ());
       ret.put ("ContextPath", aHttpRequest.getContextPath ());
+      ret.put ("ContextPathGlobal", WebScopeManager.getGlobalScope ().getContextPath ());
       ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
       ret.put ("LocalName", aHttpRequest.getLocalName ());
       ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
@@ -189,8 +191,8 @@ public final class RequestLogger
   {
     final Map <String, String> ret = new LinkedHashMap <String, String> ();
     for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap (),
-                                                                                      new ComparatorAsString ())
-                                                                     .entrySet ())
+                                                                                       new ComparatorAsString ())
+                                                                      .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
     return ret;
   }

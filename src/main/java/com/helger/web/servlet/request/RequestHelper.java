@@ -46,6 +46,7 @@ import com.helger.web.http.EHTTPVersion;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.port.CNetworkPort;
 import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.
@@ -136,7 +137,23 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = aHttpRequest.getRequestURI ();
+    String sServletPath;
+    String sPathInfo;
+    try
+    {
+      sServletPath = aHttpRequest.getServletPath ();
+      sPathInfo = aHttpRequest.getPathInfo ();
+    }
+    catch (final UnsupportedOperationException ex)
+    {
+      // For the com.helger.web.mock.OfflineHttpServletRequest
+      sServletPath = "";
+      sPathInfo = "";
+    }
+
+    // Use the GlobalWebScope context path to build the result string instead of
+    // "aHttpRequest.getRequestURI"!
+    final String sRequestURI = WebScopeManager.getGlobalScope ().getContextPath () + sServletPath + sPathInfo;
     if (StringHelper.hasNoText (sRequestURI))
       return sRequestURI;
 
@@ -187,9 +204,9 @@ public final class RequestHelper
       return "/";
     }
 
-    // In some rare scenarios, Tomcat 7 may return null here!
-    final String sContextPath = StringHelper.getNotNull (aHttpRequest.getContextPath (), "");
-    if (!sRequestURI.startsWith (sContextPath))
+    // Always use the context path
+    final String sContextPath = WebScopeManager.getGlobalScope ().getContextPath ();
+    if (StringHelper.hasNoText (sContextPath) || !sRequestURI.startsWith (sContextPath))
       return sRequestURI;
 
     // Normal case: URI contains context path.
@@ -234,12 +251,14 @@ public final class RequestHelper
    * Get the full URL (incl. protocol) and parameters of the passed request.<br>
    *
    * <pre>
-   * http://hostname.com/mywebapp/servlet/MyServlet/a/b;c=123?d=789
+   * http://hostname.com/mywebapp/servlet/dir/a/b.xml=123?d=789
    * </pre>
    *
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URL.
+   * @see #getURI(HttpServletRequest) getURI to retrieve the URL without the
+   *      server scheme and name.
    */
   @Nonnull
   @Nonempty
@@ -247,11 +266,20 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final StringBuffer aReqUrl = aHttpRequest.getRequestURL ();
-    final String sQueryString = aHttpRequest.getQueryString (); // d=789
+    final StringBuilder ret = getFullServerName (aHttpRequest.getScheme (),
+                                                 aHttpRequest.getServerName (),
+                                                 aHttpRequest.getServerPort ());
+
+    // Path
+    final String sRequestURI = getRequestURI (aHttpRequest);
+    ret.append (sRequestURI);
+
+    // query string
+    final String sQueryString = aHttpRequest.getQueryString ();
     if (sQueryString != null)
-      aReqUrl.append (URLUtils.QUESTIONMARK).append (sQueryString);
-    return aReqUrl.toString ();
+      ret.append (URLUtils.QUESTIONMARK).append (sQueryString);
+
+    return ret.toString ();
   }
 
   /**
@@ -259,12 +287,13 @@ public final class RequestHelper
    * Example:
    *
    * <pre>
-   * /mywebapp/servlet/MyServlet/a/b;c=123?d=789
+   * /mywebapp/servlet/dir/a/b.xml=123?d=789
    * </pre>
    *
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
+   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
    */
   @Nonnull
   @Nonempty

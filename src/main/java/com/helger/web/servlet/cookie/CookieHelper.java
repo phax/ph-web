@@ -31,6 +31,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotations.PresentForCodeCoverage;
 import com.helger.commons.annotations.ReturnsMutableCopy;
 import com.helger.commons.string.StringHelper;
+import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
  * Misc. helper methods on HTTP cookies.
@@ -112,14 +113,12 @@ public final class CookieHelper
   }
 
   @Nonnull
-  public static Cookie createContextCookie (@Nonnull final HttpServletRequest aHttpRequest,
-                                            @Nonnull final String sName,
+  public static Cookie createContextCookie (@Nonnull final String sName,
                                             @Nullable final String sValue,
                                             final boolean bExpireWhenBrowserIsClosed)
   {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    final String sContextPath = aHttpRequest.getContextPath ();
+    // Always use the context path from the global scope!
+    final String sContextPath = WebScopeManager.getGlobalScope ().getContextPath ();
     return createCookie (sName,
                          sValue,
                          StringHelper.hasText (sContextPath) ? sContextPath : "/",

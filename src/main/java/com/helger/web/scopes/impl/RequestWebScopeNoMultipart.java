@@ -47,7 +47,6 @@ import com.helger.commons.lang.CGStringHelper;
 import com.helger.commons.scopes.AbstractMapBasedScope;
 import com.helger.commons.scopes.ScopeUtils;
 import com.helger.commons.scopes.mgr.ScopeManager;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
@@ -85,7 +84,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return GlobalIDFactory.getNewIntID () + "@" + aHttpRequest.getRequestURI ();
+    return GlobalIDFactory.getNewIntID () + "@" + RequestHelper.getRequestURI (aHttpRequest);
   }
 
   public RequestWebScopeNoMultipart (@Nonnull final HttpServletRequest aHttpRequest,
@@ -444,14 +443,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String getContextPath ()
   {
-    if (true)
-    {
-      // Always use the context path from the global web scope because it can be
-      // customized!
-      return WebScopeManager.getGlobalScope ().getContextPath ();
-    }
-    // In some rare scenarios, Tomcat 7 may return null here!
-    return StringHelper.getNotNull (m_aHttpRequest.getContextPath (), "");
+    // Always use the context path from the global web scope because it can be
+    // customized!
+    return WebScopeManager.getGlobalScope ().getContextPath ();
   }
 
   @Nonnull
@@ -580,6 +574,8 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
   public StringBuffer getRequestURL ()
   {
+    // This call does NOT consider the customized context path from
+    // GlobalWebScope!
     return m_aHttpRequest.getRequestURL ();
   }
 

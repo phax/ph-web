@@ -574,9 +574,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
   public StringBuffer getRequestURL ()
   {
-    // This call does NOT consider the customized context path from
-    // GlobalWebScope!
-    return m_aHttpRequest.getRequestURL ();
+    return RequestHelper.getRequestURL (m_aHttpRequest);
   }
 
   public boolean isRequestedSessionIdValid ()

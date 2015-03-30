@@ -109,7 +109,8 @@ public final class RequestHelper
 
   /**
    * Get the request URI without an eventually appended session
-   * (";jsessionid=...")
+   * (";jsessionid=..."). This method considers the GlobalWebScope custom
+   * context path.
    * <table summary="Examples of Returned Values">
    * <tr align=left>
    * <th>First line of HTTP request</th>
@@ -142,7 +143,7 @@ public final class RequestHelper
     try
     {
       sServletPath = aHttpRequest.getServletPath ();
-      sPathInfo = aHttpRequest.getPathInfo ();
+      sPathInfo = StringHelper.getNotNull (aHttpRequest.getPathInfo (), "");
     }
     catch (final UnsupportedOperationException ex)
     {
@@ -245,6 +246,41 @@ public final class RequestHelper
     // Can happen e.g. with index page: URI="/", servletPath="/index.html"
     // Use servlet path in this case, as it indicates the actual target path.
     return sServletPath;
+  }
+
+  /**
+   * Reconstructs the URL the client used to make the request. The returned URL
+   * contains a protocol, server name, port number, and server path, but it does
+   * not include query string parameters.
+   * <p>
+   * If this request has been forwarded using
+   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * reconstructed URL must reflect the path used to obtain the
+   * RequestDispatcher, and not the server path specified by the client.
+   * <p>
+   * Because this method returns a <code>StringBuffer</code>, not a string, you
+   * can modify the URL easily, for example, to append query parameters.
+   * <p>
+   * This method is useful for creating redirect messages and for reporting
+   * errors.
+   *
+   * @return a <code>StringBuffer</code> object containing the reconstructed URL
+   */
+  @Nonnull
+  @Nonempty
+  public static StringBuffer getRequestURL (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final StringBuilder ret = getFullServerName (aHttpRequest.getScheme (),
+                                                 aHttpRequest.getServerName (),
+                                                 aHttpRequest.getServerPort ());
+
+    // Path
+    final String sRequestURI = getRequestURI (aHttpRequest);
+    ret.append (sRequestURI);
+
+    return new StringBuffer (ret);
   }
 
   /**

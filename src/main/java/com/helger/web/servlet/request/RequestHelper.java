@@ -264,6 +264,9 @@ public final class RequestHelper
    * This method is useful for creating redirect messages and for reporting
    * errors.
    *
+   * @param aHttpRequest
+   *        The HTTP request to get the request URL from. May not be
+   *        <code>null</code>.
    * @return a <code>StringBuffer</code> object containing the reconstructed URL
    */
   @Nonnull

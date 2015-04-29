@@ -184,13 +184,52 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   }
 
   @Nullable
+  @Deprecated
   public List <String> getAttributeValues (@Nullable final String sName)
   {
-    return getAttributeValues (sName, null);
+    return getAttributeAsList (sName);
   }
 
   @Nullable
+  public List <String> getAttributeAsList (@Nullable final String sName)
+  {
+    return getAttributeAsList (sName, null);
+  }
+
+  @Nullable
+  @Deprecated
   public List <String> getAttributeValues (@Nullable final String sName, @Nullable final List <String> aDefault)
+  {
+    return getAttributeAsList (sName, aDefault);
+  }
+
+  /**
+   * Try to convert the passed value into a {@link List} of {@link String}. This
+   * method is only called, if the passed value is non-<code>null</code>, if it
+   * is not an String array or a single String.
+   *
+   * @param sName
+   *        The name of the parameter to be queried. Just for informational
+   *        purposes.
+   * @param aValue
+   *        The retrieved non-<code>null</code> attribute value which is neither
+   *        a String nor a String array.
+   * @param aDefault
+   *        The default value to be returned, in case no type conversion could
+   *        be found.
+   * @return The converted value or the default value.
+   */
+  @Nullable
+  @OverrideOnDemand
+  protected List <String> getAttributeAsListCustom (@Nullable final String sName,
+                                                    @Nonnull final Object aValue,
+                                                    @Nullable final List <String> aDefault)
+  {
+    return aDefault;
+  }
+
+  @Nullable
+  public List <String> getAttributeAsList (@Nullable final String sName, @Nullable final List <String> aDefault)
   {
     final Object aValue = getAttributeObject (sName);
     if (aValue instanceof String [])
@@ -203,8 +242,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
       // single value passed in the request
       return CollectionHelper.newList ((String) aValue);
     }
-    // E.g. for file items
-    return aDefault;
+    return getAttributeAsListCustom (sName, aValue, aDefault);
   }
 
   public boolean hasAttributeValue (@Nullable final String sName, @Nullable final String sDesiredValue)
@@ -240,13 +278,11 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   public Map <String, IFileItem> getAllUploadedFileItems ()
   {
     final Map <String, IFileItem> ret = new HashMap <String, IFileItem> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
-      final String sAttrName = aEnum.nextElement ();
-      final Object aAttrValue = getAttributeObject (sAttrName);
+      final Object aAttrValue = aEntry.getValue ();
       if (aAttrValue instanceof IFileItem)
-        ret.put (sAttrName, (IFileItem) aAttrValue);
+        ret.put (aEntry.getKey (), (IFileItem) aAttrValue);
     }
     return ret;
   }
@@ -256,11 +292,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   public Map <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
     final Map <String, IFileItem []> ret = new HashMap <String, IFileItem []> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
-      final String sAttrName = aEnum.nextElement ();
-      final Object aAttrValue = getAttributeObject (sAttrName);
+      final String sAttrName = aEntry.getKey ();
+      final Object aAttrValue = aEntry.getValue ();
       if (aAttrValue instanceof IFileItem)
         ret.put (sAttrName, new IFileItem [] { (IFileItem) aAttrValue });
       else
@@ -275,11 +310,8 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   public List <IFileItem> getAllUploadedFileItemValues ()
   {
     final List <IFileItem> ret = new ArrayList <IFileItem> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
+    for (final Object aAttrValue : getAllAttributeValues ())
     {
-      final String sAttrName = aEnum.nextElement ();
-      final Object aAttrValue = getAttributeObject (sAttrName);
       if (aAttrValue instanceof IFileItem)
         ret.add ((IFileItem) aAttrValue);
       else

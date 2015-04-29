@@ -192,15 +192,33 @@ public class RequestFieldData implements Serializable
    * @return A list of simple request values with the same key or
    *         <code>null</code> if no such request parameter is present and no
    *         default value was provided
+   * @deprecated Use {@link #getRequestValueAsList()} instead
    */
+  @Deprecated
   @Nullable
   public final List <String> getRequestValues ()
+  {
+    return getRequestValueAsList ();
+  }
+
+  /**
+   * In case multiple request parameters with the same value are present (e.g.
+   * multi-selects or checkboxes) this method retrieves all request values. If
+   * no such request value is present a list with one entry (the default value)
+   * is returned, in case the default value is non-empty
+   *
+   * @return A list of simple request values with the same key or
+   *         <code>null</code> if no such request parameter is present and no
+   *         default value was provided
+   */
+  @Nullable
+  public final List <String> getRequestValueAsList ()
   {
     List <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
       aDefault = CollectionHelper.newList (sDefaultValue);
-    return getScope ().getAttributeValues (m_sFieldName, aDefault);
+    return getScope ().getAttributeAsList (m_sFieldName, aDefault);
   }
 
   /**
@@ -217,6 +235,22 @@ public class RequestFieldData implements Serializable
     ValueEnforcer.notNull (sExpectedValue, "ExpectedValue");
 
     return sExpectedValue.equals (getRequestValue ());
+  }
+
+  /**
+   * Utility method that checks if the passed expected value matches the request
+   * parameter (considering the fallback mechanism)
+   *
+   * @param aExpectedValues
+   *        The list of expected values. May not be <code>null</code>.
+   * @return <code>true</code> if the passed value equals the actual request
+   *         value
+   */
+  public final boolean hasRequestValue (@Nonnull final List <String> aExpectedValues)
+  {
+    ValueEnforcer.notNull (aExpectedValues, "ExpectedValues");
+
+    return aExpectedValues.equals (getRequestValueAsList ());
   }
 
   @Override

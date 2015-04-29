@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.helger</groupId>
       <artifactId>ph-commons</artifactId>
-      <version>5.6.1</version>
+      <version>5.7.0</version>
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>org.mozilla</groupId>
       <artifactId>rhino</artifactId>
-      <version>1.7R5</version>
+      <version>1.7.6</version>
       <optional>true</optional>
     </dependency>
     <dependency>

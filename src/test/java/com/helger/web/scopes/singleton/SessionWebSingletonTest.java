@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.helger.commons.mock.PHTestUtils;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scopes.singleton.SessionWebSingleton;
 
 /**
  * Test class for class {@link SessionWebSingleton}.<br>
@@ -38,7 +37,7 @@ import com.helger.web.scopes.singleton.SessionWebSingleton;
 public final class SessionWebSingletonTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testSerialize () throws Exception
+  public void testBasic () throws Exception
   {
     assertTrue (SessionWebSingleton.getAllSessionSingletons ().isEmpty ());
     assertFalse (SessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingleton.class));
@@ -53,6 +52,29 @@ public final class SessionWebSingletonTest extends AbstractWebScopeAwareTestCase
     assertEquals (1, a.get ());
 
     final MockSessionWebSingleton b = MockSessionWebSingleton.getInstance ();
+    assertSame (a, b);
+
+    PHTestUtils.testDefaultSerialization (a);
+  }
+
+  @Test
+  public void testSerialize () throws Exception
+  {
+    assertTrue (SessionWebSingleton.getAllSessionSingletons ().isEmpty ());
+    assertFalse (SessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));
+    assertNull (SessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
+
+    final MockSessionWebSingletonWithScopeCtor a = MockSessionWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (a);
+    assertTrue (SessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));
+    assertSame (a, SessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
+    assertNotNull (a.getScope ());
+    assertEquals (0, a.get ());
+    a.inc ();
+    assertEquals (1, a.get ());
+
+    final MockSessionWebSingletonWithScopeCtor b = MockSessionWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (b.getScope ());
     assertSame (a, b);
 
     PHTestUtils.testDefaultSerialization (a);

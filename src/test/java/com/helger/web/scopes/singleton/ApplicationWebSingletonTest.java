@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scopes.singleton.ApplicationWebSingleton;
 
 /**
  * Test class for class {@link ApplicationWebSingleton}.<br>
@@ -37,7 +36,7 @@ import com.helger.web.scopes.singleton.ApplicationWebSingleton;
 public final class ApplicationWebSingletonTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testSerialize () throws Exception
+  public void testBasic () throws Exception
   {
     assertTrue (ApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
     assertFalse (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
@@ -52,6 +51,28 @@ public final class ApplicationWebSingletonTest extends AbstractWebScopeAwareTest
     assertEquals (1, a.get ());
 
     final MockApplicationWebSingleton b = MockApplicationWebSingleton.getInstance ();
+    assertSame (a, b);
+  }
+
+  @Test
+  public void testCtor () throws Exception
+  {
+    assertTrue (ApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
+    assertFalse (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertNull (ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+
+    final MockApplicationWebSingletonWithScopeCtor a = MockApplicationWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (a);
+    assertTrue (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertSame (a,
+                ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertNotNull (a.getScope ());
+    assertEquals (0, a.get ());
+    a.inc ();
+    assertEquals (1, a.get ());
+
+    final MockApplicationWebSingletonWithScopeCtor b = MockApplicationWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (b.getScope ());
     assertSame (a, b);
   }
 }

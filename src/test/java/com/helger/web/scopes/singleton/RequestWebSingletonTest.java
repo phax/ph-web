@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scopes.singleton.RequestWebSingleton;
 
 /**
  * Test class for class {@link RequestWebSingleton}.<br>
@@ -37,7 +36,7 @@ import com.helger.web.scopes.singleton.RequestWebSingleton;
 public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testSerialize () throws Exception
+  public void testBasic () throws Exception
   {
     assertTrue (RequestWebSingleton.getAllRequestSingletons ().isEmpty ());
     assertFalse (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
@@ -52,6 +51,27 @@ public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestCase
     assertEquals (1, a.get ());
 
     final MockRequestWebSingleton b = MockRequestWebSingleton.getInstance ();
+    assertSame (a, b);
+  }
+
+  @Test
+  public void testCtor () throws Exception
+  {
+    assertTrue (RequestWebSingleton.getAllRequestSingletons ().isEmpty ());
+    assertFalse (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertNull (RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+
+    final MockRequestWebSingletonWithScopeCtor a = MockRequestWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (a);
+    assertTrue (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertSame (a, RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertNotNull (a.getScope ());
+    assertEquals (0, a.get ());
+    a.inc ();
+    assertEquals (1, a.get ());
+
+    final MockRequestWebSingletonWithScopeCtor b = MockRequestWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (b.getScope ());
     assertSame (a, b);
   }
 }

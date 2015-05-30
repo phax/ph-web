@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.helger.commons.mock.PHTestUtils;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scopes.singleton.SessionApplicationWebSingleton;
 
 /**
  * Test class for class {@link SessionApplicationWebSingleton}.<br>
@@ -38,7 +37,7 @@ import com.helger.web.scopes.singleton.SessionApplicationWebSingleton;
 public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testSerialize () throws Exception
+  public void testBasic () throws Exception
   {
     assertTrue (SessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
     assertFalse (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingleton.class));
@@ -54,6 +53,30 @@ public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAw
     assertEquals (1, a.get ());
 
     final MockSessionApplicationWebSingleton b = MockSessionApplicationWebSingleton.getInstance ();
+    assertSame (a, b);
+
+    PHTestUtils.testDefaultSerialization (a);
+  }
+
+  @Test
+  public void testCtor () throws Exception
+  {
+    assertTrue (SessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
+    assertFalse (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertNull (SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+
+    final MockSessionApplicationWebSingletonWithScopeCtor a = MockSessionApplicationWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (a);
+    assertTrue (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertSame (a,
+                SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertNotNull (a.getScope ());
+    assertEquals (0, a.get ());
+    a.inc ();
+    assertEquals (1, a.get ());
+
+    final MockSessionApplicationWebSingletonWithScopeCtor b = MockSessionApplicationWebSingletonWithScopeCtor.getInstance ();
+    assertNotNull (b.getScope ());
     assertSame (a, b);
 
     PHTestUtils.testDefaultSerialization (a);

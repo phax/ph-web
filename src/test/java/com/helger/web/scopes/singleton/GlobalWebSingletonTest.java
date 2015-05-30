@@ -28,7 +28,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scopes.singleton.GlobalWebSingleton;
 
 /**
  * Test class for class {@link GlobalWebSingleton}.
@@ -52,7 +51,7 @@ public final class GlobalWebSingletonTest extends AbstractWebScopeAwareTestCase
   }
 
   @Test
-  public void testAll ()
+  public void testBasic ()
   {
     assertTrue (GlobalWebSingleton.getAllGlobalSingletons ().isEmpty ());
     assertFalse (GlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingleton.class));

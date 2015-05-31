@@ -31,7 +31,7 @@ import com.helger.web.scopes.mock.WebScopeAwareTestSetup;
  * 
  * @author Philip Helger
  */
-public final class FuncTestWebScopeSPIManagerTest
+public final class WebScopeSPIManagerFuncTest
 {
   static
   {

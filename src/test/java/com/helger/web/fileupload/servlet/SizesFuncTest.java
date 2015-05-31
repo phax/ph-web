@@ -40,7 +40,7 @@ import com.helger.web.mock.MockHttpServletRequest;
 /**
  * Unit test for items with varying sizes.
  */
-public final class FuncTestSizes extends AbstractFileUploadTestCase
+public final class SizesFuncTest extends AbstractFileUploadTestCase
 {
   /**
    * Runs a test with varying file sizes.

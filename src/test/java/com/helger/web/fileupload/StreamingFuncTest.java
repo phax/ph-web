@@ -50,7 +50,7 @@ import com.helger.web.mock.MockHttpServletRequest;
 /**
  * Unit test for items with varying sizes.
  */
-public final class FuncTestStreaming
+public final class StreamingFuncTest
 {
   /**
    * Tests a file upload with varying file sizes.

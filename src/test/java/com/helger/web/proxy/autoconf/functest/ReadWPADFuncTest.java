@@ -32,7 +32,7 @@ import com.helger.commons.io.resource.URLResource;
 import com.helger.commons.io.streams.StreamUtils;
 import com.helger.web.proxy.autoconf.ProxyAutoConfigHelper;
 
-public class FuncTestReadWPAD
+public final class ReadWPADFuncTest
 {
   public static String getProxyAutoConfigFunction (final IReadableResource aRes, final String sCharset) throws IOException
   {

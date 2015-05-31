@@ -34,7 +34,7 @@ import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
  *
  * @author Philip Helger
  */
-public final class GlobalWebSingletonWithScopeCtorTest extends AbstractWebScopeAwareTestCase
+public final class GlobalWebSingletonWithScopeCtorFuncTest extends AbstractWebScopeAwareTestCase
 {
   @BeforeClass
   public static void beforeClass ()

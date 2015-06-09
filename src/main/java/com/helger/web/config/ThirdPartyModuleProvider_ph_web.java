@@ -51,7 +51,7 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
                                                                      "JCraft Inc.",
                                                                      ELicense.BSD,
-                                                                     new Version (0, 1, 52),
+                                                                     new Version (0, 1, 53),
                                                                      "http://www.jcraft.com/jsch/",
                                                                      true);
 

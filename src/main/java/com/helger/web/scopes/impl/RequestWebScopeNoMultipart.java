@@ -178,23 +178,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   }
 
   @Nullable
-  @Deprecated
-  public List <String> getAttributeValues (@Nullable final String sName)
-  {
-    return getAttributeAsList (sName);
-  }
-
-  @Nullable
   public List <String> getAttributeAsList (@Nullable final String sName)
   {
     return getAttributeAsList (sName, null);
-  }
-
-  @Nullable
-  @Deprecated
-  public List <String> getAttributeValues (@Nullable final String sName, @Nullable final List <String> aDefault)
-  {
-    return getAttributeAsList (sName, aDefault);
   }
 
   /**

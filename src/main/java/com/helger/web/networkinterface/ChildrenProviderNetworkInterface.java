@@ -50,13 +50,6 @@ public class ChildrenProviderNetworkInterface implements IChildrenProvider <Netw
   }
 
   @Nullable
-  @Deprecated
-  public Collection <NetworkInterface> getChildren (@Nonnull final NetworkInterface aCurrent)
-  {
-    return getAllChildren (aCurrent);
-  }
-
-  @Nullable
   public Collection <NetworkInterface> getAllChildren (@Nonnull final NetworkInterface aCurrent)
   {
     final Enumeration <NetworkInterface> aSubIFs = aCurrent.getSubInterfaces ();

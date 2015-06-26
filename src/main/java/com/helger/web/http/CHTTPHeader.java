@@ -127,8 +127,6 @@ public final class CHTTPHeader
   public static final String VALUE_ALLOW_FROM = "ALLOW-FROM";
   public static final String VALUE_DENY = "DENY";
   public static final String VALUE_INCLUDE_SUBDOMAINS = "includeSubDomains";
-  @Deprecated
-  public static final String VALUE_INCLUDE_SUBDMOAINS = VALUE_INCLUDE_SUBDOMAINS;
   public static final String VALUE_NOSNIFF = "nosniff";
   public static final String VALUE_SAMEORIGIN = "SAMEORIGIN";
 

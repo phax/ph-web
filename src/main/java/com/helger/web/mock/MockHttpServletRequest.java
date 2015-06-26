@@ -1292,22 +1292,4 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     removeAllParameters ();
     return this;
   }
-
-  @Deprecated
-  @Nonnull
-  public static MockHttpServletRequest createWithContent (@Nullable final byte [] aContent)
-  {
-    return createWithContent (aContent, null);
-  }
-
-  @Deprecated
-  @Nonnull
-  public static MockHttpServletRequest createWithContent (@Nullable final byte [] aContent,
-                                                          @Nullable final String sContentType)
-  {
-    final MockHttpServletRequest req = new MockHttpServletRequest ();
-    req.setContent (aContent);
-    req.setContentType (sContentType);
-    return req;
-  }
 }

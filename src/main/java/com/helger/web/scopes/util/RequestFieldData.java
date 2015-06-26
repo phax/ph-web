@@ -192,24 +192,6 @@ public class RequestFieldData implements Serializable
    * @return A list of simple request values with the same key or
    *         <code>null</code> if no such request parameter is present and no
    *         default value was provided
-   * @deprecated Use {@link #getRequestValueAsList()} instead
-   */
-  @Deprecated
-  @Nullable
-  public final List <String> getRequestValues ()
-  {
-    return getRequestValueAsList ();
-  }
-
-  /**
-   * In case multiple request parameters with the same value are present (e.g.
-   * multi-selects or checkboxes) this method retrieves all request values. If
-   * no such request value is present a list with one entry (the default value)
-   * is returned, in case the default value is non-empty
-   *
-   * @return A list of simple request values with the same key or
-   *         <code>null</code> if no such request parameter is present and no
-   *         default value was provided
    */
   @Nullable
   public final List <String> getRequestValueAsList ()

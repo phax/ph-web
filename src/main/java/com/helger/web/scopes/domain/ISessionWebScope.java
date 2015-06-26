@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.scopes.domain.ISessionScope;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.ISessionScope;
 import com.helger.web.scopes.IWebScope;
 
 /**

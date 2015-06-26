@@ -20,10 +20,11 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.Translatable;
-import com.helger.commons.name.IHasDisplayText;
-import com.helger.commons.text.impl.TextProvider;
+import com.helger.commons.annotation.Translatable;
+import com.helger.commons.text.IMultilingualText;
+import com.helger.commons.text.display.IHasDisplayText;
 import com.helger.commons.text.resolve.DefaultTextResolver;
+import com.helger.commons.text.util.TextHelper;
 
 @Translatable
 public enum EBrowserText implements IHasDisplayText
@@ -42,15 +43,15 @@ public enum EBrowserText implements IHasDisplayText
   APPLICATION ("Anwendung oder API", "Application or API"),
   IE_COMPATIBILITY_MODE (" (Kompatibilitätsmodus)", " (compatibility mode)");
 
-  private final TextProvider m_aTP;
+  private final IMultilingualText m_aTP;
 
   private EBrowserText (final String sDE, final String sEN)
   {
-    m_aTP = TextProvider.create_DE_EN (sDE, sEN);
+    m_aTP = TextHelper.create_DE_EN (sDE, sEN);
   }
 
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
-    return DefaultTextResolver.getText (this, m_aTP, aContentLocale);
+    return DefaultTextResolver.getTextStatic (this, m_aTP, aContentLocale);
   }
 }

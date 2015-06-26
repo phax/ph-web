@@ -26,21 +26,21 @@ import javax.annotation.concurrent.Immutable;
 import org.joda.time.DateTime;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.impl.MicroElement;
+import com.helger.commons.microdom.MicroElement;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.xml.EXMLCharMode;
-import com.helger.commons.xml.serialize.XMLMaskHelper;
+import com.helger.commons.xml.serialize.write.EXMLCharMode;
+import com.helger.commons.xml.serialize.write.XMLMaskHelper;
 import com.helger.datetime.IHasLastModificationDateTime;
 import com.helger.datetime.PDTUtils;
 import com.helger.web.datetime.PDTWebDateUtils;
 
 /**
  * Represents a single URL within an XML URL set.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -97,7 +97,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
   /**
    * Get the length of a single tag name in XML representation for open AND
    * close together.
-   * 
+   *
    * @param s
    *        The tag name without leading and trailing angle brackets
    * @return The length in chars in XML representation
@@ -199,9 +199,9 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     final XMLSitemapURL rhs = (XMLSitemapURL) o;
     // Don't compare output length and double priority as they are calculated
     return m_sLocation.equals (rhs.m_sLocation) &&
-           EqualsUtils.equals (m_aLastModification, rhs.m_aLastModification) &&
-           EqualsUtils.equals (m_eChangeFreq, rhs.m_eChangeFreq) &&
-           EqualsUtils.equals (m_sPriority, rhs.m_sPriority);
+           EqualsHelper.equals (m_aLastModification, rhs.m_aLastModification) &&
+           EqualsHelper.equals (m_eChangeFreq, rhs.m_eChangeFreq) &&
+           EqualsHelper.equals (m_sPriority, rhs.m_sPriority);
   }
 
   @Override

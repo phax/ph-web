@@ -29,9 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.io.IReadableResource;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.io.resource.IReadableResource;
+import com.helger.commons.io.stream.StreamHelper;
 
 @Immutable
 public final class RhinoUtils
@@ -65,7 +65,7 @@ public final class RhinoUtils
       }
       finally
       {
-        StreamUtils.close (aReader);
+        StreamHelper.close (aReader);
       }
     }
     else

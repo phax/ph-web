@@ -18,9 +18,8 @@ package com.helger.web.scopes.singleton;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.UsedViaReflection;
-import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.web.scopes.singleton.SessionWebSingleton;
+import com.helger.commons.annotation.UsedViaReflection;
+import com.helger.commons.hashcode.HashCodeGenerator;
 
 /**
  * Mock implementation of {@link SessionWebSingleton}

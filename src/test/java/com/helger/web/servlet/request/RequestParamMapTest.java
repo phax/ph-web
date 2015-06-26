@@ -28,13 +28,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.helger.commons.collections.attrs.MapBasedAttributeContainer;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Unit test class for class {@link RequestParamMap}.
- * 
+ *
  * @author Philip Helger
  */
 @SuppressFBWarnings ("NP_NONNULL_PARAM_VIOLATION")
@@ -54,8 +52,8 @@ public final class RequestParamMapTest
     aTestMap.put ("c", "...");
     assertEquals (5, aTestMap.size ());
 
-    final IRequestParamMap aMap = RequestParamMap.create (new MapBasedAttributeContainer (aTestMap));
-    assertEquals (4, aMap.size ());
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertEquals (4, aMap.getSize ());
     assertTrue (aMap.containsKey ("a"));
     assertTrue (aMap.containsKey ("b"));
     assertTrue (aMap.containsKey ("c"));
@@ -63,7 +61,7 @@ public final class RequestParamMapTest
 
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
-    assertEquals (2, aNames.size ());
+    assertEquals (2, aNames.getSize ());
     final Map <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));
@@ -218,8 +216,8 @@ public final class RequestParamMapTest
     aTestMap.put ("c!!level1??!!level2??", "...");
     assertEquals (5, aTestMap.size ());
 
-    final IRequestParamMap aMap = RequestParamMap.create (new MapBasedAttributeContainer (aTestMap));
-    assertEquals (4, aMap.size ());
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertEquals (4, aMap.getSize ());
     assertTrue (aMap.containsKey ("a"));
     assertTrue (aMap.containsKey ("b"));
     assertTrue (aMap.containsKey ("c"));
@@ -227,7 +225,7 @@ public final class RequestParamMapTest
 
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
-    assertEquals (2, aNames.size ());
+    assertEquals (2, aNames.getSize ());
     final Map <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));

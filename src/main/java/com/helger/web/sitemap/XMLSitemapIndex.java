@@ -33,18 +33,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.commons.io.file.FileUtils;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.impl.MicroDocument;
+import com.helger.commons.microdom.MicroDocument;
 import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.xml.serialize.IXMLWriterSettings;
+import com.helger.commons.xml.serialize.write.IXMLWriterSettings;
 import com.helger.web.datetime.PDTWebDateUtils;
 import com.helger.web.servlet.server.StaticServerInfo;
 
@@ -205,7 +205,7 @@ public final class XMLSitemapIndex implements Serializable
   @Nonnull
   private OutputStream _createOutputStream (@Nonnull final File aFile)
   {
-    OutputStream aOS = FileUtils.getOutputStream (aFile);
+    OutputStream aOS = FileHelper.getOutputStream (aFile);
     if (m_bUseGZip)
       try
       {
@@ -222,7 +222,7 @@ public final class XMLSitemapIndex implements Serializable
   public ESuccess writeToDisk (@Nonnull final File aBaseDir)
   {
     ValueEnforcer.notNull (aBaseDir, "Basedir");
-    if (!FileUtils.existsDir (aBaseDir))
+    if (!FileHelper.existsDir (aBaseDir))
       throw new IllegalArgumentException ("The passed directory does not exist: " + aBaseDir);
 
     if (m_aURLSets.isEmpty ())

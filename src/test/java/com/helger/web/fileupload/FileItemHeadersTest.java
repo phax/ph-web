@@ -26,9 +26,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.helger.web.fileupload.FileItemHeaders;
-import com.helger.web.fileupload.IFileItemHeaders;
-
 /**
  * Unit tests {@link IFileItemHeaders} and {@link FileItemHeaders}.
  *

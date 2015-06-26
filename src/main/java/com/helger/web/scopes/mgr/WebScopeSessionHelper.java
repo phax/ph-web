@@ -28,11 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.scopes.IScopeRenewalAware;
-import com.helger.commons.scopes.domain.ISessionApplicationScope;
-import com.helger.commons.scopes.mgr.ScopeSessionManager;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.scope.IScopeRenewalAware;
+import com.helger.commons.scope.ISessionApplicationScope;
+import com.helger.commons.scope.mgr.ScopeSessionManager;
 import com.helger.commons.state.EChange;
 import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 import com.helger.web.scopes.domain.ISessionWebScope;

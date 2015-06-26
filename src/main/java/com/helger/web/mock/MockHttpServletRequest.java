@@ -56,23 +56,23 @@ import javax.servlet.http.Part;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.IHasLocale;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.UnsupportedOperation;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.collections.multimap.IMultiMapSetBased;
-import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
-import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
-import com.helger.commons.io.streams.StreamUtils;
-import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.multimap.IMultiMapSetBased;
+import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.lang.ClassHelper;
+import com.helger.commons.locale.IHasLocale;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
-import com.helger.commons.url.URLUtils;
+import com.helger.commons.url.URLHelper;
 import com.helger.web.CWeb;
 import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.CHTTPHeader;
@@ -437,8 +437,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
           if (aValue instanceof String [])
             setParameter (aEntry.getKey (), (String []) aValue);
           else
-            throw new IllegalArgumentException ("Unexpected parameter type: " +
-                                                CGStringHelper.getSafeClassName (aValue));
+            throw new IllegalArgumentException ("Unexpected parameter type: " + ClassHelper.getSafeClassName (aValue));
       }
     return this;
   }
@@ -505,8 +504,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
           if (aValue instanceof String [])
             addParameter (aEntry.getKey (), (String []) aValue);
           else
-            throw new IllegalArgumentException ("Unexpected parameter type: " +
-                                                CGStringHelper.getSafeClassName (aValue));
+            throw new IllegalArgumentException ("Unexpected parameter type: " + ClassHelper.getSafeClassName (aValue));
       }
     return this;
   }
@@ -626,7 +624,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       return null;
 
     final InputStream aIS = new NonBlockingByteArrayInputStream (m_aContent);
-    final Reader aReader = StreamUtils.createReader (aIS, getCharacterEncodingObjOrDefault ());
+    final Reader aReader = StreamHelper.createReader (aIS, getCharacterEncodingObjOrDefault ());
     return new BufferedReader (aReader);
   }
 
@@ -1231,7 +1229,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   {
     if (StringHelper.hasText (sRequestURL))
     {
-      final URI aURI = URLUtils.getAsURI (RequestHelper.getWithoutSessionID (sRequestURL));
+      final URI aURI = URLHelper.getAsURI (RequestHelper.getWithoutSessionID (sRequestURL));
       if (aURI != null)
       {
         // Server stuff - straight forward
@@ -1277,7 +1275,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         // Request parameters
         setQueryString (aURI.getQuery ());
         removeAllParameters ();
-        setParameters (URLUtils.getQueryStringAsMap (aURI.getQuery ()));
+        setParameters (URLHelper.getQueryStringAsMap (aURI.getQuery ()));
         return this;
       }
     }

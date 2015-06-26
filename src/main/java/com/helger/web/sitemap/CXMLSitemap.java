@@ -18,11 +18,11 @@ package com.helger.web.sitemap;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.xml.EXMLIncorrectCharacterHandling;
-import com.helger.commons.xml.serialize.EXMLSerializeIndent;
-import com.helger.commons.xml.serialize.IXMLWriterSettings;
-import com.helger.commons.xml.serialize.XMLWriterSettings;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.xml.serialize.write.EXMLIncorrectCharacterHandling;
+import com.helger.commons.xml.serialize.write.EXMLSerializeIndent;
+import com.helger.commons.xml.serialize.write.IXMLWriterSettings;
+import com.helger.commons.xml.serialize.write.XMLWriterSettings;
 
 /**
  * Constants for handling sitemaps.org sitemaps consistently.

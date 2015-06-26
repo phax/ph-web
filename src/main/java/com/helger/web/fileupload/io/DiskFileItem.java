@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.UUID;
@@ -36,25 +35,25 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.SystemProperties;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.ReturnsMutableObject;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.equals.EqualsUtils;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileIOError;
 import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.file.SimpleFileIO;
-import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.commons.system.SystemProperties;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeadersSupport;
@@ -211,13 +210,13 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_sFilename = sFilename;
     m_nSizeThreshold = ValueEnforcer.isGT0 (nSizeThreshold, "SizeThreshold");
     m_aTempDir = aRepository != null ? aRepository : new File (SystemProperties.getTmpDir ());
-    if (!FileUtils.existsDir (m_aTempDir))
+    if (!FileHelper.existsDir (m_aTempDir))
       throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " +
                                           m_aTempDir.getAbsolutePath ());
-    if (!FileUtils.canRead (m_aTempDir))
+    if (!FileHelper.canRead (m_aTempDir))
       throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " +
                                           m_aTempDir.getAbsolutePath ());
-    if (!FileUtils.canWrite (m_aTempDir))
+    if (!FileHelper.canWrite (m_aTempDir))
       throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " +
                                           m_aTempDir.getAbsolutePath ());
   }
@@ -269,8 +268,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     }
     else
     {
-      final InputStream aIS = FileUtils.getInputStream (m_aDFOSFile);
-      StreamUtils.copyInputStreamToOutputStream (aIS, aOS);
+      final InputStream aIS = FileHelper.getInputStream (m_aDFOSFile);
+      StreamHelper.copyInputStreamToOutputStream (aIS, aOS);
       FileOperations.deleteFile (m_aDFOSFile);
       m_aDFOSFile = null;
     }
@@ -329,7 +328,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       return new NonBlockingByteArrayInputStream (m_aCachedContent);
     }
 
-    return FileUtils.getInputStream (m_aDFOS.getFile ());
+    return FileHelper.getInputStream (m_aDFOS.getFile ());
   }
 
   @Nullable
@@ -370,7 +369,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String getNameSecure ()
   {
     final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
-    if (!EqualsUtils.equals (sSecureName, m_sFilename))
+    if (!EqualsHelper.equals (sSecureName, m_sFilename))
       s_aLogger.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
     return sSecureName;
   }
@@ -411,7 +410,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *
    * @return The contents of the file as an array of bytes.
    */
-  @ReturnsMutableObject (reason = "Speed")
+  @ReturnsMutableObject ("Speed")
   @SuppressFBWarnings ("EI_EXPOSE_REP")
   @Nullable
   public byte [] get ()
@@ -422,7 +421,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       return m_aCachedContent;
     }
 
-    return SimpleFileIO.readFileBytes (m_aDFOS.getFile ());
+    return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
   @Nullable
@@ -435,24 +434,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       return ArrayHelper.getCopy (m_aCachedContent);
     }
 
-    return SimpleFileIO.readFileBytes (m_aDFOS.getFile ());
-  }
-
-  /**
-   * Returns the contents of the file as a String, using the specified encoding.
-   * This method uses {@link #get()} to retrieve the contents of the file.
-   *
-   * @param sCharset
-   *        The charset to use.
-   * @return The contents of the file, as a string.
-   * @throws UnsupportedEncodingException
-   *         if the requested character encoding is not available.
-   */
-  @Nonnull
-  @Deprecated
-  public String getString (@Nonnull final String sCharset) throws UnsupportedEncodingException
-  {
-    return CharsetManager.getAsString (get (), sCharset);
+    return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
   /**

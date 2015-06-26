@@ -21,8 +21,8 @@ import java.io.Serializable;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-import com.helger.commons.name.IHasDescription;
 import com.helger.commons.name.IHasName;
+import com.helger.commons.text.IHasDescription;
 
 /**
  * Interface describing a single network port.

@@ -28,10 +28,10 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.ReturnsImmutableObject;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.ReturnsImmutableObject;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -66,7 +66,7 @@ public class UAProfile implements Serializable
       s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
     m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null
-                                                                   : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
+                                                                    : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
   }
 
   /**
@@ -105,8 +105,8 @@ public class UAProfile implements Serializable
     if (!(o instanceof UAProfile))
       return false;
     final UAProfile rhs = (UAProfile) o;
-    return EqualsUtils.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&
-           EqualsUtils.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
+    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&
+           EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
   }
 
   @Override

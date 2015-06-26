@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.PHTestUtils;
+import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.web.mock.MockHttpServletRequest;
 
 /**
@@ -75,8 +75,8 @@ public final class UAProfileDatabaseTest
     assertEquals (1, aProfile.getDiffCount ());
 
     // Just some sanity check
-    PHTestUtils.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                 UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
+    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                       UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
   }
 
   @Test
@@ -108,8 +108,8 @@ public final class UAProfileDatabaseTest
     assertNull (aProfile.getProfileURL ());
     assertEquals (1, aProfile.getDiffCount ());
 
-    PHTestUtils.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                 UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
+    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                       UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
   }
 
   @Test
@@ -131,7 +131,7 @@ public final class UAProfileDatabaseTest
     assertNull (aProfile.getProfileURL ());
     assertEquals (3, aProfile.getDiffCount ());
 
-    PHTestUtils.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                 UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
+    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                       UAProfileDatabase.getUAProfileFromRequest (aHttpRequest));
   }
 }

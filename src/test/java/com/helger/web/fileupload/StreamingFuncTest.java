@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.mock.MockIOException;
+import com.helger.commons.exception.mock.MockIOException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;

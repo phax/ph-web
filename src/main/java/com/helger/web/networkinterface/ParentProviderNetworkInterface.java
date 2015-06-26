@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.parent.IParentProvider;
+import com.helger.commons.hierarchy.IParentProvider;
 import com.helger.commons.string.ToStringGenerator;
 
 /**

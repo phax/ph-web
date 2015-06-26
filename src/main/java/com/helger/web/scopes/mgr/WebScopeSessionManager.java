@@ -28,10 +28,10 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.scopes.domain.ISessionScope;
-import com.helger.commons.scopes.mgr.ScopeSessionManager;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.scope.ISessionScope;
+import com.helger.commons.scope.mgr.ScopeSessionManager;
 import com.helger.web.scopes.domain.ISessionWebScope;
 
 /**

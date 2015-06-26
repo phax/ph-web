@@ -36,17 +36,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.idfactory.GlobalIDFactory;
-import com.helger.commons.lang.CGStringHelper;
-import com.helger.commons.scopes.AbstractMapBasedScope;
-import com.helger.commons.scopes.ScopeUtils;
-import com.helger.commons.scopes.mgr.ScopeManager;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.id.factory.GlobalIDFactory;
+import com.helger.commons.lang.ClassHelper;
+import com.helger.commons.scope.AbstractMapBasedScope;
+import com.helger.commons.scope.ScopeHelper;
+import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
@@ -96,12 +96,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // done initialization
-    if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request web scope '" +
-                          getID () +
-                          "' of class " +
-                          CGStringHelper.getClassLocalName (this),
-                      ScopeUtils.getDebugStackTrace ());
+    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
+      s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   @OverrideOnDemand
@@ -150,23 +147,20 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     postAttributeInit ();
 
     // done initialization
-    if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
+    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Initialized request web scope '" +
                           getID () +
                           "' of class " +
-                          CGStringHelper.getClassLocalName (this),
-                      ScopeUtils.getDebugStackTrace ());
+                          ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   @Override
   protected void postDestroy ()
   {
-    if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request web scope '" +
-                          getID () +
-                          "' of class " +
-                          CGStringHelper.getClassLocalName (this),
-                      ScopeUtils.getDebugStackTrace ());
+    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
+      s_aLogger.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   @Nonnull
@@ -247,7 +241,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
   public boolean hasAttributeValue (@Nullable final String sName, @Nullable final String sDesiredValue)
   {
-    return EqualsUtils.equals (getAttributeAsString (sName), sDesiredValue);
+    return EqualsHelper.equals (getAttributeAsString (sName), sDesiredValue);
   }
 
   public boolean hasAttributeValue (@Nullable final String sName,
@@ -255,7 +249,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
                                     final boolean bDefault)
   {
     final String sValue = getAttributeAsString (sName);
-    return sValue == null ? bDefault : EqualsUtils.equals (sValue, sDesiredValue);
+    return sValue == null ? bDefault : EqualsHelper.equals (sValue, sDesiredValue);
   }
 
   /**

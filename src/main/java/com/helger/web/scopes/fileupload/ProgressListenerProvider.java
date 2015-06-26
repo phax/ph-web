@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.UsedViaReflection;
-import com.helger.commons.lang.ServiceLoaderUtils;
+import com.helger.commons.annotation.UsedViaReflection;
+import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IProgressListener;
 import com.helger.web.fileupload.IProgressListenerProvider;
@@ -31,7 +31,7 @@ import com.helger.web.scopes.singleton.GlobalWebSingleton;
 
 /**
  * SPI handler for {@link IProgressListenerProvider} implementations
- * 
+ *
  * @author Philip Helger
  */
 public final class ProgressListenerProvider extends GlobalWebSingleton
@@ -44,7 +44,7 @@ public final class ProgressListenerProvider extends GlobalWebSingleton
   @UsedViaReflection
   public ProgressListenerProvider ()
   {
-    m_aProgressListenerProvider = ServiceLoaderUtils.getFirstSPIImplementation (IProgressListenerProvider.class);
+    m_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProvider.class);
     if (m_aProgressListenerProvider != null)
       s_aLogger.info ("Using progress listener provider: " + m_aProgressListenerProvider.getClass ().getName ());
   }

@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.helger.commons.error.IResourceErrorGroup;
 import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.mock.PHTestUtils;
+import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.xml.schema.XMLSchemaValidationHelper;
 import com.helger.commons.xml.transform.StringStreamSource;
@@ -123,8 +123,8 @@ public final class XMLSitemapURLSetTest
       s1.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
       s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
     }
-    PHTestUtils.testDefaultImplementationWithEqualContentObject (s1, s2);
+    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (s1, s2);
     s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
-    PHTestUtils.testDefaultImplementationWithDifferentContentObject (s1, s2);
+    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (s1, s2);
   }
 }

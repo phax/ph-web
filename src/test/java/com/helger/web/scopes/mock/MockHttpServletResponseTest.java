@@ -29,7 +29,7 @@ import com.helger.web.mock.MockHttpServletResponse;
 
 /**
  * Test class for class {@link MockHttpServletResponse}.
- * 
+ *
  * @author Philip Helger
  */
 public final class MockHttpServletResponseTest
@@ -44,7 +44,7 @@ public final class MockHttpServletResponseTest
     assertEquals (CCharset.CHARSET_UTF_8, aResp.getCharacterEncoding ());
     aResp.getWriter ().write (TEST_STRING);
     assertFalse (aResp.isCommitted ());
-    assertEquals (TEST_STRING, aResp.getContentAsString ());
+    assertEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_UTF_8_OBJ));
     assertTrue (aResp.isCommitted ());
 
     // Start over
@@ -56,7 +56,7 @@ public final class MockHttpServletResponseTest
     aResp.setCharacterEncoding (CCharset.CHARSET_ISO_8859_1);
     aResp.getWriter ().write (TEST_STRING);
     assertEquals (CCharset.CHARSET_ISO_8859_1, aResp.getCharacterEncoding ());
-    assertEquals (TEST_STRING, aResp.getContentAsString ());
+    assertEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_ISO_8859_1_OBJ));
 
     // Start over again
     aResp.setCommitted (false);
@@ -69,7 +69,7 @@ public final class MockHttpServletResponseTest
     aResp.setCharacterEncoding ("UTF-16");
     assertEquals ("UTF-16", aResp.getCharacterEncoding ());
     // It will fail in the selected charset
-    assertFalse (TEST_STRING.equals (aResp.getContentAsString ()));
+    assertFalse (TEST_STRING.equals (aResp.getContentAsString (CCharset.CHARSET_UTF_16_OBJ)));
     // Retrieving in the system charset will succeed
     assertTrue (TEST_STRING.equals (aResp.getContentAsString (SystemHelper.getSystemCharset ())));
   }

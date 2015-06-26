@@ -42,11 +42,11 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.base64.Base64Helper;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.base64.Base64;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
@@ -279,7 +279,7 @@ public final class UAProfileDatabase
               {
                 if (StringHelper.hasText (sDiffDigest))
                 {
-                  final byte [] aDigest = Base64Helper.safeDecode (sDiffDigest);
+                  final byte [] aDigest = Base64.safeDecode (sDiffDigest);
                   if (aDigest != null)
                   {
                     // MD5 hashes have 16 bytes!

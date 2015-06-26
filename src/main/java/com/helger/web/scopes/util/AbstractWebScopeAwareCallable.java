@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.callback.INonThrowingCallable;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.mock.MockHttpServletResponse;

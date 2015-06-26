@@ -27,9 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.io.file.FileUtils;
-import com.helger.commons.lang.ServiceLoaderUtils;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.io.file.FileHelper;
+import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.ESuccess;
 import com.helger.web.sitemap.XMLSitemapIndex;
 import com.helger.web.sitemap.XMLSitemapURLSet;
@@ -49,7 +49,7 @@ public final class XMLSitemapProvider
 
   static
   {
-    s_aProviders = ServiceLoaderUtils.getAllSPIImplementations (IXMLSitemapProviderSPI.class);
+    s_aProviders = ServiceLoaderHelper.getAllSPIImplementations (IXMLSitemapProviderSPI.class);
   }
 
   @PresentForCodeCoverage
@@ -75,7 +75,7 @@ public final class XMLSitemapProvider
   public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory, final boolean bUseGZip)
   {
     ValueEnforcer.notNull (aTargetDirectory, "TargetDirectory");
-    if (!FileUtils.existsDir (aTargetDirectory))
+    if (!FileHelper.existsDir (aTargetDirectory))
       throw new IllegalArgumentException ("The passed file is not an existing directory: " + aTargetDirectory);
 
     // Any provider present?

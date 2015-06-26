@@ -26,10 +26,10 @@ import java.io.InputStreamReader;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.io.IReadableResource;
 import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resource.URLResource;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.web.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
@@ -54,7 +54,7 @@ public final class ReadWPADFuncTest
     }
     finally
     {
-      StreamUtils.close (aReader);
+      StreamHelper.close (aReader);
     }
   }
 

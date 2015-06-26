@@ -152,7 +152,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
-    assertEquals (new Version (5, 0, 317, 2), aUA.getInfoChrome ().getVersion ());
+    assertEquals (new Version (5, 0, 317, "2"), aUA.getInfoChrome ().getVersion ());
 
     // QtWeb
     aUA = UserAgentDecryptor.decryptUserAgentString ("Mozilla/5.0 (Windows; U; Windows NT 6.0; de-AT) AppleWebKit/532.4 (KHTML, like Gecko) QtWeb Internet Browser/3.3 http://www.QtWeb.net");

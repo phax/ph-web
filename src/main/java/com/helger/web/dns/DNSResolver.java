@@ -25,8 +25,8 @@ import javax.annotation.concurrent.Immutable;
 
 import org.xbill.DNS.Address;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.annotations.UsedViaReflection;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.UsedViaReflection;
 
 /**
  * A simple DNS resolver, using the dnsjava library.

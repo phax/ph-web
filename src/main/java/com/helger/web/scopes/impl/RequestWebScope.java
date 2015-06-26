@@ -30,18 +30,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
-import com.helger.commons.annotations.IsSPIImplementation;
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.UsedViaReflection;
+import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.collections.multimap.IMultiMapListBased;
-import com.helger.commons.collections.multimap.MultiHashMapArrayListBased;
-import com.helger.commons.io.streams.StreamUtils;
-import com.helger.commons.lang.ServiceLoaderUtils;
-import com.helger.commons.scopes.IScope;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.multimap.IMultiMapListBased;
+import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
+import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.lang.ServiceLoaderHelper;
+import com.helger.commons.scope.IScope;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -130,7 +130,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
   public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
-  private static final IFileItemFactoryProviderSPI s_aFIFP = ServiceLoaderUtils.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
+  private static final IFileItemFactoryProviderSPI s_aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
 
   public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
                           @Nonnull final HttpServletResponse aHttpResponse)
@@ -228,7 +228,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
       }
       catch (final FileUploadException ex)
       {
-        if (!StreamUtils.isKnownEOFException (ex.getCause ()))
+        if (!StreamHelper.isKnownEOFException (ex.getCause ()))
           s_aLogger.error ("Error parsing multipart request content", ex);
       }
       catch (final RuntimeException ex)

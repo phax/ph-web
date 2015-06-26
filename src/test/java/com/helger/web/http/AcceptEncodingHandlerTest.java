@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.PHAssert;
+import com.helger.commons.mock.CommonsAssert;
 
 public final class AcceptEncodingHandlerTest
 {
@@ -38,34 +38,34 @@ public final class AcceptEncodingHandlerTest
   public void testReadFromSpecs2 ()
   {
     AcceptEncodingList aAE = AcceptEncodingHandler.getAcceptEncodings ("compress, gzip");
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("identity"));
     aAE = AcceptEncodingHandler.getAcceptEncodings ("");
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("identity"));
     aAE = AcceptEncodingHandler.getAcceptEncodings ("*");
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("identity"));
     aAE = AcceptEncodingHandler.getAcceptEncodings ("compress;q=0.5, gzip;q=1.0");
-    PHAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("identity"));
     aAE = AcceptEncodingHandler.getAcceptEncodings ("gzip;q=1.0, identity; q=0.5, *;q=0");
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (0, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("identity"));
     aAE = AcceptEncodingHandler.getAcceptEncodings ("gzip;q=1.0, identity; q=0.5, *;q=0.7");
-    PHAssert.assertEquals (0.7, aAE.getQualityOfEncoding ("compress"));
-    PHAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
-    PHAssert.assertEquals (0.7, aAE.getQualityOfEncoding ("other"));
-    PHAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("identity"));
+    CommonsAssert.assertEquals (0.7, aAE.getQualityOfEncoding ("compress"));
+    CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
+    CommonsAssert.assertEquals (0.7, aAE.getQualityOfEncoding ("other"));
+    CommonsAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("identity"));
   }
 }

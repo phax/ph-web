@@ -25,8 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.parent.IChildrenProvider;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.hierarchy.IChildrenProvider;
 import com.helger.commons.string.ToStringGenerator;
 
 /**

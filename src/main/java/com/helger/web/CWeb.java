@@ -16,9 +16,12 @@
  */
 package com.helger.web;
 
+import java.nio.charset.Charset;
+
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.charset.CCharset;
 import com.helger.web.port.DefaultNetworkPorts;
 
 /**
@@ -40,6 +43,15 @@ public final class CWeb
   public static final String SCHEME_HTTP = "http";
   /** The scheme for HTTPS */
   public static final String SCHEME_HTTPS = "https";
+
+  /** Default charset for requests: UTF-8 */
+  public static final String CHARSET_REQUEST = CCharset.CHARSET_UTF_8;
+  /** Default charset for requests: UTF-8 */
+  public static final Charset CHARSET_REQUEST_OBJ = CCharset.CHARSET_UTF_8_OBJ;
+  /** Default charset for multipart requests: UTF-8 */
+  public static final String CHARSET_MULTIPART = CCharset.CHARSET_UTF_8;
+  /** Default charset for multipart requests: UTF-8 */
+  public static final Charset CHARSET_MULTIPART_OBJ = CCharset.CHARSET_UTF_8_OBJ;
 
   @PresentForCodeCoverage
   private static final CWeb s_aInstance = new CWeb ();

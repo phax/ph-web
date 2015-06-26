@@ -20,15 +20,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.commons.scopes.ScopeUtils;
-import com.helger.commons.scopes.domain.ISessionScope;
-import com.helger.commons.scopes.mgr.ScopeManager;
-import com.helger.commons.scopes.spi.ScopeSPIManager;
+import com.helger.commons.scope.ISessionScope;
+import com.helger.commons.scope.ScopeHelper;
+import com.helger.commons.scope.mgr.ScopeManager;
+import com.helger.commons.scope.spi.ScopeSPIManager;
 import com.helger.web.scopes.mock.WebScopeAwareTestSetup;
 
 /**
  * Test class for class {@link ScopeSPIManager}.
- * 
+ *
  * @author Philip Helger
  */
 public final class WebScopeSPIManagerFuncTest
@@ -36,7 +36,7 @@ public final class WebScopeSPIManagerFuncTest
   static
   {
     WebScopeAwareTestSetup.setCoreMockHttpListeners ();
-    ScopeUtils.setLifeCycleDebuggingEnabled (true);
+    ScopeHelper.setLifeCycleDebuggingEnabled (true);
   }
 
   @Test

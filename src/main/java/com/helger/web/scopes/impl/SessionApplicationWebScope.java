@@ -25,8 +25,8 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.scopes.impl.SessionApplicationScope;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.SessionApplicationScope;
 import com.helger.commons.state.EChange;
 import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 

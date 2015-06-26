@@ -24,11 +24,11 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.CGlobal;
-import com.helger.commons.IHasStringRepresentation;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;

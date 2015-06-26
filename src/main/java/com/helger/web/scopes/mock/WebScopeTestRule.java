@@ -26,9 +26,9 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.rules.ExternalResource;
 
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;

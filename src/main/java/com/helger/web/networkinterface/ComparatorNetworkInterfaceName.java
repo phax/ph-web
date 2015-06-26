@@ -17,17 +17,14 @@
 package com.helger.web.networkinterface;
 
 import java.net.NetworkInterface;
-import java.util.Comparator;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.helger.commons.compare.AbstractComparator;
-import com.helger.commons.compare.ESortOrder;
 
 /**
  * Comparator to compare {@link NetworkInterface} objects by their name.
- * 
+ *
  * @author Philip Helger
  */
 public class ComparatorNetworkInterfaceName extends AbstractComparator <NetworkInterface>
@@ -37,44 +34,6 @@ public class ComparatorNetworkInterfaceName extends AbstractComparator <NetworkI
    */
   public ComparatorNetworkInterfaceName ()
   {}
-
-  /**
-   * Constructor with sort order.
-   * 
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   */
-  public ComparatorNetworkInterfaceName (@Nonnull final ESortOrder eSortOrder)
-  {
-    super (eSortOrder);
-  }
-
-  /**
-   * Comparator with default sort order and a nested comparator.
-   * 
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceName (@Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aNestedComparator);
-  }
-
-  /**
-   * Comparator with sort order and a nested comparator.
-   * 
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceName (@Nonnull final ESortOrder eSortOrder,
-                                         @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (eSortOrder, aNestedComparator);
-  }
 
   @Override
   protected int mainCompare (@Nonnull final NetworkInterface aElement1, @Nonnull final NetworkInterface aElement2)

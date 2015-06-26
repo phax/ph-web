@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.PresentForCodeCoverage;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
 import com.helger.commons.messagedigest.MessageDigestGeneratorHelper;
@@ -310,7 +310,7 @@ public final class HTTPDigestAuth
   @Nonnull
   private static String _md5 (@Nonnull final String s)
   {
-    final byte [] aHA1 = MessageDigestGeneratorHelper.getDigest (s, CHARSET, EMessageDigestAlgorithm.MD5);
+    final byte [] aHA1 = MessageDigestGeneratorHelper.getAllDigestBytes (s, CHARSET, EMessageDigestAlgorithm.MD5);
     return MessageDigestGeneratorHelper.getHexValueFromDigest (aHA1);
   }
 

@@ -30,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.commons.io.IReadableResource;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.io.resource.IReadableResource;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -74,18 +74,10 @@ public final class FileItemResource implements IReadableResource
   }
 
   @Nullable
-  @Deprecated
-  public Reader getReader (@Nonnull final String sCharset)
-  {
-    final InputStream aIS = getInputStream ();
-    return StreamUtils.createReader (aIS, sCharset);
-  }
-
-  @Nullable
   public Reader getReader (@Nonnull final Charset aCharset)
   {
     final InputStream aIS = getInputStream ();
-    return StreamUtils.createReader (aIS, aCharset);
+    return StreamHelper.createReader (aIS, aCharset);
   }
 
   public boolean exists ()

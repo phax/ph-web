@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.equals.EqualsUtils;
+import com.helger.commons.equals.EqualsHelper;
 
 /**
  * Test class for class {@link AcceptMimeTypeHandler}
- * 
+ *
  * @author Philip Helger
  */
 public final class AcceptMimeTypeHandlerTest
@@ -36,10 +36,10 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (0.8d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (0.8d, c.getQualityOfMimeType ("text/other")));
   }
 
   @Test
@@ -47,13 +47,13 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (0.5d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (0.5d, c.getQualityOfMimeType ("text/other")));
 
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xml")));
   }
 
   @Test
@@ -61,10 +61,10 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (0.8d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (0.8d, c.getQualityOfMimeType ("text/other")));
   }
 
   @Test
@@ -72,10 +72,10 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("*/*");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/other")));
   }
 
   @Test
@@ -83,10 +83,10 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("image/gif, image/jpeg, image/pjpeg, image/pjpeg, application/x-shockwave-flash, */*");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/other")));
   }
 
   @Test
@@ -94,10 +94,10 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("text/html, application/xhtml+xml, */*");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/other")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xhtml+xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/other")));
   }
 
   @Test
@@ -105,12 +105,12 @@ public final class AcceptMimeTypeHandlerTest
   {
     final AcceptMimeTypeList c = AcceptMimeTypeHandler.getAcceptMimeTypes ("text/*,application/html;q=0.9,application/*;q=0.8");
     assertNotNull (c);
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/html")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/*")));
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfMimeType ("text/anythingelse")));
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfMimeType ("application/html")));
-    assertTrue (EqualsUtils.equals (0.8d, c.getQualityOfMimeType ("application/xml")));
-    assertTrue (EqualsUtils.equals (0d, c.getQualityOfMimeType ("image/gif")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/html")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/*")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfMimeType ("text/anythingelse")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfMimeType ("application/html")));
+    assertTrue (EqualsHelper.equals (0.8d, c.getQualityOfMimeType ("application/xml")));
+    assertTrue (EqualsHelper.equals (0d, c.getQualityOfMimeType ("image/gif")));
 
     assertFalse (c.explicitlySupportsMimeType ("text/html"));
     assertTrue (c.explicitlySupportsMimeType ("text/*"));

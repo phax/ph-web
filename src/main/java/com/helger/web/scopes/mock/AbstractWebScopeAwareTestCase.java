@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Rule;
 
-import com.helger.commons.mock.AbstractPHTestCase;
+import com.helger.commons.mock.AbstractCommonsTestCase;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
 import com.helger.web.mock.MockServletPool;
@@ -33,7 +33,7 @@ import com.helger.web.mock.MockServletPool;
  *
  * @author Philip Helger
  */
-public abstract class AbstractWebScopeAwareTestCase extends AbstractPHTestCase
+public abstract class AbstractWebScopeAwareTestCase extends AbstractCommonsTestCase
 {
   protected static final String MOCK_CONTEXT = WebScopeAwareTestSetup.MOCK_CONTEXT_PATH;
 

@@ -25,13 +25,13 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Represents the quality value of an HTTP Accept* header.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -79,7 +79,7 @@ public final class QValue implements Comparable <QValue>, Serializable
    */
   public boolean isMinimumQuality ()
   {
-    return EqualsUtils.equals (m_dQuality, MIN_QUALITY);
+    return EqualsHelper.equals (m_dQuality, MIN_QUALITY);
   }
 
   /**
@@ -121,7 +121,7 @@ public final class QValue implements Comparable <QValue>, Serializable
    */
   public boolean isMaximumQuality ()
   {
-    return EqualsUtils.equals (m_dQuality, MAX_QUALITY);
+    return EqualsHelper.equals (m_dQuality, MAX_QUALITY);
   }
 
   /**
@@ -143,7 +143,7 @@ public final class QValue implements Comparable <QValue>, Serializable
     if (!(o instanceof QValue))
       return false;
     final QValue rhs = (QValue) o;
-    return EqualsUtils.equals (m_dQuality, rhs.m_dQuality);
+    return EqualsHelper.equals (m_dQuality, rhs.m_dQuality);
   }
 
   @Override

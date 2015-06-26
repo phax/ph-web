@@ -18,7 +18,7 @@ package com.helger.web.fileupload;
 
 import javax.annotation.Nullable;
 
-import com.helger.commons.annotations.IsSPIInterface;
+import com.helger.commons.annotation.IsSPIInterface;
 
 /**
  * Provider interface for {@link IProgressListener} instances.

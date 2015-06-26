@@ -25,9 +25,9 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;
@@ -35,7 +35,7 @@ import com.helger.web.http.HTTPStringHelper;
 
 /**
  * Credentials for HTTP digest authentication
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -218,10 +218,10 @@ public class DigestAuthClientCredentials implements Serializable
            m_sServerNonce.equals (rhs.m_sServerNonce) &&
            m_sDigestURI.equals (rhs.m_sDigestURI) &&
            m_sResponse.equals (rhs.m_sResponse) &&
-           EqualsUtils.equals (m_sAlgorithm, rhs.m_sAlgorithm) &&
-           EqualsUtils.equals (m_sClientNonce, rhs.m_sClientNonce) &&
-           EqualsUtils.equals (m_sOpaque, rhs.m_sOpaque) &&
-           EqualsUtils.equals (m_sMessageQOP, rhs.m_sMessageQOP) &&
+           EqualsHelper.equals (m_sAlgorithm, rhs.m_sAlgorithm) &&
+           EqualsHelper.equals (m_sClientNonce, rhs.m_sClientNonce) &&
+           EqualsHelper.equals (m_sOpaque, rhs.m_sOpaque) &&
+           EqualsHelper.equals (m_sMessageQOP, rhs.m_sMessageQOP) &&
            m_nNonceCount == rhs.m_nNonceCount;
   }
 

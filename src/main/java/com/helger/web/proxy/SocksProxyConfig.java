@@ -24,9 +24,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.SystemProperties;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.commons.system.SystemProperties;
 import com.helger.web.port.DefaultNetworkPorts;
 
 /**

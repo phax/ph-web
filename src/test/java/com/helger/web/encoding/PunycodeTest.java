@@ -22,7 +22,7 @@ import org.junit.Test;
 
 /**
  * Test class for class {@link Punycode}
- * 
+ *
  * @author Philip Helger
  */
 public final class PunycodeTest
@@ -66,8 +66,8 @@ public final class PunycodeTest
   {
     for (final ETest test : ETest.values ())
     {
-      final String out = Punycode.encode (test.m_sIn);
-      final String in = Punycode.decode (out);
+      final String out = Punycode.getEncoded (test.m_sIn);
+      final String in = Punycode.getDecoded (out);
       assertEquals (test.m_sName, test.m_sOut, out);
       assertEquals (test.m_sName, test.m_sIn, in);
     }

@@ -18,7 +18,7 @@ package com.helger.web.sitemap.provider;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.IsSPIInterface;
+import com.helger.commons.annotation.IsSPIInterface;
 import com.helger.web.sitemap.XMLSitemapURLSet;
 
 /**

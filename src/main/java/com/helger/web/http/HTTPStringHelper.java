@@ -19,9 +19,9 @@ package com.helger.web.http;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.exceptions.InitializationException;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.exception.InitializationException;
 import com.helger.commons.string.StringHelper;
 
 /**

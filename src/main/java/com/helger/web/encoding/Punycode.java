@@ -20,11 +20,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.codec.DecoderException;
-import com.helger.commons.codec.EncoderException;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.codec.DecodeException;
+import com.helger.commons.codec.EncodeException;
+import com.helger.commons.i18n.CodepointHelper;
 import com.helger.commons.i18n.CodepointIteratorCharArray;
-import com.helger.commons.i18n.CodepointUtils;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -95,14 +95,14 @@ public final class Punycode
   }
 
   @Nullable
-  public static String encode (@Nullable final String s)
+  public static String getEncoded (@Nullable final String s)
   {
     if (s == null)
       return null;
-    return encode (s.toCharArray (), null);
+    return getEncoded (s.toCharArray (), null);
   }
 
-  public static String encode (@Nonnull final char [] aChars, @Nullable final boolean [] aCaseFlags)
+  public static String getEncoded (@Nonnull final char [] aChars, @Nullable final boolean [] aCaseFlags)
   {
     final StringBuilder aSB = new StringBuilder ();
     final CodepointIteratorCharArray aIter = new CodepointIteratorCharArray (aChars);
@@ -138,7 +138,7 @@ public final class Punycode
           m = i;
       }
       if (m - n > (Integer.MAX_VALUE - delta) / (h + 1))
-        throw new EncoderException ("Overflow");
+        throw new EncodeException ("Overflow");
       delta += (m - n) * (h + 1);
       n = m;
       aIter.position (0);
@@ -149,7 +149,7 @@ public final class Punycode
         if (i < n)
         {
           if (++delta == 0)
-            throw new EncoderException ("Overflow");
+            throw new EncodeException ("Overflow");
         }
         if (i == n)
         {
@@ -174,16 +174,16 @@ public final class Punycode
   }
 
   @Nullable
-  public static String decode (@Nullable final String s)
+  public static String getDecoded (@Nullable final String s)
   {
     if (s == null)
       return null;
-    return decode (s.toCharArray (), null);
+    return getDecoded (s.toCharArray (), null);
   }
 
   @SuppressFBWarnings ("QF_QUESTIONABLE_FOR_LOOP")
   @Nonnull
-  public static String decode (@Nonnull final char [] aChars, @Nullable final boolean [] aCaseFlags)
+  public static String getDecoded (@Nonnull final char [] aChars, @Nullable final boolean [] aCaseFlags)
   {
     final StringBuilder aSB = new StringBuilder ();
     int n, out, i, bias, b, j, in, oldi, w, k, digit, t;
@@ -199,7 +199,7 @@ public final class Punycode
       if (aCaseFlags != null)
         aCaseFlags[out] = _flagged (aChars[j]);
       if (!_basic (aChars[j]))
-        throw new DecoderException ("Bad Input");
+        throw new DecodeException ("Bad Input");
       aSB.append (aChars[j]);
     }
     out = aSB.length ();
@@ -208,23 +208,23 @@ public final class Punycode
       for (oldi = i, w = 1, k = BASE;; k += BASE)
       {
         if (in > aChars.length)
-          throw new DecoderException ("Bad input");
+          throw new DecodeException ("Bad input");
         digit = _decode_digit (aChars[in++]);
         if (digit >= BASE)
-          throw new DecoderException ("Bad input");
+          throw new DecodeException ("Bad input");
         if (digit > (Integer.MAX_VALUE - i) / w)
-          throw new DecoderException ("Overflow");
+          throw new DecodeException ("Overflow");
         i += digit * w;
         t = (k <= bias) ? TMIN : (k >= bias + TMAX) ? TMAX : k - bias;
         if (digit < t)
           break;
         if (w > Integer.MAX_VALUE / (BASE - t))
-          throw new DecoderException ("Overflow");
+          throw new DecodeException ("Overflow");
         w *= (BASE - t);
       }
       bias = _adapt (i - oldi, out + 1, oldi == 0);
       if (i / (out + 1) > Integer.MAX_VALUE - n)
-        throw new DecoderException ("Overflow");
+        throw new DecodeException ("Overflow");
       n += i / (out + 1);
       i %= (out + 1);
       if (aCaseFlags != null)
@@ -232,7 +232,7 @@ public final class Punycode
         // not sure if this is right
         System.arraycopy (aCaseFlags, i, aCaseFlags, i + Character.charCount (n), aCaseFlags.length - i);
       }
-      CodepointUtils.insert (aSB, i++, n);
+      CodepointHelper.insert (aSB, i++, n);
     }
     return aSB.toString ();
   }

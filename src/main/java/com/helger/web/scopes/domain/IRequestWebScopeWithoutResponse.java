@@ -27,7 +27,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.helger.commons.scopes.domain.IRequestScope;
+import com.helger.commons.scope.IRequestScope;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.http.EHTTPMethod;

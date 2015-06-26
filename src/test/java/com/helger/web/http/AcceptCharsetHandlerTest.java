@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.equals.EqualsUtils;
+import com.helger.commons.equals.EqualsHelper;
 
 public final class AcceptCharsetHandlerTest
 {
@@ -31,11 +31,11 @@ public final class AcceptCharsetHandlerTest
     final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets ("UTF-8");
     assertNotNull (c);
     // Explicitly contained
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("UTF-8")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("UTF-8")));
     // Not contained
-    assertTrue (EqualsUtils.equals (0d, c.getQualityOfCharset ("ISO-8859-15")));
+    assertTrue (EqualsHelper.equals (0d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
   }
 
   @Test
@@ -44,11 +44,11 @@ public final class AcceptCharsetHandlerTest
     final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets ("UTF-8;q=0.5");
     assertNotNull (c);
     // Explicitly contained
-    assertTrue (EqualsUtils.equals (0.5d, c.getQualityOfCharset ("UTF-8")));
+    assertTrue (EqualsHelper.equals (0.5d, c.getQualityOfCharset ("UTF-8")));
     // Not contained
-    assertTrue (EqualsUtils.equals (0d, c.getQualityOfCharset ("ISO-8859-15")));
+    assertTrue (EqualsHelper.equals (0d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
   }
 
   @Test
@@ -57,11 +57,11 @@ public final class AcceptCharsetHandlerTest
     final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets ("UTF-8,*");
     assertNotNull (c);
     // Explicitly contained
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("UTF-8")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("UTF-8")));
     // Not contained
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("ISO-8859-15")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("ISO-8859-1")));
   }
 
   @Test
@@ -70,11 +70,11 @@ public final class AcceptCharsetHandlerTest
     final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets ("UTF-8,*;q=0.9");
     assertNotNull (c);
     // Explicitly contained
-    assertTrue (EqualsUtils.equals (1d, c.getQualityOfCharset ("UTF-8")));
+    assertTrue (EqualsHelper.equals (1d, c.getQualityOfCharset ("UTF-8")));
     // Not contained
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfCharset ("ISO-8859-15")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfCharset ("ISO-8859-1")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-1")));
   }
 
   @Test
@@ -83,10 +83,10 @@ public final class AcceptCharsetHandlerTest
     final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets ("UTF-8;q=0.2,*;q=0.9");
     assertNotNull (c);
     // Explicitly contained
-    assertTrue (EqualsUtils.equals (0.2d, c.getQualityOfCharset ("UTF-8")));
+    assertTrue (EqualsHelper.equals (0.2d, c.getQualityOfCharset ("UTF-8")));
     // Not contained
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfCharset ("ISO-8859-15")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
-    assertTrue (EqualsUtils.equals (0.9d, c.getQualityOfCharset ("ISO-8859-1")));
+    assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-1")));
   }
 }

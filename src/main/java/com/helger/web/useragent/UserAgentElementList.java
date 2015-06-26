@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collections.pair.IReadonlyPair;
+import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * This class wraps the basic elements of a user agent string.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -37,7 +37,7 @@ final class UserAgentElementList
 {
   private final List <Object> m_aList = new ArrayList <Object> ();
 
-  public void add (@Nonnull final IReadonlyPair <String, String> aPair)
+  public void add (@Nonnull final IPair <String, String> aPair)
   {
     ValueEnforcer.notNull (aPair, "Pair");
     m_aList.add (aPair);
@@ -59,9 +59,9 @@ final class UserAgentElementList
   public String getPairValue (@Nullable final String sKey)
   {
     for (final Object aObj : m_aList)
-      if (aObj instanceof IReadonlyPair <?, ?>)
-        if (((IReadonlyPair <?, ?>) aObj).getFirst ().equals (sKey))
-          return (String) ((IReadonlyPair <?, ?>) aObj).getSecond ();
+      if (aObj instanceof IPair <?, ?>)
+        if (((IPair <?, ?>) aObj).getFirst ().equals (sKey))
+          return (String) ((IPair <?, ?>) aObj).getSecond ();
     return null;
   }
 
@@ -69,7 +69,7 @@ final class UserAgentElementList
    * Search for a list item starting with the specified String.<br>
    * Example: any/version (list1; list2) any2/version2<br>
    * -> This method is for searching for "list1" and "list2"
-   * 
+   *
    * @param sPrefix
    *        The search string
    * @return The list item string

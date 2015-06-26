@@ -19,9 +19,8 @@ package com.helger.web.scopes.singleton;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.UsedViaReflection;
-import com.helger.commons.scopes.IScope;
-import com.helger.web.scopes.singleton.GlobalWebSingleton;
+import com.helger.commons.annotation.UsedViaReflection;
+import com.helger.commons.scope.IScope;
 
 /**
  * Mock implementation of {@link GlobalWebSingleton}

@@ -28,10 +28,10 @@ import javax.annotation.Nullable;
 import javax.annotation.WillNotClose;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.io.file.FileUtils;
-import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.io.file.FileHelper;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.StreamHelper;
 
 /**
  * An output stream which will retain data in memory until a specified threshold
@@ -127,7 +127,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
     }
     catch (final IOException ex)
     {
-      StreamUtils.close (aFOS);
+      StreamHelper.close (aFOS);
       throw ex;
     }
   }
@@ -173,7 +173,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   public int getDataLength ()
   {
     if (m_aMemoryOutputStream != null)
-      return m_aMemoryOutputStream.size ();
+      return m_aMemoryOutputStream.getSize ();
     return 0;
   }
 
@@ -233,8 +233,8 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
     }
     else
     {
-      final InputStream aIS = FileUtils.getInputStream (m_aOutputFile);
-      StreamUtils.copyInputStreamToOutputStream (aIS, aOS);
+      final InputStream aIS = FileHelper.getInputStream (m_aOutputFile);
+      StreamHelper.copyInputStreamToOutputStream (aIS, aOS);
     }
   }
 }

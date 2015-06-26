@@ -19,7 +19,7 @@ package com.helger.web.useragent;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.IHasStringRepresentation;
+import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.web.useragent.browser.BrowserInfo;
 import com.helger.web.useragent.browser.BrowserInfoIE;
 import com.helger.web.useragent.browser.BrowserInfoMobile;

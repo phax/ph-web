@@ -24,9 +24,9 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.name.IHasDisplayText;
+import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.commons.text.display.IHasDisplayText;
 import com.helger.commons.version.Version;
 
 /**

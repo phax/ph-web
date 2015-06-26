@@ -28,8 +28,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.stats.IStatisticsHandlerCounter;
-import com.helger.commons.stats.StatisticsManager;
+import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
+import com.helger.commons.statistics.StatisticsManager;
 import com.helger.web.http.AcceptEncodingHandler;
 import com.helger.web.http.AcceptEncodingList;
 import com.helger.web.http.CHTTPHeader;
@@ -49,8 +49,8 @@ import com.helger.web.servlet.response.gzip.GZIPResponse;
 public class CompressFilter implements Filter
 {
   private static final String REQUEST_ATTR = CompressFilter.class.getName ();
-  private static final IStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
-                                                                                                     "$none");
+  private static final IMutableStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
+                                                                                                            "$none");
 
   public void init (@Nonnull final FilterConfig aFilterConfig)
   {

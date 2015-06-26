@@ -22,8 +22,8 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.scopes.mock.ScopeAwareTestSetup;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.mock.ScopeAwareTestSetup;
 import com.helger.web.mock.MockServletRequestListener;
 import com.helger.web.scopes.mgr.WebScopeManager;
 

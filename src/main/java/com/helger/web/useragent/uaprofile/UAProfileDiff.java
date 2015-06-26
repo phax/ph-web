@@ -27,13 +27,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
 import com.helger.commons.messagedigest.MessageDigestGeneratorHelper;
 import com.helger.commons.microdom.IMicroDocument;
@@ -42,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Represents a single UA profile diff.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -69,9 +69,9 @@ public class UAProfileDiff implements Serializable
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestGeneratorHelper.getDigest (EMessageDigestAlgorithm.MD5,
-                                                                            sData,
-                                                                            CCharset.CHARSET_UTF_8_OBJ);
+      final byte [] aCalcedDigest = MessageDigestGeneratorHelper.getAllDigestBytes (EMessageDigestAlgorithm.MD5,
+                                                                                    sData,
+                                                                                    CCharset.CHARSET_UTF_8_OBJ);
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +
                         Base64.encodeBytes (aCalcedDigest) +
@@ -120,7 +120,7 @@ public class UAProfileDiff implements Serializable
     if (!(o instanceof UAProfileDiff))
       return false;
     final UAProfileDiff rhs = (UAProfileDiff) o;
-    return m_sData.equals (rhs.m_sData) && EqualsUtils.equals (m_aMD5Digest, rhs.m_aMD5Digest);
+    return m_sData.equals (rhs.m_sData) && EqualsHelper.equals (m_aMD5Digest, rhs.m_aMD5Digest);
   }
 
   @Override

@@ -29,16 +29,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLData;
-import com.helger.commons.url.URLUtils;
+import com.helger.commons.url.URLHelper;
 import com.helger.web.CWeb;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.EHTTPMethod;
@@ -316,7 +316,7 @@ public final class RequestHelper
     // query string
     final String sQueryString = aHttpRequest.getQueryString ();
     if (sQueryString != null)
-      ret.append (URLUtils.QUESTIONMARK).append (sQueryString);
+      ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
 
     return ret.toString ();
   }
@@ -343,7 +343,7 @@ public final class RequestHelper
     final String sReqUrl = getRequestURI (aHttpRequest);
     final String sQueryString = aHttpRequest.getQueryString (); // d=789&x=y
     if (StringHelper.hasText (sQueryString))
-      return sReqUrl + URLUtils.QUESTIONMARK + sQueryString;
+      return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
     return sReqUrl;
   }
 
@@ -398,7 +398,7 @@ public final class RequestHelper
       aURL.append (sPath);
     }
     if (StringHelper.hasText (sQueryString))
-      aURL.append (URLUtils.QUESTIONMARK).append (sQueryString);
+      aURL.append (URLHelper.QUESTIONMARK).append (sQueryString);
     return aURL.toString ();
   }
 

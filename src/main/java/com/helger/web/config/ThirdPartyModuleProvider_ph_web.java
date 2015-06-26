@@ -18,7 +18,7 @@ package com.helger.web.config;
 
 import javax.annotation.Nullable;
 
-import com.helger.commons.annotations.IsSPIImplementation;
+import com.helger.commons.annotation.IsSPIImplementation;
 import com.helger.commons.thirdparty.ELicense;
 import com.helger.commons.thirdparty.IThirdPartyModule;
 import com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI;
@@ -44,7 +44,7 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
   public static final IThirdPartyModule RHINO = new ThirdPartyModule ("Rhino",
                                                                       "Mozilla",
                                                                       ELicense.MPL20,
-                                                                      new Version ("1.7.6"),
+                                                                      new Version (1, 7, 7),
                                                                       "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino",
                                                                       true);
 

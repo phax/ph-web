@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.web.scopes.domain.IApplicationWebScope;
 import com.helger.web.scopes.domain.IGlobalWebScope;
 import com.helger.web.scopes.domain.IRequestWebScope;

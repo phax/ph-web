@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.encode.IEncoder;
+import com.helger.commons.codec.IEncoder;
 
 /**
  * Heuristic Android filename encoder based on <a href=
@@ -57,7 +57,7 @@ public class AndroidFilenameEncoder implements IEncoder <String>
   }
 
   @Nonnull
-  public String encode (@Nullable final String sSrc)
+  public String getEncoded (@Nullable final String sSrc)
   {
     ValueEnforcer.notNull (sSrc, "Src");
     return getSafeAndroidFilename (sSrc);

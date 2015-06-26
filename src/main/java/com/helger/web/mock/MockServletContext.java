@@ -49,16 +49,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.SystemProperties;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.io.IReadableResource;
-import com.helger.commons.io.IReadableResourceProvider;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
+import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
 import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.system.SystemProperties;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

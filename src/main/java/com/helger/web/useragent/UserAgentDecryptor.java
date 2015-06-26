@@ -24,11 +24,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.collections.pair.ReadonlyPair;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.utils.StringScanner;
+import com.helger.commons.string.util.StringScanner;
 import com.helger.commons.url.URLProtocolRegistry;
 
 /**
@@ -53,7 +53,7 @@ public final class UserAgentDecryptor
    *
    * @param sUserAgent
    *        The user agent string to parse.
-   * @return A list than can contain {@link ReadonlyPair}, {@link String} and
+   * @return A list than can contain {@link ReadOnlyPair}, {@link String} and
    *         {@link List} of String objects.
    */
   @Nonnull
@@ -80,7 +80,7 @@ public final class UserAgentDecryptor
           if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sFullValue))
             ret.add (sFullValue);
           else
-            ret.add (ReadonlyPair.create (sKey, sValue));
+            ret.add (ReadOnlyPair.create (sKey, sValue));
           break;
         }
         case ' ':
@@ -90,7 +90,7 @@ public final class UserAgentDecryptor
           final String sText = aSS.getUntilIndex (nIndex).trim ();
           final Matcher aMatcher = RegExHelper.getMatcher ("([^\\s]+)\\s+([0-9]+\\.[0-9]+)", sText);
           if (aMatcher.matches ())
-            ret.add (ReadonlyPair.create (aMatcher.group (1), aMatcher.group (2)));
+            ret.add (ReadOnlyPair.create (aMatcher.group (1), aMatcher.group (2)));
           else
             ret.add (sText);
           break;

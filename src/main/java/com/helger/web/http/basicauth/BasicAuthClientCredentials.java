@@ -23,16 +23,16 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.base64.Base64Helper;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.base64.Base64;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Credentials for HTTP basic authentication
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -43,7 +43,7 @@ public class BasicAuthClientCredentials implements Serializable
 
   /**
    * Create credentials with a user name only and no password.
-   * 
+   *
    * @param sUserName
    *        The user name to use. May neither be <code>null</code> nor empty.
    */
@@ -54,7 +54,7 @@ public class BasicAuthClientCredentials implements Serializable
 
   /**
    * Create credentials with a user name and a password.
-   * 
+   *
    * @param sUserName
    *        The user name to use. May neither be <code>null</code> nor empty.
    * @param sPassword
@@ -99,7 +99,7 @@ public class BasicAuthClientCredentials implements Serializable
   /**
    * Create the request HTTP header value for use with the
    * {@link com.helger.web.http.CHTTPHeader#AUTHORIZATION} header name.
-   * 
+   *
    * @return The HTTP header value to use. Neither <code>null</code> nor empty.
    */
   @Nonnull
@@ -109,7 +109,7 @@ public class BasicAuthClientCredentials implements Serializable
     final String sCombined = StringHelper.getConcatenatedOnDemand (m_sUserName,
                                                                    HTTPBasicAuth.USERNAME_PASSWORD_SEPARATOR,
                                                                    m_sPassword);
-    return HTTPBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64Helper.safeEncode (sCombined, HTTPBasicAuth.CHARSET);
+    return HTTPBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, HTTPBasicAuth.CHARSET);
   }
 
   @Override
@@ -120,7 +120,7 @@ public class BasicAuthClientCredentials implements Serializable
     if (!(o instanceof BasicAuthClientCredentials))
       return false;
     final BasicAuthClientCredentials rhs = (BasicAuthClientCredentials) o;
-    return m_sUserName.equals (rhs.m_sUserName) && EqualsUtils.equals (m_sPassword, rhs.m_sPassword);
+    return m_sUserName.equals (rhs.m_sUserName) && EqualsHelper.equals (m_sPassword, rhs.m_sPassword);
   }
 
   @Override

@@ -19,15 +19,15 @@ package com.helger.web.scopes.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.scopes.MetaScopeFactory;
-import com.helger.commons.scopes.domain.IApplicationScope;
-import com.helger.commons.scopes.domain.IGlobalScope;
-import com.helger.commons.scopes.domain.IRequestScope;
-import com.helger.commons.scopes.domain.ISessionApplicationScope;
-import com.helger.commons.scopes.domain.ISessionScope;
-import com.helger.commons.scopes.factory.IScopeFactory;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.scope.IApplicationScope;
+import com.helger.commons.scope.IGlobalScope;
+import com.helger.commons.scope.IRequestScope;
+import com.helger.commons.scope.ISessionApplicationScope;
+import com.helger.commons.scope.ISessionScope;
+import com.helger.commons.scope.mgr.IScopeFactory;
+import com.helger.commons.scope.mgr.MetaScopeFactory;
 import com.helger.commons.string.ToStringGenerator;
 
 /**

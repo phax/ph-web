@@ -18,11 +18,11 @@ package com.helger.web;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.PHTestUtils;
+import com.helger.commons.mock.CommonsTestHelper;
 
 /**
  * Test SPI configuration consistency.
- * 
+ *
  * @author Philip Helger
  */
 public final class SPITest
@@ -30,6 +30,6 @@ public final class SPITest
   @Test
   public void testBasic () throws Exception
   {
-    PHTestUtils.testIfAllSPIImplementationsAreValid ();
+    CommonsTestHelper.testIfAllSPIImplementationsAreValid ();
   }
 }

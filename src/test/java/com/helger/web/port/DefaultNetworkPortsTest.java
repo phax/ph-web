@@ -25,11 +25,11 @@ import java.io.File;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.compare.AbstractComparator;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.impl.MicroDocument;
+import com.helger.commons.microdom.MicroDocument;
 import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.string.StringHelper;
 

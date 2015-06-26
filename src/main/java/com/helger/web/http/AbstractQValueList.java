@@ -23,8 +23,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**

@@ -23,10 +23,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.collections.multimap.IMultiMapSetBased;
-import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.multimap.IMultiMapSetBased;
+import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.MimeTypeInfo;
 import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
@@ -84,7 +84,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     }
     finally
     {
-      StreamUtils.close (w);
+      StreamHelper.close (w);
     }
   }
 }

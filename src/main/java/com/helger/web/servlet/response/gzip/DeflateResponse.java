@@ -25,9 +25,9 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.stats.IStatisticsHandlerCounter;
-import com.helger.commons.stats.StatisticsManager;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
+import com.helger.commons.statistics.StatisticsManager;
 
 public final class DeflateResponse extends AbstractCompressedResponseWrapper
 {
@@ -50,7 +50,7 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
     }
   }
 
-  private static final IStatisticsHandlerCounter s_aStatsDeflate = StatisticsManager.getCounterHandler (DeflateResponse.class);
+  private static final IMutableStatisticsHandlerCounter s_aStatsDeflate = StatisticsManager.getCounterHandler (DeflateResponse.class);
 
   public DeflateResponse (@Nonnull final HttpServletRequest aHttpRequest,
                           @Nonnull final HttpServletResponse aHttpResponse,

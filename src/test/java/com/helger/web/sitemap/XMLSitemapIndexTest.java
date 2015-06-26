@@ -28,8 +28,8 @@ import javax.annotation.Nonnull;
 import org.junit.Test;
 
 import com.helger.commons.error.IResourceErrorGroup;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.file.FileUtils;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.xml.schema.XMLSchemaValidationHelper;
@@ -57,11 +57,11 @@ public final class XMLSitemapIndexTest
     try
     {
       x.writeToDisk (aBaseDir);
-      assertTrue (FileUtils.existsFile (new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
+      assertTrue (FileHelper.existsFile (new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
       final int nMax = x.getURLSetCount ();
       for (int i = 0; i < nMax; ++i)
-        assertTrue (FileUtils.existsFile (new File (aBaseDir, x.getSitemapFilename (i))));
-      assertFalse (FileUtils.existsFile (new File (aBaseDir, x.getSitemapFilename (nMax))));
+        assertTrue (FileHelper.existsFile (new File (aBaseDir, x.getSitemapFilename (i))));
+      assertFalse (FileHelper.existsFile (new File (aBaseDir, x.getSitemapFilename (nMax))));
     }
     finally
     {

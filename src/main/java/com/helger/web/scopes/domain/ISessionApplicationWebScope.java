@@ -16,7 +16,7 @@
  */
 package com.helger.web.scopes.domain;
 
-import com.helger.commons.scopes.domain.ISessionApplicationScope;
+import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.web.scopes.IWebScope;
 
 /**

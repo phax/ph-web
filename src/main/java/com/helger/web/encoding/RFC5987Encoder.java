@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.encode.IEncoder;
+import com.helger.commons.codec.IEncoder;
 import com.helger.commons.string.StringHelper;
 
 /**
@@ -151,7 +151,7 @@ public class RFC5987Encoder implements IEncoder <String>
   }
 
   @Nonnull
-  public String encode (@Nullable final String sSrc)
+  public String getEncoded (@Nullable final String sSrc)
   {
     ValueEnforcer.notNull (sSrc, "Src");
     return getRFC5987Encoded (sSrc, m_aCharset);

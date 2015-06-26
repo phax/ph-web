@@ -28,15 +28,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.exceptions.InitializationException;
-import com.helger.commons.lang.CGStringHelper;
-import com.helger.commons.stats.IStatisticsHandlerCounter;
-import com.helger.commons.stats.IStatisticsHandlerTimer;
-import com.helger.commons.stats.StatisticsManager;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.exception.InitializationException;
+import com.helger.commons.lang.ClassHelper;
+import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
+import com.helger.commons.statistics.IMutableStatisticsHandlerTimer;
+import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.timing.StopWatch;
-import com.helger.commons.xml.serialize.XMLWriterSettings;
+import com.helger.commons.xml.serialize.write.XMLWriterSettings;
 import com.helger.web.scopes.domain.IRequestWebScope;
 import com.helger.web.servlet.request.RequestLogger;
 
@@ -54,22 +54,22 @@ import com.helger.web.servlet.request.RequestLogger;
 public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareHttpServlet.class);
-  private static final IStatisticsHandlerCounter s_aCounterRequests = StatisticsManager.getCounterHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                           "$requests");
-  private static final IStatisticsHandlerTimer s_aTimerHdlDelete = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                      "$DELETE");
-  private static final IStatisticsHandlerTimer s_aTimerHdlGet = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                   "$GET");
-  private static final IStatisticsHandlerTimer s_aTimerHdlHead = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                    "$HEAD");
-  private static final IStatisticsHandlerTimer s_aTimerHdlOptions = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                       "$OPTIONS");
-  private static final IStatisticsHandlerTimer s_aTimerHdlPost = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                    "$POST");
-  private static final IStatisticsHandlerTimer s_aTimerHdlPut = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                   "$PUT");
-  private static final IStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                     "$TRACE");
+  private static final IMutableStatisticsHandlerCounter s_aCounterRequests = StatisticsManager.getCounterHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                                  "$requests");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlDelete = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                             "$DELETE");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlGet = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                          "$GET");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlHead = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                           "$HEAD");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlOptions = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                              "$OPTIONS");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlPost = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                           "$POST");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlPut = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                          "$PUT");
+  private static final IMutableStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
+                                                                                                            "$TRACE");
 
   private String m_sApplicationID;
 
@@ -79,7 +79,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   @OverrideOnDemand
   protected String getApplicationID ()
   {
-    return CGStringHelper.getClassLocalName (getClass ());
+    return ClassHelper.getClassLocalName (getClass ());
   }
 
   /**
@@ -208,7 +208,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onDelete (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -247,7 +247,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onGet (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -286,7 +286,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onHead (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -326,7 +326,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                                                                    IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onOptions (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -365,7 +365,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onPost (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -404,7 +404,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onPut (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
@@ -443,7 +443,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = new StopWatch (true);
+    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       onTrace (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());

@@ -24,15 +24,15 @@ import java.io.File;
 
 import org.junit.Test;
 
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.file.FileUtils;
 import com.helger.web.servlet.server.StaticServerInfo;
 import com.helger.web.sitemap.CXMLSitemap;
 import com.helger.web.sitemap.XMLSitemapIndex;
 
 /**
  * Test class for class {@link XMLSitemapProvider}.
- * 
+ *
  * @author Philip Helger
  */
 public final class XMLSitemapProviderTest
@@ -59,13 +59,14 @@ public final class XMLSitemapProviderTest
       try
       {
         assertTrue (XMLSitemapProvider.createSitemapFiles (aTargetDir, bUseGZip).isSuccess ());
-        assertTrue (FileUtils.existsFile (new File (aTargetDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
+        assertTrue (FileHelper.existsFile (new File (aTargetDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
 
         // 3 URL sets are present
         final int nMax = 3;
         for (int nIndex = 0; nIndex < nMax; ++nIndex)
-          assertTrue (FileUtils.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nIndex, bUseGZip))));
-        assertFalse (FileUtils.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
+          assertTrue (FileHelper.existsFile (new File (aTargetDir,
+                                                       XMLSitemapIndex.getSitemapFilename (nIndex, bUseGZip))));
+        assertFalse (FileHelper.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
       }
       finally
       {

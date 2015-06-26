@@ -25,7 +25,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.scopes.AbstractSingleton;
+import com.helger.commons.scope.singleton.AbstractSingleton;
 import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 import com.helger.web.scopes.mgr.WebScopeManager;
 
@@ -46,7 +46,7 @@ public abstract class SessionApplicationWebSingleton extends AbstractSingleton i
     writeAbstractSingletonFields (aOOS);
   }
 
-  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException
+  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
   {
     readAbstractSingletonFields (aOIS);
   }

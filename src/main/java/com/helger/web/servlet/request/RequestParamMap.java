@@ -31,14 +31,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.collections.attrs.AbstractGenericReadonlyAttributeContainer;
-import com.helger.commons.collections.attrs.IReadonlyAttributeContainer;
-import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.attr.AbstractReadOnlyAttributeContainer;
+import com.helger.commons.collection.attr.IAttributeContainer;
+import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -141,7 +141,7 @@ public final class RequestParamMap implements IRequestParamMap
       s_aLogger.warn ("You're trying to access the path element '" +
                       sPath +
                       "' as map, but it is a " +
-                      CGStringHelper.getClassLocalName (aPathObj) +
+                      ClassHelper.getClassLocalName (aPathObj) +
                       "!");
       return null;
     }
@@ -189,7 +189,7 @@ public final class RequestParamMap implements IRequestParamMap
   public String getString (@Nonnull @Nonempty final String... aPath)
   {
     final Object aValue = getObject (aPath);
-    return AbstractGenericReadonlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
+    return AbstractReadOnlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   @Nullable
@@ -237,7 +237,7 @@ public final class RequestParamMap implements IRequestParamMap
   }
 
   @Nonnegative
-  public int size ()
+  public int getSize ()
   {
     return m_aMap.size ();
   }
@@ -314,7 +314,7 @@ public final class RequestParamMap implements IRequestParamMap
   }
 
   @Nonnull
-  public static IRequestParamMap create (@Nonnull final IReadonlyAttributeContainer aAttrCont)
+  public static IRequestParamMap create (@Nonnull final IAttributeContainer <String, ?> aAttrCont)
   {
     final RequestParamMap ret = new RequestParamMap ();
     for (final String sName : aAttrCont.getAllAttributeNames ())

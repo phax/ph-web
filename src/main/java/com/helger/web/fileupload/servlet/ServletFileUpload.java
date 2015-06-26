@@ -22,7 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.web.fileupload.FileUpload;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;

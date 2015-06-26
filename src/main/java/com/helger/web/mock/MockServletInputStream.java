@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.servlet.ServletInputStream;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.streams.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 
 /**
  * A {@link ServletInputStream} for testing based on a predefined byte array or

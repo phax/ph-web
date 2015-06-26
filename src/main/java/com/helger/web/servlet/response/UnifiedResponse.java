@@ -39,17 +39,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
-import com.helger.commons.GlobalDebug;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.ReturnsMutableObject;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.io.IInputStreamProvider;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.debug.GlobalDebug;
+import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeTypeParser;
@@ -57,7 +57,7 @@ import com.helger.commons.mutable.MutableLong;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.url.URLUtils;
+import com.helger.commons.url.URLHelper;
 import com.helger.datetime.PDTFactory;
 import com.helger.web.encoding.RFC5987Encoder;
 import com.helger.web.http.AcceptCharsetHandler;
@@ -129,7 +129,7 @@ public class UnifiedResponse
   private Charset m_aCharset;
   private IMimeType m_aMimeType;
   private byte [] m_aContent;
-  private IInputStreamProvider m_aContentISP;
+  private IHasInputStream m_aContentISP;
   private EContentDispositionType m_eContentDispositionType = DEFAULT_CONTENT_DISPOSITION_TYPE;
   private String m_sContentDispositionFilename;
   private CacheControlBuilder m_aCacheControl;
@@ -453,7 +453,7 @@ public class UnifiedResponse
    * @return this
    */
   @Nonnull
-  public UnifiedResponse setContent (@Nonnull final IInputStreamProvider aISP)
+  public UnifiedResponse setContent (@Nonnull final IHasInputStream aISP)
   {
     ValueEnforcer.notNull (aISP, "InputStreamProvider");
     if (hasContent ())
@@ -647,7 +647,7 @@ public class UnifiedResponse
   }
 
   @Nullable
-  @ReturnsMutableObject (reason = "Design")
+  @ReturnsMutableObject ("Design")
   public CacheControlBuilder getCacheControl ()
   {
     return m_aCacheControl;
@@ -664,7 +664,7 @@ public class UnifiedResponse
    * @return The non-<code>null</code> header map.
    */
   @Nonnull
-  @ReturnsMutableObject (reason = "design")
+  @ReturnsMutableObject ("design")
   protected HTTPHeaderMap getResponseHeaderMap ()
   {
     return m_aResponseHeaderMap;
@@ -1265,7 +1265,7 @@ public class UnifiedResponse
             final OutputStream aOS = aHttpResponse.getOutputStream ();
             final MutableLong aByteCount = new MutableLong ();
 
-            if (StreamUtils.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
+            if (StreamHelper.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
             {
               // Copying succeeded
               final long nBytesCopied = aByteCount.longValue ();
@@ -1437,7 +1437,7 @@ public class UnifiedResponse
         final Charset aCharsetToUse = m_aCharset != null ? m_aCharset : CCharset.CHARSET_UTF_8_OBJ;
         aSB.append (m_eContentDispositionType.getID ())
            .append ("; filename=")
-           .append (URLUtils.urlEncode (m_sContentDispositionFilename, aCharsetToUse));
+           .append (URLHelper.urlEncode (m_sContentDispositionFilename, aCharsetToUse));
       }
       else
       {

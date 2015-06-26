@@ -22,15 +22,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Contains information about a single web spider.
- * 
+ *
  * @author Philip Helger
  */
 public final class WebSpiderInfo implements IHasID <String>, Serializable
@@ -93,9 +93,9 @@ public final class WebSpiderInfo implements IHasID <String>, Serializable
       return false;
     final WebSpiderInfo rhs = (WebSpiderInfo) o;
     return m_sID.equals (rhs.m_sID) &&
-           EqualsUtils.equals (m_sName, rhs.m_sName) &&
-           EqualsUtils.equals (m_eType, rhs.m_eType) &&
-           EqualsUtils.equals (m_sInfo, rhs.m_sInfo);
+           EqualsHelper.equals (m_sName, rhs.m_sName) &&
+           EqualsHelper.equals (m_eType, rhs.m_eType) &&
+           EqualsHelper.equals (m_sInfo, rhs.m_sInfo);
   }
 
   @Override

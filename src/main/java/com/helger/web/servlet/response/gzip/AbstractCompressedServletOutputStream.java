@@ -31,13 +31,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.servlet.response.ResponseHelper;
 
 /**
  * Special {@link ServletOutputStream} that knows whether it is closed or not
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractCompressedServletOutputStream extends ServletOutputStream
@@ -190,7 +190,7 @@ public abstract class AbstractCompressedServletOutputStream extends ServletOutpu
         if (m_aBAOS != null)
         {
           if (m_nContentLength < 0)
-            m_nContentLength = m_aBAOS.size ();
+            m_nContentLength = m_aBAOS.getSize ();
           if (m_nContentLength < m_nMinCompressSize)
             doNotCompress ("close with buffer");
           else
@@ -275,7 +275,7 @@ public abstract class AbstractCompressedServletOutputStream extends ServletOutpu
           if (m_nContentLength >= 0 && m_nContentLength < m_nMinCompressSize)
             doNotCompress ("_prepareToWrite buffered " + m_nContentLength);
           else
-            if (nLength >= (m_aBAOS.getBufferSize () - m_aBAOS.size ()))
+            if (nLength >= (m_aBAOS.getBufferSize () - m_aBAOS.getSize ()))
               doCompress ("_prepareToWrite buffered " + nLength);
             else
             {

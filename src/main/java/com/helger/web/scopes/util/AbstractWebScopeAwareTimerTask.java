@@ -21,7 +21,7 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.web.mock.MockHttpServletResponse;
 import com.helger.web.mock.OfflineHttpServletRequest;
 import com.helger.web.scopes.mgr.WebScopeManager;

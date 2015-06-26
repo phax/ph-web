@@ -35,22 +35,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.IHasLocale;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.collections.multimap.IMultiMapSetBased;
-import com.helger.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
-import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.multimap.IMultiMapSetBased;
+import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.locale.IHasLocale;
 import com.helger.commons.mime.IMimeType;
+import com.helger.commons.mime.MimeTypeHelper;
 import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
-import com.helger.commons.mime.MimeTypeUtils;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.CWeb;
@@ -212,7 +212,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
     if (m_aWriter == null)
     {
-      final Writer aWriter = StreamUtils.createWriter (m_aContent, getCharacterEncodingObjOrDefault ());
+      final Writer aWriter = StreamHelper.createWriter (m_aContent, getCharacterEncodingObjOrDefault ());
       m_aWriter = new ResponsePrintWriter (aWriter);
     }
     return m_aWriter;
@@ -224,20 +224,6 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   {
     flushBuffer ();
     return m_aContent.toByteArray ();
-  }
-
-  @Nonnull
-  public String getContentAsString ()
-  {
-    return getContentAsString (getCharacterEncodingOrDefault ());
-  }
-
-  @Nonnull
-  @Deprecated
-  public String getContentAsString (@Nonnull @Nonempty final String sCharset)
-  {
-    flushBuffer ();
-    return m_aContent.getAsString (sCharset);
   }
 
   @Nonnull
@@ -265,7 +251,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
       try
       {
         final IMimeType aContentType = MimeTypeParser.parseMimeType (sContentType);
-        final String sEncoding = MimeTypeUtils.getCharsetNameFromMimeType (aContentType);
+        final String sEncoding = MimeTypeHelper.getCharsetNameFromMimeType (aContentType);
         if (sEncoding != null)
           setCharacterEncoding (sEncoding);
       }
@@ -311,7 +297,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   private void _setCommittedIfBufferSizeExceeded ()
   {
     final int nBufSize = getBufferSize ();
-    if (nBufSize > 0 && m_aContent.size () > nBufSize)
+    if (nBufSize > 0 && m_aContent.getSize () > nBufSize)
       setCommitted (true);
   }
 

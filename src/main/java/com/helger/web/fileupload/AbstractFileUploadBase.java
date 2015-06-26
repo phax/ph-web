@@ -33,10 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
@@ -331,8 +331,8 @@ public abstract class AbstractFileUploadBase
         }
         finally
         {
-          StreamUtils.close (aIS);
-          StreamUtils.close (aOS);
+          StreamHelper.close (aIS);
+          StreamHelper.close (aOS);
         }
         if (aFileItem instanceof IFileItemHeadersSupport)
         {

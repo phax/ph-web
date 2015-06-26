@@ -28,9 +28,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotations.OverrideOnDemand;
-import com.helger.commons.exceptions.InitializationException;
-import com.helger.commons.lang.CGStringHelper;
+import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.exception.InitializationException;
+import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.scopes.domain.IRequestWebScope;
@@ -42,7 +42,7 @@ import com.helger.web.scopes.domain.IRequestWebScope;
  * If more than one scope aware filter are present in the filter chain, only the
  * filter invoked first creates the request scope. Succeeding scope aeware
  * filters wont create a request scope.
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractScopeAwareFilter implements Filter
@@ -52,7 +52,7 @@ public abstract class AbstractScopeAwareFilter implements Filter
   /**
    * Determine the application ID to be used, based on the passed filter
    * configuration. This method is only invoked once on startup.
-   * 
+   *
    * @param aFilterConfig
    *        The filter configuration
    * @return The application ID for this filter.
@@ -60,12 +60,12 @@ public abstract class AbstractScopeAwareFilter implements Filter
   @OverrideOnDemand
   protected String getApplicationID (@Nonnull final FilterConfig aFilterConfig)
   {
-    return CGStringHelper.getClassLocalName (getClass ());
+    return ClassHelper.getClassLocalName (getClass ());
   }
 
   /**
    * Initialize the filter
-   * 
+   *
    * @param aFilterConfig
    *        Filter configuration from servlet container
    * @throws ServletException
@@ -85,7 +85,7 @@ public abstract class AbstractScopeAwareFilter implements Filter
 
   /**
    * Implement this main filtering method in subclasses.
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP request. Never <code>null</code>.
    * @param aHttpResponse

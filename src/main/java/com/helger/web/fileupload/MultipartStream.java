@@ -26,11 +26,11 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.io.streams.NonBlockingByteArrayOutputStream;
-import com.helger.commons.io.streams.StreamUtils;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.exception.MultipartIllegalBoundaryException;
+import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.exception.MultipartMalformedStreamException;
 import com.helger.web.fileupload.io.ICloseable;
 
@@ -448,7 +448,7 @@ public final class MultipartStream
     }
     finally
     {
-      StreamUtils.close (aBAOS);
+      StreamHelper.close (aBAOS);
     }
   }
 

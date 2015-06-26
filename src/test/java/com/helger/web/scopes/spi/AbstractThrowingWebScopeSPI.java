@@ -16,7 +16,7 @@
  */
 package com.helger.web.scopes.spi;
 
-import com.helger.commons.mock.MockRuntimeException;
+import com.helger.commons.exception.mock.MockRuntimeException;
 
 /**
  * Abstract base class for all Mock SPI implementations

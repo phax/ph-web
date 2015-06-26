@@ -26,9 +26,9 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.stats.IStatisticsHandlerCounter;
-import com.helger.commons.stats.StatisticsManager;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
+import com.helger.commons.statistics.StatisticsManager;
 
 public final class GZIPResponse extends AbstractCompressedResponseWrapper
 {
@@ -51,7 +51,7 @@ public final class GZIPResponse extends AbstractCompressedResponseWrapper
     }
   }
 
-  private static final IStatisticsHandlerCounter s_aStatsGZip = StatisticsManager.getCounterHandler (GZIPResponse.class);
+  private static final IMutableStatisticsHandlerCounter s_aStatsGZip = StatisticsManager.getCounterHandler (GZIPResponse.class);
 
   public GZIPResponse (final HttpServletRequest aHttpRequest,
                        final HttpServletResponse aHttpResponse,

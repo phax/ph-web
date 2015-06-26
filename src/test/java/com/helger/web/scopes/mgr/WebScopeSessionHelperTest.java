@@ -31,13 +31,11 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import com.helger.commons.scopes.IScopeRenewalAware;
-import com.helger.commons.scopes.mgr.ScopeSessionManager;
+import com.helger.commons.scope.IScopeRenewalAware;
+import com.helger.commons.scope.mgr.ScopeSessionManager;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.scopes.domain.ISessionApplicationWebScope;
 import com.helger.web.scopes.domain.ISessionWebScope;
-import com.helger.web.scopes.mgr.WebScopeManager;
-import com.helger.web.scopes.mgr.WebScopeSessionHelper;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**

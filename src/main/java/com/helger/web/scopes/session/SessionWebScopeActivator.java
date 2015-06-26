@@ -32,17 +32,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.DevelopersNote;
-import com.helger.commons.lang.CGStringHelper;
-import com.helger.commons.scopes.ScopeUtils;
-import com.helger.commons.scopes.domain.ISessionApplicationScope;
+import com.helger.commons.annotation.DevelopersNote;
+import com.helger.commons.lang.ClassHelper;
+import com.helger.commons.scope.ISessionApplicationScope;
+import com.helger.commons.scope.ScopeHelper;
 import com.helger.web.scopes.domain.ISessionWebScope;
 import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
  * This class is responsible for passivating and activating session web scopes.
  * Important: this object itself may NOT be passivated!
- * 
+ *
  * @author Philip Helger
  */
 public final class SessionWebScopeActivator implements Serializable, HttpSessionActivationListener, ISessionWebScopeDontPassivate
@@ -59,7 +59,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
 
   /**
    * Constructor for writing
-   * 
+   *
    * @param aSessionWebScope
    *        the scope to be written
    */
@@ -118,11 +118,12 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
       }
     }
 
-    if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
+    if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Wrote info on session web scope '" +
-                      m_aSessionWebScope.getID () +
-                      "' of class " +
-                      CGStringHelper.getClassLocalName (this), ScopeUtils.getDebugStackTrace ());
+                          m_aSessionWebScope.getID () +
+                          "' of class " +
+                          ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   @SuppressWarnings ("unchecked")
@@ -147,14 +148,14 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
     }
     m_aSessionApplicationScopes = aSAS;
 
-    if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
+    if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Read info on session scope: " +
                           m_aAttrs.size () +
                           " attrs and " +
                           m_aSessionApplicationScopes.size () +
                           " SAScopes of class " +
-                          CGStringHelper.getClassLocalName (this),
-                      ScopeUtils.getDebugStackTrace ());
+                          ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
@@ -173,11 +174,11 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
             ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
     }
 
-    if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
+    if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Successfully passivated session web scope '" +
                       m_aSessionWebScope.getID () +
                       "' of class " +
-                      CGStringHelper.getClassLocalName (this), ScopeUtils.getDebugStackTrace ());
+                      ClassHelper.getClassLocalName (this), ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionDidActivate (@Nonnull final HttpSessionEvent aEvent)
@@ -211,10 +212,10 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
             ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
     }
 
-    if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
+    if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Successfully activated session web scope '" +
                       aSessionWebScope.getID () +
                       "' of class " +
-                      CGStringHelper.getClassLocalName (this), ScopeUtils.getDebugStackTrace ());
+                      ClassHelper.getClassLocalName (this), ScopeHelper.getDebugStackTrace ());
   }
 }

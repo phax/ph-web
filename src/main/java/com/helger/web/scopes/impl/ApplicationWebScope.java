@@ -19,8 +19,8 @@ package com.helger.web.scopes.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.scopes.impl.ApplicationScope;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.ApplicationScope;
 import com.helger.web.scopes.domain.IApplicationWebScope;
 
 /**

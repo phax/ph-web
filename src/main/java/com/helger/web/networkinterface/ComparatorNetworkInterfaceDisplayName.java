@@ -18,72 +18,23 @@ package com.helger.web.networkinterface;
 
 import java.net.NetworkInterface;
 import java.text.Collator;
-import java.util.Comparator;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.compare.AbstractCollationComparator;
-import com.helger.commons.compare.ESortOrder;
+import com.helger.commons.compare.AbstractCollatingComparator;
 
 /**
  * Comparator to compare {@link NetworkInterface} objects by their display name.
- * 
+ *
  * @author Philip Helger
  */
-public class ComparatorNetworkInterfaceDisplayName extends AbstractCollationComparator <NetworkInterface>
+public class ComparatorNetworkInterfaceDisplayName extends AbstractCollatingComparator <NetworkInterface>
 {
   /**
-   * Comparator with default locale {@link Collator} and default sort order.
-   */
-  public ComparatorNetworkInterfaceDisplayName ()
-  {
-    super ();
-  }
-
-  /**
-   * Comparator with default locale {@link Collator} and default sort order and
-   * a nested comparator.
-   * 
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aNestedComparator);
-  }
-
-  /**
-   * Comparator with default locale {@link Collator}.
-   * 
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final ESortOrder eSortOrder)
-  {
-    super (eSortOrder);
-  }
-
-  /**
-   * Comparator with default locale {@link Collator} and a nested comparator.
-   * 
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final ESortOrder eSortOrder,
-                                                @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (eSortOrder, aNestedComparator);
-  }
-
-  /**
    * Comparator with default sort order and specified sort locale.
-   * 
+   *
    * @param aSortLocale
    *        The locale to use. May be <code>null</code>.
    */
@@ -93,55 +44,8 @@ public class ComparatorNetworkInterfaceDisplayName extends AbstractCollationComp
   }
 
   /**
-   * Comparator with default sort order but special locale and a nested
-   * comparator.
-   * 
-   * @param aSortLocale
-   *        The locale to use. May be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale,
-                                                @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aSortLocale, aNestedComparator);
-  }
-
-  /**
-   * Constructor with locale and sort order.
-   * 
-   * @param aSortLocale
-   *        The locale to use. May be <code>null</code>.
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale, @Nonnull final ESortOrder eSortOrder)
-  {
-    super (aSortLocale, eSortOrder);
-  }
-
-  /**
-   * Constructor with locale and sort order and a nested comparator.
-   * 
-   * @param aSortLocale
-   *        The locale to use. May be <code>null</code>.
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale,
-                                                @Nonnull final ESortOrder eSortOrder,
-                                                @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aSortLocale, eSortOrder, aNestedComparator);
-  }
-
-  /**
    * Constructor with {@link Collator} using the default sort order
-   * 
+   *
    * @param aCollator
    *        The {@link Collator} to use. May not be <code>null</code>.
    */
@@ -150,56 +54,9 @@ public class ComparatorNetworkInterfaceDisplayName extends AbstractCollationComp
     super (aCollator);
   }
 
-  /**
-   * Constructor with {@link Collator} using the default sort order and a nested
-   * comparator.
-   * 
-   * @param aCollator
-   *        The {@link Collator} to use. May not be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator,
-                                                @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aCollator, aNestedComparator);
-  }
-
-  /**
-   * Constructor with {@link Collator} and sort order.
-   * 
-   * @param aCollator
-   *        The {@link Collator} to use. May not be <code>null</code>.
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator, @Nonnull final ESortOrder eSortOrder)
-  {
-    super (aCollator, eSortOrder);
-  }
-
-  /**
-   * Constructor with {@link Collator} and sort order and a nested comparator.
-   * 
-   * @param aCollator
-   *        The {@link Collator} to use. May not be <code>null</code>.
-   * @param eSortOrder
-   *        The sort order to use. May not be <code>null</code>.
-   * @param aNestedComparator
-   *        The nested comparator to be invoked, when the main comparison
-   *        resulted in 0.
-   */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator,
-                                                @Nonnull final ESortOrder eSortOrder,
-                                                @Nullable final Comparator <? super NetworkInterface> aNestedComparator)
-  {
-    super (aCollator, eSortOrder, aNestedComparator);
-  }
-
   @Override
   @Nullable
-  protected String asString (@Nonnull final NetworkInterface aObject)
+  protected String getPart (@Nonnull final NetworkInterface aObject)
   {
     return aObject.getDisplayName ();
   }

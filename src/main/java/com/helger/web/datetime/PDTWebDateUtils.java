@@ -31,9 +31,9 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.collections.pair.IReadonlyPair;
-import com.helger.commons.collections.pair.ReadonlyPair;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.pair.IPair;
+import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.datetime.PDTFactory;
 import com.helger.datetime.config.PDTConfig;
 import com.helger.datetime.format.PDTFormatter;
@@ -175,18 +175,18 @@ public final class PDTWebDateUtils
    *         ).
    */
   @Nonnull
-  private static IReadonlyPair <String, DateTimeZone> _extractDateTimeZone (@Nonnull final String sDate)
+  private static IPair <String, DateTimeZone> _extractDateTimeZone (@Nonnull final String sDate)
   {
     final String [] aDTZ = { "UTC", "GMT" };
     for (final String sDTZ : aDTZ)
     {
       if (sDate.endsWith (" " + sDTZ))
-        return ReadonlyPair.create (sDate.substring (0, sDate.length () - (1 + sDTZ.length ())),
+        return ReadOnlyPair.create (sDate.substring (0, sDate.length () - (1 + sDTZ.length ())),
                                     DateTimeZone.forID (sDTZ));
       if (sDate.endsWith (sDTZ))
-        return ReadonlyPair.create (sDate.substring (0, sDate.length () - sDTZ.length ()), DateTimeZone.forID (sDTZ));
+        return ReadOnlyPair.create (sDate.substring (0, sDate.length () - sDTZ.length ()), DateTimeZone.forID (sDTZ));
     }
-    return ReadonlyPair.create (sDate, null);
+    return ReadOnlyPair.create (sDate, null);
   }
 
   /**
@@ -221,7 +221,7 @@ public final class PDTWebDateUtils
     if (sDate == null)
       return null;
 
-    final IReadonlyPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
+    final IPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
     return _parseDateTimeUsingMask (RFC822_MASKS, aPair.getFirst (), aPair.getSecond ());
   }
 
@@ -257,7 +257,7 @@ public final class PDTWebDateUtils
     if (sDate == null)
       return null;
 
-    final IReadonlyPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
+    final IPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
     return _parseLocalDateTimeUsingMask (RFC822_MASKS, aPair.getFirst (), aPair.getSecond ());
   }
 
@@ -289,7 +289,7 @@ public final class PDTWebDateUtils
     if (sDate == null)
       return null;
 
-    final IReadonlyPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
+    final IPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
     return _parseDateTimeUsingMask (W3CDATETIME_MASKS, aPair.getFirst (), aPair.getSecond ());
   }
 
@@ -321,7 +321,7 @@ public final class PDTWebDateUtils
     if (sDate == null)
       return null;
 
-    final IReadonlyPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
+    final IPair <String, DateTimeZone> aPair = _extractDateTimeZone (sDate.trim ());
     return _parseLocalDateTimeUsingMask (W3CDATETIME_MASKS, aPair.getFirst (), aPair.getSecond ());
   }
 

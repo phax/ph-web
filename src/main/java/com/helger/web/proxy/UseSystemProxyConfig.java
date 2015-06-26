@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.SystemProperties;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.commons.system.SystemProperties;
 
 /**
  * Proxy configuration that uses the system default proxy settings.

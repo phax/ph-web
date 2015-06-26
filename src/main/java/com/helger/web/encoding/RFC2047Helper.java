@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.codec.DecoderException;
+import com.helger.commons.codec.DecodeException;
 import com.helger.commons.codec.RFC1522BCodec;
 import com.helger.commons.codec.RFC1522QCodec;
 
@@ -84,10 +84,10 @@ public final class RFC2047Helper
       switch (eCodec)
       {
         case Q:
-          return new RFC1522QCodec (aCharset).encodeText (sValue);
+          return new RFC1522QCodec (aCharset).getEncodedText (sValue);
         case B:
         default:
-          return new RFC1522BCodec (aCharset).encodeText (sValue);
+          return new RFC1522BCodec (aCharset).getEncodedText (sValue);
       }
     }
     catch (final Exception ex)
@@ -112,14 +112,14 @@ public final class RFC2047Helper
     try
     {
       // try BCodec first
-      return new RFC1522BCodec ().decodeText (sValue);
+      return new RFC1522BCodec ().getDecodedText (sValue);
     }
-    catch (final DecoderException de)
+    catch (final DecodeException de)
     {
       // try QCodec next
       try
       {
-        return new RFC1522QCodec ().decodeText (sValue);
+        return new RFC1522QCodec ().getDecodedText (sValue);
       }
       catch (final Exception ex)
       {

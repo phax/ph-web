@@ -18,7 +18,7 @@ package com.helger.web.jsch;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.annotations.PresentForCodeCoverage;
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.jcraft.jsch.JSch;
 
 /**

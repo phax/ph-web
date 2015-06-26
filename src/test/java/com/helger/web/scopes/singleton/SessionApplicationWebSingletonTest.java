@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.PHTestUtils;
+import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
@@ -55,7 +55,7 @@ public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAw
     final MockSessionApplicationWebSingleton b = MockSessionApplicationWebSingleton.getInstance ();
     assertSame (a, b);
 
-    PHTestUtils.testDefaultSerialization (a);
+    CommonsTestHelper.testDefaultSerialization (a);
   }
 
   @Test
@@ -79,6 +79,6 @@ public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAw
     assertNotNull (b.getScope ());
     assertSame (a, b);
 
-    PHTestUtils.testDefaultSerialization (a);
+    CommonsTestHelper.testDefaultSerialization (a);
   }
 }

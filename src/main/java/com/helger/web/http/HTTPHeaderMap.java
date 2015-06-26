@@ -32,13 +32,13 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
-import com.helger.commons.ICloneable;
-import com.helger.commons.IHasSize;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.annotations.ReturnsMutableObject;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.lang.ICloneable;
+import com.helger.commons.lang.IHasSize;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -74,12 +74,6 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     m_aHeaders.putAll (aOther.m_aHeaders);
   }
 
-  @Deprecated
-  public void reset ()
-  {
-    clear ();
-  }
-
   /**
    * Remove all contained headers.
    *
@@ -96,7 +90,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   }
 
   @Nonnull
-  @ReturnsMutableObject (reason = "design")
+  @ReturnsMutableObject ("design")
   private List <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
   {
     List <String> aValues = m_aHeaders.get (sName);
@@ -430,7 +424,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   }
 
   @Nonnegative
-  public int size ()
+  public int getSize ()
   {
     return m_aHeaders.size ();
   }

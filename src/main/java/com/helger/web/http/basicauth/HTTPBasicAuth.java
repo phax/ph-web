@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotations.PresentForCodeCoverage;
-import com.helger.commons.base64.Base64Helper;
+import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.base64.Base64;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -102,7 +102,7 @@ public final class HTTPBasicAuth
 
     // Apply Base64 decoding
     final String sEncodedCredentials = aElements[1];
-    final String sUsernamePassword = Base64Helper.safeDecodeAsString (sEncodedCredentials, CHARSET);
+    final String sUsernamePassword = Base64.safeDecodeAsString (sEncodedCredentials, CHARSET);
     if (sUsernamePassword == null)
     {
       s_aLogger.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");

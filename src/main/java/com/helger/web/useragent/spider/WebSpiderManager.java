@@ -30,14 +30,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.reader.XMLListHandler;
 import com.helger.commons.microdom.serialize.MicroReader;
-import com.helger.commons.microdom.utils.MicroUtils;
+import com.helger.commons.microdom.util.MicroHelper;
+import com.helger.commons.microdom.util.XMLListHandler;
 
 /**
  * Provides a list of known web spiders.
@@ -74,13 +74,13 @@ public final class WebSpiderManager
     for (final IMicroElement eSpider : aDoc.getDocumentElement ().getAllChildElements ("spider"))
     {
       final WebSpiderInfo aSpider = new WebSpiderInfo (eSpider.getAttributeValue ("ident"));
-      aSpider.setName (MicroUtils.getChildTextContent (eSpider, "name"));
-      final String sType = MicroUtils.getChildTextContent (eSpider, "type");
+      aSpider.setName (MicroHelper.getChildTextContent (eSpider, "name"));
+      final String sType = MicroHelper.getChildTextContent (eSpider, "type");
       final EWebSpiderType eType = EWebSpiderType.getFromIDOrNull (sType);
       if (sType != null && eType == null)
         s_aLogger.warn ("Unknown web spider type '" + sType + "'");
       aSpider.setType (eType);
-      aSpider.setInfo (MicroUtils.getChildTextContent (eSpider, "info"));
+      aSpider.setInfo (MicroHelper.getChildTextContent (eSpider, "info"));
       m_aMap.put (_getUnifiedID (aSpider.getID ()), aSpider);
     }
   }
@@ -95,7 +95,7 @@ public final class WebSpiderManager
       if (aSpider == null)
       {
         aSpider = new WebSpiderInfo (sID);
-        aSpider.setName (MicroUtils.getChildTextContent (eSpider, "name"));
+        aSpider.setName (MicroHelper.getChildTextContent (eSpider, "name"));
         m_aMap.put (_getUnifiedID (aSpider.getID ()), aSpider);
       }
     }

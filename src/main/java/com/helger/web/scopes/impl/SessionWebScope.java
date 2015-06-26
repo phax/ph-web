@@ -27,8 +27,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotations.Nonempty;
-import com.helger.commons.scopes.impl.SessionScope;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.SessionScope;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;

@@ -36,7 +36,7 @@ import com.helger.commons.microdom.MicroDocument;
 import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.datetime.IHasLastModificationDateTime;
-import com.helger.datetime.PDTUtils;
+import com.helger.datetime.util.PDTHelper;
 
 /**
  * Represents a set of {@link XMLSitemapURL} objects.
@@ -73,7 +73,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
     if (aURLLastModified != null)
     {
       // Is the URL modification later than the current maximum
-      if (m_aLastModification == null || PDTUtils.isGreater (aURLLastModified, m_aLastModification))
+      if (m_aLastModification == null || PDTHelper.isGreater (aURLLastModified, m_aLastModification))
       {
         m_aPrevLastModification = m_aLastModification;
         m_aLastModification = aURLLastModified;

@@ -35,7 +35,7 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.xml.serialize.write.EXMLCharMode;
 import com.helger.commons.xml.serialize.write.XMLMaskHelper;
 import com.helger.datetime.IHasLastModificationDateTime;
-import com.helger.datetime.PDTUtils;
+import com.helger.datetime.util.PDTHelper;
 import com.helger.web.datetime.PDTWebDateUtils;
 
 /**
@@ -87,7 +87,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     m_sLocation = aLocation.getAsString ();
     if (m_sLocation.length () > LOCATION_MAX_LENGTH)
       throw new IllegalArgumentException ("URL location is too long!");
-    m_aLastModification = PDTUtils.isNullValue (aLastModification) ? null : aLastModification;
+    m_aLastModification = PDTHelper.isNullValue (aLastModification) ? null : aLastModification;
     m_eChangeFreq = eChangeFreq;
     m_dPriority = aPriority == null ? DEFAULT_PRIORITY : aPriority.doubleValue ();
     m_sPriority = aPriority == null ? null : aPriority.toString ();

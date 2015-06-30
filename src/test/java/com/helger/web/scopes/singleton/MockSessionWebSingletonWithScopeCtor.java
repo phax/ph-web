@@ -24,11 +24,11 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.scope.IScope;
 
 /**
- * Mock implementation of {@link SessionWebSingleton}
+ * Mock implementation of {@link AbstractSessionWebSingleton}
  *
  * @author Philip Helger
  */
-public final class MockSessionWebSingletonWithScopeCtor extends SessionWebSingleton
+public final class MockSessionWebSingletonWithScopeCtor extends AbstractSessionWebSingleton
 {
   private int i = 0;
   private final IScope m_aScope;

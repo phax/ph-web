@@ -23,11 +23,11 @@ import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.scope.IScope;
 
 /**
- * Mock implementation of {@link GlobalWebSingleton}
+ * Mock implementation of {@link AbstractGlobalWebSingleton}
  *
  * @author Philip Helger
  */
-public final class MockGlobalWebSingletonWithScopeCtor extends GlobalWebSingleton
+public final class MockGlobalWebSingletonWithScopeCtor extends AbstractGlobalWebSingleton
 {
   static int s_nCtorCount = 0;
   static int s_nDtorCount = 0;

@@ -28,24 +28,24 @@ import org.junit.Test;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Test class for class {@link ApplicationWebSingleton}.<br>
+ * Test class for class {@link AbstractApplicationWebSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  *
  * @author Philip Helger
  */
-public final class ApplicationWebSingletonTest extends AbstractWebScopeAwareTestCase
+public final class ApplicationWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (ApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
-    assertFalse (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
-    assertNull (ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
+    assertTrue (AbstractApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
+    assertFalse (AbstractApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
+    assertNull (AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
 
     final MockApplicationWebSingleton a = MockApplicationWebSingleton.getInstance ();
     assertNotNull (a);
-    assertTrue (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
-    assertSame (a, ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
+    assertTrue (AbstractApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
+    assertSame (a, AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
@@ -57,15 +57,15 @@ public final class ApplicationWebSingletonTest extends AbstractWebScopeAwareTest
   @Test
   public void testCtor () throws Exception
   {
-    assertTrue (ApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
-    assertFalse (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
-    assertNull (ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractApplicationWebSingleton.getAllApplicationSingletons ().isEmpty ());
+    assertFalse (AbstractApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertNull (AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
 
     final MockApplicationWebSingletonWithScopeCtor a = MockApplicationWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
-    assertTrue (ApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
     assertSame (a,
-                ApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
+                AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
     assertEquals (0, a.get ());
     a.inc ();

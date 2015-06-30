@@ -30,11 +30,11 @@ import org.junit.Test;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Test class for class {@link GlobalWebSingleton}.
+ * Test class for class {@link AbstractGlobalWebSingleton}.
  *
  * @author Philip Helger
  */
-public final class GlobalWebSingletonTest extends AbstractWebScopeAwareTestCase
+public final class GlobalWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @BeforeClass
   public static void beforeClass ()
@@ -53,14 +53,14 @@ public final class GlobalWebSingletonTest extends AbstractWebScopeAwareTestCase
   @Test
   public void testBasic ()
   {
-    assertTrue (GlobalWebSingleton.getAllGlobalSingletons ().isEmpty ());
-    assertFalse (GlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingleton.class));
-    assertNull (GlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingleton.class));
+    assertTrue (AbstractGlobalWebSingleton.getAllGlobalSingletons ().isEmpty ());
+    assertFalse (AbstractGlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingleton.class));
+    assertNull (AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingleton.class));
 
     final MockGlobalWebSingleton a = MockGlobalWebSingleton.getInstance ();
     assertNotNull (a);
-    assertTrue (GlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingleton.class));
-    assertSame (a, GlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingleton.class));
+    assertTrue (AbstractGlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingleton.class));
+    assertSame (a, AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingleton.class));
     assertNotNull (a);
 
     final MockGlobalWebSingleton b = MockGlobalWebSingleton.getInstance ();

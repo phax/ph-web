@@ -29,25 +29,25 @@ import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Test class for class {@link SessionApplicationWebSingleton}.<br>
+ * Test class for class {@link AbstractSessionApplicationWebSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  *
  * @author Philip Helger
  */
-public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAwareTestCase
+public final class SessionApplicationWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (SessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
-    assertFalse (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingleton.class));
-    assertNull (SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingleton.class));
+    assertTrue (AbstractSessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
+    assertFalse (AbstractSessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingleton.class));
+    assertNull (AbstractSessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingleton.class));
 
     final MockSessionApplicationWebSingleton a = MockSessionApplicationWebSingleton.getInstance ();
     assertNotNull (a);
-    assertTrue (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingleton.class));
+    assertTrue (AbstractSessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingleton.class));
     assertSame (a,
-                SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingleton.class));
+                AbstractSessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
@@ -61,15 +61,15 @@ public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAw
   @Test
   public void testCtor () throws Exception
   {
-    assertTrue (SessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
-    assertFalse (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
-    assertNull (SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractSessionApplicationWebSingleton.getAllSessionApplicationSingletons ().isEmpty ());
+    assertFalse (AbstractSessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertNull (AbstractSessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
 
     final MockSessionApplicationWebSingletonWithScopeCtor a = MockSessionApplicationWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
-    assertTrue (SessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractSessionApplicationWebSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
     assertSame (a,
-                SessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
+                AbstractSessionApplicationWebSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
     assertEquals (0, a.get ());
     a.inc ();

@@ -27,14 +27,14 @@ import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IProgressListener;
 import com.helger.web.fileupload.IProgressListenerProvider;
-import com.helger.web.scopes.singleton.GlobalWebSingleton;
+import com.helger.web.scopes.singleton.AbstractGlobalWebSingleton;
 
 /**
  * SPI handler for {@link IProgressListenerProvider} implementations
  *
  * @author Philip Helger
  */
-public final class ProgressListenerProvider extends GlobalWebSingleton
+public final class ProgressListenerProvider extends AbstractGlobalWebSingleton
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);
 

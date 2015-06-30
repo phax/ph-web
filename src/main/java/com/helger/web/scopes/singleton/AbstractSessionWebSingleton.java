@@ -16,42 +16,57 @@
  */
 package com.helger.web.scopes.singleton;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.scope.singleton.AbstractSingleton;
-import com.helger.web.scopes.domain.IRequestWebScope;
+import com.helger.web.scopes.domain.ISessionWebScope;
 import com.helger.web.scopes.mgr.WebScopeManager;
 
 /**
- * This is the base class for singleton objects that reside in the request
- * scope. This class can be used for web scopes and non-web scopes as it handled
- * in the same object.
+ * This is the base class for singleton objects that reside in the session web
+ * scope.
  *
- * @see com.helger.web.scopes.mgr.EWebScope#REQUEST
+ * @see com.helger.web.scopes.mgr.EWebScope#SESSION
  * @author Philip Helger
  */
-public abstract class RequestWebSingleton extends AbstractSingleton
+@MustImplementEqualsAndHashcode
+public abstract class AbstractSessionWebSingleton extends AbstractSingleton implements Serializable
 {
-  protected RequestWebSingleton ()
+  protected AbstractSessionWebSingleton ()
   {}
 
-  /**
-   * @param bMustBePresent
-   *        if <code>true</code> the scope must be present, <code>false</code>
-   *        if it may be <code>null</code>.
-   * @return The scope to be used for this type of singleton.
-   */
-  @Nonnull
-  private static IRequestWebScope _getStaticScope (final boolean bMustBePresent)
+  private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
   {
-    return bMustBePresent ? WebScopeManager.getRequestScope () : WebScopeManager.getRequestScopeOrNull ();
+    writeAbstractSingletonFields (aOOS);
+  }
+
+  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
+  {
+    readAbstractSingletonFields (aOIS);
   }
 
   /**
-   * Get the singleton object in the current request web scope, using the passed
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> the scope will be created if it is not
+   *        existing, <code>false</code> if not.
+   * @return The scope to be used for this type of singleton.
+   */
+  @Nonnull
+  private static ISessionWebScope _getStaticScope (final boolean bCreateIfNotExisting)
+  {
+    return WebScopeManager.getSessionScope (bCreateIfNotExisting);
+  }
+
+  /**
+   * Get the singleton object in the current session web scope, using the passed
    * class. If the singleton is not yet instantiated, a new instance is created.
    *
    * @param aClass
@@ -60,14 +75,14 @@ public abstract class RequestWebSingleton extends AbstractSingleton
    * @return The singleton object and never <code>null</code>.
    */
   @Nonnull
-  public static final <T extends RequestWebSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractSessionWebSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
 
   /**
    * Get the singleton object if it is already instantiated inside the current
-   * request web scope or <code>null</code> if it is not instantiated.
+   * session web scope or <code>null</code> if it is not instantiated.
    *
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
@@ -75,13 +90,13 @@ public abstract class RequestWebSingleton extends AbstractSingleton
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends RequestWebSingleton> T getRequestSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractSessionWebSingleton> T getSessionSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
 
   /**
-   * Check if a singleton is already instantiated inside the current request web
+   * Check if a singleton is already instantiated inside the current session web
    * scope
    *
    * @param aClass
@@ -89,20 +104,20 @@ public abstract class RequestWebSingleton extends AbstractSingleton
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isRequestSingletonInstantiated (@Nonnull final Class <? extends RequestWebSingleton> aClass)
+  public static final boolean isSessionSingletonInstantiated (@Nonnull final Class <? extends AbstractSessionWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
   /**
-   * Get all singleton objects registered in the current request web scope.
+   * Get all singleton objects registered in the current session web scope.
    *
    * @return A non-<code>null</code> list with all instances of this class in
-   *         the current request web scope.
+   *         the current session web scope.
    */
   @Nonnull
-  public static final List <RequestWebSingleton> getAllRequestSingletons ()
+  public static final List <AbstractSessionWebSingleton> getAllSessionSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), RequestWebSingleton.class);
+    return getAllSingletons (_getStaticScope (false), AbstractSessionWebSingleton.class);
   }
 }

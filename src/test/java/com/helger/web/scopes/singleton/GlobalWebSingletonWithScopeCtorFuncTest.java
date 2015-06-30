@@ -30,7 +30,7 @@ import org.junit.Test;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Test class for class {@link GlobalWebSingleton}.
+ * Test class for class {@link AbstractGlobalWebSingleton}.
  *
  * @author Philip Helger
  */
@@ -53,14 +53,14 @@ public final class GlobalWebSingletonWithScopeCtorFuncTest extends AbstractWebSc
   @Test
   public void testCtor ()
   {
-    assertTrue (GlobalWebSingleton.getAllGlobalSingletons ().isEmpty ());
-    assertFalse (GlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
-    assertNull (GlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractGlobalWebSingleton.getAllGlobalSingletons ().isEmpty ());
+    assertFalse (AbstractGlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
+    assertNull (AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
 
     final MockGlobalWebSingletonWithScopeCtor a = MockGlobalWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
-    assertTrue (GlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
-    assertSame (a, GlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractGlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
+    assertSame (a, AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
 
     final MockGlobalWebSingletonWithScopeCtor b = MockGlobalWebSingletonWithScopeCtor.getInstance ();

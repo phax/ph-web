@@ -34,9 +34,9 @@ import com.helger.web.scopes.mgr.WebScopeManager;
  * @see com.helger.web.scopes.mgr.EWebScope#APPLICATION
  * @author Philip Helger
  */
-public abstract class ApplicationWebSingleton extends AbstractSingleton
+public abstract class AbstractApplicationWebSingleton extends AbstractSingleton
 {
-  protected ApplicationWebSingleton ()
+  protected AbstractApplicationWebSingleton ()
   {}
 
   /**
@@ -61,7 +61,7 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
    * @return The singleton object and never <code>null</code>.
    */
   @Nonnull
-  public static final <T extends ApplicationWebSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractApplicationWebSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
@@ -76,7 +76,7 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends ApplicationWebSingleton> T getApplicationSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractApplicationWebSingleton> T getApplicationSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -90,7 +90,7 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isApplicationSingletonInstantiated (@Nonnull final Class <? extends ApplicationWebSingleton> aClass)
+  public static final boolean isApplicationSingletonInstantiated (@Nonnull final Class <? extends AbstractApplicationWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -102,8 +102,8 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
    *         the current application web scope.
    */
   @Nonnull
-  public static final List <ApplicationWebSingleton> getAllApplicationSingletons ()
+  public static final List <AbstractApplicationWebSingleton> getAllApplicationSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), ApplicationWebSingleton.class);
+    return getAllSingletons (_getStaticScope (false), AbstractApplicationWebSingleton.class);
   }
 }

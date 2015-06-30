@@ -32,9 +32,9 @@ import com.helger.web.scopes.mgr.WebScopeManager;
  * @see com.helger.web.scopes.mgr.EWebScope#GLOBAL
  * @author Philip Helger
  */
-public abstract class GlobalWebSingleton extends AbstractSingleton
+public abstract class AbstractGlobalWebSingleton extends AbstractSingleton
 {
-  protected GlobalWebSingleton ()
+  protected AbstractGlobalWebSingleton ()
   {}
 
   /**
@@ -59,7 +59,7 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
    * @return The singleton object and never <code>null</code>.
    */
   @Nonnull
-  public static final <T extends GlobalWebSingleton> T getGlobalSingleton (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
@@ -74,7 +74,7 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends GlobalWebSingleton> T getGlobalSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -88,7 +88,7 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isGlobalSingletonInstantiated (@Nonnull final Class <? extends GlobalWebSingleton> aClass)
+  public static final boolean isGlobalSingletonInstantiated (@Nonnull final Class <? extends AbstractGlobalWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -100,8 +100,8 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
    *         the current global web scope.
    */
   @Nonnull
-  public static final List <GlobalWebSingleton> getAllGlobalSingletons ()
+  public static final List <AbstractGlobalWebSingleton> getAllGlobalSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), GlobalWebSingleton.class);
+    return getAllSingletons (_getStaticScope (false), AbstractGlobalWebSingleton.class);
   }
 }

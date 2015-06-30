@@ -53,7 +53,7 @@ import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.scopes.fileupload.ProgressListenerProvider;
-import com.helger.web.scopes.singleton.GlobalWebSingleton;
+import com.helger.web.scopes.singleton.AbstractGlobalWebSingleton;
 
 /**
  * The default request web scope that also tries to parse multi part requests.
@@ -69,7 +69,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
    * @author Philip Helger
    */
   @IsSPIImplementation
-  public static final class GlobalDiskFileItemFactory extends GlobalWebSingleton implements IFileItemFactory
+  public static final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton implements IFileItemFactory
   {
     private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
 

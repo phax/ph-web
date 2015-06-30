@@ -22,11 +22,11 @@ import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.hashcode.HashCodeGenerator;
 
 /**
- * Mock implementation of {@link SessionWebSingleton}
+ * Mock implementation of {@link AbstractSessionWebSingleton}
  *
  * @author Philip Helger
  */
-public final class MockSessionWebSingleton extends SessionWebSingleton
+public final class MockSessionWebSingleton extends AbstractSessionWebSingleton
 {
   private int i = 0;
 

@@ -28,24 +28,24 @@ import org.junit.Test;
 import com.helger.web.scopes.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Test class for class {@link RequestWebSingleton}.<br>
+ * Test class for class {@link AbstractRequestWebSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  *
  * @author Philip Helger
  */
-public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestCase
+public final class RequestWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (RequestWebSingleton.getAllRequestSingletons ().isEmpty ());
-    assertFalse (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
-    assertNull (RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingleton.class));
+    assertTrue (AbstractRequestWebSingleton.getAllRequestSingletons ().isEmpty ());
+    assertFalse (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
+    assertNull (AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingleton.class));
 
     final MockRequestWebSingleton a = MockRequestWebSingleton.getInstance ();
     assertNotNull (a);
-    assertTrue (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
-    assertSame (a, RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingleton.class));
+    assertTrue (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
+    assertSame (a, AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
@@ -57,14 +57,14 @@ public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestCase
   @Test
   public void testCtor () throws Exception
   {
-    assertTrue (RequestWebSingleton.getAllRequestSingletons ().isEmpty ());
-    assertFalse (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
-    assertNull (RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractRequestWebSingleton.getAllRequestSingletons ().isEmpty ());
+    assertFalse (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertNull (AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
 
     final MockRequestWebSingletonWithScopeCtor a = MockRequestWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
-    assertTrue (RequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
-    assertSame (a, RequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertTrue (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertSame (a, AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
     assertEquals (0, a.get ());
     a.inc ();

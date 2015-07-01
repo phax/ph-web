@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
@@ -35,12 +35,12 @@ import com.helger.commons.microdom.IMicroElement;
 import com.helger.commons.microdom.MicroDocument;
 import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.datetime.IHasLastModificationDateTime;
+import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
 
 /**
  * Represents a set of {@link XMLSitemapURL} objects.
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -56,8 +56,8 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
 
   private int m_nOutputLength = XML_HEADER_LENGTH;
   private final List <XMLSitemapURL> m_aURLs = new ArrayList <XMLSitemapURL> ();
-  private DateTime m_aPrevLastModification;
-  private DateTime m_aLastModification;
+  private LocalDateTime m_aPrevLastModification;
+  private LocalDateTime m_aLastModification;
 
   public XMLSitemapURLSet ()
   {}
@@ -69,7 +69,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
     m_nOutputLength += aURL.getOutputLength ();
 
     // Has the URL a modification date?
-    final DateTime aURLLastModified = aURL.getLastModificationDateTime ();
+    final LocalDateTime aURLLastModified = aURL.getLastModificationDateTime ();
     if (aURLLastModified != null)
     {
       // Is the URL modification later than the current maximum
@@ -93,7 +93,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
     if (m_aLastModification != null)
     {
       // Has the URL a modification date?
-      final DateTime aURLLastModified = aLastURL.getLastModificationDateTime ();
+      final LocalDateTime aURLLastModified = aLastURL.getLastModificationDateTime ();
       if (m_aLastModification.equals (aURLLastModified))
       {
         // Use the previous last modification
@@ -138,7 +138,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
    *         <code>null</code> if no contained URL has a modification date!
    */
   @Nullable
-  public DateTime getLastModificationDateTime ()
+  public LocalDateTime getLastModificationDateTime ()
   {
     return m_aLastModification;
   }

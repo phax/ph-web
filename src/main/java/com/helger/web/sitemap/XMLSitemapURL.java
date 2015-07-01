@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.equals.EqualsHelper;
@@ -34,7 +34,7 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.xml.serialize.write.EXMLCharMode;
 import com.helger.commons.xml.serialize.write.XMLMaskHelper;
-import com.helger.datetime.IHasLastModificationDateTime;
+import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
 import com.helger.web.datetime.PDTWebDateUtils;
 
@@ -59,7 +59,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
   private static final String ELEMENT_PRIORITY = "priority";
 
   private final String m_sLocation;
-  private final DateTime m_aLastModification;
+  private final LocalDateTime m_aLastModification;
   private final EXMLSitemapChangeFequency m_eChangeFreq;
   private final double m_dPriority;
   private final String m_sPriority;
@@ -70,13 +70,13 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     this (aLocation, null);
   }
 
-  public XMLSitemapURL (@Nonnull final ISimpleURL aLocation, @Nullable final DateTime aLastModification)
+  public XMLSitemapURL (@Nonnull final ISimpleURL aLocation, @Nullable final LocalDateTime aLastModification)
   {
     this (aLocation, aLastModification, null, null);
   }
 
   public XMLSitemapURL (@Nonnull final ISimpleURL aLocation,
-                        @Nullable final DateTime aLastModification,
+                        @Nullable final LocalDateTime aLastModification,
                         @Nullable final EXMLSitemapChangeFequency eChangeFreq,
                         @Nullable final Double aPriority)
   {
@@ -124,8 +124,8 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
 
     if (m_aLastModification != null)
     {
-      // 24 == length of formatted date
-      ret += _getTagOutputLength (ELEMENT_LASTMOD) + 24;
+      // 23 == length of formatted date
+      ret += _getTagOutputLength (ELEMENT_LASTMOD) + 23;
     }
 
     if (m_eChangeFreq != null)
@@ -144,7 +144,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
   }
 
   @Nullable
-  public DateTime getLastModificationDateTime ()
+  public LocalDateTime getLastModificationDateTime ()
   {
     return m_aLastModification;
   }

@@ -28,7 +28,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,12 +174,10 @@ public final class XMLSitemapIndex implements Serializable
 
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
-      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC).appendText (StaticServerInfo.getInstance ()
-                                                                                      .getFullContextPath () +
-                                                                      "/" +
-                                                                      getSitemapFilename (nIndex));
+      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
+              .appendText (StaticServerInfo.getInstance ().getFullContextPath () + "/" + getSitemapFilename (nIndex));
 
-      final DateTime aLastModification = aURLSet.getLastModificationDateTime ();
+      final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
         eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
                 .appendText (PDTWebDateUtils.getAsStringXSD (aLastModification));
@@ -234,7 +232,8 @@ public final class XMLSitemapIndex implements Serializable
     // Write base file
     if (MicroWriter.writeToFile (getAsDocument (),
                                  new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
-                                 getXMLWriterSettings ()).isFailure ())
+                                 getXMLWriterSettings ())
+                   .isFailure ())
     {
       s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
       return ESuccess.FAILURE;

@@ -46,17 +46,17 @@ public final class XMLSitemapURLSetTest
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir")));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"),
-                                 PDTFactory.getCurrentDateTime (),
+                                 PDTFactory.getCurrentLocalDateTime (),
                                  null,
                                  null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value&param2=value2"),
-                                 PDTFactory.getCurrentDateTime (),
+                                 PDTFactory.getCurrentLocalDateTime (),
                                  EXMLSitemapChangeFequency.NEVER,
                                  null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at"),
-                                 PDTFactory.getCurrentDateTime (),
+                                 PDTFactory.getCurrentLocalDateTime (),
                                  EXMLSitemapChangeFequency.NEVER,
                                  Double.valueOf (1d / 9)));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
@@ -75,7 +75,7 @@ public final class XMLSitemapURLSetTest
     // Insert exactly the number of maximum URLs
     while (s.getURLCount () < XMLSitemapURLSet.MAX_URLS_PER_FILE)
       s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at"),
-                                   PDTFactory.getCurrentDateTime (),
+                                   PDTFactory.getCurrentLocalDateTime (),
                                    EXMLSitemapChangeFequency.NEVER,
                                    null));
     assertFalse (s.isMultiFileSitemap ());
@@ -93,14 +93,14 @@ public final class XMLSitemapURLSetTest
 
     // Build a very lengthy item
     final XMLSitemapURL aLongURL = new XMLSitemapURL (new SimpleURL ("http://www.myverlonghostnamethatisunreasoanble.com/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/filename?param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value#anchor"),
-                                                      PDTFactory.getCurrentDateTime (),
+                                                      PDTFactory.getCurrentLocalDateTime (),
                                                       EXMLSitemapChangeFequency.NEVER,
                                                       Double.valueOf (1d / 9));
     final int nURLLength = aLongURL.getOutputLength ();
 
     // How many of the lengthy items are needed to force an overflow?
     final int nExceedCount = ((XMLSitemapURLSet.MAX_FILE_SIZE - nEmptyLength) / nURLLength) + 1;
-    assertEquals (26750, nExceedCount);
+    assertEquals (26818, nExceedCount);
     assertTrue (nExceedCount < XMLSitemapURLSet.MAX_URLS_PER_FILE);
 
     // Add so many entries, that the limit is not exceeded

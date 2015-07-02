@@ -286,7 +286,7 @@ public final class RequestParamMap implements IRequestParamMap
   {
     if (o == this)
       return true;
-    if (!(o instanceof RequestParamMap))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final RequestParamMap rhs = (RequestParamMap) o;
     return m_aMap.equals (rhs.m_aMap);

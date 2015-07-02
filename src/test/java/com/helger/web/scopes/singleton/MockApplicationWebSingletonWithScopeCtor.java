@@ -68,7 +68,7 @@ public final class MockApplicationWebSingletonWithScopeCtor extends AbstractAppl
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockApplicationWebSingletonWithScopeCtor))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockApplicationWebSingletonWithScopeCtor) o).i;
   }

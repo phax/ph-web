@@ -140,7 +140,7 @@ public final class QValue implements Comparable <QValue>, Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof QValue))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final QValue rhs = (QValue) o;
     return EqualsHelper.equals (m_dQuality, rhs.m_dQuality);

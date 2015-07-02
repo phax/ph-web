@@ -23,7 +23,7 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 
 /**
  * Mock implementation of {@link AbstractApplicationWebSingleton}
- * 
+ *
  * @author Philip Helger
  */
 public final class MockApplicationWebSingleton extends AbstractApplicationWebSingleton
@@ -57,7 +57,7 @@ public final class MockApplicationWebSingleton extends AbstractApplicationWebSin
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockApplicationWebSingleton))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockApplicationWebSingleton) o).i;
   }

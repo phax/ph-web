@@ -68,7 +68,7 @@ public final class MockSessionApplicationWebSingletonWithScopeCtor extends Abstr
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockSessionApplicationWebSingletonWithScopeCtor))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockSessionApplicationWebSingletonWithScopeCtor) o).i;
   }

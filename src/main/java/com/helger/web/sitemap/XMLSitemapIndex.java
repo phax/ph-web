@@ -262,7 +262,7 @@ public final class XMLSitemapIndex implements Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof XMLSitemapIndex))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final XMLSitemapIndex rhs = (XMLSitemapIndex) o;
     return m_aURLSets.equals (rhs.m_aURLSets) && m_bUseGZip == rhs.m_bUseGZip;

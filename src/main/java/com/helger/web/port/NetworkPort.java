@@ -26,7 +26,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Represents a single network port.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -79,7 +79,7 @@ public class NetworkPort implements INetworkPort
   {
     if (o == this)
       return true;
-    if (!(o instanceof NetworkPort))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final NetworkPort rhs = (NetworkPort) o;
     return m_nPort == rhs.m_nPort &&

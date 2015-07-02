@@ -68,7 +68,7 @@ public final class MockRequestWebSingletonWithScopeCtor extends AbstractRequestW
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockRequestWebSingletonWithScopeCtor))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockRequestWebSingletonWithScopeCtor) o).i;
   }

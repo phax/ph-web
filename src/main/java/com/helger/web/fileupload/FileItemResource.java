@@ -111,7 +111,7 @@ public final class FileItemResource implements IReadableResource
   {
     if (o == this)
       return true;
-    if (!(o instanceof FileItemResource))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final FileItemResource rhs = (FileItemResource) o;
     return m_aFileItem.equals (rhs.m_aFileItem);

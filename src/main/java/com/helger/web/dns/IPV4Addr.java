@@ -35,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Representation of a single IP V4 address.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -67,7 +67,8 @@ public class IPV4Addr implements IHasStringRepresentation
 
   public IPV4Addr (final byte [] aAddressBytes)
   {
-    this (aAddressBytes[0] & PART_MAX_VALUE,
+    this (aAddressBytes[0] &
+          PART_MAX_VALUE,
           aAddressBytes[1] & PART_MAX_VALUE,
           aAddressBytes[2] & PART_MAX_VALUE,
           aAddressBytes[3] & PART_MAX_VALUE);
@@ -75,7 +76,7 @@ public class IPV4Addr implements IHasStringRepresentation
 
   /**
    * Constructor that creates an IP address from the 4 numbers.
-   * 
+   *
    * @param n1
    *        first number
    * @param n2
@@ -140,7 +141,7 @@ public class IPV4Addr implements IHasStringRepresentation
   {
     if (o == this)
       return true;
-    if (!(o instanceof IPV4Addr))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final IPV4Addr rhs = (IPV4Addr) o;
     return m_nIP0 == rhs.m_nIP0 && m_nIP1 == rhs.m_nIP1 && m_nIP2 == rhs.m_nIP2 && m_nIP3 == rhs.m_nIP3;

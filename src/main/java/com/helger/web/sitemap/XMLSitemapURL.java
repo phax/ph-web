@@ -194,7 +194,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
   {
     if (o == this)
       return true;
-    if (!(o instanceof XMLSitemapURL))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final XMLSitemapURL rhs = (XMLSitemapURL) o;
     // Don't compare output length and double priority as they are calculated

@@ -117,7 +117,7 @@ public class UAProfileDiff implements Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof UAProfileDiff))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UAProfileDiff rhs = (UAProfileDiff) o;
     return m_sData.equals (rhs.m_sData) && EqualsHelper.equals (m_aMD5Digest, rhs.m_aMD5Digest);

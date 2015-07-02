@@ -117,7 +117,7 @@ public class BasicAuthClientCredentials implements Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof BasicAuthClientCredentials))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final BasicAuthClientCredentials rhs = (BasicAuthClientCredentials) o;
     return m_sUserName.equals (rhs.m_sUserName) && EqualsHelper.equals (m_sPassword, rhs.m_sPassword);

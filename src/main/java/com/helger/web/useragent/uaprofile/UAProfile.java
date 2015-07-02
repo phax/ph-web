@@ -66,7 +66,7 @@ public class UAProfile implements Serializable
       s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
     m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null
-                                                                    : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
+                                                                     : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
   }
 
   /**
@@ -102,7 +102,7 @@ public class UAProfile implements Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof UAProfile))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UAProfile rhs = (UAProfile) o;
     return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&

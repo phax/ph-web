@@ -68,7 +68,7 @@ public final class MockSessionWebSingletonWithScopeCtor extends AbstractSessionW
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockSessionWebSingletonWithScopeCtor))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockSessionWebSingletonWithScopeCtor) o).i;
   }

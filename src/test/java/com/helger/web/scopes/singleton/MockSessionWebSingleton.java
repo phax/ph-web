@@ -57,7 +57,7 @@ public final class MockSessionWebSingleton extends AbstractSessionWebSingleton
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockSessionWebSingleton))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockSessionWebSingleton) o).i;
   }

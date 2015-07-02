@@ -175,7 +175,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
   {
     if (o == this)
       return true;
-    if (!(o instanceof XMLSitemapURLSet))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final XMLSitemapURLSet rhs = (XMLSitemapURLSet) o;
     // Don't compare the other fields as they are calculated

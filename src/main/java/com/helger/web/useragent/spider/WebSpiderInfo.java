@@ -89,7 +89,7 @@ public final class WebSpiderInfo implements IHasID <String>, Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof WebSpiderInfo))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final WebSpiderInfo rhs = (WebSpiderInfo) o;
     return m_sID.equals (rhs.m_sID) &&

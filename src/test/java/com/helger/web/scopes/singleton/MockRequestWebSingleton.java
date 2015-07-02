@@ -57,7 +57,7 @@ public final class MockRequestWebSingleton extends AbstractRequestWebSingleton
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockRequestWebSingleton))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     return i == ((MockRequestWebSingleton) o).i;
   }

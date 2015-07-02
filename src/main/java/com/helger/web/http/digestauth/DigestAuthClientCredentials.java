@@ -210,7 +210,7 @@ public class DigestAuthClientCredentials implements Serializable
   {
     if (o == this)
       return true;
-    if (!(o instanceof DigestAuthClientCredentials))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final DigestAuthClientCredentials rhs = (DigestAuthClientCredentials) o;
     return m_sUserName.equals (rhs.m_sUserName) &&

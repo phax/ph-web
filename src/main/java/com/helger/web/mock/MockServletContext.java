@@ -198,7 +198,7 @@ public class MockServletContext implements ServletContext
 
   public final void setContextPath (@Nullable final String sContextPath)
   {
-    if (sContextPath == null)
+    if (StringHelper.hasNoText (sContextPath))
       m_sContextPath = "";
     else
       if (StringHelper.startsWith (sContextPath, '/'))

@@ -139,6 +139,15 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     return PDTWebDateUtils.getAsStringRFC822 (aDT);
   }
 
+  @Nonnull
+  public static String getDateTimeAsString (@Nonnull final LocalDateTime aLDT)
+  {
+    ValueEnforcer.notNull (aLDT, "DateTime");
+
+    // This method internally converts the date to UTC
+    return PDTWebDateUtils.getAsStringRFC822 (aLDT);
+  }
+
   /**
    * Set the passed header as a date header.
    *

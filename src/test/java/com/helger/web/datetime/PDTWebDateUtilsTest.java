@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ import com.helger.datetime.PDTFactory;
 
 /**
  * Test class for class {@link PDTWebDateUtils}.
- * 
+ *
  * @author Philip Helger
  */
 public final class PDTWebDateUtilsTest
@@ -48,6 +49,7 @@ public final class PDTWebDateUtilsTest
     final String sNow = PDTWebDateUtils.getCurrentDateTimeAsStringRFC822 ();
     assertNotNull (PDTWebDateUtils.getDateTimeFromRFC822 (sNow));
     assertNotNull (PDTWebDateUtils.getAsStringRFC822 ((DateTime) null));
+    assertNotNull (PDTWebDateUtils.getAsStringRFC822 ((LocalDateTime) null));
   }
 
   private static void _testW3C (final DateTime aDT)

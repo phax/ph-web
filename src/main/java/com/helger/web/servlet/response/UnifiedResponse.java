@@ -34,7 +34,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -472,7 +472,7 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public UnifiedResponse setExpires (@Nonnull final DateTime aDT)
+  public UnifiedResponse setExpires (@Nonnull final LocalDateTime aDT)
   {
     m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES, aDT);
     return this;
@@ -486,7 +486,7 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public UnifiedResponse setLastModified (@Nonnull final DateTime aDT)
+  public UnifiedResponse setLastModified (@Nonnull final LocalDateTime aDT)
   {
     if (m_eHTTPMethod != EHTTPMethod.GET && m_eHTTPMethod != EHTTPMethod.HEAD)
       _warn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
@@ -575,7 +575,11 @@ public class UnifiedResponse
     // -> Strip all paths and replace all invalid characters
     final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilename));
     if (!sFilename.equals (sFilenameToUse))
-      _warn ("Content-Dispostion filename was internally modified from '" + sFilename + "' to '" + sFilenameToUse + "'");
+      _warn ("Content-Dispostion filename was internally modified from '" +
+             sFilename +
+             "' to '" +
+             sFilenameToUse +
+             "'");
 
     // Disabled because of the extended UTF-8 handling (RFC 5987)
     if (false)
@@ -739,8 +743,8 @@ public class UnifiedResponse
     {
       case HTTP_10:
       {
-        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES, PDTFactory.getCurrentDateTime ()
-                                                                           .plusSeconds (nSeconds));
+        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES,
+                                            PDTFactory.getCurrentDateTime ().plusSeconds (nSeconds));
         break;
       }
       case HTTP_11:
@@ -995,7 +999,9 @@ public class UnifiedResponse
   {
     setCustomResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
                              new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                 (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+                                                                    (bIncludeSubdomains ? ";" +
+                                                                                          CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                        : ""));
     return this;
   }
 
@@ -1102,7 +1108,8 @@ public class UnifiedResponse
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.<br/>
+   * Removes the response headers matching the passed name from the response.
+   * <br/>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
@@ -1507,7 +1514,9 @@ public class UnifiedResponse
     {
       final String sCharset = m_aCharset.name ();
       if (m_aMimeType == null)
-        _warn ("If no MimeType present, the client cannot get notified about the character encoding '" + sCharset + "'");
+        _warn ("If no MimeType present, the client cannot get notified about the character encoding '" +
+               sCharset +
+               "'");
 
       // Check with request charset
       final QValue aQuality = m_aAcceptCharsetList.getQValueOfCharset (sCharset);

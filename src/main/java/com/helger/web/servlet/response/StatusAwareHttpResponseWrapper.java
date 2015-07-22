@@ -24,6 +24,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.web.http.HTTPHeaderMap;
 
 /**
@@ -111,48 +113,49 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   }
 
   @Override
-  public void setDateHeader (final String sName, final long nMillis)
+  public void setDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
     super.setDateHeader (sName, nMillis);
     m_aHeaderMap.setDateHeader (sName, nMillis);
   }
 
   @Override
-  public void addDateHeader (final String sName, final long nMillis)
+  public void addDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
     super.addDateHeader (sName, nMillis);
     m_aHeaderMap.addDateHeader (sName, nMillis);
   }
 
   @Override
-  public void setHeader (final String sName, final String sValue)
+  public void setHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
   {
     super.setHeader (sName, sValue);
     m_aHeaderMap.setHeader (sName, sValue);
   }
 
   @Override
-  public void addHeader (final String sName, final String sValue)
+  public void addHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
   {
     super.addHeader (sName, sValue);
     m_aHeaderMap.addHeader (sName, sValue);
   }
 
   @Override
-  public void setIntHeader (final String sName, final int nValue)
+  public void setIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
   {
     super.setIntHeader (sName, nValue);
     m_aHeaderMap.setIntHeader (sName, nValue);
   }
 
   @Override
-  public void addIntHeader (final String sName, final int nValue)
+  public void addIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
   {
     super.addIntHeader (sName, nValue);
     m_aHeaderMap.addIntHeader (sName, nValue);
   }
 
   @Nonnull
+  @ReturnsMutableObject ("design")
   public HTTPHeaderMap getHeaderMap ()
   {
     return m_aHeaderMap;

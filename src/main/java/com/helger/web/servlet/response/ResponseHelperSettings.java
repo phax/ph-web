@@ -31,7 +31,7 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.state.EChange;
 import com.helger.datetime.PDTFactory;
-import com.helger.web.datetime.PDTWebDateUtils;
+import com.helger.web.datetime.PDTWebDateHelper;
 
 /**
  * Contains the settings for the {@link ResponseHelper} class.
@@ -50,7 +50,7 @@ public final class ResponseHelperSettings
                                                                                              0);
 
   /** The string representation of never expires date */
-  public static final String EXPIRES_NEVER_STRING = PDTWebDateUtils.getAsStringRFC822 (EXPIRES_NEVER_DATETIME);
+  public static final String EXPIRES_NEVER_STRING = PDTWebDateHelper.getAsStringRFC822 (EXPIRES_NEVER_DATETIME);
 
   /**
    * Expires in at least 2 days (which is the minimum to be accepted for real

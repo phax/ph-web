@@ -36,7 +36,7 @@ import com.helger.commons.xml.serialize.write.EXMLCharMode;
 import com.helger.commons.xml.serialize.write.XMLMaskHelper;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
-import com.helger.web.datetime.PDTWebDateUtils;
+import com.helger.web.datetime.PDTWebDateHelper;
 
 /**
  * Represents a single URL within an XML URL set.
@@ -181,7 +181,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     ret.appendElement (sNamespaceURI, ELEMENT_LOC).appendText (m_sLocation);
     if (m_aLastModification != null)
       ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD)
-         .appendText (PDTWebDateUtils.getAsStringXSD (m_aLastModification));
+         .appendText (PDTWebDateHelper.getAsStringXSD (m_aLastModification));
     if (m_eChangeFreq != null)
       ret.appendElement (sNamespaceURI, ELEMENT_CHANGEFREQ).appendText (m_eChangeFreq.getText ());
     if (m_sPriority != null)

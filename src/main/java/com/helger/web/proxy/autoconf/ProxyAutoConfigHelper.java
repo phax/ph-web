@@ -58,7 +58,7 @@ public final class ProxyAutoConfigHelper
       s_aGlobalScope.defineFunctionProperties (new String [] { "myIpAddress" },
                                                DNSResolver.class,
                                                ScriptableObject.DONTENUM);
-      RhinoUtils.readFile (s_aGlobalScope,
+      RhinoHelper.readFile (s_aGlobalScope,
                            aCtx,
                            new ClassPathResource ("proxy-js/pac-utils.js"),
                            "pac-utils",
@@ -99,9 +99,9 @@ public final class ProxyAutoConfigHelper
 
       // read the PAC file
       if (m_aPACRes != null)
-        RhinoUtils.readFile (m_aInstanceScope, aCtx, m_aPACRes, "PAC file", CCharset.CHARSET_ISO_8859_1);
+        RhinoHelper.readFile (m_aInstanceScope, aCtx, m_aPACRes, "PAC file", CCharset.CHARSET_ISO_8859_1);
       else
-        RhinoUtils.readString (m_aInstanceScope, aCtx, m_sPACCode);
+        RhinoHelper.readString (m_aInstanceScope, aCtx, m_sPACCode);
     }
     return m_aInstanceScope;
   }

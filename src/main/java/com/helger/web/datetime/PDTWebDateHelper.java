@@ -53,7 +53,7 @@ import com.helger.datetime.format.PDTFromString;
  * @author Philip Helger (major modification)
  */
 @Immutable
-public final class PDTWebDateUtils
+public final class PDTWebDateHelper
 {
   private static final String FORMAT_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
   private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -107,9 +107,9 @@ public final class PDTWebDateUtils
   private static final Locale LOCALE_TO_USE = Locale.US;
 
   @PresentForCodeCoverage
-  private static final PDTWebDateUtils s_aInstance = new PDTWebDateUtils ();
+  private static final PDTWebDateHelper s_aInstance = new PDTWebDateHelper ();
 
-  private PDTWebDateUtils ()
+  private PDTWebDateHelper ()
   {}
 
   /**

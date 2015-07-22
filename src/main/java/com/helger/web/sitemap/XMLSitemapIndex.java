@@ -45,7 +45,7 @@ import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.xml.serialize.write.IXMLWriterSettings;
-import com.helger.web.datetime.PDTWebDateUtils;
+import com.helger.web.datetime.PDTWebDateHelper;
 import com.helger.web.servlet.server.StaticServerInfo;
 
 /**
@@ -180,7 +180,7 @@ public final class XMLSitemapIndex implements Serializable
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
         eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
-                .appendText (PDTWebDateUtils.getAsStringXSD (aLastModification));
+                .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
       ++nIndex;
     }
     return ret;

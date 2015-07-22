@@ -34,14 +34,14 @@ import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.stream.StreamHelper;
 
 @Immutable
-public final class RhinoUtils
+public final class RhinoHelper
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RhinoUtils.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (RhinoHelper.class);
 
   @PresentForCodeCoverage
-  private static final RhinoUtils s_aInstance = new RhinoUtils ();
+  private static final RhinoHelper s_aInstance = new RhinoHelper ();
 
-  private RhinoUtils ()
+  private RhinoHelper ()
   {}
 
   public static void readFile (@Nonnull final Scriptable aScope,

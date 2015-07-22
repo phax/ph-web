@@ -43,7 +43,7 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.datetime.PDTFactory;
-import com.helger.web.datetime.PDTWebDateUtils;
+import com.helger.web.datetime.PDTWebDateHelper;
 
 /**
  * Abstracts HTTP header interface for external usage.
@@ -136,7 +136,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     ValueEnforcer.notNull (aDT, "DateTime");
 
     // This method internally converts the date to UTC
-    return PDTWebDateUtils.getAsStringRFC822 (aDT);
+    return PDTWebDateHelper.getAsStringRFC822 (aDT);
   }
 
   @Nonnull
@@ -145,7 +145,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
     ValueEnforcer.notNull (aLDT, "DateTime");
 
     // This method internally converts the date to UTC
-    return PDTWebDateUtils.getAsStringRFC822 (aLDT);
+    return PDTWebDateHelper.getAsStringRFC822 (aLDT);
   }
 
   /**

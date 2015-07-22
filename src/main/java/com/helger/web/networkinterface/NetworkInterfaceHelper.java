@@ -34,12 +34,12 @@ import com.helger.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
  * @author Philip Helger
  */
 @Immutable
-public final class NetworkInterfaceUtils
+public final class NetworkInterfaceHelper
 {
   @PresentForCodeCoverage
-  private static final NetworkInterfaceUtils s_aInstance = new NetworkInterfaceUtils ();
+  private static final NetworkInterfaceHelper s_aInstance = new NetworkInterfaceHelper ();
 
-  private NetworkInterfaceUtils ()
+  private NetworkInterfaceHelper ()
   {}
 
   /**

@@ -39,7 +39,7 @@ import com.helger.commons.compare.ComparatorComparable;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotation.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
-import com.helger.web.scopes.mgr.WebScopeManager;
+import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Helper class to debug information passed to a JSP page or a servlet.

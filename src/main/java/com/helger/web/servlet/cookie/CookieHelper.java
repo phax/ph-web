@@ -31,7 +31,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.string.StringHelper;
-import com.helger.web.scopes.mgr.WebScopeManager;
+import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Misc. helper methods on HTTP cookies.

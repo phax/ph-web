@@ -46,7 +46,7 @@ import com.helger.web.http.EHTTPVersion;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.port.CNetworkPort;
 import com.helger.web.port.DefaultNetworkPorts;
-import com.helger.web.scopes.mgr.WebScopeManager;
+import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.

@@ -101,9 +101,23 @@ public final class RequestLogger
       ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
       ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
       ret.put ("RequestURI", aHttpRequest.getRequestURI ());
-      ret.put ("RequestURI2", RequestHelper.getRequestURI (aHttpRequest));
+      try
+      {
+        ret.put ("RequestURI2", RequestHelper.getRequestURI (aHttpRequest));
+      }
+      catch (final IllegalStateException ex)
+      {
+        // No global web scope available
+      }
       ret.put ("RequestURL", aHttpRequest.getRequestURL ().toString ());
-      ret.put ("RequestURL2", RequestHelper.getRequestURL (aHttpRequest).toString ());
+      try
+      {
+        ret.put ("RequestURL2", RequestHelper.getRequestURL (aHttpRequest).toString ());
+      }
+      catch (final IllegalStateException ex)
+      {
+        // No global web scope available
+      }
       ret.put ("Scheme", aHttpRequest.getScheme ());
       ret.put ("ServerName", aHttpRequest.getServerName ());
       ret.put ("ServerPort", Integer.toString (aHttpRequest.getServerPort ()));

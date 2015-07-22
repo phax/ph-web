@@ -14,24 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.session;
+package com.helger.web.scope;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 
-import com.helger.web.scope.ISessionWebScope;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.scope.ApplicationScope;
 
 /**
- * Interface for session attributes that are notified during session activation.
+ * Represents a single application web scope. It has no additional features
+ * compared to the regular {@link ApplicationScope} but implements the specific
+ * {@link IApplicationWebScope} interface.
  * 
  * @author Philip Helger
  */
-public interface ISessionWebScopeActivationHandler
+@ThreadSafe
+public class ApplicationWebScope extends ApplicationScope implements IApplicationWebScope
 {
   /**
-   * Invoked after the session was activated.
+   * Create a new application web scope with the given ID.
    * 
-   * @param aSessionScope
-   *        The activated session scope. Never <code>null</code>.
+   * @param sScopeID
+   *        The scope ID to be used. May neither be <code>null</code> nor empty.
    */
-  void onSessionDidActivate (@Nonnull ISessionWebScope aSessionScope);
+  public ApplicationWebScope (@Nonnull @Nonempty final String sScopeID)
+  {
+    super (sScopeID);
+  }
 }

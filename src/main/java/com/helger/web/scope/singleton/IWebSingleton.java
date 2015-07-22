@@ -14,24 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.session;
-
-import javax.annotation.Nonnull;
-
-import com.helger.web.scope.ISessionWebScope;
+package com.helger.web.scope.singleton;
 
 /**
- * Interface for session attributes that are notified during session activation.
- * 
+ * Marker interface for web singletons to easily differentiate them from non-web
+ * singletons.
+ *
  * @author Philip Helger
  */
-public interface ISessionWebScopeActivationHandler
+public interface IWebSingleton
 {
-  /**
-   * Invoked after the session was activated.
-   * 
-   * @param aSessionScope
-   *        The activated session scope. Never <code>null</code>.
-   */
-  void onSessionDidActivate (@Nonnull ISessionWebScope aSessionScope);
+  /* empty */
 }

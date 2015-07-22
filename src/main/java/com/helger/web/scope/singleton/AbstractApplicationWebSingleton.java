@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.scope.singleton.AbstractSingleton;
-import com.helger.web.scope.domain.IApplicationWebScope;
+import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -34,7 +34,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @see com.helger.web.scope.mgr.EWebScope#APPLICATION
  * @author Philip Helger
  */
-public abstract class AbstractApplicationWebSingleton extends AbstractSingleton
+public abstract class AbstractApplicationWebSingleton extends AbstractSingleton implements IWebSingleton
 {
   protected AbstractApplicationWebSingleton ()
   {}

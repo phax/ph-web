@@ -34,8 +34,8 @@ import com.helger.commons.scope.IScopeRenewalAware;
 import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
 import com.helger.commons.state.EChange;
-import com.helger.web.scope.domain.ISessionApplicationWebScope;
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.ISessionApplicationWebScope;
+import com.helger.web.scope.ISessionWebScope;
 
 /**
  * Some utility methods to handle complex actions in session scopes.

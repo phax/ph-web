@@ -64,6 +64,8 @@ public final class SessionHelper
     {
       try
       {
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Invalidating session " + aSession.getId ());
         aSession.invalidate ();
         return EChange.CHANGED;
       }
@@ -117,7 +119,8 @@ public final class SessionHelper
     {
       try
       {
-        s_aLogger.info ("Invalidating session " + aSession.getId ());
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Invalidating session " + aSession.getId () + " for renewal");
         aSession.invalidate ();
       }
       catch (final IllegalStateException ex)

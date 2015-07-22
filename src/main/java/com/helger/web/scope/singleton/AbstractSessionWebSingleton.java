@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.scope.singleton.AbstractSingleton;
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -38,7 +38,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
-public abstract class AbstractSessionWebSingleton extends AbstractSingleton implements Serializable
+public abstract class AbstractSessionWebSingleton extends AbstractSingleton implements IWebSingleton, Serializable
 {
   protected AbstractSessionWebSingleton ()
   {}

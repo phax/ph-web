@@ -43,12 +43,11 @@ import com.helger.commons.scope.IRequestScope;
 import com.helger.commons.scope.ISessionScope;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
-import com.helger.web.scope.MetaWebScopeFactory;
-import com.helger.web.scope.domain.IApplicationWebScope;
-import com.helger.web.scope.domain.IGlobalWebScope;
-import com.helger.web.scope.domain.IRequestWebScope;
-import com.helger.web.scope.domain.ISessionApplicationWebScope;
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.IApplicationWebScope;
+import com.helger.web.scope.IGlobalWebScope;
+import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.ISessionApplicationWebScope;
+import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.session.SessionWebScopeActivator;
 
 /**

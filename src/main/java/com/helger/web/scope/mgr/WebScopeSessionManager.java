@@ -32,7 +32,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.scope.ISessionScope;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.ISessionWebScope;
 
 /**
  * This is a specialization of {@link ScopeSessionManager} for web scopes.

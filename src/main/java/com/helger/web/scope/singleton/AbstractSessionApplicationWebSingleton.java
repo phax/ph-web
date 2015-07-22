@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.scope.singleton.AbstractSingleton;
-import com.helger.web.scope.domain.ISessionApplicationWebScope;
+import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -36,7 +36,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @see com.helger.web.scope.mgr.EWebScope#SESSION_APPLICATION
  * @author Philip Helger
  */
-public abstract class AbstractSessionApplicationWebSingleton extends AbstractSingleton implements Serializable
+public abstract class AbstractSessionApplicationWebSingleton extends AbstractSingleton implements IWebSingleton, Serializable
 {
   protected AbstractSessionApplicationWebSingleton ()
   {}

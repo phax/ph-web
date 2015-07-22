@@ -36,7 +36,7 @@ import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.commons.scope.ScopeHelper;
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**

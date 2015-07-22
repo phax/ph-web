@@ -28,7 +28,7 @@ import com.helger.web.http.EHTTPMethod;
 import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
-import com.helger.web.scope.servlet.WebScopeListener;
+import com.helger.web.servlets.scope.WebScopeListener;
 
 /**
  * Contains static initialization methods for web scope tests, that makes it a

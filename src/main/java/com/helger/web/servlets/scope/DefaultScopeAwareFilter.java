@@ -14,24 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.session;
+package com.helger.web.servlets.scope;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import com.helger.web.scope.ISessionWebScope;
+import com.helger.commons.state.EContinue;
+import com.helger.web.scope.IRequestWebScope;
 
 /**
- * Interface for session attributes that are notified during session activation.
+ * A simple Servlet filter that surrounds each and every call with the necessary
+ * scope begin and end calls.
  * 
  * @author Philip Helger
  */
-public interface ISessionWebScopeActivationHandler
+public class DefaultScopeAwareFilter extends AbstractScopeAwareFilter
 {
-  /**
-   * Invoked after the session was activated.
-   * 
-   * @param aSessionScope
-   *        The activated session scope. Never <code>null</code>.
-   */
-  void onSessionDidActivate (@Nonnull ISessionWebScope aSessionScope);
+  @Override
+  @Nonnull
+  protected EContinue doFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                                @Nonnull final HttpServletResponse aHttpResponse,
+                                @Nonnull final IRequestWebScope aRequestScope)
+  {
+    // No filtering
+    return EContinue.CONTINUE;
+  }
 }

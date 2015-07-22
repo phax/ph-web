@@ -18,7 +18,7 @@ package com.helger.web.scope.session;
 
 import javax.annotation.Nonnull;
 
-import com.helger.web.scope.domain.ISessionWebScope;
+import com.helger.web.scope.ISessionWebScope;
 
 /**
  * Interface for session attributes that are notified during session

@@ -14,24 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.session;
+package com.helger.web.sitemap;
 
 import javax.annotation.Nonnull;
 
-import com.helger.web.scope.ISessionWebScope;
+import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.web.sitemap.IXMLSitemapProviderSPI;
+import com.helger.web.sitemap.XMLSitemapURLSet;
 
-/**
- * Interface for session attributes that are notified during session activation.
- * 
- * @author Philip Helger
- */
-public interface ISessionWebScopeActivationHandler
+@IsSPIImplementation
+public final class MockXMLSitemapProviderEmptySPI implements IXMLSitemapProviderSPI
 {
-  /**
-   * Invoked after the session was activated.
-   * 
-   * @param aSessionScope
-   *        The activated session scope. Never <code>null</code>.
-   */
-  void onSessionDidActivate (@Nonnull ISessionWebScope aSessionScope);
+  @Nonnull
+  public XMLSitemapURLSet createURLSet ()
+  {
+    // Empty URL set
+    return new XMLSitemapURLSet ();
+  }
 }

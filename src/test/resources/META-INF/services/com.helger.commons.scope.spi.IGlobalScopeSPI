@@ -1,2 +1,2 @@
-com.helger.web.scopes.spi.MockGlobalWebScopeSPI
-com.helger.web.scopes.spi.MockThrowingGlobalWebScopeSPI
+com.helger.web.scope.spi.MockGlobalWebScopeSPI
+com.helger.web.scope.spi.MockThrowingGlobalWebScopeSPI

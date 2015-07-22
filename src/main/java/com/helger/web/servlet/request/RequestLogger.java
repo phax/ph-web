@@ -35,7 +35,6 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.cache.AnnotationUsageCache;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.compare.ComparatorComparable;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotation.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
@@ -79,7 +78,14 @@ public final class RequestLogger
       ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
       ret.put ("ContentType", aHttpRequest.getContentType ());
       ret.put ("ContextPath", aHttpRequest.getContextPath ());
-      ret.put ("ContextPath2", WebScopeManager.getGlobalScope ().getContextPath ());
+      try
+      {
+        ret.put ("ContextPath2", WebScopeManager.getGlobalScope ().getContextPath ());
+      }
+      catch (final IllegalStateException ex)
+      {
+        // No global web scope available
+      }
       ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
       ret.put ("LocalName", aHttpRequest.getLocalName ());
       ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
@@ -193,9 +199,7 @@ public final class RequestLogger
   public static Map <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final Map <String, String> ret = new LinkedHashMap <String, String> ();
-    // FIXME ph-commons replace with ComparatorString
-    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap (),
-                                                                                       new ComparatorComparable <String> ())
+    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
                                                                       .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
     return ret;

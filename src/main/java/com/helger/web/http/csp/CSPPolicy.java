@@ -16,6 +16,7 @@
  */
 package com.helger.web.http.csp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 6.0.3
  */
-public class CSPPolicy implements IHasStringRepresentation
+public class CSPPolicy implements IHasStringRepresentation, Serializable
 {
   private final List <CSPDirective> m_aList = new ArrayList <CSPDirective> ();
 

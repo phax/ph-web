@@ -75,6 +75,7 @@ public final class AcceptCharsetHandler
   @Nonnull
   public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    // Check if a value is cached in the HTTP request
     AcceptCharsetList aValue = (AcceptCharsetList) aHttpRequest.getAttribute (AcceptCharsetList.class.getName ());
     if (aValue == null)
     {

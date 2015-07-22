@@ -197,7 +197,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *        created, should the item size exceed the threshold.
    *        <code>null</code> means default temp directory.
    */
-  public DiskFileItem (final String sFieldName,
+  public DiskFileItem (@Nullable final String sFieldName,
                        @Nullable final String sContentType,
                        final boolean bIsFormField,
                        @Nullable final String sFilename,
@@ -362,7 +362,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nullable
   public String getName () throws InvalidFileNameException
   {
-    return Streams.checkFileName (m_sFilename);
+    return FileUploadHelper.checkFileName (m_sFilename);
   }
 
   @Nullable

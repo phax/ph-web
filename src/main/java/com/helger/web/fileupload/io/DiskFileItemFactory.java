@@ -141,7 +141,7 @@ public class DiskFileItemFactory implements IFileItemFactory
    * @return The newly created file item.
    */
   @Nonnull
-  public DiskFileItem createItem (final String sFieldName,
+  public DiskFileItem createItem (@Nullable final String sFieldName,
                                   @Nullable final String sContentType,
                                   final boolean bIsFormField,
                                   @Nullable final String sFileName)

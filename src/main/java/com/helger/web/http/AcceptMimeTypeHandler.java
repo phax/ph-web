@@ -103,6 +103,7 @@ public final class AcceptMimeTypeHandler
   @Nonnull
   public static AcceptMimeTypeList getAcceptMimeTypes (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    // Check if a value is cached in the HTTP request
     AcceptMimeTypeList aValue = (AcceptMimeTypeList) aHttpRequest.getAttribute (AcceptMimeTypeList.class.getName ());
     if (aValue == null)
     {

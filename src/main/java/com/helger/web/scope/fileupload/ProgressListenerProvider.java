@@ -26,11 +26,11 @@ import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IProgressListener;
-import com.helger.web.fileupload.IProgressListenerProvider;
+import com.helger.web.fileupload.IProgressListenerProviderSPI;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**
- * SPI handler for {@link IProgressListenerProvider} implementations
+ * SPI handler for {@link IProgressListenerProviderSPI} implementations
  *
  * @author Philip Helger
  */
@@ -38,15 +38,15 @@ public final class ProgressListenerProvider extends AbstractGlobalWebSingleton
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);
 
-  private final IProgressListenerProvider m_aProgressListenerProvider;
+  private final IProgressListenerProviderSPI m_aProgressListenerProvider;
 
   @Deprecated
   @UsedViaReflection
   public ProgressListenerProvider ()
   {
-    m_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProvider.class);
+    m_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
     if (m_aProgressListenerProvider != null)
-      s_aLogger.info ("Using progress listener provider: " + m_aProgressListenerProvider.getClass ().getName ());
+      s_aLogger.info ("Using progress listener provider " + m_aProgressListenerProvider);
   }
 
   @Nonnull

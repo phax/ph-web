@@ -16,6 +16,9 @@
  */
 package com.helger.web.fileupload;
 
+import javax.annotation.CheckForSigned;
+import javax.annotation.Nonnegative;
+
 /**
  * The {@link IProgressListener} may be used to display a progress bar or do
  * stuff like that.
@@ -24,9 +27,10 @@ public interface IProgressListener
 {
   /**
    * Updates the listeners status information.
-   * 
+   *
    * @param nBytesRead
-   *        The total number of bytes, which have been read so far.
+   *        The total number of bytes, which have been read so far. Always &ge;
+   *        0.
    * @param nContentLength
    *        The total number of bytes, which are being read. May be -1, if this
    *        number is unknown.
@@ -34,5 +38,5 @@ public interface IProgressListener
    *        The number of the field, which is currently being read. (0 = no item
    *        so far, 1 = first item is being read, ...)
    */
-  void update (long nBytesRead, long nContentLength, int nItems);
+  void update (@Nonnegative long nBytesRead, @CheckForSigned long nContentLength, @Nonnegative int nItems);
 }

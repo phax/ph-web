@@ -19,6 +19,10 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.CheckForSigned;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * <p>
  * Abstracts access to the request information needed for file uploads. This
@@ -37,6 +41,7 @@ public interface IRequestContext
    *
    * @return The character encoding for the request.
    */
+  @Nullable
   String getCharacterEncoding ();
 
   /**
@@ -44,6 +49,7 @@ public interface IRequestContext
    *
    * @return The content type of the request.
    */
+  @Nullable
   String getContentType ();
 
   /**
@@ -52,6 +58,7 @@ public interface IRequestContext
    * @return The content length of the request. My be -1 to indicate an unknown
    *         content length.
    */
+  @CheckForSigned
   long getContentLength ();
 
   /**
@@ -61,5 +68,6 @@ public interface IRequestContext
    * @throws IOException
    *         if a problem occurs.
    */
+  @Nonnull
   InputStream getInputStream () throws IOException;
 }

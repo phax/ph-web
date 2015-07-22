@@ -16,6 +16,7 @@
  */
 package com.helger.web.http.csp;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ import com.helger.commons.url.ISimpleURL;
  * @author Philip Helger
  * @since 6.0.3
  */
-public class CSPSourceList implements IHasStringRepresentation
+public class CSPSourceList implements IHasStringRepresentation, Serializable
 {
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";

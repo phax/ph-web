@@ -16,13 +16,11 @@
  */
 package com.helger.web.scope.impl;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,10 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
-import com.helger.commons.annotation.IsSPIImplementation;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
@@ -41,19 +36,15 @@ import com.helger.commons.collection.multimap.IMultiMapListBased;
 import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
-import com.helger.commons.scope.IScope;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemFactoryProviderSPI;
 import com.helger.web.fileupload.IProgressListener;
 import com.helger.web.fileupload.exception.FileUploadException;
-import com.helger.web.fileupload.io.DiskFileItem;
-import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.scope.fileupload.GlobalDiskFileItemFactory;
 import com.helger.web.scope.fileupload.ProgressListenerProvider;
-import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**
  * The default request web scope that also tries to parse multi part requests.
@@ -63,74 +54,25 @@ import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 public class RequestWebScope extends RequestWebScopeNoMultipart
 {
   /**
-   * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning
-   * up, when the servlet context is destroyed.
-   *
-   * @author Philip Helger
-   */
-  @IsSPIImplementation
-  public static final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton implements IFileItemFactory
-  {
-    private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
-
-    @UsedViaReflection
-    @Deprecated
-    public GlobalDiskFileItemFactory ()
-    {}
-
-    @Nonnull
-    public static GlobalDiskFileItemFactory getInstance ()
-    {
-      return getGlobalSingleton (GlobalDiskFileItemFactory.class);
-    }
-
-    @Override
-    protected void onDestroy (@Nonnull final IScope aScopeInDestruction)
-    {
-      m_aFactory.deleteAllTemporaryFiles ();
-    }
-
-    public void setRepository (@Nullable final File aRepository)
-    {
-      m_aFactory.setRepository (aRepository);
-    }
-
-    @Nonnull
-    public DiskFileItem createItem (final String sFieldName,
-                                    final String sContentType,
-                                    final boolean bIsFormField,
-                                    final String sFileName)
-    {
-      return m_aFactory.createItem (sFieldName, sContentType, bIsFormField, sFileName);
-    }
-
-    @Nonnull
-    @ReturnsMutableCopy
-    public List <File> getAllTemporaryFiles ()
-    {
-      return m_aFactory.getAllTemporaryFiles ();
-    }
-
-    @Override
-    public String toString ()
-    {
-      return ToStringGenerator.getDerived (super.toString ()).append ("factory", m_aFactory).toString ();
-    }
-  }
-
-  /**
    * The maximum size of a single file (in bytes) that will be handled. May not
    * be larger than 2 GB as browsers cannot handle more than 2GB. See e.g.
    * http://www.motobit.com/help/ScptUtl/pa33.htm or
-   * https://bugzilla.mozilla.org/show_bug.cgi?id=215450 Extensive analysis: <a
-   * href=
+   * https://bugzilla.mozilla.org/show_bug.cgi?id=215450 Extensive analysis:
+   * <a href=
    * "http://tomcat.10.n6.nabble.com/Problems-uploading-huge-files-gt-2GB-to-Tomcat-app-td4730850.html"
    * >here</a>
    */
   public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
-  private static final IFileItemFactoryProviderSPI s_aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
+  private static final IFileItemFactoryProviderSPI s_aFIFP;
+
+  static
+  {
+    s_aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
+    if (s_aFIFP != null)
+      s_aLogger.info ("Using custom IFileItemFactoryProviderSPI " + s_aFIFP);
+  }
 
   public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
                           @Nonnull final HttpServletResponse aHttpResponse)
@@ -150,10 +92,12 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
   }
 
   @Nonnull
-  private IFileItemFactory _getFactory ()
+  private static IFileItemFactory _getFileItemFactory ()
   {
     if (s_aFIFP != null)
-      return s_aFIFP.getCustomFactory ();
+      return s_aFIFP.getFileItemFactory ();
+
+    // Default to the global one
     return GlobalDiskFileItemFactory.getInstance ();
   }
 
@@ -169,12 +113,12 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
       try
       {
         // Setup the ServletFileUpload....
-        final ServletFileUpload aUpload = new ServletFileUpload (_getFactory ());
+        final ServletFileUpload aUpload = new ServletFileUpload (_getFileItemFactory ());
         aUpload.setSizeMax (MAX_REQUEST_SIZE);
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
-        final IProgressListener aListener = ProgressListenerProvider.getInstance ().getProgressListener ();
-        if (aListener != null)
-          aUpload.setProgressListener (aListener);
+        final IProgressListener aProgressListener = ProgressListenerProvider.getInstance ().getProgressListener ();
+        if (aProgressListener != null)
+          aUpload.setProgressListener (aProgressListener);
 
         try
         {
@@ -204,10 +148,10 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         // set all form fields
         for (final Map.Entry <String, List <String>> aEntry : aFormFields.entrySet ())
         {
-          // Convert list of String to value (String or array of String)
+          // Convert list of String to value (String or String[])
           final List <String> aValues = aEntry.getValue ();
           final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
-                                                    : ArrayHelper.newArray (aValues, String.class);
+                                                     : ArrayHelper.newArray (aValues, String.class);
           setAttribute (aEntry.getKey (), aValue);
         }
 
@@ -215,10 +159,10 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         // name)
         for (final Map.Entry <String, List <IFileItem>> aEntry : aFormFiles.entrySet ())
         {
-          // Convert list of String to value (String or array of String)
+          // Convert list of String to value (IFileItem or IFileItem[])
           final List <IFileItem> aValues = aEntry.getValue ();
           final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
-                                                    : ArrayHelper.newArray (aValues, IFileItem.class);
+                                                     : ArrayHelper.newArray (aValues, IFileItem.class);
           setAttribute (aEntry.getKey (), aValue);
         }
 

@@ -26,7 +26,7 @@ import com.helger.commons.annotation.IsSPIInterface;
  * @author Philip Helger
  */
 @IsSPIInterface
-public interface IProgressListenerProvider
+public interface IProgressListenerProviderSPI
 {
   /**
    * @return A progress listener instance for handling file uploads

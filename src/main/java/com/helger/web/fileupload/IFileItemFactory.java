@@ -22,13 +22,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
+
 /**
  * <p>
  * A factory interface for creating {@link IFileItem} instances. Factories can
  * provide their own custom configuration, over and above that provided by the
  * default file upload implementation.
  * </p>
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItemFactory.java 479262 2006-11-26 03:09:24Z niallp $
  */
@@ -36,7 +38,7 @@ public interface IFileItemFactory
 {
   /**
    * Define where to store files
-   * 
+   *
    * @param aRepository
    *        The directory to use. May be <code>null</code>.
    */
@@ -45,7 +47,7 @@ public interface IFileItemFactory
   /**
    * Create a new {@link IFileItem} instance from the supplied parameters and
    * any local factory configuration.
-   * 
+   *
    * @param sFieldName
    *        The name of the form field.
    * @param sContentType
@@ -59,8 +61,12 @@ public interface IFileItemFactory
    * @return The newly created file item.
    */
   @Nonnull
-  IFileItem createItem (String sFieldName, String sContentType, boolean bIsFormField, String sFileName);
+  IFileItem createItem (@Nullable String sFieldName,
+                        @Nullable String sContentType,
+                        boolean bIsFormField,
+                        @Nullable String sFileName);
 
   @Nonnull
+  @ReturnsMutableCopy
   List <File> getAllTemporaryFiles ();
 }

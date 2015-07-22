@@ -152,7 +152,7 @@ public final class MultipartStream
   /**
    * The input stream from which data is read.
    */
-  private final InputStream m_aInput;
+  private final InputStream m_aIS;
 
   /**
    * The length of the boundary token plus the leading <code>CRLF--</code>.
@@ -228,7 +228,7 @@ public final class MultipartStream
                    final int nBufSize,
                    final MultipartProgressNotifier aNotifier)
   {
-    m_aInput = aIS;
+    m_aIS = aIS;
     m_nBufSize = nBufSize;
     m_aBuffer = new byte [nBufSize];
     m_aNotifier = aNotifier;
@@ -304,7 +304,7 @@ public final class MultipartStream
     {
       m_nHead = 0;
       // Refill.
-      m_nTail = m_aInput.read (m_aBuffer, m_nHead, m_nBufSize);
+      m_nTail = m_aIS.read (m_aBuffer, m_nHead, m_nBufSize);
       if (m_nTail == -1)
       {
         // No more data available.
@@ -443,7 +443,7 @@ public final class MultipartStream
       }
 
       final Charset aCharsetToUse = m_sHeaderEncoding != null ? CharsetManager.getCharsetFromName (m_sHeaderEncoding)
-                                                             : SystemHelper.getSystemCharset ();
+                                                              : SystemHelper.getSystemCharset ();
       return aBAOS.getAsString (aCharsetToUse);
     }
     finally
@@ -772,7 +772,7 @@ public final class MultipartStream
     }
 
     /**
-     * Closes the input stream.
+     * Closes the input stream but NOT the underlying InputStream.
      *
      * @throws IOException
      *         An I/O error occurred.
@@ -786,34 +786,34 @@ public final class MultipartStream
     /**
      * Closes the input stream.
      *
-     * @param pCloseUnderlying
+     * @param bCloseUnderlying
      *        Whether to close the underlying stream (hard close)
      * @throws IOException
      *         An I/O error occurred.
      */
     @SuppressFBWarnings ("SR_NOT_CHECKED")
-    public void close (final boolean pCloseUnderlying) throws IOException
+    public void close (final boolean bCloseUnderlying) throws IOException
     {
       if (m_bClosed)
         return;
 
-      if (pCloseUnderlying)
+      if (bCloseUnderlying)
       {
         m_bClosed = true;
-        m_aInput.close ();
+        m_aIS.close ();
       }
       else
       {
         while (true)
         {
-          int av = available ();
-          if (av == 0)
+          int nAvail = available ();
+          if (nAvail == 0)
           {
-            av = _makeAvailable ();
-            if (av == 0)
+            nAvail = _makeAvailable ();
+            if (nAvail == 0)
               break;
           }
-          skip (av);
+          skip (nAvail);
         }
       }
       m_bClosed = true;
@@ -868,7 +868,7 @@ public final class MultipartStream
 
       while (true)
       {
-        final int nBytesRead = m_aInput.read (m_aBuffer, m_nTail, m_nBufSize - m_nTail);
+        final int nBytesRead = m_aIS.read (m_aBuffer, m_nTail, m_nBufSize - m_nTail);
         if (nBytesRead == -1)
         {
           // The last pad amount is left in the buffer.

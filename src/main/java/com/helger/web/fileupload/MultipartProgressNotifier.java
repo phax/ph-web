@@ -16,6 +16,7 @@
  */
 package com.helger.web.fileupload;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
@@ -55,10 +56,10 @@ public final class MultipartProgressNotifier
    * @param nContentLength
    *        The expected content length.
    */
-  MultipartProgressNotifier (@Nullable final IProgressListener aListener, final long nContentLength)
+  MultipartProgressNotifier (@Nullable final IProgressListener aListener, @CheckForSigned final long nContentLength)
   {
     if (aListener != null && s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("setting listener " + aListener.getClass ().getName ());
+      s_aLogger.debug ("setting progress listener " + aListener);
     m_aListener = aListener;
     m_nContentLength = nContentLength;
   }
@@ -92,7 +93,7 @@ public final class MultipartProgressNotifier
   /**
    * Called to indicate, that a new file item has been detected.
    */
-  void noteItem ()
+  void onNextFileItem ()
   {
     ++m_nItems;
     _notifyListener ();

@@ -26,13 +26,9 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  * Utility class for working with streams.
  */
 @Immutable
-public final class Streams
+public final class FileUploadHelper
 {
-  /**
-   * Private constructor, to prevent instantiation. This class has only static
-   * methods.
-   */
-  private Streams ()
+  private FileUploadHelper ()
   {}
 
   /**
@@ -52,8 +48,8 @@ public final class Streams
   {
     if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {
-      throw new InvalidFileNameException (sFilename, "Invalid filename: " +
-                                                     StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
+      throw new InvalidFileNameException (sFilename,
+                                          "Invalid filename: " + StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
     }
     return sFilename;
   }

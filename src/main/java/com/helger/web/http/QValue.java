@@ -35,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public final class QValue implements Comparable <QValue>, Serializable
+public class QValue implements Comparable <QValue>, Serializable
 {
   /** Minimum quality value */
   public static final double MIN_QUALITY = 0;

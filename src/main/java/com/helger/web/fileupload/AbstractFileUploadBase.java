@@ -771,7 +771,7 @@ public abstract class AbstractFileUploadBase
                                                  _getContentLength (aFileItemHeaders),
                                                  m_aMulti,
                                                  m_nFileSizeMax);
-            m_aNotifier.noteItem ();
+            m_aNotifier.onNextFileItem ();
             m_bItemValid = true;
             return true;
           }
@@ -788,7 +788,7 @@ public abstract class AbstractFileUploadBase
                                                  _getContentLength (aFileItemHeaders),
                                                  m_aMulti,
                                                  m_nFileSizeMax);
-            m_aNotifier.noteItem ();
+            m_aNotifier.onNextFileItem ();
             m_bItemValid = true;
             return true;
           }

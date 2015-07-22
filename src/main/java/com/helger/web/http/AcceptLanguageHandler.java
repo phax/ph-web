@@ -72,6 +72,7 @@ public final class AcceptLanguageHandler
   @Nonnull
   public static AcceptLanguageList getAcceptLanguages (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    // Check if a value is cached in the HTTP request
     AcceptLanguageList aValue = (AcceptLanguageList) aHttpRequest.getAttribute (AcceptLanguageList.class.getName ());
     if (aValue == null)
     {

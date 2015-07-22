@@ -18,14 +18,16 @@ package com.helger.web.fileupload;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.junit.Test;
 
+import com.helger.commons.charset.CCharset;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+
 /**
  * Unit tests {@link MultipartStream}.
- * 
+ *
  * @author Sean C. Sullivan
  */
 public final class MultipartStreamTest
@@ -35,27 +37,27 @@ public final class MultipartStreamTest
   @Test
   public void testThreeParamConstructor () throws Exception
   {
-    final String strData = "foobar";
-    final byte [] contents = strData.getBytes ();
-    final InputStream input = new ByteArrayInputStream (contents);
-    final byte [] boundary = BOUNDARY_TEXT.getBytes ();
-    final int iBufSize = boundary.length;
-    final MultipartStream ms = new MultipartStream (input,
-                                                    boundary,
-                                                    iBufSize,
-                                                    new MultipartProgressNotifier (null, contents.length));
+    final String sStrData = "foobar";
+    final byte [] aContents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes ();
+    final int nBufSize = aBoundary.length;
+    final MultipartStream ms = new MultipartStream (aIS,
+                                                    aBoundary,
+                                                    nBufSize,
+                                                    new MultipartProgressNotifier (null, aContents.length));
     assertNotNull (ms);
   }
 
   @Test
   public void testTwoParamConstructor () throws Exception
   {
-    final String strData = "foobar";
-    final byte [] contents = strData.getBytes ();
-    final InputStream input = new ByteArrayInputStream (contents);
-    final byte [] boundary = BOUNDARY_TEXT.getBytes ();
-    final MultipartStream ms = new MultipartStream (input,
-                                                    boundary,
+    final String sStrData = "foobar";
+    final byte [] contents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final InputStream aIS = new NonBlockingByteArrayInputStream (contents);
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes ();
+    final MultipartStream ms = new MultipartStream (aIS,
+                                                    aBoundary,
                                                     new MultipartProgressNotifier (null, contents.length));
     assertNotNull (ms);
   }

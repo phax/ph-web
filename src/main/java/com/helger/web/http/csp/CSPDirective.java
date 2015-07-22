@@ -16,6 +16,8 @@
  */
 package com.helger.web.http.csp;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 6.0.3
  */
-public final class CSPDirective implements IHasName, IHasStringRepresentation
+public class CSPDirective implements IHasName, IHasStringRepresentation, Serializable
 {
   private final String m_sName;
   private final String m_sValue;

@@ -65,9 +65,9 @@ public final class PDTWebDateHelper
    * then it fails with exception
    */
   private static final String [] RFC822_MASKS = { "EEE, dd MMM yy HH:mm:ss",
-                                                 "EEE, dd MMM yy HH:mm",
-                                                 "dd MMM yy HH:mm:ss",
-                                                 "dd MMM yy HH:mm" };
+                                                  "EEE, dd MMM yy HH:mm",
+                                                  "dd MMM yy HH:mm:ss",
+                                                  "dd MMM yy HH:mm" };
 
   /*
    * order is like this because the SimpleDateFormat.parse does not fail with
@@ -76,33 +76,33 @@ public final class PDTWebDateHelper
    * then it fails with exception
    */
   private static final String [] W3CDATETIME_MASKS = { "yyyy-MM-dd'T'HH:mm:ss.SSS",
-                                                      "yyyy-MM-dd't'HH:mm:ss.SSS",
-                                                      "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                                                      "yyyy-MM-dd't'HH:mm:ss.SSS'z'",
-                                                      "yyyy-MM-dd'T'HH:mm:ss",
-                                                      "yyyy-MM-dd't'HH:mm:ss",
-                                                      "yyyy-MM-dd'T'HH:mm:ss",
-                                                      "yyyy-MM-dd't'HH:mm:ss",
-                                                      FORMAT_W3C,
-                                                      "yyyy-MM-dd't'HH:mm:ss'z'",
-                                                      "yyyy-MM-dd'T'HH:mm",
-                                                      /*
-                                                       * Applies to the
-                                                       * following 2: together
-                                                       * with logic in the
-                                                       * parseW3CDateTime they
-                                                       * handle W3C dates
-                                                       * without time forcing
-                                                       * them to be GMT
-                                                       */
-                                                      "yyyy-MM'T'HH:mm",
-                                                      "yyyy'T'HH:mm",
-                                                      "yyyy-MM-dd't'HH:mm",
-                                                      "yyyy-MM-dd'T'HH:mm'Z'",
-                                                      "yyyy-MM-dd't'HH:mm'z'",
-                                                      "yyyy-MM-dd",
-                                                      "yyyy-MM",
-                                                      "yyyy" };
+                                                       "yyyy-MM-dd't'HH:mm:ss.SSS",
+                                                       "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                                                       "yyyy-MM-dd't'HH:mm:ss.SSS'z'",
+                                                       "yyyy-MM-dd'T'HH:mm:ss",
+                                                       "yyyy-MM-dd't'HH:mm:ss",
+                                                       "yyyy-MM-dd'T'HH:mm:ss",
+                                                       "yyyy-MM-dd't'HH:mm:ss",
+                                                       FORMAT_W3C,
+                                                       "yyyy-MM-dd't'HH:mm:ss'z'",
+                                                       "yyyy-MM-dd'T'HH:mm",
+                                                       /*
+                                                        * Applies to the
+                                                        * following 2: together
+                                                        * with logic in the
+                                                        * parseW3CDateTime they
+                                                        * handle W3C dates
+                                                        * without time forcing
+                                                        * them to be GMT
+                                                        */
+                                                       "yyyy-MM'T'HH:mm",
+                                                       "yyyy'T'HH:mm",
+                                                       "yyyy-MM-dd't'HH:mm",
+                                                       "yyyy-MM-dd'T'HH:mm'Z'",
+                                                       "yyyy-MM-dd't'HH:mm'z'",
+                                                       "yyyy-MM-dd",
+                                                       "yyyy-MM",
+                                                       "yyyy" };
 
   private static final Locale LOCALE_TO_USE = Locale.US;
 
@@ -376,6 +376,9 @@ public final class PDTWebDateHelper
   @Nonnull
   public static String getAsStringRFC822 (@Nullable final DateTime aDateTime)
   {
+    if (aDateTime == null)
+      return getCurrentDateTimeAsStringRFC822 ();
+
     return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE)
                        .withZone (PDTConfig.getDateTimeZoneUTC ())
                        .print (aDateTime);
@@ -392,6 +395,9 @@ public final class PDTWebDateHelper
   @Nonnull
   public static String getAsStringRFC822 (@Nullable final LocalDateTime aDateTime)
   {
+    if (aDateTime == null)
+      return getCurrentDateTimeAsStringRFC822 ();
+
     return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE)
                        .withZone (PDTConfig.getDateTimeZoneUTC ())
                        .print (aDateTime);
@@ -426,7 +432,8 @@ public final class PDTWebDateHelper
   @Nonnull
   public static String getAsStringW3C (@Nullable final LocalDateTime aDateTime)
   {
-    return getAsStringW3C (aDateTime == null ? (DateTime) null : aDateTime.toDateTime (PDTConfig.getDateTimeZoneUTC ()));
+    return getAsStringW3C (aDateTime == null ? (DateTime) null
+                                             : aDateTime.toDateTime (PDTConfig.getDateTimeZoneUTC ()));
   }
 
   /**
@@ -438,7 +445,7 @@ public final class PDTWebDateHelper
     // Important to use date time zone GMT as this is what the standard
     // printer emits!
     // Use no milli seconds as the standard printer does not print them!
-    final DateTime aNow = PDTFactory.getCurrentDateTime ().withZone (DateTimeZone.forID ("GMT")).withMillisOfSecond (0);
+    final DateTime aNow = PDTFactory.getCurrentDateTime ().withZone (DateTimeZone.UTC).withMillisOfSecond (0);
     return getAsStringRFC822 (aNow);
   }
 

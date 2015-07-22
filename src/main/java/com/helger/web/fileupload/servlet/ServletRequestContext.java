@@ -17,9 +17,11 @@
 package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
@@ -56,22 +58,26 @@ public class ServletRequestContext implements IRequestContext
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
   }
 
+  @Nullable
   public String getCharacterEncoding ()
   {
     return m_aHttpRequest.getCharacterEncoding ();
   }
 
+  @Nullable
   public String getContentType ()
   {
     return m_aHttpRequest.getContentType ();
   }
 
+  @CheckForSigned
   public long getContentLength ()
   {
     return RequestHelper.getContentLength (m_aHttpRequest);
   }
 
-  public InputStream getInputStream () throws IOException
+  @Nonnull
+  public ServletInputStream getInputStream () throws IOException
   {
     return m_aHttpRequest.getInputStream ();
   }

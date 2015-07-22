@@ -32,7 +32,7 @@ import com.helger.web.fileupload.exception.FileUploadIOException;
 import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.fileupload.io.ICloseable;
-import com.helger.web.fileupload.io.Streams;
+import com.helger.web.fileupload.io.FileUploadHelper;
 
 /**
  * Default implementation of {@link IFileItemStream}.
@@ -159,7 +159,7 @@ final class FileItemStream implements IFileItemStream, Closeable
   @Nullable
   public String getName ()
   {
-    return Streams.checkFileName (m_sName);
+    return FileUploadHelper.checkFileName (m_sName);
   }
 
   @Nullable

@@ -1069,7 +1069,7 @@ public class UnifiedResponse
   /**
    * Adds a response header to the response according to the passed name and
    * value. If an existing header with the same is present, the value is added
-   * to the list so that the header is emitted more than once.<br/>
+   * to the list so that the header is emitted more than once.<br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
@@ -1089,7 +1089,7 @@ public class UnifiedResponse
 
   /**
    * Sets a response header to the response according to the passed name and
-   * value. An existing header entry with the same name is overridden.<br/>
+   * value. An existing header entry with the same name is overridden.<br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!
@@ -1109,7 +1109,7 @@ public class UnifiedResponse
 
   /**
    * Removes the response headers matching the passed name from the response.
-   * <br/>
+   * <br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
    * directly offers. Use this method only in emergency and make sure you
    * validate the header field and allowed value!

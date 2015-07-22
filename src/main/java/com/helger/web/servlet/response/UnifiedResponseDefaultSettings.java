@@ -128,11 +128,14 @@ public class UnifiedResponseDefaultSettings
    *        if enabled, this signals the UA that the HSTS Policy applies to this
    *        HSTS Host as well as any sub-domains of the host's domain name.
    */
-  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
+  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds,
+                                                 final boolean bIncludeSubdomains)
   {
     setResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
                        new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                           (bIncludeSubdomains ? ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+                                                              (bIncludeSubdomains ? ";" +
+                                                                                    CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                  : ""));
   }
 
   /**
@@ -218,7 +221,8 @@ public class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.<br/>
+   * Removes the response headers matching the passed name from the response.
+   * <br>
    * <b>ATTENTION:</b> You should only use the APIs that
    * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
    * only in emergency and make sure you validate the header field and allowed

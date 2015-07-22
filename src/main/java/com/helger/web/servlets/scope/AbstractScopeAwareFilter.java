@@ -96,14 +96,19 @@ public abstract class AbstractScopeAwareFilter implements Filter
    * @return {@link EContinue#CONTINUE} to indicate that the next filter is to
    *         be called or {@link EContinue#BREAK} to indicate that the next
    *         filter does not need to be called! Never return <code>null</code>!
+   * @throws IOException
+   *         In case of an IO error
+   * @throws ServletException
+   *         For non IO errors
    */
   @Nonnull
   protected abstract EContinue doFilter (@Nonnull HttpServletRequest aHttpRequest,
                                          @Nonnull HttpServletResponse aHttpResponse,
                                          @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
 
-  public final void doFilter (final ServletRequest aRequest, final ServletResponse aResponse, final FilterChain aChain) throws IOException,
-                                                                                                                       ServletException
+  public final void doFilter (final ServletRequest aRequest,
+                              final ServletResponse aResponse,
+                              final FilterChain aChain) throws IOException, ServletException
   {
     if (aRequest instanceof HttpServletRequest && aResponse instanceof HttpServletResponse)
     {

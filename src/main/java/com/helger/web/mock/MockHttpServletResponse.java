@@ -393,7 +393,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    *
    * @param sName
    *        the name of the header
-   * @return the associated header value, or <code>null<code> if none
+   * @return the associated header value, or <code>null</code> if none
    */
   @Nullable
   public String getHeader (@Nullable final String sName)
@@ -614,7 +614,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
     }
 
     @Override
-    public void write (final char aBuf [], final int nOff, final int nLen)
+    public void write (final char aBuf[], final int nOff, final int nLen)
     {
       super.write (aBuf, nOff, nLen);
       super.flush ();

@@ -49,12 +49,12 @@ import com.helger.web.fileupload.IFileItemFactory;
  * </p>
  * <p>
  * If not otherwise configured, the default configuration values are as follows:
+ * </p>
  * <ul>
  * <li>Size threshold is 10KB.</li>
  * <li>Repository is the system default temp directory, as returned by
  * <code>System.getProperty("java.io.tmpdir")</code>.</li>
  * </ul>
- * </p>
  * <p>
  * Temporary files, which are created for file items, should be deleted later
  * on.

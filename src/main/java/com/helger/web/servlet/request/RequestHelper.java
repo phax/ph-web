@@ -112,22 +112,11 @@ public final class RequestHelper
    * (";jsessionid=..."). This method considers the GlobalWebScope custom
    * context path.
    * <table summary="Examples of Returned Values">
-   * <tr align=left>
-   * <th>First line of HTTP request</th>
-   * <th>Returned Value</th>
-   * <tr>
-   * <td>POST /some/path.html;JSESSIONID=4711</td>
-   * <td>/some/path.html</td>
-   * </tr>
-   * <tr>
-   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
-   * <td>/a.html</td>
-   * </tr>
-   * <tr>
-   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
-   * <td>/xyz</td>
-   * </tr>
-   * </table>
+   * <tr align=left> <th>First line of HTTP request</th> <th>Returned Value</th>
+   * <tr> <td>POST /some/path.html;JSESSIONID=4711</td> <td>/some/path.html</td>
+   * </tr> <tr> <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td> </tr> <tr> <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td> </tr> </table>
    *
    * @param aHttpRequest
    *        The HTTP request
@@ -218,15 +207,12 @@ public final class RequestHelper
   /**
    * Return the path within the servlet mapping for the given request, i.e. the
    * part of the request's URL beyond the part that called the servlet, or "" if
-   * the whole URL has been used to identify the servlet.
-   * <p>
+   * the whole URL has been used to identify the servlet. <br>
    * Detects include request URL if called within a RequestDispatcher include.
-   * <p>
-   * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -> "/a".
-   * <p>
-   * E.g.: servlet mapping = "/test"; request URI = "/test" -> "".
-   * <p>
-   * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -> "".
+   * <br>
+   * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -&gt; "/a". <br>
+   * E.g.: servlet mapping = "/test"; request URI = "/test" -&gt; "". <br>
+   * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -&gt; "".
    *
    * @param aHttpRequest
    *        current HTTP request

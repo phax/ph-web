@@ -374,23 +374,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * query string in the first line of the HTTP request. The web container does
    * not decode this String. For example:
    * <table summary="Examples of Returned Values">
-   * <tr align=left>
-   * <th>First line of HTTP request</th>
-   * <th>Returned Value</th>
-   * </tr>
-   * <tr>
-   * <td>POST /some/path.html HTTP/1.1</td>
-   * <td>/some/path.html</td>
-   * </tr>
-   * <tr>
-   * <td>GET http://foo.bar/a.html HTTP/1.0</td>
-   * <td>/a.html</td>
-   * </tr>
-   * <tr>
-   * <td>HEAD /xyz?a=b HTTP/1.1</td>
-   * <td>/xyz</td>
-   * </tr>
-   * </table>
+   * <tr align=left> <th>First line of HTTP request</th> <th>Returned Value</th>
+   * </tr> <tr> <td>POST /some/path.html HTTP/1.1</td> <td>/some/path.html</td>
+   * </tr> <tr> <td>GET http://foo.bar/a.html HTTP/1.0</td> <td>/a.html</td>
+   * </tr> <tr> <td>HEAD /xyz?a=b HTTP/1.1</td> <td>/xyz</td> </tr> </table>
    *
    * @return a <code>String</code> containing the part of the URL from the
    *         protocol name up to the query string
@@ -523,7 +510,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   String getFullContextAndServletPath ();
 
   /**
-   * Get the full URL (incl. protocol) and parameters of the current request.<br>
+   * Get the full URL (incl. protocol) and parameters of the current request.
+   * <br>
    * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>
    *
    * @return The full URL of the current request.
@@ -681,15 +669,12 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   /**
    * Return the path within the servlet mapping for the given request, i.e. the
    * part of the request's URL beyond the part that called the servlet, or "" if
-   * the whole URL has been used to identify the servlet.
-   * <p>
+   * the whole URL has been used to identify the servlet. <br>
    * Detects include request URL if called within a RequestDispatcher include.
-   * <p>
-   * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -> "/a".
-   * <p>
-   * E.g.: servlet mapping = "/test"; request URI = "/test" -> "".
-   * <p>
-   * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -> "".
+   * <br>
+   * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -&gt; "/a". <br>
+   * E.g.: servlet mapping = "/test"; request URI = "/test" -&gt; "". <br>
+   * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -&gt; "".
    *
    * @return the path within the servlet mapping, or ""
    */

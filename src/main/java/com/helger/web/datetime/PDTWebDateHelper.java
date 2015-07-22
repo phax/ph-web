@@ -42,11 +42,9 @@ import com.helger.datetime.format.PDTFromString;
 /**
  * A helper class that parses Dates out of Strings with date time in RFC822 and
  * W3CDateTime formats plus the variants Atom (0.3) and RSS (0.9, 0.91, 0.92,
- * 0.93, 0.94, 1.0 and 2.0) specificators added to those formats.
- * <p/>
+ * 0.93, 0.94, 1.0 and 2.0) specificators added to those formats.<br>
  * It uses the JDK java.text.SimpleDateFormat class attempting the parse using a
- * mask for each one of the possible formats.
- * <p/>
+ * mask for each one of the possible formats.<br>
  * Original work Copyright 2004 Sun Microsystems, Inc.
  *
  * @author Alejandro Abdelnur (original; mainly the formatting masks)
@@ -190,8 +188,7 @@ public final class PDTWebDateHelper
   }
 
   /**
-   * Parses a Date out of a String with a date in RFC822 format.
-   * <p/>
+   * Parses a Date out of a String with a date in RFC822 format. <br>
    * It parsers the following formats:
    * <ul>
    * <li>"EEE, dd MMM yyyy HH:mm:ss z"</li>
@@ -203,10 +200,10 @@ public final class PDTWebDateHelper
    * <li>"dd MMM yy HH:mm:ss z"</li>
    * <li>"dd MMM yy HH:mm z"</li>
    * </ul>
-   * <p/>
+   * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
-   * <p/>
+   * </p>
    *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
@@ -226,8 +223,7 @@ public final class PDTWebDateHelper
   }
 
   /**
-   * Parses a Date out of a String with a date in RFC822 format.
-   * <p/>
+   * Parses a Date out of a String with a date in RFC822 format. <br>
    * It parsers the following formats:
    * <ul>
    * <li>"EEE, dd MMM yyyy HH:mm:ss z"</li>
@@ -239,10 +235,10 @@ public final class PDTWebDateHelper
    * <li>"dd MMM yy HH:mm:ss z"</li>
    * <li>"dd MMM yy HH:mm z"</li>
    * </ul>
-   * <p/>
+   * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
-   * <p/>
+   * </p>
    *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
@@ -262,8 +258,7 @@ public final class PDTWebDateHelper
   }
 
   /**
-   * Parses a Date out of a String with a date in W3C date-time format.
-   * <p/>
+   * Parses a Date out of a String with a date in W3C date-time format. <br>
    * It parsers the following formats:
    * <ul>
    * <li>"yyyy-MM-dd'T'HH:mm:ssz"</li>
@@ -272,10 +267,10 @@ public final class PDTWebDateHelper
    * <li>"yyyy-MM"</li>
    * <li>"yyyy"</li>
    * </ul>
-   * <p/>
+   * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
-   * <p/>
+   * </p>
    *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
@@ -294,8 +289,7 @@ public final class PDTWebDateHelper
   }
 
   /**
-   * Parses a Date out of a String with a date in W3C date-time format.
-   * <p/>
+   * Parses a Date out of a String with a date in W3C date-time format. <br>
    * It parsers the following formats:
    * <ul>
    * <li>"yyyy-MM-dd'T'HH:mm:ssz"</li>
@@ -304,10 +298,10 @@ public final class PDTWebDateHelper
    * <li>"yyyy-MM"</li>
    * <li>"yyyy"</li>
    * </ul>
-   * <p/>
+   * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
    * of each element.
-   * <p/>
+   * </p>
    *
    * @param sDate
    *        string to parse for a date. May be <code>null</code>.
@@ -328,7 +322,6 @@ public final class PDTWebDateHelper
   /**
    * Parses a Date out of a String with a date in W3C date-time format or in a
    * RFC822 format.
-   * <p>
    *
    * @param sDate
    *        string to parse for a date.
@@ -348,7 +341,6 @@ public final class PDTWebDateHelper
   /**
    * Parses a Date out of a String with a date in W3C date-time format or in a
    * RFC822 format.
-   * <p>
    *
    * @param sDate
    *        string to parse for a date.

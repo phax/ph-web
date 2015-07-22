@@ -57,7 +57,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  *   header-part := 1*header CRLF<br>
  *   header := header-name ":" header-value<br>
  *   header-name := &lt;printable ascii characters except ":"&gt;<br>
- *   header-value := &lt;any ascii characters except CR & LF&gt;<br>
+ *   header-value := &lt;any ascii characters except CR &amp; LF&gt;<br>
  *   body-data := &lt;arbitrary data&gt;<br>
  * </code>
  * <p>
@@ -462,10 +462,7 @@ public final class MultipartStream
    * {@link #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)}
    * ).
    *
-   * @param aOS
-   *        The <code>Stream</code> to write data into. May be null, in which
-   *        case this method is equivalent to {@link #discardBodyData()}.
-   * @return the amount of data written.
+   * @return the amount of data read.
    * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    * @throws IOException

@@ -57,27 +57,27 @@ public final class CHTTPHeader
   public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
   public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
   /**
-   * https://www.owasp.org/index.php/HTTP_Strict_Transport_Security<br/>
+   * https://www.owasp.org/index.php/HTTP_Strict_Transport_Security<br>
    * e.g. "max-age=16070400; includeSubDomains"
    */
   public static final String STRICT_TRANSPORT_SECURITY = "Strict-Transport-Security";
   /**
-   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br>
    * e.g. X-Frame-Options: deny
    */
   public static final String X_FRAME_OPTIONS = "X-Frame-Options";
   /**
-   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br>
    * e.g. Frame-Options: deny
    */
   public static final String FRAME_OPTIONS = "Frame-Options";
   /**
-   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br>
    * e.g. X-XSS-Protection: 1; mode=block
    */
   public static final String X_XSS_PROTECTION = "X-XSS-Protection";
   /**
-   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br/>
+   * https://www.owasp.org/index.php/List_of_useful_HTTP_headers<br>
    * e.g. X-Content-Type-Options: nosniff
    */
   public static final String X_CONTENT_TYPE_OPTIONS = "X-Content-Type-Options";

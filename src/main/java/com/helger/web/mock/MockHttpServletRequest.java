@@ -416,9 +416,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Sets all provided parameters <emphasis>replacing</emphasis> any existing
-   * values for the provided parameter names. To add without replacing existing
-   * values, use {@link #addParameters(Map)}.
+   * Sets all provided parameters <em>replacing</em> any existing values for the
+   * provided parameter names. To add without replacing existing values, use
+   * {@link #addParameters(Map)}.
    *
    * @param aParams
    *        Parameter name value map. May be <code>null</code>.
@@ -483,9 +483,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Adds all provided parameters <emphasis>without</emphasis> replacing any
-   * existing values. To replace existing values, use
-   * {@link #setParameters(Map)}.
+   * Adds all provided parameters <em>without</em> replacing any existing
+   * values. To replace existing values, use {@link #setParameters(Map)}.
    *
    * @param aParams
    *        Parameter name value map
@@ -1149,7 +1148,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   @UnsupportedOperation
-  public AsyncContext startAsync (final ServletRequest servletRequest, final ServletResponse servletResponse) throws IllegalStateException
+  public AsyncContext startAsync (final ServletRequest servletRequest,
+                                  final ServletResponse servletResponse) throws IllegalStateException
   {
     throw new UnsupportedOperationException ();
   }

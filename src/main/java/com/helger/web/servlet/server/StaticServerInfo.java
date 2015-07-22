@@ -94,7 +94,7 @@ public class StaticServerInfo implements Serializable
   }
 
   /**
-   * @return <code>/context</code> or <code></code> (empty string)
+   * @return <code>"/context"</code> or <code>""</code> (empty string)
    */
   @Nonnull
   public String getContextPath ()

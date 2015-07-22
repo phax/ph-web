@@ -31,11 +31,11 @@ import com.helger.web.port.DefaultNetworkPorts;
 
 /**
  * SOCKS proxy configuration.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
-public final class SocksProxyConfig implements IProxyConfig
+public class SocksProxyConfig implements IProxyConfig
 {
   public static final String SYSPROP_SOCKS_PROXY_HOST = "socksProxyHost";
   public static final String SYSPROP_SOCKS_PROXY_PORT = "socksProxyPort";
@@ -47,7 +47,7 @@ public final class SocksProxyConfig implements IProxyConfig
   /**
    * Create a SOCKS proxy config object based on the default port
    * {@link #DEFAULT_SOCKS_PROXY_PORT}.
-   * 
+   *
    * @param sHost
    *        The SOCKS proxy host. May not be <code>null</code>.
    */
@@ -58,7 +58,7 @@ public final class SocksProxyConfig implements IProxyConfig
 
   /**
    * Create a SOCKS proxy config object based on the given port.
-   * 
+   *
    * @param sHost
    *        The SOCKS proxy host. May not be <code>null</code>.
    * @param nPort

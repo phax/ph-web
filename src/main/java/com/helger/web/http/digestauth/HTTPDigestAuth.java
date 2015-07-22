@@ -310,8 +310,8 @@ public final class HTTPDigestAuth
   @Nonnull
   private static String _md5 (@Nonnull final String s)
   {
-    final byte [] aHA1 = MessageDigestGeneratorHelper.getAllDigestBytes (s, CHARSET, EMessageDigestAlgorithm.MD5);
-    return MessageDigestGeneratorHelper.getHexValueFromDigest (aHA1);
+    final byte [] aMD5 = MessageDigestGeneratorHelper.getAllDigestBytes (s, CHARSET, EMessageDigestAlgorithm.MD5);
+    return MessageDigestGeneratorHelper.getHexValueFromDigest (aMD5);
   }
 
   /**

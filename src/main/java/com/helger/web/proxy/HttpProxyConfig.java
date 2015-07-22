@@ -45,7 +45,7 @@ import com.helger.web.port.DefaultNetworkPorts;
  * @author Philip Helger
  */
 @Immutable
-public final class HttpProxyConfig implements IProxyConfig
+public class HttpProxyConfig implements IProxyConfig
 {
   private final EHttpProxyType m_eProxyType;
   private final String m_sHost;

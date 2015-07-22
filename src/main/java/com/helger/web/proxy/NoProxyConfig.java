@@ -25,22 +25,14 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Class for indicating direct Internet access (no proxy needed).
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
-public final class NoProxyConfig implements IProxyConfig
+public class NoProxyConfig implements IProxyConfig
 {
-  private static final NoProxyConfig s_aInstance = new NoProxyConfig ();
-
-  private NoProxyConfig ()
+  public NoProxyConfig ()
   {}
-
-  @Nonnull
-  public static NoProxyConfig getInstance ()
-  {
-    return s_aInstance;
-  }
 
   public void activateGlobally ()
   {

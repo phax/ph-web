@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  * Test class for class {@link NoProxyConfig}.
- * 
+ *
  * @author Philip Helger
  */
 public final class NoProxyConfigTest
@@ -33,7 +33,7 @@ public final class NoProxyConfigTest
   @Test
   public void testAll ()
   {
-    final NoProxyConfig aPC = NoProxyConfig.getInstance ();
+    final NoProxyConfig aPC = new NoProxyConfig ();
     aPC.activateGlobally ();
     assertNotNull (aPC.getAsProxy ());
     assertEquals (Proxy.Type.DIRECT, aPC.getAsProxy ().type ());

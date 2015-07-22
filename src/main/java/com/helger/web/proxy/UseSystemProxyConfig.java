@@ -18,7 +18,6 @@ package com.helger.web.proxy;
 
 import java.net.Proxy;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
@@ -28,27 +27,21 @@ import com.helger.commons.system.SystemProperties;
 
 /**
  * Proxy configuration that uses the system default proxy settings.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
-public final class UseSystemProxyConfig implements IProxyConfig
+public class UseSystemProxyConfig implements IProxyConfig
 {
   public static final String SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
-  private static final UseSystemProxyConfig s_aInstance = new UseSystemProxyConfig ();
 
-  private UseSystemProxyConfig ()
+  public UseSystemProxyConfig ()
   {}
-
-  @Nonnull
-  public static UseSystemProxyConfig getInstance ()
-  {
-    return s_aInstance;
-  }
 
   public boolean isUseSystemProxies ()
   {
-    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES), false);
+    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES),
+                                   false);
   }
 
   public void activateGlobally ()

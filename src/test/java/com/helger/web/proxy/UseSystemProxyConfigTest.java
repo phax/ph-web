@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * Test class for class {@link UseSystemProxyConfig}.
- * 
+ *
  * @author Philip Helger
  */
 public final class UseSystemProxyConfigTest
@@ -30,7 +30,7 @@ public final class UseSystemProxyConfigTest
   {
     try
     {
-      UseSystemProxyConfig.getInstance ().activateGlobally ();
+      new UseSystemProxyConfig ().activateGlobally ();
     }
     finally
     {

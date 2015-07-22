@@ -38,7 +38,7 @@ import com.helger.web.http.HTTPStringHelper;
  * @author Philip Helger
  */
 @NotThreadSafe
-public final class DigestAuthServerBuilder implements Serializable
+public class DigestAuthServerBuilder implements Serializable
 {
   private String m_sRealm;
   private final Set <String> m_aDomains = new LinkedHashSet <String> ();

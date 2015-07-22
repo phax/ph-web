@@ -46,6 +46,7 @@ public final class ProxyAutoConfigHelper
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
   private static final ScriptableObject s_aGlobalScope;
+
   static
   {
     final Context aCtx = Context.enter ();
@@ -59,10 +60,10 @@ public final class ProxyAutoConfigHelper
                                                DNSResolver.class,
                                                ScriptableObject.DONTENUM);
       RhinoHelper.readFile (s_aGlobalScope,
-                           aCtx,
-                           new ClassPathResource ("proxy-js/pac-utils.js"),
-                           "pac-utils",
-                           CCharset.CHARSET_ISO_8859_1);
+                            aCtx,
+                            new ClassPathResource ("proxy-js/pac-utils.js"),
+                            "pac-utils",
+                            CCharset.CHARSET_ISO_8859_1);
       s_aGlobalScope.sealObject ();
     }
     finally
@@ -157,7 +158,7 @@ public final class ProxyAutoConfigHelper
           sDirective = sDirective.trim ();
           if (sDirective.equals ("DIRECT"))
           {
-            ret.add (NoProxyConfig.getInstance ());
+            ret.add (new NoProxyConfig ());
             bError = false;
           }
           else
@@ -191,7 +192,8 @@ public final class ProxyAutoConfigHelper
                   {
                     final String sProxyHost = aParts[0];
                     final String sProxyPort = aParts[1];
-                    final int nProxyPort = StringParser.parseInt (sProxyPort, SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
+                    final int nProxyPort = StringParser.parseInt (sProxyPort,
+                                                                  SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
                     ret.add (new SocksProxyConfig (sProxyHost, nProxyPort));
                     bError = false;
                   }

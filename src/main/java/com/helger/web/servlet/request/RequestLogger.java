@@ -37,7 +37,7 @@ import com.helger.commons.cache.AnnotationUsageCache;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.compare.ComparatorComparable;
 import com.helger.commons.string.StringHelper;
-import com.helger.web.annotations.IsOffline;
+import com.helger.web.annotation.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.scopes.mgr.WebScopeManager;
 

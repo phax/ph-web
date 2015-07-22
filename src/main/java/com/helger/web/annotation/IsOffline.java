@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.annotations;
+package com.helger.web.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

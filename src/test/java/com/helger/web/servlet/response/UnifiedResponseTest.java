@@ -33,7 +33,7 @@ import com.helger.web.mock.MockHttpServletRequest;
  *
  * @author Boris Gregorcic
  */
-public class UnifiedResponseTest
+public final class UnifiedResponseTest
 {
   @Test
   public void testSetStrictTransportSecurity ()

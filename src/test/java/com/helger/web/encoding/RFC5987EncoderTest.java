@@ -22,10 +22,10 @@ import org.junit.Test;
 
 /**
  * Test class for class {@link RFC5987Encoder}.
- * 
+ *
  * @author Philip Helger
  */
-public class RFC5987EncoderTest
+public final class RFC5987EncoderTest
 {
   @Test
   public void testBasic ()

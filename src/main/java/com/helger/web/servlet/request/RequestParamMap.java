@@ -16,6 +16,8 @@
  */
 package com.helger.web.servlet.request;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +63,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public final class RequestParamMap implements IRequestParamMap
+public class RequestParamMap implements IRequestParamMap
 {
   public static final String DEFAULT_OPEN = "[";
   public static final String DEFAULT_CLOSE = "]";
@@ -190,6 +192,44 @@ public final class RequestParamMap implements IRequestParamMap
   {
     final Object aValue = getObject (aPath);
     return AbstractReadOnlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
+  }
+
+  public boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
+  {
+    final Object aValue = getObject (sPath);
+    return AbstractReadOnlyAttributeContainer.getAsBoolean (sPath, aValue, bDefault);
+  }
+
+  public double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
+  {
+    final Object aValue = getObject (sPath);
+    return AbstractReadOnlyAttributeContainer.getAsDouble (sPath, aValue, dDefault);
+  }
+
+  public int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
+  {
+    final Object aValue = getObject (sPath);
+    return AbstractReadOnlyAttributeContainer.getAsInt (sPath, aValue, nDefault);
+  }
+
+  public long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
+  {
+    final Object aValue = getObject (sPath);
+    return AbstractReadOnlyAttributeContainer.getAsLong (sPath, aValue, nDefault);
+  }
+
+  @Nullable
+  public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
+  {
+    final Object aValue = getObject (aPath);
+    return AbstractReadOnlyAttributeContainer.getAsBigInteger (ArrayHelper.getLast (aPath), aValue, null);
+  }
+
+  @Nullable
+  public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
+  {
+    final Object aValue = getObject (aPath);
+    return AbstractReadOnlyAttributeContainer.getAsBigDecimal (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   @Nullable

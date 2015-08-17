@@ -16,6 +16,8 @@
  */
 package com.helger.web.servlet.request;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +44,20 @@ public interface IRequestParamMap extends IHasSize
 
   @Nullable
   String getString (@Nonnull @Nonempty String... aPath);
+
+  boolean getBoolean (@Nonnull @Nonempty String sPath, boolean bDefault);
+
+  double getDouble (@Nonnull @Nonempty String sPath, double dDefault);
+
+  int getInt (@Nonnull @Nonempty String sPath, int nDefault);
+
+  long getLong (@Nonnull @Nonempty String sPath, long nDefault);
+
+  @Nullable
+  BigInteger getBigInteger (@Nonnull @Nonempty String... aPath);
+
+  @Nullable
+  BigDecimal getBigDecimal (@Nonnull @Nonempty String... aPath);
 
   @Nullable
   Map <String, String> getValueMap (@Nonnull @Nonempty String... aPath);

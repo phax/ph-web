@@ -78,6 +78,7 @@ import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
+import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.servlet.request.RequestHelper;
 
 /**
@@ -1068,6 +1069,20 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     m_aSession = aHttpSession;
     if (aHttpSession instanceof MockHttpSession)
       ((MockHttpSession) aHttpSession).doAccess ();
+    return this;
+  }
+
+  /**
+   * Copy the session information from the existing request.
+   *
+   * @param aRequestScope
+   *        Request scope to use. May not be <code>null</code>.
+   * @return this
+   */
+  @Nonnull
+  public MockHttpServletRequest setSessionFromExistingRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  {
+    setSession (aRequestScope.getSession (false));
     return this;
   }
 

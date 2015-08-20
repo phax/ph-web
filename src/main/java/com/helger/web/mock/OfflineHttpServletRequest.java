@@ -26,7 +26,7 @@ import com.helger.web.annotation.IsOffline;
  * A special {@link MockHttpServletRequest} that throws
  * {@link UnsupportedOperationException} exceptions for server or path related
  * queries. So it is "offline" only :)
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe

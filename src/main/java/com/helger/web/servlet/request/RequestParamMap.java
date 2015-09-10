@@ -105,21 +105,33 @@ public class RequestParamMap implements IRequestParamMap
     }
     else
     {
-      // Get the name until the first "["
-      final String sPrefix = sName.substring (0, nIndex);
-
-      // Ensure that the respective map is present
-      final Object aPrefixValue = aMap.get (sPrefix);
-      Map <String, Object> aChildMap = GenericReflection.<Object, Map <String, Object>> uncheckedCast (aPrefixValue);
-      if (aChildMap == null)
+      if (nIndex == 0)
       {
-        aChildMap = new HashMap <String, Object> ();
-        aMap.put (sPrefix, aChildMap);
-      }
+        // Empty level - makes no sense
 
-      // Recursively scan child items (starting at the first character after the
-      // '[')
-      _recursiveAddItem (aChildMap, sName.substring (nIndex + s_sOpen.length ()), aValue);
+        // Recursively scan child items (starting at the first character after
+        // the '[')
+        _recursiveAddItem (aMap, sName.substring (s_sOpen.length ()), aValue);
+      }
+      else
+      {
+        // Get the name until the first "["
+        final String sPrefix = sName.substring (0, nIndex);
+
+        // Ensure that the respective map is present
+        final Object aPrefixValue = aMap.get (sPrefix);
+        Map <String, Object> aChildMap = GenericReflection.<Object, Map <String, Object>> uncheckedCast (aPrefixValue);
+        if (aChildMap == null)
+        {
+          aChildMap = new HashMap <String, Object> ();
+          aMap.put (sPrefix, aChildMap);
+        }
+
+        // Recursively scan child items (starting at the first character after
+        // the
+        // '[')
+        _recursiveAddItem (aChildMap, sName.substring (nIndex + s_sOpen.length ()), aValue);
+      }
     }
   }
 
@@ -130,6 +142,10 @@ public class RequestParamMap implements IRequestParamMap
     String sRealName = StringHelper.replaceAll (sName, s_sClose + s_sOpen, s_sOpen);
     // Remove the remaining trailing closing separator
     sRealName = StringHelper.trimEnd (sRealName, s_sClose);
+    // Remove any remaining opening closing separator because this indicates and
+    // invalid level (as e.g. in 'columns[0][]')
+    while (sRealName.endsWith (s_sOpen))
+      sRealName = StringHelper.trimEnd (sRealName, s_sOpen.length ());
     // Start parsing
     _recursiveAddItem (m_aMap, sRealName, aValue);
   }

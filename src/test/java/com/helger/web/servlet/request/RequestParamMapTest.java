@@ -257,4 +257,30 @@ public final class RequestParamMapTest
 
     RequestParamMap.setSeparatorsToDefault ();
   }
+
+  @Test
+  public void testInvalidNames1 ()
+  {
+    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    aTestMap.put ("columns[0][][][][]", "bla");
+
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertTrue (aMap.contains ("columns"));
+    assertNotNull (aMap.getMap ("columns"));
+    assertTrue (aMap.getMap ("columns").contains ("0"));
+    assertEquals ("bla", aMap.getMap ("columns").getString ("0"));
+  }
+
+  @Test
+  public void testInvalidNames2 ()
+  {
+    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    aTestMap.put ("columns[][][][][0]", "bla");
+
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertTrue (aMap.contains ("columns"));
+    assertNotNull (aMap.getMap ("columns"));
+    assertTrue (aMap.getMap ("columns").contains ("0"));
+    assertEquals ("bla", aMap.getMap ("columns").getString ("0"));
+  }
 }

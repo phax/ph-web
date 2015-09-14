@@ -83,7 +83,11 @@ public class RequestParamMap implements IRequestParamMap
   public RequestParamMap (@Nonnull final Map <String, ?> aMap)
   {
     for (final Map.Entry <String, ?> aEntry : aMap.entrySet ())
-      m_aMap.put (aEntry.getKey (), RequestParamMapItem.create (aEntry.getValue ()));
+    {
+      final RequestParamMapItem aItem = RequestParamMapItem.create (aEntry.getValue ());
+      if (aItem != null)
+        m_aMap.put (aEntry.getKey (), aItem);
+    }
   }
 
   private void _recursiveAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
@@ -94,7 +98,9 @@ public class RequestParamMap implements IRequestParamMap
     if (nIndex == -1)
     {
       // Value level
-      aMap.put (sName, RequestParamMapItem.create (aValue));
+      final RequestParamMapItem aItem = RequestParamMapItem.create (aValue);
+      if (aItem != null)
+        aMap.put (sName, aItem);
     }
     else
     {

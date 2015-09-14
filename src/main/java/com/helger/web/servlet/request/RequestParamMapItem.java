@@ -27,7 +27,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -104,7 +103,7 @@ public final class RequestParamMapItem implements Serializable
                                        .toString ();
   }
 
-  @Nonnull
+  @Nullable
   public static RequestParamMapItem create (@Nonnull final Object o)
   {
     if (o instanceof RequestParamMapItem)
@@ -124,10 +123,16 @@ public final class RequestParamMapItem implements Serializable
       for (final Map.Entry <?, ?> aEntry : ((Map <?, ?>) o).entrySet ())
       {
         // Recursive create function
-        ret.m_aChildren.put ((String) aEntry.getKey (), RequestParamMapItem.create (aEntry.getValue ()));
+        final RequestParamMapItem aChildItem = RequestParamMapItem.create (aEntry.getValue ());
+        if (aChildItem != null)
+          ret.m_aChildren.put ((String) aEntry.getKey (), aChildItem);
       }
       return ret;
     }
-    throw new IllegalStateException ("Invalid object type supplied: " + ClassHelper.getClassName (o) + " -- " + o);
+
+    // Unsupported type - this can e.g. happen when building the overall
+    // RequestParamMap from a request and the request contains arbitrary objects
+    // that are of any type. These should simply be ignored.
+    return null;
   }
 }

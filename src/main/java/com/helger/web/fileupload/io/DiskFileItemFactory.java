@@ -19,8 +19,6 @@ package com.helger.web.fileupload.io;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -34,6 +32,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.VisibleForTesting;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.io.file.FileIOError;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -68,7 +67,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItemFactory.class);
 
-  protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+  protected final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
   /**
    * The directory in which uploaded files will be stored, if stored on disk.

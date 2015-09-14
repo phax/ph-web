@@ -37,7 +37,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.attr.AbstractReadOnlyAttributeContainer;
+import com.helger.commons.collection.attr.AttributeValueConverter;
 import com.helger.commons.collection.attr.IAttributeContainer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.lang.ClassHelper;
@@ -207,45 +207,45 @@ public class RequestParamMap implements IRequestParamMap
   public String getString (@Nonnull @Nonempty final String... aPath)
   {
     final Object aValue = getObject (aPath);
-    return AbstractReadOnlyAttributeContainer.getAsString (ArrayHelper.getLast (aPath), aValue, null);
+    return AttributeValueConverter.getAsString (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   public boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
   {
     final Object aValue = getObject (sPath);
-    return AbstractReadOnlyAttributeContainer.getAsBoolean (sPath, aValue, bDefault);
+    return AttributeValueConverter.getAsBoolean (sPath, aValue, bDefault);
   }
 
   public double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
   {
     final Object aValue = getObject (sPath);
-    return AbstractReadOnlyAttributeContainer.getAsDouble (sPath, aValue, dDefault);
+    return AttributeValueConverter.getAsDouble (sPath, aValue, dDefault);
   }
 
   public int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
   {
     final Object aValue = getObject (sPath);
-    return AbstractReadOnlyAttributeContainer.getAsInt (sPath, aValue, nDefault);
+    return AttributeValueConverter.getAsInt (sPath, aValue, nDefault);
   }
 
   public long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
   {
     final Object aValue = getObject (sPath);
-    return AbstractReadOnlyAttributeContainer.getAsLong (sPath, aValue, nDefault);
+    return AttributeValueConverter.getAsLong (sPath, aValue, nDefault);
   }
 
   @Nullable
   public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
     final Object aValue = getObject (aPath);
-    return AbstractReadOnlyAttributeContainer.getAsBigInteger (ArrayHelper.getLast (aPath), aValue, null);
+    return AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   @Nullable
   public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
     final Object aValue = getObject (aPath);
-    return AbstractReadOnlyAttributeContainer.getAsBigDecimal (ArrayHelper.getLast (aPath), aValue, null);
+    return AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath), aValue, null);
   }
 
   @Nullable

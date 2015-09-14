@@ -16,6 +16,7 @@
  */
 package com.helger.web.servlet.request;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -35,12 +36,12 @@ import com.helger.commons.lang.IHasSize;
  *
  * @author Philip Helger
  */
-public interface IRequestParamMap extends IHasSize
+public interface IRequestParamMap extends IHasSize, Serializable
 {
   boolean contains (@Nonnull @Nonempty String... aPath);
 
   @Nullable
-  Object getObject (@Nonnull @Nonempty String... aPath);
+  RequestParamMapItem getObject (@Nonnull @Nonempty String... aPath);
 
   @Nullable
   String getString (@Nonnull @Nonempty String... aPath);
@@ -98,7 +99,7 @@ public interface IRequestParamMap extends IHasSize
    */
   @Nonnull
   @ReturnsMutableCopy
-  Collection <Object> values ();
+  Collection <RequestParamMapItem> values ();
 
   /**
    * @return A copy of the contained map. For the value types see
@@ -106,11 +107,11 @@ public interface IRequestParamMap extends IHasSize
    */
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, Object> getAsObjectMap ();
+  Map <String, RequestParamMapItem> getAsObjectMap ();
 
   /**
    * @return A key/value map, with enforced values. If this map contains a
-   *         nested map, this method will fail with a ClassCastException!
+   *         nested map, the nested maps are ignored!
    */
   @Nonnull
   @ReturnsMutableCopy

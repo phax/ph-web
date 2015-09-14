@@ -18,6 +18,12 @@
 
 -->
 <changelog xmlns="http://www.helger.com/xsd/changelog/1.0" version="1.0" component="ph-web">
+  <release date="2015-09-14" version="7.0.1" />
+  <entry date="2015-09-14" category="api" action="change">
+    <change>
+      <text locale="en">Reworked RequestParamMap to allow for values and children at the same node and made Serializable</text>
+    </change>
+  </entry>
   <release date="2015-07-22" version="7.0.0" />
   <entry date="2015-07-02" category="tech" action="update">
     <change>

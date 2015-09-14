@@ -29,9 +29,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -40,8 +37,6 @@ import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.attr.AttributeValueConverter;
 import com.helger.commons.collection.attr.IAttributeContainer;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -67,19 +62,16 @@ public class RequestParamMap implements IRequestParamMap
 {
   public static final String DEFAULT_OPEN = "[";
   public static final String DEFAULT_CLOSE = "]";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestParamMap.class);
 
   /** The index open separator */
   private static String s_sOpen = DEFAULT_OPEN;
   /** The index close separator */
   private static String s_sClose = DEFAULT_CLOSE;
 
-  private final Map <String, Object> m_aMap;
+  private final Map <String, RequestParamMapItem> m_aMap = new HashMap <String, RequestParamMapItem> ();
 
   public RequestParamMap ()
-  {
-    m_aMap = new HashMap <String, Object> ();
-  }
+  {}
 
   /**
    * This constructor is private, because it does not call the
@@ -88,12 +80,13 @@ public class RequestParamMap implements IRequestParamMap
    * @param aMap
    *        The map to use. May not be <code>null</code>.
    */
-  private RequestParamMap (@Nonnull final Map <String, Object> aMap)
+  public RequestParamMap (@Nonnull final Map <String, ?> aMap)
   {
-    m_aMap = ValueEnforcer.notNull (aMap, "Map");
+    for (final Map.Entry <String, ?> aEntry : aMap.entrySet ())
+      m_aMap.put (aEntry.getKey (), RequestParamMapItem.create (aEntry.getValue ()));
   }
 
-  private void _recursiveAddItem (@Nonnull final Map <String, Object> aMap,
+  private void _recursiveAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
                                   @Nonnull final String sName,
                                   @Nullable final Object aValue)
   {
@@ -101,7 +94,7 @@ public class RequestParamMap implements IRequestParamMap
     if (nIndex == -1)
     {
       // Value level
-      aMap.put (sName, aValue);
+      aMap.put (sName, RequestParamMapItem.create (aValue));
     }
     else
     {
@@ -119,55 +112,46 @@ public class RequestParamMap implements IRequestParamMap
         final String sPrefix = sName.substring (0, nIndex);
 
         // Ensure that the respective map is present
-        final Object aPrefixValue = aMap.get (sPrefix);
-        Map <String, Object> aChildMap = GenericReflection.<Object, Map <String, Object>> uncheckedCast (aPrefixValue);
-        if (aChildMap == null)
+        RequestParamMapItem aChildItem = aMap.get (sPrefix);
+        if (aChildItem == null)
         {
-          aChildMap = new HashMap <String, Object> ();
-          aMap.put (sPrefix, aChildMap);
+          aChildItem = new RequestParamMapItem ();
+          aMap.put (sPrefix, aChildItem);
         }
 
         // Recursively scan child items (starting at the first character after
-        // the
-        // '[')
-        _recursiveAddItem (aChildMap, sName.substring (nIndex + s_sOpen.length ()), aValue);
+        // the '[')
+        _recursiveAddItem (aChildItem.directGetChildren (), sName.substring (nIndex + s_sOpen.length ()), aValue);
       }
     }
   }
 
-  public void put (@Nonnull final String sName, @Nullable final Object aValue)
+  public void put (@Nonnull final String sPath, @Nullable final Object aValue)
   {
     // replace everything just to have opening separators ("[") left and only
     // one closing separator ("]") at the end
-    String sRealName = StringHelper.replaceAll (sName, s_sClose + s_sOpen, s_sOpen);
+    String sRealPath = StringHelper.replaceAll (sPath, s_sClose + s_sOpen, s_sOpen);
     // Remove the remaining trailing closing separator
-    sRealName = StringHelper.trimEnd (sRealName, s_sClose);
+    sRealPath = StringHelper.trimEnd (sRealPath, s_sClose);
     // Remove any remaining opening closing separator because this indicates and
     // invalid level (as e.g. in 'columns[0][]')
-    while (sRealName.endsWith (s_sOpen))
-      sRealName = StringHelper.trimEnd (sRealName, s_sOpen.length ());
+    while (sRealPath.endsWith (s_sOpen))
+      sRealPath = StringHelper.trimEnd (sRealPath, s_sOpen.length ());
     // Start parsing
-    _recursiveAddItem (m_aMap, sRealName, aValue);
+    _recursiveAddItem (m_aMap, sRealPath, aValue);
   }
 
   @Nullable
-  private static Map <String, Object> _getAsMap (@Nonnull final Map <String, Object> aMap, @Nullable final String sPath)
+  private static Map <String, RequestParamMapItem> _getChildMap (@Nonnull final Map <String, RequestParamMapItem> aMap,
+                                                                 @Nullable final String sPath)
   {
-    final Object aPathObj = aMap.get (sPath);
-    if (aPathObj != null && !(aPathObj instanceof Map <?, ?>))
-    {
-      s_aLogger.warn ("You're trying to access the path element '" +
-                      sPath +
-                      "' as map, but it is a " +
-                      ClassHelper.getClassLocalName (aPathObj) +
-                      "!");
-      return null;
-    }
-    return GenericReflection.<Object, Map <String, Object>> uncheckedCast (aPathObj);
+    final RequestParamMapItem aPathObj = aMap.get (sPath);
+    return aPathObj == null ? null : aPathObj.directGetChildren ();
   }
 
   /**
-   * Iterate the root map down to the map specified by the passed path.
+   * Iterate the root map down to the map specified by the passed path except
+   * for the last element.
    *
    * @param aPath
    *        The path to iterate. May neither be <code>null</code> nor empty.
@@ -175,15 +159,15 @@ public class RequestParamMap implements IRequestParamMap
    *         child.
    */
   @Nullable
-  private Map <String, Object> _getResolvedChildMap (@Nonnull @Nonempty final String... aPath)
+  private Map <String, RequestParamMapItem> _getChildMapExceptLast (@Nonnull @Nonempty final String... aPath)
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
-    Map <String, Object> aMap = m_aMap;
+    Map <String, RequestParamMapItem> aMap = m_aMap;
     // Until the second last object
     for (int i = 0; i < aPath.length - 1; ++i)
     {
-      aMap = _getAsMap (aMap, aPath[i]);
+      aMap = _getChildMap (aMap, aPath[i]);
       if (aMap == null)
         return null;
     }
@@ -192,69 +176,79 @@ public class RequestParamMap implements IRequestParamMap
 
   public boolean contains (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, Object> aMap = _getResolvedChildMap (aPath);
-    return aMap != null && aMap.containsKey (ArrayHelper.getLast (aPath));
+    final Map <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
+    if (aMap == null)
+      return false;
+    final String sLastPathPart = ArrayHelper.getLast (aPath);
+    if (aMap.containsKey (sLastPathPart))
+      return true;
+
+    for (final RequestParamMapItem aItem : aMap.values ())
+      if (aItem.containsChild (sLastPathPart))
+        return true;
+
+    return false;
   }
 
   @Nullable
-  public Object getObject (@Nonnull @Nonempty final String... aPath)
+  public RequestParamMapItem getObject (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, Object> aMap = _getResolvedChildMap (aPath);
+    final Map <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
     return aMap == null ? null : aMap.get (ArrayHelper.getLast (aPath));
   }
 
   @Nullable
   public String getString (@Nonnull @Nonempty final String... aPath)
   {
-    final Object aValue = getObject (aPath);
-    return AttributeValueConverter.getAsString (ArrayHelper.getLast (aPath), aValue, null);
+    final RequestParamMapItem aItem = getObject (aPath);
+    return aItem == null ? null : aItem.getValue ();
   }
 
   public boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
   {
-    final Object aValue = getObject (sPath);
-    return AttributeValueConverter.getAsBoolean (sPath, aValue, bDefault);
+    final RequestParamMapItem aItem = getObject (sPath);
+    return AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
   }
 
   public double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
   {
-    final Object aValue = getObject (sPath);
-    return AttributeValueConverter.getAsDouble (sPath, aValue, dDefault);
+    final RequestParamMapItem aItem = getObject (sPath);
+    return AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
   }
 
   public int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
   {
-    final Object aValue = getObject (sPath);
-    return AttributeValueConverter.getAsInt (sPath, aValue, nDefault);
+    final RequestParamMapItem aItem = getObject (sPath);
+    return AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
   }
 
   public long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
   {
-    final Object aValue = getObject (sPath);
-    return AttributeValueConverter.getAsLong (sPath, aValue, nDefault);
+    final RequestParamMapItem aItem = getObject (sPath);
+    return AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
   }
 
   @Nullable
   public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
-    final Object aValue = getObject (aPath);
-    return AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath), aValue, null);
+    final RequestParamMapItem aItem = getObject (aPath);
+    return AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath), aItem.getValue (), null);
   }
 
   @Nullable
   public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
-    final Object aValue = getObject (aPath);
-    return AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath), aValue, null);
+    final RequestParamMapItem aItem = getObject (aPath);
+    return AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath), aItem.getValue (), null);
   }
 
   @Nullable
-  private Map <String, Object> _getResolvedMap (@Nonnull final String... aPath)
+  private Map <String, RequestParamMapItem> _getChildMapFully (@Nonnull final String... aPath)
   {
-    Map <String, Object> aMap = m_aMap;
+    Map <String, RequestParamMapItem> aMap = m_aMap;
     for (final String sPath : aPath)
     {
-      aMap = _getAsMap (aMap, sPath);
+      aMap = _getChildMap (aMap, sPath);
       if (aMap == null)
         return null;
     }
@@ -264,7 +258,7 @@ public class RequestParamMap implements IRequestParamMap
   @Nullable
   public Map <String, String> getValueMap (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, Object> aMap = _getResolvedMap (aPath);
+    final Map <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
       return null;
     return getAsValueMap (aMap);
@@ -276,7 +270,7 @@ public class RequestParamMap implements IRequestParamMap
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
-    final Map <String, Object> aMap = _getResolvedMap (aPath);
+    final Map <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
       return null;
     return new RequestParamMap (aMap);
@@ -307,26 +301,27 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public Collection <Object> values ()
+  public Collection <RequestParamMapItem> values ()
   {
     return CollectionHelper.newList (m_aMap.values ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, Object> getAsObjectMap ()
+  public Map <String, RequestParamMapItem> getAsObjectMap ()
   {
     return CollectionHelper.newMap (m_aMap);
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getAsValueMap (final Map <String, Object> aMap) throws ClassCastException
+  public static Map <String, String> getAsValueMap (final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
     final Map <String, String> ret = new HashMap <String, String> (aMap.size ());
-    for (final Map.Entry <String, Object> aEntry : aMap.entrySet ())
-      ret.put (aEntry.getKey (), (String) aEntry.getValue ());
+    for (final Map.Entry <String, RequestParamMapItem> aEntry : aMap.entrySet ())
+      if (aEntry.getValue ().hasValue ())
+        ret.put (aEntry.getKey (), aEntry.getValue ().getValue ());
     return ret;
   }
 

@@ -213,39 +213,45 @@ public class RequestParamMap implements IRequestParamMap
   public boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
+    return aItem == null ? bDefault : AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
   }
 
   public double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
+    return aItem == null ? dDefault : AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
   }
 
   public int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
+    return aItem == null ? nDefault : AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
   }
 
   public long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
+    return aItem == null ? nDefault : AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
   }
 
   @Nullable
   public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath), aItem.getValue (), null);
+    return aItem == null ? null
+                         : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
+                                                                    aItem.getValue (),
+                                                                    null);
   }
 
   @Nullable
   public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath), aItem.getValue (), null);
+    return aItem == null ? null
+                         : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
+                                                                    aItem.getValue (),
+                                                                    null);
   }
 
   @Nullable

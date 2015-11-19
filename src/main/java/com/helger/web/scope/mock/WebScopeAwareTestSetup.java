@@ -74,7 +74,7 @@ public final class WebScopeAwareTestSetup
   public static MockServletContext createDefaultMockServletContext (@Nullable final String sContextPath,
                                                                     @Nullable final Map <String, String> aInitParams)
   {
-    return new MockServletContext (sContextPath, aInitParams);
+    return MockServletContext.create (sContextPath, aInitParams);
   }
 
   /**

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -75,6 +76,7 @@ public class MockServletContext implements ServletContext
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
   public static final String DEFAULT_SERVLET_CONTEXT_PATH = "";
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletContext.class);
+  private static final AtomicBoolean s_aReThrowListenerException = new AtomicBoolean (false);
 
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
@@ -87,61 +89,23 @@ public class MockServletContext implements ServletContext
   private boolean m_bInvalidated = false;
 
   /**
-   * Create a new MockServletContext, using no base path and a
-   * DefaultIResourceProvider (i.e. the classpath root as WAR root).
+   * @return <code>true</code> if runtime exceptions from context listeners
+   *         should be propagated to the outside or if they should be logged and
+   *         processing should continue. Default is <code>false</code>.
    */
-  public MockServletContext ()
+  public static boolean isReThrowListenerException ()
   {
-    this (null, "", null, null);
+    return s_aReThrowListenerException.get ();
   }
 
   /**
-   * Create a new MockServletContext, using no base path and a
-   * DefaultIResourceProvider (i.e. the classpath root as WAR root).
-   *
-   * @param aInitParams
-   *        The init parameter
+   * @param bReThrowListenerException
+   *        <code>true</code> to re-throw listener exceptions (on context inited
+   *        and destroyed)
    */
-  public MockServletContext (@Nullable final Map <String, String> aInitParams)
+  public static void setReThrowListenerException (final boolean bReThrowListenerException)
   {
-    this (null, "", null, aInitParams);
-  }
-
-  /**
-   * Create a new MockServletContext.
-   *
-   * @param sContextPath
-   *        The context path to use. May be <code>null</code>.
-   */
-  public MockServletContext (@Nullable final String sContextPath)
-  {
-    this (sContextPath, "", null, null);
-  }
-
-  /**
-   * Create a new MockServletContext.
-   *
-   * @param sContextPath
-   *        Context path to use. May be <code>null</code>.
-   * @param aInitParams
-   *        The init parameter The context path to use
-   */
-  public MockServletContext (@Nullable final String sContextPath, @Nullable final Map <String, String> aInitParams)
-  {
-    this (sContextPath, "", null, aInitParams);
-  }
-
-  /**
-   * Create a new MockServletContext.
-   *
-   * @param sContextPath
-   *        The context path to use
-   * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash)
-   */
-  public MockServletContext (@Nullable final String sContextPath, @Nullable final String sResourceBasePath)
-  {
-    this (sContextPath, sResourceBasePath, null, null);
+    s_aReThrowListenerException.set (bReThrowListenerException);
   }
 
   /**
@@ -156,10 +120,10 @@ public class MockServletContext implements ServletContext
    * @param aInitParams
    *        Optional map with initialization parameters
    */
-  public MockServletContext (@Nullable final String sContextPath,
-                             @Nullable final String sResourceBasePath,
-                             @Nullable final IReadableResourceProvider aResourceLoader,
-                             @Nullable final Map <String, String> aInitParams)
+  protected MockServletContext (@Nullable final String sContextPath,
+                                @Nullable final String sResourceBasePath,
+                                @Nullable final IReadableResourceProvider aResourceLoader,
+                                @Nullable final Map <String, String> aInitParams)
   {
     setContextPath (sContextPath);
     m_aResourceProvider = aResourceLoader != null ? aResourceLoader : new DefaultResourceProvider ();
@@ -173,11 +137,6 @@ public class MockServletContext implements ServletContext
     if (aInitParams != null)
       for (final Map.Entry <String, String> aEntry : aInitParams.entrySet ())
         addInitParameter (aEntry.getKey (), aEntry.getValue ());
-
-    // Invoke all event listeners
-    final ServletContextEvent aSCE = new ServletContextEvent (this);
-    for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
-      aListener.contextInitialized (aSCE);
 
     m_aServletPool = new MockServletPool (this);
   }
@@ -481,7 +440,16 @@ public class MockServletContext implements ServletContext
     // Call all HTTP listener
     final ServletContextEvent aSCE = new ServletContextEvent (this);
     for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
-      aListener.contextDestroyed (aSCE);
+      try
+      {
+        aListener.contextDestroyed (aSCE);
+      }
+      catch (final RuntimeException ex)
+      {
+        if (isReThrowListenerException ())
+          throw ex;
+        s_aLogger.error ("Failed to call contextDestroyed on " + aListener, ex);
+      }
 
     m_aAttributes.clear ();
   }
@@ -640,5 +608,118 @@ public class MockServletContext implements ServletContext
   public void declareRoles (final String... roleNames)
   {
     throw new UnsupportedOperationException ();
+  }
+
+  /**
+   * Create a new MockServletContext, using no base path and a
+   * DefaultResourceProvider (i.e. the classpath root as WAR root).
+   *
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create ()
+  {
+    return create (null, "", null, null);
+  }
+
+  /**
+   * Create a new MockServletContext, using no base path and a
+   * DefaultIResourceProvider (i.e. the classpath root as WAR root).
+   *
+   * @param aInitParams
+   *        The init parameter
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create (@Nullable final Map <String, String> aInitParams)
+  {
+    return create (null, "", null, aInitParams);
+  }
+
+  /**
+   * Create a new MockServletContext.
+   *
+   * @param sContextPath
+   *        The context path to use. May be <code>null</code>.
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create (@Nullable final String sContextPath)
+  {
+    return create (sContextPath, "", null, null);
+  }
+
+  /**
+   * Create a new MockServletContext.
+   *
+   * @param sContextPath
+   *        Context path to use. May be <code>null</code>.
+   * @param aInitParams
+   *        The init parameter The context path to use
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create (@Nullable final String sContextPath,
+                                           @Nullable final Map <String, String> aInitParams)
+  {
+    return create (sContextPath, "", null, aInitParams);
+  }
+
+  /**
+   * Create a new MockServletContext.
+   *
+   * @param sContextPath
+   *        The context path to use
+   * @param sResourceBasePath
+   *        the WAR root directory (should not end with a slash)
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create (@Nullable final String sContextPath,
+                                           @Nullable final String sResourceBasePath)
+  {
+    return create (sContextPath, sResourceBasePath, null, null);
+  }
+
+  /**
+   * Create a new MockServletContext.
+   *
+   * @param sContextPath
+   *        The context path to use
+   * @param sResourceBasePath
+   *        the WAR root directory (should not end with a slash)
+   * @param aResourceLoader
+   *        the IReadableResourceProvider to use (or null for the default)
+   * @param aInitParams
+   *        Optional map with initialization parameters
+   * @return The created {@link MockServletContext}
+   */
+  @Nonnull
+  public static MockServletContext create (@Nullable final String sContextPath,
+                                           @Nullable final String sResourceBasePath,
+                                           @Nullable final IReadableResourceProvider aResourceLoader,
+                                           @Nullable final Map <String, String> aInitParams)
+  {
+    final MockServletContext ret = new MockServletContext (sContextPath,
+                                                           sResourceBasePath,
+                                                           aResourceLoader,
+                                                           aInitParams);
+
+    // Invoke all event listeners after the servlet context object itself
+    // finished!
+    final ServletContextEvent aSCE = new ServletContextEvent (ret);
+    for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
+      try
+      {
+        aListener.contextInitialized (aSCE);
+      }
+      catch (final RuntimeException ex)
+      {
+        if (isReThrowListenerException ())
+          throw ex;
+        s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
+      }
+
+    return ret;
   }
 }

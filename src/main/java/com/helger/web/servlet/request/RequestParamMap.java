@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,7 +69,8 @@ public class RequestParamMap implements IRequestParamMap
   /** The index close separator */
   private static String s_sClose = DEFAULT_CLOSE;
 
-  private final Map <String, RequestParamMapItem> m_aMap = new HashMap <String, RequestParamMapItem> ();
+  /** Linked hash map for consistent results */
+  private final Map <String, RequestParamMapItem> m_aMap = new LinkedHashMap <String, RequestParamMapItem> ();
 
   public RequestParamMap ()
   {}

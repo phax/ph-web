@@ -34,7 +34,7 @@ public final class MockHttpServletRequestTest
   public void testSetPathsFromRequestURI ()
   {
     final String sContextPath = "/ctx";
-    final MockServletContext aSC = new MockServletContext (sContextPath);
+    final MockServletContext aSC = MockServletContext.create (sContextPath);
     try
     {
       final MockHttpServletRequest c = new MockHttpServletRequest (aSC, EHTTPMethod.GET);

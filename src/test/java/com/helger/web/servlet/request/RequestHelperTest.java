@@ -37,10 +37,11 @@ public final class RequestHelperTest
   @Test
   public void testGetRequestURI ()
   {
-    final MockServletContext aSC = new MockServletContext ();
+    final MockServletContext aSC = MockServletContext.create ();
     try
     {
-      final MockHttpServletRequest r = new MockHttpServletRequest (aSC, EHTTPMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
+      final MockHttpServletRequest r = new MockHttpServletRequest (aSC,
+                                                                   EHTTPMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));
       r.addParameters (new SMap ().add ("abc", "xyz"));
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));

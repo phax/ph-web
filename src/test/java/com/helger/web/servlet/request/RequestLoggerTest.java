@@ -35,7 +35,7 @@ public final class RequestLoggerTest
   @Test
   public void testBasic ()
   {
-    final MockServletContext aSC = new MockServletContext ();
+    final MockServletContext aSC = MockServletContext.create ();
     try
     {
       final HttpServletRequest aHttpRequest = new MockHttpServletRequest (aSC);

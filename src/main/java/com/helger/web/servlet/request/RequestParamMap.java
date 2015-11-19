@@ -19,7 +19,6 @@ package com.helger.web.servlet.request;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -332,7 +331,7 @@ public class RequestParamMap implements IRequestParamMap
   public static Map <String, String> getAsValueMap (final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
-    final Map <String, String> ret = new HashMap <String, String> (aMap.size ());
+    final Map <String, String> ret = new LinkedHashMap <String, String> (aMap.size ());
     for (final Map.Entry <String, RequestParamMapItem> aEntry : aMap.entrySet ())
       if (aEntry.getValue ().hasValue ())
         ret.put (aEntry.getKey (), aEntry.getValue ().getValue ());

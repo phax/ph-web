@@ -17,7 +17,7 @@
 package com.helger.web.servlet.request;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -39,7 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
 public final class RequestParamMapItem implements Serializable
 {
   private String m_sValue;
-  private final Map <String, RequestParamMapItem> m_aChildren = new HashMap <String, RequestParamMapItem> ();
+  private final Map <String, RequestParamMapItem> m_aChildren = new LinkedHashMap <String, RequestParamMapItem> ();
 
   public RequestParamMapItem ()
   {}

@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.io.resource.IReadableResource;
@@ -139,6 +140,25 @@ public class MockServletContext implements ServletContext
         addInitParameter (aEntry.getKey (), aEntry.getValue ());
 
     m_aServletPool = new MockServletPool (this);
+  }
+
+  @OverrideOnDemand
+  protected void initListeners ()
+  {
+    // Invoke all event listeners after the servlet context object itself
+    // finished!
+    final ServletContextEvent aSCE = new ServletContextEvent (this);
+    for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
+      try
+      {
+        aListener.contextInitialized (aSCE);
+      }
+      catch (final RuntimeException ex)
+      {
+        if (isReThrowListenerException ())
+          throw ex;
+        s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
+      }
   }
 
   /**
@@ -704,22 +724,7 @@ public class MockServletContext implements ServletContext
                                                            sResourceBasePath,
                                                            aResourceLoader,
                                                            aInitParams);
-
-    // Invoke all event listeners after the servlet context object itself
-    // finished!
-    final ServletContextEvent aSCE = new ServletContextEvent (ret);
-    for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
-      try
-      {
-        aListener.contextInitialized (aSCE);
-      }
-      catch (final RuntimeException ex)
-      {
-        if (isReThrowListenerException ())
-          throw ex;
-        s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
-      }
-
+    ret.initListeners ();
     return ret;
   }
 }

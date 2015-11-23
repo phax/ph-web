@@ -18,6 +18,12 @@
 
 -->
 <changelog xmlns="http://www.helger.com/xsd/changelog/1.0" version="1.0" component="ph-web">
+  <release date="2015-11-23" version="7.0.2" />
+  <entry date="2015-11-19" category="api" action="change">
+    <change>
+      <text locale="en">Made MockServletContext more configurable and overloadable</text>
+    </change>
+  </entry>
   <release date="2015-09-15" version="7.0.2" />
   <release date="2015-09-14" version="7.0.1" />
   <entry date="2015-09-14" category="api" action="change">

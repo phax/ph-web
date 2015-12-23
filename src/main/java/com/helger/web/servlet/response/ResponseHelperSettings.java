@@ -16,21 +16,20 @@
  */
 package com.helger.web.servlet.response;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.state.EChange;
-import com.helger.datetime.PDTFactory;
 import com.helger.web.datetime.PDTWebDateHelper;
 
 /**
@@ -42,12 +41,7 @@ import com.helger.web.datetime.PDTWebDateHelper;
 public final class ResponseHelperSettings
 {
   /** A special date that never expires */
-  public static final LocalDateTime EXPIRES_NEVER_DATETIME = PDTFactory.createLocalDateTime (1995,
-                                                                                             DateTimeConstants.MAY,
-                                                                                             6,
-                                                                                             12,
-                                                                                             0,
-                                                                                             0);
+  public static final LocalDateTime EXPIRES_NEVER_DATETIME = LocalDateTime.of (1995, Month.MAY, 6, 12, 0, 0);
 
   /** The string representation of never expires date */
   public static final String EXPIRES_NEVER_STRING = PDTWebDateHelper.getAsStringRFC822 (EXPIRES_NEVER_DATETIME);

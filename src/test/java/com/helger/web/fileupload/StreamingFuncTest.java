@@ -46,6 +46,7 @@ import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.servlet.AbstractServletInputStream;
 
 /**
  * Unit test for items with varying sizes.
@@ -178,7 +179,7 @@ public final class StreamingFuncTest
       }
 
       @Override
-      public int read (final byte b [], final int off, final int len) throws IOException
+      public int read (final byte b[], final int off, final int len) throws IOException
       {
         return bais.read (b, off, Math.min (len, 3));
       }
@@ -229,7 +230,7 @@ public final class StreamingFuncTest
       @Override
       public ServletInputStream getInputStream ()
       {
-        return new ServletInputStream ()
+        return new AbstractServletInputStream ()
         {
           @Override
           public int read () throws IOException
@@ -257,37 +258,39 @@ public final class StreamingFuncTest
   private static byte [] _newShortRequest () throws IOException
   {
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII");
-    osw.write (_getHeader ("field"));
-    osw.write ("123");
-    osw.write ("\r\n");
-    osw.write (_getFooter ());
-    osw.close ();
+    try (final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII"))
+    {
+      osw.write (_getHeader ("field"));
+      osw.write ("123");
+      osw.write ("\r\n");
+      osw.write (_getFooter ());
+    }
     return baos.toByteArray ();
   }
 
   private static byte [] _newRequest () throws IOException
   {
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII");
-    int add = 16;
-    int num = 0;
-    for (int i = 0; i < 16384; i += add)
+    try (final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII"))
     {
-      if (++add == 32)
+      int add = 16;
+      int num = 0;
+      for (int i = 0; i < 16384; i += add)
       {
-        add = 16;
+        if (++add == 32)
+        {
+          add = 16;
+        }
+        osw.write (_getHeader ("field" + (num++)));
+        osw.flush ();
+        for (int j = 0; j < i; j++)
+        {
+          baos.write ((byte) j);
+        }
+        osw.write ("\r\n");
       }
-      osw.write (_getHeader ("field" + (num++)));
-      osw.flush ();
-      for (int j = 0; j < i; j++)
-      {
-        baos.write ((byte) j);
-      }
-      osw.write ("\r\n");
+      osw.write (_getFooter ());
     }
-    osw.write (_getFooter ());
-    osw.close ();
     return baos.toByteArray ();
   }
 

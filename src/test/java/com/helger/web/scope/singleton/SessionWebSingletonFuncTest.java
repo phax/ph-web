@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scope.singleton.AbstractSessionWebSingleton;
 
 /**
  * Test class for class {@link AbstractSessionWebSingleton}.<br>

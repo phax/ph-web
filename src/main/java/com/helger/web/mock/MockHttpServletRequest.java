@@ -51,6 +51,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
@@ -65,6 +66,7 @@ import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.multimap.IMultiMapSetBased;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
@@ -1306,5 +1308,23 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     setQueryString (null);
     removeAllParameters ();
     return this;
+  }
+
+  // Servlet spec 3.1 methods:
+
+  public long getContentLengthLong ()
+  {
+    return getContentLength ();
+  }
+
+  public String changeSessionId ()
+  {
+    m_sSessionID = GlobalIDFactory.getNewStringID ();
+    return m_sSessionID;
+  }
+
+  public <T extends HttpUpgradeHandler> T upgrade (final Class <T> handlerClass) throws IOException, ServletException
+  {
+    throw new UnsupportedOperationException ("upgrade is not supported!");
   }
 }

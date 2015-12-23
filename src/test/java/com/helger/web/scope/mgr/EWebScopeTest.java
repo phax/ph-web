@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.web.scope.mgr.EWebScope;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
 /**

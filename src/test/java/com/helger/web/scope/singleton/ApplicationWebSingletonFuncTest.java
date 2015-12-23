@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
-import com.helger.web.scope.singleton.AbstractApplicationWebSingleton;
 
 /**
  * Test class for class {@link AbstractApplicationWebSingleton}.<br>

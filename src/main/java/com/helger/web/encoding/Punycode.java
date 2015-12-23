@@ -23,8 +23,8 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.codec.DecodeException;
 import com.helger.commons.codec.EncodeException;
-import com.helger.commons.i18n.CodepointHelper;
-import com.helger.commons.i18n.CodepointIteratorCharArray;
+import com.helger.lesscommons.i18n.CodepointHelper;
+import com.helger.lesscommons.i18n.CodepointIteratorCharArray;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

@@ -27,9 +27,6 @@ import org.junit.Test;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.web.servlet.server.StaticServerInfo;
-import com.helger.web.sitemap.CXMLSitemap;
-import com.helger.web.sitemap.XMLSitemapIndex;
-import com.helger.web.sitemap.XMLSitemapProvider;
 
 /**
  * Test class for class {@link XMLSitemapProvider}.

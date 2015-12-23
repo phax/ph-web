@@ -630,6 +630,11 @@ public class MockServletContext implements ServletContext
     throw new UnsupportedOperationException ();
   }
 
+  public String getVirtualServerName ()
+  {
+    return "Mock Server";
+  }
+
   /**
    * Create a new MockServletContext, using no base path and a
    * DefaultResourceProvider (i.e. the classpath root as WAR root).

@@ -20,9 +20,6 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.IsSPIImplementation;
 import com.helger.commons.url.SimpleURL;
-import com.helger.web.sitemap.IXMLSitemapProviderSPI;
-import com.helger.web.sitemap.XMLSitemapURL;
-import com.helger.web.sitemap.XMLSitemapURLSet;
 
 @IsSPIImplementation
 public final class MockXMLSitemapProviderMultiFileSPI implements IXMLSitemapProviderSPI

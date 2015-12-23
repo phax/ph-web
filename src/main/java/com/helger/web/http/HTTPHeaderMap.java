@@ -17,6 +17,9 @@
 package com.helger.web.http;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -27,10 +30,6 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -131,7 +130,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
   }
 
   @Nonnull
-  public static String getDateTimeAsString (@Nonnull final DateTime aDT)
+  public static String getDateTimeAsString (@Nonnull final ZonedDateTime aDT)
   {
     ValueEnforcer.notNull (aDT, "DateTime");
 
@@ -158,7 +157,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void setDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    setDateHeader (sName, PDTFactory.createDateTimeFromMillis (nMillis));
+    setDateHeader (sName, PDTFactory.createZonedDateTime (nMillis));
   }
 
   /**
@@ -173,7 +172,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDate aLD)
   {
-    setDateHeader (sName, PDTFactory.createDateTime (aLD));
+    setDateHeader (sName, PDTFactory.createZonedDateTime (aLD));
   }
 
   /**
@@ -187,7 +186,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDateTime aLDT)
   {
-    setDateHeader (sName, PDTFactory.createDateTime (aLDT));
+    setDateHeader (sName, PDTFactory.createZonedDateTime (aLDT));
   }
 
   /**
@@ -198,7 +197,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    * @param aDT
    *        The DateTime to set as a date. May not be <code>null</code>.
    */
-  public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
+  public void setDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final ZonedDateTime aDT)
   {
     _setHeader (sName, getDateTimeAsString (aDT));
   }
@@ -213,7 +212,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void addDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
   {
-    addDateHeader (sName, PDTFactory.createDateTimeFromMillis (nMillis));
+    addDateHeader (sName, PDTFactory.createZonedDateTime (nMillis));
   }
 
   /**
@@ -228,7 +227,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDate aLD)
   {
-    addDateHeader (sName, PDTFactory.createDateTime (aLD));
+    addDateHeader (sName, PDTFactory.createZonedDateTime (aLD));
   }
 
   /**
@@ -242,7 +241,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    */
   public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final LocalDateTime aLDT)
   {
-    addDateHeader (sName, PDTFactory.createDateTime (aLDT));
+    addDateHeader (sName, PDTFactory.createZonedDateTime (aLDT));
   }
 
   /**
@@ -253,7 +252,7 @@ public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, Lis
    * @param aDT
    *        The DateTime to set as a date. May not be <code>null</code>.
    */
-  public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final DateTime aDT)
+  public void addDateHeader (@Nonnull @Nonempty final String sName, @Nonnull final ZonedDateTime aDT)
   {
     _addHeader (sName, getDateTimeAsString (aDT));
   }

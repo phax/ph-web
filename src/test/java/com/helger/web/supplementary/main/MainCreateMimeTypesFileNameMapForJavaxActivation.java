@@ -19,6 +19,8 @@ package com.helger.web.supplementary.main;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.time.Clock;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +33,6 @@ import com.helger.commons.mime.MimeTypeInfo;
 import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.vendor.VendorInfo;
-import com.helger.datetime.PDTFactory;
 
 public final class MainCreateMimeTypesFileNameMapForJavaxActivation
 {
@@ -69,7 +70,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       for (final String sLine : VendorInfo.getFileHeaderLines ())
         w.write ("# " + sLine + '\n');
       w.write ("#\n");
-      w.write ("# Created on: " + PDTFactory.getCurrentDateTime ().toString () + "\n");
+      w.write ("# Created on: " + ZonedDateTime.now (Clock.systemUTC ()).toString () + "\n");
       w.write ("# Created by: " + MainCreateMimeTypesFileNameMapForJavaxActivation.class.getName () + "\n");
       w.write ("#\n");
 

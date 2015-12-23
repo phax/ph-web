@@ -31,8 +31,8 @@ import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
 import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
-import com.helger.web.fileupload.io.ICloseable;
 import com.helger.web.fileupload.io.FileUploadHelper;
+import com.helger.web.fileupload.io.ICloseable;
 
 /**
  * Default implementation of {@link IFileItemStream}.

@@ -54,6 +54,7 @@ import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.CWeb;
+import com.helger.web.servlet.AbstractServletOutputStream;
 
 /**
  * Mock implementation of {@link HttpServletResponse}.
@@ -73,7 +74,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   private boolean m_bWriterAccessAllowed = true;
   private Charset m_aCharacterEncoding = DEFAULT_CHARSET_OBJ;
   private final NonBlockingByteArrayOutputStream m_aContent = new NonBlockingByteArrayOutputStream ();
-  private final ServletOutputStream m_aOS = new ServletOutputStream ()
+  private final ServletOutputStream m_aOS = new AbstractServletOutputStream ()
   {
     @Override
     public void write (final int b) throws IOException
@@ -91,7 +92,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
     }
   };
   private PrintWriter m_aWriter;
-  private int m_nContentLength = 0;
+  private long m_nContentLength = 0;
   private String m_sContentType;
   private int m_nBufferSize = DEFAULT_BUFFER_SIZE;
   private boolean m_bCommitted;
@@ -240,7 +241,7 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 
   public int getContentLength ()
   {
-    return m_nContentLength;
+    return (int) m_nContentLength;
   }
 
   public void setContentType (@Nullable final String sContentType)
@@ -643,5 +644,12 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
       super.flush ();
       setCommitted (true);
     }
+  }
+
+  // Servlet spec 3.1 methods:
+
+  public void setContentLengthLong (final long len)
+  {
+    m_nContentLength = len;
   }
 }

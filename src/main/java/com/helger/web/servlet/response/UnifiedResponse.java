@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +60,6 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.URLHelper;
-import com.helger.datetime.PDTFactory;
 import com.helger.web.encoding.RFC5987Encoder;
 import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.AcceptCharsetList;
@@ -743,8 +744,7 @@ public class UnifiedResponse
     {
       case HTTP_10:
       {
-        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES,
-                                            PDTFactory.getCurrentDateTime ().plusSeconds (nSeconds));
+        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES, LocalDate.now ().plus (nSeconds, ChronoUnit.SECONDS));
         break;
       }
       case HTTP_11:
@@ -1237,12 +1237,12 @@ public class UnifiedResponse
       if (nContentLength > 0 && m_eHTTPMethod.isContentAllowed ())
       {
         // Create the correct stream
-        final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse);
-
-        // Emit main content to stream
-        aOS.write (m_aContent, 0, nContentLength);
-        aOS.flush ();
-        aOS.close ();
+        try (final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse))
+        {
+          // Emit main content to stream
+          aOS.write (m_aContent, 0, nContentLength);
+          aOS.flush ();
+        }
 
         _applyLengthChecks (nContentLength);
       }

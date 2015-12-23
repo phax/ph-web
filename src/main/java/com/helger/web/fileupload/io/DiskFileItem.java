@@ -261,19 +261,20 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     // read values
     aOIS.defaultReadObject ();
 
-    final OutputStream aOS = getOutputStream ();
-    if (m_aCachedContent != null)
+    try (final OutputStream aOS = getOutputStream ())
     {
-      aOS.write (m_aCachedContent);
+      if (m_aCachedContent != null)
+      {
+        aOS.write (m_aCachedContent);
+      }
+      else
+      {
+        final InputStream aIS = FileHelper.getInputStream (m_aDFOSFile);
+        StreamHelper.copyInputStreamToOutputStream (aIS, aOS);
+        FileOperations.deleteFile (m_aDFOSFile);
+        m_aDFOSFile = null;
+      }
     }
-    else
-    {
-      final InputStream aIS = FileHelper.getInputStream (m_aDFOSFile);
-      StreamHelper.copyInputStreamToOutputStream (aIS, aOS);
-      FileOperations.deleteFile (m_aDFOSFile);
-      m_aDFOSFile = null;
-    }
-    aOS.close ();
 
     m_aCachedContent = null;
   }

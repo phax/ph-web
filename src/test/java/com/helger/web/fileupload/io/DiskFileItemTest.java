@@ -211,11 +211,9 @@ public final class DiskFileItemTest
     final String textFieldName = "textField";
 
     final IFileItem item = factory.createItem (textFieldName, textContentType, true, "My File Name");
-    try
+    try (final OutputStream os = item.getOutputStream ())
     {
-      final OutputStream os = item.getOutputStream ();
       os.write (contentBytes);
-      os.close ();
     }
     catch (final IOException e)
     {
@@ -234,12 +232,10 @@ public final class DiskFileItemTest
 
     // Serialize the test object
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    try
+    try (final ObjectOutputStream oos = new ObjectOutputStream (baos))
     {
-      final ObjectOutputStream oos = new ObjectOutputStream (baos);
       oos.writeObject (target);
       oos.flush ();
-      oos.close ();
     }
     catch (final Exception e)
     {
@@ -248,19 +244,15 @@ public final class DiskFileItemTest
 
     // Deserialize the test object
     Object result = null;
-    try
+    try (final ByteArrayInputStream bais = new ByteArrayInputStream (baos.toByteArray ());
+         final ObjectInputStream ois = new ObjectInputStream (bais))
     {
-      final ByteArrayInputStream bais = new ByteArrayInputStream (baos.toByteArray ());
-      final ObjectInputStream ois = new ObjectInputStream (bais);
       result = ois.readObject ();
-      bais.close ();
     }
     catch (final Exception e)
     {
       fail ("Exception during deserialization: " + e);
     }
     return result;
-
   }
-
 }

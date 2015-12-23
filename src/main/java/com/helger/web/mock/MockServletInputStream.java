@@ -24,14 +24,15 @@ import javax.servlet.ServletInputStream;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.web.servlet.AbstractServletInputStream;
 
 /**
  * A {@link ServletInputStream} for testing based on a predefined byte array or
  * an existing {@link InputStream}.
- * 
+ *
  * @author Philip Helger
  */
-public class MockServletInputStream extends ServletInputStream
+public class MockServletInputStream extends AbstractServletInputStream
 {
   private final InputStream m_aIS;
 

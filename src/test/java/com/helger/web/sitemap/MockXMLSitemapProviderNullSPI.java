@@ -19,8 +19,6 @@ package com.helger.web.sitemap;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.web.sitemap.IXMLSitemapProviderSPI;
-import com.helger.web.sitemap.XMLSitemapURLSet;
 
 @IsSPIImplementation
 public final class MockXMLSitemapProviderNullSPI implements IXMLSitemapProviderSPI

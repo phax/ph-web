@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.http.CHTTPHeader;
+import com.helger.web.servlet.AbstractServletOutputStream;
 import com.helger.web.servlet.response.ResponseHelper;
 
 /**
@@ -40,7 +41,7 @@ import com.helger.web.servlet.response.ResponseHelper;
  *
  * @author Philip Helger
  */
-public abstract class AbstractCompressedServletOutputStream extends ServletOutputStream
+public abstract class AbstractCompressedServletOutputStream extends AbstractServletOutputStream
 {
   private static final int DEFAULT_BUFSIZE = 8192;
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractCompressedServletOutputStream.class);
@@ -300,7 +301,9 @@ public abstract class AbstractCompressedServletOutputStream extends ServletOutpu
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public final void write (@Nonnull final byte [] aBytes,
+                           @Nonnegative final int nOfs,
+                           @Nonnegative final int nLen) throws IOException
   {
     _prepareToWrite (nLen);
     m_aOS.write (aBytes, nOfs, nLen);

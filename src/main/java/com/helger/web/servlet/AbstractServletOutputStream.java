@@ -5,7 +5,7 @@ import javax.servlet.WriteListener;
 
 /**
  * Abstract base class for Servlet 3.1 {@link ServletOutputStream}
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractServletOutputStream extends ServletOutputStream

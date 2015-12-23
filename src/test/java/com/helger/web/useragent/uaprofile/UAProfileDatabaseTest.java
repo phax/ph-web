@@ -55,19 +55,19 @@ public final class UAProfileDatabaseTest
     assertEquals (0, aProfile.getDiffCount ());
 
     aHttpRequest.addHeader ("25-Profile-Diff-1",
-                            "<?xml version=\"1.0\"?> <rdf:RDF\n"
-                                + "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" \n"
-                                + "xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\"> \n"
-                                + "<rdf:Description rdf:ID=\"MyDeviceProfile\">\n"
-                                + "<prf:component>\n"
-                                + "<rdf:Description rdf:ID=\"HardwarePlatform\">\n"
-                                + "<rdf:type\n"
-                                + "rdf:resource=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#HardwarePlatform\"/> \n"
-                                + "<prf:SoundOutputCapable>No</prf:SoundOutputCapable>\n"
-                                + "</rdf:Description>\n"
-                                + "</prf:component>\n"
-                                + "</rdf:Description>\n"
-                                + "</rdf:RDF>");
+                            "<?xml version=\"1.0\"?> <rdf:RDF\n" +
+                                                 "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" \n" +
+                                                 "xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\"> \n" +
+                                                 "<rdf:Description rdf:ID=\"MyDeviceProfile\">\n" +
+                                                 "<prf:component>\n" +
+                                                 "<rdf:Description rdf:ID=\"HardwarePlatform\">\n" +
+                                                 "<rdf:type\n" +
+                                                 "rdf:resource=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#HardwarePlatform\"/> \n" +
+                                                 "<prf:SoundOutputCapable>No</prf:SoundOutputCapable>\n" +
+                                                 "</rdf:Description>\n" +
+                                                 "</prf:component>\n" +
+                                                 "</rdf:Description>\n" +
+                                                 "</rdf:RDF>");
     aProfile = UAProfileDatabase.getUAProfileFromRequest (aHttpRequest);
     assertNotNull (aProfile);
     assertTrue (aProfile.isSet ());
@@ -89,19 +89,19 @@ public final class UAProfileDatabaseTest
     assertNull (aProfile);
 
     aHttpRequest.addHeader ("x-wap-profile-diff",
-                            "1;<?xml version=\"1.0\"?> <rdf:RDF\n"
-                                + "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" \n"
-                                + "xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\"> \n"
-                                + "<rdf:Description rdf:ID=\"MyDeviceProfile\">\n"
-                                + "<prf:component>\n"
-                                + "<rdf:Description rdf:ID=\"HardwarePlatform\">\n"
-                                + "<rdf:type\n"
-                                + "rdf:resource=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#HardwarePlatform\"/> \n"
-                                + "<prf:SoundOutputCapable>No</prf:SoundOutputCapable> \n"
-                                + "</rdf:Description>\n"
-                                + "</prf:component>\n"
-                                + "</rdf:Description>\n"
-                                + "</rdf:RDF>");
+                            "1;<?xml version=\"1.0\"?> <rdf:RDF\n" +
+                                                  "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" \n" +
+                                                  "xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\"> \n" +
+                                                  "<rdf:Description rdf:ID=\"MyDeviceProfile\">\n" +
+                                                  "<prf:component>\n" +
+                                                  "<rdf:Description rdf:ID=\"HardwarePlatform\">\n" +
+                                                  "<rdf:type\n" +
+                                                  "rdf:resource=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#HardwarePlatform\"/> \n" +
+                                                  "<prf:SoundOutputCapable>No</prf:SoundOutputCapable> \n" +
+                                                  "</rdf:Description>\n" +
+                                                  "</prf:component>\n" +
+                                                  "</rdf:Description>\n" +
+                                                  "</rdf:RDF>");
     aProfile = UAProfileDatabase.getUAProfileFromRequest (aHttpRequest);
     assertNotNull (aProfile);
     assertTrue (aProfile.isSet ());

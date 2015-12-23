@@ -29,11 +29,11 @@ import com.helger.web.proxy.IProxyConfig;
 public final class ProxyAutoConfigHelperTest
 {
   private static final String [] PAC_FILES = new String [] { "brz-proxy.pac",
-                                                            "wikipedia-pac.js",
-                                                            "returnproxy-complex.js",
-                                                            "returnproxy-simple-with-loadbalancing.js",
-                                                            "returnproxy-simple.js",
-                                                            "ente.regione.emr.it.js" };
+                                                             "wikipedia-pac.js",
+                                                             "returnproxy-complex.js",
+                                                             "returnproxy-simple-with-loadbalancing.js",
+                                                             "returnproxy-simple.js",
+                                                             "ente.regione.emr.it.js" };
 
   @Test
   public void testFindProxyForURL ()

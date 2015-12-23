@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Interface for a single web request scope object that also offers access to
  * the HTTP servlet response.
- * 
+ *
  * @author Philip Helger
  */
 public interface IRequestWebScope extends IRequestWebScopeWithoutResponse

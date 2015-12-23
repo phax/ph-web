@@ -25,7 +25,7 @@ import com.helger.commons.scope.ISessionScope;
 
 /**
  * Interface for a single session scope object.
- * 
+ *
  * @author Philip Helger
  */
 public interface ISessionWebScope extends ISessionScope, IWebScope
@@ -34,7 +34,7 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    * Get the underlying HTTP session. Important: do not use it to access the
    * attributes within the session. Use only the scope API for this, so that the
    * synchronization is consistent!
-   * 
+   *
    * @return The underlying HTTP session. Never <code>null</code>.
    */
   @Nonnull
@@ -43,7 +43,7 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
   /**
    * Returns the time when the underlying HTTP session was created, measured in
    * milliseconds since midnight January 1, 1970 GMT.
-   * 
+   *
    * @return a <code>long</code> specifying when this session was created,
    *         expressed in milliseconds since 1/1/1970 GMT
    * @exception IllegalStateException
@@ -59,7 +59,7 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    * <p>
    * Actions that your application takes, such as getting or setting a value
    * associated with the session, do not affect the access time.
-   * 
+   *
    * @return a <code>long</code> representing the last time the client sent a
    *         request associated with this session, expressed in milliseconds
    *         since 1/1/1970 GMT
@@ -73,7 +73,7 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    * will keep the underlying HTTP session open between client accesses. After
    * this interval, the servlet container will invalidate the session. A
    * negative time indicates the session should never timeout.
-   * 
+   *
    * @return an integer specifying the number of seconds this session remains
    *         open between client requests
    */
@@ -85,7 +85,7 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    * HTTP session. For example, if the server used only cookie-based sessions,
    * and the client had disabled the use of cookies, then a session would be new
    * on each request.
-   * 
+   *
    * @return <code>true</code> if the server has created a new HTTP session, but
    *         the client has not yet joined
    * @exception IllegalStateException

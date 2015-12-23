@@ -51,8 +51,8 @@ import com.helger.web.fileupload.io.AbstractLimitedInputStream;
  * </p>
  * <p>
  * This class handles multiple files per single HTML widget, sent using
- * <code>multipart/mixed</code> encoding type, as specified by <a
- * href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
+ * <code>multipart/mixed</code> encoding type, as specified by
+ * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
  * </p>
  * <p>
  * How the data for individual parts is stored is determined by the factory used
@@ -265,8 +265,7 @@ public abstract class AbstractFileUploadBase
    *         uploaded content.
    */
   @Nonnull
-  public IFileItemIterator getItemIterator (@Nonnull final IRequestContext aCtx) throws FileUploadException,
-                                                                                IOException
+  public IFileItemIterator getItemIterator (@Nonnull final IRequestContext aCtx) throws FileUploadException, IOException
   {
     return new FileItemIterator (aCtx);
   }
@@ -327,7 +326,8 @@ public abstract class AbstractFileUploadBase
           throw new IOFileUploadException ("Processing of " +
                                            MULTIPART_FORM_DATA +
                                            " request failed. " +
-                                           ex.getMessage (), ex);
+                                           ex.getMessage (),
+                                           ex);
         }
         finally
         {
@@ -666,10 +666,10 @@ public abstract class AbstractFileUploadBase
             protected void onLimitExceeded (final long nSizeMax, final long nCount) throws IOException
             {
               final FileUploadException ex = new SizeLimitExceededException ("the request was rejected because its size (" +
-                                                                                 nCount +
-                                                                                 ") exceeds the configured maximum (" +
-                                                                                 nSizeMax +
-                                                                                 ")",
+                                                                             nCount +
+                                                                             ") exceeds the configured maximum (" +
+                                                                             nSizeMax +
+                                                                             ")",
                                                                              nCount,
                                                                              nSizeMax);
               throw new FileUploadIOException (ex);
@@ -685,7 +685,9 @@ public abstract class AbstractFileUploadBase
                                                   nContentLength +
                                                   ") exceeds the configured maximum (" +
                                                   m_nSizeMax +
-                                                  ")", nContentLength, m_nSizeMax);
+                                                  ")",
+                                                  nContentLength,
+                                                  m_nSizeMax);
           }
         }
       }

@@ -45,7 +45,8 @@ public final class ApplicationWebSingletonFuncTest extends AbstractWebScopeAware
     final MockApplicationWebSingleton a = MockApplicationWebSingleton.getInstance ();
     assertNotNull (a);
     assertTrue (AbstractApplicationWebSingleton.isApplicationSingletonInstantiated (MockApplicationWebSingleton.class));
-    assertSame (a, AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
+    assertSame (a,
+                AbstractApplicationWebSingleton.getApplicationSingletonIfInstantiated (MockApplicationWebSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());

@@ -35,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
  * operation exceptions for each scope type. This can be helpful to avoid
  * creating non-web scopes in web applicaiton. Note: an implementation of this
  * class must explicitly be set in {@link MetaScopeFactory}!
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe

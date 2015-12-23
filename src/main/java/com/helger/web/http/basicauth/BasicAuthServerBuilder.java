@@ -35,7 +35,7 @@ public class BasicAuthServerBuilder implements Serializable
 
   /**
    * Set the realm to be used.
-   * 
+   *
    * @param sRealm
    *        The realm to be used. May not be <code>null</code> and should not be
    *        empty.

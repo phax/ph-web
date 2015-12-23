@@ -31,7 +31,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
  * This class globally holds the HTTP listeners ({@link ServletContextListener}
  * , {@link HttpSessionListener} and {@link ServletRequestListener}) that are
  * triggered in tests.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe

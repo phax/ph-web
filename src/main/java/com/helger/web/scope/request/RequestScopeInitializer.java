@@ -32,7 +32,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Internal class from scope aware filter and servlets.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -45,7 +45,7 @@ public final class RequestScopeInitializer
 
   /**
    * Ctor.
-   * 
+   *
    * @param aRequestScope
    *        The request scope to be used. May not be <code>null</code>.
    * @param bCreatedIt

@@ -118,7 +118,9 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (@Nonnull final byte [] b, @Nonnegative final int off, @Nonnegative final int len) throws IOException
+  public void write (@Nonnull final byte [] b,
+                     @Nonnegative final int off,
+                     @Nonnegative final int len) throws IOException
   {
     checkThreshold (len);
     getStream ().write (b, off, len);

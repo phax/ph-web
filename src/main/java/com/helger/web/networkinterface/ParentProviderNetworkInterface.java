@@ -28,7 +28,7 @@ import com.helger.commons.string.ToStringGenerator;
 /**
  * Default implementation of {@link IParentProvider} for
  * {@link NetworkInterface}.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable

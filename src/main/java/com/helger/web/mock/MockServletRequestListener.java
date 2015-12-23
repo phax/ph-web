@@ -24,7 +24,7 @@ import javax.servlet.ServletRequestListener;
 
 /**
  * This mock listeners is responsible for creating
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe

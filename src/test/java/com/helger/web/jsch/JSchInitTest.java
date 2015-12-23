@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * Test class for class {@link JSchInit}.
- * 
+ *
  * @author Philip Helger
  */
 public final class JSchInitTest

@@ -20,7 +20,7 @@ import com.helger.commons.scope.ISessionApplicationScope;
 
 /**
  * Interface for a single session application scope object.
- * 
+ *
  * @author Philip Helger
  */
 public interface ISessionApplicationWebScope extends ISessionApplicationScope, IWebScope

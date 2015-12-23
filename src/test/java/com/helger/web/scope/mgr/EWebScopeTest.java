@@ -24,7 +24,7 @@ import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
 /**
  * Test class for class {@link EWebScope}.
- * 
+ *
  * @author Philip Helger
  */
 public final class EWebScopeTest extends AbstractWebScopeAwareTestCase

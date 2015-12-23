@@ -29,7 +29,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Abstract implementation of {@link Runnable} that handles WebScopes correctly.
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractWebScopeAwareRunnable implements INonThrowingRunnable

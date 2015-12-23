@@ -27,7 +27,7 @@ import com.helger.commons.charset.CCharset;
 
 /**
  * Unit tests for {@link ParameterParser}.
- * 
+ *
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
 public final class ParameterParserTest

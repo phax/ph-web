@@ -26,7 +26,7 @@ import com.helger.commons.scope.ApplicationScope;
  * Represents a single application web scope. It has no additional features
  * compared to the regular {@link ApplicationScope} but implements the specific
  * {@link IApplicationWebScope} interface.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -34,7 +34,7 @@ public class ApplicationWebScope extends ApplicationScope implements IApplicatio
 {
   /**
    * Create a new application web scope with the given ID.
-   * 
+   *
    * @param sScopeID
    *        The scope ID to be used. May neither be <code>null</code> nor empty.
    */

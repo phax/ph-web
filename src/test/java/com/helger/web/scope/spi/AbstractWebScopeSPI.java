@@ -16,10 +16,9 @@
  */
 package com.helger.web.scope.spi;
 
-
 /**
  * Abstract base class for all Mock SPI implementations
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractWebScopeSPI

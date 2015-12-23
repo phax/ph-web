@@ -20,7 +20,7 @@ import com.helger.commons.scope.IApplicationScope;
 
 /**
  * Interface for an application web scope.
- * 
+ *
  * @author Philip Helger
  */
 public interface IApplicationWebScope extends IApplicationScope, IWebScope

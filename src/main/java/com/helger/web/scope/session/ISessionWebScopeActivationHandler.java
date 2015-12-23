@@ -22,14 +22,14 @@ import com.helger.web.scope.ISessionWebScope;
 
 /**
  * Interface for session attributes that are notified during session activation.
- * 
+ *
  * @author Philip Helger
  */
 public interface ISessionWebScopeActivationHandler
 {
   /**
    * Invoked after the session was activated.
-   * 
+   *
    * @param aSessionScope
    *        The activated session scope. Never <code>null</code>.
    */

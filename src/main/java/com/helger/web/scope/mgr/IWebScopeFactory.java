@@ -31,14 +31,14 @@ import com.helger.web.scope.ISessionWebScope;
 
 /**
  * Interface for a web scope factory.
- * 
+ *
  * @author Philip Helger
  */
 public interface IWebScopeFactory
 {
   /**
    * Create a new global web scope.
-   * 
+   *
    * @param aServletContext
    *        The servlet context to use
    * @return Never <code>null</code>.
@@ -48,7 +48,7 @@ public interface IWebScopeFactory
 
   /**
    * Create a new application scope
-   * 
+   *
    * @param sScopeID
    *        The scope ID to use
    * @return Never <code>null</code>.
@@ -58,7 +58,7 @@ public interface IWebScopeFactory
 
   /**
    * Create a new session scope
-   * 
+   *
    * @param aHttpSession
    *        The underlying HTTP session. May not be <code>null</code>.
    * @return Never <code>null</code>.
@@ -68,7 +68,7 @@ public interface IWebScopeFactory
 
   /**
    * Create a new session application scope
-   * 
+   *
    * @param sScopeID
    *        The scope ID to use
    * @return Never <code>null</code>.
@@ -78,7 +78,7 @@ public interface IWebScopeFactory
 
   /**
    * Create a new request scope
-   * 
+   *
    * @param aHttpRequest
    *        The HTTP servlet request. May not be <code>null</code>.
    * @param aHttpResponse

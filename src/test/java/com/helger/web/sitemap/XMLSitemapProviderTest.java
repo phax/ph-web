@@ -64,7 +64,8 @@ public final class XMLSitemapProviderTest
         for (int nIndex = 0; nIndex < nMax; ++nIndex)
           assertTrue (FileHelper.existsFile (new File (aTargetDir,
                                                        XMLSitemapIndex.getSitemapFilename (nIndex, bUseGZip))));
-        assertFalse (FileHelper.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
+        assertFalse (FileHelper.existsFile (new File (aTargetDir,
+                                                      XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
       }
       finally
       {

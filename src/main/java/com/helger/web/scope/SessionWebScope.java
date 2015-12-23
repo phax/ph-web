@@ -37,7 +37,7 @@ import com.helger.web.scope.mgr.MetaWebScopeFactory;
 /**
  * Default implementation of the {@link ISessionWebScope} interface. It is
  * serializable in general, but just don't do it :)
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe

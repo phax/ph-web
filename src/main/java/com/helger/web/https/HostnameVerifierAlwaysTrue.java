@@ -27,7 +27,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * Implementation of HostnameVerifier always returning <code>true</code>.
- * 
+ *
  * @author Philip Helger
  */
 public class HostnameVerifierAlwaysTrue implements HostnameVerifier

@@ -43,7 +43,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 /**
  * Abstract output stream switching
  * {@link javax.servlet.http.HttpServletResponseWrapper}
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -111,7 +111,8 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
         sRealContentType = sContentType;
 
       if (sRealContentType != null &&
-          (sRealContentType.contains (AcceptEncodingHandler.DEFLATE_ENCODING) || sRealContentType.contains (AcceptEncodingHandler.GZIP_ENCODING)))
+          (sRealContentType.contains (AcceptEncodingHandler.DEFLATE_ENCODING) ||
+           sRealContentType.contains (AcceptEncodingHandler.GZIP_ENCODING)))
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
           s_aLogger.info ("Explicitly disabling compression because of external content type " + sContentType);

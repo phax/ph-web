@@ -30,7 +30,7 @@ import com.helger.commons.string.ToStringGenerator;
 
 /**
  * A trust manager that accepts all certificates.
- * 
+ *
  * @author Philip Helger
  */
 public class DoNothingTrustManager implements X509TrustManager

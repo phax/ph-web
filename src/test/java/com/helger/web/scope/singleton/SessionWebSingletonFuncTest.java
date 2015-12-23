@@ -67,7 +67,8 @@ public final class SessionWebSingletonFuncTest extends AbstractWebScopeAwareTest
     final MockSessionWebSingletonWithScopeCtor a = MockSessionWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
     assertTrue (AbstractSessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));
-    assertSame (a, AbstractSessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
+    assertSame (a,
+                AbstractSessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
     assertEquals (0, a.get ());
     a.inc ();

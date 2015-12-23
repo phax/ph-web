@@ -29,7 +29,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * This mock listeners is responsible for creating
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe

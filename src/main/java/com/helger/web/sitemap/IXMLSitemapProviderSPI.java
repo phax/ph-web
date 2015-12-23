@@ -22,7 +22,7 @@ import com.helger.commons.annotation.IsSPIInterface;
 
 /**
  * SPI interface for components that offer sitemap entries.
- * 
+ *
  * @author Philip Helger
  */
 @IsSPIInterface
@@ -30,7 +30,7 @@ public interface IXMLSitemapProviderSPI
 {
   /**
    * Create a new URL set with all URLs relevant .
-   * 
+   *
    * @return A non-<code>null</code> URL set with all elements.
    */
   @Nonnull

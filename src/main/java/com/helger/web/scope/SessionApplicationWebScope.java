@@ -33,7 +33,7 @@ import com.helger.commons.state.EChange;
  * Represents a single "session application scope". This is a scope that is
  * specific to the selected application within the global scope and to the
  * current user session.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe

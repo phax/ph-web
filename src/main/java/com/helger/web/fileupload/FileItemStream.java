@@ -100,11 +100,11 @@ final class FileItemStream implements IFileItemStream, Closeable
       if (nContentLength >= 0 && nContentLength > nFileSizeMax)
       {
         final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
-                                                                                          m_sFieldName +
-                                                                                          " exceeds its maximum permitted " +
-                                                                                          " size of " +
-                                                                                          nFileSizeMax +
-                                                                                          " bytes.",
+                                                                                      m_sFieldName +
+                                                                                      " exceeds its maximum permitted " +
+                                                                                      " size of " +
+                                                                                      nFileSizeMax +
+                                                                                      " bytes.",
                                                                                       nContentLength,
                                                                                       nFileSizeMax,
                                                                                       sFieldName,
@@ -119,11 +119,11 @@ final class FileItemStream implements IFileItemStream, Closeable
         {
           aItemIS.close (true);
           final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
-                                                                                            m_sFieldName +
-                                                                                            " exceeds its maximum permitted " +
-                                                                                            " size of " +
-                                                                                            nSizeMax +
-                                                                                            " bytes.",
+                                                                                        m_sFieldName +
+                                                                                        " exceeds its maximum permitted " +
+                                                                                        " size of " +
+                                                                                        nSizeMax +
+                                                                                        " bytes.",
                                                                                         nCount,
                                                                                         nSizeMax,
                                                                                         m_sFieldName,

@@ -73,7 +73,7 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
 
   /**
    * Parse a very long file upload by using a progress listener.
-   * 
+   *
    * @throws Exception
    *         In case of error
    */
@@ -115,8 +115,9 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
     _runTest (NUM_ITEMS, contents.length, request);
   }
 
-  private void _runTest (final int NUM_ITEMS, final long pContentLength, final MockHttpServletRequest request) throws FileUploadException,
-                                                                                                              IOException
+  private void _runTest (final int NUM_ITEMS,
+                         final long pContentLength,
+                         final MockHttpServletRequest request) throws FileUploadException, IOException
   {
     final ServletFileUpload upload = new ServletFileUpload (null);
     final ProgressListenerImpl listener = new ProgressListenerImpl (pContentLength, NUM_ITEMS);

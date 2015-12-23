@@ -50,11 +50,11 @@ final class UserAgent implements IUserAgent
   private static final String IE_RV_SEARCH_STRING = "rv:";
   private static final String KONQUEROR_PREFIX = "Konqueror/";
   private static final String [] GECKO_VARIANTS = new String [] { "GranParadiso",
-                                                                 "Fedora",
-                                                                 "Namoroka",
-                                                                 "Netscape",
-                                                                 "K-Meleon",
-                                                                 "WebThumb" };
+                                                                  "Fedora",
+                                                                  "Namoroka",
+                                                                  "Netscape",
+                                                                  "K-Meleon",
+                                                                  "WebThumb" };
   private static final int IE_VERSION_IN_COMPATIBILITY_MODE = 7;
 
   private final String m_sFullUserAgent;

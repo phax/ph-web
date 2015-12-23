@@ -18,7 +18,7 @@ package com.helger.web.fileupload.exception;
 
 /**
  * Thrown to indicate that the request size exceeds the configured maximum.
- * 
+ *
  * @author commons-fileupload
  */
 public class SizeLimitExceededException extends AbstractSizeException

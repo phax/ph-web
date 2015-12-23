@@ -25,14 +25,14 @@ import com.helger.commons.lang.EnumHelper;
 
 /**
  * Determine the response stream type to be used.
- * 
+ *
  * @author Philip Helger
  */
 public enum EResponseStreamType implements IHasID <String>
 {
-  PLAIN ("plain"),
-  GZIP ("gzip"),
-  DEFLATE ("deflate");
+ PLAIN ("plain"),
+ GZIP ("gzip"),
+ DEFLATE ("deflate");
 
   private final String m_sID;
 

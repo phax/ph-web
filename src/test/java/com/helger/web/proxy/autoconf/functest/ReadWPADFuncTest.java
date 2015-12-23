@@ -34,7 +34,8 @@ import com.helger.web.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
 {
-  public static String getProxyAutoConfigFunction (final IReadableResource aRes, final String sCharset) throws IOException
+  public static String getProxyAutoConfigFunction (final IReadableResource aRes,
+                                                   final String sCharset) throws IOException
   {
     InputStream aIS = null;
     BufferedReader aReader = null;
@@ -64,8 +65,8 @@ public final class ReadWPADFuncTest
     // Works for Intercent-ER
     final String sAutoProxyConfig = false ? getProxyAutoConfigFunction (new URLResource ("http://wpad.ente.regione.emr.it/wpad.dat"),
                                                                         CCharset.CHARSET_ISO_8859_1)
-                                         : getProxyAutoConfigFunction (new URLResource ("http://wpad/wpad.dat"),
-                                                                       CCharset.CHARSET_ISO_8859_1);
+                                          : getProxyAutoConfigFunction (new URLResource ("http://wpad/wpad.dat"),
+                                                                        CCharset.CHARSET_ISO_8859_1);
     if (sAutoProxyConfig != null)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);

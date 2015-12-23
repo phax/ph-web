@@ -120,9 +120,9 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Wrote info on session web scope '" +
-                          m_aSessionWebScope.getID () +
-                          "' of class " +
-                          ClassHelper.getClassLocalName (this),
+                      m_aSessionWebScope.getID () +
+                      "' of class " +
+                      ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -150,11 +150,11 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Read info on session scope: " +
-                          m_aAttrs.size () +
-                          " attrs and " +
-                          m_aSessionApplicationScopes.size () +
-                          " SAScopes of class " +
-                          ClassHelper.getClassLocalName (this),
+                      m_aAttrs.size () +
+                      " attrs and " +
+                      m_aSessionApplicationScopes.size () +
+                      " SAScopes of class " +
+                      ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -178,7 +178,8 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
       s_aLogger.info ("Successfully passivated session web scope '" +
                       m_aSessionWebScope.getID () +
                       "' of class " +
-                      ClassHelper.getClassLocalName (this), ScopeHelper.getDebugStackTrace ());
+                      ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionDidActivate (@Nonnull final HttpSessionEvent aEvent)
@@ -186,7 +187,9 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
     final HttpSession aHttpSession = aEvent.getSession ();
 
     // Create a new session web scope
-    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
+    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
+                                                                                               true,
+                                                                                               true);
 
     // Restore the read values into the scope
     for (final Map.Entry <String, Object> aEntry : m_aAttrs.entrySet ())
@@ -216,6 +219,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
       s_aLogger.info ("Successfully activated session web scope '" +
                       aSessionWebScope.getID () +
                       "' of class " +
-                      ClassHelper.getClassLocalName (this), ScopeHelper.getDebugStackTrace ());
+                      ClassHelper.getClassLocalName (this),
+                      ScopeHelper.getDebugStackTrace ());
   }
 }

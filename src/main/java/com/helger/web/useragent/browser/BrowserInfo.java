@@ -79,7 +79,7 @@ public class BrowserInfo implements IHasDisplayText, Serializable
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
     return m_eBrowserType == null ? null
-                                 : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
+                                  : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
   }
 
   @Nonnull

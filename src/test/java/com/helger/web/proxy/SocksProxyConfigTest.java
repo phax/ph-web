@@ -28,7 +28,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Test class for class {@link SocksProxyConfig}.
- * 
+ *
  * @author Philip Helger
  */
 public final class SocksProxyConfigTest

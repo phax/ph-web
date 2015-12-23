@@ -32,7 +32,8 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.mgr.MetaWebScopeFactory;
 
 /**
- * Implementation of the {@link IGlobalWebScope} interface for web applications.<br>
+ * Implementation of the {@link IGlobalWebScope} interface for web applications.
+ * <br>
  * Note: for synchronization issues, this class does not store the attributes in
  * the passed {@link ServletContext} but in a separate map.
  *

@@ -137,7 +137,9 @@ public abstract class AbstractLimitedInputStream extends FilterInputStream imple
    * @see java.io.FilterInputStream
    */
   @Override
-  public int read (@Nonnull final byte [] b, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public int read (@Nonnull final byte [] b,
+                   @Nonnegative final int nOfs,
+                   @Nonnegative final int nLen) throws IOException
   {
     ValueEnforcer.isArrayOfsLen (b, nOfs, nLen);
     final int res = super.read (b, nOfs, nLen);

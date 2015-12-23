@@ -323,8 +323,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 
   @Override
   protected final void doOptions (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException,
-                                                                                   IOException
+                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = StopWatch.createdStarted ();

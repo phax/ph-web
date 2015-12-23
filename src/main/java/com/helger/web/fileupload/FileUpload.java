@@ -22,8 +22,8 @@ package com.helger.web.fileupload;
  * </p>
  * <p>
  * This class handles multiple files per single HTML widget, sent using
- * <code>multipart/mixed</code> encoding type, as specified by <a
- * href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
+ * <code>multipart/mixed</code> encoding type, as specified by
+ * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
  * </p>
  * <p>
  * How the data for individual parts is stored is determined by the factory used

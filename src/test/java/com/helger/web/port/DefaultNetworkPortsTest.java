@@ -61,25 +61,25 @@ public final class DefaultNetworkPortsTest
     final IMicroDocument aDoc = new MicroDocument ();
     final IMicroElement ePorts = aDoc.appendElement ("ports");
     for (final INetworkPort aPort : CollectionHelper.getSorted (DefaultNetworkPorts.getAllPorts (),
-                                                               new AbstractComparator <NetworkPort> ()
-                                                               {
-                                                                 @Override
-                                                                 protected int mainCompare (final NetworkPort aElement1,
-                                                                                            final NetworkPort aElement2)
-                                                                 {
-                                                                   int ret = aElement1.getPort () -
-                                                                             aElement2.getPort ();
-                                                                   if (ret == 0)
-                                                                   {
-                                                                     ret = aElement1.getProtocol ().ordinal () -
-                                                                           aElement2.getProtocol ().ordinal ();
-                                                                     if (ret == 0)
-                                                                       ret = aElement1.getName ()
-                                                                                      .compareTo (aElement2.getName ());
-                                                                   }
-                                                                   return ret;
-                                                                 }
-                                                               }))
+                                                                new AbstractComparator <NetworkPort> ()
+                                                                {
+                                                                  @Override
+                                                                  protected int mainCompare (final NetworkPort aElement1,
+                                                                                             final NetworkPort aElement2)
+                                                                  {
+                                                                    int ret = aElement1.getPort () -
+                                                                              aElement2.getPort ();
+                                                                    if (ret == 0)
+                                                                    {
+                                                                      ret = aElement1.getProtocol ().ordinal () -
+                                                                            aElement2.getProtocol ().ordinal ();
+                                                                      if (ret == 0)
+                                                                        ret = aElement1.getName ()
+                                                                                       .compareTo (aElement2.getName ());
+                                                                    }
+                                                                    return ret;
+                                                                  }
+                                                                }))
     {
       final IMicroElement ePort = ePorts.appendElement ("defaultport");
       ePort.setAttribute ("port", aPort.getPort ());

@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * This class marks a class as being "offline" even though it is a web class!
- * 
+ *
  * @author Philip Helger
  */
 @Retention (RetentionPolicy.RUNTIME)

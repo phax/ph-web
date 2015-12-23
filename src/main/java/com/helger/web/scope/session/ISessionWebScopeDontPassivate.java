@@ -19,7 +19,7 @@ package com.helger.web.scope.session;
 /**
  * Marker interface for session attributes that avoids an attribute to be
  * passivated.
- * 
+ *
  * @author Philip Helger
  */
 public interface ISessionWebScopeDontPassivate

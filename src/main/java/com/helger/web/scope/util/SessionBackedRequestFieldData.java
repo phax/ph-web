@@ -72,7 +72,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
   {
     final String sSuperDefaultValue = super.getDefaultValue ();
     final IScope aSessionScope = WebScopeManager.getSessionScope (false);
-    return aSessionScope == null ? sSuperDefaultValue : aSessionScope.getAttributeAsString (getSessionFieldName (),
-                                                                                            sSuperDefaultValue);
+    return aSessionScope == null ? sSuperDefaultValue
+                                 : aSessionScope.getAttributeAsString (getSessionFieldName (), sSuperDefaultValue);
   }
 }

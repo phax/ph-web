@@ -66,7 +66,7 @@ public class CompressFilter implements Filter
                                           @Nonnull final FilterChain aChain,
                                           @Nonnull final HttpServletResponse aHttpResponse,
                                           @Nonnull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException,
-                                                                                                               ServletException
+                                                                                                                ServletException
   {
     boolean bException = true;
     try

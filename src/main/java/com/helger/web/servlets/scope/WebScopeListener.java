@@ -28,7 +28,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * A default implementation of a web scope aware {@link ServletContextListener}
  * and {@link HttpSessionListener}. Manages global web scopes and session web
  * scopes.
- * 
+ *
  * @author Philip Helger
  */
 public class WebScopeListener implements ServletContextListener, HttpSessionListener

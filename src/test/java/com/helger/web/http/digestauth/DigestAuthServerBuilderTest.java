@@ -26,7 +26,7 @@ import com.helger.commons.url.SimpleURL;
 
 /**
  * Test class for class {@link DigestAuthServerBuilder}.
- * 
+ *
  * @author Philip Helger
  */
 public final class DigestAuthServerBuilderTest

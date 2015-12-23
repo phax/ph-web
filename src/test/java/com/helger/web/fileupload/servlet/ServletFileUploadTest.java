@@ -41,25 +41,25 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   @Test
   public void testFileUpload () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n"
-                                                    + "Content-Type: text/whatever\r\n"
-                                                    + "\r\n"
-                                                    + "This is the content of the file\n"
-                                                    + "\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"field\"\r\n"
-                                                    + "\r\n"
-                                                    + "fieldValue\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"multi\"\r\n"
-                                                    + "\r\n"
-                                                    + "value1\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"multi\"\r\n"
-                                                    + "\r\n"
-                                                    + "value2\r\n"
-                                                    + "-----1234--\r\n");
+    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n" +
+                                                    "Content-Type: text/whatever\r\n" +
+                                                    "\r\n" +
+                                                    "This is the content of the file\n" +
+                                                    "\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"field\"\r\n" +
+                                                    "\r\n" +
+                                                    "fieldValue\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"multi\"\r\n" +
+                                                    "\r\n" +
+                                                    "value1\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"multi\"\r\n" +
+                                                    "\r\n" +
+                                                    "value2\r\n" +
+                                                    "-----1234--\r\n");
     assertEquals (4, fileItems.size ());
 
     final IFileItem file = fileItems.get (0);
@@ -88,13 +88,13 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   @Test
   public void testFilenameCaseSensitivity () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"FiLe\"; filename=\"FOO.tab\"\r\n"
-                                                    + "Content-Type: text/whatever\r\n"
-                                                    + "\r\n"
-                                                    + "This is the content of the file\n"
-                                                    + "\r\n"
-                                                    + "-----1234--\r\n");
+    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"FiLe\"; filename=\"FOO.tab\"\r\n" +
+                                                    "Content-Type: text/whatever\r\n" +
+                                                    "\r\n" +
+                                                    "This is the content of the file\n" +
+                                                    "\r\n" +
+                                                    "-----1234--\r\n");
     assertEquals (1, fileItems.size ());
 
     final IFileItem file = fileItems.get (0);
@@ -105,18 +105,18 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   /**
    * This is what the browser does if you submit the form without choosing a
    * file.
-   * 
+   *
    * @throws FileUploadException
    *         In case of error
    */
   @Test
   public void testEmptyFile () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"file\"; filename=\"\"\r\n"
-                                                    + "\r\n"
-                                                    + "\r\n"
-                                                    + "-----1234--\r\n");
+    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"file\"; filename=\"\"\r\n" +
+                                                    "\r\n" +
+                                                    "\r\n" +
+                                                    "-----1234--\r\n");
     assertEquals (1, fileItems.size ());
 
     final IFileItem file = fileItems.get (0);
@@ -129,32 +129,32 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
    * Internet Explorer 5 for the Mac has a bug where the carriage return is
    * missing on any boundary line immediately preceding an input with
    * type=image. (type=submit does not have the bug.)
-   * 
+   *
    * @throws FileUploadException
    *         In case of error
    */
   @Test
   public void testIE5MacBug () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"field1\"\r\n"
-                                                    + "\r\n"
-                                                    + "fieldValue\r\n"
-                                                    + "-----1234\n"
-                                                    + // NOTE \r missing
-                                                    "Content-Disposition: form-data; name=\"submitName.x\"\r\n"
-                                                    + "\r\n"
-                                                    + "42\r\n"
-                                                    + "-----1234\n"
-                                                    + // NOTE \r missing
-                                                    "Content-Disposition: form-data; name=\"submitName.y\"\r\n"
-                                                    + "\r\n"
-                                                    + "21\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"field2\"\r\n"
-                                                    + "\r\n"
-                                                    + "fieldValue2\r\n"
-                                                    + "-----1234--\r\n");
+    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"field1\"\r\n" +
+                                                    "\r\n" +
+                                                    "fieldValue\r\n" +
+                                                    "-----1234\n" + // NOTE \r
+                                                                    // missing
+                                                    "Content-Disposition: form-data; name=\"submitName.x\"\r\n" +
+                                                    "\r\n" +
+                                                    "42\r\n" +
+                                                    "-----1234\n" + // NOTE \r
+                                                                    // missing
+                                                    "Content-Disposition: form-data; name=\"submitName.y\"\r\n" +
+                                                    "\r\n" +
+                                                    "21\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"field2\"\r\n" +
+                                                    "\r\n" +
+                                                    "fieldValue2\r\n" +
+                                                    "-----1234--\r\n");
 
     assertEquals (4, fileItems.size ());
 
@@ -180,9 +180,10 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   }
 
   /**
-   * Test for <a
-   * href="http://issues.apache.org/jira/browse/FILEUPLOAD-62">FILEUPLOAD-62</a>
-   * 
+   * Test for
+   * <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-62">FILEUPLOAD-62
+   * </a>
+   *
    * @throws Exception
    *         In case of error
    */
@@ -190,27 +191,27 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   public void testFILEUPLOAD62 () throws Exception
   {
     final String contentType = "multipart/form-data; boundary=AaB03x";
-    final String request = "--AaB03x\r\n"
-                           + "content-disposition: form-data; name=\"field1\"\r\n"
-                           + "\r\n"
-                           + "Joe Blow\r\n"
-                           + "--AaB03x\r\n"
-                           + "content-disposition: form-data; name=\"pics\"\r\n"
-                           + "Content-type: multipart/mixed; boundary=BbC04y\r\n"
-                           + "\r\n"
-                           + "--BbC04y\r\n"
-                           + "Content-disposition: attachment; filename=\"file1.txt\"\r\n"
-                           + "Content-Type: text/plain\r\n"
-                           + "\r\n"
-                           + "... contents of file1.txt ...\r\n"
-                           + "--BbC04y\r\n"
-                           + "Content-disposition: attachment; filename=\"file2.gif\"\r\n"
-                           + "Content-type: image/gif\r\n"
-                           + "Content-Transfer-Encoding: binary\r\n"
-                           + "\r\n"
-                           + "...contents of file2.gif...\r\n"
-                           + "--BbC04y--\r\n"
-                           + "--AaB03x--";
+    final String request = "--AaB03x\r\n" +
+                           "content-disposition: form-data; name=\"field1\"\r\n" +
+                           "\r\n" +
+                           "Joe Blow\r\n" +
+                           "--AaB03x\r\n" +
+                           "content-disposition: form-data; name=\"pics\"\r\n" +
+                           "Content-type: multipart/mixed; boundary=BbC04y\r\n" +
+                           "\r\n" +
+                           "--BbC04y\r\n" +
+                           "Content-disposition: attachment; filename=\"file1.txt\"\r\n" +
+                           "Content-Type: text/plain\r\n" +
+                           "\r\n" +
+                           "... contents of file1.txt ...\r\n" +
+                           "--BbC04y\r\n" +
+                           "Content-disposition: attachment; filename=\"file2.gif\"\r\n" +
+                           "Content-type: image/gif\r\n" +
+                           "Content-Transfer-Encoding: binary\r\n" +
+                           "\r\n" +
+                           "...contents of file2.gif...\r\n" +
+                           "--BbC04y--\r\n" +
+                           "--AaB03x--";
     final List <IFileItem> fileItems = parseUpload (request.getBytes (CCharset.CHARSET_US_ASCII_OBJ), contentType);
     assertEquals (3, fileItems.size ());
     final IFileItem item0 = fileItems.get (0);
@@ -228,37 +229,37 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   }
 
   /**
-   * Test for <a
-   * href="http://issues.apache.org/jira/browse/FILEUPLOAD-111">FILEUPLOAD
+   * Test for
+   * <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-111">FILEUPLOAD
    * -111</a>
-   * 
+   *
    * @throws FileUploadException
    *         In case of error
    */
   @Test
   public void testFoldedHeaders () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n"
-                                                    + "Content-Type: text/whatever\r\n"
-                                                    + "\r\n"
-                                                    + "This is the content of the file\n"
-                                                    + "\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; \r\n"
-                                                    + "\tname=\"field\"\r\n"
-                                                    + "\r\n"
-                                                    + "fieldValue\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data;\r\n"
-                                                    + "     name=\"multi\"\r\n"
-                                                    + "\r\n"
-                                                    + "value1\r\n"
-                                                    + "-----1234\r\n"
-                                                    + "Content-Disposition: form-data; name=\"multi\"\r\n"
-                                                    + "\r\n"
-                                                    + "value2\r\n"
-                                                    + "-----1234--\r\n");
+    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n" +
+                                                    "Content-Type: text/whatever\r\n" +
+                                                    "\r\n" +
+                                                    "This is the content of the file\n" +
+                                                    "\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; \r\n" +
+                                                    "\tname=\"field\"\r\n" +
+                                                    "\r\n" +
+                                                    "fieldValue\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data;\r\n" +
+                                                    "     name=\"multi\"\r\n" +
+                                                    "\r\n" +
+                                                    "value1\r\n" +
+                                                    "-----1234\r\n" +
+                                                    "Content-Disposition: form-data; name=\"multi\"\r\n" +
+                                                    "\r\n" +
+                                                    "value2\r\n" +
+                                                    "-----1234--\r\n");
     assertEquals (4, fileItems.size ());
 
     final IFileItem file = fileItems.get (0);

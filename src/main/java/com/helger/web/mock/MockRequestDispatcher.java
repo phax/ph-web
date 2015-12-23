@@ -30,7 +30,7 @@ import com.helger.commons.ValueEnforcer;
 
 /**
  * Mock implementation of the {@link RequestDispatcher} interface
- * 
+ *
  * @author Philip Helger
  */
 @NotThreadSafe
@@ -42,7 +42,7 @@ public class MockRequestDispatcher implements RequestDispatcher
 
   /**
    * Create a new MockRequestDispatcher for the given URL.
-   * 
+   *
    * @param sURL
    *        the URL to dispatch to.
    */
@@ -76,7 +76,7 @@ public class MockRequestDispatcher implements RequestDispatcher
   /**
    * Obtain the underlying MockHttpServletResponse, unwrapping
    * {@link HttpServletResponseWrapper} decorators if necessary.
-   * 
+   *
    * @param aResponse
    *        Original response
    * @return The matching {@link MockHttpServletResponse}

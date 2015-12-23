@@ -40,7 +40,7 @@ import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
 /**
  * Test class for class {@link WebScopeSessionHelper}.
- * 
+ *
  * @author Philip Helger
  */
 public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCase

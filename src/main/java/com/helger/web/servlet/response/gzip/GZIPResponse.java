@@ -69,6 +69,10 @@ public final class GZIPResponse extends AbstractCompressedResponseWrapper
                                                                                 final long nContentLength,
                                                                                 @Nonnegative final int nMinCompressSize) throws IOException
   {
-    return new GZIPServletOutputStream (aHttpRequest, aHttpResponse, sContentEncoding, nContentLength, nMinCompressSize);
+    return new GZIPServletOutputStream (aHttpRequest,
+                                        aHttpResponse,
+                                        sContentEncoding,
+                                        nContentLength,
+                                        nMinCompressSize);
   }
 }

@@ -29,7 +29,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
 /**
  * An abstract base class that handles scopes correctly for {@link TimerTask}
  * implementations.
- * 
+ *
  * @author Philip Helger
  */
 public abstract class AbstractWebScopeAwareTimerTask extends TimerTask
@@ -60,7 +60,8 @@ public abstract class AbstractWebScopeAwareTimerTask extends TimerTask
     // Create the scope
     WebScopeManager.onRequestBegin (m_sApplicationID,
                                     new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ()
-                                                                                  .getServletContext (), false),
+                                                                                  .getServletContext (),
+                                                                   false),
                                     new MockHttpServletResponse ());
     try
     {

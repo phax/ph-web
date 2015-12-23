@@ -25,13 +25,13 @@ import com.helger.commons.lang.EnumHelper;
 
 /**
  * Determine the content disposition type to be used.
- * 
+ *
  * @author Philip Helger
  */
 public enum EContentDispositionType implements IHasID <String>
 {
-  ATTACHMENT ("attachment"),
-  INLINE ("inline");
+ ATTACHMENT ("attachment"),
+ INLINE ("inline");
 
   private final String m_sID;
 

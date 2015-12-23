@@ -25,13 +25,13 @@ import com.helger.commons.name.IHasName;
 
 /**
  * HTTP versions
- * 
+ *
  * @author Philip Helger
  */
 public enum EHTTPVersion implements IHasName
 {
-  HTTP_10 ("HTTP/1.0"),
-  HTTP_11 ("HTTP/1.1");
+ HTTP_10 ("HTTP/1.0"),
+ HTTP_11 ("HTTP/1.1");
 
   private final String m_sName;
 

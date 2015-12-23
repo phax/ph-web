@@ -22,7 +22,7 @@ import com.helger.commons.annotation.IsSPIInterface;
 
 /**
  * Provider interface for {@link IProgressListener} instances.
- * 
+ *
  * @author Philip Helger
  */
 @IsSPIInterface

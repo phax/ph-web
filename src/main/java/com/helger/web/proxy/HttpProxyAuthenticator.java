@@ -26,7 +26,7 @@ import com.helger.commons.string.StringParser;
 
 /**
  * A special authenticator for HTTP/HTTPS/FTPS proxy connections.
- * 
+ *
  * @author Philip Helger
  */
 public class HttpProxyAuthenticator extends Authenticator
@@ -60,8 +60,8 @@ public class HttpProxyAuthenticator extends Authenticator
           // Seems to be OK.
           final String sProxyUser = m_eProxyType.getProxyUser ();
           final String sProxyPassword = m_eProxyType.getProxyPassword ();
-          return new PasswordAuthentication (sProxyUser, sProxyPassword == null ? new char [0]
-                                                                               : sProxyPassword.toCharArray ());
+          return new PasswordAuthentication (sProxyUser,
+                                             sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
         }
       }
     }

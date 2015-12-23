@@ -374,10 +374,23 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * query string in the first line of the HTTP request. The web container does
    * not decode this String. For example:
    * <table summary="Examples of Returned Values">
-   * <tr align=left> <th>First line of HTTP request</th> <th>Returned Value</th>
-   * </tr> <tr> <td>POST /some/path.html HTTP/1.1</td> <td>/some/path.html</td>
-   * </tr> <tr> <td>GET http://foo.bar/a.html HTTP/1.0</td> <td>/a.html</td>
-   * </tr> <tr> <td>HEAD /xyz?a=b HTTP/1.1</td> <td>/xyz</td> </tr> </table>
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * </tr>
+   * <tr>
+   * <td>POST /some/path.html HTTP/1.1</td>
+   * <td>/some/path.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html HTTP/1.0</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz?a=b HTTP/1.1</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
    *
    * @return a <code>String</code> containing the part of the URL from the
    *         protocol name up to the query string

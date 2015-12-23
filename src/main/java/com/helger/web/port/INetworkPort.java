@@ -26,7 +26,7 @@ import com.helger.commons.text.IHasDescription;
 
 /**
  * Interface describing a single network port.
- * 
+ *
  * @author Philip Helger
  */
 public interface INetworkPort extends IHasName, IHasDescription, Serializable

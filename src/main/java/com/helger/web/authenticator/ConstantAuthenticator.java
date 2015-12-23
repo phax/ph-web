@@ -31,7 +31,7 @@ import com.helger.commons.string.ToStringGenerator;
  * static user name and password for all requested sites.<br>
  * Call to enable:
  * <code>Authenticator.setDefault (new ConstantAuthenticator (user, pw));</code>
- * 
+ *
  * @author Philip Helger
  */
 public class ConstantAuthenticator extends Authenticator

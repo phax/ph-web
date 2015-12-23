@@ -26,7 +26,7 @@ import com.helger.web.http.EHTTPMethod;
 
 /**
  * Test class for class {@link HTTPDigestAuth}.
- * 
+ *
  * @author Philip Helger
  */
 public final class HTTPDigestAuthTest
@@ -49,15 +49,15 @@ public final class HTTPDigestAuthTest
     assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc"));
     assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\","));
     assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\" , "));
-    final DigestAuthClientCredentials aUP = HTTPDigestAuth.getDigestAuthClientCredentials ("Digest username=\"Mufasa\",\r\n"
-                                                                                           + "     realm=\"testrealm@host.com\",\r\n"
-                                                                                           + "     nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",\r\n"
-                                                                                           + "     uri=\"/dir/index.html\",\r\n"
-                                                                                           + "     qop=auth,\r\n"
-                                                                                           + "     nc=00000001,\r\n"
-                                                                                           + "     cnonce=\"0a4f113b\",\r\n"
-                                                                                           + "     response=\"6629fae49393a05397450978507c4ef1\",\r\n"
-                                                                                           + "     opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
+    final DigestAuthClientCredentials aUP = HTTPDigestAuth.getDigestAuthClientCredentials ("Digest username=\"Mufasa\",\r\n" +
+                                                                                           "     realm=\"testrealm@host.com\",\r\n" +
+                                                                                           "     nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",\r\n" +
+                                                                                           "     uri=\"/dir/index.html\",\r\n" +
+                                                                                           "     qop=auth,\r\n" +
+                                                                                           "     nc=00000001,\r\n" +
+                                                                                           "     cnonce=\"0a4f113b\",\r\n" +
+                                                                                           "     response=\"6629fae49393a05397450978507c4ef1\",\r\n" +
+                                                                                           "     opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
     assertNotNull (aUP);
     assertEquals ("Mufasa", aUP.getUserName ());
     assertEquals ("testrealm@host.com", aUP.getRealm ());

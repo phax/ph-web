@@ -100,20 +100,20 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
 
   /**
    * Checks, whether limiting the file size works.
-   * 
+   *
    * @throws FileUploadException
    *         In case of error
    */
   @Test
   public void testFileSizeLimit () throws FileUploadException
   {
-    final String request = "-----1234\r\n"
-                           + "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n"
-                           + "Content-Type: text/whatever\r\n"
-                           + "\r\n"
-                           + "This is the content of the file\n"
-                           + "\r\n"
-                           + "-----1234--\r\n";
+    final String request = "-----1234\r\n" +
+                           "Content-Disposition: form-data; name=\"file\"; filename=\"foo.tab\"\r\n" +
+                           "Content-Type: text/whatever\r\n" +
+                           "\r\n" +
+                           "This is the content of the file\n" +
+                           "\r\n" +
+                           "-----1234--\r\n";
 
     ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (-1);

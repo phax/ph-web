@@ -26,19 +26,19 @@ import com.helger.commons.name.IHasName;
 /**
  * HTTP 1.1 methods.<br>
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
- * 
+ *
  * @author Philip Helger
  */
 public enum EHTTPMethod implements IHasName
 {
-  OPTIONS ("OPTIONS"),
-  GET ("GET"),
-  HEAD ("HEAD"),
-  POST ("POST"),
-  PUT ("PUT"),
-  DELETE ("DELETE"),
-  TRACE ("TRACE"),
-  CONNECT ("CONNECT");
+ OPTIONS ("OPTIONS"),
+ GET ("GET"),
+ HEAD ("HEAD"),
+ POST ("POST"),
+ PUT ("PUT"),
+ DELETE ("DELETE"),
+ TRACE ("TRACE"),
+ CONNECT ("CONNECT");
 
   private final String m_sName;
 

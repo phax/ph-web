@@ -37,8 +37,8 @@ import com.helger.web.servlet.request.RequestHelper;
  * </p>
  * <p>
  * This class handles multiple files per single HTML widget, sent using
- * <code>multipart/mixed</code> encoding type, as specified by <a
- * href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Use
+ * <code>multipart/mixed</code> encoding type, as specified by
+ * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Use
  * {@link #parseRequest(HttpServletRequest)} to acquire a list of
  * {@link com.helger.web.fileupload.IFileItem}s associated with a given HTML
  * widget.
@@ -122,7 +122,7 @@ public class ServletFileUpload extends FileUpload
    */
   @Nonnull
   public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException,
-                                                                                           IOException
+                                                                                            IOException
   {
     return super.getItemIterator (new ServletRequestContext (aHttpRequest));
   }

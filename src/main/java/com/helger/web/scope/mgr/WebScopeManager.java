@@ -357,7 +357,8 @@ public final class WebScopeManager
     catch (final ClassCastException ex)
     {
       throw new IllegalStateException ("Session scope object is not a web scope but: " +
-                                       String.valueOf (aSessionWebScope), ex);
+                                       String.valueOf (aSessionWebScope),
+                                       ex);
     }
   }
 
@@ -517,8 +518,8 @@ public final class WebScopeManager
                                                                         final boolean bCreateIfNotExisting)
   {
     final ISessionWebScope aSessionScope = getSessionScope (bCreateIfNotExisting);
-    return aSessionScope == null ? null : aSessionScope.getSessionApplicationScope (sApplicationID,
-                                                                                    bCreateIfNotExisting);
+    return aSessionScope == null ? null
+                                 : aSessionScope.getSessionApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   // --- request scopes ---

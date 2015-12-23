@@ -23,14 +23,14 @@ import com.helger.web.scope.ISessionWebScope;
 /**
  * Interface for session attributes that are notified during session
  * passivation.
- * 
+ *
  * @author Philip Helger
  */
 public interface ISessionWebScopePassivationHandler
 {
   /**
    * Invoked before the session will be passivated.
-   * 
+   *
    * @param aSessionScope
    *        The passivated session scope. Never <code>null</code>.
    */

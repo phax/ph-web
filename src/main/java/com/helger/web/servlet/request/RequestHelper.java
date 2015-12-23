@@ -112,11 +112,22 @@ public final class RequestHelper
    * (";jsessionid=..."). This method considers the GlobalWebScope custom
    * context path.
    * <table summary="Examples of Returned Values">
-   * <tr align=left> <th>First line of HTTP request</th> <th>Returned Value</th>
-   * <tr> <td>POST /some/path.html;JSESSIONID=4711</td> <td>/some/path.html</td>
-   * </tr> <tr> <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
-   * <td>/a.html</td> </tr> <tr> <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
-   * <td>/xyz</td> </tr> </table>
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * <tr>
+   * <td>POST /some/path.html;JSESSIONID=4711</td>
+   * <td>/some/path.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
    *
    * @param aHttpRequest
    *        The HTTP request

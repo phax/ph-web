@@ -27,7 +27,7 @@ import com.helger.web.useragent.browser.BrowserInfoSpider;
 
 /**
  * Represents a single parsed user agent.
- * 
+ *
  * @author Philip Helger
  */
 public interface IUserAgent extends IHasStringRepresentation

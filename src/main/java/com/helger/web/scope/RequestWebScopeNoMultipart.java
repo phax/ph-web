@@ -96,7 +96,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+      s_aLogger.info ("Created request web scope '" +
+                      getID () +
+                      "' of class " +
+                      ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -148,9 +151,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Initialized request web scope '" +
-                          getID () +
-                          "' of class " +
-                          ClassHelper.getClassLocalName (this),
+                      getID () +
+                      "' of class " +
+                      ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -158,7 +161,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   protected void postDestroy ()
   {
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+      s_aLogger.info ("Destroyed request web scope '" +
+                      getID () +
+                      "' of class " +
+                      ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 

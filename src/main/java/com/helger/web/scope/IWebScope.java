@@ -21,7 +21,7 @@ import com.helger.commons.scope.IScope;
 /**
  * Base interface for web scopes. This is only a marker interface and offers no
  * additional logic.
- * 
+ *
  * @author Philip Helger
  */
 public interface IWebScope extends IScope

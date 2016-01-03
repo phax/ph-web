@@ -111,19 +111,27 @@ public final class PDTWebDateHelper
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (PDTWebDateHelper.class);
+  // "XX" means "+HHmm"
+  // "XXX" means "+HH:mm"
+  private static final String ZONE_PATTERN = "XXX";
   private static final String FORMAT_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
-  private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ssZ";
+  private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN;
 
-  /*
+  /**
    * order is like this because the SimpleDateFormat.parse does not fail with
    * exception if it can parse a valid date out of a substring of the full
    * string given the mask so we have to check the most complete format first,
-   * then it fails with exception
+   * then it fails with exception. <br>
+   * An RFC superseding 822 recommends to use yyyy instead of yy
    */
   private static final Mask <?> [] RFC822_MASKS = { Mask.localDateTime (FORMAT_RFC822),
+                                                    Mask.localDateTime ("EEE, dd MMM yyyy HH:mm:ss"),
                                                     Mask.localDateTime ("EEE, dd MMM yy HH:mm:ss"),
+                                                    Mask.localDateTime ("EEE, dd MMM yyyy HH:mm"),
                                                     Mask.localDateTime ("EEE, dd MMM yy HH:mm"),
+                                                    Mask.localDateTime ("dd MMM yyyy HH:mm:ss"),
                                                     Mask.localDateTime ("dd MMM yy HH:mm:ss"),
+                                                    Mask.localDateTime ("dd MMM yyyy HH:mm"),
                                                     Mask.localDateTime ("dd MMM yy HH:mm") };
 
   /*
@@ -132,16 +140,18 @@ public final class PDTWebDateHelper
    * string given the mask so we have to check the most complete format first,
    * then it fails with exception
    */
-  private static final Mask <?> [] W3CDATETIME_MASKS = { Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSSZ"),
+  private static final Mask <?> [] W3CDATETIME_MASKS = { Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS" +
+                                                                              ZONE_PATTERN),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS" +
+                                                                              ZONE_PATTERN),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS"),
                                                          Mask.offsetDateTime (FORMAT_W3C),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ssZ"),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss"),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mmZ"),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mmZ"),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm"),
                                                          /*
@@ -342,12 +352,15 @@ public final class PDTWebDateHelper
    * create a RFC822 representation of a date.
    *
    * @param aDateTime
-   *        Date to print. May not be <code>null</code>.
-   * @return the RFC822 represented by the given Date.
+   *        Date to print. May be <code>null</code>.
+   * @return the RFC822 represented by the given Date. <code>null</code> if the
+   *         parameter is <code>null</code>.
    */
-  @Nonnull
-  public static String getAsStringRFC822 (@Nonnull final ZonedDateTime aDateTime)
+  @Nullable
+  public static String getAsStringRFC822 (@Nullable final ZonedDateTime aDateTime)
   {
+    if (aDateTime == null)
+      return null;
     return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
   }
 
@@ -355,12 +368,15 @@ public final class PDTWebDateHelper
    * create a RFC822 representation of a date.
    *
    * @param aDateTime
-   *        Date to print. May not be <code>null</code>.
-   * @return the RFC822 represented by the given Date.
+   *        Date to print. May be <code>null</code>.
+   * @return the RFC822 represented by the given Date. <code>null</code> if the
+   *         parameter is <code>null</code>.
    */
-  @Nonnull
-  public static String getAsStringRFC822 (@Nonnull final OffsetDateTime aDateTime)
+  @Nullable
+  public static String getAsStringRFC822 (@Nullable final OffsetDateTime aDateTime)
   {
+    if (aDateTime == null)
+      return null;
     return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
   }
 
@@ -368,12 +384,15 @@ public final class PDTWebDateHelper
    * create a RFC822 representation of a date time using UTC date time zone.
    *
    * @param aDateTime
-   *        Date to print. May not be <code>null</code>.
-   * @return the RFC822 represented by the given Date.
+   *        Date to print. May be <code>null</code>.
+   * @return the RFC822 represented by the given Date. <code>null</code> if the
+   *         parameter is <code>null</code>.
    */
-  @Nonnull
-  public static String getAsStringRFC822 (@Nonnull final LocalDateTime aDateTime)
+  @Nullable
+  public static String getAsStringRFC822 (@Nullable final LocalDateTime aDateTime)
   {
+    if (aDateTime == null)
+      return null;
     return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
   }
 

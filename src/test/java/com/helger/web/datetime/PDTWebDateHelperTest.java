@@ -78,10 +78,13 @@ public final class PDTWebDateHelperTest
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20Z"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20+01:00"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.145Z"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.145+01:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30+01:00"));
-    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.45+01:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1994-11-05T08:15:30-05:00"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20+01:00"));
 
     try
     {

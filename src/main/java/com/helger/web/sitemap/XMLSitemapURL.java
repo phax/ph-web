@@ -115,8 +115,8 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     int ret = _getTagOutputLength (ELEMENT_URL);
 
     // <loc>
-    ret += _getTagOutputLength (ELEMENT_LOC) +
-           XMLMaskHelper.getMaskedXMLTextLength (CXMLSitemap.XML_WRITER_SETTINGS.getXMLVersion (),
+    ret += _getTagOutputLength (ELEMENT_LOC);
+    ret += XMLMaskHelper.getMaskedXMLTextLength (CXMLSitemap.XML_WRITER_SETTINGS.getXMLVersion (),
                                                  EXMLCharMode.TEXT,
                                                  CXMLSitemap.XML_WRITER_SETTINGS.getIncorrectCharacterHandling (),
                                                  m_sLocation);

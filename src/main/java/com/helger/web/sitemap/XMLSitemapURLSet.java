@@ -54,7 +54,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
   private static final int XML_HEADER_LENGTH = 38 + 60 + 9;
 
   private int m_nOutputLength = XML_HEADER_LENGTH;
-  private final List <XMLSitemapURL> m_aURLs = new ArrayList <XMLSitemapURL> ();
+  private final List <XMLSitemapURL> m_aURLs = new ArrayList <> ();
   private LocalDateTime m_aPrevLastModification;
   private LocalDateTime m_aLastModification;
 

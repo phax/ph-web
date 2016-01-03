@@ -37,10 +37,10 @@ import com.helger.web.CWeb;
  */
 public enum EHttpProxyType implements IHasID <String>
 {
- HTTP ("http", EURLProtocol.HTTP, CWeb.DEFAULT_PORT_HTTP),
- HTTPS ("https", EURLProtocol.HTTPS, CWeb.DEFAULT_PORT_HTTPS),
- // Default proxy port for FTP is also 80! This is not a copy/paste error!
- FTP ("ftp", EURLProtocol.FTP, CWeb.DEFAULT_PORT_HTTP);
+  HTTP ("http", EURLProtocol.HTTP, CWeb.DEFAULT_PORT_HTTP),
+  HTTPS ("https", EURLProtocol.HTTPS, CWeb.DEFAULT_PORT_HTTPS),
+  // Default proxy port for FTP is also 80! This is not a copy/paste error!
+  FTP ("ftp", EURLProtocol.FTP, CWeb.DEFAULT_PORT_HTTP);
 
   private final String m_sID;
   private final IURLProtocol m_aURLProtocol;

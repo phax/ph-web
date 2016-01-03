@@ -25,17 +25,17 @@ import com.helger.commons.lang.EnumHelper;
 
 public enum EWebSpiderType implements IHasID <String>
 {
- SEARCHSPIDER ("searchspider"),
- RSSSPIDER ("rssspider"),
- BLOGSPIDER ("blogspider"),
- FORUMSPIDER ("forumspider"),
- IMAGESPIDER ("imagespider"),
- MISC_SPIDER ("misc_spider"),
- LINKCHECKER ("linkchecker"),
- HTMLVALIDATOR ("htmlvalidator"),
- CSSVALIDATOR ("cssvalidator"),
- HTTP_MONITORING ("http_monitoring"),
- UNKNOWN ("unknown");
+  SEARCHSPIDER ("searchspider"),
+  RSSSPIDER ("rssspider"),
+  BLOGSPIDER ("blogspider"),
+  FORUMSPIDER ("forumspider"),
+  IMAGESPIDER ("imagespider"),
+  MISC_SPIDER ("misc_spider"),
+  LINKCHECKER ("linkchecker"),
+  HTMLVALIDATOR ("htmlvalidator"),
+  CSSVALIDATOR ("cssvalidator"),
+  HTTP_MONITORING ("http_monitoring"),
+  UNKNOWN ("unknown");
 
   private final String m_sID;
 

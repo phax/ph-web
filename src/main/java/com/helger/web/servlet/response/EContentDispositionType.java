@@ -30,8 +30,8 @@ import com.helger.commons.lang.EnumHelper;
  */
 public enum EContentDispositionType implements IHasID <String>
 {
- ATTACHMENT ("attachment"),
- INLINE ("inline");
+  ATTACHMENT ("attachment"),
+  INLINE ("inline");
 
   private final String m_sID;
 

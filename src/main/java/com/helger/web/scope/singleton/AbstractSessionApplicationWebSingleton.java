@@ -36,7 +36,8 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @see com.helger.web.scope.mgr.EWebScope#SESSION_APPLICATION
  * @author Philip Helger
  */
-public abstract class AbstractSessionApplicationWebSingleton extends AbstractSingleton implements IWebSingleton, Serializable
+public abstract class AbstractSessionApplicationWebSingleton extends AbstractSingleton
+                                                             implements IWebSingleton, Serializable
 {
   protected AbstractSessionApplicationWebSingleton ()
   {}

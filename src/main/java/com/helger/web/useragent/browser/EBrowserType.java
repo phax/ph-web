@@ -33,18 +33,18 @@ import com.helger.commons.text.display.IHasDisplayText;
  */
 public enum EBrowserType implements IHasID <String>,IHasDisplayText
 {
- FIREFOX ("firefox", EBrowserText.FIREFOX),
- IE ("ie", EBrowserText.IE),
- OPERA ("opera", EBrowserText.OPERA),
- SAFARI ("safari", EBrowserText.SAFARI),
- CHROME ("chrome", EBrowserText.CHROME),
- LYNX ("lynx", EBrowserText.LYNX),
- KONQUEROR ("konqueror", EBrowserText.KONQUEROR),
- GECKO ("gecko", EBrowserText.GECKO),
- WEBKIT ("webkit", EBrowserText.WEBKIT),
- MOBILE ("mobile", EBrowserText.MOBILE),
- SPIDER ("spider", EBrowserText.SPIDER),
- APPLICATION ("generic", EBrowserText.APPLICATION);
+  FIREFOX ("firefox", EBrowserText.FIREFOX),
+  IE ("ie", EBrowserText.IE),
+  OPERA ("opera", EBrowserText.OPERA),
+  SAFARI ("safari", EBrowserText.SAFARI),
+  CHROME ("chrome", EBrowserText.CHROME),
+  LYNX ("lynx", EBrowserText.LYNX),
+  KONQUEROR ("konqueror", EBrowserText.KONQUEROR),
+  GECKO ("gecko", EBrowserText.GECKO),
+  WEBKIT ("webkit", EBrowserText.WEBKIT),
+  MOBILE ("mobile", EBrowserText.MOBILE),
+  SPIDER ("spider", EBrowserText.SPIDER),
+  APPLICATION ("generic", EBrowserText.APPLICATION);
 
   private final String m_sID;
   private final IHasDisplayText m_aDisplayName;

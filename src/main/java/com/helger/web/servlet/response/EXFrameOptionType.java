@@ -32,19 +32,19 @@ import com.helger.web.http.CHTTPHeader;
  */
 public enum EXFrameOptionType implements IHasID <String>
 {
- /**
-  * The page cannot be displayed in a frame, regardless of the site attempting
-  * to do so.
-  */
+  /**
+   * The page cannot be displayed in a frame, regardless of the site attempting
+   * to do so.
+   */
   DENY (CHTTPHeader.VALUE_DENY),
- /**
-  * The page can only be displayed in a frame on the same origin as the page
-  * itself.
-  */
+  /**
+   * The page can only be displayed in a frame on the same origin as the page
+   * itself.
+   */
   SAMEORIGIN (CHTTPHeader.VALUE_SAMEORIGIN),
- /**
-  * The page can only be displayed in a frame on the specified origin.
-  */
+  /**
+   * The page can only be displayed in a frame on the specified origin.
+   */
   ALLOW_FROM (CHTTPHeader.VALUE_ALLOW_FROM);
 
   private final String m_sID;

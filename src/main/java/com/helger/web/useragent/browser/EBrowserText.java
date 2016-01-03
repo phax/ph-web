@@ -29,19 +29,19 @@ import com.helger.commons.text.util.TextHelper;
 @Translatable
 public enum EBrowserText implements IHasDisplayText
 {
- FIREFOX ("Mozilla Firefox", "Mozilla Firefox"),
- IE ("Microsoft Internet Explorer", "Microsoft Internet Explorer"),
- OPERA ("Opera", "Opera"),
- SAFARI ("Apple Safari", "Apple Safari"),
- CHROME ("Google Chrome", "Google Chrome"),
- LYNX ("Lynx", "Lynx"),
- KONQUEROR ("Konqueror", "Konqueror"),
- GECKO ("Gecko basierend", "Gecko based"),
- WEBKIT ("WebKit basierend", "WebKit based"),
- MOBILE ("Mobiler Browser", "Mobile browser"),
- SPIDER ("Web Spieder", "Web Spider"),
- APPLICATION ("Anwendung oder API", "Application or API"),
- IE_COMPATIBILITY_MODE (" (Kompatibilitätsmodus)", " (compatibility mode)");
+  FIREFOX ("Mozilla Firefox", "Mozilla Firefox"),
+  IE ("Microsoft Internet Explorer", "Microsoft Internet Explorer"),
+  OPERA ("Opera", "Opera"),
+  SAFARI ("Apple Safari", "Apple Safari"),
+  CHROME ("Google Chrome", "Google Chrome"),
+  LYNX ("Lynx", "Lynx"),
+  KONQUEROR ("Konqueror", "Konqueror"),
+  GECKO ("Gecko basierend", "Gecko based"),
+  WEBKIT ("WebKit basierend", "WebKit based"),
+  MOBILE ("Mobiler Browser", "Mobile browser"),
+  SPIDER ("Web Spieder", "Web Spider"),
+  APPLICATION ("Anwendung oder API", "Application or API"),
+  IE_COMPATIBILITY_MODE (" (Kompatibilitätsmodus)", " (compatibility mode)");
 
   private final IMultilingualText m_aTP;
 

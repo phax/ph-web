@@ -30,8 +30,8 @@ import com.helger.commons.lang.EnumHelper;
  */
 public enum ENetworkProtocol implements IHasID <String>
 {
- TCP ("tcp"),
- UDP ("udp");
+  TCP ("tcp"),
+  UDP ("udp");
 
   private final String m_sID;
 

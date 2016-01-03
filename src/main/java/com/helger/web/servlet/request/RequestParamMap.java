@@ -239,20 +239,18 @@ public class RequestParamMap implements IRequestParamMap
   public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null
-                         : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
-                                                                    aItem.getValue (),
-                                                                    null);
+    return aItem == null ? null : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
+                                                                           aItem.getValue (),
+                                                                           null);
   }
 
   @Nullable
   public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null
-                         : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
-                                                                    aItem.getValue (),
-                                                                    null);
+    return aItem == null ? null : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
+                                                                           aItem.getValue (),
+                                                                           null);
   }
 
   @Nullable

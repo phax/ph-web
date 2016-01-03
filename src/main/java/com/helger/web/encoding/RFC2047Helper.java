@@ -38,8 +38,8 @@ public final class RFC2047Helper
 {
   public static enum ECodec
   {
-   B,
-   Q
+    B,
+    Q
   }
 
   public static final Charset DEFAULT_CHARSET = CCharset.CHARSET_UTF_8_OBJ;

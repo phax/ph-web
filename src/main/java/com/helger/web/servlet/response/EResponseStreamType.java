@@ -30,9 +30,9 @@ import com.helger.commons.lang.EnumHelper;
  */
 public enum EResponseStreamType implements IHasID <String>
 {
- PLAIN ("plain"),
- GZIP ("gzip"),
- DEFLATE ("deflate");
+  PLAIN ("plain"),
+  GZIP ("gzip"),
+  DEFLATE ("deflate");
 
   private final String m_sID;
 

@@ -27,27 +27,27 @@ import com.helger.commons.version.Version;
  */
 public enum EWebFeature
 {
- INLINE_IMAGES
- {
-   @Override
-   public boolean isSupported (@Nonnull final BrowserInfo aBI)
-   {
-     switch (aBI.getBrowserType ())
-     {
-       case OPERA:
-         return aBI.getVersion ().isGreaterOrEqualThan (V72);
-       case FIREFOX:
-       case CHROME:
-       case GECKO:
-       case SAFARI:
-         return true;
-       case IE:
-         return aBI.getVersion ().isGreaterOrEqualThan (V80);
-       default:
-         return false;
-     }
-   }
- };
+  INLINE_IMAGES
+  {
+    @Override
+    public boolean isSupported (@Nonnull final BrowserInfo aBI)
+    {
+      switch (aBI.getBrowserType ())
+      {
+        case OPERA:
+          return aBI.getVersion ().isGreaterOrEqualThan (V72);
+        case FIREFOX:
+        case CHROME:
+        case GECKO:
+        case SAFARI:
+          return true;
+        case IE:
+          return aBI.getVersion ().isGreaterOrEqualThan (V80);
+        default:
+          return false;
+      }
+    }
+  };
 
   public static final Version V72 = new Version (7, 2);
   public static final Version V80 = new Version (8);

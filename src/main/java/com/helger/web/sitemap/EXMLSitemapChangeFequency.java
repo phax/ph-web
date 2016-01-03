@@ -29,13 +29,13 @@ import com.helger.commons.string.StringHelper;
  */
 public enum EXMLSitemapChangeFequency
 {
- ALWAYS ("always"),
- HOURLY ("hourly"),
- DAILY ("daily"),
- WEEKLY ("weekly"),
- MONTHLY ("monthly"),
- YEARLY ("yearly"),
- NEVER ("never");
+  ALWAYS ("always"),
+  HOURLY ("hourly"),
+  DAILY ("daily"),
+  WEEKLY ("weekly"),
+  MONTHLY ("monthly"),
+  YEARLY ("yearly"),
+  NEVER ("never");
 
   private final String m_sText;
 

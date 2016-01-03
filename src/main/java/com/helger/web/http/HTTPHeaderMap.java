@@ -50,7 +50,11 @@ import com.helger.web.datetime.PDTWebDateHelper;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class HTTPHeaderMap implements IHasSize, Iterable <Map.Entry <String, List <String>>>, ICloneable <HTTPHeaderMap>, Serializable
+public class HTTPHeaderMap implements
+                           IHasSize,
+                           Iterable <Map.Entry <String, List <String>>>,
+                           ICloneable <HTTPHeaderMap>,
+                           Serializable
 {
   private final Map <String, List <String>> m_aHeaders = new LinkedHashMap <String, List <String>> ();
 

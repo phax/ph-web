@@ -23,8 +23,8 @@ package com.helger.web.servlet.response;
  */
 public enum ERedirectMode
 {
- /** Use the default httpServletResponse.sendRedirect */
+  /** Use the default httpServletResponse.sendRedirect */
   DEFAULT,
- /** Use HTTP 303/302 depending on the HTTP version used */
+  /** Use HTTP 303/302 depending on the HTTP version used */
   POST_REDIRECT_GET;
 }

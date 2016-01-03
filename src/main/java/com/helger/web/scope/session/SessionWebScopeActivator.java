@@ -45,7 +45,10 @@ import com.helger.web.scope.mgr.WebScopeManager;
  *
  * @author Philip Helger
  */
-public final class SessionWebScopeActivator implements Serializable, HttpSessionActivationListener, ISessionWebScopeDontPassivate
+public final class SessionWebScopeActivator implements
+                                            Serializable,
+                                            HttpSessionActivationListener,
+                                            ISessionWebScopeDontPassivate
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScopeActivator.class);
   private ISessionWebScope m_aSessionWebScope;

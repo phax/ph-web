@@ -29,6 +29,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalQuery;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -38,6 +40,7 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.pair.IPair;
@@ -111,20 +114,22 @@ public final class PDTWebDateHelper
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (PDTWebDateHelper.class);
-  // "XX" means "+HHmm"
   // "XXX" means "+HH:mm"
-  private static final String ZONE_PATTERN = "XXX";
+  // "XX" means "+HHmm"
+  private static final String ZONE_PATTERN1 = "XXX";
+  private static final String ZONE_PATTERN2 = "XX";
   private static final String FORMAT_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
-  private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN;
+  private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN1;
 
   /**
    * order is like this because the SimpleDateFormat.parse does not fail with
    * exception if it can parse a valid date out of a substring of the full
    * string given the mask so we have to check the most complete format first,
    * then it fails with exception. <br>
-   * An RFC superseding 822 recommends to use yyyy instead of yy
+   * RFC 1123 superseding 822 recommends to use yyyy instead of yy
    */
-  private static final Mask <?> [] RFC822_MASKS = { Mask.localDateTime (FORMAT_RFC822),
+  private static final Mask <?> [] RFC822_MASKS = { Mask.zonedDateTime (FORMAT_RFC822),
+                                                    Mask.zonedDateTime ("EEE, dd MMM yyyy HH:mm:ss XX"),
                                                     Mask.localDateTime ("EEE, dd MMM yyyy HH:mm:ss"),
                                                     Mask.localDateTime ("EEE, dd MMM yy HH:mm:ss"),
                                                     Mask.localDateTime ("EEE, dd MMM yyyy HH:mm"),
@@ -141,17 +146,25 @@ public final class PDTWebDateHelper
    * then it fails with exception
    */
   private static final Mask <?> [] W3CDATETIME_MASKS = { Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS" +
-                                                                              ZONE_PATTERN),
+                                                                              ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS" +
+                                                                              ZONE_PATTERN2),
                                                          Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS" +
-                                                                              ZONE_PATTERN),
+                                                                              ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS" +
+                                                                              ZONE_PATTERN2),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS"),
                                                          Mask.offsetDateTime (FORMAT_W3C),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN2),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN2),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss"),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN2),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN2),
                                                          Mask.localDateTime ("yyyy-MM-dd'T'HH:mm"),
                                                          Mask.localDateTime ("yyyy-MM-dd't'HH:mm"),
                                                          /*
@@ -189,6 +202,43 @@ public final class PDTWebDateHelper
    *        array of masks to use for parsing the string
    * @param sDate
    *        string to parse for a date.
+   * @return the Date represented by the given string using one of the given
+   *         masks. It returns <b>null</b> if it was not possible to parse the
+   *         the string with any of the masks.
+   */
+  @Nullable
+  private static OffsetDateTime _parseOffsetDateTimeUsingMask (@Nonnull final Mask <?> [] aMasks,
+                                                               @Nonnull @Nonempty final String sDate)
+  {
+    for (final Mask <?> aMask : aMasks)
+    {
+      final DateTimeFormatter aDTF = PDTFormatter.getForPattern (aMask.m_sPattern, LOCALE_TO_USE);
+      try
+      {
+        final Temporal ret = aDTF.parse (sDate, aMask.m_aQuery);
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Parsed '" + sDate + "' with '" + aMask.m_sPattern + "' to " + ret.getClass ().getName ());
+        return TypeConverter.convertIfNecessary (ret, OffsetDateTime.class);
+      }
+      catch (final DateTimeParseException ex)
+      {
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Failed to parse '" + sDate + "' with '" + aMask.m_sPattern + "': " + ex.getMessage ());
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Parses a Date out of a string using an array of masks.
+   * <p/>
+   * It uses the masks in order until one of them succeeds or all fail.
+   * <p/>
+   *
+   * @param aMasks
+   *        array of masks to use for parsing the string
+   * @param sDate
+   *        string to parse for a date.
    * @param aDTZ
    *        The date/time zone to use. Optional.
    * @return the Date represented by the given string using one of the given
@@ -196,9 +246,9 @@ public final class PDTWebDateHelper
    *         the string with any of the masks.
    */
   @Nullable
-  private static OffsetDateTime _parseDateTimeUsingMask (@Nonnull final Mask <?> [] aMasks,
-                                                         @Nonnull @Nonempty final String sDate,
-                                                         @Nullable final ZoneId aDTZ)
+  private static ZonedDateTime _parseZonedDateTimeUsingMask (@Nonnull final Mask <?> [] aMasks,
+                                                             @Nonnull @Nonempty final String sDate,
+                                                             @Nullable final ZoneId aDTZ)
   {
     for (final Mask <?> aMask : aMasks)
     {
@@ -208,15 +258,83 @@ public final class PDTWebDateHelper
       try
       {
         final Temporal ret = aDTF.parse (sDate, aMask.m_aQuery);
-        s_aLogger.info ("Parsed '" + sDate + "' with '" + aMask.m_sPattern + "' to " + ret.getClass ().getName ());
-        return TypeConverter.convertIfNecessary (ret, OffsetDateTime.class);
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Parsed '" + sDate + "' with '" + aMask.m_sPattern + "' to " + ret.getClass ().getName ());
+        return TypeConverter.convertIfNecessary (ret, ZonedDateTime.class);
       }
       catch (final DateTimeParseException ex)
       {
-        s_aLogger.error ("Failed to parse '" + sDate + "' with '" + aMask.m_sPattern + "': " + ex.getMessage ());
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Failed to parse '" + sDate + "' with '" + aMask.m_sPattern + "': " + ex.getMessage ());
       }
     }
     return null;
+  }
+
+  private static final class ZoneIdSupplier
+  {
+    private final String m_sZoneID;
+    private final ZoneId m_aZoneId;
+
+    private ZoneIdSupplier (@Nonnull @Nonempty final String sZoneID, @Nonnull final ZoneId aZoneId)
+    {
+      m_sZoneID = ValueEnforcer.notEmpty (sZoneID, "ZoneIDString");
+      m_aZoneId = ValueEnforcer.notNull (aZoneId, "ZoneID");
+    }
+
+    @Nonnull
+    public static ZoneIdSupplier of (@Nonnull final String sZoneID)
+    {
+      return new ZoneIdSupplier (sZoneID, ZoneId.of (sZoneID));
+    }
+
+    @Nonnull
+    public static ZoneIdSupplier ofHours (@Nonnull final String sZoneID, final int nHours)
+    {
+      return new ZoneIdSupplier (sZoneID, ZoneOffset.ofHours (nHours));
+    }
+  }
+
+  private static List <ZoneIdSupplier> s_aZIS = new ArrayList <> ();
+
+  static
+  {
+    s_aZIS.add (ZoneIdSupplier.of ("UTC"));
+    s_aZIS.add (ZoneIdSupplier.of ("GMT"));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("EST", -5));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("EDT", -4));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("CST", -6));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("CDT", -5));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("MST", -7));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("MDT", -6));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("PST", -8));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("PDT", -7));
+    s_aZIS.add (ZoneIdSupplier.of ("UT"));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("A", -1));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("B", -2));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("C", -3));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("D", -4));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("E", -5));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("F", -6));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("G", -7));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("H", -8));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("I", -9));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("K", -10));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("L", -11));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("M", -12));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("N", +1));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("O", +2));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("P", +3));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("Q", +4));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("R", +5));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("S", +6));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("T", +7));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("U", +8));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("V", +9));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("W", +10));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("X", +11));
+    s_aZIS.add (ZoneIdSupplier.ofHours ("Y", +12));
+    s_aZIS.add (ZoneIdSupplier.of ("Z"));
   }
 
   /**
@@ -233,16 +351,14 @@ public final class PDTWebDateHelper
   private static IPair <String, ZoneId> _extractDateTimeZone (@Nonnull final String sDate)
   {
     final int nDateLen = sDate.length ();
-    final String [] aDTZ = { "UTC", "GMT" };
-    for (final String sDTZ : aDTZ)
+    for (final ZoneIdSupplier aSupp : s_aZIS)
     {
+      final String sDTZ = aSupp.m_sZoneID;
       if (sDate.endsWith (" " + sDTZ))
-        return ReadOnlyPair.create (sDate.substring (0, nDateLen - (1 + sDTZ.length ())), ZoneId.of (sDTZ));
+        return ReadOnlyPair.create (sDate.substring (0, nDateLen - (1 + sDTZ.length ())), aSupp.m_aZoneId);
       if (sDate.endsWith (sDTZ))
-        return ReadOnlyPair.create (sDate.substring (0, nDateLen - sDTZ.length ()), ZoneId.of (sDTZ));
+        return ReadOnlyPair.create (sDate.substring (0, nDateLen - sDTZ.length ()), aSupp.m_aZoneId);
     }
-    if (sDate.endsWith ("Z"))
-      return ReadOnlyPair.create (sDate.substring (0, nDateLen - 1), ZoneOffset.UTC);
     return ReadOnlyPair.create (sDate, null);
   }
 
@@ -272,13 +388,13 @@ public final class PDTWebDateHelper
    *         <code>null</code>.
    */
   @Nullable
-  public static OffsetDateTime getDateTimeFromRFC822 (@Nullable final String sDate)
+  public static ZonedDateTime getDateTimeFromRFC822 (@Nullable final String sDate)
   {
     if (StringHelper.hasNoText (sDate))
       return null;
 
     final IPair <String, ZoneId> aPair = _extractDateTimeZone (sDate.trim ());
-    return _parseDateTimeUsingMask (RFC822_MASKS, aPair.getFirst (), aPair.getSecond ());
+    return _parseZonedDateTimeUsingMask (RFC822_MASKS, aPair.getFirst (), aPair.getSecond ());
   }
 
   /**
@@ -308,8 +424,7 @@ public final class PDTWebDateHelper
     if (StringHelper.hasNoText (sDate))
       return null;
 
-    final IPair <String, ZoneId> aPair = _extractDateTimeZone (sDate.trim ());
-    return _parseDateTimeUsingMask (W3CDATETIME_MASKS, aPair.getFirst (), aPair.getSecond ());
+    return _parseOffsetDateTimeUsingMask (W3CDATETIME_MASKS, sDate.trim ());
   }
 
   /**
@@ -323,12 +438,13 @@ public final class PDTWebDateHelper
    *         Date.
    */
   @Nullable
-  public static OffsetDateTime getDateTimeFromW3COrRFC822 (@Nullable final String sDate)
+  public static ZonedDateTime getDateTimeFromW3COrRFC822 (@Nullable final String sDate)
   {
-    OffsetDateTime aDateTime = getDateTimeFromW3C (sDate);
-    if (aDateTime == null)
-      aDateTime = getDateTimeFromRFC822 (sDate);
-    return aDateTime;
+    final OffsetDateTime aDateTime = getDateTimeFromW3C (sDate);
+    if (aDateTime != null)
+      return aDateTime.toZonedDateTime ();
+
+    return getDateTimeFromRFC822 (sDate);
   }
 
   /**
@@ -344,7 +460,7 @@ public final class PDTWebDateHelper
   @Nullable
   public static LocalDateTime getLocalDateTimeFromW3COrRFC822 (@Nullable final String sDate)
   {
-    final OffsetDateTime aDateTime = getDateTimeFromW3COrRFC822 (sDate);
+    final ZonedDateTime aDateTime = getDateTimeFromW3COrRFC822 (sDate);
     return aDateTime == null ? null : aDateTime.toLocalDateTime ();
   }
 
@@ -361,7 +477,7 @@ public final class PDTWebDateHelper
   {
     if (aDateTime == null)
       return null;
-    return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
+    return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).format (aDateTime);
   }
 
   /**
@@ -377,7 +493,7 @@ public final class PDTWebDateHelper
   {
     if (aDateTime == null)
       return null;
-    return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
+    return getAsStringRFC822 (aDateTime.toZonedDateTime ());
   }
 
   /**
@@ -393,7 +509,40 @@ public final class PDTWebDateHelper
   {
     if (aDateTime == null)
       return null;
-    return PDTFormatter.getForPattern (FORMAT_RFC822, LOCALE_TO_USE).withZone (ZoneOffset.UTC).format (aDateTime);
+    return getAsStringRFC822 (aDateTime.atOffset (ZoneOffset.UTC));
+  }
+
+  /**
+   * create a W3C Date Time representation of a date time using UTC date time
+   * zone.
+   *
+   * @param aDateTime
+   *        Date to print. May not be <code>null</code>.
+   * @return the W3C Date Time represented by the given Date.
+   */
+  @Nullable
+  public static String getAsStringW3C (@Nullable final ZonedDateTime aDateTime)
+  {
+    if (aDateTime == null)
+      return null;
+    final DateTimeFormatter aFormatter = PDTFormatter.getForPattern (FORMAT_W3C, LOCALE_TO_USE);
+    return aFormatter.format (aDateTime);
+  }
+
+  /**
+   * create a W3C Date Time representation of a date time using UTC date time
+   * zone.
+   *
+   * @param aDateTime
+   *        Date to print. May not be <code>null</code>.
+   * @return the W3C Date Time represented by the given Date.
+   */
+  @Nullable
+  public static String getAsStringW3C (@Nullable final OffsetDateTime aDateTime)
+  {
+    if (aDateTime == null)
+      return null;
+    return getAsStringW3C (aDateTime.toZonedDateTime ());
   }
 
   /**
@@ -403,41 +552,12 @@ public final class PDTWebDateHelper
    *        Date to print. May not be <code>null</code>.
    * @return the W3C Date Time represented by the given Date.
    */
-  @Nonnull
-  public static String getAsStringW3C (@Nonnull final LocalDateTime aDateTime)
+  @Nullable
+  public static String getAsStringW3C (@Nullable final LocalDateTime aDateTime)
   {
-    final DateTimeFormatter aFormatter = PDTFormatter.getForPattern (FORMAT_W3C, LOCALE_TO_USE);
-    return aFormatter.format (aDateTime.withNano (0));
-  }
-
-  /**
-   * create a W3C Date Time representation of a date time using UTC date time
-   * zone.
-   *
-   * @param aDateTime
-   *        Date to print. May not be <code>null</code>.
-   * @return the W3C Date Time represented by the given Date.
-   */
-  @Nonnull
-  public static String getAsStringW3C (@Nonnull final ZonedDateTime aDateTime)
-  {
-    final DateTimeFormatter aFormatter = PDTFormatter.getForPattern (FORMAT_W3C, LOCALE_TO_USE);
-    return aFormatter.format (aDateTime.withNano (0));
-  }
-
-  /**
-   * create a W3C Date Time representation of a date time using UTC date time
-   * zone.
-   *
-   * @param aDateTime
-   *        Date to print. May not be <code>null</code>.
-   * @return the W3C Date Time represented by the given Date.
-   */
-  @Nonnull
-  public static String getAsStringW3C (@Nonnull final OffsetDateTime aDateTime)
-  {
-    final DateTimeFormatter aFormatter = PDTFormatter.getForPattern (FORMAT_W3C, LOCALE_TO_USE);
-    return aFormatter.format (aDateTime.withNano (0));
+    if (aDateTime == null)
+      return null;
+    return getAsStringW3C (aDateTime.atOffset (ZoneOffset.UTC));
   }
 
   /**
@@ -448,7 +568,7 @@ public final class PDTWebDateHelper
   {
     // Important to use date time zone GMT as this is what the standard
     // printer emits!
-    // Use no milli seconds as the standard printer does not print them!
+    // Use no milliseconds as the standard printer does not print them!
     final ZonedDateTime aNow = ZonedDateTime.now (Clock.systemUTC ()).withNano (0);
     return getAsStringRFC822 (aNow);
   }

@@ -18,6 +18,7 @@ package com.helger.web.datetime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.time.Clock;
@@ -32,6 +33,7 @@ import javax.annotation.Nonnull;
 import org.junit.Test;
 
 import com.helger.datetime.PDTFactory;
+import com.helger.datetime.config.PDTConfig;
 
 /**
  * Test class for class {@link PDTWebDateHelper}.
@@ -43,17 +45,36 @@ public final class PDTWebDateHelperTest
   @Test
   public void testRfc822 ()
   {
-    final OffsetDateTime d = OffsetDateTime.now (Clock.systemUTC ());
+    final ZonedDateTime d = ZonedDateTime.now (PDTConfig.getDefaultZoneId ()).withNano (0);
     final String s = PDTWebDateHelper.getAsStringRFC822 (d);
     assertNotNull (s);
-    final OffsetDateTime d2 = PDTWebDateHelper.getDateTimeFromRFC822 (s);
-    assertNotNull (d2);
-    assertEquals (d, d2);
+    final ZonedDateTime d2 = PDTWebDateHelper.getDateTimeFromRFC822 (s);
+    assertNotNull ("Failed to parse: " + s, d2);
+    assertEquals ("Difference after parsing: " + s, d, d2);
 
     final String sNow = PDTWebDateHelper.getCurrentDateTimeAsStringRFC822 ();
     assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 (sNow));
-    assertNotNull (PDTWebDateHelper.getAsStringRFC822 ((ZonedDateTime) null));
-    assertNotNull (PDTWebDateHelper.getAsStringRFC822 ((LocalDateTime) null));
+
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 Z"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 UT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 UTC"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 GMT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 EST"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 EDT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 CST"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 CDT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 MST"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 MDT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 PST"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 PDT"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 +0100"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 +0000"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromRFC822 ("Sun, 03 Jan 2016 23:15:42 -0100"));
+
+    assertNull (PDTWebDateHelper.getAsStringRFC822 ((ZonedDateTime) null));
+    assertNull (PDTWebDateHelper.getAsStringRFC822 ((OffsetDateTime) null));
+    assertNull (PDTWebDateHelper.getAsStringRFC822 ((LocalDateTime) null));
   }
 
   private static void _testW3C (@Nonnull final OffsetDateTime aSrc)
@@ -81,25 +102,15 @@ public final class PDTWebDateHelperTest
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20Z"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20+01:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.145Z"));
+    assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.145+0100"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30.145+01:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20:30+01:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1994-11-05T08:15:30-05:00"));
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C ("1997-07-16T19:20+01:00"));
 
-    try
-    {
-      PDTWebDateHelper.getAsStringW3C ((ZonedDateTime) null);
-      fail ();
-    }
-    catch (final NullPointerException ex)
-    {}
-    try
-    {
-      PDTWebDateHelper.getAsStringW3C ((LocalDateTime) null);
-      fail ();
-    }
-    catch (final NullPointerException ex)
-    {}
+    assertNull (PDTWebDateHelper.getAsStringW3C ((ZonedDateTime) null));
+    assertNull (PDTWebDateHelper.getAsStringW3C ((OffsetDateTime) null));
+    assertNull (PDTWebDateHelper.getAsStringW3C ((LocalDateTime) null));
   }
 
   @Test

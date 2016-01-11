@@ -49,7 +49,7 @@ public final class PDTWebDateHelperTest
     final String s = PDTWebDateHelper.getAsStringRFC822 (d);
     assertNotNull (s);
     final ZonedDateTime d2 = PDTWebDateHelper.getDateTimeFromRFC822 (s);
-    assertNotNull ("Failed to parse: " + s, d2);
+    assertNotNull ("Failed to parse RFC822: " + s, d2);
     assertEquals ("Difference after parsing: " + s, d, d2);
 
     final String sNow = PDTWebDateHelper.getCurrentDateTimeAsStringRFC822 ();
@@ -82,7 +82,7 @@ public final class PDTWebDateHelperTest
     final String s = PDTWebDateHelper.getAsStringW3C (aSrc);
     assertNotNull (s);
     final OffsetDateTime aDT2 = PDTWebDateHelper.getDateTimeFromW3C (s);
-    assertNotNull (aDT2);
+    assertNotNull ("Failed to parse W3C date '" + s + "'", aDT2);
     assertEquals (aSrc.withNano (0), aDT2);
   }
 

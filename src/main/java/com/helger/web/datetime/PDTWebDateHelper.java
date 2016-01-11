@@ -118,26 +118,28 @@ public final class PDTWebDateHelper
   // "XX" means "+HHmm"
   private static final String ZONE_PATTERN1 = "XXX";
   private static final String ZONE_PATTERN2 = "XX";
-  private static final String FORMAT_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
-  private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN1;
+  private static final String FORMAT_RFC822 = "EEE, dd MMM uuuu HH:mm:ss 'GMT'";
+  private static final String FORMAT_W3C = "uuuu-MM-dd'T'HH:mm:ss" + ZONE_PATTERN1;
 
   /**
    * order is like this because the SimpleDateFormat.parse does not fail with
    * exception if it can parse a valid date out of a substring of the full
    * string given the mask so we have to check the most complete format first,
    * then it fails with exception. <br>
-   * RFC 1123 superseding 822 recommends to use yyyy instead of yy
+   * RFC 1123 superseding 822 recommends to use yyyy instead of yy<br>
+   * Because of strict formatting "uuuu" (year) must be used instead of "yyyy"
+   * (year of era)
    */
   private static final Mask <?> [] RFC822_MASKS = { Mask.zonedDateTime (FORMAT_RFC822),
-                                                    Mask.zonedDateTime ("EEE, dd MMM yyyy HH:mm:ss XX"),
-                                                    Mask.localDateTime ("EEE, dd MMM yyyy HH:mm:ss"),
-                                                    Mask.localDateTime ("EEE, dd MMM yy HH:mm:ss"),
-                                                    Mask.localDateTime ("EEE, dd MMM yyyy HH:mm"),
-                                                    Mask.localDateTime ("EEE, dd MMM yy HH:mm"),
-                                                    Mask.localDateTime ("dd MMM yyyy HH:mm:ss"),
-                                                    Mask.localDateTime ("dd MMM yy HH:mm:ss"),
-                                                    Mask.localDateTime ("dd MMM yyyy HH:mm"),
-                                                    Mask.localDateTime ("dd MMM yy HH:mm") };
+                                                    Mask.zonedDateTime ("EEE, dd MMM uuuu HH:mm:ss XX"),
+                                                    Mask.localDateTime ("EEE, dd MMM uuuu HH:mm:ss"),
+                                                    Mask.localDateTime ("EEE, dd MMM uu HH:mm:ss"),
+                                                    Mask.localDateTime ("EEE, dd MMM uuuu HH:mm"),
+                                                    Mask.localDateTime ("EEE, dd MMM uu HH:mm"),
+                                                    Mask.localDateTime ("dd MMM uuuu HH:mm:ss"),
+                                                    Mask.localDateTime ("dd MMM uu HH:mm:ss"),
+                                                    Mask.localDateTime ("dd MMM uuuu HH:mm"),
+                                                    Mask.localDateTime ("dd MMM uu HH:mm") };
 
   /*
    * order is like this because the SimpleDateFormat.parse does not fail with
@@ -145,28 +147,28 @@ public final class PDTWebDateHelper
    * string given the mask so we have to check the most complete format first,
    * then it fails with exception
    */
-  private static final Mask <?> [] W3CDATETIME_MASKS = { Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS" +
+  private static final Mask <?> [] W3CDATETIME_MASKS = { Mask.offsetDateTime ("uuuu-MM-dd'T'HH:mm:ss.SSS" +
                                                                               ZONE_PATTERN1),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS" +
+                                                         Mask.offsetDateTime ("uuuu-MM-dd'T'HH:mm:ss.SSS" +
                                                                               ZONE_PATTERN2),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS" +
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm:ss.SSS" +
                                                                               ZONE_PATTERN1),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS" +
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm:ss.SSS" +
                                                                               ZONE_PATTERN2),
-                                                         Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss.SSS"),
-                                                         Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss.SSS"),
+                                                         Mask.localDateTime ("uuuu-MM-dd'T'HH:mm:ss.SSS"),
+                                                         Mask.localDateTime ("uuuu-MM-dd't'HH:mm:ss.SSS"),
                                                          Mask.offsetDateTime (FORMAT_W3C),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm:ss" + ZONE_PATTERN2),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN1),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm:ss" + ZONE_PATTERN2),
-                                                         Mask.localDateTime ("yyyy-MM-dd'T'HH:mm:ss"),
-                                                         Mask.localDateTime ("yyyy-MM-dd't'HH:mm:ss"),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN1),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd'T'HH:mm" + ZONE_PATTERN2),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN1),
-                                                         Mask.offsetDateTime ("yyyy-MM-dd't'HH:mm" + ZONE_PATTERN2),
-                                                         Mask.localDateTime ("yyyy-MM-dd'T'HH:mm"),
-                                                         Mask.localDateTime ("yyyy-MM-dd't'HH:mm"),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd'T'HH:mm:ss" + ZONE_PATTERN2),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm:ss" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm:ss" + ZONE_PATTERN2),
+                                                         Mask.localDateTime ("uuuu-MM-dd'T'HH:mm:ss"),
+                                                         Mask.localDateTime ("uuuu-MM-dd't'HH:mm:ss"),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd'T'HH:mm" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd'T'HH:mm" + ZONE_PATTERN2),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm" + ZONE_PATTERN1),
+                                                         Mask.offsetDateTime ("uuuu-MM-dd't'HH:mm" + ZONE_PATTERN2),
+                                                         Mask.localDateTime ("uuuu-MM-dd'T'HH:mm"),
+                                                         Mask.localDateTime ("uuuu-MM-dd't'HH:mm"),
                                                          /*
                                                           * Applies to the
                                                           * following 2:
@@ -178,11 +180,11 @@ public final class PDTWebDateHelper
                                                           * forcing them to be
                                                           * GMT
                                                           */
-                                                         Mask.localDateTime ("yyyy-MM'T'HH:mm"),
-                                                         Mask.localDateTime ("yyyy'T'HH:mm"),
-                                                         Mask.localDate ("yyyy-MM-dd"),
-                                                         Mask.yearMonth ("yyyy-MM"),
-                                                         Mask.year ("yyyy") };
+                                                         Mask.localDateTime ("uuuu-MM'T'HH:mm"),
+                                                         Mask.localDateTime ("uuuu'T'HH:mm"),
+                                                         Mask.localDate ("uuuu-MM-dd"),
+                                                         Mask.yearMonth ("uuuu-MM"),
+                                                         Mask.year ("uuuu") };
 
   private static final Locale LOCALE_TO_USE = Locale.US;
 
@@ -299,6 +301,7 @@ public final class PDTWebDateHelper
 
   static
   {
+    // Longest strings first!
     s_aZIS.add (ZoneIdSupplier.of ("UTC"));
     s_aZIS.add (ZoneIdSupplier.of ("GMT"));
     s_aZIS.add (ZoneIdSupplier.ofHours ("EST", -5));
@@ -366,14 +369,14 @@ public final class PDTWebDateHelper
    * Parses a Date out of a String with a date in RFC822 format. <br>
    * It parsers the following formats:
    * <ul>
-   * <li>"EEE, dd MMM yyyy HH:mm:ss z"</li>
-   * <li>"EEE, dd MMM yyyy HH:mm z"</li>
-   * <li>"EEE, dd MMM yy HH:mm:ss z"</li>
-   * <li>"EEE, dd MMM yy HH:mm z"</li>
-   * <li>"dd MMM yyyy HH:mm:ss z"</li>
-   * <li>"dd MMM yyyy HH:mm z"</li>
-   * <li>"dd MMM yy HH:mm:ss z"</li>
-   * <li>"dd MMM yy HH:mm z"</li>
+   * <li>"EEE, dd MMM uuuu HH:mm:ss z"</li>
+   * <li>"EEE, dd MMM uuuu HH:mm z"</li>
+   * <li>"EEE, dd MMM uu HH:mm:ss z"</li>
+   * <li>"EEE, dd MMM uu HH:mm z"</li>
+   * <li>"dd MMM uuuu HH:mm:ss z"</li>
+   * <li>"dd MMM uuuu HH:mm z"</li>
+   * <li>"dd MMM uu HH:mm:ss z"</li>
+   * <li>"dd MMM uu HH:mm z"</li>
    * </ul>
    * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format
@@ -401,11 +404,11 @@ public final class PDTWebDateHelper
    * Parses a Date out of a String with a date in W3C date-time format. <br>
    * It parsers the following formats:
    * <ul>
-   * <li>"yyyy-MM-dd'T'HH:mm:ssz"</li>
-   * <li>"yyyy-MM-dd'T'HH:mmz"</li>
-   * <li>"yyyy-MM-dd"</li>
-   * <li>"yyyy-MM"</li>
-   * <li>"yyyy"</li>
+   * <li>"uuuu-MM-dd'T'HH:mm:ssz"</li>
+   * <li>"uuuu-MM-dd'T'HH:mmz"</li>
+   * <li>"uuuu-MM-dd"</li>
+   * <li>"uuuu-MM"</li>
+   * <li>"uuuu"</li>
    * </ul>
    * <p>
    * Refer to the java.text.SimpleDateFormat javadocs for details on the format

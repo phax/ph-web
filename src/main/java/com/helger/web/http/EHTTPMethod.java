@@ -38,7 +38,8 @@ public enum EHTTPMethod implements IHasName
   PUT ("PUT"),
   DELETE ("DELETE"),
   TRACE ("TRACE"),
-  CONNECT ("CONNECT");
+  CONNECT ("CONNECT"),
+  PATCH ("PATCH");
 
   private final String m_sName;
 

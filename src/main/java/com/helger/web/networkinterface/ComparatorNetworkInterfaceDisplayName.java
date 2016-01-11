@@ -23,14 +23,15 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.compare.AbstractCollatingComparator;
+import com.helger.commons.compare.CollatingPartComparator;
+import com.helger.commons.compare.CollatingComparator;
 
 /**
  * Comparator to compare {@link NetworkInterface} objects by their display name.
  *
  * @author Philip Helger
  */
-public class ComparatorNetworkInterfaceDisplayName extends AbstractCollatingComparator <NetworkInterface>
+public class ComparatorNetworkInterfaceDisplayName extends CollatingPartComparator <NetworkInterface>
 {
   /**
    * Comparator with default sort order and specified sort locale.
@@ -40,7 +41,7 @@ public class ComparatorNetworkInterfaceDisplayName extends AbstractCollatingComp
    */
   public ComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale)
   {
-    super (aSortLocale);
+    this (new CollatingComparator (aSortLocale));
   }
 
   /**
@@ -51,13 +52,18 @@ public class ComparatorNetworkInterfaceDisplayName extends AbstractCollatingComp
    */
   public ComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator)
   {
-    super (aCollator);
+    this (new CollatingComparator (aCollator));
   }
 
-  @Override
-  @Nullable
-  protected String getPart (@Nonnull final NetworkInterface aObject)
+  /**
+   * Constructor with {@link CollatingComparator} using the default sort order
+   *
+   * @param aComparator
+   *        The {@link CollatingComparator} to use. May not be <code>null</code>
+   *        .
+   */
+  public ComparatorNetworkInterfaceDisplayName (@Nonnull final CollatingComparator aComparator)
   {
-    return aObject.getDisplayName ();
+    super (aComparator, aObject -> aObject.getDisplayName ());
   }
 }

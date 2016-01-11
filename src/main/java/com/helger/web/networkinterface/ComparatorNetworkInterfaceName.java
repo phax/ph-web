@@ -18,22 +18,17 @@ package com.helger.web.networkinterface;
 
 import java.net.NetworkInterface;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.compare.AbstractPartComparatorComparable;
+import com.helger.commons.compare.PartComparatorComparable;
 
 /**
  * Comparator to compare {@link NetworkInterface} objects by their name.
  *
  * @author Philip Helger
  */
-public class ComparatorNetworkInterfaceName extends AbstractPartComparatorComparable <NetworkInterface, String>
+public class ComparatorNetworkInterfaceName extends PartComparatorComparable <NetworkInterface, String>
 {
-  @Override
-  @Nullable
-  protected String getPart (@Nonnull final NetworkInterface aObject)
+  public ComparatorNetworkInterfaceName ()
   {
-    return aObject.getName ();
+    super (aObject -> aObject.getName ());
   }
 }

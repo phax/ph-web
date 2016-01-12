@@ -18,8 +18,6 @@ package com.helger.web.servlet.response;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -29,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.web.datetime.PDTWebDateHelper;
 
@@ -58,7 +57,7 @@ public final class ResponseHelperSettings
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHelperSettings.class);
 
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   private static int s_nExpirationSeconds = DEFAULT_EXPIRATION_SECONDS;
   private static boolean s_bResponseCompressionEnabled = DEFAULT_RESPONSE_COMPRESSION_ENABLED;
   private static boolean s_bResponseGzipEnabled = DEFAULT_RESPONSE_GZIP_ENABLED;
@@ -80,19 +79,13 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
       s_aLogger.info ("ResponseHelper responseCompressionEnabled=" + bResponseCompressionEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -123,19 +116,13 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
       s_aLogger.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -166,19 +153,13 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
       s_aLogger.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -214,9 +195,7 @@ public final class ResponseHelperSettings
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       EChange eChange = EChange.UNCHANGED;
       if (s_bResponseCompressionEnabled != bResponseCompressionEnabled)
       {
@@ -237,11 +216,7 @@ public final class ResponseHelperSettings
         s_aLogger.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
       }
       return eChange;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -255,19 +230,13 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setExpirationSeconds (final int nExpirationSeconds)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_nExpirationSeconds == nExpirationSeconds)
         return EChange.UNCHANGED;
       s_nExpirationSeconds = nExpirationSeconds;
       s_aLogger.info ("ResponseHelper expirationSeconds=" + nExpirationSeconds);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**

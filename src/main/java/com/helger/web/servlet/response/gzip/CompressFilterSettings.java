@@ -16,9 +16,6 @@
  */
 package com.helger.web.servlet.response.gzip;
 
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -26,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 
 /**
@@ -37,7 +35,7 @@ import com.helger.commons.state.EChange;
 public final class CompressFilterSettings
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (CompressFilterSettings.class);
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   private static boolean s_bFilterLoaded = false;
   private static boolean s_bResponseCompressionEnabled = true;
   private static boolean s_bResponseGzipEnabled = true;
@@ -55,16 +53,10 @@ public final class CompressFilterSettings
    */
   public static void markFilterLoaded ()
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_bFilterLoaded = true;
-      s_aLogger.info ("CompressFilter is loaded");
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
+    s_aLogger.info ("CompressFilter is loaded");
   }
 
   /**
@@ -94,19 +86,13 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
       s_aLogger.info ("CompressFilter responseCompressionEnabled=" + bResponseCompressionEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -137,19 +123,13 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
       s_aLogger.info ("CompressFilter responseGzipEnabled=" + bResponseGzipEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -180,19 +160,13 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
       s_aLogger.info ("CompressFilter responseDeflateEnabled=" + bResponseDeflateEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -228,9 +202,7 @@ public final class CompressFilterSettings
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       EChange eChange = EChange.UNCHANGED;
       if (s_bResponseCompressionEnabled != bResponseCompressionEnabled)
       {
@@ -251,11 +223,7 @@ public final class CompressFilterSettings
         s_aLogger.info ("CompressFilter responseDeflateEnabled=" + bResponseDeflateEnabled);
       }
       return eChange;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -268,19 +236,13 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setDebugModeEnabled (final boolean bDebugModeEnabled)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_bDebugModeEnabled == bDebugModeEnabled)
         return EChange.UNCHANGED;
       s_bDebugModeEnabled = bDebugModeEnabled;
       s_aLogger.info ("CompressFilter debugMode=" + bDebugModeEnabled);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**

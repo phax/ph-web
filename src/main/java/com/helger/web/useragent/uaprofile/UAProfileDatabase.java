@@ -27,8 +27,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
@@ -47,6 +45,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
@@ -76,9 +75,9 @@ public final class UAProfileDatabase
   private static final String REQUEST_ATTR = UAProfileDatabase.class.getName ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (UAProfileDatabase.class);
 
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final Set <UAProfile> s_aUniqueUAProfiles = new HashSet <UAProfile> ();
+  private static final Set <UAProfile> s_aUniqueUAProfiles = new HashSet <> ();
   @GuardedBy ("s_aRWLock")
   private static INonThrowingRunnableWithParameter <UAProfile> s_aNewUAProfileCallback;
 
@@ -91,28 +90,14 @@ public final class UAProfileDatabase
   @Nullable
   public static INonThrowingRunnableWithParameter <UAProfile> getNewUAProfileCallback ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_aNewUAProfileCallback;
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> s_aNewUAProfileCallback);
   }
 
   public static void setNewUAProfileCallback (@Nullable final INonThrowingRunnableWithParameter <UAProfile> aCallback)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_aNewUAProfileCallback = aCallback;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   @Nullable
@@ -382,22 +367,17 @@ public final class UAProfileDatabase
       aHttpRequest.setAttribute (REQUEST_ATTR, aUAProfile);
       if (aUAProfile.isSet ())
       {
-        s_aRWLock.writeLock ().lock ();
-        try
-        {
-          if (s_aUniqueUAProfiles.add (aUAProfile))
+        final UAProfile aFinalUAProfile = aUAProfile;
+        s_aRWLock.writeLocked ( () -> {
+          if (s_aUniqueUAProfiles.add (aFinalUAProfile))
           {
             if (s_aLogger.isDebugEnabled ())
-              s_aLogger.debug ("Found UA-Profile info: " + aUAProfile.toString ());
+              s_aLogger.debug ("Found UA-Profile info: " + aFinalUAProfile.toString ());
 
             if (s_aNewUAProfileCallback != null)
-              s_aNewUAProfileCallback.run (aUAProfile);
+              s_aNewUAProfileCallback.run (aFinalUAProfile);
           }
-        }
-        finally
-        {
-          s_aRWLock.writeLock ().unlock ();
-        }
+        });
       }
     }
     return aUAProfile;
@@ -405,16 +385,8 @@ public final class UAProfileDatabase
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Set <UAProfile> getUniqueUAProfiles ()
+  public static Set <UAProfile> getAllUniqueUAProfiles ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newSet (s_aUniqueUAProfiles);
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> CollectionHelper.newSet (s_aUniqueUAProfiles));
   }
 }

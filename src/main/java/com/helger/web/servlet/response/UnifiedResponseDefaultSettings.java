@@ -18,8 +18,6 @@ package com.helger.web.servlet.response;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -32,6 +30,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
@@ -49,11 +48,11 @@ import com.helger.web.http.HTTPHeaderMap;
 @ThreadSafe
 public class UnifiedResponseDefaultSettings
 {
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
   @GuardedBy ("s_aRWLock")
-  private static final Map <String, Cookie> s_aCookies = new LinkedHashMap <String, Cookie> ();
+  private static final Map <String, Cookie> s_aCookies = new LinkedHashMap <> ();
 
   private UnifiedResponseDefaultSettings ()
   {}
@@ -65,15 +64,7 @@ public class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static HTTPHeaderMap getResponseHeaderMap ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_aResponseHeaderMap.getClone ();
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked (s_aResponseHeaderMap::getClone);
   }
 
   /**
@@ -183,15 +174,9 @@ public class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_aResponseHeaderMap.setHeader (sName, sValue);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -209,15 +194,9 @@ public class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_aResponseHeaderMap.addHeader (sName, sValue);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -238,15 +217,7 @@ public class UnifiedResponseDefaultSettings
   {
     ValueEnforcer.notEmpty (sName, "Name");
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
-      return s_aResponseHeaderMap.removeHeaders (sName);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.removeHeaders (sName));
   }
 
   /**
@@ -257,15 +228,7 @@ public class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllResponseHeaders ()
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
-      return s_aResponseHeaderMap.clear ();
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.clear ());
   }
 
   /**
@@ -292,15 +255,7 @@ public class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static Map <String, Cookie> getAllCookies ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newMap (s_aCookies);
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> CollectionHelper.newMap (s_aCookies));
   }
 
   /**
@@ -315,15 +270,9 @@ public class UnifiedResponseDefaultSettings
 
     final String sKey = aCookie.getName ();
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_aCookies.put (sKey, aCookie);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -339,15 +288,7 @@ public class UnifiedResponseDefaultSettings
     if (StringHelper.hasNoText (sName))
       return EChange.UNCHANGED;
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (s_aCookies.remove (sName) != null);
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    return s_aRWLock.writeLocked ( () -> EChange.valueOf (s_aCookies.remove (sName) != null));
   }
 
   /**
@@ -358,17 +299,11 @@ public class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllCookies ()
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_aCookies.isEmpty ())
         return EChange.UNCHANGED;
       s_aCookies.clear ();
       return EChange.CHANGED;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 }

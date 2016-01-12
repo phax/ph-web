@@ -18,8 +18,6 @@ package com.helger.web.useragent;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +32,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.http.CHTTPHeader;
 
@@ -48,9 +47,9 @@ public final class UserAgentDatabase
 {
   private static final String REQUEST_ATTR = UserAgentDatabase.class.getName ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDatabase.class);
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final Set <String> s_aUniqueUserAgents = new HashSet <String> ();
+  private static final Set <String> s_aUniqueUserAgents = new HashSet <> ();
   @GuardedBy ("s_aRWLock")
   private static INonThrowingRunnableWithParameter <IUserAgent> s_aNewUserAgentCallback;
 
@@ -62,15 +61,9 @@ public final class UserAgentDatabase
 
   public static void setNewUserAgentCallback (@Nullable final INonThrowingRunnableWithParameter <IUserAgent> aCallback)
   {
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    s_aRWLock.writeLocked ( () -> {
       s_aNewUserAgentCallback = aCallback;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -103,18 +96,12 @@ public final class UserAgentDatabase
     // Decrypt outside the lock
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
-    s_aRWLock.writeLock ().lock ();
-    try
-    {
+    return s_aRWLock.writeLocked ( () -> {
       if (s_aUniqueUserAgents.add (sUserAgent))
         if (s_aNewUserAgentCallback != null)
           s_aNewUserAgentCallback.run (aUserAgent);
       return aUserAgent;
-    }
-    finally
-    {
-      s_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -145,16 +132,8 @@ public final class UserAgentDatabase
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Set <String> getUniqueUserAgents ()
+  public static Set <String> getAllUniqueUserAgents ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newSet (s_aUniqueUserAgents);
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> CollectionHelper.newSet (s_aUniqueUserAgents));
   }
 }

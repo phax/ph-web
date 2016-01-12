@@ -142,8 +142,7 @@ public class RequestParamMap implements IRequestParamMap
     sRealPath = StringHelper.trimEnd (sRealPath, s_sClose);
     // Remove any remaining opening closing separator because this indicates and
     // invalid level (as e.g. in 'columns[0][]')
-    while (sRealPath.endsWith (s_sOpen))
-      sRealPath = StringHelper.trimEnd (sRealPath, s_sOpen.length ());
+    sRealPath = StringHelper.trimEndRepeatedly (sRealPath, s_sOpen);
     // Start parsing
     _recursiveAddItem (m_aMap, sRealPath, aValue);
   }

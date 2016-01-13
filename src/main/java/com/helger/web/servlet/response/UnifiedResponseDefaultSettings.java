@@ -236,15 +236,7 @@ public class UnifiedResponseDefaultSettings
    */
   public static boolean hasCookies ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.isNotEmpty (s_aCookies);
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> CollectionHelper.isNotEmpty (s_aCookies));
   }
 
   /**

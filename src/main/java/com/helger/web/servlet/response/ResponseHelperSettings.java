@@ -94,15 +94,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseCompressionEnabled ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_bResponseCompressionEnabled;
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> s_bResponseCompressionEnabled);
   }
 
   /**
@@ -131,15 +123,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseGzipEnabled ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_bResponseGzipEnabled;
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -168,15 +152,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseDeflateEnabled ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_bResponseDeflateEnabled;
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -244,14 +220,6 @@ public final class ResponseHelperSettings
    */
   public static int getExpirationSeconds ()
   {
-    s_aRWLock.readLock ().lock ();
-    try
-    {
-      return s_nExpirationSeconds;
-    }
-    finally
-    {
-      s_aRWLock.readLock ().unlock ();
-    }
+    return s_aRWLock.readLocked ( () -> s_nExpirationSeconds);
   }
 }

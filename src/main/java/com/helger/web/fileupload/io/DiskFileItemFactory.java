@@ -112,15 +112,9 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   private void _addTempFile (@Nonnull final File aFile)
   {
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
+    m_aRWLock.writeLocked ( () -> {
       m_aTempFiles.add (aFile);
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -161,30 +155,16 @@ public class DiskFileItemFactory implements IFileItemFactory
   @ReturnsMutableCopy
   public List <File> getAllTemporaryFiles ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aTempFiles);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aTempFiles));
   }
 
   public void deleteAllTemporaryFiles ()
   {
-    List <File> aTempFiles;
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      aTempFiles = CollectionHelper.newList (m_aTempFiles);
+    final List <File> aTempFiles = m_aRWLock.writeLocked ( () -> {
+      final List <File> ret = CollectionHelper.newList (m_aTempFiles);
       m_aTempFiles.clear ();
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+      return ret;
+    });
 
     for (final File aTempFile : aTempFiles)
     {

@@ -19,8 +19,6 @@ package com.helger.web.mock;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -50,8 +49,8 @@ public class MockEventListenerList
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockEventListenerList.class);
 
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
-  private final List <EventListener> m_aListener = new ArrayList <EventListener> ();
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
+  private final List <EventListener> m_aListener = new ArrayList <> ();
 
   public MockEventListenerList ()
   {}
@@ -75,20 +74,14 @@ public class MockEventListenerList
     // Get all listeners to assign
     final List <EventListener> aOtherListeners = aList.getAllListeners ();
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
+    return m_aRWLock.writeLocked ( () -> {
       if (m_aListener.isEmpty () && aOtherListeners.isEmpty ())
         return EChange.UNCHANGED;
 
       m_aListener.clear ();
       m_aListener.addAll (aOtherListeners);
       return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   /**
@@ -112,76 +105,48 @@ public class MockEventListenerList
                       aListener.getClass ());
     }
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (m_aListener.add (aListener));
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return m_aRWLock.writeLocked ( () -> EChange.valueOf (m_aListener.add (aListener)));
   }
 
   @Nonnull
   public EChange removeListeners (@Nullable final Class <? extends EventListener> aListenerClass)
   {
-    EChange ret = EChange.UNCHANGED;
-    if (aListenerClass != null)
-    {
-      m_aRWLock.writeLock ().lock ();
-      try
-      {
-        // Create a copy of the list
-        for (final EventListener aListener : CollectionHelper.newList (m_aListener))
-          if (aListener.getClass ().equals (aListenerClass))
-            ret = ret.or (EChange.valueOf (m_aListener.remove (aListener)));
-      }
-      finally
-      {
-        m_aRWLock.writeLock ().unlock ();
-      }
-    }
-    return ret;
+    if (aListenerClass == null)
+      return EChange.UNCHANGED;
+
+    return m_aRWLock.writeLocked ( () -> {
+      EChange ret = EChange.UNCHANGED;
+      // Create a copy of the list
+      for (final EventListener aListener : CollectionHelper.newList (m_aListener))
+        if (aListener.getClass ().equals (aListenerClass))
+          ret = ret.or (EChange.valueOf (m_aListener.remove (aListener)));
+      return ret;
+    });
   }
 
   @Nonnull
   public EChange removeAllListeners ()
   {
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
+    return m_aRWLock.writeLocked ( () -> {
       if (m_aListener.isEmpty ())
         return EChange.UNCHANGED;
       m_aListener.clear ();
       return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <EventListener> getAllListeners ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aListener);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aListener));
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <ServletContextListener> getAllServletContextListeners ()
   {
-    final List <ServletContextListener> ret = new ArrayList <ServletContextListener> ();
+    final List <ServletContextListener> ret = new ArrayList <> ();
     for (final EventListener aListener : getAllListeners ())
       if (aListener instanceof ServletContextListener)
         ret.add ((ServletContextListener) aListener);
@@ -192,7 +157,7 @@ public class MockEventListenerList
   @ReturnsMutableCopy
   public List <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    final List <HttpSessionListener> ret = new ArrayList <HttpSessionListener> ();
+    final List <HttpSessionListener> ret = new ArrayList <> ();
     for (final EventListener aListener : getAllListeners ())
       if (aListener instanceof HttpSessionListener)
         ret.add ((HttpSessionListener) aListener);
@@ -203,7 +168,7 @@ public class MockEventListenerList
   @ReturnsMutableCopy
   public List <ServletRequestListener> getAllServletRequestListeners ()
   {
-    final List <ServletRequestListener> ret = new ArrayList <ServletRequestListener> ();
+    final List <ServletRequestListener> ret = new ArrayList <> ();
     for (final EventListener aListener : getAllListeners ())
       if (aListener instanceof ServletRequestListener)
         ret.add ((ServletRequestListener) aListener);

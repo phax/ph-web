@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,6 +31,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
 
@@ -45,13 +44,13 @@ import com.helger.web.http.CHTTPHeader;
 @ThreadSafe
 public class FileItemHeaders implements IFileItemHeaders, Serializable
 {
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
   /**
    * Map of <code>String</code> keys to a <code>List</code> of
    * <code>String</code> instances.
    */
-  private final Map <String, List <String>> m_aHeaderNameToValueListMap = new HashMap <String, List <String>> ();
+  private final Map <String, List <String>> m_aHeaderNameToValueListMap = new HashMap <> ();
 
   /**
    * List to preserve order of headers as added. This would not be needed if a
@@ -66,16 +65,10 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    m_aRWLock.readLock ().lock ();
-    try
-    {
+    return m_aRWLock.readLocked ( () -> {
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       return CollectionHelper.getFirstElement (aHeaderValueList);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    });
   }
 
   @Nullable
@@ -103,45 +96,23 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    m_aRWLock.readLock ().lock ();
-    try
-    {
+    return m_aRWLock.readLocked ( () -> {
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       return CollectionHelper.getIterator (aHeaderValueList);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    });
   }
 
   @Nonnull
   public Iterator <String> getHeaderNames ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_aHeaderNameList.iterator ();
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.iterator ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <String> getAllHeaderNames ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aHeaderNameList);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aHeaderNameList));
   }
 
   /**
@@ -158,9 +129,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
+    m_aRWLock.writeLocked ( () -> {
       List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {
@@ -169,11 +138,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
         m_aHeaderNameList.add (sNameLower);
       }
       aHeaderValueList.add (sValue);
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    });
   }
 
   @Override

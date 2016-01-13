@@ -19,8 +19,6 @@ package com.helger.web.scope.mgr;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,6 +35,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.scope.IApplicationScope;
 import com.helger.commons.scope.IGlobalScope;
 import com.helger.commons.scope.IRequestScope;
@@ -65,8 +64,8 @@ public final class WebScopeManager
   private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeManager.class);
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
-  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
-  private static final Set <String> s_aSessionsInInvalidation = new HashSet <String> ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  private static final Set <String> s_aSessionsInInvalidation = new HashSet <> ();
 
   @PresentForCodeCoverage
   private static final WebScopeManager s_aInstance = new WebScopeManager ();
@@ -454,16 +453,7 @@ public final class WebScopeManager
       // a previous invocation are invalidated on Tomcat restart
 
       // Ensure that session.invalidate can not be called recursively
-      boolean bCanInvalidateSession;
-      s_aRWLock.writeLock ().lock ();
-      try
-      {
-        bCanInvalidateSession = s_aSessionsInInvalidation.add (sSessionID);
-      }
-      finally
-      {
-        s_aRWLock.writeLock ().unlock ();
-      }
+      final boolean bCanInvalidateSession = s_aRWLock.writeLocked ( () -> s_aSessionsInInvalidation.add (sSessionID));
 
       if (bCanInvalidateSession)
       {
@@ -479,15 +469,9 @@ public final class WebScopeManager
         finally
         {
           // Remove from "in invalidation" list
-          s_aRWLock.writeLock ().lock ();
-          try
-          {
+          s_aRWLock.writeLocked ( () -> {
             s_aSessionsInInvalidation.remove (sSessionID);
-          }
-          finally
-          {
-            s_aRWLock.writeLock ().unlock ();
-          }
+          });
         }
       }
     }

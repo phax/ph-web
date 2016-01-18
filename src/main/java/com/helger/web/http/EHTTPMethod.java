@@ -65,6 +65,11 @@ public enum EHTTPMethod implements IHasName
     return this != HEAD;
   }
 
+  public boolean isPostOrPut ()
+  {
+    return this == POST || this == PUT;
+  }
+
   @Nullable
   public static EHTTPMethod getFromNameOrNull (@Nullable final String sName)
   {

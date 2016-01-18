@@ -17,6 +17,7 @@
 package com.helger.web.fileupload;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -194,7 +195,7 @@ public final class StreamingFuncTest
     assertEquals ((byte) '1', bytes[0]);
     assertEquals ((byte) '2', bytes[1]);
     assertEquals ((byte) '3', bytes[2]);
-    assertTrue (!fileIter.hasNext ());
+    assertFalse (fileIter.hasNext ());
   }
 
   private IFileItemIterator _parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException
@@ -304,9 +305,9 @@ public final class StreamingFuncTest
   public void testInvalidFileNameException () throws Exception
   {
     final String sFilename = "foo.exe\u0000.png";
-    assertTrue (sFilename.length () == 12);
-    assertTrue (sFilename.toCharArray ().length == 12);
-    assertTrue (sFilename.toCharArray ()[7] == 0);
+    assertEquals (12, sFilename.length ());
+    assertEquals (12, sFilename.toCharArray ().length);
+    assertEquals (0, sFilename.toCharArray ()[7]);
     final String aRequest = "-----1234\r\n" +
                             "Content-Disposition: form-data; name=\"file\"; filename=\"" +
                             sFilename +
@@ -340,8 +341,8 @@ public final class StreamingFuncTest
     catch (final InvalidFileNameException e)
     {
       assertEquals (sFilename, e.getName ());
-      assertTrue (e.getMessage ().indexOf (sFilename) == -1);
-      assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
+      assertEquals (-1, e.getMessage ().indexOf (sFilename));
+      assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") >= 0);
     }
     assertEquals ("foo.exe", fileItemStream.getNameSecure ());
 

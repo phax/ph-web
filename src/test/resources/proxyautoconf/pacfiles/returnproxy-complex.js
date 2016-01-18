@@ -18,7 +18,7 @@
 
 function FindProxyForURL(url, host) {
  
-pacver = "company.net PAC file version 7.2, January 4th, 2008";
+var pacver = "company.net PAC file version 7.2, January 4th, 2008";
  
 // Convert everything to lower case.
 var lhost = host.toLowerCase();
@@ -27,7 +27,7 @@ host = lhost;
 // Set the default proxy variable that users get if they don�t match
 // any more specific rule. 
  
-proxy = "PROXY coreproxy.company.net:8000";
+var proxy = "PROXY coreproxy.company.net:8000";
 // Los Angeles WAN subnets go to LA proxy 
 if (isInNet(myIpAddress(), "10.100.0.0", "255.252.0.0")) { 
      proxy = "PROXY laproxy.company.net:8000";
@@ -90,7 +90,7 @@ if ((host == "www.company.net") ||
 }
  
 // Test to see if host is an IP address
-reip = /^\d+\.\d+\.\d+\.\d+$/g;
+var reip = /^\d+\.\d+\.\d+\.\d+$/g;
 if (reip.test(host)) {
  
      // Check for an Internet DMZ address

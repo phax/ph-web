@@ -935,9 +935,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setContextPath (@Nullable final String sContextPath)
   {
-    if (sContextPath != null)
-      if (!sContextPath.isEmpty () && !sContextPath.startsWith ("/"))
-        s_aLogger.error ("Illegal context path specified: '" + sContextPath + "'");
+    if (StringHelper.hasText (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
+      s_aLogger.error ("Illegal context path specified: '" + sContextPath + "'");
     m_sContextPath = sContextPath;
     return this;
   }
@@ -1028,7 +1027,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setServletPath (@Nullable final String sServletPath)
   {
-    if (sServletPath != null && !sServletPath.isEmpty () && !sServletPath.startsWith ("/"))
+    if (StringHelper.hasText (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
       s_aLogger.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
     m_sServletPath = sServletPath;
     return this;

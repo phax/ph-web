@@ -17,6 +17,7 @@
 package com.helger.web.fileupload;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -59,12 +60,12 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
       assertTrue (pItems >= 0 && pItems <= expectedItems);
 
       assertTrue (bytesRead == null || pBytesRead >= bytesRead.longValue ());
-      bytesRead = new Long (pBytesRead);
+      bytesRead = Long.valueOf (pBytesRead);
       assertTrue (items == null || pItems >= items.intValue ());
-      items = new Integer (pItems);
+      items = Integer.valueOf (pItems);
     }
 
-    void checkFinished ()
+    private void _checkFinished ()
     {
       assertEquals (expectedContentLength, bytesRead.longValue ());
       assertEquals (expectedItems, items.intValue ());
@@ -143,7 +144,7 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
       }
       assertEquals (-1, istream.read ());
     }
-    assertTrue (!iter.hasNext ());
-    listener.checkFinished ();
+    assertFalse (iter.hasNext ());
+    listener._checkFinished ();
   }
 }

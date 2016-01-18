@@ -26,6 +26,7 @@ var ipbits=myip.split(".")
 var myseg=parseInt(ipbits[3])
 
 // Check to see if the 4th octect is even or odd
+var proxy;
 if (myseg==Math.floor(myseg/2)*2) {
      // Even
      proxy = "PROXY p1.company.com:8080; PROXY p2.company.com:8080";

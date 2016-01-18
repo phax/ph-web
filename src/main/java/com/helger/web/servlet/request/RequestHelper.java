@@ -390,7 +390,7 @@ public final class RequestHelper
     final StringBuilder aURL = getFullServerName (sScheme, sServerName, nServerPort);
     if (StringHelper.hasText (sPath))
     {
-      if (!sPath.startsWith ("/", 0))
+      if (!StringHelper.startsWith (sPath, '/'))
         aURL.append ('/');
       aURL.append (sPath);
     }

@@ -188,22 +188,20 @@ public final class DiskFileItemTest
    */
   private byte [] _createContentBytes (final int size)
   {
-    final StringBuffer buffer = new StringBuffer (size);
+    final StringBuilder buffer = new StringBuilder (size);
     byte count = 0;
     for (int i = 0; i < size; i++)
     {
-      buffer.append (count + "");
+      buffer.append (count);
       count++;
       if (count > 9)
-      {
         count = 0;
-      }
     }
     return buffer.toString ().getBytes ();
   }
 
   /**
-   * Create a FileItem with the specfied content bytes.
+   * Create a FileItem with the specified content bytes.
    */
   private IFileItem _createFileItem (final byte [] contentBytes)
   {
@@ -245,7 +243,7 @@ public final class DiskFileItemTest
     // Deserialize the test object
     Object result = null;
     try (final ByteArrayInputStream bais = new ByteArrayInputStream (baos.toByteArray ());
-         final ObjectInputStream ois = new ObjectInputStream (bais))
+        final ObjectInputStream ois = new ObjectInputStream (bais))
     {
       result = ois.readObject ();
     }

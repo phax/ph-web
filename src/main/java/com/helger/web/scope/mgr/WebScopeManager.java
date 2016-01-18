@@ -163,7 +163,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Gobal scope object is not a global web scope: " + String.valueOf (aGlobalScope), ex);
+      s_aLogger.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
       return null;
     }
   }
@@ -276,7 +276,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Application scope object is not an application web scope: " + String.valueOf (aAppScope), ex);
+      s_aLogger.warn ("Application scope object is not an application web scope: " + aAppScope, ex);
       return null;
     }
   }
@@ -355,9 +355,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      throw new IllegalStateException ("Session scope object is not a web scope but: " +
-                                       String.valueOf (aSessionWebScope),
-                                       ex);
+      throw new IllegalStateException ("Session scope object is not a web scope but: " + aSessionWebScope, ex);
     }
   }
 
@@ -469,9 +467,7 @@ public final class WebScopeManager
         finally
         {
           // Remove from "in invalidation" list
-          s_aRWLock.writeLocked ( () -> {
-            s_aSessionsInInvalidation.remove (sSessionID);
-          });
+          s_aRWLock.writeLocked ( () -> s_aSessionsInInvalidation.remove (sSessionID));
         }
       }
     }
@@ -529,7 +525,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Request scope object is not a request web scope: " + String.valueOf (aRequestScope), ex);
+      s_aLogger.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
       return null;
     }
   }

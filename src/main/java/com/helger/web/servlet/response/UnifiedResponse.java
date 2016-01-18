@@ -677,7 +677,7 @@ public class UnifiedResponse
 
   /**
    * Remove all settings and headers relevant to caching.
-   * 
+   *
    * @return this for chaining
    */
   @Nonnull

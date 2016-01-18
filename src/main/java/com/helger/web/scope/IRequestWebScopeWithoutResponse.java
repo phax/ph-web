@@ -16,6 +16,7 @@
  */
 package com.helger.web.scope;
 
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Enumeration;
 import java.util.List;
@@ -27,7 +28,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.scope.IRequestScope;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.http.EHTTPMethod;
@@ -108,6 +111,17 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         length is not known
    */
   long getContentLength ();
+
+  /**
+   * @return The charset defined for this request. May be <code>null</code> if
+   *         none is present;
+   */
+  @Nullable
+  default Charset getCharset ()
+  {
+    final String sEncoding = getRequest ().getCharacterEncoding ();
+    return StringHelper.hasNoText (sEncoding) ? null : CharsetManager.getCharsetFromName (sEncoding);
+  }
 
   /**
    * Returns the name and version of the protocol the request uses in the form

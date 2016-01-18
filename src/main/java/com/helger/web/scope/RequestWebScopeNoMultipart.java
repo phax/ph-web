@@ -262,7 +262,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @ReturnsMutableCopy
   public Map <String, IFileItem> getAllUploadedFileItems ()
   {
-    final Map <String, IFileItem> ret = new HashMap <String, IFileItem> ();
+    final Map <String, IFileItem> ret = new HashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
@@ -276,7 +276,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @ReturnsMutableCopy
   public Map <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
-    final Map <String, IFileItem []> ret = new HashMap <String, IFileItem []> ();
+    final Map <String, IFileItem []> ret = new HashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final String sAttrName = aEntry.getKey ();
@@ -294,7 +294,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @ReturnsMutableCopy
   public List <IFileItem> getAllUploadedFileItemValues ()
   {
-    final List <IFileItem> ret = new ArrayList <IFileItem> ();
+    final List <IFileItem> ret = new ArrayList <> ();
     for (final Object aAttrValue : getAllAttributeValues ())
     {
       if (aAttrValue instanceof IFileItem)

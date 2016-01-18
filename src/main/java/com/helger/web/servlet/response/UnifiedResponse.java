@@ -762,7 +762,7 @@ public class UnifiedResponse
    * @return <code>true</code> if a status code is defined, <code>false</code>
    *         if not.
    */
-  public boolean hasStatusCode ()
+  public boolean isStatusCodeDefined ()
   {
     return m_nStatusCode != CGlobal.ILLEGAL_UINT;
   }
@@ -770,7 +770,7 @@ public class UnifiedResponse
   /**
    * @return The HTTP status code defined or {@link CGlobal#ILLEGAL_UINT} if
    *         undefined.
-   * @see #hasStatusCode()
+   * @see #isStatusCodeDefined()
    */
   public int getStatusCode ()
   {
@@ -779,7 +779,7 @@ public class UnifiedResponse
 
   private void _setStatus (@Nonnegative final int nStatusCode)
   {
-    if (hasStatusCode ())
+    if (isStatusCodeDefined ())
       _info ("Overwriting status code " + m_nStatusCode + " with " + nStatusCode);
     m_nStatusCode = nStatusCode;
   }
@@ -815,6 +815,11 @@ public class UnifiedResponse
     return this;
   }
 
+  public boolean isRedirectDefined ()
+  {
+    return m_sRedirectTargetUrl != null;
+  }
+
   @Nonnull
   public UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl)
   {
@@ -845,8 +850,8 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
-    if (m_sRedirectTargetUrl != null)
-      _info ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + m_sRedirectTargetUrl + "'");
+    if (isRedirectDefined ())
+      _info ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + sRedirectTargetUrl + "'");
     m_sRedirectTargetUrl = sRedirectTargetUrl;
     m_eRedirectMode = eRedirectMode;
     return this;
@@ -1345,8 +1350,8 @@ public class UnifiedResponse
       }
     }
 
-    final boolean bIsRedirect = m_sRedirectTargetUrl != null;
-    final boolean bHasStatusCode = m_nStatusCode != CGlobal.ILLEGAL_UINT;
+    final boolean bIsRedirect = isRedirectDefined ();
+    final boolean bHasStatusCode = isStatusCodeDefined ();
 
     if (bIsRedirect)
     {

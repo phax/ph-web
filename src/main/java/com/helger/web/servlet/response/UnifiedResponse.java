@@ -676,6 +676,23 @@ public class UnifiedResponse
   }
 
   /**
+   * Remove all settings and headers relevant to caching.
+   * 
+   * @return this for chaining
+   */
+  @Nonnull
+  public UnifiedResponse removeCaching ()
+  {
+    // Remove any eventually set headers
+    removeExpires ();
+    removeCacheControl ();
+    removeETag ();
+    removeLastModified ();
+    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.PRAGMA);
+    return this;
+  }
+
+  /**
    * A utility method that disables caching for this response.
    *
    * @return this
@@ -684,11 +701,7 @@ public class UnifiedResponse
   public UnifiedResponse disableCaching ()
   {
     // Remove any eventually set headers
-    removeExpires ();
-    removeCacheControl ();
-    removeETag ();
-    removeLastModified ();
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.PRAGMA);
+    removeCaching ();
 
     switch (m_eHTTPVersion)
     {

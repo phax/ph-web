@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
@@ -43,7 +44,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.regex.RegExHelper;
@@ -79,7 +79,7 @@ public final class UAProfileDatabase
   @GuardedBy ("s_aRWLock")
   private static final Set <UAProfile> s_aUniqueUAProfiles = new HashSet <> ();
   @GuardedBy ("s_aRWLock")
-  private static INonThrowingRunnableWithParameter <UAProfile> s_aNewUAProfileCallback;
+  private static Consumer <UAProfile> s_aNewUAProfileCallback;
 
   @PresentForCodeCoverage
   private static final UAProfileDatabase s_aInstance = new UAProfileDatabase ();
@@ -88,16 +88,14 @@ public final class UAProfileDatabase
   {}
 
   @Nullable
-  public static INonThrowingRunnableWithParameter <UAProfile> getNewUAProfileCallback ()
+  public static Consumer <UAProfile> getNewUAProfileCallback ()
   {
     return s_aRWLock.readLocked ( () -> s_aNewUAProfileCallback);
   }
 
-  public static void setNewUAProfileCallback (@Nullable final INonThrowingRunnableWithParameter <UAProfile> aCallback)
+  public static void setNewUAProfileCallback (@Nullable final Consumer <UAProfile> aCallback)
   {
-    s_aRWLock.writeLocked ( () -> {
-      s_aNewUAProfileCallback = aCallback;
-    });
+    s_aRWLock.writeLocked ( () -> s_aNewUAProfileCallback = aCallback);
   }
 
   @Nullable
@@ -375,7 +373,7 @@ public final class UAProfileDatabase
               s_aLogger.debug ("Found UA-Profile info: " + aFinalUAProfile.toString ());
 
             if (s_aNewUAProfileCallback != null)
-              s_aNewUAProfileCallback.run (aFinalUAProfile);
+              s_aNewUAProfileCallback.accept (aFinalUAProfile);
           }
         });
       }

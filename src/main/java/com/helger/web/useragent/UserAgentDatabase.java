@@ -18,6 +18,7 @@ package com.helger.web.useragent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
@@ -51,7 +51,7 @@ public final class UserAgentDatabase
   @GuardedBy ("s_aRWLock")
   private static final Set <String> s_aUniqueUserAgents = new HashSet <> ();
   @GuardedBy ("s_aRWLock")
-  private static INonThrowingRunnableWithParameter <IUserAgent> s_aNewUserAgentCallback;
+  private static Consumer <IUserAgent> s_aNewUserAgentCallback;
 
   @PresentForCodeCoverage
   private static final UserAgentDatabase s_aInstance = new UserAgentDatabase ();
@@ -59,11 +59,9 @@ public final class UserAgentDatabase
   private UserAgentDatabase ()
   {}
 
-  public static void setNewUserAgentCallback (@Nullable final INonThrowingRunnableWithParameter <IUserAgent> aCallback)
+  public static void setNewUserAgentCallback (@Nullable final Consumer <IUserAgent> aCallback)
   {
-    s_aRWLock.writeLocked ( () -> {
-      s_aNewUserAgentCallback = aCallback;
-    });
+    s_aRWLock.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
   }
 
   /**
@@ -99,7 +97,7 @@ public final class UserAgentDatabase
     return s_aRWLock.writeLocked ( () -> {
       if (s_aUniqueUserAgents.add (sUserAgent))
         if (s_aNewUserAgentCallback != null)
-          s_aNewUserAgentCallback.run (aUserAgent);
+          s_aNewUserAgentCallback.accept (aUserAgent);
       return aUserAgent;
     });
   }

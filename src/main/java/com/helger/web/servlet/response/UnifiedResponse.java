@@ -103,7 +103,7 @@ public class UnifiedResponse
   public static final int MAX_CSS_KB_FOR_IE = 288;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (UnifiedResponse.class);
-  private static final AtomicInteger s_aRequestNum = new AtomicInteger (0);
+  private static final AtomicInteger s_aResponseNum = new AtomicInteger (0);
 
   // Input fields set from request
   private final EHTTPVersion m_eHTTPVersion;
@@ -146,7 +146,7 @@ public class UnifiedResponse
    * Unique internal ID for each response, so that error messages can be more
    * easily aggregated.
    */
-  private final int m_nResponseID = s_aRequestNum.incrementAndGet ();
+  private final int m_nResponseID = s_aResponseNum.incrementAndGet ();
 
   /**
    * The request URL, lazily initialized.
@@ -172,7 +172,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   private static Map <String, Cookie> _createCookieMap ()
   {
-    return new LinkedHashMap <String, Cookie> ();
+    return new LinkedHashMap <> ();
   }
 
   /**
@@ -758,9 +758,28 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * @return <code>true</code> if a status code is defined, <code>false</code>
+   *         if not.
+   */
+  public boolean hasStatusCode ()
+  {
+    return m_nStatusCode != CGlobal.ILLEGAL_UINT;
+  }
+
+  /**
+   * @return The HTTP status code defined or {@link CGlobal#ILLEGAL_UINT} if
+   *         undefined.
+   * @see #hasStatusCode()
+   */
+  public int getStatusCode ()
+  {
+    return m_nStatusCode;
+  }
+
   private void _setStatus (@Nonnegative final int nStatusCode)
   {
-    if (m_nStatusCode != CGlobal.ILLEGAL_UINT)
+    if (hasStatusCode ())
       _info ("Overwriting status code " + m_nStatusCode + " with " + nStatusCode);
     m_nStatusCode = nStatusCode;
   }

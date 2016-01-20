@@ -124,6 +124,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     if (m_aLastModification != null)
     {
       // 23 == length of formatted date
+      // YYYY-MM-DDThh:mm:ss.sss
       ret += _getTagOutputLength (ELEMENT_LASTMOD) + 23;
     }
 

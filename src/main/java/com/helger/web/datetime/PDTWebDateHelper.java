@@ -16,6 +16,11 @@
  */
 package com.helger.web.datetime;
 
+import static java.time.temporal.ChronoField.HOUR_OF_DAY;
+import static java.time.temporal.ChronoField.MILLI_OF_SECOND;
+import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
+import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,8 +30,11 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalQuery;
 import java.util.ArrayList;
@@ -587,10 +595,41 @@ public final class PDTWebDateHelper
     return getAsStringW3C (aNow);
   }
 
+  public static final DateTimeFormatter XSD_DATE_TIME;
+
+  static
+  {
+    XSD_DATE_TIME = new DateTimeFormatterBuilder ().parseCaseInsensitive ()
+                                                   .append (DateTimeFormatter.ISO_LOCAL_DATE)
+                                                   .appendLiteral ('T')
+                                                   .appendValue (HOUR_OF_DAY, 2)
+                                                   .appendLiteral (':')
+                                                   .appendValue (MINUTE_OF_HOUR, 2)
+                                                   .optionalStart ()
+                                                   .appendLiteral (':')
+                                                   .appendValue (SECOND_OF_MINUTE, 2)
+                                                   .optionalStart ()
+                                                   /*
+                                                    * This is different compared
+                                                    * to ISO_LOCAL_TIME
+                                                    */
+                                                   .appendFraction (MILLI_OF_SECOND, 3, 3, true)
+                                                   .optionalStart ()
+                                                   .appendOffsetId ()
+                                                   .optionalStart ()
+                                                   .appendLiteral ('[')
+                                                   .parseCaseSensitive ()
+                                                   .appendZoneRegionId ()
+                                                   .appendLiteral (']')
+                                                   .toFormatter ()
+                                                   .withResolverStyle (ResolverStyle.STRICT)
+                                                   .withChronology (IsoChronology.INSTANCE);
+  }
+
   @Nonnull
   private static DateTimeFormatter _getXSDFormatterDateTime (@Nonnull final ZoneId aZoneID)
   {
-    return DateTimeFormatter.ISO_DATE_TIME.withZone (aZoneID);
+    return XSD_DATE_TIME.withZone (aZoneID);
   }
 
   @Nullable
@@ -627,7 +666,7 @@ public final class PDTWebDateHelper
   @Nonnull
   public static String getAsStringXSD (@Nullable final LocalDateTime aLocalDateTime)
   {
-    // For LocalDateTime always use the default chronology
+    // For LocalDateTime always use the default zone ID
     return _getXSDFormatterDateTime (PDTConfig.getDefaultZoneId ()).format (aLocalDateTime);
   }
 

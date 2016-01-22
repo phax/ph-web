@@ -641,7 +641,7 @@ public final class PDTWebDateHelper
   @Nullable
   public static ZonedDateTime getDateTimeFromXSD (@Nullable final String sValue, @Nonnull final ZoneId aZoneID)
   {
-    return PDTFromString.getDateTimeFromString (sValue, _getXSDFormatterDateTime (aZoneID));
+    return PDTFromString.getZonedDateTimeFromString (sValue, _getXSDFormatterDateTime (aZoneID));
   }
 
   @Nullable

@@ -33,7 +33,8 @@ function convert_addr(ipchars) {
 }
 
 function isInNet(ipaddr, pattern, maskstr) {
-    var test = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/(ipaddr);
+	// The "/.../.test()" version does not work with Nashorn
+    var test = new RegExp("^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$").test(ipaddr);
     if (test == null) {
         ipaddr = dnsResolve(ipaddr);
         if (ipaddr == null)

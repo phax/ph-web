@@ -26,7 +26,6 @@ import javax.annotation.concurrent.Immutable;
 import org.xbill.DNS.Address;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.UsedViaReflection;
 
 /**
  * A simple DNS resolver, using the dnsjava library.
@@ -70,20 +69,6 @@ public final class DNSResolver
     if (aAddress == null)
       return null;
     return new IPV4Addr (aAddress.getAddress ()).getAsString ();
-  }
-
-  /**
-   * This method must be present for the proxy-auto configuration setup!
-   *
-   * @return My IP address
-   * @see #getMyIpAddress()
-   */
-  @Nonnull
-  @Deprecated
-  @UsedViaReflection
-  public static String myIpAddress ()
-  {
-    return getMyIpAddress ();
   }
 
   @Nonnull

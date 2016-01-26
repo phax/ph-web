@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.script.ScriptException;
+
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
@@ -60,7 +62,7 @@ public final class ReadWPADFuncTest
   }
 
   @Test
-  public void testReadWPAD () throws IOException
+  public void testReadWPAD () throws IOException, ScriptException
   {
     // Works for Intercent-ER
     final String sAutoProxyConfig = false ? getProxyAutoConfigFunction (new URLResource ("http://wpad.ente.regione.emr.it/wpad.dat"),
@@ -75,16 +77,16 @@ public final class ReadWPADFuncTest
   }
 
   @Test
-  public void testReadWPADExamples () throws IOException
+  public void testReadWPADExamples () throws IOException, ScriptException
   {
     for (final String sFile : new String [] { "wpad01.dat", "wpad02.dat", "wpad03.dat" })
     {
       final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" +
                                                                                          sFile),
                                                                   CCharset.CHARSET_ISO_8859_1);
-      assertNotNull (sFile, sAutoProxyConfig);
+      assertNotNull (sFile + " failed", sAutoProxyConfig);
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);
-      assertNotNull (sFile, aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
+      assertNotNull (sFile + " failed", aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
     }
   }
 }

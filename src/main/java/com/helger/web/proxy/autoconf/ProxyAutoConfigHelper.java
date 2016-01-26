@@ -21,21 +21,21 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.exception.InitializationException;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.URLProtocolRegistry;
-import com.helger.web.dns.DNSResolver;
 import com.helger.web.proxy.EHttpProxyType;
 import com.helger.web.proxy.HttpProxyConfig;
 import com.helger.web.proxy.IProxyConfig;
@@ -45,107 +45,67 @@ import com.helger.web.proxy.SocksProxyConfig;
 public final class ProxyAutoConfigHelper
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
-  private static final ScriptableObject s_aGlobalScope;
+
+  // create a script engine manager
+  private static final ScriptEngineManager s_aScriptFactory = new ScriptEngineManager ();
+  // create a Nashorn script engine
+  private static final ScriptEngine s_aScriptEngine = s_aScriptFactory.getEngineByName ("nashorn");
 
   static
   {
-    final Context aCtx = Context.enter ();
     try
     {
-      s_aGlobalScope = aCtx.initStandardObjects ();
-      s_aGlobalScope.defineFunctionProperties (new String [] { "dnsResolve" },
-                                               DNSResolver.class,
-                                               ScriptableObject.DONTENUM);
-      s_aGlobalScope.defineFunctionProperties (new String [] { "myIpAddress" },
-                                               DNSResolver.class,
-                                               ScriptableObject.DONTENUM);
-      RhinoHelper.readFile (s_aGlobalScope,
-                            aCtx,
-                            new ClassPathResource ("proxy-js/pac-utils.js"),
-                            "pac-utils",
-                            CCharset.CHARSET_ISO_8859_1);
-      s_aGlobalScope.sealObject ();
+      s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return com.helger.web.dns.DNSResolver.dnsResolve(hostName); }");
+      s_aScriptEngine.eval ("var myIpAddress = function(){ return com.helger.web.dns.DNSResolver.getMyIpAddress(); }");
+      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (CCharset.CHARSET_ISO_8859_1_OBJ));
     }
-    finally
+    catch (final ScriptException ex)
     {
-      Context.exit ();
+      throw new InitializationException ("Failed to init ProxyAutoConfig Nashorn script!", ex);
     }
   }
 
   private final IReadableResource m_aPACRes;
   private final String m_sPACCode;
-  private Scriptable m_aInstanceScope;
 
-  public ProxyAutoConfigHelper (@Nonnull final IReadableResource aPACRes)
+  public ProxyAutoConfigHelper (@Nonnull final IReadableResource aPACRes) throws ScriptException
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
+    s_aScriptEngine.eval (m_aPACRes.getReader (CCharset.CHARSET_ISO_8859_1_OBJ));
   }
 
-  public ProxyAutoConfigHelper (@Nonnull final String sPACCode)
+  public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException
   {
     m_aPACRes = null;
     m_sPACCode = ValueEnforcer.notNull (sPACCode, "PACCode");
-  }
-
-  @Nonnull
-  private Scriptable _getInstanceScope (final Context aCtx)
-  {
-    if (m_aInstanceScope == null)
-    {
-      // create the scope
-      m_aInstanceScope = aCtx.newObject (s_aGlobalScope);
-      m_aInstanceScope.setPrototype (s_aGlobalScope);
-      m_aInstanceScope.setParentScope (null);
-
-      // read the PAC file
-      if (m_aPACRes != null)
-        RhinoHelper.readFile (m_aInstanceScope, aCtx, m_aPACRes, "PAC file", CCharset.CHARSET_ISO_8859_1);
-      else
-        RhinoHelper.readString (m_aInstanceScope, aCtx, m_sPACCode);
-    }
-    return m_aInstanceScope;
+    s_aScriptEngine.eval (m_sPACCode);
   }
 
   @Nullable
-  public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost)
+  public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
-    final Context aCtx = Context.enter ();
-    try
-    {
-      // create "instance" scope"
-      final Scriptable aInstanceScope = _getInstanceScope (aCtx);
+    // Call "FindProxyForURL"
+    final Object aResult = s_aScriptEngine.eval ("FindProxyForURL('" + sURL + "', '" + sHost + "')");
+    if (aResult == null)
+      return null;
 
-      // Call "FindProxyForURL"
-      final Object aResult = aCtx.evaluateString (aInstanceScope,
-                                                  "FindProxyForURL('" + sURL + "', '" + sHost + "')",
-                                                  "<inline>",
-                                                  1,
-                                                  null);
-      if (aResult == null)
-        return null;
-
-      // FIXME parse result:
-      /*
-       * Return Value Format The JavaScript function returns a single string. If
-       * the string is null, no proxies should be used. The string can contain
-       * any number of the following building blocks, separated by a semicolon:
-       * DIRECT Connections should be made directly, without any proxies. PROXY
-       * host:port The specified proxy should be used. SOCKS host:port The
-       * specified SOCKS server should be used.
-       */
-      return aResult.toString ();
-    }
-    finally
-    {
-      Context.exit ();
-    }
+    // FIXME parse result:
+    /*
+     * Return Value Format The JavaScript function returns a single string. If
+     * the string is null, no proxies should be used. The string can contain any
+     * number of the following building blocks, separated by a semicolon: DIRECT
+     * Connections should be made directly, without any proxies. PROXY host:port
+     * The specified proxy should be used. SOCKS host:port The specified SOCKS
+     * server should be used.
+     */
+    return aResult.toString ();
   }
 
   @Nonnull
-  public List <IProxyConfig> getProxyListForURL (final String sURL, final String sHost)
+  public List <IProxyConfig> getProxyListForURL (final String sURL, final String sHost) throws ScriptException
   {
-    final List <IProxyConfig> ret = new ArrayList <IProxyConfig> ();
+    final List <IProxyConfig> ret = new ArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
     if (sProxyCode != null)
     {

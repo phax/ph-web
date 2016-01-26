@@ -21,6 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import javax.script.ScriptException;
+
 import org.junit.Test;
 
 import com.helger.commons.io.resource.ClassPathResource;
@@ -36,26 +38,26 @@ public final class ProxyAutoConfigHelperTest
                                                              "ente.regione.emr.it.js" };
 
   @Test
-  public void testFindProxyForURL ()
+  public void testFindProxyForURL () throws ScriptException
   {
     for (final String sFile : PAC_FILES)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (new ClassPathResource ("proxyautoconf/pacfiles/" +
                                                                                                  sFile));
-      assertNotNull (aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
+      assertNotNull (sFile + " failed", aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
     }
   }
 
   @Test
-  public void testGetProxyListForURL ()
+  public void testGetProxyListForURL () throws ScriptException
   {
     for (final String sFile : PAC_FILES)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (new ClassPathResource ("proxyautoconf/pacfiles/" +
                                                                                                  sFile));
       final List <IProxyConfig> aPC = aPACHelper.getProxyListForURL ("http://www.orf.at/index.html", "www.orf.at");
-      assertNotNull (aPC);
-      assertFalse (aPC.isEmpty ());
+      assertNotNull (sFile + " failed", aPC);
+      assertFalse (sFile + " failed", aPC.isEmpty ());
     }
   }
 }

@@ -29,6 +29,7 @@ import javax.servlet.ServletContext;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.IteratorHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -100,7 +101,7 @@ public class MockServletConfig implements ServletConfig
   @Nonnull
   public Enumeration <String> getInitParameterNames ()
   {
-    return CollectionHelper.getEnumeration (m_aServletInitParams.keySet ());
+    return IteratorHelper.getEnumeration (m_aServletInitParams.keySet ());
   }
 
   public void addInitParameter (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)

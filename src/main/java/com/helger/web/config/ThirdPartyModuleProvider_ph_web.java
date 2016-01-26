@@ -41,13 +41,6 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
                                                                         "http://www.xbill.org/dnsjava/",
                                                                         true);
 
-  public static final IThirdPartyModule RHINO = new ThirdPartyModule ("Rhino",
-                                                                      "Mozilla",
-                                                                      ELicense.MPL20,
-                                                                      new Version (1, 7, 7),
-                                                                      "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino",
-                                                                      true);
-
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
                                                                      "JCraft Inc.",
                                                                      ELicense.BSD,
@@ -58,6 +51,6 @@ public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleP
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()
   {
-    return new IThirdPartyModule [] { DNSJAVA, RHINO, JSCH };
+    return new IThirdPartyModule [] { DNSJAVA, JSCH };
   }
 }

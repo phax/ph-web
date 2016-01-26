@@ -22,17 +22,16 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
+import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.URLProtocolRegistry;
@@ -46,10 +45,8 @@ public final class ProxyAutoConfigHelper
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
 
-  // create a script engine manager
-  private static final ScriptEngineManager s_aScriptFactory = new ScriptEngineManager ();
   // create a Nashorn script engine
-  private static final ScriptEngine s_aScriptEngine = s_aScriptFactory.getEngineByName ("nashorn");
+  private static final ScriptEngine s_aScriptEngine = ScriptHelper.createNashornEngine ();
 
   static
   {
@@ -57,7 +54,7 @@ public final class ProxyAutoConfigHelper
     {
       s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return com.helger.web.dns.DNSResolver.dnsResolve(hostName); }");
       s_aScriptEngine.eval ("var myIpAddress = function(){ return com.helger.web.dns.DNSResolver.getMyIpAddress(); }");
-      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (CCharset.CHARSET_ISO_8859_1_OBJ));
+      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
     }
     catch (final ScriptException ex)
     {
@@ -72,7 +69,7 @@ public final class ProxyAutoConfigHelper
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
-    s_aScriptEngine.eval (m_aPACRes.getReader (CCharset.CHARSET_ISO_8859_1_OBJ));
+    s_aScriptEngine.eval (m_aPACRes.getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
   }
 
   public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException

@@ -28,6 +28,8 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.attr.AttributeValueConverter;
 import com.helger.commons.lang.IHasSize;
 
 /**
@@ -44,21 +46,53 @@ public interface IRequestParamMap extends IHasSize, Serializable
   RequestParamMapItem getObject (@Nonnull @Nonempty String... aPath);
 
   @Nullable
-  String getString (@Nonnull @Nonempty String... aPath);
+  default String getString (@Nonnull @Nonempty final String... aPath)
+  {
+    final RequestParamMapItem aItem = getObject (aPath);
+    return aItem == null ? null : aItem.getValue ();
+  }
 
-  boolean getBoolean (@Nonnull @Nonempty String sPath, boolean bDefault);
+  default boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
+  {
+    final RequestParamMapItem aItem = getObject (sPath);
+    return aItem == null ? bDefault : AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
+  }
 
-  double getDouble (@Nonnull @Nonempty String sPath, double dDefault);
+  default double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
+  {
+    final RequestParamMapItem aItem = getObject (sPath);
+    return aItem == null ? dDefault : AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
+  }
 
-  int getInt (@Nonnull @Nonempty String sPath, int nDefault);
+  default int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
+  {
+    final RequestParamMapItem aItem = getObject (sPath);
+    return aItem == null ? nDefault : AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
+  }
 
-  long getLong (@Nonnull @Nonempty String sPath, long nDefault);
+  default long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
+  {
+    final RequestParamMapItem aItem = getObject (sPath);
+    return aItem == null ? nDefault : AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
+  }
 
   @Nullable
-  BigInteger getBigInteger (@Nonnull @Nonempty String... aPath);
+  default BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
+  {
+    final RequestParamMapItem aItem = getObject (aPath);
+    return aItem == null ? null : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
+                                                                           aItem.getValue (),
+                                                                           null);
+  }
 
   @Nullable
-  BigDecimal getBigDecimal (@Nonnull @Nonempty String... aPath);
+  default BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
+  {
+    final RequestParamMapItem aItem = getObject (aPath);
+    return aItem == null ? null : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
+                                                                           aItem.getValue (),
+                                                                           null);
+  }
 
   @Nullable
   Map <String, String> getValueMap (@Nonnull @Nonempty String... aPath);

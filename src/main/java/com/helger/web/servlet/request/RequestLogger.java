@@ -65,7 +65,7 @@ public final class RequestLogger
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final Map <String, String> ret = new LinkedHashMap <String, String> ();
+    final Map <String, String> ret = new LinkedHashMap <> ();
     if (s_aOfflineCache.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
@@ -168,7 +168,7 @@ public final class RequestLogger
   @ReturnsMutableCopy
   public static Map <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
   {
-    final Map <String, String> ret = new LinkedHashMap <String, String> ();
+    final Map <String, String> ret = new LinkedHashMap <> ();
     for (final Map.Entry <String, List <String>> aEntry : aMap)
     {
       final String sName = aEntry.getKey ();
@@ -212,7 +212,7 @@ public final class RequestLogger
   @Nonnull
   public static Map <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    final Map <String, String> ret = new LinkedHashMap <String, String> ();
+    final Map <String, String> ret = new LinkedHashMap <> ();
     for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
                                                                       .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));

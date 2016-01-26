@@ -64,6 +64,7 @@ import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.IteratorHelper;
 import com.helger.commons.collection.multimap.IMultiMapSetBased;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.id.factory.GlobalIDFactory;
@@ -292,7 +293,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getAttributeNames ()
   {
     checkActive ();
-    return CollectionHelper.getEnumeration (m_aAttributes.keySet ());
+    return IteratorHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   public void setCharacterEncoding (@Nullable final String sCharacterEncoding)
@@ -550,7 +551,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public Enumeration <String> getParameterNames ()
   {
-    return CollectionHelper.getEnumeration (m_aParameters.keySet ());
+    return IteratorHelper.getEnumeration (m_aParameters.keySet ());
   }
 
   @Nullable
@@ -713,7 +714,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonempty
   public Enumeration <Locale> getLocales ()
   {
-    return CollectionHelper.getEnumeration (m_aLocales);
+    return IteratorHelper.getEnumeration (m_aLocales);
   }
 
   @Nonnull
@@ -885,13 +886,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
     final Set <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
-    return CollectionHelper.getEnumeration (vals != null ? vals : CollectionHelper.<String> newUnmodifiableList ());
+    return IteratorHelper.getEnumeration (vals);
   }
 
   @Nonnull
   public Enumeration <String> getHeaderNames ()
   {
-    return CollectionHelper.getEnumeration (m_aHeaders.keySet ());
+    return IteratorHelper.getEnumeration (m_aHeaders.keySet ());
   }
 
   @Nonnull

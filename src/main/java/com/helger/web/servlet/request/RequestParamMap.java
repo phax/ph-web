@@ -16,12 +16,11 @@
  */
 package com.helger.web.servlet.request;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -34,7 +33,6 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.attr.AttributeValueConverter;
 import com.helger.commons.collection.attr.IAttributeContainer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
@@ -69,7 +67,7 @@ public class RequestParamMap implements IRequestParamMap
   private static String s_sClose = DEFAULT_CLOSE;
 
   /** Linked hash map for consistent results */
-  private final Map <String, RequestParamMapItem> m_aMap = new LinkedHashMap <String, RequestParamMapItem> ();
+  private final Map <String, RequestParamMapItem> m_aMap = new LinkedHashMap <> ();
 
   public RequestParamMap ()
   {}
@@ -204,55 +202,6 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  public String getString (@Nonnull @Nonempty final String... aPath)
-  {
-    final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : aItem.getValue ();
-  }
-
-  public boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
-  {
-    final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? bDefault : AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
-  }
-
-  public double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
-  {
-    final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? dDefault : AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
-  }
-
-  public int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
-  {
-    final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? nDefault : AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
-  }
-
-  public long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
-  {
-    final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? nDefault : AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
-  }
-
-  @Nullable
-  public BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
-  {
-    final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
-                                                                           aItem.getValue (),
-                                                                           null);
-  }
-
-  @Nullable
-  public BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
-  {
-    final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
-                                                                           aItem.getValue (),
-                                                                           null);
-  }
-
-  @Nullable
   private Map <String, RequestParamMapItem> _getChildMapFully (@Nonnull final String... aPath)
   {
     Map <String, RequestParamMapItem> aMap = m_aMap;
@@ -328,11 +277,7 @@ public class RequestParamMap implements IRequestParamMap
   public static Map <String, String> getAsValueMap (final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
-    final Map <String, String> ret = new LinkedHashMap <String, String> (aMap.size ());
-    for (final Map.Entry <String, RequestParamMapItem> aEntry : aMap.entrySet ())
-      if (aEntry.getValue ().hasValue ())
-        ret.put (aEntry.getKey (), aEntry.getValue ().getValue ());
-    return ret;
+    return CollectionHelper.newOrderedMap (aMap, Function.identity (), aValue -> aValue.getValue ());
   }
 
   @Nonnull

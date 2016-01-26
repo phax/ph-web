@@ -31,6 +31,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.IteratorHelper;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
@@ -98,7 +99,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     return m_aRWLock.readLocked ( () -> {
       final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return CollectionHelper.getIterator (aHeaderValueList);
+      return IteratorHelper.getIterator (aHeaderValueList);
     });
   }
 
@@ -133,7 +134,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
       List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {
-        aHeaderValueList = new ArrayList <String> ();
+        aHeaderValueList = new ArrayList <> ();
         m_aHeaderNameToValueListMap.put (sNameLower, aHeaderValueList);
         m_aHeaderNameList.add (sNameLower);
       }

@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.lang.IHasStringRepresentation;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -58,14 +59,7 @@ public class CSPPolicy implements IHasStringRepresentation, Serializable
   @Nonnull
   public String getAsString ()
   {
-    final StringBuilder aSB = new StringBuilder ();
-    for (final CSPDirective aDirective : m_aList)
-    {
-      if (aSB.length () > 0)
-        aSB.append ("; ");
-      aSB.append (aDirective.getAsString ());
-    }
-    return aSB.toString ();
+    return StringHelper.getImplodedNonEmpty ("; ", m_aList, d -> d.getAsString ());
   }
 
   @Override

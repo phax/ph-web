@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.id.ComparatorHasIDString;
+import com.helger.commons.id.IHasID;
 import com.helger.commons.mock.AbstractCommonsTestCase;
 
 /**
@@ -35,7 +35,7 @@ public final class WebSpiderManagerTest extends AbstractCommonsTestCase
   public void testAll ()
   {
     for (final WebSpiderInfo aWSI : CollectionHelper.getSorted (WebSpiderManager.getInstance ().getAllKnownSpiders (),
-                                                                new ComparatorHasIDString <WebSpiderInfo> ()))
+                                                                IHasID.getComparatorID ()))
     {
       assertNotNull (aWSI);
       assertNotNull (aWSI.getID ());

@@ -31,7 +31,7 @@ import com.helger.commons.compare.CollatingComparator;
  *
  * @author Philip Helger
  */
-public class ComparatorNetworkInterfaceDisplayName extends CollatingPartComparator <NetworkInterface>
+public class CollatingComparatorNetworkInterfaceDisplayName extends CollatingPartComparator <NetworkInterface>
 {
   /**
    * Comparator with default sort order and specified sort locale.
@@ -39,7 +39,7 @@ public class ComparatorNetworkInterfaceDisplayName extends CollatingPartComparat
    * @param aSortLocale
    *        The locale to use. May be <code>null</code>.
    */
-  public ComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale)
+  public CollatingComparatorNetworkInterfaceDisplayName (@Nullable final Locale aSortLocale)
   {
     this (new CollatingComparator (aSortLocale));
   }
@@ -50,7 +50,7 @@ public class ComparatorNetworkInterfaceDisplayName extends CollatingPartComparat
    * @param aCollator
    *        The {@link Collator} to use. May not be <code>null</code>.
    */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator)
+  public CollatingComparatorNetworkInterfaceDisplayName (@Nonnull final Collator aCollator)
   {
     this (new CollatingComparator (aCollator));
   }
@@ -62,7 +62,7 @@ public class ComparatorNetworkInterfaceDisplayName extends CollatingPartComparat
    *        The {@link CollatingComparator} to use. May not be <code>null</code>
    *        .
    */
-  public ComparatorNetworkInterfaceDisplayName (@Nonnull final CollatingComparator aComparator)
+  public CollatingComparatorNetworkInterfaceDisplayName (@Nonnull final CollatingComparator aComparator)
   {
     super (aComparator, aObject -> aObject.getDisplayName ());
   }

@@ -277,7 +277,7 @@ public class RequestParamMap implements IRequestParamMap
   public static Map <String, String> getAsValueMap (final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
-    return CollectionHelper.newOrderedMap (aMap, Function.identity (), aValue -> aValue.getValue ());
+    return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), aValue -> aValue.getValue ());
   }
 
   @Nonnull

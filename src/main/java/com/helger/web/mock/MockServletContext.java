@@ -58,6 +58,7 @@ import com.helger.commons.collection.IteratorHelper;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
+import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemProperties;
@@ -621,7 +622,7 @@ public class MockServletContext implements ServletContext
 
   public ClassLoader getClassLoader ()
   {
-    return getClass ().getClassLoader ();
+    return IPrivilegedAction.getClassLoader (getClass ()).invokeSafe ();
   }
 
   @UnsupportedOperation

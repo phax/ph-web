@@ -25,6 +25,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.hierarchy.IParentProvider;
 import com.helger.commons.tree.withid.DefaultTreeItemWithID;
 import com.helger.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
 
@@ -99,5 +100,11 @@ public final class NetworkInterfaceHelper
       }
     }
     return ret;
+  }
+
+  @Nonnull
+  public static IParentProvider <NetworkInterface> parentProvider ()
+  {
+    return aObj -> aObj.getParent ();
   }
 }

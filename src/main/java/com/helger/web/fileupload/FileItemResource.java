@@ -18,9 +18,7 @@ package com.helger.web.fileupload;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.Reader;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,7 +31,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -71,13 +68,6 @@ public final class FileItemResource implements IReadableResource
   public InputStream getInputStream ()
   {
     return m_aFileItem.getInputStream ();
-  }
-
-  @Nullable
-  public Reader getReader (@Nonnull final Charset aCharset)
-  {
-    final InputStream aIS = getInputStream ();
-    return StreamHelper.createReader (aIS, aCharset);
   }
 
   public boolean exists ()

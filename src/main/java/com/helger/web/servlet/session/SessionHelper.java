@@ -91,12 +91,12 @@ public final class SessionHelper
 
     try
     {
-      return GenericReflection.<Enumeration <?>, Enumeration <String>> uncheckedCast (aSession.getAttributeNames ());
+      return GenericReflection.uncheckedCast (aSession.getAttributeNames ());
     }
     catch (final IllegalStateException ex)
     {
       // Session no longer valid
-      return IteratorHelper.<String> getEmptyEnumeration ();
+      return IteratorHelper.getEmptyEnumeration ();
     }
   }
 

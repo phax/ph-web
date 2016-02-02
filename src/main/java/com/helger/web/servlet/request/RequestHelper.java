@@ -522,7 +522,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return GenericReflection.<Enumeration <?>, Enumeration <String>> uncheckedCast (aHttpRequest.getHeaders (sName));
+    return GenericReflection.uncheckedCast (aHttpRequest.getHeaders (sName));
   }
 
   /**
@@ -538,7 +538,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return GenericReflection.<Enumeration <?>, Enumeration <String>> uncheckedCast (aHttpRequest.getHeaderNames ());
+    return GenericReflection.uncheckedCast (aHttpRequest.getHeaderNames ());
   }
 
   @Nullable

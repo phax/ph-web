@@ -365,6 +365,14 @@ public final class RequestHelper
 
   @Nonnull
   @Nonempty
+  public static StringBuilder getFullServerName (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ());
+  }
+
+  @Nonnull
+  @Nonempty
   public static StringBuilder getFullServerName (@Nonnull final String sScheme,
                                                  @Nonnull final String sServerName,
                                                  final int nServerPort)

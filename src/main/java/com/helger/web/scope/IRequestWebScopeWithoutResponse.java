@@ -18,7 +18,9 @@ package com.helger.web.scope;
 
 import java.nio.charset.Charset;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,14 +30,20 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.scope.IRequestScope;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
+import com.helger.commons.url.SimpleURL;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
+import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.servlet.request.IRequestParamMap;
+import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * Interface for a single web request scope object that does not offer access to
@@ -52,7 +60,17 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         {@link IFileItem} it is not considered in the returned map!
    */
   @Nonnull
-  Map <String, IFileItem> getAllUploadedFileItems ();
+  default Map <String, IFileItem> getAllUploadedFileItems ()
+  {
+    final Map <String, IFileItem> ret = new HashMap <> ();
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    {
+      final Object aAttrValue = aEntry.getValue ();
+      if (aAttrValue instanceof IFileItem)
+        ret.put (aEntry.getKey (), (IFileItem) aAttrValue);
+    }
+    return ret;
+  }
 
   /**
    * @return A non-<code>null</code> but maybe empty map with all contained
@@ -60,7 +78,21 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         the field name.
    */
   @Nonnull
-  Map <String, IFileItem []> getAllUploadedFileItemsComplete ();
+  default Map <String, IFileItem []> getAllUploadedFileItemsComplete ()
+  {
+    final Map <String, IFileItem []> ret = new HashMap <> ();
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    {
+      final String sAttrName = aEntry.getKey ();
+      final Object aAttrValue = aEntry.getValue ();
+      if (aAttrValue instanceof IFileItem)
+        ret.put (sAttrName, new IFileItem [] { (IFileItem) aAttrValue });
+      else
+        if (aAttrValue instanceof IFileItem [])
+          ret.put (sAttrName, ArrayHelper.getCopy ((IFileItem []) aAttrValue));
+    }
+    return ret;
+  }
 
   /**
    * @return A non-<code>null</code> but maybe empty list of all
@@ -69,7 +101,20 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         content of {@link IFileItem} arrays.
    */
   @Nonnull
-  List <IFileItem> getAllUploadedFileItemValues ();
+  default List <IFileItem> getAllUploadedFileItemValues ()
+  {
+    final List <IFileItem> ret = new ArrayList <> ();
+    for (final Object aAttrValue : getAllAttributeValues ())
+    {
+      if (aAttrValue instanceof IFileItem)
+        ret.add ((IFileItem) aAttrValue);
+      else
+        if (aAttrValue instanceof IFileItem [])
+          for (final IFileItem aChild : (IFileItem []) aAttrValue)
+            ret.add (aChild);
+    }
+    return ret;
+  }
 
   /**
    * Get the request attribute denoted by the specified attribute name as an
@@ -82,7 +127,11 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         attribute is not a file item.
    */
   @Nullable
-  IFileItem getAttributeAsFileItem (@Nullable String sAttrName);
+  default IFileItem getAttributeAsFileItem (@Nullable final String sAttrName)
+  {
+    final Object aObject = getAttributeObject (sAttrName);
+    return aObject instanceof IFileItem ? (IFileItem) aObject : null;
+  }
 
   /**
    * @return A cached request param map for this request.
@@ -93,6 +142,21 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   // ServletRequest methods
 
   /**
+   * Returns the name of the character encoding used in the body of this
+   * request. This method returns <code>null</code> if the request does not
+   * specify a character encoding
+   *
+   * @return a <code>String</code> containing the name of the character
+   *         encoding, or <code>null</code> if the request does not specify a
+   *         character encoding
+   */
+  @Nullable
+  default String getCharacterEncoding ()
+  {
+    return getRequest ().getCharacterEncoding ();
+  }
+
+  /**
    * Returns the MIME type of the body of the request, or <code>null</code> if
    * the type is not known. For HTTP servlets, same as the value of the CGI
    * variable CONTENT_TYPE.
@@ -100,7 +164,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the name of the MIME type of the
    *         request, or null if the type is not known
    */
-  String getContentType ();
+  default String getContentType ()
+  {
+    return getRequest ().getContentType ();
+  }
 
   /**
    * Returns the length, in bytes, of the request body and made available by the
@@ -110,7 +177,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return an integer containing the length of the request body or -1 if the
    *         length is not known
    */
-  long getContentLength ();
+  default long getContentLength ()
+  {
+    return RequestHelper.getContentLength (getRequest ());
+  }
 
   /**
    * @return The charset defined for this request. May be <code>null</code> if
@@ -132,13 +202,19 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the protocol name and version
    *         number
    */
-  String getProtocol ();
+  default String getProtocol ()
+  {
+    return getRequest ().getProtocol ();
+  }
 
   /**
    * @return The {@link EHTTPVersion} matching the {@link #getProtocol()}
    */
   @Nullable
-  EHTTPVersion getHttpVersion ();
+  default EHTTPVersion getHttpVersion ()
+  {
+    return RequestHelper.getHttpVersion (getRequest ());
+  }
 
   /**
    * Returns the name of the scheme used to make this request, for example,
@@ -148,7 +224,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the name of the scheme used to
    *         make this request
    */
-  String getScheme ();
+  default String getScheme ()
+  {
+    return getRequest ().getScheme ();
+  }
 
   /**
    * Returns the host name of the server to which the request was sent. It is
@@ -157,8 +236,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return a <code>String</code> containing the name of the server
    */
-
-  String getServerName ();
+  default String getServerName ()
+  {
+    return getRequest ().getServerName ();
+  }
 
   /**
    * Returns the port number to which the request was sent. It is the value of
@@ -167,7 +248,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return an integer specifying the port number
    */
-  int getServerPort ();
+  default int getServerPort ()
+  {
+    return getRequest ().getServerPort ();
+  }
 
   /**
    * Returns the Internet Protocol (IP) address of the client or last proxy that
@@ -177,7 +261,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the IP address of the client that
    *         sent the request
    */
-  String getRemoteAddr ();
+  default String getRemoteAddr ()
+  {
+    return getRequest ().getRemoteAddr ();
+  }
 
   /**
    * Returns the fully qualified name of the client or the last proxy that sent
@@ -189,7 +276,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the fully qualified name of the
    *         client
    */
-  String getRemoteHost ();
+  default String getRemoteHost ()
+  {
+    return getRequest ().getRemoteHost ();
+  }
 
   /**
    * Returns the Internet Protocol (IP) source port of the client or last proxy
@@ -197,7 +287,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return an integer specifying the port number
    */
-  int getRemotePort ();
+  default int getRemotePort ()
+  {
+    return getRequest ().getRemotePort ();
+  }
 
   /**
    * Returns a boolean indicating whether this request was made using a secure
@@ -205,7 +298,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return a boolean indicating if the request was made using a secure channel
    */
-  boolean isSecure ();
+  default boolean isSecure ()
+  {
+    return getRequest ().isSecure ();
+  }
 
   /**
    * Returns the host name of the Internet Protocol (IP) interface on which the
@@ -214,7 +310,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the host name of the IP on which
    *         the request was received.
    */
-  String getLocalName ();
+  default String getLocalName ()
+  {
+    return getRequest ().getLocalName ();
+  }
 
   /**
    * Returns the Internet Protocol (IP) address of the interface on which the
@@ -223,7 +322,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the IP address on which the
    *         request was received.
    */
-  String getLocalAddr ();
+  default String getLocalAddr ()
+  {
+    return getRequest ().getLocalAddr ();
+  }
 
   /**
    * Returns the Internet Protocol (IP) port number of the interface on which
@@ -231,7 +333,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return an integer specifying the port number
    */
-  int getLocalPort ();
+  default int getLocalPort ()
+  {
+    return getRequest ().getLocalPort ();
+  }
 
   // HttpServletRequest:
 
@@ -248,7 +353,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         string indicating the authentication scheme, or <code>null</code>
    *         if the request was not authenticated.
    */
-  String getAuthType ();
+  default String getAuthType ()
+  {
+    return getRequest ().getAuthType ();
+  }
 
   /**
    * Returns an array containing all of the <code>Cookie</code> objects the
@@ -258,7 +366,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return an array of all the <code>Cookies</code> included with this
    *         request, or <code>null</code> if the request has no cookies
    */
-  Cookie [] getCookies ();
+  default Cookie [] getCookies ()
+  {
+    return getRequest ().getCookies ();
+  }
 
   /**
    * Returns the name of the HTTP method with which this request was made, for
@@ -268,13 +379,19 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> specifying the name of the method with which
    *         this request was made
    */
-  String getMethod ();
+  default String getMethod ()
+  {
+    return getRequest ().getMethod ();
+  }
 
   /**
    * @return The {@link EHTTPMethod} matching the {@link #getMethod()}
    */
   @Nullable
-  EHTTPMethod getHttpMethod ();
+  default EHTTPMethod getHttpMethod ()
+  {
+    return RequestHelper.getHttpMethod (getRequest ());
+  }
 
   /**
    * Returns any extra path information associated with the URL the client sent
@@ -291,7 +408,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         the query string in the request URL; or <code>null</code> if the
    *         URL does not have any extra path information
    */
-  String getPathInfo ();
+  default String getPathInfo ()
+  {
+    return RequestHelper.getPathInfo (getRequest ());
+  }
 
   /**
    * Returns any extra path information after the servlet name but before the
@@ -307,7 +427,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>null</code> if the URL does not have any extra path
    *         information
    */
-  String getPathTranslated ();
+  default String getPathTranslated ()
+  {
+    return getRequest ().getPathTranslated ();
+  }
 
   /**
    * @return Returns the portion of the request URI that indicates the context
@@ -320,7 +443,12 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #getFullContextPath()
    */
   @Nonnull
-  String getContextPath ();
+  default String getContextPath ()
+  {
+    // Always use the context path from the global web scope because it can be
+    // customized!
+    return WebScopeManager.getGlobalScope ().getContextPath ();
+  }
 
   /**
    * Returns the query string that is contained in the request URL after the
@@ -331,7 +459,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>null</code> if the URL contains no query string. The value is
    *         not decoded by the container.
    */
-  String getQueryString ();
+  default String getQueryString ()
+  {
+    return getRequest ().getQueryString ();
+  }
 
   /**
    * Returns the login of the user making this request, if the user has been
@@ -343,7 +474,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> specifying the login of the user making this
    *         request, or <code>null</code> if the user login is not known
    */
-  String getRemoteUser ();
+  default String getRemoteUser ()
+  {
+    return getRequest ().getRemoteUser ();
+  }
 
   /**
    * Returns a boolean indicating whether the authenticated user is included in
@@ -357,7 +491,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         request belongs to a given role; <code>false</code> if the user has
    *         not been authenticated
    */
-  boolean isUserInRole (String sRole);
+  default boolean isUserInRole (final String sRole)
+  {
+    return getRequest ().isUserInRole (sRole);
+  }
 
   /**
    * Returns a <code>java.security.Principal</code> object containing the name
@@ -369,7 +506,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         been authenticated
    */
   @Nullable
-  Principal getUserPrincipal ();
+  default Principal getUserPrincipal ()
+  {
+    return getRequest ().getUserPrincipal ();
+  }
 
   /**
    * Returns the session ID specified by the client. This may not be the same as
@@ -381,7 +521,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #isRequestedSessionIdValid
    */
   @Nullable
-  String getRequestedSessionId ();
+  default String getRequestedSessionId ()
+  {
+    return getRequest ().getRequestedSessionId ();
+  }
 
   /**
    * Returns the part of this request's URL from the protocol name up to the
@@ -409,7 +552,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the part of the URL from the
    *         protocol name up to the query string
    */
-  String getRequestURI ();
+  default String getRequestURI ()
+  {
+    return RequestHelper.getRequestURI (getRequest ());
+  }
 
   /**
    * Reconstructs the URL the client used to make the request. The returned URL
@@ -429,7 +575,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return a <code>StringBuffer</code> object containing the reconstructed URL
    */
-  StringBuffer getRequestURL ();
+  default StringBuffer getRequestURL ()
+  {
+    return RequestHelper.getRequestURL (getRequest ());
+  }
 
   /**
    * Returns the part of this request's URL that calls the servlet. This path
@@ -446,7 +595,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         the "/*" pattern.
    */
   @Nonnull
-  String getServletPath ();
+  default String getServletPath ()
+  {
+    return getRequest ().getServletPath ();
+  }
 
   /**
    * Returns the current <code>HttpSession</code> associated with this request
@@ -471,7 +623,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>false</code> and the request has no valid session
    */
   @Nullable
-  HttpSession getSession (boolean bCreateIfNotExisting);
+  default HttpSession getSession (final boolean bCreateIfNotExisting)
+  {
+    return getRequest ().getSession (bCreateIfNotExisting);
+  }
 
   /**
    * Checks whether the requested session ID is still valid.
@@ -484,7 +639,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #getRequestedSessionId
    * @see #getSession
    */
-  boolean isRequestedSessionIdValid ();
+  default boolean isRequestedSessionIdValid ()
+  {
+    return getRequest ().isRequestedSessionIdValid ();
+  }
 
   /**
    * Checks whether the requested session ID came in as a cookie.
@@ -493,7 +651,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>false</code>
    * @see #getSession
    */
-  boolean isRequestedSessionIdFromCookie ();
+  default boolean isRequestedSessionIdFromCookie ()
+  {
+    return getRequest ().isRequestedSessionIdFromCookie ();
+  }
 
   /**
    * Checks whether the requested session ID came in as part of the request URL.
@@ -502,7 +663,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         otherwise, <code>false</code>
    * @see #getSession
    */
-  boolean isRequestedSessionIdFromURL ();
+  default boolean isRequestedSessionIdFromURL ()
+  {
+    return getRequest ().isRequestedSessionIdFromURL ();
+  }
 
   // Extended API
 
@@ -510,7 +674,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return Return the absolute server path. E.g. "http://localhost:8080"
    */
   @Nonnull
-  String getFullServerPath ();
+  default String getFullServerPath ()
+  {
+    return RequestHelper.getFullServerName (getRequest ()).toString ();
+  }
 
   /**
    * @return Return the absolute context path. E.g.
@@ -519,7 +686,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #getContextPath()
    */
   @Nonnull
-  String getFullContextPath ();
+  default String getFullContextPath ()
+  {
+    return RequestHelper.getFullServerName (getRequest ()).append (getContextPath ()).toString ();
+  }
 
   /**
    * @return Return the absolute servlet path. E.g.
@@ -543,7 +713,12 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return The full URL of the current request.
    */
-  String getURL ();
+  @Nonnull
+  @Nonempty
+  default String getURL ()
+  {
+    return RequestHelper.getURL (getRequest ());
+  }
 
   /**
    * Encodes the specified URL by including the session ID in it, or, if
@@ -579,7 +754,13 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return the encoded URL if encoding is needed. Never <code>null</code>.
    */
   @Nonnull
-  ISimpleURL encodeURL (@Nonnull ISimpleURL aURL);
+  default ISimpleURL encodeURL (@Nonnull final ISimpleURL aURL)
+  {
+    ValueEnforcer.notNull (aURL, "URL");
+
+    // Encode only the path and copy params and anchor
+    return new SimpleURL (encodeURL (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ());
+  }
 
   /**
    * Encodes the specified URL for use in the <code>sendRedirect</code> method
@@ -621,7 +802,13 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #encodeURL(String)
    */
   @Nonnull
-  ISimpleURL encodeRedirectURL (@Nonnull ISimpleURL aURL);
+  default ISimpleURL encodeRedirectURL (@Nonnull final ISimpleURL aURL)
+  {
+    ValueEnforcer.notNull (aURL, "URL");
+
+    // Encode only the path and copy params and anchor
+    return new SimpleURL (encodeRedirectURL (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ());
+  }
 
   /**
    * Check if this request uses a Cookie based session handling (meaning cookies
@@ -629,7 +816,11 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return <code>true</code> if the session ID is passed via cookies.
    */
-  boolean areCookiesEnabled ();
+  default boolean areCookiesEnabled ()
+  {
+    // Just check whether the session ID is appended to the URL or not
+    return "a".equals (encodeURL ("a"));
+  }
 
   /**
    * Returns the value of the specified request header as a <code>String</code>.
@@ -645,7 +836,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         name
    */
   @Nullable
-  String getRequestHeader (@Nullable String sName);
+  default String getRequestHeader (@Nullable final String sName)
+  {
+    return getRequest ().getHeader (sName);
+  }
 
   /**
    * Returns all the values of the specified request header as an
@@ -667,7 +861,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         to header information, return <code>null</code>
    */
   @Nullable
-  Enumeration <String> getRequestHeaders (@Nullable String sName);
+  default Enumeration <String> getRequestHeaders (@Nullable final String sName)
+  {
+    return RequestHelper.getRequestHeaders (getRequest (), sName);
+  }
 
   /**
    * Returns an enumeration of all the header names this request contains. If
@@ -682,7 +879,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>null</code>
    */
   @Nullable
-  Enumeration <String> getRequestHeaderNames ();
+  default Enumeration <String> getRequestHeaderNames ()
+  {
+    return RequestHelper.getRequestHeaderNames (getRequest ());
+  }
 
   /**
    * Return the URI of the request within the servlet context.
@@ -691,7 +891,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         default "/" is returned is an empty request URI is determined.
    */
   @Nonnull
-  String getPathWithinServletContext ();
+  default String getPathWithinServletContext ()
+  {
+    return RequestHelper.getPathWithinServletContext (getRequest ());
+  }
 
   /**
    * Return the path within the servlet mapping for the given request, i.e. the
@@ -706,7 +909,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return the path within the servlet mapping, or ""
    */
   @Nonnull
-  String getPathWithinServlet ();
+  default String getPathWithinServlet ()
+  {
+    return RequestHelper.getPathWithinServlet (getRequest ());
+  }
 
   /**
    * @return The underlying HTTP servlet request object. Never <code>null</code>

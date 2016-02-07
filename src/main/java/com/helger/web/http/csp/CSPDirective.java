@@ -104,7 +104,7 @@ public class CSPDirective implements IHasName, IHasStringRepresentation, Seriali
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("name", m_sName).appendIfNotEmpty ("value", m_sValue).toString ();
+    return new ToStringGenerator (this).append ("name", m_sName).appendIfNotNull ("value", m_sValue).toString ();
   }
 
   @Nonnull

@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -99,7 +100,7 @@ public final class RequestParamMapItem implements Serializable
   public String toString ()
   {
     return new ToStringGenerator (null).appendIfNotNull ("Value", m_sValue)
-                                       .appendIfNotEmpty ("Children", m_aChildren)
+                                       .appendIf ("Children", m_aChildren, CollectionHelper::isNotEmpty)
                                        .toString ();
   }
 

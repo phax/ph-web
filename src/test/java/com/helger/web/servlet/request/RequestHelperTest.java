@@ -65,8 +65,9 @@ public final class RequestHelperTest
     final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
     final ISimpleURL aBaseURL = new SimpleURL (sURL);
     // Just a sanity check that parsing works :)
-    assertEquals (sURL, aBaseURL.getAsString ());
+    assertEquals (sURL, aBaseURL.getAsStringWithEncodedParameters ());
     final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
-    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top", aStrippedURL.getAsString ());
+    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top",
+                  aStrippedURL.getAsStringWithEncodedParameters ());
   }
 }

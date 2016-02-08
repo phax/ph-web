@@ -155,7 +155,8 @@ public class UnifiedResponseDefaultSettings
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsString ());
+      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS,
+                         eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
       setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
   }

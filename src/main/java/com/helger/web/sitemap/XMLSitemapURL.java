@@ -83,7 +83,7 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
     if (aPriority != null)
       ValueEnforcer.isBetweenInclusive (aPriority.doubleValue (), "Priority", MIN_PRIORITY, MAX_PRIORITY);
 
-    m_sLocation = aLocation.getAsString ();
+    m_sLocation = aLocation.getAsStringWithEncodedParameters ();
     if (m_sLocation.length () > LOCATION_MAX_LENGTH)
       throw new IllegalArgumentException ("URL location is too long!");
     m_aLastModification = PDTHelper.isNullValue (aLastModification) ? null : aLastModification;

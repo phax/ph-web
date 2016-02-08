@@ -847,7 +847,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
-    return setRedirect (aRedirectTargetUrl.getAsString (), eRedirectMode);
+    return setRedirect (aRedirectTargetUrl.getAsStringWithEncodedParameters (), eRedirectMode);
   }
 
   @Nonnull
@@ -1084,7 +1084,8 @@ public class UnifiedResponse
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsString ());
+      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS,
+                               eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
       setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;

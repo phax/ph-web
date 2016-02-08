@@ -82,7 +82,7 @@ public class CSPSourceList implements IHasStringRepresentation, Serializable
   public CSPSourceList addHost (@Nonnull final ISimpleURL aHost)
   {
     ValueEnforcer.notNull (aHost, "Host");
-    return addHost (aHost.getAsString ());
+    return addHost (aHost.getAsStringWithEncodedParameters ());
   }
 
   /**

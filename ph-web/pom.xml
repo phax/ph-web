@@ -20,16 +20,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>com.helger</groupId>
-    <artifactId>parent-pom</artifactId>
-    <version>1.8.0</version>
+    <artifactId>ph-web-parent-pom</artifactId>
+    <version>8.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ph-web</artifactId>
-  <version>8.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ph-web</name>
   <description>Java library with basic web functionality</description>
-  <url>https://github.com/phax/ph-web</url>
+  <url>https://github.com/phax/ph-web/ph-web</url>
   <inceptionYear>2014</inceptionYear>
  
   <licenses>
@@ -39,13 +38,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
-  <scm>
-    <connection>scm:git:git@github.com:phax/ph-web.git</connection>
-    <developerConnection>scm:git:git@github.com:phax/ph-web.git</developerConnection>
-    <url>http://github.com/phax/ph-web</url>
-    <tag>HEAD</tag>
-  </scm>
 
   <organization>
     <name>Philip Helger</name>
@@ -60,25 +52,6 @@
       <url>http://www.helger.com</url>
     </developer>
   </developers>
-  
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.helger</groupId>
-        <artifactId>ph-commons-parent-pom</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.helger</groupId>
-        <artifactId>ph-datetime-parent-pom</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -104,13 +77,11 @@
     <dependency>
       <groupId>dnsjava</groupId>
       <artifactId>dnsjava</artifactId>
-      <version>2.1.7</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.53</version>
       <optional>true</optional>
     </dependency>
 

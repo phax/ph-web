@@ -2,8 +2,7 @@
 Java library with common web stuff.
 
 Versions <= 6.4.3 are compatible with ph-commons < 6.0.
-Versions >= 7.0.0 are compatible with ph-commons >= 6.0.
-Versions >= 8 require JDK 8.
+Versions >= 7.0.0 are compatible with ph-commons >= 6.0
 
 #Maven usage
 Add the following to your pom.xml to use this artifact:

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2014-2016 Philip Helger (www.helger.com)
+    Copyright (C) 2015-2016 Philip Helger (www.helger.com)
     philip[at]helger[dot]com
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,17 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
     <version>1.8.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>ph-web</artifactId>
+  <artifactId>ph-web-parent-pom</artifactId>
   <version>8.0.0-SNAPSHOT</version>
-  <packaging>bundle</packaging>
-  <name>ph-web</name>
-  <description>Java library with basic web functionality</description>
+  <packaging>pom</packaging>
+  <name>ph-web-parent-pom</name>
+  <description>Base POM to build the ph-web projects</description>
   <url>https://github.com/phax/ph-web</url>
   <inceptionYear>2014</inceptionYear>
  
@@ -70,48 +70,19 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <dependency>
         <groupId>com.helger</groupId>
-        <artifactId>ph-datetime-parent-pom</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <artifactId>ph-web</artifactId>
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-commons</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-datetime</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>dnsjava</groupId>
-      <artifactId>dnsjava</artifactId>
-      <version>2.1.7</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch</artifactId>
-      <version>0.1.53</version>
-      <optional>true</optional>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
 
     <dependency>
@@ -121,23 +92,7 @@
     </dependency>
   </dependencies>
   
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              com.helger.web.*
-            </Export-Package>
-            <Import-Package>
-              !javax.annotation.*,*
-            </Import-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <modules>
+    <module>ph-web</module>
+  </modules>
 </project>

@@ -1,0 +1,2 @@
+com.helger.web.scope.spi.MockGlobalWebScopeSPI
+com.helger.web.scope.spi.MockThrowingGlobalWebScopeSPI

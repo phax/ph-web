@@ -19,7 +19,6 @@ package com.helger.web.useragent;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.web.useragent.browser.BrowserInfo;
 import com.helger.web.useragent.browser.BrowserInfoIE;
 import com.helger.web.useragent.browser.BrowserInfoMobile;
@@ -30,7 +29,7 @@ import com.helger.web.useragent.browser.BrowserInfoSpider;
  *
  * @author Philip Helger
  */
-public interface IUserAgent extends IHasStringRepresentation
+public interface IUserAgent
 {
   /**
    * @return The original user agent string as sent by the browser.

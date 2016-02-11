@@ -26,7 +26,6 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
@@ -37,7 +36,7 @@ import com.helger.commons.url.ISimpleURL;
  * @author Philip Helger
  * @since 6.0.3
  */
-public class CSPSourceList implements IHasStringRepresentation, Serializable
+public class CSPSourceList implements Serializable
 {
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";

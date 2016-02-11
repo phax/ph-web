@@ -16,6 +16,7 @@
  */
 package com.helger.web.dns;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
 import javax.annotation.Nonnegative;
@@ -28,7 +29,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;
@@ -39,7 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class IPV4Addr implements IHasStringRepresentation
+public class IPV4Addr implements Serializable
 {
   public static final int PARTS = 4;
   public static final int PART_MIN_VALUE = 0;

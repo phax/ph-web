@@ -25,7 +25,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.IHasStringRepresentation;
 import com.helger.commons.name.IHasName;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -36,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 6.0.3
  */
-public class CSPDirective implements IHasName, IHasStringRepresentation, Serializable
+public class CSPDirective implements IHasName, Serializable
 {
   private final String m_sName;
   private final String m_sValue;

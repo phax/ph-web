@@ -84,10 +84,10 @@ public final class RFC2047Helper
       switch (eCodec)
       {
         case Q:
-          return new RFC1522QCodec (aCharset).getEncodedText (sValue);
+          return new RFC1522QCodec (aCharset).getEncoded (sValue);
         case B:
         default:
-          return new RFC1522BCodec (aCharset).getEncodedText (sValue);
+          return new RFC1522BCodec (aCharset).getEncoded (sValue);
       }
     }
     catch (final Exception ex)
@@ -112,14 +112,14 @@ public final class RFC2047Helper
     try
     {
       // try BCodec first
-      return new RFC1522BCodec ().getDecodedText (sValue);
+      return new RFC1522BCodec ().getDecoded (sValue);
     }
     catch (final DecodeException de)
     {
       // try QCodec next
       try
       {
-        return new RFC1522QCodec ().getDecodedText (sValue);
+        return new RFC1522QCodec ().getDecoded (sValue);
       }
       catch (final Exception ex)
       {

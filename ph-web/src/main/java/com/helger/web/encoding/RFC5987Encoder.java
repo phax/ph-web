@@ -33,7 +33,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author Philip Helger
  */
-public class RFC5987Encoder implements IEncoder <String>
+public class RFC5987Encoder implements IEncoder <String, String>
 {
   public static final char ESCAPE_CHAR = '%';
   // Order is important for binary search!

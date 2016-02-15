@@ -274,7 +274,7 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getAsValueMap (final Map <String, RequestParamMapItem> aMap) throws ClassCastException
+  public static Map <String, String> getAsValueMap (@Nonnull final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
     return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), aValue -> aValue.getValue ());

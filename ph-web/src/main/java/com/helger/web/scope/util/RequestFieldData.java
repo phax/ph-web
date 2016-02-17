@@ -27,6 +27,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.StringHelper;
@@ -194,9 +195,9 @@ public class RequestFieldData implements Serializable
    *         default value was provided
    */
   @Nullable
-  public final List <String> getRequestValueAsList ()
+  public final ICommonsList <String> getRequestValueAsList ()
   {
-    List <String> aDefault = null;
+    ICommonsList <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
       aDefault = CollectionHelper.newList (sDefaultValue);

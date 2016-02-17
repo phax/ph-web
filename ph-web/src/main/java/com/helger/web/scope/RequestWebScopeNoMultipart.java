@@ -35,6 +35,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.scope.AbstractMapBasedScope;
@@ -180,15 +181,16 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
    */
   @Nullable
   @OverrideOnDemand
-  protected List <String> getAttributeAsListCustom (@Nullable final String sName,
-                                                    @Nonnull final Object aValue,
-                                                    @Nullable final List <String> aDefault)
+  protected ICommonsList <String> getAttributeAsListCustom (@Nullable final String sName,
+                                                            @Nonnull final Object aValue,
+                                                            @Nullable final ICommonsList <String> aDefault)
   {
     return aDefault;
   }
 
   @Nullable
-  public List <String> getAttributeAsList (@Nullable final String sName, @Nullable final List <String> aDefault)
+  public ICommonsList <String> getAttributeAsList (@Nullable final String sName,
+                                                   @Nullable final ICommonsList <String> aDefault)
   {
     final Object aValue = getAttributeObject (sName);
     if (aValue instanceof String [])

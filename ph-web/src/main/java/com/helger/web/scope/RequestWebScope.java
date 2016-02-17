@@ -32,6 +32,7 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.multimap.IMultiMapListBased;
 import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.io.stream.StreamHelper;
@@ -146,7 +147,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         }
 
         // set all form fields
-        for (final Map.Entry <String, List <String>> aEntry : aFormFields.entrySet ())
+        for (final Map.Entry <String, ICommonsList <String>> aEntry : aFormFields.entrySet ())
         {
           // Convert list of String to value (String or String[])
           final List <String> aValues = aEntry.getValue ();
@@ -157,7 +158,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
 
         // set all form files (potentially overwriting form fields with the same
         // name)
-        for (final Map.Entry <String, List <IFileItem>> aEntry : aFormFiles.entrySet ())
+        for (final Map.Entry <String, ICommonsList <IFileItem>> aEntry : aFormFiles.entrySet ())
         {
           // Convert list of String to value (IFileItem or IFileItem[])
           final List <IFileItem> aValues = aEntry.getValue ();

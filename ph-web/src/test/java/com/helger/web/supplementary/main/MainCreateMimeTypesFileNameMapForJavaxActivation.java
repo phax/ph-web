@@ -22,10 +22,10 @@ import java.io.Writer;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Set;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.collection.multimap.IMultiMapSetBased;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.StreamHelper;
@@ -75,8 +75,8 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, Set <String>> aEntry : CollectionHelper.getSortedByKey (aMap).entrySet ())
-        w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (",", aEntry.getValue ()) + "\n");
+      for (final Map.Entry <String, ICommonsSet <String>> aEntry : CollectionHelper.getSortedByKey (aMap).entrySet ())
+        w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (',', aEntry.getValue ()) + "\n");
 
       // done
       w.flush ();

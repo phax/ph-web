@@ -25,8 +25,7 @@ import java.util.Map;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.ext.ICommonsSet;
-import com.helger.commons.collection.multimap.IMultiMapSetBased;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.MimeTypeInfo;
@@ -52,7 +51,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     try
     {
       // build map from MimeType to list of extensions
-      final IMultiMapSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <String, String> ();
+      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <> ();
 
       for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
         for (final String sExt : aInfo.getAllExtensions ())
@@ -75,7 +74,8 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, ICommonsSet <String>> aEntry : CollectionHelper.getSortedByKey (aMap).entrySet ())
+      for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : CollectionHelper.getSortedByKey (aMap)
+                                                                                          .entrySet ())
         w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (',', aEntry.getValue ()) + "\n");
 
       // done

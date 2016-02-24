@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -42,7 +41,8 @@ import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.multimap.IMultiMapSetBased;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -99,8 +99,8 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   private Locale m_aLocale = Locale.getDefault ();
 
   // HttpServletResponse properties
-  private final List <Cookie> m_aCookies = new ArrayList <Cookie> ();
-  private final IMultiMapSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, String> ();
+  private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList <> ();
+  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
   private int m_nStatus = HttpServletResponse.SC_OK;
   private String m_sErrorMessage;
   private String m_sRedirectedUrl;

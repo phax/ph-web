@@ -65,7 +65,6 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.multimap.IMultiMapSetBased;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
@@ -126,7 +125,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private int m_nLocalPort = DEFAULT_SERVER_PORT;
   private String m_sAuthType;
   private Cookie [] m_aCookies;
-  private final IMultiMapSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, String> ();
+  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
   private EHTTPMethod m_eMethod;
   private String m_sPathInfo;
   private String m_sContextPath = "";

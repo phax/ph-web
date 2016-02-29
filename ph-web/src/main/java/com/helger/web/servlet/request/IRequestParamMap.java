@@ -19,9 +19,7 @@ package com.helger.web.servlet.request;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +28,9 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.attr.AttributeValueConverter;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.lang.IHasSize;
 
 /**
@@ -95,7 +96,7 @@ public interface IRequestParamMap extends IHasSize, Serializable
   }
 
   @Nullable
-  Map <String, String> getValueMap (@Nonnull @Nonempty String... aPath);
+  ICommonsOrderedMap <String, String> getValueMap (@Nonnull @Nonempty String... aPath);
 
   /**
    * Get a nested map for the specified path.
@@ -124,7 +125,7 @@ public interface IRequestParamMap extends IHasSize, Serializable
    */
   @Nonnull
   @ReturnsMutableCopy
-  Set <String> keySet ();
+  ICommonsOrderedSet <String> keySet ();
 
   /**
    * @return A collection of all values of this map. The type of the value is
@@ -133,7 +134,7 @@ public interface IRequestParamMap extends IHasSize, Serializable
    */
   @Nonnull
   @ReturnsMutableCopy
-  Collection <RequestParamMapItem> values ();
+  ICommonsList <RequestParamMapItem> values ();
 
   /**
    * @return A copy of the contained map. For the value types see
@@ -141,7 +142,7 @@ public interface IRequestParamMap extends IHasSize, Serializable
    */
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, RequestParamMapItem> getAsObjectMap ();
+  ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ();
 
   /**
    * @return A key/value map, with enforced values. If this map contains a
@@ -149,5 +150,5 @@ public interface IRequestParamMap extends IHasSize, Serializable
    */
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, String> getAsValueMap ();
+  ICommonsOrderedMap <String, String> getAsValueMap ();
 }

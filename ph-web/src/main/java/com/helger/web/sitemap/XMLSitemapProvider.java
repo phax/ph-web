@@ -17,7 +17,6 @@
 package com.helger.web.sitemap;
 
 import java.io.File;
-import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.ESuccess;
@@ -43,7 +43,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public final class XMLSitemapProvider
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapProvider.class);
-  private static final List <IXMLSitemapProviderSPI> s_aProviders;
+  private static final ICommonsList <IXMLSitemapProviderSPI> s_aProviders;
 
   static
   {

@@ -16,10 +16,7 @@
  */
 package com.helger.web.servlet.request;
 
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
@@ -35,6 +32,9 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.cache.AnnotationUsageCache;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotation.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
@@ -61,11 +61,11 @@ public final class RequestLogger
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getRequestFieldMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, String> getRequestFieldMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final Map <String, String> ret = new LinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     if (s_aOfflineCache.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
@@ -159,22 +159,22 @@ public final class RequestLogger
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getHTTPHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     return getHTTPHeaderMap (RequestHelper.getRequestHeaderMap (aHttpRequest));
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
+  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
   {
-    final Map <String, String> ret = new LinkedHashMap <> ();
-    for (final Map.Entry <String, List <String>> aEntry : aMap)
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : aMap)
     {
       final String sName = aEntry.getKey ();
-      final List <String> aValue = aEntry.getValue ();
+      final ICommonsList <String> aValue = aEntry.getValue ();
       if (aValue.size () == 1)
-        ret.put (sName, aValue.get (0));
+        ret.put (sName, aValue.getFirst ());
       else
         ret.put (sName, aValue.toString ());
     }
@@ -210,9 +210,9 @@ public final class RequestLogger
   }
 
   @Nonnull
-  public static Map <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    final Map <String, String> ret = new LinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
                                                                       .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
@@ -230,7 +230,7 @@ public final class RequestLogger
   {
     final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Request parameters:\n");
-    for (final Entry <String, String> aEntry : aRequestParameterMap.entrySet ())
+    for (final Map.Entry <String, String> aEntry : aRequestParameterMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = '").append (aEntry.getValue ()).append ("'\n");
     return aSB;
   }

@@ -17,7 +17,6 @@
 package com.helger.web.mock;
 
 import java.util.EventListener;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -26,6 +25,7 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionListener;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * This class globally holds the HTTP listeners ({@link ServletContextListener}
@@ -80,21 +80,21 @@ public final class MockHttpListener
 
   @Nonnull
   @ReturnsMutableCopy
-  public static List <ServletContextListener> getAllServletContextListeners ()
+  public static ICommonsList <ServletContextListener> getAllServletContextListeners ()
   {
     return s_aListener.getAllServletContextListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static List <HttpSessionListener> getAllHttpSessionListeners ()
+  public static ICommonsList <HttpSessionListener> getAllHttpSessionListeners ()
   {
     return s_aListener.getAllHttpSessionListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static List <ServletRequestListener> getAllServletRequestListeners ()
+  public static ICommonsList <ServletRequestListener> getAllServletRequestListeners ()
   {
     return s_aListener.getAllServletRequestListeners ();
   }

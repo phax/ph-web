@@ -16,9 +16,6 @@
  */
 package com.helger.web.servlet.response;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +26,8 @@ import javax.servlet.http.Cookie;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
@@ -52,7 +50,7 @@ public class UnifiedResponseDefaultSettings
   @GuardedBy ("s_aRWLock")
   private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
   @GuardedBy ("s_aRWLock")
-  private static final Map <String, Cookie> s_aCookies = new LinkedHashMap <> ();
+  private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap <> ();
 
   private UnifiedResponseDefaultSettings ()
   {}
@@ -237,7 +235,7 @@ public class UnifiedResponseDefaultSettings
    */
   public static boolean hasCookies ()
   {
-    return s_aRWLock.readLocked ( () -> CollectionHelper.isNotEmpty (s_aCookies));
+    return s_aRWLock.readLocked ( () -> s_aCookies.isNotEmpty ());
   }
 
   /**
@@ -246,9 +244,9 @@ public class UnifiedResponseDefaultSettings
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, Cookie> getAllCookies ()
+  public static ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return s_aRWLock.readLocked ( () -> CollectionHelper.newMap (s_aCookies));
+    return s_aRWLock.readLocked ( () -> s_aCookies.getClone ());
   }
 
   /**
@@ -263,9 +261,7 @@ public class UnifiedResponseDefaultSettings
 
     final String sKey = aCookie.getName ();
 
-    s_aRWLock.writeLocked ( () -> {
-      s_aCookies.put (sKey, aCookie);
-    });
+    s_aRWLock.writeLocked ( () -> s_aCookies.put (sKey, aCookie));
   }
 
   /**
@@ -292,11 +288,6 @@ public class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllCookies ()
   {
-    return s_aRWLock.writeLocked ( () -> {
-      if (s_aCookies.isEmpty ())
-        return EChange.UNCHANGED;
-      s_aCookies.clear ();
-      return EChange.CHANGED;
-    });
+    return s_aRWLock.writeLocked ( () -> s_aCookies.removeAll ());
   }
 }

@@ -16,8 +16,6 @@
  */
 package com.helger.web.useragent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 
 import javax.annotation.Nonnull;
@@ -25,6 +23,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -54,7 +53,7 @@ public final class UserAgentDecryptor
    * @param sUserAgent
    *        The user agent string to parse.
    * @return A list than can contain {@link ReadOnlyPair}, {@link String} and
-   *         {@link List} of String objects.
+   *         {@link ICommonsList} of String objects.
    */
   @Nonnull
   private static UserAgentElementList _decryptUserAgent (@Nonnull final String sUserAgent)
@@ -110,11 +109,8 @@ public final class UserAgentDecryptor
           final String sParams = aSS.getUntilBalanced (1, '(', ')');
 
           // convert to ";" separated list
-          final List <String> aParams = StringHelper.getExploded (';', sParams);
-          final List <String> aList = new ArrayList <String> (aParams.size ());
-          for (final String sParam : aParams)
-            aList.add (sParam.trim ());
-          ret.add (aList);
+          final ICommonsList <String> aParams = StringHelper.getExploded (';', sParams);
+          ret.add (aParams.getAllMapped (String::trim));
           break;
         }
         default:

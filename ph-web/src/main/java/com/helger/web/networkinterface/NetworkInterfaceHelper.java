@@ -17,14 +17,14 @@
 package com.helger.web.networkinterface;
 
 import java.net.NetworkInterface;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hierarchy.IParentProvider;
 import com.helger.commons.tree.withid.DefaultTreeItemWithID;
 import com.helger.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
@@ -56,7 +56,7 @@ public final class NetworkInterfaceHelper
     final DefaultTreeWithGlobalUniqueID <String, NetworkInterface> ret = new DefaultTreeWithGlobalUniqueID <String, NetworkInterface> ();
 
     // Build basic level - all IFs without a parent
-    final List <NetworkInterface> aNonRootNIs = new ArrayList <> ();
+    final ICommonsList <NetworkInterface> aNonRootNIs = new CommonsArrayList <> ();
     try
     {
       for (final NetworkInterface aNI : IteratorHelper.getIterator (NetworkInterface.getNetworkInterfaces ()))
@@ -71,9 +71,9 @@ public final class NetworkInterfaceHelper
     }
 
     int nNotFound = 0;
-    while (!aNonRootNIs.isEmpty ())
+    while (aNonRootNIs.isNotEmpty ())
     {
-      final NetworkInterface aNI = aNonRootNIs.remove (0);
+      final NetworkInterface aNI = aNonRootNIs.removeFirst ();
       final DefaultTreeItemWithID <String, NetworkInterface> aParentItem = ret.getItemWithID (aNI.getParent ()
                                                                                                  .getName ());
       if (aParentItem != null)

@@ -17,14 +17,15 @@
 package com.helger.web.http.csp;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.ext.CommonsLinkedHashSet;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -36,13 +37,14 @@ import com.helger.commons.url.ISimpleURL;
  * @author Philip Helger
  * @since 6.0.3
  */
+@NotThreadSafe
 public class CSPSourceList implements Serializable
 {
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";
   public static final String KEYWORD_UNSAFE_EVAL = "'unsafe-eval'";
 
-  private final Set <String> m_aList = new LinkedHashSet <String> ();
+  private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet <> ();
 
   public CSPSourceList ()
   {}

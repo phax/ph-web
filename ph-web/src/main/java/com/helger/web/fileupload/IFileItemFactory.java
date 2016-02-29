@@ -17,12 +17,12 @@
 package com.helger.web.fileupload;
 
 import java.io.File;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * <p>
@@ -68,5 +68,5 @@ public interface IFileItemFactory
 
   @Nonnull
   @ReturnsMutableCopy
-  List <File> getAllTemporaryFiles ();
+  ICommonsList <File> getAllTemporaryFiles ();
 }

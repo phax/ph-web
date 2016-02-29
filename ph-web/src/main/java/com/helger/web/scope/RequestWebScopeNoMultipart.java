@@ -19,8 +19,6 @@ package com.helger.web.scope;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,8 +32,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.scope.AbstractMapBasedScope;
@@ -164,9 +163,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   }
 
   /**
-   * Try to convert the passed value into a {@link List} of {@link String}. This
-   * method is only called, if the passed value is non-<code>null</code>, if it
-   * is not an String array or a single String.
+   * Try to convert the passed value into a {@link ICommonsList} of
+   * {@link String}. This method is only called, if the passed value is non-
+   * <code>null</code>, if it is not an String array or a single String.
    *
    * @param sName
    *        The name of the parameter to be queried. Just for informational
@@ -196,12 +195,12 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (aValue instanceof String [])
     {
       // multiple values passed in the request
-      return CollectionHelper.newList ((String []) aValue);
+      return new CommonsArrayList <> ((String []) aValue);
     }
     if (aValue instanceof String)
     {
       // single value passed in the request
-      return CollectionHelper.newList ((String) aValue);
+      return new CommonsArrayList <> ((String) aValue);
     }
     return getAttributeAsListCustom (sName, aValue, aDefault);
   }
@@ -214,7 +213,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (aValue == null)
     {
       // Use all attributes except the internal ones
-      final Map <String, Object> aAttrs = getAllAttributes ();
+      final ICommonsMap <String, Object> aAttrs = getAllAttributes ();
       // Remove all special internal attributes
       aAttrs.remove (REQUEST_ATTR_SCOPE_INITED);
 

@@ -16,7 +16,6 @@
  */
 package com.helger.web.useragent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -24,6 +23,8 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -35,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 final class UserAgentElementList
 {
-  private final List <Object> m_aList = new ArrayList <Object> ();
+  private final ICommonsList <Object> m_aList = new CommonsArrayList <> ();
 
   public void add (@Nonnull final IPair <String, String> aPair)
   {

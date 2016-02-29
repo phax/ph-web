@@ -18,8 +18,6 @@ package com.helger.web.sitemap;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -28,6 +26,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -54,7 +54,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
   private static final int XML_HEADER_LENGTH = 38 + 60 + 9;
 
   private int m_nOutputLength = XML_HEADER_LENGTH;
-  private final List <XMLSitemapURL> m_aURLs = new ArrayList <> ();
+  private final ICommonsList <XMLSitemapURL> m_aURLs = new CommonsArrayList <> ();
   private LocalDateTime m_aPrevLastModification;
   private LocalDateTime m_aLastModification;
 
@@ -82,7 +82,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
 
   void removeLastURL ()
   {
-    final XMLSitemapURL aLastURL = m_aURLs.remove (m_aURLs.size () - 1);
+    final XMLSitemapURL aLastURL = m_aURLs.removeLast ();
     m_nOutputLength -= aLastURL.getOutputLength ();
 
     // In case the last URL was the one with the latest modification date, use

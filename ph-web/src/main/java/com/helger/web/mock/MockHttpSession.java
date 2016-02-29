@@ -18,7 +18,6 @@ package com.helger.web.mock;
 
 import java.io.Serializable;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -37,6 +36,8 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -57,7 +58,7 @@ public class MockHttpSession implements HttpSession
   private int m_nMaxInactiveInterval = -1; // indefinite
   private long m_nLastAccessedTime = System.currentTimeMillis ();
   private final ServletContext m_aServletContext;
-  private final Map <String, Object> m_aAttributes = new HashMap <String, Object> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
   private boolean m_bInvalidated = false;
   private boolean m_bIsNew = true;
 
@@ -263,7 +264,7 @@ public class MockHttpSession implements HttpSession
   @Nonnull
   public Serializable serializeState ()
   {
-    final HashMap <String, Object> aState = new HashMap <String, Object> ();
+    final ICommonsMap <String, Object> aState = new CommonsHashMap <> ();
     for (final Map.Entry <String, Object> entry : m_aAttributes.entrySet ())
     {
       final String sName = entry.getKey ();

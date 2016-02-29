@@ -16,9 +16,7 @@
  */
 package com.helger.web.fileupload;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,11 +24,13 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.string.StringHelper;
 
 /**
  * A simple parser intended to parse sequences of name/value pairs. Parameter
- * values are exptected to be enclosed in quotes if they contain unsafe
+ * values are expected to be enclosed in quotes if they contain unsafe
  * characters, such as '=' characters or separators. Parameter values are
  * optional and can be omitted.
  * <p>
@@ -229,10 +229,10 @@ public final class ParameterParser
    */
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String> parse (@Nullable final String sStr, @Nullable final char [] aSeparators)
+  public ICommonsMap <String, String> parse (@Nullable final String sStr, @Nullable final char [] aSeparators)
   {
     if (ArrayHelper.isEmpty (aSeparators))
-      return new HashMap <String, String> ();
+      return new CommonsHashMap <> ();
 
     char cSep = aSeparators[0];
     if (sStr != null)
@@ -264,9 +264,9 @@ public final class ParameterParser
    */
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String> parse (@Nullable final String sStr, final char cSeparator)
+  public ICommonsMap <String, String> parse (@Nullable final String sStr, final char cSeparator)
   {
-    final Map <String, String> ret = new HashMap <String, String> ();
+    final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
     if (sStr != null)
     {
       final char [] aChars = sStr.toCharArray ();

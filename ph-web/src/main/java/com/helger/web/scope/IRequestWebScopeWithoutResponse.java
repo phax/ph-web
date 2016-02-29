@@ -18,10 +18,7 @@ package com.helger.web.scope;
 
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -34,6 +31,10 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.scope.IRequestScope;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
@@ -60,9 +61,9 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         {@link IFileItem} it is not considered in the returned map!
    */
   @Nonnull
-  default Map <String, IFileItem> getAllUploadedFileItems ()
+  default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
   {
-    final Map <String, IFileItem> ret = new HashMap <> ();
+    final ICommonsMap <String, IFileItem> ret = new CommonsHashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
@@ -78,9 +79,9 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         the field name.
    */
   @Nonnull
-  default Map <String, IFileItem []> getAllUploadedFileItemsComplete ()
+  default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
-    final Map <String, IFileItem []> ret = new HashMap <> ();
+    final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final String sAttrName = aEntry.getKey ();
@@ -101,9 +102,9 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         content of {@link IFileItem} arrays.
    */
   @Nonnull
-  default List <IFileItem> getAllUploadedFileItemValues ()
+  default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
   {
-    final List <IFileItem> ret = new ArrayList <> ();
+    final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
     for (final Object aAttrValue : getAllAttributeValues ())
     {
       if (aAttrValue instanceof IFileItem)

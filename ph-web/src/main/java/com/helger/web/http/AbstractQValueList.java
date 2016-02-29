@@ -17,14 +17,13 @@
 package com.helger.web.http;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -37,23 +36,23 @@ import com.helger.commons.string.ToStringGenerator;
 public abstract class AbstractQValueList <KEYTYPE extends Serializable> implements Serializable
 {
   // Maps something to quality
-  protected final Map <KEYTYPE, QValue> m_aMap = new LinkedHashMap <KEYTYPE, QValue> ();
+  protected final ICommonsOrderedMap <KEYTYPE, QValue> m_aMap = new CommonsLinkedHashMap <> ();
 
   public AbstractQValueList ()
   {}
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <KEYTYPE, QValue> getAllQValues ()
+  public ICommonsOrderedMap <KEYTYPE, QValue> getAllQValues ()
   {
-    return CollectionHelper.newMap (m_aMap);
+    return m_aMap.getClone ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <KEYTYPE, QValue> getAllQValuesLowerThan (final double dQuality)
+  public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesLowerThan (final double dQuality)
   {
-    final Map <KEYTYPE, QValue> ret = new HashMap <KEYTYPE, QValue> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -65,9 +64,9 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <KEYTYPE, QValue> getAllQValuesLowerOrEqual (final double dQuality)
+  public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesLowerOrEqual (final double dQuality)
   {
-    final Map <KEYTYPE, QValue> ret = new HashMap <KEYTYPE, QValue> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -79,9 +78,9 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <KEYTYPE, QValue> getAllQValuesGreaterThan (final double dQuality)
+  public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesGreaterThan (final double dQuality)
   {
-    final Map <KEYTYPE, QValue> ret = new HashMap <KEYTYPE, QValue> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -93,9 +92,9 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <KEYTYPE, QValue> getAllQValuesGreaterOrEqual (final double dQuality)
+  public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesGreaterOrEqual (final double dQuality)
   {
-    final Map <KEYTYPE, QValue> ret = new HashMap <KEYTYPE, QValue> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();

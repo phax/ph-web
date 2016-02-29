@@ -17,7 +17,6 @@
 package com.helger.web.fileupload.scope;
 
 import java.io.File;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +24,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.UsedViaReflection;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -75,7 +75,7 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <File> getAllTemporaryFiles ()
+  public ICommonsList <File> getAllTemporaryFiles ()
   {
     return m_aFactory.getAllTemporaryFiles ();
   }

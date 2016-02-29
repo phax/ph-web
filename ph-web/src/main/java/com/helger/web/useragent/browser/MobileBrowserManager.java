@@ -16,17 +16,17 @@
  */
 package com.helger.web.useragent.browser;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.microdom.util.XMLListHandler;
 import com.helger.commons.string.StringHelper;
@@ -34,7 +34,7 @@ import com.helger.commons.string.StringHelper;
 @Immutable
 public final class MobileBrowserManager
 {
-  private static Set <String> s_aMap = new HashSet <String> ();
+  private static ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
 
   static
   {
@@ -55,23 +55,19 @@ public final class MobileBrowserManager
 
   private static void _readList (@Nonnull final String sPath)
   {
-    final List <String> aList = new ArrayList <String> ();
+    final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
-    for (final String sItem : aList)
-      s_aMap.add (_unify (sItem));
+    s_aSet.addAllMapped (aList, sItem -> _unify (sItem));
   }
 
   @Nullable
   public static String getFromUserAgent (@Nullable final String sFullUserAgent)
   {
-    if (StringHelper.hasText (sFullUserAgent))
-    {
-      final String sUnifiedUA = _unify (sFullUserAgent);
-      for (final String sUAPart : s_aMap)
-        if (sUnifiedUA.contains (sUAPart))
-          return sUAPart;
-    }
-    return null;
+    if (StringHelper.hasNoText (sFullUserAgent))
+      return null;
+
+    final String sUnifiedUA = _unify (sFullUserAgent);
+    return s_aSet.findFirst (sUAPart -> sUnifiedUA.contains (sUAPart));
   }
 }

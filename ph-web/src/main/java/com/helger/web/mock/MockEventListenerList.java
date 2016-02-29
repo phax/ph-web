@@ -16,12 +16,11 @@
  */
 package com.helger.web.mock;
 
-import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequestListener;
@@ -32,7 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
@@ -50,7 +50,8 @@ public class MockEventListenerList
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockEventListenerList.class);
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final List <EventListener> m_aListener = new ArrayList <> ();
+  @GuardedBy ("m_aRWLock")
+  private final ICommonsList <EventListener> m_aListener = new CommonsArrayList <> ();
 
   public MockEventListenerList ()
   {}
@@ -72,14 +73,13 @@ public class MockEventListenerList
       return EChange.UNCHANGED;
 
     // Get all listeners to assign
-    final List <EventListener> aOtherListeners = aList.getAllListeners ();
+    final ICommonsList <EventListener> aOtherListeners = aList.getAllListeners ();
 
     return m_aRWLock.writeLocked ( () -> {
       if (m_aListener.isEmpty () && aOtherListeners.isEmpty ())
         return EChange.UNCHANGED;
 
-      m_aListener.clear ();
-      m_aListener.addAll (aOtherListeners);
+      m_aListener.setAll (aOtherListeners);
       return EChange.CHANGED;
     });
   }
@@ -117,7 +117,7 @@ public class MockEventListenerList
     return m_aRWLock.writeLocked ( () -> {
       EChange ret = EChange.UNCHANGED;
       // Create a copy of the list
-      for (final EventListener aListener : CollectionHelper.newList (m_aListener))
+      for (final EventListener aListener : m_aListener.getClone ())
         if (aListener.getClass ().equals (aListenerClass))
           ret = ret.or (EChange.valueOf (m_aListener.remove (aListener)));
       return ret;
@@ -127,52 +127,35 @@ public class MockEventListenerList
   @Nonnull
   public EChange removeAllListeners ()
   {
-    return m_aRWLock.writeLocked ( () -> {
-      if (m_aListener.isEmpty ())
-        return EChange.UNCHANGED;
-      m_aListener.clear ();
-      return EChange.CHANGED;
-    });
+    return m_aRWLock.writeLocked ( () -> m_aListener.removeAll ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <EventListener> getAllListeners ()
+  public ICommonsList <EventListener> getAllListeners ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aListener));
+    return m_aRWLock.readLocked ( () -> m_aListener.getClone ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <ServletContextListener> getAllServletContextListeners ()
+  public ICommonsList <ServletContextListener> getAllServletContextListeners ()
   {
-    final List <ServletContextListener> ret = new ArrayList <> ();
-    for (final EventListener aListener : getAllListeners ())
-      if (aListener instanceof ServletContextListener)
-        ret.add ((ServletContextListener) aListener);
-    return ret;
+    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (ServletContextListener.class));
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <HttpSessionListener> getAllHttpSessionListeners ()
+  public ICommonsList <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    final List <HttpSessionListener> ret = new ArrayList <> ();
-    for (final EventListener aListener : getAllListeners ())
-      if (aListener instanceof HttpSessionListener)
-        ret.add ((HttpSessionListener) aListener);
-    return ret;
+    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (HttpSessionListener.class));
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <ServletRequestListener> getAllServletRequestListeners ()
+  public ICommonsList <ServletRequestListener> getAllServletRequestListeners ()
   {
-    final List <ServletRequestListener> ret = new ArrayList <> ();
-    for (final EventListener aListener : getAllListeners ())
-      if (aListener instanceof ServletRequestListener)
-        ret.add ((ServletRequestListener) aListener);
-    return ret;
+    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (ServletRequestListener.class));
   }
 
   @Override

@@ -20,10 +20,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnegative;
@@ -36,6 +33,10 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.lang.ICloneable;
 import com.helger.commons.lang.IHasSize;
 import com.helger.commons.state.EChange;
@@ -52,11 +53,11 @@ import com.helger.web.datetime.PDTWebDateHelper;
 @NotThreadSafe
 public class HTTPHeaderMap implements
                            IHasSize,
-                           Iterable <Map.Entry <String, List <String>>>,
+                           Iterable <Map.Entry <String, ICommonsList <String>>>,
                            ICloneable <HTTPHeaderMap>,
                            Serializable
 {
-  private final Map <String, List <String>> m_aHeaders = new LinkedHashMap <String, List <String>> ();
+  private final ICommonsOrderedMap <String, ICommonsList <String>> m_aHeaders = new CommonsLinkedHashMap <> ();
 
   /**
    * Default constructor.
@@ -94,12 +95,12 @@ public class HTTPHeaderMap implements
 
   @Nonnull
   @ReturnsMutableObject ("design")
-  private List <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
+  private ICommonsList <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
   {
-    List <String> aValues = m_aHeaders.get (sName);
+    ICommonsList <String> aValues = m_aHeaders.get (sName);
     if (aValues == null)
     {
-      aValues = new ArrayList <String> (2);
+      aValues = new CommonsArrayList <> (2);
       m_aHeaders.put (sName, aValues);
     }
     return aValues;
@@ -110,7 +111,7 @@ public class HTTPHeaderMap implements
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
 
-    final List <String> aValues = _getOrCreateHeaderList (sName);
+    final ICommonsList <String> aValues = _getOrCreateHeaderList (sName);
     aValues.clear ();
     aValues.add (sValue);
   }
@@ -352,16 +353,16 @@ public class HTTPHeaderMap implements
   {
     ValueEnforcer.notNull (aOther, "Other");
 
-    for (final Map.Entry <String, List <String>> aEntry : aOther.m_aHeaders.entrySet ())
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : aOther.m_aHeaders.entrySet ())
       for (final String sValue : aEntry.getValue ())
         _addHeader (aEntry.getKey (), sValue);
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, List <String>> getAllHeaders ()
+  public ICommonsOrderedMap <String, ICommonsList <String>> getAllHeaders ()
   {
-    return CollectionHelper.newOrderedMap (m_aHeaders);
+    return m_aHeaders.getClone ();
   }
 
   /**
@@ -375,9 +376,9 @@ public class HTTPHeaderMap implements
    */
   @Nonnull
   @ReturnsMutableCopy
-  public List <String> getAllHeaderValues (@Nullable final String sName)
+  public ICommonsList <String> getAllHeaderValues (@Nullable final String sName)
   {
-    return CollectionHelper.newList (m_aHeaders.get (sName));
+    return new CommonsArrayList <> (m_aHeaders.get (sName));
   }
 
   /**
@@ -391,11 +392,11 @@ public class HTTPHeaderMap implements
    */
   @Nonnull
   @ReturnsMutableCopy
-  public List <String> getAllHeaderValuesCaseInsensitive (@Nullable final String sName)
+  public ICommonsList <String> getAllHeaderValuesCaseInsensitive (@Nullable final String sName)
   {
-    final List <String> ret = new ArrayList <String> ();
+    final ICommonsList <String> ret = new CommonsArrayList <> ();
     if (StringHelper.hasText (sName))
-      for (final Map.Entry <String, List <String>> aEntry : m_aHeaders.entrySet ())
+      for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
         if (sName.equalsIgnoreCase (aEntry.getKey ()))
         {
           ret.addAll (aEntry.getValue ());
@@ -411,11 +412,8 @@ public class HTTPHeaderMap implements
 
   public boolean containsHeadersCaseInsensitive (@Nullable final String sName)
   {
-    if (StringHelper.hasText (sName))
-      for (final String sHeaderName : m_aHeaders.keySet ())
-        if (sName.equalsIgnoreCase (sHeaderName))
-          return true;
-    return false;
+    return StringHelper.hasText (sName) &&
+           CollectionHelper.containsAny (m_aHeaders.keySet (), sHeaderName -> sName.equalsIgnoreCase (sHeaderName));
   }
 
   @Nonnull
@@ -425,7 +423,7 @@ public class HTTPHeaderMap implements
   }
 
   @Nonnull
-  public Iterator <Map.Entry <String, List <String>>> iterator ()
+  public Iterator <Map.Entry <String, ICommonsList <String>>> iterator ()
   {
     return m_aHeaders.entrySet ().iterator ();
   }

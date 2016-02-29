@@ -17,7 +17,6 @@
 package com.helger.web.servlet.request;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -26,6 +25,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -40,7 +41,7 @@ import com.helger.commons.string.ToStringGenerator;
 public final class RequestParamMapItem implements Serializable
 {
   private String m_sValue;
-  private final Map <String, RequestParamMapItem> m_aChildren = new LinkedHashMap <String, RequestParamMapItem> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap <> ();
 
   public RequestParamMapItem ()
   {}
@@ -64,12 +65,12 @@ public final class RequestParamMapItem implements Serializable
 
   public boolean hasChildren ()
   {
-    return !m_aChildren.isEmpty ();
+    return m_aChildren.isNotEmpty ();
   }
 
   @Nonnull
   @ReturnsMutableObject ("design")
-  public Map <String, RequestParamMapItem> directGetChildren ()
+  public ICommonsOrderedMap <String, RequestParamMapItem> directGetChildren ()
   {
     return m_aChildren;
   }

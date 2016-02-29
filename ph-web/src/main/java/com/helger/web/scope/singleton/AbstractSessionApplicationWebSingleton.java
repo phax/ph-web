@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -121,7 +121,7 @@ public abstract class AbstractSessionApplicationWebSingleton extends AbstractSin
    *         the current session application web scope.
    */
   @Nonnull
-  public static final List <AbstractSessionApplicationWebSingleton> getAllSessionApplicationSingletons ()
+  public static final ICommonsList <AbstractSessionApplicationWebSingleton> getAllSessionApplicationSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), AbstractSessionApplicationWebSingleton.class);
   }

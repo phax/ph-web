@@ -17,14 +17,14 @@
 package com.helger.web.http.digestauth;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.ext.CommonsLinkedHashSet;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
@@ -41,12 +41,12 @@ import com.helger.web.http.HTTPStringHelper;
 public class DigestAuthServerBuilder implements Serializable
 {
   private String m_sRealm;
-  private final Set <String> m_aDomains = new LinkedHashSet <String> ();
+  private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet <String> ();
   private String m_sNonce;
   private String m_sOpaque;
   private ETriState m_eStale = ETriState.UNDEFINED;
   private String m_sAlgorithm;
-  private final Set <String> m_aQOPs = new LinkedHashSet <String> ();
+  private final ICommonsOrderedSet <String> m_aQOPs = new CommonsLinkedHashSet <> ();
 
   public DigestAuthServerBuilder ()
   {}
@@ -262,7 +262,7 @@ public class DigestAuthServerBuilder implements Serializable
     final StringBuilder ret = new StringBuilder (HTTPDigestAuth.HEADER_VALUE_PREFIX_DIGEST);
     // Realm is required
     ret.append (" realm=").append (HTTPStringHelper.getQuotedTextString (m_sRealm));
-    if (!m_aDomains.isEmpty ())
+    if (m_aDomains.isNotEmpty ())
     {
       ret.append (", domain=")
          .append (HTTPStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
@@ -271,11 +271,11 @@ public class DigestAuthServerBuilder implements Serializable
     ret.append (", nonce=").append (HTTPStringHelper.getQuotedTextString (m_sNonce));
     if (m_sOpaque != null)
       ret.append (", opaque=").append (HTTPStringHelper.getQuotedTextString (m_sOpaque));
-    if (!m_eStale.isUndefined ())
+    if (m_eStale.isDefined ())
       ret.append (", stale=").append (m_eStale.isTrue () ? "true" : "false");
     if (m_sAlgorithm != null)
       ret.append (", algorithm=").append (m_sAlgorithm);
-    if (!m_aQOPs.isEmpty ())
+    if (m_aQOPs.isNotEmpty ())
       ret.append (", qop=").append (HTTPStringHelper.getQuotedTextString (StringHelper.getImploded (',', m_aQOPs)));
 
     return ret.toString ();

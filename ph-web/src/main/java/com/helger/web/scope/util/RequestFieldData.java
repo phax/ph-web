@@ -26,7 +26,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
@@ -200,7 +200,7 @@ public class RequestFieldData implements Serializable
     ICommonsList <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
-      aDefault = CollectionHelper.newList (sDefaultValue);
+      aDefault = new CommonsArrayList <> (sDefaultValue);
     return getScope ().getAttributeAsList (m_sFieldName, aDefault);
   }
 

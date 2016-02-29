@@ -16,8 +16,6 @@
  */
 package com.helger.web.scope.mgr;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
@@ -35,6 +33,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.scope.IApplicationScope;
 import com.helger.commons.scope.IGlobalScope;
@@ -65,7 +65,7 @@ public final class WebScopeManager
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final Set <String> s_aSessionsInInvalidation = new HashSet <> ();
+  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet <> ();
 
   @PresentForCodeCoverage
   private static final WebScopeManager s_aInstance = new WebScopeManager ();

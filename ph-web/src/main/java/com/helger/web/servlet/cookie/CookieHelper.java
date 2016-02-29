@@ -16,8 +16,7 @@
  */
 package com.helger.web.servlet.cookie;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +29,8 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.scope.mgr.WebScopeManager;
 
@@ -51,15 +52,12 @@ public final class CookieHelper
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, Cookie> getAllCookies (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, Cookie> getAllCookies (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final Map <String, Cookie> ret = new LinkedHashMap <String, Cookie> ();
-    final Cookie [] aCookies = aHttpRequest.getCookies ();
-    if (aCookies != null)
-      for (final Cookie aCookie : aCookies)
-        ret.put (aCookie.getName (), aCookie);
+    final ICommonsOrderedMap <String, Cookie> ret = new CommonsLinkedHashMap <> ();
+    ret.putAll (aHttpRequest.getCookies (), Cookie::getName, Function.identity ());
     return ret;
   }
 

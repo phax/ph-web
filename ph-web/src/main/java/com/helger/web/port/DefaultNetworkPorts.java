@@ -16,16 +16,14 @@
  */
 package com.helger.web.port;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.CodingStyleguideUnaware;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * A list of default ports between 0 and 1024. Created from the IANA port list.
@@ -37,7 +35,7 @@ import com.helger.commons.collection.CollectionHelper;
 public final class DefaultNetworkPorts
 {
   // needs to be the first member!
-  private static List <NetworkPort> s_aPortList = new ArrayList <NetworkPort> ();
+  private static ICommonsList <NetworkPort> s_aPortList = new CommonsArrayList <> ();
 
   public static final INetworkPort TCP_0_itunes = _registerPort (0,
                                                                  ENetworkProtocol.TCP,
@@ -3991,19 +3989,15 @@ public final class DefaultNetworkPorts
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static List <NetworkPort> getAllPorts ()
+  public static ICommonsList <NetworkPort> getAllPorts ()
   {
-    return CollectionHelper.newList (s_aPortList);
+    return s_aPortList.getClone ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static List <NetworkPort> getAllPorts (@Nonnegative final int nPort)
+  public static ICommonsList <NetworkPort> getAllPorts (@Nonnegative final int nPort)
   {
-    final List <NetworkPort> ret = new ArrayList <NetworkPort> ();
-    for (final NetworkPort aPort : s_aPortList)
-      if (aPort.getPort () == nPort)
-        ret.add (aPort);
-    return ret;
+    return s_aPortList.getAll (aPort -> aPort.getPort () == nPort);
   }
 }

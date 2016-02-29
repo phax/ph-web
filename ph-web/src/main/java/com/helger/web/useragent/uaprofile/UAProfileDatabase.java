@@ -18,14 +18,9 @@ package com.helger.web.useragent.uaprofile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -44,7 +39,12 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -77,7 +77,7 @@ public final class UAProfileDatabase
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final Set <UAProfile> s_aUniqueUAProfiles = new HashSet <> ();
+  private static final ICommonsSet <UAProfile> s_aUniqueUAProfiles = new CommonsHashSet <> ();
   @GuardedBy ("s_aRWLock")
   private static Consumer <UAProfile> s_aNewUAProfileCallback;
 
@@ -129,8 +129,8 @@ public final class UAProfileDatabase
   }
 
   @Nonnull
-  private static Map <Integer, String> _getProfileDiffData (@Nonnull final HttpServletRequest aHttpRequest,
-                                                            final String sExtNSValue)
+  private static ICommonsMap <Integer, String> _getProfileDiffData (@Nonnull final HttpServletRequest aHttpRequest,
+                                                                    final String sExtNSValue)
   {
     // Determine the profile diffs to use
     Enumeration <String> aProfileDiffs = RequestHelper.getRequestHeaders (aHttpRequest, X_WAP_PROFILE_DIFF);
@@ -142,7 +142,7 @@ public final class UAProfileDatabase
     }
 
     // Parse the diffs
-    final Map <Integer, String> aProfileDiffData = new HashMap <Integer, String> ();
+    final ICommonsMap <Integer, String> aProfileDiffData = new CommonsHashMap <> ();
     while (aProfileDiffs.hasMoreElements ())
     {
       String sProfileDiff = aProfileDiffs.nextElement ();
@@ -234,8 +234,8 @@ public final class UAProfileDatabase
     }
 
     // Parse profile headers
-    final List <String> aProfileData = new ArrayList <String> ();
-    final Map <Integer, byte []> aProfileDiffDigests = new HashMap <Integer, byte []> ();
+    final ICommonsList <String> aProfileData = new CommonsArrayList <> ();
+    final ICommonsMap <Integer, byte []> aProfileDiffDigests = new CommonsHashMap <> ();
     while (aProfiles.hasMoreElements ())
     {
       String sProfile = aProfiles.nextElement ();
@@ -309,10 +309,10 @@ public final class UAProfileDatabase
     }
 
     // Read diffs
-    final Map <Integer, String> aProfileDiffData = _getProfileDiffData (aHttpRequest, sExtNSValue);
+    final ICommonsMap <Integer, String> aProfileDiffData = _getProfileDiffData (aHttpRequest, sExtNSValue);
 
     // Merge data and digest
-    final Map <Integer, UAProfileDiff> aProfileDiffs = new HashMap <Integer, UAProfileDiff> ();
+    final ICommonsMap <Integer, UAProfileDiff> aProfileDiffs = new CommonsHashMap <> ();
     for (final Map.Entry <Integer, String> aEntry : aProfileDiffData.entrySet ())
     {
       final Integer aIndex = aEntry.getKey ();
@@ -383,8 +383,8 @@ public final class UAProfileDatabase
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Set <UAProfile> getAllUniqueUAProfiles ()
+  public static ICommonsSet <UAProfile> getAllUniqueUAProfiles ()
   {
-    return s_aRWLock.readLocked ( () -> CollectionHelper.newSet (s_aUniqueUAProfiles));
+    return s_aRWLock.readLocked ( () -> s_aUniqueUAProfiles.getClone ());
   }
 }

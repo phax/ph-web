@@ -17,7 +17,6 @@
 package com.helger.web.mock;
 
 import java.util.Enumeration;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -28,8 +27,10 @@ import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -43,7 +44,7 @@ public class MockServletConfig implements ServletConfig
 {
   private final ServletContext m_aSC;
   private final String m_sServletName;
-  private final Map <String, String> m_aServletInitParams = new LinkedHashMap <String, String> ();
+  private final ICommonsOrderedMap <String, String> m_aServletInitParams = new CommonsLinkedHashMap <> ();
 
   /**
    * Constructor without servlet init parameters.
@@ -119,9 +120,10 @@ public class MockServletConfig implements ServletConfig
 
   @Nonnull
   @Nonempty
-  public Map <String, String> getAllInitParameters ()
+  @ReturnsMutableCopy
+  public ICommonsOrderedMap <String, String> getAllInitParameters ()
   {
-    return CollectionHelper.newMap (m_aServletInitParams);
+    return m_aServletInitParams.getClone ();
   }
 
   @Override

@@ -16,10 +16,7 @@
  */
 package com.helger.web.servlet.request;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nonnegative;
@@ -34,6 +31,10 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.attr.IAttributeContainer;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -67,7 +68,7 @@ public class RequestParamMap implements IRequestParamMap
   private static String s_sClose = DEFAULT_CLOSE;
 
   /** Linked hash map for consistent results */
-  private final Map <String, RequestParamMapItem> m_aMap = new LinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aMap = new CommonsLinkedHashMap <> ();
 
   public RequestParamMap ()
   {}
@@ -146,8 +147,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  private static Map <String, RequestParamMapItem> _getChildMap (@Nonnull final Map <String, RequestParamMapItem> aMap,
-                                                                 @Nullable final String sPath)
+  private static ICommonsOrderedMap <String, RequestParamMapItem> _getChildMap (@Nonnull final Map <String, RequestParamMapItem> aMap,
+                                                                                @Nullable final String sPath)
   {
     final RequestParamMapItem aPathObj = aMap.get (sPath);
     return aPathObj == null ? null : aPathObj.directGetChildren ();
@@ -163,11 +164,11 @@ public class RequestParamMap implements IRequestParamMap
    *         child.
    */
   @Nullable
-  private Map <String, RequestParamMapItem> _getChildMapExceptLast (@Nonnull @Nonempty final String... aPath)
+  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapExceptLast (@Nonnull @Nonempty final String... aPath)
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
-    Map <String, RequestParamMapItem> aMap = m_aMap;
+    ICommonsOrderedMap <String, RequestParamMapItem> aMap = m_aMap;
     // Until the second last object
     for (int i = 0; i < aPath.length - 1; ++i)
     {
@@ -180,7 +181,7 @@ public class RequestParamMap implements IRequestParamMap
 
   public boolean contains (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
+    final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
     if (aMap == null)
       return false;
     final String sLastPathPart = ArrayHelper.getLast (aPath);
@@ -197,14 +198,14 @@ public class RequestParamMap implements IRequestParamMap
   @Nullable
   public RequestParamMapItem getObject (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
+    final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
     return aMap == null ? null : aMap.get (ArrayHelper.getLast (aPath));
   }
 
   @Nullable
-  private Map <String, RequestParamMapItem> _getChildMapFully (@Nonnull final String... aPath)
+  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapFully (@Nonnull final String... aPath)
   {
-    Map <String, RequestParamMapItem> aMap = m_aMap;
+    ICommonsOrderedMap <String, RequestParamMapItem> aMap = m_aMap;
     for (final String sPath : aPath)
     {
       aMap = _getChildMap (aMap, sPath);
@@ -215,9 +216,9 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  public Map <String, String> getValueMap (@Nonnull @Nonempty final String... aPath)
+  public ICommonsOrderedMap <String, String> getValueMap (@Nonnull @Nonempty final String... aPath)
   {
-    final Map <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
+    final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
       return null;
     return getAsValueMap (aMap);
@@ -229,7 +230,7 @@ public class RequestParamMap implements IRequestParamMap
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
-    final Map <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
+    final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
       return null;
     return new RequestParamMap (aMap);
@@ -253,28 +254,28 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public Set <String> keySet ()
+  public ICommonsOrderedSet <String> keySet ()
   {
-    return CollectionHelper.newSet (m_aMap.keySet ());
+    return m_aMap.copyOfKeySet ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public Collection <RequestParamMapItem> values ()
+  public ICommonsList <RequestParamMapItem> values ()
   {
-    return CollectionHelper.newList (m_aMap.values ());
+    return m_aMap.copyOfValues ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, RequestParamMapItem> getAsObjectMap ()
+  public ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ()
   {
-    return CollectionHelper.newMap (m_aMap);
+    return m_aMap.getClone ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, String> getAsValueMap (@Nonnull final Map <String, RequestParamMapItem> aMap) throws ClassCastException
+  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
     return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), aValue -> aValue.getValue ());
@@ -282,7 +283,7 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String> getAsValueMap () throws ClassCastException
+  public ICommonsOrderedMap <String, String> getAsValueMap () throws ClassCastException
   {
     return getAsValueMap (m_aMap);
   }

@@ -16,10 +16,6 @@
  */
 package com.helger.web.useragent.spider;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,7 +27,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsCollection;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.IMicroElement;
@@ -53,7 +53,7 @@ public final class WebSpiderManager
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (WebSpiderManager.class);
-  private final Map <String, WebSpiderInfo> m_aMap = new HashMap <String, WebSpiderInfo> ();
+  private final ICommonsMap <String, WebSpiderInfo> m_aMap = new CommonsHashMap <> ();
 
   private WebSpiderManager ()
   {
@@ -103,7 +103,7 @@ public final class WebSpiderManager
 
   private void _readSpiderList2 (final String sPath)
   {
-    final List <String> aList = new ArrayList <String> ();
+    final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read spiderlist2 from " + sPath);
     for (final String sSpider : aList)
@@ -126,9 +126,9 @@ public final class WebSpiderManager
 
   @Nonnull
   @ReturnsMutableCopy
-  public Collection <WebSpiderInfo> getAllKnownSpiders ()
+  public ICommonsCollection <WebSpiderInfo> getAllKnownSpiders ()
   {
-    return CollectionHelper.newList (m_aMap.values ());
+    return m_aMap.copyOfValues ();
   }
 
   @Nullable
@@ -139,7 +139,6 @@ public final class WebSpiderManager
     for (final Map.Entry <String, WebSpiderInfo> aEntry : m_aMap.entrySet ())
       if (sUserAgentLC.contains (aEntry.getKey ()))
         return aEntry.getValue ();
-
     return null;
   }
 }

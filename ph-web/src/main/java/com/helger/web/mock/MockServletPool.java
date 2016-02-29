@@ -16,8 +16,6 @@
  */
 package com.helger.web.mock;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -32,7 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -117,7 +116,7 @@ public class MockServletPool
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletPool.class);
 
   private final MockServletContext m_aSC;
-  private final List <ServletItem> m_aServlets = new ArrayList <ServletItem> ();
+  private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList <> ();
   private boolean m_bInvalidated = false;
 
   public MockServletPool (@Nonnull final MockServletContext aSC)
@@ -218,17 +217,15 @@ public class MockServletPool
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
-    final List <ServletItem> aMatchingItems = new ArrayList <ServletItem> ();
+    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
     if (StringHelper.hasText (sPath))
-      for (final ServletItem aItem : m_aServlets)
-        if (aItem.matchesPath (sPath))
-          aMatchingItems.add (aItem);
+      m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
     final int nMatchingItems = aMatchingItems.size ();
     if (nMatchingItems == 0)
       return null;
     if (nMatchingItems > 1)
       s_aLogger.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
-    return CollectionHelper.getFirstElement (aMatchingItems).getServlet ();
+    return aMatchingItems.getFirst ().getServlet ();
   }
 
   /**

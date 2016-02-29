@@ -23,16 +23,10 @@ import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -63,8 +57,15 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
@@ -105,16 +106,16 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   private boolean m_bInvalidated = false;
   private boolean m_bActive = true;
-  private final Map <String, Object> m_aAttributes = new HashMap <String, Object> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
   private Charset m_aCharacterEncoding;
   private byte [] m_aContent;
   private String m_sContentType;
-  private final Map <String, String []> m_aParameters = new LinkedHashMap <String, String []> (16);
+  private final ICommonsOrderedMap <String, String []> m_aParameters = new CommonsLinkedHashMap <> (16);
   private String m_sProtocol = DEFAULT_PROTOCOL;
   private String m_sScheme = DEFAULT_SCHEME;
   private String m_sServerName = DEFAULT_SERVER_NAME;
   private int m_nServerPort = DEFAULT_SERVER_PORT;
-  private final List <Locale> m_aLocales = new ArrayList <Locale> ();
+  private final ICommonsList <Locale> m_aLocales = new CommonsArrayList <> ();
   private boolean m_bSecure = false;
   private final ServletContext m_aServletContext;
   private String m_sRemoteAddr = DEFAULT_REMOTE_ADDR;
@@ -131,7 +132,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sContextPath = "";
   private String m_sQueryString;
   private String m_sRemoteUser;
-  private final Set <String> m_aUserRoles = new HashSet <String> ();
+  private final ICommonsSet <String> m_aUserRoles = new CommonsHashSet <> ();
   private Principal m_aUserPrincipal;
   private String m_sRequestURI;
   private String m_sServletPath = "";
@@ -563,9 +564,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   @Nonnull
   @ReturnsMutableCopy
-  public Map <String, String []> getParameterMap ()
+  public ICommonsOrderedMap <String, String []> getParameterMap ()
   {
-    return CollectionHelper.newMap (m_aParameters);
+    return m_aParameters.getClone ();
   }
 
   @Nonnull
@@ -706,7 +707,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Locale getLocale ()
   {
     // One element is added in ctor!
-    return m_aLocales.get (0);
+    return m_aLocales.getFirst ();
   }
 
   @Nonnull
@@ -877,14 +878,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final Set <String> aValue = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    final ICommonsSet <String> aValue = m_aHeaders.get (_getUnifiedHeaderName (sName));
     return aValue == null || aValue.isEmpty () ? null : String.valueOf (aValue.iterator ().next ());
   }
 
   @Nonnull
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
-    final Set <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    final ICommonsSet <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
     return IteratorHelper.getEnumeration (vals);
   }
 

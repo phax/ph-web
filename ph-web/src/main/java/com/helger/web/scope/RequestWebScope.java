@@ -17,7 +17,6 @@
 package com.helger.web.scope;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -31,7 +30,6 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.multimap.IMultiMapListBased;
 import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
@@ -131,9 +129,9 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         }
 
         // Group all items with the same name together
-        final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <String, String> ();
-        final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased <String, IFileItem> ();
-        final List <IFileItem> aFileItems = aUpload.parseRequest (m_aHttpRequest);
+        final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <> ();
+        final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased <> ();
+        final ICommonsList <IFileItem> aFileItems = aUpload.parseRequest (m_aHttpRequest);
         for (final IFileItem aFileItem : aFileItems)
         {
           if (aFileItem.isFormField ())
@@ -150,8 +148,8 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         for (final Map.Entry <String, ICommonsList <String>> aEntry : aFormFields.entrySet ())
         {
           // Convert list of String to value (String or String[])
-          final List <String> aValues = aEntry.getValue ();
-          final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
+          final ICommonsList <String> aValues = aEntry.getValue ();
+          final Object aValue = aValues.size () == 1 ? aValues.getFirst ()
                                                      : ArrayHelper.newArray (aValues, String.class);
           setAttribute (aEntry.getKey (), aValue);
         }
@@ -161,8 +159,8 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         for (final Map.Entry <String, ICommonsList <IFileItem>> aEntry : aFormFiles.entrySet ())
         {
           // Convert list of String to value (IFileItem or IFileItem[])
-          final List <IFileItem> aValues = aEntry.getValue ();
-          final Object aValue = aValues.size () == 1 ? CollectionHelper.getFirstElement (aValues)
+          final ICommonsList <IFileItem> aValues = aEntry.getValue ();
+          final Object aValue = aValues.size () == 1 ? aValues.getFirst ()
                                                      : ArrayHelper.newArray (aValues, IFileItem.class);
           setAttribute (aEntry.getKey (), aValue);
         }

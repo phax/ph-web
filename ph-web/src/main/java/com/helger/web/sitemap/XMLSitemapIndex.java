@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.Nonnegative;
@@ -35,7 +33,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.microdom.IMicroDocument;
@@ -65,7 +64,7 @@ public final class XMLSitemapIndex implements Serializable
   private static final String ELEMENT_LASTMOD = "lastmod";
   private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapIndex.class);
 
-  private final List <XMLSitemapURLSet> m_aURLSets = new ArrayList <XMLSitemapURLSet> ();
+  private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList <> ();
   private final boolean m_bUseGZip;
 
   /**
@@ -101,9 +100,9 @@ public final class XMLSitemapIndex implements Serializable
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <XMLSitemapURLSet> getAllURLSets ()
+  public ICommonsList <XMLSitemapURLSet> getAllURLSets ()
   {
-    return CollectionHelper.newList (m_aURLSets);
+    return m_aURLSets.getClone ();
   }
 
   public void addURLSet (@Nonnull final XMLSitemapURLSet aURLSet)

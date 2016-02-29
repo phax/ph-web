@@ -23,7 +23,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -41,6 +40,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileIOError;
@@ -350,7 +350,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
     // Parameter parser can handle null input
-    final Map <String, String> aParams = aParser.parse (getContentType (), ';');
+    final ICommonsMap <String, String> aParams = aParser.parse (getContentType (), ';');
     return aParams.get ("charset");
   }
 

@@ -16,8 +16,6 @@
  */
 package com.helger.web.http;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnegative;
@@ -29,7 +27,8 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.lang.ICloneable;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -52,7 +51,7 @@ public class CacheControlBuilder implements ICloneable <CacheControlBuilder>
   private boolean m_bNoTransform = false;
   private boolean m_bMustRevalidate = false;
   private boolean m_bProxyRevalidate = false;
-  private final List <String> m_aExtensions = new ArrayList <String> ();
+  private final ICommonsList <String> m_aExtensions = new CommonsArrayList <> ();
 
   /**
    * Constructor
@@ -423,15 +422,15 @@ public class CacheControlBuilder implements ICloneable <CacheControlBuilder>
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <String> getAllExtensions ()
+  public ICommonsList <String> getAllExtensions ()
   {
-    return CollectionHelper.newList (m_aExtensions);
+    return m_aExtensions.getClone ();
   }
 
   @Nonnull
   public String getAsHTTPHeaderValue ()
   {
-    final List <String> aItems = new ArrayList <String> ();
+    final ICommonsList <String> aItems = new CommonsArrayList <> ();
     if (m_aMaxAgeSeconds != null)
       aItems.add ("max-age=" + m_aMaxAgeSeconds.toString ());
     if (m_aSharedMaxAgeSeconds != null)

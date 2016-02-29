@@ -19,7 +19,6 @@ package com.helger.web.proxy;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnegative;
@@ -30,7 +29,8 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
@@ -52,7 +52,7 @@ public class HttpProxyConfig implements IProxyConfig
   private final int m_nPort;
   private final String m_sUserName;
   private final String m_sPassword;
-  private final List <String> m_aNonProxyHosts = new ArrayList <String> ();
+  private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
 
   public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
                           @Nonnull @Nonempty final String sHost,
@@ -121,9 +121,9 @@ public class HttpProxyConfig implements IProxyConfig
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <String> getNonProxyHosts ()
+  public ICommonsList <String> getNonProxyHosts ()
   {
-    return CollectionHelper.newList (m_aNonProxyHosts);
+    return m_aNonProxyHosts.getClone ();
   }
 
   @Nullable
@@ -147,7 +147,7 @@ public class HttpProxyConfig implements IProxyConfig
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyUser (), m_sUserName);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPassword (), m_sPassword);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (),
-                                       StringHelper.getImploded ("|", m_aNonProxyHosts));
+                                       StringHelper.getImploded ('|', m_aNonProxyHosts));
   }
 
   public static void deactivateGlobally ()

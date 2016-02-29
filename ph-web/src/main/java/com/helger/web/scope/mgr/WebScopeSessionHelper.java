@@ -16,7 +16,6 @@
  */
 package com.helger.web.scope.mgr;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -30,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.scope.IScopeRenewalAware;
 import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
@@ -55,20 +56,21 @@ public final class WebScopeSessionHelper
 
   @Nonnull
   @ReturnsMutableCopy
-  private static Map <String, Map <String, IScopeRenewalAware>> _getSessionApplicationScopeValues (@Nonnull final ISessionWebScope aOldSessionScope)
+  private static ICommonsMap <String, ICommonsMap <String, IScopeRenewalAware>> _getSessionApplicationScopeValues (@Nonnull final ISessionWebScope aOldSessionScope)
   {
     // Map from <application ID> to <map from <field name> to <field value>>
-    final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new HashMap <String, Map <String, IScopeRenewalAware>> ();
+    final ICommonsMap <String, ICommonsMap <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new CommonsHashMap <> ();
 
     // For all session application scope values
-    final Map <String, ISessionApplicationScope> aAllSessionApplicationScopes = aOldSessionScope.getAllSessionApplicationScopes ();
+    final ICommonsMap <String, ISessionApplicationScope> aAllSessionApplicationScopes = aOldSessionScope.getAllSessionApplicationScopes ();
     if (!aAllSessionApplicationScopes.isEmpty ())
     {
       // For all existing session application scopes in the session scope
       for (final Map.Entry <String, ISessionApplicationScope> aEntry : aAllSessionApplicationScopes.entrySet ())
       {
         // Get all values from the current session application scope
-        final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
+        final ICommonsMap <String, IScopeRenewalAware> aSurviving = aEntry.getValue ()
+                                                                          .getAllScopeRenewalAwareAttributes ();
         if (!aSurviving.isEmpty ())
         {
           // Extract the application ID
@@ -82,14 +84,14 @@ public final class WebScopeSessionHelper
 
   private static void _restoreScopeAttributes (@Nonnull final ISessionWebScope aNewSessionScope,
                                                @Nonnull final Map <String, IScopeRenewalAware> aSessionScopeValues,
-                                               @Nonnull final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues)
+                                               @Nonnull final Map <String, ? extends Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues)
   {
     // restore the session scope attributes
     for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSessionScopeValues.entrySet ())
       aNewSessionScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
 
     // restore the session application scope attributes
-    for (final Map.Entry <String, Map <String, IScopeRenewalAware>> aEntry : aSessionApplicationScopeValues.entrySet ())
+    for (final Map.Entry <String, ? extends Map <String, IScopeRenewalAware>> aEntry : aSessionApplicationScopeValues.entrySet ())
     {
       // Create the session application scope in the new session scope
       final ISessionApplicationWebScope aNewSessionApplicationScope = aNewSessionScope.getSessionApplicationScope (aEntry.getKey (),
@@ -123,8 +125,8 @@ public final class WebScopeSessionHelper
 
     // Save all values from session scopes and from all session application
     // scopes
-    final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
-    final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = _getSessionApplicationScopeValues (aOldSessionScope);
+    final ICommonsMap <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
+    final ICommonsMap <String, ICommonsMap <String, IScopeRenewalAware>> aSessionApplicationScopeValues = _getSessionApplicationScopeValues (aOldSessionScope);
 
     // Clear the old the session scope
     if (bInvalidateHttpSession)
@@ -173,8 +175,8 @@ public final class WebScopeSessionHelper
 
     // Save all values from session scopes and from all session application
     // scopes
-    final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
-    final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = _getSessionApplicationScopeValues (aOldSessionScope);
+    final ICommonsMap <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
+    final ICommonsMap <String, ICommonsMap <String, IScopeRenewalAware>> aSessionApplicationScopeValues = _getSessionApplicationScopeValues (aOldSessionScope);
 
     // Do not invalidate the underlying session - only renew the session scope
     // itself because we don't have the possibility to create a new HTTP

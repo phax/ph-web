@@ -46,6 +46,11 @@ public class UseSystemProxyConfig implements IProxyConfig
 
   public void activateGlobally ()
   {
+    activateGloballyStatic ();
+  }
+
+  public void activateGloballyStatic ()
+  {
     // Deactivate other proxy configurations
     HttpProxyConfig.deactivateGlobally ();
     SocksProxyConfig.deactivateGlobally ();

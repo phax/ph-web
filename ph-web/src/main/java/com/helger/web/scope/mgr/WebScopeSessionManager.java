@@ -16,10 +16,6 @@
  */
 package com.helger.web.scope.mgr;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -30,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsCollection;
 import com.helger.commons.scope.ISessionScope;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionWebScope;
@@ -96,13 +93,9 @@ public final class WebScopeSessionManager
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static Collection <? extends ISessionWebScope> getAllSessionWebScopes ()
+  public static ICommonsCollection <ISessionWebScope> getAllSessionWebScopes ()
   {
-    final List <ISessionWebScope> ret = new ArrayList <ISessionWebScope> ();
-    for (final ISessionScope aSessionScope : ScopeSessionManager.getInstance ().getAllSessionScopes ())
-      if (aSessionScope instanceof ISessionWebScope)
-        ret.add ((ISessionWebScope) aSessionScope);
-    return ret;
+    return ScopeSessionManager.getInstance ().getAllSessionScopes ().getAllInstanceOf (ISessionWebScope.class);
   }
 
   /**

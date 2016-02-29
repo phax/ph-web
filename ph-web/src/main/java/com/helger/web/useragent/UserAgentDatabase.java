@@ -16,8 +16,6 @@
  */
 package com.helger.web.useragent;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -31,7 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.http.CHTTPHeader;
@@ -49,7 +48,7 @@ public final class UserAgentDatabase
   private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDatabase.class);
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final Set <String> s_aUniqueUserAgents = new HashSet <> ();
+  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet <> ();
   @GuardedBy ("s_aRWLock")
   private static Consumer <IUserAgent> s_aNewUserAgentCallback;
 
@@ -130,8 +129,8 @@ public final class UserAgentDatabase
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Set <String> getAllUniqueUserAgents ()
+  public static ICommonsSet <String> getAllUniqueUserAgents ()
   {
-    return s_aRWLock.readLocked ( () -> CollectionHelper.newSet (s_aUniqueUserAgents));
+    return s_aRWLock.readLocked ( () -> s_aUniqueUserAgents.getClone ());
   }
 }

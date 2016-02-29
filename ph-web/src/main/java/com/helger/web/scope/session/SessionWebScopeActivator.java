@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -33,6 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.commons.scope.ScopeHelper;
@@ -51,9 +52,10 @@ public final class SessionWebScopeActivator implements
                                             ISessionWebScopeDontPassivate
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScopeActivator.class);
+
   private ISessionWebScope m_aSessionWebScope;
-  private Map <String, Object> m_aAttrs;
-  private Map <String, ISessionApplicationScope> m_aSessionApplicationScopes;
+  private ICommonsMap <String, Object> m_aAttrs;
+  private ICommonsMap <String, ISessionApplicationScope> m_aSessionApplicationScopes;
 
   @Deprecated
   @DevelopersNote ("For reading only")
@@ -78,7 +80,7 @@ public final class SessionWebScopeActivator implements
 
     {
       // Determine all attributes to be passivated
-      final Map <String, Object> aRelevantObjects = new HashMap <String, Object> ();
+      final ICommonsMap <String, Object> aRelevantObjects = new CommonsHashMap <> ();
       for (final Map.Entry <String, Object> aEntry : m_aSessionWebScope.getAllAttributes ().entrySet ())
       {
         final Object aValue = aEntry.getValue ();
@@ -90,7 +92,7 @@ public final class SessionWebScopeActivator implements
 
     // Write all session application scopes
     {
-      final Map <String, ISessionApplicationScope> aSAScopes = m_aSessionWebScope.getAllSessionApplicationScopes ();
+      final ICommonsMap <String, ISessionApplicationScope> aSAScopes = m_aSessionWebScope.getAllSessionApplicationScopes ();
       out.writeInt (aSAScopes.size ());
       for (final Map.Entry <String, ISessionApplicationScope> aEntry : aSAScopes.entrySet ())
       {
@@ -99,7 +101,7 @@ public final class SessionWebScopeActivator implements
 
         final ISessionApplicationScope aScope = aEntry.getValue ();
         // Remember all attributes
-        final Map <String, Object> aOrigAttrs = aScope.getAllAttributes ();
+        final ICommonsMap <String, Object> aOrigAttrs = aScope.getAllAttributes ();
         // Remove all attributes
         aScope.clear ();
 
@@ -110,7 +112,7 @@ public final class SessionWebScopeActivator implements
         aScope.setAttributes (aOrigAttrs);
 
         // Determine all relevant attributes to passivate
-        final Map <String, Object> aRelevantObjects = new HashMap <String, Object> ();
+        final ICommonsMap <String, Object> aRelevantObjects = new CommonsHashMap <> ();
         for (final Map.Entry <String, Object> aEntry2 : aOrigAttrs.entrySet ())
         {
           final Object aValue = aEntry2.getValue ();
@@ -136,16 +138,16 @@ public final class SessionWebScopeActivator implements
       throw new IllegalStateException ("Another SessionWebScope is already present: " + m_aSessionWebScope.toString ());
 
     // Read session attributes
-    m_aAttrs = (Map <String, Object>) in.readObject ();
+    m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
     // Read session application scopes
     final int nSAScopes = in.readInt ();
-    final Map <String, ISessionApplicationScope> aSAS = new HashMap <String, ISessionApplicationScope> (nSAScopes);
+    final ICommonsMap <String, ISessionApplicationScope> aSAS = new CommonsHashMap <> (nSAScopes);
     for (int i = 0; i < nSAScopes; ++i)
     {
       final String sScopeID = in.readUTF ();
       final ISessionApplicationScope aScope = (ISessionApplicationScope) in.readObject ();
-      final Map <String, Object> aScopeAttrs = (Map <String, Object>) in.readObject ();
+      final ICommonsMap <String, Object> aScopeAttrs = (ICommonsMap <String, Object>) in.readObject ();
       aScope.setAttributes (aScopeAttrs);
       aSAS.put (sScopeID, aScope);
     }

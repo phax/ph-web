@@ -37,8 +37,6 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalQuery;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -51,6 +49,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.commons.string.StringHelper;
@@ -305,7 +305,7 @@ public final class PDTWebDateHelper
     }
   }
 
-  private static List <ZoneIdSupplier> s_aZIS = new ArrayList <> ();
+  private static ICommonsList <ZoneIdSupplier> s_aZIS = new CommonsArrayList <> ();
 
   static
   {

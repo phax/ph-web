@@ -16,9 +16,6 @@
  */
 package com.helger.web.proxy.autoconf;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
@@ -28,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
@@ -100,9 +99,9 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public List <IProxyConfig> getProxyListForURL (final String sURL, final String sHost) throws ScriptException
+  public ICommonsList <IProxyConfig> getProxyListForURL (final String sURL, final String sHost) throws ScriptException
   {
-    final List <IProxyConfig> ret = new ArrayList <> ();
+    final ICommonsList <IProxyConfig> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
     if (sProxyCode != null)
     {

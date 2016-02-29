@@ -24,8 +24,7 @@ import java.nio.charset.CharsetEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,7 +46,9 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.io.file.FilenameHelper;
@@ -139,7 +140,7 @@ public class UnifiedResponse
   private String m_sRedirectTargetUrl;
   private ERedirectMode m_eRedirectMode;
   private boolean m_bWarnOnDuplicateCookies = DEFAULT_WARN_ON_DUPLICATE_COOKIES;
-  private Map <String, Cookie> m_aCookies;
+  private ICommonsOrderedMap <String, Cookie> m_aCookies;
 
   // Internal status members
   /**
@@ -170,9 +171,9 @@ public class UnifiedResponse
 
   @Nonnull
   @ReturnsMutableCopy
-  private static Map <String, Cookie> _createCookieMap ()
+  private static ICommonsOrderedMap <String, Cookie> _createCookieMap ()
   {
-    return new LinkedHashMap <> ();
+    return new CommonsLinkedHashMap <> ();
   }
 
   /**
@@ -242,10 +243,11 @@ public class UnifiedResponse
     if (!m_bAlreadyEmittedRequestHeaders)
     {
       s_aLogger.warn ("  Request Headers: " +
-                      CollectionHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap)));
+                      RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap).getSortedByKey (Comparator.naturalOrder ()));
       if (!m_aResponseHeaderMap.isEmpty ())
         s_aLogger.warn ("  Response Headers: " +
-                        CollectionHelper.getSortedByKey (RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)));
+                        RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)
+                                     .getSortedByKey (Comparator.naturalOrder ()));
       m_bAlreadyEmittedRequestHeaders = true;
     }
   }
@@ -944,10 +946,7 @@ public class UnifiedResponse
   @Nonnull
   public EChange removeAllCookies ()
   {
-    if (m_aCookies == null || m_aCookies.isEmpty ())
-      return EChange.UNCHANGED;
-    m_aCookies.clear ();
-    return EChange.CHANGED;
+    return m_aCookies == null ? EChange.UNCHANGED : m_aCookies.removeAll ();
   }
 
   /**
@@ -956,7 +955,7 @@ public class UnifiedResponse
    */
   public boolean hasCookies ()
   {
-    return CollectionHelper.isNotEmpty (m_aCookies);
+    return m_aCookies != null && m_aCookies.isNotEmpty ();
   }
 
   /**
@@ -966,9 +965,9 @@ public class UnifiedResponse
    */
   @Nonnull
   @ReturnsMutableCopy
-  protected Map <String, Cookie> getAllCookies ()
+  protected ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return CollectionHelper.newMap (m_aCookies);
+    return new CommonsLinkedHashMap <> (m_aCookies);
   }
 
   /**
@@ -1211,10 +1210,10 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private static String _getAsStringMimeTypes (@Nonnull final Map <IMimeType, QValue> aMap)
+  private static String _getAsStringMimeTypes (@Nonnull final ICommonsOrderedMap <IMimeType, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
-    for (final Map.Entry <IMimeType, QValue> aEntry : CollectionHelper.getSortedByValue (aMap).entrySet ())
+    for (final Map.Entry <IMimeType, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");
@@ -1225,10 +1224,10 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private static String _getAsStringText (@Nonnull final Map <String, QValue> aMap)
+  private static String _getAsStringText (@Nonnull final ICommonsOrderedMap <String, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
-    for (final Map.Entry <String, QValue> aEntry : CollectionHelper.getSortedByValue (aMap).entrySet ())
+    for (final Map.Entry <String, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");
@@ -1350,7 +1349,7 @@ public class UnifiedResponse
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // Apply all collected headers
-    for (final Map.Entry <String, List <String>> aEntry : m_aResponseHeaderMap)
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aResponseHeaderMap)
     {
       final String sHeaderName = aEntry.getKey ();
       int nIndex = 0;
@@ -1517,7 +1516,7 @@ public class UnifiedResponse
       final QValue aQuality = m_aAcceptMimeTypeList.getQValueOfMimeType (m_aMimeType);
       if (aQuality.isMinimumQuality ())
       {
-        final Map <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
+        final ICommonsOrderedMap <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
         _error ("MimeType '" +
                 sMimeType +
                 "' is not at all supported by the request. Allowed values are: " +
@@ -1531,7 +1530,7 @@ public class UnifiedResponse
           if (GlobalDebug.isDebugMode ())
           {
             // Inform if the quality of the request is <= 50%!
-            final Map <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
+            final ICommonsOrderedMap <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
             if (!aBetterValues.isEmpty ())
               _warn ("MimeType '" +
                      sMimeType +
@@ -1560,7 +1559,7 @@ public class UnifiedResponse
       final QValue aQuality = m_aAcceptCharsetList.getQValueOfCharset (sCharset);
       if (aQuality.isMinimumQuality ())
       {
-        final Map <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
+        final ICommonsOrderedMap <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
         _error ("Character encoding '" +
                 sCharset +
                 "' is not at all supported by the request. Allowed values are: " +
@@ -1570,7 +1569,7 @@ public class UnifiedResponse
         if (aQuality.isLowValue ())
         {
           // Inform if the quality of the request is <= 50%!
-          final Map <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
+          final ICommonsOrderedMap <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
           if (!aBetterValues.isEmpty ())
             _warn ("Character encoding '" +
                    sCharset +

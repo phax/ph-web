@@ -17,12 +17,12 @@
 package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.web.fileupload.FileUpload;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -100,7 +100,7 @@ public class ServletFileUpload extends FileUpload
    */
   @Nonnull
   @ReturnsMutableCopy
-  public List <IFileItem> parseRequest (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException
+  public ICommonsList <IFileItem> parseRequest (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException
   {
     return parseRequest (new ServletRequestContext (aHttpRequest));
   }

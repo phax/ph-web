@@ -19,17 +19,19 @@ package com.helger.web.useragent.uaprofile;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.ReturnsImmutableObject;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsTreeMap;
+import com.helger.commons.collection.ext.ICommonsNavigableMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -46,7 +48,7 @@ public class UAProfile implements Serializable
   public static final UAProfile EMPTY = new UAProfile ();
 
   private final String m_sProfileUrl;
-  private final Map <Integer, UAProfileDiff> m_aProfileDiffData;
+  private final ICommonsNavigableMap <Integer, UAProfileDiff> m_aProfileDiffData;
 
   private UAProfile ()
   {
@@ -65,8 +67,7 @@ public class UAProfile implements Serializable
     if (nUrls > 1)
       s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
-    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null
-                                                                     : new TreeMap <Integer, UAProfileDiff> (aProfileDiffData);
+    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
   }
 
   /**
@@ -85,11 +86,11 @@ public class UAProfile implements Serializable
     return CollectionHelper.getSize (m_aProfileDiffData);
   }
 
-  @Nullable
-  @ReturnsImmutableObject
-  public Map <Integer, UAProfileDiff> getProfileDiffData ()
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsNavigableMap <Integer, UAProfileDiff> getProfileDiffData ()
   {
-    return CollectionHelper.makeUnmodifiable (m_aProfileDiffData);
+    return new CommonsTreeMap <> (m_aProfileDiffData);
   }
 
   public boolean isSet ()

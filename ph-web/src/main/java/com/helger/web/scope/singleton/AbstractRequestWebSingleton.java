@@ -16,11 +16,10 @@
  */
 package com.helger.web.scope.singleton;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -105,7 +104,7 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    *         the current request web scope.
    */
   @Nonnull
-  public static final List <AbstractRequestWebSingleton> getAllRequestSingletons ()
+  public static final ICommonsList <AbstractRequestWebSingleton> getAllRequestSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), AbstractRequestWebSingleton.class);
   }

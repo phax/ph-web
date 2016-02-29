@@ -17,13 +17,14 @@
 package com.helger.web.http.csp;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -34,9 +35,10 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 6.0.3
  */
+@NotThreadSafe
 public class CSPPolicy implements Serializable
 {
-  private final List <CSPDirective> m_aList = new ArrayList <CSPDirective> ();
+  private final ICommonsList <CSPDirective> m_aList = new CommonsArrayList <> ();
 
   public CSPPolicy ()
   {}
@@ -58,7 +60,7 @@ public class CSPPolicy implements Serializable
   @Nonnull
   public String getAsString ()
   {
-    return StringHelper.getImplodedNonEmpty ("; ", m_aList, d -> d.getAsString ());
+    return StringHelper.getImplodedNonEmpty ("; ", m_aList, CSPDirective::getAsString);
   }
 
   @Override

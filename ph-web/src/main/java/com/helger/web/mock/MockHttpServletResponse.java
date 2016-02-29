@@ -20,9 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,9 +38,9 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -382,9 +380,9 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    */
   @Nonnull
   @ReturnsMutableCopy
-  public Set <String> getHeaderNames ()
+  public ICommonsSet <String> getHeaderNames ()
   {
-    return CollectionHelper.newSet (m_aHeaders.keySet ());
+    return m_aHeaders.copyOfKeySet ();
   }
 
   /**
@@ -399,8 +397,8 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final List <String> aList = getHeaders (sName);
-    return CollectionHelper.getFirstElement (aList);
+    final ICommonsList <String> aList = getHeaders (sName);
+    return aList == null ? null : aList.getFirst ();
   }
 
   /**
@@ -411,9 +409,9 @@ public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
    * @return the associated header values, or an empty List if none
    */
   @Nonnull
-  public List <String> getHeaders (@Nullable final String sName)
+  public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
-    return CollectionHelper.newList (m_aHeaders.get (_unifyHeaderName (sName)));
+    return new CommonsArrayList <> (m_aHeaders.get (_unifyHeaderName (sName)));
   }
 
   /**

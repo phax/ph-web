@@ -28,7 +28,8 @@ import org.junit.rules.ExternalResource;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;
@@ -47,7 +48,7 @@ public class WebScopeTestRule extends ExternalResource
   public static final String MOCK_CONTEXT_PATH = WebScopeAwareTestSetup.MOCK_CONTEXT_PATH;
 
   private String m_sContextPath = MOCK_CONTEXT_PATH;
-  private Map <String, String> m_aServletContextInitParameters;
+  private ICommonsMap <String, String> m_aServletContextInitParameters;
   private MockServletContext m_aServletContext;
   private MockHttpServletRequest m_aRequest;
 
@@ -56,7 +57,7 @@ public class WebScopeTestRule extends ExternalResource
     this (null);
   }
 
-  public WebScopeTestRule (@Nullable final Map <String, String> aServletContextInitParameters)
+  public WebScopeTestRule (@Nullable final ICommonsMap <String, String> aServletContextInitParameters)
   {
     m_aServletContextInitParameters = aServletContextInitParameters;
   }
@@ -75,7 +76,7 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   @Nonnull
-  public final WebScopeTestRule setServletContextInitParameters (@Nullable final Map <String, String> aServletContextInitParameters)
+  public final WebScopeTestRule setServletContextInitParameters (@Nullable final ICommonsMap <String, String> aServletContextInitParameters)
   {
     m_aServletContextInitParameters = aServletContextInitParameters;
     return this;
@@ -83,9 +84,9 @@ public class WebScopeTestRule extends ExternalResource
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <String, String> getServletContextInitParameters ()
+  public final ICommonsMap <String, String> getServletContextInitParameters ()
   {
-    return CollectionHelper.newMap (m_aServletContextInitParameters);
+    return new CommonsHashMap <> (m_aServletContextInitParameters);
   }
 
   /**

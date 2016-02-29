@@ -17,8 +17,6 @@
 package com.helger.web.http.digestauth;
 
 import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -33,6 +31,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
 import com.helger.commons.messagedigest.MessageDigestGeneratorHelper;
 import com.helger.commons.string.StringHelper;
@@ -75,11 +75,11 @@ public final class HTTPDigestAuth
    * @param sAuthHeader
    *        The HTTP header value to be interpreted. May be <code>null</code>.
    * @return <code>null</code> if the passed value cannot be parsed as a HTTP
-   *         Digest Authentication value, a {@link LinkedHashMap} with all
+   *         Digest Authentication value, a {@link ICommonsOrderedMap} with all
    *         parameter name-value pairs in the order they are contained.
    */
   @Nullable
-  public static Map <String, String> getDigestAuthParams (@Nullable final String sAuthHeader)
+  public static ICommonsOrderedMap <String, String> getDigestAuthParams (@Nullable final String sAuthHeader)
   {
     final String sRealHeader = StringHelper.trim (sAuthHeader);
     if (StringHelper.hasNoText (sRealHeader))
@@ -101,7 +101,7 @@ public final class HTTPDigestAuth
     }
     nIndex++;
 
-    final Map <String, String> aParams = new LinkedHashMap <String, String> ();
+    final ICommonsOrderedMap <String, String> aParams = new CommonsLinkedHashMap <> ();
     while (true)
     {
       // Skip all spaces
@@ -247,7 +247,7 @@ public final class HTTPDigestAuth
   @Nullable
   public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nullable final String sAuthHeader)
   {
-    final Map <String, String> aParams = getDigestAuthParams (sAuthHeader);
+    final ICommonsOrderedMap <String, String> aParams = getDigestAuthParams (sAuthHeader);
     if (aParams == null)
       return null;
 

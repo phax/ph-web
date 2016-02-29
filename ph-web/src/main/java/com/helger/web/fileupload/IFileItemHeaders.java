@@ -17,12 +17,12 @@
 package com.helger.web.fileupload;
 
 import java.util.Iterator;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * <p>
@@ -102,5 +102,5 @@ public interface IFileItemHeaders
    */
   @Nonnull
   @ReturnsMutableCopy
-  List <String> getAllHeaderNames ();
+  ICommonsList <String> getAllHeaderNames ();
 }

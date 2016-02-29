@@ -17,8 +17,6 @@
 package com.helger.web.fileupload.io;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -31,7 +29,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.VisibleForTesting;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.io.file.FileIOError;
 import com.helger.commons.io.file.FileOperations;
@@ -79,7 +78,7 @@ public class DiskFileItemFactory implements IFileItemFactory
    */
   private final int m_nSizeThreshold;
 
-  private final List <File> m_aTempFiles = new ArrayList <File> ();
+  private final ICommonsList <File> m_aTempFiles = new CommonsArrayList <> ();
 
   @VisibleForTesting
   public DiskFileItemFactory (@Nonnegative final int nSizeThreshold)
@@ -112,9 +111,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   private void _addTempFile (@Nonnull final File aFile)
   {
-    m_aRWLock.writeLocked ( () -> {
-      m_aTempFiles.add (aFile);
-    });
+    m_aRWLock.writeLocked ( () -> m_aTempFiles.add (aFile));
   }
 
   /**
@@ -153,15 +150,15 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <File> getAllTemporaryFiles ()
+  public ICommonsList <File> getAllTemporaryFiles ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aTempFiles));
+    return m_aRWLock.readLocked ( () -> m_aTempFiles.getClone ());
   }
 
   public void deleteAllTemporaryFiles ()
   {
-    final List <File> aTempFiles = m_aRWLock.writeLocked ( () -> {
-      final List <File> ret = CollectionHelper.newList (m_aTempFiles);
+    final ICommonsList <File> aTempFiles = m_aRWLock.writeLocked ( () -> {
+      final ICommonsList <File> ret = m_aTempFiles.getClone ();
       m_aTempFiles.clear ();
       return ret;
     });

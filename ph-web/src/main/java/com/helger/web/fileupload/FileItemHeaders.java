@@ -17,12 +17,8 @@
 package com.helger.web.fileupload;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,8 +26,11 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
@@ -51,13 +50,13 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
    * Map of <code>String</code> keys to a <code>List</code> of
    * <code>String</code> instances.
    */
-  private final Map <String, List <String>> m_aHeaderNameToValueListMap = new HashMap <> ();
+  private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap <> ();
 
   /**
    * List to preserve order of headers as added. This would not be needed if a
    * <code>LinkedHashMap</code> could be used, but don't want to depend on 1.4.
    */
-  private final List <String> m_aHeaderNameList = new ArrayList <String> ();
+  private final ICommonsList <String> m_aHeaderNameList = new CommonsArrayList <> ();
 
   @Nullable
   public String getHeader (@Nonnull final String sName)
@@ -67,8 +66,8 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     final String sNameLower = sName.toLowerCase (Locale.US);
 
     return m_aRWLock.readLocked ( () -> {
-      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return CollectionHelper.getFirstElement (aHeaderValueList);
+      final ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
     });
   }
 
@@ -98,7 +97,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     final String sNameLower = sName.toLowerCase (Locale.US);
 
     return m_aRWLock.readLocked ( () -> {
-      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      final ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       return IteratorHelper.getIterator (aHeaderValueList);
     });
   }
@@ -111,9 +110,9 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <String> getAllHeaderNames ()
+  public ICommonsList <String> getAllHeaderNames ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aHeaderNameList));
+    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.getClone ());
   }
 
   /**
@@ -131,10 +130,10 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
     final String sNameLower = sName.toLowerCase (Locale.US);
 
     m_aRWLock.writeLocked ( () -> {
-      List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {
-        aHeaderValueList = new ArrayList <> ();
+        aHeaderValueList = new CommonsArrayList <> ();
         m_aHeaderNameToValueListMap.put (sNameLower, aHeaderValueList);
         m_aHeaderNameList.add (sNameLower);
       }

@@ -29,8 +29,10 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.IteratorHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.CommonsLinkedHashSet;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.http.CHTTPHeader;
@@ -53,10 +55,9 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
   private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap <> ();
 
   /**
-   * List to preserve order of headers as added. This would not be needed if a
-   * <code>LinkedHashMap</code> could be used, but don't want to depend on 1.4.
+   * List to preserve order of headers as added.
    */
-  private final ICommonsList <String> m_aHeaderNameList = new CommonsArrayList <> ();
+  private final ICommonsOrderedSet <String> m_aHeaderNameList = new CommonsLinkedHashSet <> ();
 
   @Nullable
   public String getHeader (@Nonnull final String sName)
@@ -112,7 +113,7 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
-    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.getClone ());
+    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.getCopyAsList ());
   }
 
   /**

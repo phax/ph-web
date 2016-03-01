@@ -31,6 +31,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.mock.CommonsAssert;
 import com.helger.commons.mock.CommonsTestHelper;
 
@@ -47,7 +50,7 @@ public final class RequestParamMapTest
   @Test
   public void test ()
   {
-    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
     aTestMap.put ("a", "...");
     aTestMap.put ("page_name[de]", "deutscher name");
     aTestMap.put ("a", "...");
@@ -68,7 +71,7 @@ public final class RequestParamMapTest
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
     assertEquals (2, aNames.getSize ());
-    final Map <String, String> aValueMap = aNames.getAsValueMap ();
+    final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));
     assertEquals ("english name", aValueMap.get ("en"));

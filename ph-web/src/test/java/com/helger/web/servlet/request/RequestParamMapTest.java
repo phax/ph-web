@@ -25,13 +25,11 @@ import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.junit.Test;
 
 import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.mock.CommonsAssert;
@@ -214,7 +212,7 @@ public final class RequestParamMapTest
     assertEquals ("abc", RequestParamMap.getFieldName ("abc"));
     assertEquals ("abc!!idx1??!!idx2??", RequestParamMap.getFieldName ("abc", "idx1", "idx2"));
 
-    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
     aTestMap.put ("a", "...");
     aTestMap.put ("page_name!!de??", "deutscher name");
     aTestMap.put ("a", "...");
@@ -235,7 +233,7 @@ public final class RequestParamMapTest
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
     assertEquals (2, aNames.getSize ());
-    final Map <String, String> aValueMap = aNames.getAsValueMap ();
+    final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));
     assertEquals ("english name", aValueMap.get ("en"));
@@ -270,7 +268,7 @@ public final class RequestParamMapTest
   @Test
   public void testInvalidNames1 ()
   {
-    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
     aTestMap.put ("columns[0][][][][]", "bla");
 
     final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
@@ -283,7 +281,7 @@ public final class RequestParamMapTest
   @Test
   public void testInvalidNames2 ()
   {
-    final Map <String, Object> aTestMap = new HashMap <String, Object> ();
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
     aTestMap.put ("columns[][][][][0]", "bla");
 
     final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
@@ -297,7 +295,7 @@ public final class RequestParamMapTest
   public void testExtend ()
   {
     // Order is important for this map!
-    final Map <String, Object> aTestMap = new LinkedHashMap <String, Object> ();
+    final ICommonsOrderedMap <String, Object> aTestMap = new CommonsLinkedHashMap <> ();
     aTestMap.put ("columns[name]", "bla");
     aTestMap.put ("columns[name][test]", "value");
     aTestMap.put ("columns[name][test2]", "value2");

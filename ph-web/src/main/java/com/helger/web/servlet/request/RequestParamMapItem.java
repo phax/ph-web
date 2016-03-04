@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
@@ -73,6 +74,13 @@ public final class RequestParamMapItem implements Serializable
   public ICommonsOrderedMap <String, RequestParamMapItem> directGetChildren ()
   {
     return m_aChildren;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsOrderedMap <String, RequestParamMapItem> getAllChildren ()
+  {
+    return m_aChildren.getClone ();
   }
 
   public boolean containsChild (@Nullable final String sName)

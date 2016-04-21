@@ -285,7 +285,7 @@ public abstract class AbstractFileUploadBase
   @ReturnsMutableCopy
   public ICommonsList <IFileItem> parseRequest (@Nonnull final IRequestContext aCtx) throws FileUploadException
   {
-    final ICommonsList <IFileItem> aItems = new CommonsArrayList <> ();
+    final ICommonsList <IFileItem> aItems = new CommonsArrayList<> ();
     boolean bSuccessful = false;
     try
     {
@@ -827,7 +827,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Returns the next available {@link IFileItemStream}.
      *
-     * @throws java.util.NoSuchElementException
+     * @throws NoSuchElementException
      *         No more items are available. Use {@link #hasNext()} to prevent
      *         this exception.
      * @throws FileUploadException

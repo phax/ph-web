@@ -25,8 +25,8 @@ import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -70,12 +70,13 @@ import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.locale.IHasLocale;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.commons.url.URLHelper;
+import com.helger.commons.url.URLParameter;
+import com.helger.commons.url.URLParameterList;
 import com.helger.web.CWeb;
 import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.CHTTPHeader;
@@ -110,7 +111,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private Charset m_aCharacterEncoding;
   private byte [] m_aContent;
   private String m_sContentType;
-  private final ICommonsOrderedMap <String, String []> m_aParameters = new CommonsLinkedHashMap <> (16);
+  private final URLParameterList m_aParameters = new URLParameterList ();
   private String m_sProtocol = DEFAULT_PROTOCOL;
   private String m_sScheme = DEFAULT_SCHEME;
   private String m_sServerName = DEFAULT_SERVER_NAME;
@@ -396,7 +397,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
-    return setParameter (sName, new String [] { sValue });
+    m_aParameters.remove (sName);
+    m_aParameters.add (sName, sValue);
+    return this;
   }
 
   /**
@@ -414,35 +417,29 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setParameter (@Nonnull final String sName, @Nullable final String [] aValues)
   {
-    ValueEnforcer.notNull (sName, "Name");
-    m_aParameters.put (sName, aValues);
+    m_aParameters.remove (sName);
+    m_aParameters.addAll (sName, aValues);
     return this;
   }
 
   /**
    * Sets all provided parameters <em>replacing</em> any existing values for the
    * provided parameter names. To add without replacing existing values, use
-   * {@link #addParameters(Map)}.
+   * {@link #addParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map. May be <code>null</code>.
    * @return this
    */
   @Nonnull
-  public MockHttpServletRequest setParameters (@Nullable final Map <String, ? extends Object> aParams)
+  public MockHttpServletRequest setParameters (@Nullable final List <? extends URLParameter> aParams)
   {
     if (aParams != null)
-      for (final Map.Entry <String, ? extends Object> aEntry : aParams.entrySet ())
-      {
-        final Object aValue = aEntry.getValue ();
-        if (aValue instanceof String)
-          setParameter (aEntry.getKey (), (String) aValue);
-        else
-          if (aValue instanceof String [])
-            setParameter (aEntry.getKey (), (String []) aValue);
-          else
-            throw new IllegalArgumentException ("Unexpected parameter type: " + ClassHelper.getSafeClassName (aValue));
-      }
+    {
+      for (final URLParameter aParam : aParams)
+        m_aParameters.remove (aParam.getName ());
+      m_aParameters.addAll (aParams);
+    }
     return this;
   }
 
@@ -461,7 +458,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public final MockHttpServletRequest addParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
-    return addParameter (sName, new String [] { sValue });
+    m_aParameters.add (sName, sValue);
+    return this;
   }
 
   /**
@@ -479,36 +477,22 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public final MockHttpServletRequest addParameter (@Nonnull final String sName, @Nullable final String [] aValues)
   {
-    ValueEnforcer.notNull (sName, "Name");
-
-    final String [] aOldParams = m_aParameters.get (sName);
-    m_aParameters.put (sName, ArrayHelper.getConcatenated (aOldParams, aValues));
+    m_aParameters.addAll (sName, aValues);
     return this;
   }
 
   /**
    * Adds all provided parameters <em>without</em> replacing any existing
-   * values. To replace existing values, use {@link #setParameters(Map)}.
+   * values. To replace existing values, use {@link #setParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map
    * @return this
    */
   @Nonnull
-  public MockHttpServletRequest addParameters (@Nullable final Map <String, ? extends Object> aParams)
+  public MockHttpServletRequest addParameters (@Nullable final List <? extends URLParameter> aParams)
   {
-    if (aParams != null)
-      for (final Map.Entry <String, ? extends Object> aEntry : aParams.entrySet ())
-      {
-        final Object aValue = aEntry.getValue ();
-        if (aValue instanceof String)
-          addParameter (aEntry.getKey (), (String) aValue);
-        else
-          if (aValue instanceof String [])
-            addParameter (aEntry.getKey (), (String []) aValue);
-          else
-            throw new IllegalArgumentException ("Unexpected parameter type: " + ClassHelper.getSafeClassName (aValue));
-      }
+    m_aParameters.addAll (aParams);
     return this;
   }
 
@@ -544,14 +528,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   {
     ValueEnforcer.notNull (sName, "Name");
 
-    final String [] aParamValues = m_aParameters.get (sName);
-    return ArrayHelper.getFirst (aParamValues);
+    return m_aParameters.getFirstParamValue (sName);
   }
 
   @Nonnull
   public Enumeration <String> getParameterNames ()
   {
-    return IteratorHelper.getEnumeration (m_aParameters.keySet ());
+    return IteratorHelper.getEnumeration (m_aParameters.getAllParamNames ());
   }
 
   @Nullable
@@ -559,14 +542,17 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public String [] getParameterValues (@Nonnull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return ArrayHelper.getCopy (m_aParameters.get (sName));
+    return m_aParameters.getAllParamValues (sName).toArray (new String [0]);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String []> getParameterMap ()
   {
-    return m_aParameters.getClone ();
+    final ICommonsOrderedMap <String, String []> ret = new CommonsLinkedHashMap <> ();
+    for (final String sParamName : m_aParameters.getAllParamNames ())
+      ret.put (sParamName, getParameterValues (sParamName));
+    return ret;
   }
 
   @Nonnull
@@ -1239,7 +1225,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #setServletPath(String)
    * @see #setPathInfo(String)
    * @see #setQueryString(String)
-   * @see #setParameters(Map)
+   * @see #setParameters(List)
    */
   @Nonnull
   public MockHttpServletRequest setAllPaths (@Nullable final String sRequestURL)

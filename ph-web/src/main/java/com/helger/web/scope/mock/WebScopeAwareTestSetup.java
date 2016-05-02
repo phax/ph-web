@@ -25,10 +25,8 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.cleanup.CommonsCleanup;
 import com.helger.web.http.EHTTPMethod;
-import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
-import com.helger.web.servlets.scope.WebScopeListener;
 
 /**
  * Contains static initialization methods for web scope tests, that makes it a
@@ -89,18 +87,6 @@ public final class WebScopeAwareTestSetup
   public static MockHttpServletRequest createDefaultMockRequest (@Nonnull final MockServletContext aServletContext)
   {
     return new MockHttpServletRequest (aServletContext, EHTTPMethod.GET);
-  }
-
-  /**
-   * So that the mock HTTP listeners are available outside of this class
-   */
-  public static void setCoreMockHttpListeners ()
-  {
-    // Web listeners
-    MockHttpListener.removeAllDefaultListeners ();
-    MockHttpListener.addDefaultListener (new WebScopeListener ());
-    MockHttpListener.addDefaultListener (new MockServletRequestListenerScopeAware ());
-    MockHttpListener.setToDefault ();
   }
 
   /**

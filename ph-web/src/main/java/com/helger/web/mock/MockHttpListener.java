@@ -26,6 +26,8 @@ import javax.servlet.http.HttpSessionListener;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.web.scope.mock.MockServletRequestListenerScopeAware;
+import com.helger.web.servlets.scope.WebScopeListener;
 
 /**
  * This class globally holds the HTTP listeners ({@link ServletContextListener}
@@ -38,7 +40,21 @@ import com.helger.commons.collection.ext.ICommonsList;
 public final class MockHttpListener
 {
   private static MockEventListenerList s_aDefaultListener = new MockEventListenerList ();
-  private static MockEventListenerList s_aListener = new MockEventListenerList ();
+  private static MockEventListenerList s_aCurrentListener = new MockEventListenerList ();
+
+  static
+  {
+    init ();
+  }
+
+  public static void init ()
+  {
+    // Web listeners
+    removeAllDefaultListeners ();
+    addDefaultListener (new WebScopeListener ());
+    addDefaultListener (new MockServletRequestListenerScopeAware ());
+    setCurrentToDefault ();
+  }
 
   private MockHttpListener ()
   {}
@@ -58,44 +74,44 @@ public final class MockHttpListener
     s_aDefaultListener.removeAllListeners ();
   }
 
-  public static void setToDefault ()
+  public static void setCurrentToDefault ()
   {
-    s_aListener.setFrom (s_aDefaultListener);
+    s_aCurrentListener.setFrom (s_aDefaultListener);
   }
 
   public static void addListener (@Nonnull final EventListener aListener)
   {
-    s_aListener.addListener (aListener);
+    s_aCurrentListener.addListener (aListener);
   }
 
   public static void removeListeners (@Nonnull final Class <? extends EventListener> aListenerClass)
   {
-    s_aListener.removeListeners (aListenerClass);
+    s_aCurrentListener.removeListeners (aListenerClass);
   }
 
   public static void removeAllListeners ()
   {
-    s_aListener.removeAllListeners ();
+    s_aCurrentListener.removeAllListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static ICommonsList <ServletContextListener> getAllServletContextListeners ()
   {
-    return s_aListener.getAllServletContextListeners ();
+    return s_aCurrentListener.getAllServletContextListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static ICommonsList <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    return s_aListener.getAllHttpSessionListeners ();
+    return s_aCurrentListener.getAllHttpSessionListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static ICommonsList <ServletRequestListener> getAllServletRequestListeners ()
   {
-    return s_aListener.getAllServletRequestListeners ();
+    return s_aCurrentListener.getAllServletRequestListeners ();
   }
 }

@@ -98,7 +98,7 @@ public final class XMLSitemapURLSetTest
 
     // How many of the lengthy items are needed to force an overflow?
     final int nExceedCount = ((XMLSitemapURLSet.MAX_FILE_SIZE - nEmptyLength) / nURLLength) + 1;
-    assertEquals (26818, nExceedCount);
+    assertEquals (17050, nExceedCount);
     assertTrue (nExceedCount < XMLSitemapURLSet.MAX_URLS_PER_FILE);
 
     // Add so many entries, that the limit is not exceeded

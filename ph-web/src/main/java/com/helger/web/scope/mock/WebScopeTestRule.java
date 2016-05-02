@@ -97,7 +97,7 @@ public class WebScopeTestRule extends ExternalResource
   protected void initListener ()
   {
     // Ensure that the default-default listeners are present
-    WebScopeAwareTestSetup.setCoreMockHttpListeners ();
+    MockHttpListener.init ();
   }
 
   /**

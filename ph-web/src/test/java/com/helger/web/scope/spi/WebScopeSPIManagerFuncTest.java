@@ -24,7 +24,6 @@ import com.helger.commons.scope.ISessionScope;
 import com.helger.commons.scope.ScopeHelper;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.scope.spi.ScopeSPIManager;
-import com.helger.web.scope.mock.WebScopeAwareTestSetup;
 
 /**
  * Test class for class {@link ScopeSPIManager}.
@@ -35,7 +34,6 @@ public final class WebScopeSPIManagerFuncTest
 {
   static
   {
-    WebScopeAwareTestSetup.setCoreMockHttpListeners ();
     ScopeHelper.setLifeCycleDebuggingEnabled (true);
   }
 

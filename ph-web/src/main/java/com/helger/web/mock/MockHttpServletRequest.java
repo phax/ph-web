@@ -1292,7 +1292,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         // Request parameters
         setQueryString (aURI.getQuery ());
         removeAllParameters ();
-        setParameters (URLHelper.getQueryStringAsMap (aURI.getQuery ()));
+        setParameters (URLHelper.getParsedQueryParameters (aURI.getQuery ()));
         return this;
       }
     }

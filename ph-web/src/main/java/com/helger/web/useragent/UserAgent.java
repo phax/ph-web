@@ -134,7 +134,7 @@ final class UserAgent implements IUserAgent
       if (sVersionFirefox == null)
         m_aInfoFirefox = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoFirefox = new BrowserInfo (EBrowserType.FIREFOX, new Version (sVersionFirefox));
+        m_aInfoFirefox = new BrowserInfo (EBrowserType.FIREFOX, Version.parse (sVersionFirefox));
     }
     return m_aInfoFirefox;
   }
@@ -176,7 +176,7 @@ final class UserAgent implements IUserAgent
           final String sRV = m_aElements.getListItemStartingWith (IE_RV_SEARCH_STRING);
           if (sRV != null)
           {
-            final Version aVersion = new Version (sRV.substring (IE_RV_SEARCH_STRING.length ()));
+            final Version aVersion = Version.parse (sRV.substring (IE_RV_SEARCH_STRING.length ()));
             m_aInfoIE = new BrowserInfoIE (aVersion, false);
           }
           else
@@ -189,7 +189,7 @@ final class UserAgent implements IUserAgent
       {
         // IE Compatibility Mode check
         // http://blogs.msdn.com/b/ie/archive/2010/03/23/introducing-ie9-s-user-agent-string.aspx
-        final Version aVersion = new Version (sInfoIE.substring (IE_SEARCH_STRING.length ()).trim ());
+        final Version aVersion = Version.parse (sInfoIE.substring (IE_SEARCH_STRING.length ()).trim ());
         final boolean bIsIECompatibilityMode = aVersion.getMajor () == IE_VERSION_IN_COMPATIBILITY_MODE &&
                                                sTrident != null;
         m_aInfoIE = new BrowserInfoIE (aVersion, bIsIECompatibilityMode);
@@ -223,7 +223,7 @@ final class UserAgent implements IUserAgent
       if (sVersionOpera == null)
         m_aInfoOpera = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoOpera = new BrowserInfo (EBrowserType.OPERA, new Version (sVersionOpera));
+        m_aInfoOpera = new BrowserInfo (EBrowserType.OPERA, Version.parse (sVersionOpera));
     }
     return m_aInfoOpera;
   }
@@ -241,7 +241,7 @@ final class UserAgent implements IUserAgent
       if (sVersion == null)
         m_aInfoSafari = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoSafari = new BrowserInfo (EBrowserType.SAFARI, new Version (sVersion));
+        m_aInfoSafari = new BrowserInfo (EBrowserType.SAFARI, Version.parse (sVersion));
     }
     return m_aInfoSafari;
   }
@@ -259,7 +259,7 @@ final class UserAgent implements IUserAgent
       if (sVersion == null)
         m_aInfoChrome = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoChrome = new BrowserInfo (EBrowserType.CHROME, new Version (sVersion));
+        m_aInfoChrome = new BrowserInfo (EBrowserType.CHROME, Version.parse (sVersion));
     }
     return m_aInfoChrome;
   }
@@ -275,7 +275,7 @@ final class UserAgent implements IUserAgent
       if (sVersion == null)
         m_aInfoLynx = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoLynx = new BrowserInfo (EBrowserType.LYNX, new Version (sVersion));
+        m_aInfoLynx = new BrowserInfo (EBrowserType.LYNX, Version.parse (sVersion));
     }
     return m_aInfoLynx;
   }
@@ -293,7 +293,7 @@ final class UserAgent implements IUserAgent
         m_aInfoKonqueror = BrowserInfo.IS_IT_NOT;
       else
         m_aInfoKonqueror = new BrowserInfo (EBrowserType.KONQUEROR,
-                                            new Version (sVersion.substring (KONQUEROR_PREFIX.length ())));
+                                            Version.parse (sVersion.substring (KONQUEROR_PREFIX.length ())));
     }
     return m_aInfoKonqueror;
   }
@@ -328,7 +328,7 @@ final class UserAgent implements IUserAgent
       if (sVersionGecko == null || getInfoFirefox ().isIt ())
         m_aInfoGeckoBased = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoGeckoBased = new BrowserInfo (EBrowserType.GECKO, new Version (sVersionGecko));
+        m_aInfoGeckoBased = new BrowserInfo (EBrowserType.GECKO, Version.parse (sVersionGecko));
     }
     return m_aInfoGeckoBased;
   }
@@ -348,7 +348,7 @@ final class UserAgent implements IUserAgent
       if (sVersionWebKit == null || getInfoSafari ().isIt () || getInfoChrome ().isIt ())
         m_aInfoWebKitBased = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoWebKitBased = new BrowserInfo (EBrowserType.WEBKIT, new Version (sVersionWebKit));
+        m_aInfoWebKitBased = new BrowserInfo (EBrowserType.WEBKIT, Version.parse (sVersionWebKit));
     }
     return m_aInfoWebKitBased;
   }
@@ -390,7 +390,7 @@ final class UserAgent implements IUserAgent
       if (sApp == null)
         m_aInfoApplication = BrowserInfoSpider.IS_IT_NOT;
       else
-        m_aInfoApplication = new BrowserInfo (EBrowserType.APPLICATION, new Version (0));
+        m_aInfoApplication = new BrowserInfo (EBrowserType.APPLICATION, Version.DEFAULT_VERSION);
     }
     return m_aInfoApplication;
   }

@@ -66,7 +66,8 @@ public final class UserAgentDecryptorTest
                                                      "x (",
                                                      "x [",
                                                      "BlackBerry9500/4.7.0.173 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/137",
-                                                     "Mozilla/5.0 (Windows; U; Windows NT 6.0; de-AT) AppleWebKit/532.4 (KHTML, like Gecko) QtWeb Internet Browser/3.3 http://www.QtWeb.net" };
+                                                     "Mozilla/5.0 (Windows; U; Windows NT 6.0; de-AT) AppleWebKit/532.4 (KHTML, like Gecko) QtWeb Internet Browser/3.3 http://www.QtWeb.net",
+                                                     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 Vivaldi/1.1.453.52" };
 
   @Test
   public void testBasic ()
@@ -90,6 +91,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -102,6 +104,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -113,6 +116,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -125,6 +129,7 @@ public final class UserAgentDecryptorTest
     assertTrue (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -137,6 +142,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertTrue (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -149,6 +155,7 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertTrue (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertFalse (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());
@@ -161,6 +168,19 @@ public final class UserAgentDecryptorTest
     assertFalse (aUA.getInfoOpera ().isIt ());
     assertFalse (aUA.getInfoSafari ().isIt ());
     assertFalse (aUA.getInfoChrome ().isIt ());
+    assertFalse (aUA.getInfoVivaldi ().isIt ());
+    assertFalse (aUA.getInfoGeckoBased ().isIt ());
+    assertTrue (aUA.getInfoWebKitBased ().isIt ());
+    assertFalse (aUA.getInfoWebSpider ().isIt ());
+
+    // Vivaldi
+    aUA = UserAgentDecryptor.decryptUserAgentString ("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 Vivaldi/1.1.453.52");
+    assertFalse (aUA.getInfoFirefox ().isIt ());
+    assertFalse (aUA.getInfoIE ().isIt ());
+    assertFalse (aUA.getInfoOpera ().isIt ());
+    assertFalse (aUA.getInfoSafari ().isIt ());
+    assertFalse (aUA.getInfoChrome ().isIt ());
+    assertTrue (aUA.getInfoVivaldi ().isIt ());
     assertFalse (aUA.getInfoGeckoBased ().isIt ());
     assertTrue (aUA.getInfoWebKitBased ().isIt ());
     assertFalse (aUA.getInfoWebSpider ().isIt ());

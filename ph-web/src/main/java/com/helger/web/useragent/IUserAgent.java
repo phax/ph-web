@@ -74,6 +74,12 @@ public interface IUserAgent
   BrowserInfo getInfoChrome ();
 
   /**
+   * @return Information about Vivaldi in this user agent.
+   */
+  @Nonnull
+  BrowserInfo getInfoVivaldi ();
+
+  /**
    * @return Information about Lynx in this user agent.
    */
   @Nonnull
@@ -92,7 +98,8 @@ public interface IUserAgent
   BrowserInfo getInfoGeckoBased ();
 
   /**
-   * @return Information about WebKit based browsers in this user agent.
+   * @return Information about WebKit based browsers in this user agent (e.g.
+   *         Chrome, Vivaldi etc.)
    */
   @Nonnull
   BrowserInfo getInfoWebKitBased ();

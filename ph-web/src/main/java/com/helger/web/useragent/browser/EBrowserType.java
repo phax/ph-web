@@ -40,6 +40,7 @@ public enum EBrowserType implements IHasID <String>,IHasDisplayText
   CHROME ("chrome", EBrowserText.CHROME),
   LYNX ("lynx", EBrowserText.LYNX),
   KONQUEROR ("konqueror", EBrowserText.KONQUEROR),
+  VIVALDI ("vivaldi", EBrowserText.VIVALDI),
   GECKO ("gecko", EBrowserText.GECKO),
   WEBKIT ("webkit", EBrowserText.WEBKIT),
   MOBILE ("mobile", EBrowserText.MOBILE),

@@ -45,6 +45,7 @@ final class UserAgent implements IUserAgent
   private static final String SAFARI_SEARCH_STRING = "Safari";
   private static final String OPERA_SEARCH_STRING = "Opera";
   private static final String FIREFOX_SEARCH_STRING = "Firefox";
+  private static final String VIVALDI_SEARCH_STRING = "Vivaldi";
   private static final String IE_SEARCH_STRING = "MSIE";
   private static final String IE_TRIDENT_SEARCH_STRING = "Trident/";
   private static final String IE_RV_SEARCH_STRING = "rv:";
@@ -64,6 +65,7 @@ final class UserAgent implements IUserAgent
   private BrowserInfo m_aInfoOpera;
   private BrowserInfo m_aInfoSafari;
   private BrowserInfo m_aInfoChrome;
+  private BrowserInfo m_aInfoVivaldi;
   private BrowserInfo m_aInfoLynx;
   private BrowserInfo m_aInfoKonqueror;
   private BrowserInfo m_aInfoGeckoBased;
@@ -97,6 +99,8 @@ final class UserAgent implements IUserAgent
       return getInfoSafari ();
     if (getInfoChrome ().isIt ())
       return getInfoChrome ();
+    if (getInfoVivaldi ().isIt ())
+      return getInfoVivaldi ();
     if (getInfoLynx ().isIt ())
       return getInfoLynx ();
     if (getInfoKonqueror ().isIt ())
@@ -256,12 +260,31 @@ final class UserAgent implements IUserAgent
       // (KHTML, like Gecko) Chrome/5.0.317.2 Safari/532.9
       final String sSafari = m_aElements.getPairValue (SAFARI_SEARCH_STRING);
       final String sVersion = sSafari == null ? null : m_aElements.getPairValue (CHROME_SEARCH_STRING);
-      if (sVersion == null)
+      if (sVersion == null || m_aElements.getPairValue (VIVALDI_SEARCH_STRING) != null)
         m_aInfoChrome = BrowserInfo.IS_IT_NOT;
       else
         m_aInfoChrome = new BrowserInfo (EBrowserType.CHROME, Version.parse (sVersion));
     }
     return m_aInfoChrome;
+  }
+
+  @Nonnull
+  public BrowserInfo getInfoVivaldi ()
+  {
+    if (m_aInfoVivaldi == null)
+    {
+      // Example:
+      // Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like
+      // Gecko) Chrome/50.0.2661.94 Safari/537.36 Vivaldi/1.1.453.52
+      final String sVersion = m_aElements.getPairValue (VIVALDI_SEARCH_STRING);
+      if (sVersion == null ||
+          m_aElements.getPairValue (CHROME_SEARCH_STRING) == null ||
+          m_aElements.getPairValue (SAFARI_SEARCH_STRING) == null)
+        m_aInfoVivaldi = BrowserInfo.IS_IT_NOT;
+      else
+        m_aInfoVivaldi = new BrowserInfo (EBrowserType.VIVALDI, Version.parse (sVersion));
+    }
+    return m_aInfoVivaldi;
   }
 
   @Nonnull

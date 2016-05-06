@@ -36,6 +36,7 @@ public enum EBrowserText implements IHasDisplayText
   CHROME ("Google Chrome", "Google Chrome"),
   LYNX ("Lynx", "Lynx"),
   KONQUEROR ("Konqueror", "Konqueror"),
+  VIVALDI ("Vivaldi", "Vivaldi"),
   GECKO ("Gecko basierend", "Gecko based"),
   WEBKIT ("WebKit basierend", "WebKit based"),
   MOBILE ("Mobiler Browser", "Mobile browser"),

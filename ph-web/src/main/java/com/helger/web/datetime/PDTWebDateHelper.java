@@ -55,6 +55,7 @@ import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.datetime.PDTFactory;
 import com.helger.datetime.config.PDTConfig;
 import com.helger.datetime.format.PDTFormatter;
 import com.helger.datetime.format.PDTFromString;
@@ -591,7 +592,7 @@ public final class PDTWebDateHelper
   public static String getCurrentDateTimeAsStringW3C ()
   {
     // Use no milli seconds as the standard printer does not print them!
-    final ZonedDateTime aNow = ZonedDateTime.now ().withNano (0);
+    final ZonedDateTime aNow = PDTFactory.getCurrentZonedDateTime ().withNano (0);
     return getAsStringW3C (aNow);
   }
 

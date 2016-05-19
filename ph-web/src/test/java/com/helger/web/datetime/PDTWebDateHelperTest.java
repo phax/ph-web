@@ -91,7 +91,7 @@ public final class PDTWebDateHelperTest
   {
     _testW3C (PDTFactory.createOffsetDateTime (2010, Month.FEBRUARY, 4));
     _testW3C (PDTFactory.createOffsetDateTime (12345678000L));
-    _testW3C (OffsetDateTime.now ());
+    _testW3C (PDTFactory.getCurrentOffsetDateTime ());
 
     final String sNow = PDTWebDateHelper.getCurrentDateTimeAsStringW3C ();
     assertNotNull (PDTWebDateHelper.getDateTimeFromW3C (sNow));
@@ -133,7 +133,7 @@ public final class PDTWebDateHelperTest
   @Test
   public void testXSDLocalDate ()
   {
-    final LocalDate aDT = LocalDate.now ();
+    final LocalDate aDT = PDTFactory.getCurrentLocalDate ();
     final String s = PDTWebDateHelper.getAsStringXSD (aDT);
     assertNotNull (s);
     assertEquals (aDT, PDTWebDateHelper.getLocalDateFromXSD (s));

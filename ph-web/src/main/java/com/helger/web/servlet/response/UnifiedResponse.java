@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -61,6 +60,7 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.URLHelper;
+import com.helger.datetime.PDTFactory;
 import com.helger.web.encoding.RFC5987Encoder;
 import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.AcceptCharsetList;
@@ -759,7 +759,8 @@ public class UnifiedResponse
     {
       case HTTP_10:
       {
-        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES, LocalDate.now ().plus (nSeconds, ChronoUnit.SECONDS));
+        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES,
+                                            PDTFactory.getCurrentLocalDate ().plus (nSeconds, ChronoUnit.SECONDS));
         break;
       }
       case HTTP_11:

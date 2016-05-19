@@ -655,7 +655,7 @@ public final class PDTWebDateHelper
   @Nonnull
   public static String getAsStringXSD (@Nonnull final ZonedDateTime aDateTime)
   {
-    return getAsStringXSD (ZoneOffset.UTC, aDateTime);
+    return getAsStringXSD (aDateTime.getZone (), aDateTime);
   }
 
   @Nonnull

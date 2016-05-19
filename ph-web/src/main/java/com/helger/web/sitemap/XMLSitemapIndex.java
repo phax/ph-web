@@ -44,7 +44,7 @@ import com.helger.commons.microdom.serialize.MicroWriter;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.xml.serialize.write.IXMLWriterSettings;
-import com.helger.web.datetime.PDTWebDateHelper;
+import com.helger.datetime.util.PDTWebDateHelper;
 import com.helger.web.servlet.server.StaticServerInfo;
 
 /**

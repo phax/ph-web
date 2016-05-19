@@ -29,7 +29,7 @@ import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
-import com.helger.web.datetime.PDTWebDateHelper;
+import com.helger.datetime.util.PDTWebDateHelper;
 
 /**
  * Contains the settings for the {@link ResponseHelper} class.

@@ -43,7 +43,7 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.datetime.PDTFactory;
-import com.helger.web.datetime.PDTWebDateHelper;
+import com.helger.datetime.util.PDTWebDateHelper;
 
 /**
  * Abstracts HTTP header interface for external usage.

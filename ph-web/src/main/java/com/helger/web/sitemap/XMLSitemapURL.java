@@ -35,7 +35,7 @@ import com.helger.commons.xml.serialize.write.EXMLCharMode;
 import com.helger.commons.xml.serialize.write.XMLMaskHelper;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
-import com.helger.web.datetime.PDTWebDateHelper;
+import com.helger.datetime.util.PDTWebDateHelper;
 
 /**
  * Represents a single URL within an XML URL set.

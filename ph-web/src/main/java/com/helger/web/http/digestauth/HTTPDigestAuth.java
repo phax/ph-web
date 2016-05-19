@@ -31,10 +31,11 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
-import com.helger.commons.messagedigest.MessageDigestGeneratorHelper;
+import com.helger.commons.messagedigest.MessageDigestValue;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.EHTTPMethod;
@@ -101,7 +102,7 @@ public final class HTTPDigestAuth
     }
     nIndex++;
 
-    final ICommonsOrderedMap <String, String> aParams = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> aParams = new CommonsLinkedHashMap<> ();
     while (true)
     {
       // Skip all spaces
@@ -310,8 +311,8 @@ public final class HTTPDigestAuth
   @Nonnull
   private static String _md5 (@Nonnull final String s)
   {
-    final byte [] aMD5 = MessageDigestGeneratorHelper.getAllDigestBytes (s, CHARSET, EMessageDigestAlgorithm.MD5);
-    return MessageDigestGeneratorHelper.getHexValueFromDigest (aMD5);
+    return MessageDigestValue.create (CharsetManager.getAsBytes (s, CHARSET), EMessageDigestAlgorithm.MD5)
+                             .getHexEncodedDigestString ();
   }
 
   /**

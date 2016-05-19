@@ -31,11 +31,12 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
-import com.helger.commons.messagedigest.MessageDigestGeneratorHelper;
+import com.helger.commons.messagedigest.MessageDigestValue;
 import com.helger.commons.microdom.IMicroDocument;
 import com.helger.commons.microdom.serialize.MicroReader;
 import com.helger.commons.string.ToStringGenerator;
@@ -69,9 +70,10 @@ public class UAProfileDiff implements Serializable
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestGeneratorHelper.getAllDigestBytes (EMessageDigestAlgorithm.MD5,
-                                                                                    sData,
-                                                                                    CCharset.CHARSET_UTF_8_OBJ);
+      final byte [] aCalcedDigest = MessageDigestValue.create (CharsetManager.getAsBytes (sData,
+                                                                                          CCharset.CHARSET_UTF_8_OBJ),
+                                                               EMessageDigestAlgorithm.MD5)
+                                                      .getAllDigestBytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +
                         Base64.encodeBytes (aCalcedDigest) +

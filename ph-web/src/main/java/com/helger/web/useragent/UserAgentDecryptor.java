@@ -24,7 +24,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.pair.ReadOnlyPair;
+import com.helger.commons.collection.pair.Pair;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.util.StringScanner;
@@ -79,7 +79,7 @@ public final class UserAgentDecryptor
           if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sFullValue))
             ret.add (sFullValue);
           else
-            ret.add (ReadOnlyPair.create (sKey, sValue));
+            ret.add (Pair.create (sKey, sValue));
           break;
         }
         case ' ':
@@ -89,7 +89,7 @@ public final class UserAgentDecryptor
           final String sText = aSS.getUntilIndex (nIndex).trim ();
           final Matcher aMatcher = RegExHelper.getMatcher ("([^\\s]+)\\s+([0-9]+\\.[0-9]+)", sText);
           if (aMatcher.matches ())
-            ret.add (ReadOnlyPair.create (aMatcher.group (1), aMatcher.group (2)));
+            ret.add (Pair.create (aMatcher.group (1), aMatcher.group (2)));
           else
             ret.add (sText);
           break;

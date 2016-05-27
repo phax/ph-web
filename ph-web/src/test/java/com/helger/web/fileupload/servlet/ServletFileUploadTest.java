@@ -217,15 +217,15 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
     final IFileItem item0 = fileItems.get (0);
     assertEquals ("field1", item0.getFieldName ());
     assertNull (item0.getName ());
-    assertEquals ("Joe Blow", new String (item0.get ()));
+    assertEquals ("Joe Blow", new String (item0.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
     final IFileItem item1 = fileItems.get (1);
     assertEquals ("pics", item1.getFieldName ());
     assertEquals ("file1.txt", item1.getName ());
-    assertEquals ("... contents of file1.txt ...", new String (item1.get ()));
+    assertEquals ("... contents of file1.txt ...", new String (item1.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
     final IFileItem item2 = fileItems.get (2);
     assertEquals ("pics", item2.getFieldName ());
     assertEquals ("file2.gif", item2.getName ());
-    assertEquals ("...contents of file2.gif...", new String (item2.get ()));
+    assertEquals ("...contents of file2.gif...", new String (item2.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
   }
 
   /**

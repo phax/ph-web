@@ -22,8 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +29,9 @@ import java.io.OutputStream;
 
 import org.junit.Test;
 
+import com.helger.commons.charset.CCharset;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 
@@ -83,7 +84,6 @@ public final class DiskFileItemTest
     {
       fail ("Error Serializing/Deserializing: " + e);
     }
-
   }
 
   /**
@@ -186,7 +186,7 @@ public final class DiskFileItemTest
   /**
    * Create content bytes of a specified size.
    */
-  private byte [] _createContentBytes (final int size)
+  private static byte [] _createContentBytes (final int size)
   {
     final StringBuilder buffer = new StringBuilder (size);
     byte count = 0;
@@ -197,7 +197,7 @@ public final class DiskFileItemTest
       if (count > 9)
         count = 0;
     }
-    return buffer.toString ().getBytes ();
+    return buffer.toString ().getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
   }
 
   /**
@@ -217,9 +217,7 @@ public final class DiskFileItemTest
     {
       fail ("Unexpected IOException" + e);
     }
-
     return item;
-
   }
 
   /**
@@ -227,9 +225,8 @@ public final class DiskFileItemTest
    */
   private Object _serializeDeserialize (final Object target)
   {
-
     // Serialize the test object
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
+    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
     try (final ObjectOutputStream oos = new ObjectOutputStream (baos))
     {
       oos.writeObject (target);
@@ -242,7 +239,7 @@ public final class DiskFileItemTest
 
     // Deserialize the test object
     Object result = null;
-    try (final ByteArrayInputStream bais = new ByteArrayInputStream (baos.toByteArray ());
+    try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (baos.toByteArray ());
         final ObjectInputStream ois = new ObjectInputStream (bais))
     {
       result = ois.readObject ();

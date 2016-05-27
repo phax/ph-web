@@ -19,6 +19,7 @@ package com.helger.web.servlet.response.gzip;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -353,11 +354,10 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
         return getResponse ().getWriter ();
 
       m_aCompressedOS = _createCompressedOutputStream ();
-      final String sEncoding = getCharacterEncoding ();
+      String sEncoding = getCharacterEncoding ();
       if (sEncoding == null)
-        m_aWriter = new PrintWriter (m_aCompressedOS);
-      else
-        m_aWriter = new PrintWriter (new OutputStreamWriter (m_aCompressedOS, sEncoding));
+        sEncoding = Charset.defaultCharset ().name ();
+      m_aWriter = new PrintWriter (new OutputStreamWriter (m_aCompressedOS, sEncoding));
     }
     return m_aWriter;
   }

@@ -23,6 +23,9 @@ import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
@@ -35,6 +38,8 @@ import com.helger.commons.vendor.VendorInfo;
 
 public final class MainCreateMimeTypesFileNameMapForJavaxActivation
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (MainCreateMimeTypesFileNameMapForJavaxActivation.class);
+
   /**
    * Create the mime.types file that is read by javax.activation. See class
    * javax.annotation.MimetypesFileTypeMap
@@ -51,7 +56,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     try
     {
       // build map from MimeType to list of extensions
-      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <> ();
+      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased<> ();
 
       for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
         for (final String sExt : aInfo.getAllExtensions ())
@@ -81,7 +86,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       // done
       w.flush ();
       w.close ();
-      System.out.println ("Done creating " + sDestPath);
+      s_aLogger.info ("Done creating " + sDestPath);
     }
     finally
     {

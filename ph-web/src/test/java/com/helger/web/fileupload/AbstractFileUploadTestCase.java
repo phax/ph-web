@@ -16,11 +16,10 @@
  */
 package com.helger.web.fileupload;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
@@ -33,22 +32,22 @@ public abstract class AbstractFileUploadTestCase
 {
   protected static final String CONTENT_TYPE = "multipart/form-data; boundary=---1234";
 
-  protected final List <IFileItem> parseUpload (final byte [] bytes) throws FileUploadException
+  protected final ICommonsList <IFileItem> parseUpload (final byte [] bytes) throws FileUploadException
   {
     return parseUpload (bytes, CONTENT_TYPE);
   }
 
-  protected final List <IFileItem> parseUpload (final byte [] bytes,
-                                                final String contentType) throws FileUploadException
+  protected final ICommonsList <IFileItem> parseUpload (final byte [] bytes,
+                                                        final String contentType) throws FileUploadException
   {
     final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final HttpServletRequest request = new MockHttpServletRequest ().setContent (bytes).setContentType (contentType);
 
-    final List <IFileItem> fileItems = upload.parseRequest (request);
+    final ICommonsList <IFileItem> fileItems = upload.parseRequest (request);
     return fileItems;
   }
 
-  protected final List <IFileItem> parseUpload (final String content) throws FileUploadException
+  protected final ICommonsList <IFileItem> parseUpload (final String content) throws FileUploadException
   {
     final byte [] bytes = content.getBytes (CCharset.CHARSET_US_ASCII_OBJ);
     return parseUpload (bytes, CONTENT_TYPE);

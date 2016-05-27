@@ -22,9 +22,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
+
+import com.helger.commons.collection.ext.ICommonsList;
 
 /**
  * Unit tests {@link IFileItemHeaders} and {@link FileItemHeaders}.
@@ -58,7 +59,7 @@ public final class FileItemHeadersTest
     }
 
     {
-      final List <String> headerNameList = aMutableFileItemHeaders.getAllHeaderNames ();
+      final ICommonsList <String> headerNameList = aMutableFileItemHeaders.getAllHeaderNames ();
       assertEquals (3, headerNameList.size ());
       assertEquals ("content-disposition", headerNameList.get (0));
       assertEquals ("content-type", headerNameList.get (1));

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.fileupload.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
@@ -53,7 +53,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
   @Test
   public void testFileUpload () throws IOException, FileUploadException
   {
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
+    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
     int add = 16;
     int num = 0;
     for (int i = 0; i < 16384; i += add)
@@ -122,7 +122,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
     List <IFileItem> fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     IFileItem item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get ()));
+    assertEquals ("This is the content of the file\n", new String (item.get (), CCharset.CHARSET_US_ASCII_OBJ));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (40);
@@ -131,7 +131,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
     fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get ()));
+    assertEquals ("This is the content of the file\n", new String (item.get (), CCharset.CHARSET_US_ASCII_OBJ));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (30);

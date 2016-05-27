@@ -40,7 +40,7 @@ public final class MultipartStreamTest
     final String sStrData = "foobar";
     final byte [] aContents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
     final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
-    final byte [] aBoundary = BOUNDARY_TEXT.getBytes ();
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
     final int nBufSize = aBoundary.length;
     final MultipartStream ms = new MultipartStream (aIS,
                                                     aBoundary,
@@ -55,7 +55,7 @@ public final class MultipartStreamTest
     final String sStrData = "foobar";
     final byte [] contents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
     final InputStream aIS = new NonBlockingByteArrayInputStream (contents);
-    final byte [] aBoundary = BOUNDARY_TEXT.getBytes ();
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
     final MultipartStream ms = new MultipartStream (aIS,
                                                     aBoundary,
                                                     new MultipartProgressNotifier (null, contents.length));

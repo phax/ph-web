@@ -85,9 +85,9 @@ public class MockServletContext implements ServletContext
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
   private String m_sContextPath = DEFAULT_SERVLET_CONTEXT_PATH;
-  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap <> ();
-  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap <> ();
-  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
+  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap<> ();
+  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap<> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
   private String m_sServletContextName = DEFAULT_SERVLET_CONTEXT_NAME;
   private final MockServletPool m_aServletPool;
   private boolean m_bInvalidated = false;
@@ -639,8 +639,8 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext, using no base path and a
-   * DefaultResourceProvider (i.e. the classpath root as WAR root).
+   * Create a new {@link MockServletContext}, using no base path and no context
+   * path. The initialization listeners are triggered automatically.
    *
    * @return The created {@link MockServletContext}
    */
@@ -651,11 +651,12 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext, using no base path and a
-   * DefaultIResourceProvider (i.e. the classpath root as WAR root).
+   * Create a new {@link MockServletContext}, using no base path and no context
+   * path using the provided initialization parameters. The initialization
+   * listeners are triggered automatically.
    *
    * @param aInitParams
-   *        The init parameter
+   *        The init parameter. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull
@@ -665,7 +666,8 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext.
+   * Create a new {@link MockServletContext} using no base path but the provided
+   * context path. The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
@@ -678,12 +680,13 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext.
+   * Create a new {@link MockServletContext} using the provided context path and
+   * init parameters. The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        Context path to use. May be <code>null</code>.
    * @param aInitParams
-   *        The init parameter The context path to use
+   *        The init parameter. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull
@@ -694,12 +697,15 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext.
+   * Create a new {@link MockServletContext} using the provided context path and
+   * resource base oath. The initialization listeners are triggered
+   * automatically.
    *
    * @param sContextPath
-   *        The context path to use
+   *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash)
+   *        the WAR root directory (should not end with a slash). May be
+   *        <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull
@@ -710,16 +716,18 @@ public class MockServletContext implements ServletContext
   }
 
   /**
-   * Create a new MockServletContext.
+   * Create a new {@link MockServletContext} with all possible parameters.
    *
    * @param sContextPath
-   *        The context path to use
+   *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash)
+   *        the WAR root directory (should not end with a slash). May be
+   *        <code>null</code>.
    * @param aResourceLoader
-   *        the IReadableResourceProvider to use (or null for the default)
+   *        the IReadableResourceProvider to use. May be <code>null</code>.
    * @param aInitParams
-   *        Optional map with initialization parameters
+   *        Optional map with initialization parameters. May be
+   *        <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull

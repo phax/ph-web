@@ -53,10 +53,10 @@ public final class NetworkInterfaceHelper
   @Nonnull
   public static DefaultTreeWithGlobalUniqueID <String, NetworkInterface> createNetworkInterfaceTree ()
   {
-    final DefaultTreeWithGlobalUniqueID <String, NetworkInterface> ret = new DefaultTreeWithGlobalUniqueID <String, NetworkInterface> ();
+    final DefaultTreeWithGlobalUniqueID <String, NetworkInterface> ret = new DefaultTreeWithGlobalUniqueID<> ();
 
     // Build basic level - all IFs without a parent
-    final ICommonsList <NetworkInterface> aNonRootNIs = new CommonsArrayList <> ();
+    final ICommonsList <NetworkInterface> aNonRootNIs = new CommonsArrayList<> ();
     try
     {
       for (final NetworkInterface aNI : IteratorHelper.getIterator (NetworkInterface.getNetworkInterfaces ()))

@@ -41,12 +41,12 @@ import com.helger.web.http.HTTPStringHelper;
 public class DigestAuthServerBuilder implements Serializable
 {
   private String m_sRealm;
-  private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet <String> ();
+  private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet<> ();
   private String m_sNonce;
   private String m_sOpaque;
   private ETriState m_eStale = ETriState.UNDEFINED;
   private String m_sAlgorithm;
-  private final ICommonsOrderedSet <String> m_aQOPs = new CommonsLinkedHashSet <> ();
+  private final ICommonsOrderedSet <String> m_aQOPs = new CommonsLinkedHashSet<> ();
 
   public DigestAuthServerBuilder ()
   {}

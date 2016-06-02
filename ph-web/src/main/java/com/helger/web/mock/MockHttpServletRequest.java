@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +61,7 @@ import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.CommonsHashSet;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsCollection;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
@@ -1198,7 +1198,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   @UnsupportedOperation
-  public Collection <Part> getParts () throws IOException, ServletException
+  public ICommonsCollection <Part> getParts () throws IOException, ServletException
   {
     throw new UnsupportedOperationException ();
   }

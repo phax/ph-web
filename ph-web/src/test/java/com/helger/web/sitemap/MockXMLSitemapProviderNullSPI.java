@@ -16,16 +16,16 @@
  */
 package com.helger.web.sitemap;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.IsSPIImplementation;
 
 @IsSPIImplementation
 public final class MockXMLSitemapProviderNullSPI implements IXMLSitemapProviderSPI
 {
-  @Nullable
+  @Nonnull
   public XMLSitemapURLSet createURLSet ()
   {
-    return null;
+    return new XMLSitemapURLSet ();
   }
 }

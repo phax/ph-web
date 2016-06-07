@@ -31,10 +31,10 @@ import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.mime.MimeTypeInfo;
-import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.vendor.VendorInfo;
+import com.helger.xml.util.mime.MimeTypeInfo;
+import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 public final class MainCreateMimeTypesFileNameMapForJavaxActivation
 {

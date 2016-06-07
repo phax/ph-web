@@ -28,8 +28,8 @@ import com.helger.commons.collection.ext.CommonsHashSet;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.microdom.util.XMLListHandler;
 import com.helger.commons.string.StringHelper;
+import com.helger.xml.microdom.util.XMLListHandler;
 
 @Immutable
 public final class MobileBrowserManager

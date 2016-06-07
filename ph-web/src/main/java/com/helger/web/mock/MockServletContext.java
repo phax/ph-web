@@ -61,9 +61,9 @@ import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
-import com.helger.commons.mime.MimeTypeInfoManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemProperties;
+import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

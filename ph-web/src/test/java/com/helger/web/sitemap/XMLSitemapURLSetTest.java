@@ -27,8 +27,8 @@ import com.helger.commons.error.IResourceErrorGroup;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.commons.url.SimpleURL;
-import com.helger.commons.xml.schema.XMLSchemaValidationHelper;
-import com.helger.commons.xml.transform.StringStreamSource;
+import com.helger.xml.schema.XMLSchemaValidationHelper;
+import com.helger.xml.transform.StringStreamSource;
 
 /**
  * Test class for class {@link XMLSitemapURLSet}.

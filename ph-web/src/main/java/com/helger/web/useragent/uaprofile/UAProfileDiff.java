@@ -37,9 +37,9 @@ import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
 import com.helger.commons.messagedigest.MessageDigestValue;
-import com.helger.commons.microdom.IMicroDocument;
-import com.helger.commons.microdom.serialize.MicroReader;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.xml.microdom.IMicroDocument;
+import com.helger.xml.microdom.serialize.MicroReader;
 
 /**
  * Represents a single UA profile diff.

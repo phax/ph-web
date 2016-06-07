@@ -27,6 +27,7 @@ import com.helger.commons.cleanup.CommonsCleanup;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
+import com.helger.xml.util.XMLCleanup;
 
 /**
  * Contains static initialization methods for web scope tests, that makes it a
@@ -114,6 +115,7 @@ public final class WebScopeAwareTestSetup
     }
 
     // Cleanup all ph-commons stuff
+    XMLCleanup.cleanup ();
     CommonsCleanup.cleanup ();
   }
 }

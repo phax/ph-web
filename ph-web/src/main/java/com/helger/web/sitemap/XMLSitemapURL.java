@@ -27,15 +27,15 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.microdom.IMicroElement;
-import com.helger.commons.microdom.MicroElement;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.xml.serialize.write.EXMLCharMode;
-import com.helger.commons.xml.serialize.write.XMLMaskHelper;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
 import com.helger.datetime.util.PDTWebDateHelper;
+import com.helger.xml.microdom.IMicroElement;
+import com.helger.xml.microdom.MicroElement;
+import com.helger.xml.serialize.write.EXMLCharMode;
+import com.helger.xml.serialize.write.XMLMaskHelper;
 
 /**
  * Represents a single URL within an XML URL set.

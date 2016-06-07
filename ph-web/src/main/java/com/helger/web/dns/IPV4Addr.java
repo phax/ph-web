@@ -41,6 +41,9 @@ import com.helger.commons.string.ToStringGenerator;
 @Immutable
 public class IPV4Addr implements Serializable
 {
+  /** A regular expression pattern to validate IPv4 addresses */
+  public static final String PATTERN_IPV4 = "\\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}\\b";
+
   public static final int PARTS = 4;
   public static final int PART_MIN_VALUE = 0;
   public static final int PART_MAX_VALUE = 255;
@@ -60,12 +63,12 @@ public class IPV4Addr implements Serializable
     return _validatePart (StringParser.parseInt (s, CGlobal.ILLEGAL_UINT));
   }
 
-  public IPV4Addr (final InetAddress aAddress)
+  public IPV4Addr (@Nonnull final InetAddress aAddress)
   {
     this (aAddress.getAddress ());
   }
 
-  public IPV4Addr (final byte [] aAddressBytes)
+  public IPV4Addr (@Nonnull final byte [] aAddressBytes)
   {
     this (aAddressBytes[0] &
           PART_MAX_VALUE,
@@ -101,7 +104,7 @@ public class IPV4Addr implements Serializable
    * @param sText
    *        The text interpretation of an IP address like "10.0.0.1".
    */
-  public IPV4Addr (@Nonnull final String sText)
+  private IPV4Addr (@Nonnull final String sText)
   {
     ValueEnforcer.notNull (sText, "Text");
     final String [] aParts = StringHelper.getExplodedArray ('.', sText);
@@ -161,5 +164,21 @@ public class IPV4Addr implements Serializable
                                        .append ("ip2", m_nIP2)
                                        .append ("ip3", m_nIP3)
                                        .toString ();
+  }
+
+  /**
+   * Parse the provided IPv4 address from the text string (as e.g.
+   * "192.168.0.1").
+   *
+   * @param sText
+   *        The text to be parsed. May not be <code>null</code>.
+   * @return The created object and never <code>null</code>.
+   * @throws IllegalArgumentException
+   *         If the passed string is not a valid IPv4 address
+   */
+  @Nonnull
+  public static IPV4Addr parse (@Nonnull final String sText)
+  {
+    return new IPV4Addr (sText);
   }
 }

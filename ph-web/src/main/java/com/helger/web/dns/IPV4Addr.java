@@ -53,11 +53,13 @@ public class IPV4Addr implements Serializable
   private final int m_nIP2;
   private final int m_nIP3;
 
+  @Nonnegative
   private static int _validatePart (@Nonnegative final int n)
   {
     return ValueEnforcer.isBetweenInclusive (n, "IP part", PART_MIN_VALUE, PART_MAX_VALUE);
   }
 
+  @Nonnegative
   private static int _validatePart (@Nullable final String s)
   {
     return _validatePart (StringParser.parseInt (s, CGlobal.ILLEGAL_UINT));

@@ -16,15 +16,12 @@
  */
 package com.helger.smtp.data;
 
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.collection.attr.IAttributeContainer;
 import com.helger.commons.collection.ext.ICommonsList;
@@ -63,30 +60,6 @@ public interface IEmailData extends IAttributeContainer <String, Object>
   ICommonsList <? extends IEmailAddress> getAllReplyTo ();
 
   /**
-   * Get the reply-to email addresses.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  InternetAddress [] getReplyToArray (@Nullable Charset aCharset) throws AddressException;
-
-  /**
-   * Get the reply-to email addresses.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  ICommonsList <InternetAddress> getReplyToList (@Nullable Charset aCharset) throws AddressException;
-
-  /**
    * @return Number of reply-to addresses. Always &ge; 0.
    */
   @Nonnegative
@@ -102,35 +75,11 @@ public interface IEmailData extends IAttributeContainer <String, Object>
 
   /**
    * Perform something for each TO-receiver
-   * 
+   *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
    */
   void forEachTo (@Nonnull Consumer <? super IEmailAddress> aConsumer);
-
-  /**
-   * Get a list of all TO-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  InternetAddress [] getToArray (@Nullable Charset aCharset) throws AddressException;
-
-  /**
-   * Get a list of all TO-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  ICommonsList <InternetAddress> getToList (@Nullable Charset aCharset) throws AddressException;
 
   /**
    * @return Number of TO-receivers. Always &ge; 0.
@@ -148,35 +97,11 @@ public interface IEmailData extends IAttributeContainer <String, Object>
 
   /**
    * Perform something for each CC-receiver
-   * 
+   *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
    */
   void forEachCc (@Nonnull Consumer <? super IEmailAddress> aConsumer);
-
-  /**
-   * Get a list of all CC-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  InternetAddress [] getCcArray (@Nullable Charset aCharset) throws AddressException;
-
-  /**
-   * Get a list of all CC-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  ICommonsList <InternetAddress> getCcList (@Nullable Charset aCharset) throws AddressException;
 
   /**
    * @return Number of CC-receivers. Always &ge; 0.
@@ -194,35 +119,11 @@ public interface IEmailData extends IAttributeContainer <String, Object>
 
   /**
    * Perform something for each BCC-receiver
-   * 
+   *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
    */
   void forEachBcc (@Nonnull Consumer <? super IEmailAddress> aConsumer);
-
-  /**
-   * Get a list of all BCC-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  InternetAddress [] getBccArray (@Nullable Charset aCharset) throws AddressException;
-
-  /**
-   * Get a list of all BCC-receivers.
-   *
-   * @param aCharset
-   *        Character set to use. May be <code>null</code>.
-   * @return Never <code>null</code>.
-   * @throws AddressException
-   *         in case of InternetAddress error
-   */
-  @Nonnull
-  ICommonsList <InternetAddress> getBccList (@Nullable Charset aCharset) throws AddressException;
 
   /**
    * @return Number of BCC-receivers. Always &ge; 0.

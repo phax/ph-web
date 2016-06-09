@@ -25,6 +25,8 @@ import javax.annotation.concurrent.Immutable;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
 
@@ -79,6 +81,18 @@ public final class InternetAddressHelper
   {
     final InternetAddress ret = new InternetAddress (sAddress, sPersonal, sCharset);
     ret.validate ();
+    return ret;
+  }
+
+  @Nonnull
+  public static InternetAddress [] getAsInternetAddressArray (@Nonnull final ICommonsList <? extends IEmailAddress> aAddresses,
+                                                              @Nullable final Charset aCharset) throws AddressException
+  {
+    ValueEnforcer.notNull (aAddresses, "Addresses");
+    final InternetAddress [] ret = new InternetAddress [aAddresses.size ()];
+    int i = 0;
+    for (final IEmailAddress aMA : aAddresses)
+      ret[i++] = InternetAddressHelper.getAsInternetAddress (aMA, aCharset);
     return ret;
   }
 

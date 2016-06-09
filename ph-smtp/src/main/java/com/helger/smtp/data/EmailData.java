@@ -16,17 +16,13 @@
  */
 package com.helger.smtp.data;
 
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -38,7 +34,6 @@ import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.mail.address.InternetAddressHelper;
 
 /**
  * Default implementation of the {@link IMutableEmailData} interface. Note: the
@@ -52,10 +47,10 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 {
   private EEmailType m_eEmailType;
   private IEmailAddress m_aFrom;
-  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList<> ();
+  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList <> ();
   private LocalDateTime m_aSentDateTime;
   private String m_sSubject;
   private String m_sBody;
@@ -64,7 +59,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
     // CommonsTreeMap for consistent serialization compared to a regular HashMap
-    super (true, new CommonsTreeMap<> ());
+    super (true, new CommonsTreeMap <> ());
     setEmailType (eEmailType);
   }
 
@@ -117,43 +112,6 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
     return m_aReplyTo.getClone ();
   }
 
-  @Nonnull
-  @ReturnsMutableCopy
-  private static InternetAddress [] _getAsArray (@Nonnull final List <? extends IEmailAddress> aList,
-                                                 @Nullable final Charset aCharset) throws AddressException
-  {
-    final InternetAddress [] ret = new InternetAddress [aList.size ()];
-    int i = 0;
-    for (final IEmailAddress aMA : aList)
-      ret[i++] = InternetAddressHelper.getAsInternetAddress (aMA, aCharset);
-    return ret;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public InternetAddress [] getReplyToArray (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsArray (m_aReplyTo, aCharset);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  private static ICommonsList <InternetAddress> _getAsList (@Nonnull final List <IEmailAddress> aList,
-                                                            @Nullable final Charset aCharset) throws AddressException
-  {
-    final ICommonsList <InternetAddress> ret = new CommonsArrayList<> (aList.size ());
-    for (final IEmailAddress aMA : aList)
-      ret.add (InternetAddressHelper.getAsInternetAddress (aMA, aCharset));
-    return ret;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public ICommonsList <InternetAddress> getReplyToList (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsList (m_aReplyTo, aCharset);
-  }
-
   @Nonnegative
   public int getReplyToCount ()
   {
@@ -185,20 +143,6 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
   public void forEachTo (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
   {
     m_aTo.forEach (aConsumer);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public InternetAddress [] getToArray (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsArray (m_aTo, aCharset);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public ICommonsList <InternetAddress> getToList (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsList (m_aTo, aCharset);
   }
 
   @Nonnegative
@@ -234,20 +178,6 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
     m_aCc.forEach (aConsumer);
   }
 
-  @Nonnull
-  @ReturnsMutableCopy
-  public InternetAddress [] getCcArray (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsArray (m_aCc, aCharset);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public ICommonsList <InternetAddress> getCcList (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsList (m_aCc, aCharset);
-  }
-
   @Nonnegative
   public int getCcCount ()
   {
@@ -279,20 +209,6 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
   public void forEachBcc (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
   {
     m_aBcc.forEach (aConsumer);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public InternetAddress [] getBccArray (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsArray (m_aBcc, aCharset);
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public ICommonsList <InternetAddress> getBccList (@Nullable final Charset aCharset) throws AddressException
-  {
-    return _getAsList (m_aBcc, aCharset);
   }
 
   @Nonnegative

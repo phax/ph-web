@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.mime.CMimeType;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -36,10 +35,8 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public class InputStreamProviderDataSource implements DataSource
+public class InputStreamProviderDataSource implements IExtendedDataSource
 {
-  public static final IMimeType DEFAULT_CONTENT_TYPE = CMimeType.APPLICATION_OCTET_STREAM;
-
   private final IHasInputStream m_aISP;
   private final String m_sName;
   private final String m_sContentType;

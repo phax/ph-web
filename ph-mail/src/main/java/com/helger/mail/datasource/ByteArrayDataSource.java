@@ -34,7 +34,6 @@ package com.helger.mail.datasource;
 
 import java.io.IOException;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -42,7 +41,6 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -50,7 +48,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public class ByteArrayDataSource implements DataSource
+public class ByteArrayDataSource implements IExtendedDataSource
 {
   private class WrappedOutputStream extends NonBlockingByteArrayOutputStream
   {
@@ -61,8 +59,6 @@ public class ByteArrayDataSource implements DataSource
       ByteArrayDataSource.this.m_aBytes = toByteArray ();
     }
   }
-
-  public static final IMimeType DEFAULT_CONTENT_TYPE = InputStreamProviderDataSource.DEFAULT_CONTENT_TYPE;
 
   private final String m_sContentType;
   private byte [] m_aBytes;

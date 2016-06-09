@@ -19,7 +19,6 @@ package com.helger.smtp.transport;
 import java.nio.charset.Charset;
 import java.util.Date;
 
-import javax.activation.DataHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -133,7 +132,7 @@ public final class MailConverter
         final MimeBodyPart aAttachmentPart = new MimeBodyPart ();
         aAttachmentPart.setDisposition (aDS.getDisposition ().getID ());
         aAttachmentPart.setFileName (aDS.getName ());
-        aAttachmentPart.setDataHandler (new DataHandler (aDS));
+        aAttachmentPart.setDataHandler (aDS.getAsDataHandler ());
         aMixedMultipart.addBodyPart (aAttachmentPart);
       }
 

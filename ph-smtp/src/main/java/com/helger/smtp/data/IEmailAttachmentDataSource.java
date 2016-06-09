@@ -16,15 +16,16 @@
  */
 package com.helger.smtp.data;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnull;
 
+import com.helger.mail.datasource.IExtendedDataSource;
+
 /**
- * {@link DataSource} extension for email attachments
+ * {@link IExtendedDataSource} extension for email attachments
  *
  * @author Philip Helger
  */
-public interface IEmailAttachmentDataSource extends DataSource
+public interface IEmailAttachmentDataSource extends IExtendedDataSource
 {
   /**
    * @return The disposition type to use. Never <code>null</code>.

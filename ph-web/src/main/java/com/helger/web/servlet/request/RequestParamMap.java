@@ -275,10 +275,10 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, RequestParamMapItem> aMap) throws ClassCastException
+  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap) throws ClassCastException
   {
     ValueEnforcer.notNull (aMap, "Map");
-    return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), aValue -> aValue.getValue ());
+    return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), x -> x.getValue ());
   }
 
   @Nonnull
@@ -399,8 +399,7 @@ public class RequestParamMap implements IRequestParamMap
    */
   public static void setSeparators (final char cOpen, final char cClose)
   {
-    if (cOpen == cClose)
-      throw new IllegalArgumentException ("Open and closing element may not be identical!");
+    ValueEnforcer.isFalse (cOpen == cClose, "Open and closing element may not be identical!");
     s_sOpen = Character.toString (cOpen);
     s_sClose = Character.toString (cClose);
   }
@@ -417,10 +416,8 @@ public class RequestParamMap implements IRequestParamMap
   {
     ValueEnforcer.notEmpty (sOpen, "Open");
     ValueEnforcer.notEmpty (sClose, "Close");
-    if (sOpen.contains (sClose))
-      throw new IllegalArgumentException ("open may not contain close");
-    if (sClose.contains (sOpen))
-      throw new IllegalArgumentException ("close may not contain open");
+    ValueEnforcer.isFalse (sOpen.contains (sClose), "open may not contain close");
+    ValueEnforcer.isFalse (sClose.contains (sOpen), "close may not contain open");
     s_sOpen = sOpen;
     s_sClose = sClose;
   }

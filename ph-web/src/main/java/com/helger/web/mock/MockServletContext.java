@@ -57,6 +57,7 @@ import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
@@ -85,9 +86,9 @@ public class MockServletContext implements ServletContext
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
   private String m_sContextPath = DEFAULT_SERVLET_CONTEXT_PATH;
-  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap<> ();
-  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap<> ();
-  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
+  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap <> ();
+  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap <> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
   private String m_sServletContextName = DEFAULT_SERVLET_CONTEXT_NAME;
   private final MockServletPool m_aServletPool;
   private boolean m_bInvalidated = false;
@@ -231,7 +232,7 @@ public class MockServletContext implements ServletContext
 
   @UnsupportedOperation
   @Deprecated
-  public Set <String> getResourcePaths (final String sPath)
+  public ICommonsSet <String> getResourcePaths (final String sPath)
   {
     throw new UnsupportedOperationException ();
   }
@@ -526,7 +527,7 @@ public class MockServletContext implements ServletContext
   }
 
   @UnsupportedOperation
-  public Map <String, ? extends ServletRegistration> getServletRegistrations ()
+  public ICommonsMap <String, ? extends ServletRegistration> getServletRegistrations ()
   {
     throw new UnsupportedOperationException ();
   }
@@ -563,7 +564,7 @@ public class MockServletContext implements ServletContext
   }
 
   @UnsupportedOperation
-  public Map <String, ? extends FilterRegistration> getFilterRegistrations ()
+  public ICommonsMap <String, ? extends FilterRegistration> getFilterRegistrations ()
   {
     throw new UnsupportedOperationException ();
   }
@@ -581,13 +582,13 @@ public class MockServletContext implements ServletContext
   }
 
   @UnsupportedOperation
-  public Set <SessionTrackingMode> getDefaultSessionTrackingModes ()
+  public ICommonsSet <SessionTrackingMode> getDefaultSessionTrackingModes ()
   {
     throw new UnsupportedOperationException ();
   }
 
   @UnsupportedOperation
-  public Set <SessionTrackingMode> getEffectiveSessionTrackingModes ()
+  public ICommonsSet <SessionTrackingMode> getEffectiveSessionTrackingModes ()
   {
     throw new UnsupportedOperationException ();
   }

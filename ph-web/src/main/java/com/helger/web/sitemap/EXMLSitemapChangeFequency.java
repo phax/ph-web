@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.lang.EnumHelper;
 import com.helger.commons.string.StringHelper;
 
 /**
@@ -54,10 +55,8 @@ public enum EXMLSitemapChangeFequency
   @Nullable
   public static EXMLSitemapChangeFequency getFromTextOrNull (@Nullable final String sText)
   {
-    if (StringHelper.hasText (sText))
-      for (final EXMLSitemapChangeFequency e : values ())
-        if (e.getText ().equals (sText))
-          return e;
-    return null;
+    if (StringHelper.hasNoText (sText))
+      return null;
+    return EnumHelper.findFirst (EXMLSitemapChangeFequency.class, x -> x.m_sText.equals (sText));
   }
 }

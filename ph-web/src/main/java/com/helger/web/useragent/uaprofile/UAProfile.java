@@ -32,6 +32,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsTreeMap;
 import com.helger.commons.collection.ext.ICommonsNavigableMap;
+import com.helger.commons.collection.ext.ICommonsSortedMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -48,7 +49,7 @@ public class UAProfile implements Serializable
   public static final UAProfile EMPTY = new UAProfile ();
 
   private final String m_sProfileUrl;
-  private final ICommonsNavigableMap <Integer, UAProfileDiff> m_aProfileDiffData;
+  private final ICommonsSortedMap <Integer, UAProfileDiff> m_aProfileDiffData;
 
   private UAProfile ()
   {

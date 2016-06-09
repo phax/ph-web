@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.mock.AbstractCommonsTestCase;
 
@@ -34,8 +33,9 @@ public final class WebSpiderManagerTest extends AbstractCommonsTestCase
   @Test
   public void testAll ()
   {
-    for (final WebSpiderInfo aWSI : CollectionHelper.getSorted (WebSpiderManager.getInstance ().getAllKnownSpiders (),
-                                                                IHasID.getComparatorID ()))
+    for (final WebSpiderInfo aWSI : WebSpiderManager.getInstance ()
+                                                    .getAllKnownSpiders ()
+                                                    .getSorted (IHasID.getComparatorID ()))
     {
       assertNotNull (aWSI);
       assertNotNull (aWSI.getID ());

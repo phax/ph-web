@@ -26,7 +26,6 @@ import java.util.Comparator;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
@@ -60,11 +59,11 @@ public final class DefaultNetworkPortsTest
   {
     final IMicroDocument aDoc = new MicroDocument ();
     final IMicroElement ePorts = aDoc.appendElement ("ports");
-    for (final INetworkPort aPort : CollectionHelper.getSorted (DefaultNetworkPorts.getAllPorts (),
-                                                                Comparator.comparingInt (NetworkPort::getPort)
-                                                                          .thenComparing (Comparator.comparingInt (p -> p.getProtocol ()
-                                                                                                                         .ordinal ()))
-                                                                          .thenComparing (NetworkPort::getName)))
+    for (final INetworkPort aPort : DefaultNetworkPorts.getAllPorts ()
+                                                       .getSorted (Comparator.comparingInt (NetworkPort::getPort)
+                                                                             .thenComparing (Comparator.comparingInt (x -> x.getProtocol ()
+                                                                                                                            .ordinal ()))
+                                                                             .thenComparing (NetworkPort::getName)))
     {
       final IMicroElement ePort = ePorts.appendElement ("defaultport");
       ePort.setAttribute ("port", aPort.getPort ());

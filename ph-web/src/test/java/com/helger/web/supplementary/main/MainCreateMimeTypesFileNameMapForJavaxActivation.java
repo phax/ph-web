@@ -21,13 +21,13 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.time.Clock;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.StreamHelper;
@@ -56,7 +56,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     try
     {
       // build map from MimeType to list of extensions
-      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased<> ();
+      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <> ();
 
       for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
         for (final String sExt : aInfo.getAllExtensions ())
@@ -79,8 +79,8 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : CollectionHelper.getSortedByKey (aMap)
-                                                                                          .entrySet ())
+      for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : aMap.getSortedByKey (Comparator.naturalOrder ())
+                                                                              .entrySet ())
         w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (',', aEntry.getValue ()) + "\n");
 
       // done

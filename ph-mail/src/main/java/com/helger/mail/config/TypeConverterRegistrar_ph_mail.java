@@ -16,11 +16,14 @@
  */
 package com.helger.mail.config;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.commons.charset.CCharset;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.typeconvert.ITypeConverterRegistrarSPI;
 import com.helger.commons.typeconvert.ITypeConverterRegistry;
@@ -39,5 +42,15 @@ public final class TypeConverterRegistrar_ph_mail implements ITypeConverterRegis
     aRegistry.registerTypeConverter (InternetAddress.class,
                                      EmailAddress.class,
                                      aSource -> new EmailAddress (aSource.getAddress (), aSource.getPersonal ()));
+    aRegistry.registerTypeConverter (EmailAddress.class, InternetAddress.class, aSource -> {
+      try
+      {
+        return new InternetAddress (aSource.getAddress (), aSource.getPersonal (), CCharset.CHARSET_UTF_8_OBJ.name ());
+      }
+      catch (final UnsupportedEncodingException ex)
+      {
+        throw new IllegalStateException ("UTF-8 is unknown", ex);
+      }
+    });
   }
 }

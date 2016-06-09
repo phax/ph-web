@@ -102,6 +102,11 @@
 
       <dependency>
         <groupId>com.helger</groupId>
+        <artifactId>ph-mail</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
         <artifactId>ph-web</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -127,6 +132,7 @@
   </dependencies>
   
   <modules>
+    <module>ph-mail</module>
     <module>ph-web</module>
     <module>ph-smtp</module>
   </modules>

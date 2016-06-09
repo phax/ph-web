@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.smtp.util;
+package com.helger.mail.datasource;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,40 +41,28 @@ public class InputStreamProviderDataSource implements DataSource
   public static final IMimeType DEFAULT_CONTENT_TYPE = CMimeType.APPLICATION_OCTET_STREAM;
 
   private final IHasInputStream m_aISP;
-  private final String m_sFilename;
+  private final String m_sName;
   private final String m_sContentType;
 
-  public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP, @Nonnull final String sFilename)
+  public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP, @Nonnull final String sName)
   {
-    this (aISP, sFilename, (String) null);
+    this (aISP, sName, (String) null);
   }
 
   public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP,
-                                        @Nonnull final String sFilename,
+                                        @Nonnull final String sName,
                                         @Nullable final IMimeType aContentType)
   {
-    this (aISP, sFilename, aContentType == null ? null : aContentType.getAsString ());
+    this (aISP, sName, aContentType == null ? null : aContentType.getAsString ());
   }
 
   public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP,
-                                        @Nonnull final String sFilename,
+                                        @Nonnull final String sName,
                                         @Nullable final String sContentType)
   {
     m_aISP = ValueEnforcer.notNull (aISP, "InputStreamProvider");
-    m_sFilename = ValueEnforcer.notNull (sFilename, "Filename");
+    m_sName = ValueEnforcer.notNull (sName, "Name");
     m_sContentType = sContentType != null ? sContentType : DEFAULT_CONTENT_TYPE.getAsString ();
-  }
-
-  @Nonnull
-  public String getContentType ()
-  {
-    return m_sContentType;
-  }
-
-  @Nonnull
-  public String getName ()
-  {
-    return m_sFilename;
   }
 
   @Nullable
@@ -89,12 +77,24 @@ public class InputStreamProviderDataSource implements DataSource
     throw new UnsupportedOperationException ("Read-only!");
   }
 
+  @Nonnull
+  public String getContentType ()
+  {
+    return m_sContentType;
+  }
+
+  @Nonnull
+  public String getName ()
+  {
+    return m_sName;
+  }
+
   @Override
   public String toString ()
   {
     return new ToStringGenerator (this).append ("ISP", m_aISP)
-                                       .append ("Filename", m_sFilename)
-                                       .appendIfNotNull ("ContentType", m_sContentType)
+                                       .append ("Name", m_sName)
+                                       .append ("ContentType", m_sContentType)
                                        .toString ();
   }
 }

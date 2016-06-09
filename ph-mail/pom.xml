@@ -18,18 +18,18 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>ph-web-parent-pom</artifactId>
     <version>8.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>ph-smtp</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ph-mail</artifactId>
   <packaging>bundle</packaging>
-  <name>ph-smtp</name>
-  <description>Java library for simple mail sending based on javax.mail</description>
-  <url>https://github.com/phax/ph-web/ph-smtp</url>
-  <inceptionYear>2015</inceptionYear>
+  <name>ph-mail</name>
+  <description>Java library with javax-mail extensions</description>
+  <url>https://github.com/phax/ph-web/ph-mail</url>
+  <inceptionYear>2014</inceptionYear>
  
   <licenses>
     <license>
@@ -38,7 +38,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <organization>
     <name>Philip Helger</name>
     <url>http://www.helger.com</url>
@@ -58,31 +58,10 @@
       <groupId>com.helger</groupId>
       <artifactId>ph-commons</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-xml</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-datetime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-web</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>dnsjava</groupId>
-      <artifactId>dnsjava</artifactId>
-      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -101,7 +80,7 @@
         <configuration>
           <instructions>
             <Export-Package>
-              com.helger.smtp.*
+              com.helger.mail.*
             </Export-Package>
             <Import-Package>
               !javax.annotation.*,*

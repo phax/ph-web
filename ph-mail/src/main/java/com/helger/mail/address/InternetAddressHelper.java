@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.smtp.util;
+package com.helger.mail.address;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;

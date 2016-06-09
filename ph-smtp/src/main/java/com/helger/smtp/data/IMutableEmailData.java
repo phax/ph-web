@@ -27,7 +27,7 @@ import javax.mail.internet.InternetAddress;
 import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
-import com.helger.smtp.util.InternetAddressHelper;
+import com.helger.mail.address.InternetAddressHelper;
 
 /**
  * Contains all possible fields for mail sending.<br>

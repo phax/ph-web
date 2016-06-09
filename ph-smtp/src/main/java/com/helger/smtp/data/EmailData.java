@@ -38,7 +38,7 @@ import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.smtp.util.InternetAddressHelper;
+import com.helger.mail.address.InternetAddressHelper;
 
 /**
  * Default implementation of the {@link IMutableEmailData} interface. Note: the

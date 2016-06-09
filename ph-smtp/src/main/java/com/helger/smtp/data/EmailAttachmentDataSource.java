@@ -22,18 +22,18 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.smtp.util.InputStreamProviderDataSource;
+import com.helger.mail.datasource.InputStreamProviderDataSource;
 
 public class EmailAttachmentDataSource extends InputStreamProviderDataSource implements IEmailAttachmentDataSource
 {
   private final EEmailAttachmentDisposition m_eDisposition;
 
-  public EmailAttachmentDataSource (@Nonnull final IHasInputStream aISS,
+  public EmailAttachmentDataSource (@Nonnull final IHasInputStream aISP,
                                     @Nonnull final String sFilename,
                                     @Nullable final String sContentType,
                                     @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
-    super (aISS, sFilename, sContentType);
+    super (aISP, sFilename, sContentType);
     m_eDisposition = ValueEnforcer.notNull (eDisposition, "Disposition");
   }
 

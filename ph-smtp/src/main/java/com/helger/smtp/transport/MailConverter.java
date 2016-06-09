@@ -32,10 +32,10 @@ import javax.mail.internet.MimeMultipart;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.mime.MimeType;
 import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.mail.address.InternetAddressHelper;
 import com.helger.smtp.data.IEmailAttachmentDataSource;
 import com.helger.smtp.data.IMutableEmailAttachmentList;
 import com.helger.smtp.data.IMutableEmailData;
-import com.helger.smtp.util.InternetAddressHelper;
 
 /**
  * Fill a {@link MimeMessage} object with the data of an

@@ -56,14 +56,15 @@ public interface ISMTPSettings extends Serializable
   /**
    * @return The mail encoding to be used. May be <code>null</code>.
    */
-  @Nonnull
-  String getCharset ();
-
-  /**
-   * @return The mail encoding to be used. May be <code>null</code>.
-   */
-  @Nonnull
+  @Nullable
   Charset getCharsetObj ();
+
+  @Nullable
+  default String getCharsetName ()
+  {
+    final Charset aCharset = getCharsetObj ();
+    return aCharset == null ? null : aCharset.name ();
+  }
 
   /**
    * @return <code>true</code> if SSL is enabled, <code>false</code> if SSL is

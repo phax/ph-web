@@ -56,7 +56,7 @@ public final class FailedMailDataTest
   @Nonnull
   private static SMTPSettings _createSMTPSettings ()
   {
-    return new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", CCharset.CHARSET_UTF_8, true);
+    return new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", CCharset.CHARSET_UTF_8_OBJ, true);
   }
 
   @Nonnull

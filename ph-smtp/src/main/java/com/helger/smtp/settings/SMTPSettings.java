@@ -25,11 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.lang.ICloneable;
@@ -49,8 +45,6 @@ import com.helger.web.port.DefaultNetworkPorts;
 @Immutable
 public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SMTPSettings.class);
-
   private String m_sHostName;
   private int m_nPort;
   private String m_sUserName;
@@ -102,7 +96,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
           aOther.getPort (),
           aOther.getUserName (),
           aOther.getPassword (),
-          aOther.getCharset (),
+          aOther.getCharsetObj (),
           aOther.isSSLEnabled (),
           aOther.isSTARTTLSEnabled (),
           aOther.getConnectionTimeoutMilliSecs (),
@@ -119,7 +113,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    */
   public SMTPSettings (@Nonnull final String sHost)
   {
-    this (sHost, -1, null, null, null, EmailGlobalSettings.isUseSSL ());
+    this (sHost, -1, null, null, (Charset) null, EmailGlobalSettings.isUseSSL ());
   }
 
   /**
@@ -134,7 +128,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    *        The username to use. May be <code>null</code>.
    * @param sPassword
    *        The password to use. May be <code>null</code>.
-   * @param sCharset
+   * @param aCharset
    *        The charset to use. May be <code>null</code>.
    * @param bSSLEnabled
    *        <code>true</code> to enable SSL communications
@@ -143,14 +137,14 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
                        final int nPort,
                        @Nullable final String sUserName,
                        @Nullable final String sPassword,
-                       @Nullable final String sCharset,
+                       @Nullable final Charset aCharset,
                        final boolean bSSLEnabled)
   {
     this (sHostName,
           nPort,
           sUserName,
           sPassword,
-          sCharset,
+          aCharset,
           bSSLEnabled,
           EmailGlobalSettings.isUseSTARTTLS (),
           EmailGlobalSettings.getConnectionTimeoutMilliSecs (),
@@ -170,7 +164,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    *        The username to use. May be <code>null</code>.
    * @param sPassword
    *        The password to use. May be <code>null</code>.
-   * @param sCharset
+   * @param aCharset
    *        The charset to use. May be <code>null</code>.
    * @param bSSLEnabled
    *        <code>true</code> to enable SSL communications
@@ -188,7 +182,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
                        final int nPort,
                        @Nullable final String sUserName,
                        @Nullable final String sPassword,
-                       @Nullable final String sCharset,
+                       @Nullable final Charset aCharset,
                        final boolean bSSLEnabled,
                        final boolean bSTARTTLSEnabled,
                        final long nConnectionTimeoutMilliSecs,
@@ -199,7 +193,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     setPort (nPort);
     setUserName (sUserName);
     setPassword (sPassword);
-    setCharset (sCharset);
+    setCharset (aCharset != null ? aCharset : CSMTP.CHARSET_SMTP_OBJ);
     setSSLEnabled (bSSLEnabled);
     setSTARTTLSEnabled (bSTARTTLSEnabled);
     setConnectionTimeoutMilliSecs (nConnectionTimeoutMilliSecs);
@@ -274,34 +268,18 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   }
 
   @Nonnull
-  public String getCharset ()
-  {
-    return m_aCharset.name ();
-  }
-
-  @Nonnull
   public Charset getCharsetObj ()
   {
     return m_aCharset;
   }
 
   @Nonnull
-  public EChange setCharset (@Nullable final String sCharset)
+  public EChange setCharset (@Nullable final Charset aCharset)
   {
-    try
-    {
-      final String sRealCharset = StringHelper.hasNoText (sCharset) ? CSMTP.CHARSET_SMTP : sCharset;
-      final Charset aRealCharset = CharsetManager.getCharsetFromName (sRealCharset);
-      if (EqualsHelper.equals (aRealCharset, m_aCharset))
-        return EChange.UNCHANGED;
-      m_aCharset = aRealCharset;
-      return EChange.CHANGED;
-    }
-    catch (final IllegalArgumentException ex)
-    {
-      s_aLogger.error (ex.getMessage ());
+    if (EqualsHelper.equals (aCharset, m_aCharset))
       return EChange.UNCHANGED;
-    }
+    m_aCharset = aCharset;
+    return EChange.CHANGED;
   }
 
   public boolean isSSLEnabled ()

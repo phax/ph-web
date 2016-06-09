@@ -40,7 +40,7 @@ public final class SMTPSettingsTest
                                                19,
                                                "anyuser",
                                                "secret",
-                                               CCharset.CHARSET_UTF_8,
+                                               CCharset.CHARSET_UTF_8_OBJ,
                                                true);
     assertEquals ("mail.example.com", aSettings.getHostName ());
     assertEquals (19, aSettings.getPort ());
@@ -54,7 +54,7 @@ public final class SMTPSettingsTest
                                   19,
                                   "anyuser",
                                   "secret",
-                                  CCharset.CHARSET_UTF_8,
+                                  CCharset.CHARSET_UTF_8_OBJ,
                                   true,
                                   true,
                                   5000,

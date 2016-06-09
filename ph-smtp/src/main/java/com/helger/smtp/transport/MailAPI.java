@@ -54,7 +54,6 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
-import com.helger.smtp.settings.ReadOnlySMTPSettings;
 
 /**
  * This class simplifies the task of sending an email. For a scope aware version
@@ -77,7 +76,7 @@ public final class MailAPI
                                                                                                                 "$mails.queued");
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> s_aQueueCache = new CommonsHashMap<> ();
+  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> s_aQueueCache = new CommonsHashMap <> ();
   // Just to have custom named threads....
   private static final ThreadFactory s_aThreadFactory = new ExtendedDefaultThreadFactory ("MailAPI");
   private static final ExecutorService s_aSenderThreadPool = new ThreadPoolExecutor (0,
@@ -130,21 +129,18 @@ public final class MailAPI
     if (s_aSenderThreadPool.isShutdown ())
       throw new IllegalStateException ("Cannot submit to mailqueues that are already stopped!");
 
-    // Ensure that always the same type is used!
-    final ReadOnlySMTPSettings aRealSMTPSettings = new ReadOnlySMTPSettings (aSMTPSettings);
-
     // get queue per SMTP
-    MailQueuePerSMTP aSMTPQueue = s_aQueueCache.get (aRealSMTPSettings);
+    MailQueuePerSMTP aSMTPQueue = s_aQueueCache.get (aSMTPSettings);
     if (aSMTPQueue == null)
     {
       // create a new queue
       aSMTPQueue = new MailQueuePerSMTP (EmailGlobalSettings.getMaxMailQueueLength (),
                                          EmailGlobalSettings.getMaxMailSendCount (),
-                                         aRealSMTPSettings,
+                                         aSMTPSettings,
                                          s_aFailedMailQueue);
 
       // put queue in cache
-      s_aQueueCache.put (aRealSMTPSettings, aSMTPQueue);
+      s_aQueueCache.put (aSMTPSettings, aSMTPQueue);
 
       // and start running the queue
       s_aSenderThreadPool.submit (aSMTPQueue);

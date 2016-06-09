@@ -28,8 +28,6 @@ import com.helger.smtp.data.EmailData;
 import com.helger.smtp.data.EmailDataMicroTypeConverter;
 import com.helger.smtp.failed.FailedMailData;
 import com.helger.smtp.failed.FailedMailDataMicroTypeConverter;
-import com.helger.smtp.settings.ReadOnlySMTPSettings;
-import com.helger.smtp.settings.ReadOnlySMTPSettingsMicroTypeConverter;
 import com.helger.smtp.settings.SMTPSettings;
 import com.helger.smtp.settings.SMTPSettingsMicroTypeConverter;
 import com.helger.xml.microdom.convert.IMicroTypeConverterRegistrarSPI;
@@ -51,8 +49,6 @@ public final class MicroTypeConverterRegistrar_ph_smtp implements IMicroTypeConv
                                                  new EmailAttachmentListMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (EmailData.class, new EmailDataMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (FailedMailData.class, new FailedMailDataMicroTypeConverter ());
-    aRegistry.registerMicroElementTypeConverter (ReadOnlySMTPSettings.class,
-                                                 new ReadOnlySMTPSettingsMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (SMTPSettings.class, new SMTPSettingsMicroTypeConverter ());
   }
 }

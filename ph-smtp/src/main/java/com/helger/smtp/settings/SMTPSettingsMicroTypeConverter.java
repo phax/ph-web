@@ -16,10 +16,13 @@
  */
 package com.helger.smtp.settings;
 
+import java.nio.charset.Charset;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ContainsSoftMigration;
+import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.string.StringParser;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
@@ -50,12 +53,12 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
     eSMTPSettings.setAttribute (ATTR_PORT, Integer.toString (aSMTPSettings.getPort ()));
     eSMTPSettings.setAttribute (ATTR_USER, aSMTPSettings.getUserName ());
     eSMTPSettings.setAttribute (ATTR_PASSWORD, aSMTPSettings.getPassword ());
-    eSMTPSettings.setAttribute (ATTR_CHARSET, aSMTPSettings.getCharset ());
-    eSMTPSettings.setAttribute (ATTR_SSLENABLED, Boolean.toString (aSMTPSettings.isSSLEnabled ()));
-    eSMTPSettings.setAttribute (ATTR_STARTTLSENABLED, Boolean.toString (aSMTPSettings.isSTARTTLSEnabled ()));
+    eSMTPSettings.setAttribute (ATTR_CHARSET, aSMTPSettings.getCharsetName ());
+    eSMTPSettings.setAttribute (ATTR_SSLENABLED, aSMTPSettings.isSSLEnabled ());
+    eSMTPSettings.setAttribute (ATTR_STARTTLSENABLED, aSMTPSettings.isSTARTTLSEnabled ());
     eSMTPSettings.setAttribute (ATTR_CONNECTIONTIMEOUT, aSMTPSettings.getConnectionTimeoutMilliSecs ());
     eSMTPSettings.setAttribute (ATTR_TIMEOUT, aSMTPSettings.getTimeoutMilliSecs ());
-    eSMTPSettings.setAttribute (ATTR_DEBUG_SMTP, Boolean.toString (aSMTPSettings.isDebugSMTP ()));
+    eSMTPSettings.setAttribute (ATTR_DEBUG_SMTP, aSMTPSettings.isDebugSMTP ());
     return eSMTPSettings;
   }
 
@@ -80,9 +83,10 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
 
     final String sPassword = eSMTPSettings.getAttributeValue (ATTR_PASSWORD);
 
-    String sCharset = eSMTPSettings.getAttributeValue (ATTR_CHARSET);
-    if (sCharset == null)
-      sCharset = CSMTP.CHARSET_SMTP;
+    final String sCharset = eSMTPSettings.getAttributeValue (ATTR_CHARSET);
+    Charset aCharset = null;
+    if (sCharset != null)
+      aCharset = CharsetManager.getCharsetFromName (sCharset);
 
     final String sSSLEnabled = eSMTPSettings.getAttributeValue (ATTR_SSLENABLED);
     final boolean bSSLEnabled = StringParser.parseBool (sSSLEnabled, EmailGlobalSettings.isUseSSL ());
@@ -105,7 +109,7 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
                              nPort,
                              sUser,
                              sPassword,
-                             sCharset,
+                             aCharset,
                              bSSLEnabled,
                              bSTARTTLSEnabled,
                              nConnectionTimeoutMilliSecs,

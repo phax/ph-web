@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.smtp.config;
+package com.helger.mail.config;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
@@ -32,7 +32,7 @@ import com.helger.commons.typeconvert.ITypeConverterRegistry;
  */
 @Immutable
 @IsSPIImplementation
-public final class TypeConverterRegistrar_ph_smtp implements ITypeConverterRegistrarSPI
+public final class TypeConverterRegistrar_ph_mail implements ITypeConverterRegistrarSPI
 {
   public void registerTypeConverter (@Nonnull final ITypeConverterRegistry aRegistry)
   {

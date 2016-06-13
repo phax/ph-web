@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
+import com.helger.web.fileupload.parse.AbstractFileUploadBase;
 import com.helger.web.mock.MockHttpServletRequest;
 
 final class MockHttpServletRequestFactory

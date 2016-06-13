@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload;
+package com.helger.web.fileupload.parse;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileUploadException;
-import com.helger.web.fileupload.io.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
 

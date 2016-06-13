@@ -28,8 +28,8 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItemFactory;
-import com.helger.web.fileupload.io.DiskFileItem;
-import com.helger.web.fileupload.io.DiskFileItemFactory;
+import com.helger.web.fileupload.parse.DiskFileItem;
+import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**

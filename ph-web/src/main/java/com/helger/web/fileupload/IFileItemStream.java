@@ -32,7 +32,8 @@ import com.helger.web.fileupload.exception.MultipartItemSkippedException;
  * </p>
  * <p>
  * Instances of this class are created by accessing the iterator, returned by
- * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
+ * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#getItemIterator(IRequestContext)}
+ * .
  * </p>
  * <p>
  * <em>Note</em>: There is an interaction between the iterator and its

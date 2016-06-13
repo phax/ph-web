@@ -24,7 +24,8 @@ import com.helger.web.fileupload.exception.FileUploadException;
 
 /**
  * An iterator, as returned by
- * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
+ * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#getItemIterator(IRequestContext)}
+ * .
  */
 public interface IFileItemIterator
 {

@@ -34,6 +34,8 @@ import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
+import com.helger.web.fileupload.parse.DiskFileItem;
+import com.helger.web.fileupload.parse.DiskFileItemFactory;
 
 /**
  * Serialization Unit tests for {@link DiskFileItem}.

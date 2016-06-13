@@ -27,6 +27,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
@@ -37,7 +38,7 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  * <code>multipart/form-data</code> POST request.
  * <p>
  * After retrieving an instance of this class from a
- * {@link com.helger.web.fileupload.FileUpload FileUpload} instance (see
+ * {@link com.helger.web.fileupload.parse.FileUpload FileUpload} instance (see
  * {@link com.helger.web.fileupload.servlet.ServletFileUpload#parseRequest(javax.servlet.http.HttpServletRequest)}
  * ), you may either request all contents of the file at once using
  * {@link #get()} or request an {@link java.io.InputStream InputStream} with
@@ -56,7 +57,7 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public interface IFileItem extends Serializable, DataSource
+public interface IFileItem extends Serializable, DataSource, IHasInputStream
 {
   /**
    * @return An {@link InputStream} that can be used to retrieve the contents of
@@ -156,8 +157,8 @@ public interface IFileItem extends Serializable, DataSource
 
   /**
    * Returns the contents of the file item as a String, using the default
-   * character encoding. This method uses {@link #get()} to retrieve the
-   * contents of the item.
+   * character encoding (if one provided, it is used). This method uses
+   * {@link #get()} to retrieve the contents of the item.
    *
    * @return The contents of the item, as a string.
    */

@@ -23,11 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.web.fileupload.FileUpload;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.exception.FileUploadException;
+import com.helger.web.fileupload.parse.FileUpload;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.servlet.request.RequestHelper;
 

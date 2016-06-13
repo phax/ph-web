@@ -26,9 +26,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.web.fileupload.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileUploadException;
+import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 
 /**
  * Unit tests

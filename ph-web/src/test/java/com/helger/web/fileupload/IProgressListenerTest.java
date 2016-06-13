@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.web.fileupload.exception.FileUploadException;
+import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
 

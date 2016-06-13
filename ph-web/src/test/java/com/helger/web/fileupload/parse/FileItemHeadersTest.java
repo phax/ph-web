@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload;
+package com.helger.web.fileupload.parse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,6 +26,8 @@ import java.util.Iterator;
 import org.junit.Test;
 
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.web.fileupload.IFileItemHeaders;
+import com.helger.web.fileupload.parse.FileItemHeaders;
 
 /**
  * Unit tests {@link IFileItemHeaders} and {@link FileItemHeaders}.

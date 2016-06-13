@@ -33,6 +33,7 @@ import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.progress.IProgressListener;
 
 /**
  * Tests the progress listener.

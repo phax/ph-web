@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.parse;
+package com.helger.web.multipart;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.web.fileupload.IProgressListener;
+import com.helger.web.progress.IProgressListener;
 
 /**
  * Internal class, which is used to invoke the {@link IProgressListener}.
@@ -57,7 +57,8 @@ public final class MultipartProgressNotifier
    * @param nContentLength
    *        The expected content length.
    */
-  MultipartProgressNotifier (@Nullable final IProgressListener aListener, @CheckForSigned final long nContentLength)
+  public MultipartProgressNotifier (@Nullable final IProgressListener aListener,
+                                    @CheckForSigned final long nContentLength)
   {
     if (aListener != null && s_aLogger.isDebugEnabled ())
       s_aLogger.debug ("setting progress listener " + aListener);
@@ -94,7 +95,7 @@ public final class MultipartProgressNotifier
   /**
    * Called to indicate, that a new file item has been detected.
    */
-  void onNextFileItem ()
+  public void onNextFileItem ()
   {
     ++m_nItems;
     _notifyListener ();

@@ -22,7 +22,6 @@ import java.io.InputStream;
 import javax.annotation.Nullable;
 
 import com.helger.web.fileupload.exception.InvalidFileNameException;
-import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 
 /**
  * <p>
@@ -53,7 +52,6 @@ public interface IFileItemStream extends IFileItemHeadersSupport
    *         recreate the data stream.
    * @throws IOException
    *         An I/O error occurred.
-   * @see MultipartItemSkippedException
    */
   InputStream openStream () throws IOException;
 

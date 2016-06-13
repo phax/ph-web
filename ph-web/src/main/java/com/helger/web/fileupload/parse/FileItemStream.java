@@ -30,11 +30,12 @@ import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
-import com.helger.web.fileupload.exception.MultipartItemSkippedException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.fileupload.io.FileUploadHelper;
 import com.helger.web.fileupload.io.ICloseable;
-import com.helger.web.fileupload.parse.MultipartStream.ItemInputStream;
+import com.helger.web.multipart.MultipartItemSkippedException;
+import com.helger.web.multipart.MultipartStream;
+import com.helger.web.multipart.MultipartStream.MultipartItemInputStream;
 
 /**
  * Default implementation of {@link IFileItemStream}.
@@ -95,7 +96,7 @@ final class FileItemStream implements IFileItemStream, Closeable
     m_sFieldName = sFieldName;
     m_sContentType = sContentType;
     m_bFormField = bFormField;
-    final ItemInputStream aItemIS = aMulti.createInputStream ();
+    final MultipartItemInputStream aItemIS = aMulti.createInputStream ();
     InputStream aIS = aItemIS;
     if (nFileSizeMax > 0)
     {

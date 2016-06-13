@@ -38,7 +38,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.timing.StopWatch;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
-import com.helger.web.servlet.request.RequestLogger;
+import com.helger.web.scope.util.RequestLogger;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 
 /**

@@ -349,9 +349,9 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nullable
   public String getCharSet ()
   {
-    final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
     // Parameter parser can handle null input
-    final ICommonsMap <String, String> aParams = aParser.parse (getContentType (), ';');
+    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                       .parse (getContentType (), ';');
     return aParams.get ("charset");
   }
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.fileupload;
+package com.helger.web.progress;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.fileupload.IProgressListener;
-import com.helger.web.fileupload.IProgressListenerProviderSPI;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**

@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
+import com.helger.web.scope.util.RequestLogger;
 
 /**
  * Test class for class {@link RequestLogger}.

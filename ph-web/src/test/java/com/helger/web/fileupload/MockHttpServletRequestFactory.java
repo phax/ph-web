@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.web.mock.MockHttpServletRequest;
-import com.helger.web.servlet.request.RequestHelper;
+import com.helger.web.scope.util.RequestHelper;
 
 final class MockHttpServletRequestFactory
 {

@@ -238,13 +238,13 @@ public final class ParameterParser
     if (sStr != null)
     {
       // Find the first separator to use
-      int idx = sStr.length ();
+      int nFirstIndex = sStr.length ();
       for (final char cSep2 : aSeparators)
       {
-        final int tmp = sStr.indexOf (cSep2);
-        if (tmp != -1 && tmp < idx)
+        final int nCurIndex = sStr.indexOf (cSep2);
+        if (nCurIndex != -1 && nCurIndex < nFirstIndex)
         {
-          idx = tmp;
+          nFirstIndex = nCurIndex;
           cSep = cSep2;
         }
       }
@@ -285,7 +285,8 @@ public final class ParameterParser
           sParamValue = _parseQuotedToken (cSeparator);
         }
         if (_hasChar () && aChars[m_nPos] == cSeparator)
-        {// skip separator
+        {
+          // skip separator
           m_nPos++;
         }
         if (StringHelper.hasText (sParamName))

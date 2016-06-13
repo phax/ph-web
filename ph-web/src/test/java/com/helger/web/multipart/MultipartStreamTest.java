@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.parse;
+package com.helger.web.multipart;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
-import com.helger.web.fileupload.parse.MultipartProgressNotifier;
-import com.helger.web.fileupload.parse.MultipartStream;
+import com.helger.web.multipart.MultipartProgressNotifier;
+import com.helger.web.multipart.MultipartStream;
 
 /**
  * Unit tests {@link MultipartStream}.

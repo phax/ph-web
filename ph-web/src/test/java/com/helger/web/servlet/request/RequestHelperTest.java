@@ -25,6 +25,7 @@ import com.helger.commons.url.SimpleURL;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
+import com.helger.web.scope.util.RequestHelper;
 
 /**
  * Test class for class {@link RequestHelper}.

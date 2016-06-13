@@ -44,7 +44,6 @@ import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.IFileItemStream;
-import com.helger.web.fileupload.IProgressListener;
 import com.helger.web.fileupload.IRequestContext;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
@@ -52,7 +51,10 @@ import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidContentTypeException;
 import com.helger.web.fileupload.exception.SizeLimitExceededException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
-import com.helger.web.servlet.request.RequestHelper;
+import com.helger.web.multipart.MultipartProgressNotifier;
+import com.helger.web.multipart.MultipartStream;
+import com.helger.web.progress.IProgressListener;
+import com.helger.web.scope.util.RequestHelper;
 
 /**
  * <p>
@@ -351,9 +353,9 @@ public abstract class AbstractFileUploadBase
   @Nullable
   protected byte [] getBoundary (@Nonnull final String sContentType)
   {
-    final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
     // Parameter parser can handle null input
-    final ICommonsMap <String, String> aParams = aParser.parse (sContentType, new char [] { ';', ',' });
+    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                       .parse (sContentType, new char [] { ';', ',' });
     final String sBoundaryStr = aParams.get ("boundary");
     if (sBoundaryStr == null)
       return null;
@@ -390,9 +392,9 @@ public abstract class AbstractFileUploadBase
       if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) ||
           sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
       {
-        final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
         // Parameter parser can handle null input
-        final ICommonsMap <String, String> aParams = aParser.parse (sContentDisposition, ';');
+        final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                           .parse (sContentDisposition, ';');
         if (aParams.containsKey ("filename"))
         {
           sFilename = aParams.get ("filename");
@@ -439,9 +441,9 @@ public abstract class AbstractFileUploadBase
     String sFieldName = null;
     if (sContentDisposition != null && sContentDisposition.toLowerCase (Locale.US).startsWith (RequestHelper.FORM_DATA))
     {
-      final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
       // Parameter parser can handle null input
-      final ICommonsMap <String, String> aParams = aParser.parse (sContentDisposition, ';');
+      final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                         .parse (sContentDisposition, ';');
       sFieldName = aParams.get ("name");
       if (sFieldName != null)
         sFieldName = sFieldName.trim ();

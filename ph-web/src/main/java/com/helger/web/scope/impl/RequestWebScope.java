@@ -38,13 +38,13 @@ import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemFactoryProviderSPI;
-import com.helger.web.fileupload.IProgressListener;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.progress.IProgressListener;
+import com.helger.web.progress.ProgressListenerProvider;
 import com.helger.web.scope.fileupload.GlobalDiskFileItemFactory;
-import com.helger.web.scope.fileupload.ProgressListenerProvider;
-import com.helger.web.servlet.request.RequestHelper;
+import com.helger.web.scope.util.RequestHelper;
 
 /**
  * The default request web scope that also tries to parse multi part requests.

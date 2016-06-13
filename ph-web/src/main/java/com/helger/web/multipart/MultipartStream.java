@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.parse;
+package com.helger.web.multipart;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,10 +29,6 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.fileupload.exception.MultipartIllegalBoundaryException;
-import com.helger.web.fileupload.exception.MultipartItemSkippedException;
-import com.helger.web.fileupload.exception.MultipartMalformedStreamException;
-import com.helger.web.fileupload.io.ICloseable;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -220,20 +216,19 @@ public final class MultipartStream
    * @param aNotifier
    *        The notifier, which is used for calling the progress listener, if
    *        any.
-   * @see #MultipartStream(InputStream, byte[],
-   *      MultipartStream.MultipartProgressNotifier)
+   * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
-  MultipartStream (final InputStream aIS,
-                   final byte [] aBoundary,
-                   final int nBufSize,
-                   final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS,
+                          final byte [] aBoundary,
+                          final int nBufSize,
+                          final MultipartProgressNotifier aNotifier)
   {
     m_aIS = aIS;
     m_nBufSize = nBufSize;
     m_aBuffer = new byte [nBufSize];
     m_aNotifier = aNotifier;
 
-    // We prepend CR/LF to the boundary to chop trailng CR/LF from
+    // We prepend CR/LF to the boundary to chop trailing CR/LF from
     // body-data tokens.
     m_aBoundary = new byte [aBoundary.length + BOUNDARY_PREFIX.length];
     m_nBoundaryLength = aBoundary.length + BOUNDARY_PREFIX.length;
@@ -256,10 +251,9 @@ public final class MultipartStream
    *        <code>encapsulations</code>.
    * @param aNotifier
    *        An object for calling the progress listener, if any.
-   * @see #MultipartStream(InputStream, byte[], int,
-   *      MultipartStream.MultipartProgressNotifier)
+   * @see #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)
    */
-  MultipartStream (final InputStream aIS, final byte [] aBoundary, final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS, final byte [] aBoundary, final MultipartProgressNotifier aNotifier)
   {
     this (aIS, aBoundary, DEFAULT_BUFSIZE, aNotifier);
   }
@@ -468,7 +462,6 @@ public final class MultipartStream
    * @throws IOException
    *         if an i/o error occurs.
    */
-  @SuppressWarnings ("javadoc")
   public int readBodyData () throws MultipartMalformedStreamException, IOException
   {
     final InputStream aIS = createInputStream ();
@@ -486,14 +479,14 @@ public final class MultipartStream
   }
 
   /**
-   * Creates a new {@link ItemInputStream}.
+   * Creates a new {@link MultipartItemInputStream}.
    *
-   * @return A new instance of {@link ItemInputStream}.
+   * @return A new instance of {@link MultipartItemInputStream}.
    */
   @Nonnull
-  ItemInputStream createInputStream ()
+  public MultipartItemInputStream createInputStream ()
   {
-    return new ItemInputStream ();
+    return new MultipartItemInputStream ();
   }
 
   /**
@@ -632,7 +625,7 @@ public final class MultipartStream
   /**
    * An {@link InputStream} for reading an items contents.
    */
-  public final class ItemInputStream extends InputStream implements ICloseable
+  public final class MultipartItemInputStream extends InputStream
   {
     /**
      * Offset when converting negative bytes to integers.
@@ -660,7 +653,7 @@ public final class MultipartStream
     /**
      * Creates a new instance.
      */
-    ItemInputStream ()
+    MultipartItemInputStream ()
     {
       _findSeparator ();
     }

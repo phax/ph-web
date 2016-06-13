@@ -42,12 +42,12 @@ import com.helger.commons.exception.mock.MockIOException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
-import com.helger.web.fileupload.exception.MultipartMalformedStreamException;
 import com.helger.web.fileupload.parse.AbstractFileUploadBase;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.multipart.MultipartMalformedStreamException;
 import com.helger.web.servlet.AbstractServletInputStream;
 
 /**

@@ -43,8 +43,8 @@ import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
+import com.helger.web.scope.util.RequestHelper;
 import com.helger.web.servlet.request.IRequestParamMap;
-import com.helger.web.servlet.request.RequestHelper;
 import com.helger.web.servlet.request.RequestParamMap;
 
 /**

@@ -42,7 +42,7 @@ public class NetworkPort implements INetworkPort
                       @Nonnull final String sName,
                       @Nonnull final String sDescription)
   {
-    if (!DefaultNetworkPorts.isValidPort (nPort))
+    if (!NetworkPortHelper.isValidPort (nPort))
       throw new IllegalArgumentException ("Port is illegal: " + nPort);
     m_nPort = nPort;
     m_eProtocol = ValueEnforcer.notNull (eProtocol, "Protocol");

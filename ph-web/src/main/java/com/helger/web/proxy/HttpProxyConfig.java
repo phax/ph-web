@@ -34,7 +34,7 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
-import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.port.NetworkPortHelper;
 
 /**
  * HTTP proxy configuration.<br>
@@ -76,7 +76,7 @@ public class HttpProxyConfig implements IProxyConfig
                           @Nullable final String sPassword,
                           @Nullable final List <String> aNonProxyHosts)
   {
-    if (!DefaultNetworkPorts.isValidPort (nPort))
+    if (!NetworkPortHelper.isValidPort (nPort))
       throw new IllegalArgumentException ("The passed port is invalid: " + nPort);
     m_eProxyType = ValueEnforcer.notNull (eProxyType, "ProxyType");
     m_sHost = ValueEnforcer.notEmpty (sHost, "HostName");

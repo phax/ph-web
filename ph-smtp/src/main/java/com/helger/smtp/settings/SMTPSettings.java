@@ -35,7 +35,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
-import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.port.NetworkPortHelper;
 
 /**
  * Writable implementation of the {@link ISMTPSettings} interface.
@@ -226,7 +226,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   @Nonnull
   public EChange setPort (final int nPort)
   {
-    if (nPort != -1 && !DefaultNetworkPorts.isValidPort (nPort))
+    if (nPort != -1 && !NetworkPortHelper.isValidPort (nPort))
       throw new IllegalArgumentException ("Port must either be -1 or must be in the valid range!");
 
     if (nPort == m_nPort)

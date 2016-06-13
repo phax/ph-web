@@ -45,7 +45,7 @@ public final class SchemeDefaultPortMapper
   public static void registerDefaultPort (@Nonnull @Nonempty final String sSchemeName, @Nonnegative final int nPort)
   {
     ValueEnforcer.notEmpty (sSchemeName, "SchemeName");
-    ValueEnforcer.isTrue (DefaultNetworkPorts.isValidPort (nPort), "Invalid port provided");
+    ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), "Invalid port provided");
 
     s_aRWLock.writeLocked ( () -> {
       if (s_aMap.containsKey (sSchemeName))
@@ -65,9 +65,14 @@ public final class SchemeDefaultPortMapper
     return nDefault;
   }
 
+  public static int getDefaultPortOrInvalid (@Nullable final String sSchemeName)
+  {
+    return getDefaultPort (sSchemeName, CNetworkPort.INVALID_PORT_NUMBER);
+  }
+
   public static int getDefaultPortOrThrow (@Nullable final String sSchemeName)
   {
-    final int nPort = getDefaultPort (sSchemeName, CNetworkPort.INVALID_PORT_NUMBER);
+    final int nPort = getDefaultPortOrInvalid (sSchemeName);
     if (nPort == CNetworkPort.INVALID_PORT_NUMBER)
       throw new IllegalArgumentException ("No default port present for scheme '" + sSchemeName + "'");
     return nPort;

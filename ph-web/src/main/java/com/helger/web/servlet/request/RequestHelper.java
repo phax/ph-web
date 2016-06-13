@@ -44,7 +44,7 @@ import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.port.CNetworkPort;
-import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.port.NetworkPortHelper;
 import com.helger.web.port.SchemeDefaultPortMapper;
 import com.helger.web.scope.mgr.WebScopeManager;
 
@@ -354,7 +354,7 @@ public final class RequestHelper
   public static int getServerPortToUse (@Nonnull final String sScheme, @CheckForSigned final int nServerPort)
   {
     // URL.getPort() delivers -1 for unspecified ports
-    if (!DefaultNetworkPorts.isValidPort (nServerPort))
+    if (!NetworkPortHelper.isValidPort (nServerPort))
       return getDefaultServerPort (sScheme);
     return nServerPort;
   }
@@ -378,7 +378,7 @@ public final class RequestHelper
 
     // Reconstruct URL
     final StringBuilder aSB = new StringBuilder (sScheme).append ("://").append (sServerName);
-    if (DefaultNetworkPorts.isValidPort (nServerPort) && nServerPort != getDefaultServerPort (sScheme))
+    if (NetworkPortHelper.isValidPort (nServerPort) && nServerPort != getDefaultServerPort (sScheme))
       aSB.append (':').append (nServerPort);
     return aSB;
   }

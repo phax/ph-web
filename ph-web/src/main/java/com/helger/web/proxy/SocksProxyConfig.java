@@ -27,7 +27,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
-import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.port.NetworkPortHelper;
 
 /**
  * SOCKS proxy configuration.
@@ -67,7 +67,7 @@ public class SocksProxyConfig implements IProxyConfig
   public SocksProxyConfig (@Nonnull final String sHost, @Nonnegative final int nPort)
   {
     ValueEnforcer.notEmpty (sHost, "Host");
-    if (!DefaultNetworkPorts.isValidPort (nPort))
+    if (!NetworkPortHelper.isValidPort (nPort))
       throw new IllegalArgumentException ("The passed port is invalid");
     m_sHost = sHost;
     m_nPort = nPort;

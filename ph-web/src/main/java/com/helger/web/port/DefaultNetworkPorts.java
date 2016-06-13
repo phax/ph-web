@@ -3971,20 +3971,6 @@ public final class DefaultNetworkPorts
   {}
 
   /**
-   * Check of the passed port number is theoretically valid. Valid ports must be
-   * in the range of 0-65535.
-   *
-   * @param nPort
-   *        The port number to be tested.
-   * @return <code>true</code> if the port number is valid, <code>false</code>
-   *         otherwise.
-   */
-  public static boolean isValidPort (final int nPort)
-  {
-    return nPort >= CNetworkPort.MINIMUM_PORT_NUMBER && nPort <= CNetworkPort.MAXIMUM_PORT_NUMBER;
-  }
-
-  /**
    * @return A non-null list with all known ports.
    */
   @Nonnull

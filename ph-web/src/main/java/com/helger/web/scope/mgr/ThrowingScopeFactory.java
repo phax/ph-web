@@ -33,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
 /**
  * A special {@link IScopeFactory} implementation that throws unsupported
  * operation exceptions for each scope type. This can be helpful to avoid
- * creating non-web scopes in web applicaiton. Note: an implementation of this
+ * creating non-web scopes in web application. Note: an implementation of this
  * class must explicitly be set in {@link MetaScopeFactory}!
  *
  * @author Philip Helger

@@ -42,7 +42,6 @@ import com.helger.commons.url.SimpleURL;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
-import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestHelper;
 
@@ -444,12 +443,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @see #getFullContextPath()
    */
   @Nonnull
-  default String getContextPath ()
-  {
-    // Always use the context path from the global web scope because it can be
-    // customized!
-    return WebScopeManager.getGlobalScope ().getContextPath ();
-  }
+  String getContextPath ();
 
   /**
    * Returns the query string that is contained in the request URL after the

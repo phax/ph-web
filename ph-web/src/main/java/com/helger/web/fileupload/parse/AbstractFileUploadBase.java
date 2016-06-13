@@ -52,6 +52,7 @@ import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidContentTypeException;
 import com.helger.web.fileupload.exception.SizeLimitExceededException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
+import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * <p>
@@ -77,31 +78,6 @@ import com.helger.web.fileupload.io.AbstractLimitedInputStream;
  */
 public abstract class AbstractFileUploadBase
 {
-  /**
-   * Content-disposition value for form data.
-   */
-  public static final String FORM_DATA = "form-data";
-
-  /**
-   * Content-disposition value for file attachment.
-   */
-  public static final String ATTACHMENT = "attachment";
-
-  /**
-   * Part of HTTP content type header.
-   */
-  public static final String MULTIPART = "multipart/";
-
-  /**
-   * HTTP content type header for multipart forms.
-   */
-  public static final String MULTIPART_FORM_DATA = MULTIPART + "form-data";
-
-  /**
-   * HTTP content type header for multiple uploads.
-   */
-  public static final String MULTIPART_MIXED = MULTIPART + "mixed";
-
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractFileUploadBase.class);
 
   /**
@@ -128,22 +104,6 @@ public abstract class AbstractFileUploadBase
 
   public AbstractFileUploadBase ()
   {}
-
-  /**
-   * <p>
-   * Utility method that determines whether the request contains multipart
-   * content.
-   * </p>
-   *
-   * @param sContentType
-   *        The content type to be checked. May be <code>null</code>.
-   * @return <code>true</code> if the request is multipart; <code>false</code>
-   *         otherwise.
-   */
-  public static final boolean isMultipartContent (@Nonnull final String sContentType)
-  {
-    return sContentType != null && sContentType.toLowerCase (Locale.US).startsWith (MULTIPART);
-  }
 
   /**
    * Returns the factory class used when creating file items.
@@ -293,7 +253,7 @@ public abstract class AbstractFileUploadBase
   @ReturnsMutableCopy
   public ICommonsList <IFileItem> parseRequest (@Nonnull final IRequestContext aCtx) throws FileUploadException
   {
-    final ICommonsList <IFileItem> aItems = new CommonsArrayList<> ();
+    final ICommonsList <IFileItem> aItems = new CommonsArrayList <> ();
     boolean bSuccessful = false;
     try
     {
@@ -332,7 +292,7 @@ public abstract class AbstractFileUploadBase
         catch (final IOException ex)
         {
           throw new IOFileUploadException ("Processing of " +
-                                           MULTIPART_FORM_DATA +
+                                           RequestHelper.MULTIPART_FORM_DATA +
                                            " request failed. " +
                                            ex.getMessage (),
                                            ex);
@@ -427,7 +387,8 @@ public abstract class AbstractFileUploadBase
     if (sContentDisposition != null)
     {
       final String sContentDispositionLC = sContentDisposition.toLowerCase (Locale.US);
-      if (sContentDispositionLC.startsWith (FORM_DATA) || sContentDispositionLC.startsWith (ATTACHMENT))
+      if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) ||
+          sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
       {
         final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
         // Parameter parser can handle null input
@@ -476,7 +437,7 @@ public abstract class AbstractFileUploadBase
   private static String _getFieldName (@Nullable final String sContentDisposition)
   {
     String sFieldName = null;
-    if (sContentDisposition != null && sContentDisposition.toLowerCase (Locale.US).startsWith (FORM_DATA))
+    if (sContentDisposition != null && sContentDisposition.toLowerCase (Locale.US).startsWith (RequestHelper.FORM_DATA))
     {
       final ParameterParser aParser = new ParameterParser ().setLowerCaseNames (true);
       // Parameter parser can handle null input
@@ -650,12 +611,12 @@ public abstract class AbstractFileUploadBase
       ValueEnforcer.notNull (aCtx, "RequestContext");
 
       final String sContentType = aCtx.getContentType ();
-      if (!isMultipartContent (sContentType))
+      if (!RequestHelper.isMultipartContent (sContentType))
       {
         throw new InvalidContentTypeException ("the request doesn't contain a " +
-                                               MULTIPART_FORM_DATA +
+                                               RequestHelper.MULTIPART_FORM_DATA +
                                                " or " +
-                                               MULTIPART_MIXED +
+                                               RequestHelper.MULTIPART_MIXED +
                                                " stream, content-type header is '" +
                                                sContentType +
                                                "'");
@@ -764,7 +725,8 @@ public abstract class AbstractFileUploadBase
           final String sFieldName = getFieldName (aFileItemHeaders);
           if (sFieldName != null)
           {
-            if (sSubContentType != null && sSubContentType.toLowerCase (Locale.US).startsWith (MULTIPART_MIXED))
+            if (sSubContentType != null &&
+                sSubContentType.toLowerCase (Locale.US).startsWith (RequestHelper.MULTIPART_MIXED))
             {
               m_sCurrentFieldName = sFieldName;
               // Multiple files associated with this field name

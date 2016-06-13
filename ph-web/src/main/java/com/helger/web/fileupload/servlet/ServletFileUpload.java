@@ -28,8 +28,6 @@ import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.FileUpload;
-import com.helger.web.http.EHTTPMethod;
-import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * <p>
@@ -59,30 +57,13 @@ import com.helger.web.servlet.request.RequestHelper;
 public class ServletFileUpload extends FileUpload
 {
   /**
-   * Utility method that determines whether the request contains multipart
-   * content.
-   *
-   * @param aHttpRequest
-   *        The servlet request to be evaluated. Must be non-null.
-   * @return <code>true</code> if the request is multipart; <code>false</code>
-   *         otherwise.
-   */
-  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    if (RequestHelper.getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
-      return false;
-
-    return isMultipartContent (aHttpRequest.getContentType ());
-  }
-
-  /**
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
    *
    * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
-  public ServletFileUpload (final IFileItemFactory aFileItemFactory)
+  public ServletFileUpload (@Nonnull final IFileItemFactory aFileItemFactory)
   {
     super (aFileItemFactory);
   }
@@ -102,7 +83,7 @@ public class ServletFileUpload extends FileUpload
   @ReturnsMutableCopy
   public ICommonsList <IFileItem> parseRequest (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException
   {
-    return parseRequest (new ServletRequestContext (aHttpRequest));
+    return super.parseRequest (new ServletRequestContext (aHttpRequest));
   }
 
   /**

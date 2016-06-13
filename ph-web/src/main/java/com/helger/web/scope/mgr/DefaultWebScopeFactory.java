@@ -24,16 +24,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.web.scope.ApplicationWebScope;
-import com.helger.web.scope.GlobalWebScope;
 import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
-import com.helger.web.scope.RequestWebScope;
-import com.helger.web.scope.SessionApplicationWebScope;
-import com.helger.web.scope.SessionWebScope;
+import com.helger.web.scope.impl.ApplicationWebScope;
+import com.helger.web.scope.impl.GlobalWebScope;
+import com.helger.web.scope.impl.RequestWebScope;
+import com.helger.web.scope.impl.SessionApplicationWebScope;
+import com.helger.web.scope.impl.SessionWebScope;
 
 /**
  * Web version of the scope factory.

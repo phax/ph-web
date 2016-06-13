@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.web.fileupload.parse.AbstractFileUploadBase;
 import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.web.servlet.request.RequestHelper;
 
 final class MockHttpServletRequestFactory
 {
@@ -42,14 +42,12 @@ final class MockHttpServletRequestFactory
 
     final byte [] requestData = sbRequestData.toString ().getBytes (CCharset.CHARSET_US_ASCII_OBJ);
 
-    return new MockHttpServletRequest ().setContent (requestData)
-                                        .setContentType (AbstractFileUploadBase.MULTIPART_FORM_DATA);
+    return new MockHttpServletRequest ().setContent (requestData).setContentType (RequestHelper.MULTIPART_FORM_DATA);
   }
 
   public static HttpServletRequest createInvalidHttpServletRequest ()
   {
     final byte [] requestData = "foobar".getBytes (CCharset.CHARSET_US_ASCII_OBJ);
-    return new MockHttpServletRequest ().setContent (requestData)
-                                        .setContentType (AbstractFileUploadBase.MULTIPART_FORM_DATA);
+    return new MockHttpServletRequest ().setContent (requestData).setContentType (RequestHelper.MULTIPART_FORM_DATA);
   }
 }

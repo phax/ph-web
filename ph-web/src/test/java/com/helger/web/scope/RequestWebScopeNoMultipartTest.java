@@ -29,6 +29,8 @@ import org.junit.Test;
 
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockHttpServletResponse;
+import com.helger.web.scope.impl.RequestWebScope;
+import com.helger.web.scope.impl.RequestWebScopeNoMultipart;
 import com.helger.web.scope.mock.WebScopeTestRule;
 import com.helger.web.servlet.request.IRequestParamMap;
 

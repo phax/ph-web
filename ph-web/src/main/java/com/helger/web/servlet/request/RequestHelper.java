@@ -18,6 +18,7 @@ package com.helger.web.servlet.request;
 
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
+import java.util.Locale;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -59,6 +60,31 @@ public final class RequestHelper
   public static final String SERVLET_ATTR_SSL_CIPHER_SUITE = "javax.servlet.request.cipher_suite";
   public static final String SERVLET_ATTR_SSL_KEY_SIZE = "javax.servlet.request.key_size";
   public static final String SERVLET_ATTR_CLIENT_CERTIFICATE = "javax.servlet.request.X509Certificate";
+
+  /**
+   * Content-disposition value for form data.
+   */
+  public static final String FORM_DATA = "form-data";
+
+  /**
+   * Content-disposition value for file attachment.
+   */
+  public static final String ATTACHMENT = "attachment";
+
+  /**
+   * Part of HTTP content type header. Must be all lower case!
+   */
+  public static final String MULTIPART = "multipart/";
+
+  /**
+   * HTTP content type header for multipart forms. Must be all lower case!
+   */
+  public static final String MULTIPART_FORM_DATA = MULTIPART + "form-data";
+
+  /**
+   * HTTP content type header for multiple uploads. Must be all lower case!
+   */
+  public static final String MULTIPART_MIXED = MULTIPART + "mixed";
 
   private static final String SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP = "$requesthelp.requestparammap";
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestHelper.class);
@@ -615,4 +641,38 @@ public final class RequestHelper
   {
     return _getRequestAttr (aHttpRequest, SERVLET_ATTR_CLIENT_CERTIFICATE, X509Certificate [].class);
   }
+
+  /**
+   * <p>
+   * Utility method that determines whether the request contains multipart
+   * content.
+   * </p>
+   *
+   * @param sContentType
+   *        The content type to be checked. May be <code>null</code>.
+   * @return <code>true</code> if the request is multipart; <code>false</code>
+   *         otherwise.
+   */
+  public static final boolean isMultipartContent (@Nullable final String sContentType)
+  {
+    return sContentType != null && sContentType.toLowerCase (Locale.US).startsWith (MULTIPART);
+  }
+
+  /**
+   * Utility method that determines whether the request contains multipart
+   * content.
+   *
+   * @param aHttpRequest
+   *        The servlet request to be evaluated. Must be non-null.
+   * @return <code>true</code> if the request is multipart; <code>false</code>
+   *         otherwise.
+   */
+  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    if (getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
+      return false;
+
+    return isMultipartContent (aHttpRequest.getContentType ());
+  }
+
 }

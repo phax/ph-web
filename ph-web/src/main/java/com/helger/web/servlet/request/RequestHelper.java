@@ -39,13 +39,13 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLData;
 import com.helger.commons.url.URLHelper;
-import com.helger.web.CWeb;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.port.CNetworkPort;
 import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.web.port.SchemeDefaultPortMapper;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -347,11 +347,7 @@ public final class RequestHelper
   @CheckForSigned
   public static int getDefaultServerPort (@Nullable final String sScheme)
   {
-    if (CWeb.SCHEME_HTTP.equalsIgnoreCase (sScheme))
-      return CWeb.DEFAULT_PORT_HTTP;
-    if (CWeb.SCHEME_HTTPS.equalsIgnoreCase (sScheme))
-      return CWeb.DEFAULT_PORT_HTTPS;
-    return CNetworkPort.INVALID_PORT_NUMBER;
+    return SchemeDefaultPortMapper.getDefaultPort (sScheme, CNetworkPort.INVALID_PORT_NUMBER);
   }
 
   @CheckForSigned

@@ -22,7 +22,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
-import com.helger.web.port.DefaultNetworkPorts;
 
 /**
  * Contains some global web constants
@@ -32,24 +31,8 @@ import com.helger.web.port.DefaultNetworkPorts;
 @Immutable
 public final class CWeb
 {
-  /** Default FTP port */
-  public static final int DEFAULT_PORT_FTP = DefaultNetworkPorts.TCP_21_ftp.getPort ();
-  /** Default HTTP port */
-  public static final int DEFAULT_PORT_HTTP = DefaultNetworkPorts.TCP_80_http.getPort ();
-  /** Default HTTPS port */
-  public static final int DEFAULT_PORT_HTTPS = DefaultNetworkPorts.TCP_443_https.getPort ();
-
-  /** The scheme for HTTP */
-  public static final String SCHEME_HTTP = "http";
-  /** The scheme for HTTPS */
-  public static final String SCHEME_HTTPS = "https";
-
-  /** Default charset for requests: UTF-8 */
-  public static final String CHARSET_REQUEST = CCharset.CHARSET_UTF_8;
   /** Default charset for requests: UTF-8 */
   public static final Charset CHARSET_REQUEST_OBJ = CCharset.CHARSET_UTF_8_OBJ;
-  /** Default charset for multipart requests: UTF-8 */
-  public static final String CHARSET_MULTIPART = CCharset.CHARSET_UTF_8;
   /** Default charset for multipart requests: UTF-8 */
   public static final Charset CHARSET_MULTIPART_OBJ = CCharset.CHARSET_UTF_8_OBJ;
 

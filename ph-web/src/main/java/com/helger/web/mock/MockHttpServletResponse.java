@@ -51,7 +51,7 @@ import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.CWeb;
+import com.helger.web.port.SchemeDefaultPortMapper;
 import com.helger.web.servlet.AbstractServletOutputStream;
 
 /**
@@ -62,8 +62,7 @@ import com.helger.web.servlet.AbstractServletOutputStream;
 @NotThreadSafe
 public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 {
-  public static final int DEFAULT_SERVER_PORT = CWeb.DEFAULT_PORT_HTTP;
-  public static final String DEFAULT_CHARSET_NAME = CCharset.CHARSET_UTF_8;
+  public static final int DEFAULT_SERVER_PORT = SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP);
   public static final Charset DEFAULT_CHARSET_OBJ = CCharset.CHARSET_UTF_8_OBJ;
   private static final int DEFAULT_BUFFER_SIZE = 4096;
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockHttpServletResponse.class);

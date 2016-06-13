@@ -26,7 +26,7 @@ import com.helger.commons.lang.EnumHelper;
 import com.helger.commons.system.SystemProperties;
 import com.helger.commons.url.EURLProtocol;
 import com.helger.commons.url.IURLProtocol;
-import com.helger.web.CWeb;
+import com.helger.web.port.SchemeDefaultPortMapper;
 
 /**
  * Proxy type determination.<br>
@@ -37,10 +37,12 @@ import com.helger.web.CWeb;
  */
 public enum EHttpProxyType implements IHasID <String>
 {
-  HTTP ("http", EURLProtocol.HTTP, CWeb.DEFAULT_PORT_HTTP),
-  HTTPS ("https", EURLProtocol.HTTPS, CWeb.DEFAULT_PORT_HTTPS),
+  HTTP ("http", EURLProtocol.HTTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP)),
+  HTTPS ("https",
+         EURLProtocol.HTTPS,
+         SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTPS)),
   // Default proxy port for FTP is also 80! This is not a copy/paste error!
-  FTP ("ftp", EURLProtocol.FTP, CWeb.DEFAULT_PORT_HTTP);
+  FTP ("ftp", EURLProtocol.FTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP));
 
   private final String m_sID;
   private final IURLProtocol m_aURLProtocol;

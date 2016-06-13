@@ -77,11 +77,11 @@ import com.helger.commons.system.SystemHelper;
 import com.helger.commons.url.URLHelper;
 import com.helger.commons.url.URLParameter;
 import com.helger.commons.url.URLParameterList;
-import com.helger.web.CWeb;
 import com.helger.web.http.AcceptCharsetHandler;
 import com.helger.web.http.CHTTPHeader;
 import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
+import com.helger.web.port.SchemeDefaultPortMapper;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.servlet.request.RequestHelper;
 
@@ -95,10 +95,10 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
   public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
   public static final String DEFAULT_PROTOCOL = EHTTPVersion.HTTP_11.getName ();
-  public static final String DEFAULT_SCHEME = CWeb.SCHEME_HTTP;
+  public static final String DEFAULT_SCHEME = SchemeDefaultPortMapper.SCHEME_HTTP;
   public static final String DEFAULT_SERVER_ADDR = "127.0.0.1";
   public static final String DEFAULT_SERVER_NAME = "localhost";
-  public static final int DEFAULT_SERVER_PORT = CWeb.DEFAULT_PORT_HTTP;
+  public static final int DEFAULT_SERVER_PORT = SchemeDefaultPortMapper.getDefaultPortOrThrow (DEFAULT_SCHEME);
   public static final String DEFAULT_REMOTE_ADDR = "127.0.0.1";
   public static final String DEFAULT_REMOTE_HOST = "localhost";
   /** The default HTTP method: GET */
@@ -1237,7 +1237,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       {
         // Server stuff - straight forward
         setScheme (aURI.getScheme ());
-        setSecure (CWeb.SCHEME_HTTPS.equals (aURI.getScheme ()));
+        setSecure (SchemeDefaultPortMapper.SCHEME_HTTPS.equals (aURI.getScheme ()));
         setServerName (aURI.getHost ());
         setServerPort (RequestHelper.getServerPortToUse (aURI.getScheme (), aURI.getPort ()));
 

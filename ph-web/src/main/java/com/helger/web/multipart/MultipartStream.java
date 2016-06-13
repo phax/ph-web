@@ -29,6 +29,7 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.system.SystemHelper;
+import com.helger.web.ICloseable;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -625,7 +626,7 @@ public final class MultipartStream
   /**
    * An {@link InputStream} for reading an items contents.
    */
-  public final class MultipartItemInputStream extends InputStream
+  public final class MultipartItemInputStream extends InputStream implements ICloseable
   {
     /**
      * Offset when converting negative bytes to integers.

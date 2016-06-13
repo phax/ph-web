@@ -26,13 +26,13 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.io.file.FilenameHelper;
+import com.helger.web.ICloseable;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
 import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.fileupload.io.FileUploadHelper;
-import com.helger.web.fileupload.io.ICloseable;
 import com.helger.web.multipart.MultipartItemSkippedException;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.multipart.MultipartStream.MultipartItemInputStream;
@@ -197,7 +197,7 @@ final class FileItemStream implements IFileItemStream, Closeable
   @Nonnull
   public InputStream openStream () throws IOException
   {
-    if (((ICloseable) m_aIS).isClosed ())
+    if (m_aIS instanceof ICloseable && ((ICloseable) m_aIS).isClosed ())
       throw new MultipartItemSkippedException ();
     return m_aIS;
   }

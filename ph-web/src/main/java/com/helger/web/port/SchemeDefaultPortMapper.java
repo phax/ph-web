@@ -10,6 +10,7 @@ import javax.annotation.concurrent.GuardedBy;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
@@ -70,5 +71,12 @@ public final class SchemeDefaultPortMapper
     if (nPort == CNetworkPort.INVALID_PORT_NUMBER)
       throw new IllegalArgumentException ("No default port present for scheme '" + sSchemeName + "'");
     return nPort;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ICommonsMap <String, Integer> getAll ()
+  {
+    return s_aRWLock.readLocked ( () -> s_aMap.getClone ());
   }
 }

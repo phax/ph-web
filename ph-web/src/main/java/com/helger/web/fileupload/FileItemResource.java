@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload.parse;
+package com.helger.web.fileupload;
 
 import java.io.File;
 import java.io.InputStream;
@@ -33,7 +33,6 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.hashcode.IHashCodeGenerator;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.fileupload.IFileItem;
 
 /**
  * Implementation of the {@link IReadableResource} interface for uploaded

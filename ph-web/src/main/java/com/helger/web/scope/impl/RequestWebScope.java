@@ -44,7 +44,7 @@ import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.progress.IProgressListener;
 import com.helger.web.progress.ProgressListenerProvider;
 import com.helger.web.scope.fileupload.GlobalDiskFileItemFactory;
-import com.helger.web.scope.util.RequestHelper;
+import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * The default request web scope that also tries to parse multi part requests.
@@ -116,7 +116,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         final ServletFileUpload aUpload = new ServletFileUpload (_getFileItemFactory ());
         aUpload.setSizeMax (MAX_REQUEST_SIZE);
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
-        final IProgressListener aProgressListener = ProgressListenerProvider.getInstance ().getProgressListener ();
+        final IProgressListener aProgressListener = ProgressListenerProvider.getProgressListener ();
         if (aProgressListener != null)
           aUpload.setProgressListener (aProgressListener);
 

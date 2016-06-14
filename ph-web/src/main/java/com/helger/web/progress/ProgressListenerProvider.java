@@ -16,54 +16,37 @@
  */
 package com.helger.web.progress;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.lang.ServiceLoaderHelper;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**
  * SPI handler for {@link IProgressListenerProviderSPI} implementations
  *
  * @author Philip Helger
  */
-public final class ProgressListenerProvider extends AbstractGlobalWebSingleton
+public final class ProgressListenerProvider
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);
 
-  private final IProgressListenerProviderSPI m_aProgressListenerProvider;
+  private static final IProgressListenerProviderSPI s_aProgressListenerProvider;
 
-  @Deprecated
-  @UsedViaReflection
-  public ProgressListenerProvider ()
+  static
   {
-    m_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
-    if (m_aProgressListenerProvider != null)
-      s_aLogger.info ("Using progress listener provider " + m_aProgressListenerProvider);
+    s_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
+    if (s_aProgressListenerProvider != null)
+      s_aLogger.info ("Using progress listener provider " + s_aProgressListenerProvider);
   }
 
-  @Nonnull
-  public static ProgressListenerProvider getInstance ()
-  {
-    return getGlobalSingleton (ProgressListenerProvider.class);
-  }
+  private ProgressListenerProvider ()
+  {}
 
   @Nullable
-  public IProgressListener getProgressListener ()
+  public static IProgressListener getProgressListener ()
   {
-    return m_aProgressListenerProvider == null ? null : m_aProgressListenerProvider.getProgressListener ();
-  }
-
-  @Override
-  public String toString ()
-  {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("progressListenerProvider", m_aProgressListenerProvider)
-                            .toString ();
+    return s_aProgressListenerProvider == null ? null : s_aProgressListenerProvider.getProgressListener ();
   }
 }

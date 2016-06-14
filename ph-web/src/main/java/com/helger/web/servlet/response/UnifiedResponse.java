@@ -72,8 +72,8 @@ import com.helger.web.http.EHTTPMethod;
 import com.helger.web.http.EHTTPVersion;
 import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.http.QValue;
-import com.helger.web.scope.util.RequestHelper;
-import com.helger.web.scope.util.RequestLogger;
+import com.helger.web.servlet.request.RequestHelper;
+import com.helger.web.servlet.request.RequestLogger;
 import com.helger.web.useragent.browser.BrowserInfo;
 import com.helger.web.useragent.browser.EBrowserType;
 

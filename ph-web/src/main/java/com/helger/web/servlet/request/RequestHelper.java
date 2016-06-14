@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.util;
+package com.helger.web.servlet.request;
 
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
@@ -48,8 +48,6 @@ import com.helger.web.port.CNetworkPort;
 import com.helger.web.port.NetworkPortHelper;
 import com.helger.web.port.SchemeDefaultPortMapper;
 import com.helger.web.servlet.ServletContextPathHolder;
-import com.helger.web.servlet.request.IRequestParamMap;
-import com.helger.web.servlet.request.RequestParamMap;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.

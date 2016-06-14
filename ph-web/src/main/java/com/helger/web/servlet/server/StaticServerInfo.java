@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.scope.util.RequestHelper;
+import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * This singleton instance represents default server information for locations

@@ -29,6 +29,9 @@ import com.helger.commons.scope.IGlobalScope;
  */
 public interface IGlobalWebScope extends IGlobalScope, IWebScope
 {
+  /*
+   * Change return type
+   */
   @Nullable
   IApplicationWebScope getApplicationScope (String sAppID, boolean bCreateIfNotExisting);
 

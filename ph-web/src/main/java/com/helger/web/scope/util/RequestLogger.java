@@ -38,7 +38,7 @@ import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.annotation.IsOffline;
 import com.helger.web.http.HTTPHeaderMap;
-import com.helger.web.scope.mgr.WebScopeManager;
+import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
  * Helper class to debug information passed to a JSP page or a servlet.
@@ -80,7 +80,7 @@ public final class RequestLogger
       ret.put ("ContextPath", aHttpRequest.getContextPath ());
       try
       {
-        ret.put ("ContextPath2", WebScopeManager.getGlobalScope ().getContextPath ());
+        ret.put ("ContextPath2", ServletContextPathHolder.getContextPath ());
       }
       catch (final IllegalStateException ex)
       {

@@ -47,7 +47,7 @@ import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.port.CNetworkPort;
 import com.helger.web.port.NetworkPortHelper;
 import com.helger.web.port.SchemeDefaultPortMapper;
-import com.helger.web.scope.mgr.WebScopeManager;
+import com.helger.web.servlet.ServletContextPathHolder;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestParamMap;
 
@@ -182,7 +182,7 @@ public final class RequestHelper
 
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
-    final String sRequestURI = WebScopeManager.getGlobalScope ().getContextPath () + sServletPath + sPathInfo;
+    final String sRequestURI = ServletContextPathHolder.getContextPath () + sServletPath + sPathInfo;
     if (StringHelper.hasNoText (sRequestURI))
       return sRequestURI;
 
@@ -234,7 +234,7 @@ public final class RequestHelper
     }
 
     // Always use the context path
-    final String sContextPath = WebScopeManager.getGlobalScope ().getContextPath ();
+    final String sContextPath = ServletContextPathHolder.getContextPath ();
     if (StringHelper.hasNoText (sContextPath) || !sRequestURI.startsWith (sContextPath))
       return sRequestURI;
 

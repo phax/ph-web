@@ -32,7 +32,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
-import com.helger.web.scope.mgr.WebScopeManager;
+import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
  * Misc. helper methods on HTTP cookies.
@@ -116,7 +116,7 @@ public final class CookieHelper
                                             final boolean bExpireWhenBrowserIsClosed)
   {
     // Always use the context path from the global scope!
-    final String sContextPath = WebScopeManager.getGlobalScope ().getContextPath ();
+    final String sContextPath = ServletContextPathHolder.getContextPath ();
     return createCookie (sName,
                          sValue,
                          StringHelper.hasText (sContextPath) ? sContextPath : "/",

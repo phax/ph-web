@@ -42,8 +42,8 @@ import com.helger.commons.scope.ScopeHelper;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.util.RequestHelper;
+import com.helger.web.servlet.ServletContextPathHolder;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestParamMap;
 
@@ -256,7 +256,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   {
     // Always use the context path from the global web scope because it can be
     // customized!
-    return WebScopeManager.getGlobalScope ().getContextPath ();
+    return ServletContextPathHolder.getContextPath ();
   }
 
   @Nonnull

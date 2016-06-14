@@ -21,9 +21,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -32,6 +29,7 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.MetaWebScopeFactory;
+import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
  * Implementation of the {@link IGlobalWebScope} interface for web applications.
@@ -46,10 +44,8 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
   // Because of transient field
   private static final long serialVersionUID = 15665138713664L;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (GlobalWebScope.class);
 
   private final transient ServletContext m_aSC;
-  private String m_sCustomContextPath;
 
   @Nonnull
   @Nonempty
@@ -77,6 +73,14 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     super (_createScopeID (aServletContext));
 
     m_aSC = aServletContext;
+    ServletContextPathHolder.setServletContextPath (aServletContext.getContextPath ());
+  }
+
+  @Override
+  protected void postDestroy ()
+  {
+    super.postDestroy ();
+    ServletContextPathHolder.clearContextPath ();
   }
 
   @Override
@@ -100,44 +104,6 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     return m_aSC;
   }
 
-  /**
-   * Manually change the context path to be used. Normally there is no need to
-   * call the method, because the context path is automatically determined from
-   * the {@link ServletContext} or from the underlying request. This method is
-   * only needed, if a web application is proxied by e.g. an Apache httpd and
-   * the context path between httpd and Java web application server is
-   * different!
-   *
-   * @param sContextPath
-   *        The context path of the web application, or "" for the default
-   *        (root) context. May not be <code>null</code>.
-   */
-  public void setCustomContextPath (@Nonnull final String sContextPath)
-  {
-    ValueEnforcer.notNull (sContextPath, "ContextPath");
-    m_sCustomContextPath = sContextPath;
-    s_aLogger.info ("The context path was manually overridden to use '" + sContextPath + "'!");
-  }
-
-  /**
-   * @return <code>true</code> if a custom context path was set.
-   * @see #setCustomContextPath(String)
-   */
-  public boolean hasCustomContextPath ()
-  {
-    return m_sCustomContextPath != null;
-  }
-
-  @Override
-  @Nonnull
-  public String getContextPath ()
-  {
-    String ret = m_sCustomContextPath;
-    if (ret == null)
-      ret = m_aSC.getContextPath ();
-    return ret;
-  }
-
   @Override
   public boolean equals (final Object o)
   {
@@ -146,21 +112,18 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     if (!super.equals (o))
       return false;
     final GlobalWebScope rhs = (GlobalWebScope) o;
-    return getContextPath ().equals (rhs.getContextPath ());
+    return m_aSC.getContextPath ().equals (rhs.getServletContext ().getContextPath ());
   }
 
   @Override
   public int hashCode ()
   {
-    return HashCodeGenerator.getDerived (super.hashCode ()).append (getContextPath ()).getHashCode ();
+    return HashCodeGenerator.getDerived (super.hashCode ()).append (m_aSC.getContextPath ()).getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ServletContext", m_aSC)
-                            .appendIfNotNull ("CustomContextPath", m_sCustomContextPath)
-                            .toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("ServletContext", m_aSC).toString ();
   }
 }

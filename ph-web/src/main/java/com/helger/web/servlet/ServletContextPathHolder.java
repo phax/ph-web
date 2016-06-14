@@ -9,6 +9,13 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 
+/**
+ * Helper class to hold the current servlet context path. In certain cases it is
+ * necessary to overwrite the context path (custom context path) if an
+ * application is run behind a reverse proxy but needs to emit absolute URLs.
+ *
+ * @author Philip Helger
+ */
 public final class ServletContextPathHolder
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ServletContextPathHolder.class);
@@ -24,7 +31,14 @@ public final class ServletContextPathHolder
 
   public static void setServletContextPath (@Nonnull final String sServletContextPath)
   {
-    s_sServletContextPath = ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
+    ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
+    if (s_sCustomContextPath != null)
+      s_aLogger.error ("Overwriting servlet context path '" +
+                       s_sServletContextPath +
+                       "' with '" +
+                       sServletContextPath +
+                       "'");
+    s_sServletContextPath = sServletContextPath;
   }
 
   /**
@@ -41,7 +55,14 @@ public final class ServletContextPathHolder
    */
   public static void setCustomContextPath (@Nonnull final String sCustomContextPath)
   {
-    s_sCustomContextPath = ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
+    ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
+    if (s_sCustomContextPath != null)
+      s_aLogger.error ("Overwriting custom context path '" +
+                       s_sCustomContextPath +
+                       "' with '" +
+                       sCustomContextPath +
+                       "'");
+    s_sCustomContextPath = sCustomContextPath;
     s_aLogger.info ("The context path was manually overridden to use '" + sCustomContextPath + "'!");
   }
 

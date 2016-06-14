@@ -26,8 +26,6 @@ import javax.servlet.http.HttpSessionListener;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.web.scope.mock.MockServletRequestListenerScopeAware;
-import com.helger.web.servlets.scope.WebScopeListener;
 
 /**
  * This class globally holds the HTTP listeners ({@link ServletContextListener}
@@ -41,20 +39,6 @@ public final class MockHttpListener
 {
   private static MockEventListenerList s_aDefaultListener = new MockEventListenerList ();
   private static MockEventListenerList s_aCurrentListener = new MockEventListenerList ();
-
-  static
-  {
-    init ();
-  }
-
-  public static void init ()
-  {
-    // Web listeners
-    removeAllDefaultListeners ();
-    addDefaultListener (new WebScopeListener ());
-    addDefaultListener (new MockServletRequestListenerScopeAware ());
-    setCurrentToDefault ();
-  }
 
   private MockHttpListener ()
   {}

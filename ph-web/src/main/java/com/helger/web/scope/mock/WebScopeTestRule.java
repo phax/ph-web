@@ -35,6 +35,7 @@ import com.helger.web.mock.MockHttpListener;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
 import com.helger.web.mock.MockServletPool;
+import com.helger.web.servlets.scope.WebScopeListener;
 
 /**
  * JUnit test rule for unit tests requiring web scopes.
@@ -97,7 +98,10 @@ public class WebScopeTestRule extends ExternalResource
   protected void initListener ()
   {
     // Ensure that the default-default listeners are present
-    MockHttpListener.init ();
+    MockHttpListener.removeAllDefaultListeners ();
+    MockHttpListener.addDefaultListener (new WebScopeListener ());
+    MockHttpListener.addDefaultListener (new MockServletRequestListenerScopeAware ());
+    MockHttpListener.setCurrentToDefault ();
   }
 
   /**

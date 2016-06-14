@@ -674,5 +674,4 @@ public final class RequestHelper
 
     return isMultipartContent (aHttpRequest.getContentType ());
   }
-
 }

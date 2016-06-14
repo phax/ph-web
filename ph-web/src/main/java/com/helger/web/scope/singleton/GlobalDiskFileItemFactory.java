@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.fileupload;
+package com.helger.web.scope.singleton;
 
 import java.io.File;
 
@@ -30,7 +30,6 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.parse.DiskFileItem;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
-import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**
  * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning up,

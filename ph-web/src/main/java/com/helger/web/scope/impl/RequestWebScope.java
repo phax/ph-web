@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.web.scope.multipart.RequestMultipartHelper;
 
 /**
  * The default request web scope that also tries to parse multi part requests.
@@ -39,6 +40,6 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
   @OverrideOnDemand
   protected boolean addSpecialRequestAttributes ()
   {
-    return RequestMultipartHelper.handleMultipart (m_aHttpRequest, this);
+    return RequestMultipartHelper.handleMultipart (m_aHttpRequest, this::setAttribute);
   }
 }

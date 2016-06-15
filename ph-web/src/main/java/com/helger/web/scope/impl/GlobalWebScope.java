@@ -28,7 +28,7 @@ import com.helger.commons.scope.GlobalScope;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
-import com.helger.web.scope.mgr.MetaWebScopeFactory;
+import com.helger.web.scope.mgr.WebScopeFactoryProvider;
 import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
@@ -87,7 +87,7 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   @Nonnull
   protected IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
-    return MetaWebScopeFactory.getWebScopeFactory ().createApplicationScope (sApplicationID);
+    return WebScopeFactoryProvider.getWebScopeFactory ().createApplicationScope (sApplicationID);
   }
 
   @Override

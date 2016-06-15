@@ -34,7 +34,7 @@ import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
-import com.helger.web.scope.mgr.MetaWebScopeFactory;
+import com.helger.web.scope.mgr.WebScopeFactoryProvider;
 
 /**
  * Default implementation of the {@link ISessionWebScope} interface. It is
@@ -110,7 +110,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   @Nonnull
   protected ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
-    return MetaWebScopeFactory.getWebScopeFactory ().createSessionApplicationScope (sApplicationID);
+    return WebScopeFactoryProvider.getWebScopeFactory ().createSessionApplicationScope (sApplicationID);
   }
 
   @Override

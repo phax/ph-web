@@ -29,6 +29,7 @@ import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
+import com.helger.web.scope.IWebScopeFactory;
 import com.helger.web.scope.impl.ApplicationWebScope;
 import com.helger.web.scope.impl.GlobalWebScope;
 import com.helger.web.scope.impl.RequestWebScope;

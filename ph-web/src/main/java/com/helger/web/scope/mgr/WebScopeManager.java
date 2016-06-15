@@ -135,7 +135,7 @@ public final class WebScopeManager
   @Nonnull
   public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext)
   {
-    final IGlobalWebScope aGlobalScope = MetaWebScopeFactory.getWebScopeFactory ().createGlobalScope (aServletContext);
+    final IGlobalWebScope aGlobalScope = WebScopeFactoryProvider.getWebScopeFactory ().createGlobalScope (aServletContext);
     ScopeManager.setGlobalScope (aGlobalScope);
     return aGlobalScope;
   }
@@ -296,7 +296,7 @@ public final class WebScopeManager
   @Nonnull
   public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
   {
-    final ISessionWebScope aSessionWebScope = MetaWebScopeFactory.getWebScopeFactory ()
+    final ISessionWebScope aSessionWebScope = WebScopeFactoryProvider.getWebScopeFactory ()
                                                                  .createSessionScope (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
     if (isSessionPassivationAllowed ())
@@ -509,7 +509,7 @@ public final class WebScopeManager
                                                  @Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final IRequestWebScope aRequestScope = MetaWebScopeFactory.getWebScopeFactory ().createRequestScope (aHttpRequest,
+    final IRequestWebScope aRequestScope = WebScopeFactoryProvider.getWebScopeFactory ().createRequestScope (aHttpRequest,
                                                                                                          aHttpResponse);
     ScopeManager.setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;

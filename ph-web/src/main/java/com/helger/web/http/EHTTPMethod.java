@@ -66,6 +66,11 @@ public enum EHTTPMethod implements IHasName
     return this != HEAD;
   }
 
+  public boolean isPayloadInBody ()
+  {
+    return this == POST || this == PUT || this == PATCH;
+  }
+
   @Nullable
   public static EHTTPMethod getFromNameOrNull (@Nullable final String sName)
   {

@@ -47,10 +47,10 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 {
   private EEmailType m_eEmailType;
   private IEmailAddress m_aFrom;
-  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList <> ();
-  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList <> ();
-  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList <> ();
-  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList<> ();
+  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList<> ();
+  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList<> ();
+  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList<> ();
   private LocalDateTime m_aSentDateTime;
   private String m_sSubject;
   private String m_sBody;
@@ -58,8 +58,9 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
-    // CommonsTreeMap for consistent serialization compared to a regular HashMap
-    super (true, new CommonsTreeMap <> ());
+    // CommonsTreeMap for consistent serialization compared to a regular
+    // CommonsHashMap
+    super (true, new CommonsTreeMap<> ());
     setEmailType (eEmailType);
   }
 

@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.email.EmailAddressHelper;
-import com.helger.commons.random.VerySecureRandom;
+import com.helger.commons.random.RandomHelper;
 
 public final class EmailAddressValidatorTest
 {
@@ -49,7 +49,7 @@ public final class EmailAddressValidatorTest
     // (in average 2-3)
     for (int i = 0; i < 20; ++i)
     {
-      final int nIndex = VerySecureRandom.getInstance ().nextInt (VALID.length);
+      final int nIndex = RandomHelper.getRandom ().nextInt (VALID.length);
       final String sValid = VALID[nIndex];
       if (!EmailAddressValidator.isValidWithMXCheck (sValid))
         s_aLogger.info ("No MX record for: " + sValid);

@@ -39,6 +39,7 @@ public enum EHTTPMethod implements IHasName
   DELETE ("DELETE"),
   TRACE ("TRACE"),
   CONNECT ("CONNECT"),
+  /* Extension as of RFC 5789 - partial PUT */
   PATCH ("PATCH");
 
   private final String m_sName;
@@ -57,17 +58,12 @@ public enum EHTTPMethod implements IHasName
 
   public boolean isIdempodent ()
   {
-    return this != POST && this != CONNECT;
+    return this == GET || this == HEAD || this == PUT || this == DELETE || this == OPTIONS || this == TRACE;
   }
 
   public boolean isContentAllowed ()
   {
     return this != HEAD;
-  }
-
-  public boolean isPostOrPut ()
-  {
-    return this == POST || this == PUT;
   }
 
   @Nullable

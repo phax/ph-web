@@ -23,8 +23,8 @@ import com.helger.commons.io.stream.StreamHelper;
  * (such as JAXB/WS.) Unfortunately, {@link DataHandler} has the semantics of
  * "read as many times as you want", so this makes it difficult for involving
  * parties to handle a BLOB in a streaming fashion.<br>
- * {@link AbstractStreamingDataHandler} solves this problem by offering methods that
- * enable faster bulk "consume once" read operation.
+ * {@link AbstractStreamingDataHandler} solves this problem by offering methods
+ * that enable faster bulk "consume once" read operation.
  *
  * @author Jitendra Kotamraju
  * @author Philip Helger
@@ -33,17 +33,17 @@ public abstract class AbstractStreamingDataHandler extends DataHandler implement
 {
   private String m_sHrefCid;
 
-  public AbstractStreamingDataHandler (final Object o, final String s)
+  public AbstractStreamingDataHandler (@Nonnull final Object aObj, @Nonnull final String sMimeType)
   {
-    super (o, s);
+    super (aObj, sMimeType);
   }
 
-  public AbstractStreamingDataHandler (final URL aUrl)
+  public AbstractStreamingDataHandler (@Nonnull final URL aUrl)
   {
     super (aUrl);
   }
 
-  public AbstractStreamingDataHandler (final DataSource aDataSource)
+  public AbstractStreamingDataHandler (@Nonnull final DataSource aDataSource)
   {
     super (aDataSource);
   }

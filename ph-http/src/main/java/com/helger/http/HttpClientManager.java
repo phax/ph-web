@@ -21,20 +21,15 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.singleton.AbstractGlobalSingleton;
 
 public final class HttpClientManager extends AbstractGlobalSingleton
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpClientManager.class);
-
   private static Supplier <CloseableHttpClient> s_aHttpClientSupplier = () -> new HttpClientWrapper ().createHttpClient ();
 
   private CloseableHttpClient m_aHttpClient;
@@ -71,9 +66,7 @@ public final class HttpClientManager extends AbstractGlobalSingleton
   @Nonnull
   public static CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
   {
-    if (GlobalDebug.isDebugMode ())
-      s_aLogger.info ("HTTP call: " + aRequest.getMethod () + " " + aRequest.getURI ());
-
+    HttpDebugger.beforeRequest (aRequest);
     return getInstance ().m_aHttpClient.execute (aRequest);
   }
 
@@ -81,9 +74,7 @@ public final class HttpClientManager extends AbstractGlobalSingleton
   public static <T> T execute (@Nonnull final HttpUriRequest aRequest,
                                @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
-    if (GlobalDebug.isDebugMode ())
-      s_aLogger.info ("HTTP call: " + aRequest.getMethod () + " " + aRequest.getURI ());
-
+    HttpDebugger.beforeRequest (aRequest);
     return getInstance ().m_aHttpClient.execute (aRequest, aResponseHandler);
   }
 }

@@ -120,16 +120,21 @@ public class HttpClientWrapper
   }
 
   @Nonnull
-  public CloseableHttpClient createHttpClient ()
+  public HttpClientBuilder createHttpClientBuilder ()
   {
     final HttpClientConnectionManager aConnMgr = createConnectionManager ();
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxy = createProxyHost ();
 
-    final HttpClientBuilder aBuilder = HttpClientBuilder.create ()
-                                                        .setConnectionManager (aConnMgr)
-                                                        .setDefaultRequestConfig (aRequestConfig)
-                                                        .setProxy (aProxy);
-    return aBuilder.build ();
+    return HttpClientBuilder.create ()
+                            .setConnectionManager (aConnMgr)
+                            .setDefaultRequestConfig (aRequestConfig)
+                            .setProxy (aProxy);
+  }
+
+  @Nonnull
+  public CloseableHttpClient createHttpClient ()
+  {
+    return createHttpClientBuilder ().build ();
   }
 }

@@ -24,11 +24,11 @@
     <version>8.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ph-http</artifactId>
+  <artifactId>ph-httpclient</artifactId>
   <packaging>bundle</packaging>
-  <name>ph-mail</name>
+  <name>ph-httpclient</name>
   <description>Java library with Apache httpclient extensions</description>
-  <url>https://github.com/phax/ph-web/ph-http</url>
+  <url>https://github.com/phax/ph-web/ph-httpclient</url>
   <inceptionYear>2016</inceptionYear>
  
   <licenses>

@@ -36,6 +36,8 @@ public final class HttpClientManager extends AbstractGlobalSingleton
 
   public static void setHttpClientFactory (@Nonnull final Supplier <CloseableHttpClient> aHttpClientSupplier)
   {
+    if (isGlobalSingletonInstantiated (HttpClientManager.class))
+      throw new IllegalStateException ("You cannot set the supplier after instantiation!");
     s_aHttpClientSupplier = ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
   }
 

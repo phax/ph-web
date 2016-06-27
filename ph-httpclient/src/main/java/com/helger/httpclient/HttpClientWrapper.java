@@ -12,15 +12,12 @@
 package com.helger.httpclient;
 
 import java.nio.charset.CodingErrorAction;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
@@ -38,7 +35,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-import com.helger.commons.random.RandomHelper;
+import com.helger.commons.annotation.OverrideOnDemand;
 
 @Immutable
 public class HttpClientWrapper
@@ -46,32 +43,64 @@ public class HttpClientWrapper
   public HttpClientWrapper ()
   {}
 
+  /**
+   * Create a custom SSLContext to use for the SSL Socket factory.
+   *
+   * @return <code>null</code> if no custom context is present.
+   * @throws GeneralSecurityException
+   *         In case key management problems occur.
+   */
+  @Nullable
+  @OverrideOnDemand
+  public SSLContext createSSLContext () throws GeneralSecurityException
+  {
+    return null;
+  }
+
   @Nonnull
   public LayeredConnectionSocketFactory createSSLFactory ()
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
+
+    // First try with a custom SSL context
     try
     {
-      aSSLFactory = SSLConnectionSocketFactory.getSystemSocketFactory ();
+      final SSLContext aSSLContext = createSSLContext ();
+      if (aSSLContext != null)
+        try
+        {
+          aSSLFactory = new SSLConnectionSocketFactory (aSSLContext);
+        }
+        catch (final SSLInitializationException ex)
+        {
+          // Fall through
+        }
     }
-    catch (final SSLInitializationException ex)
+    catch (final GeneralSecurityException ex)
     {
-      final SSLContext aSSLContext;
+      // Fall through
+    }
+
+    if (aSSLFactory == null)
+    {
+      // No custom SSL context present - use system defaults
       try
       {
-        aSSLContext = SSLContext.getInstance (SSLConnectionSocketFactory.TLS);
-        final KeyManager [] aKeyManagers = null;
-        final TrustManager [] aTrustManagers = null;
-        aSSLContext.init (aKeyManagers, aTrustManagers, RandomHelper.getSecureRandom ());
-        aSSLFactory = new SSLConnectionSocketFactory (aSSLContext);
+        aSSLFactory = SSLConnectionSocketFactory.getSystemSocketFactory ();
       }
-      catch (final SecurityException | KeyManagementException | NoSuchAlgorithmException ignore)
-      {}
+      catch (final SSLInitializationException ex)
+      {
+        try
+        {
+          aSSLFactory = SSLConnectionSocketFactory.getSocketFactory ();
+        }
+        catch (final SSLInitializationException ex2)
+        {
+          // Fall through
+        }
+      }
     }
-    if (aSSLFactory != null)
-      return aSSLFactory;
-
-    return SSLConnectionSocketFactory.getSocketFactory ();
+    return aSSLFactory;
   }
 
   @Nonnull
@@ -87,10 +116,14 @@ public class HttpClientWrapper
   @Nonnull
   public HttpClientConnectionManager createConnectionManager ()
   {
+    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
+    if (aSSLFactory == null)
+      throw new IllegalStateException ("Failed to create SSL SocketFactory");
+
     final Registry <ConnectionSocketFactory> sfr = RegistryBuilder.<ConnectionSocketFactory> create ()
                                                                   .register ("http",
                                                                              PlainConnectionSocketFactory.getSocketFactory ())
-                                                                  .register ("https", createSSLFactory ())
+                                                                  .register ("https", aSSLFactory)
                                                                   .build ();
 
     final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (sfr);

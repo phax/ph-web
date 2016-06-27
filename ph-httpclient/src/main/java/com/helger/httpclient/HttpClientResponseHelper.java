@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 
 import javax.annotation.concurrent.Immutable;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
@@ -26,6 +27,8 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.StringHelper;
@@ -33,6 +36,7 @@ import com.helger.json.IJson;
 import com.helger.json.serialize.JsonReader;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
+import com.helger.xml.serialize.read.DOMReader;
 
 @Immutable
 public final class HttpClientResponseHelper
@@ -45,8 +49,14 @@ public final class HttpClientResponseHelper
     if (aStatusLine.getStatusCode () >= 300)
     {
       EntityUtils.consume (aEntity);
-      throw new HttpResponseException (aStatusLine.getStatusCode (),
-                                       aStatusLine.getReasonPhrase () + " [" + aStatusLine.getStatusCode () + "]");
+      String sMessage = aStatusLine.getReasonPhrase () + " [" + aStatusLine.getStatusCode () + "]";
+      if (GlobalDebug.isDebugMode ())
+      {
+        sMessage += "\n" + aHttpResponse.getAllHeaders ().length + " headers returned";
+        for (final Header aHeader : aHttpResponse.getAllHeaders ())
+          sMessage += "\n  " + aHeader.getName () + "=" + aHeader.getValue ();
+      }
+      throw new HttpResponseException (aStatusLine.getStatusCode (), sMessage);
     }
     return aEntity;
   };
@@ -92,7 +102,7 @@ public final class HttpClientResponseHelper
     return JsonReader.readFromReader (aReader);
   };
 
-  public static final ResponseHandler <IMicroDocument> RH_XML = aHttpResponse -> {
+  public static final ResponseHandler <IMicroDocument> RH_MICRODOM = aHttpResponse -> {
     final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
@@ -115,6 +125,44 @@ public final class HttpClientResponseHelper
     // Read via reader to avoid duplication in memory
     final Reader aReader = new InputStreamReader (aEntity.getContent (), aCharset);
     return MicroReader.readMicroXML (aReader);
+  };
+
+  public static final ResponseHandler <Document> RH_XML = aHttpResponse -> {
+    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    if (aEntity == null)
+      throw new ClientProtocolException ("Response contains no content");
+    final ContentType aContentType = ContentType.getOrDefault (aEntity);
+    final Charset aCharset = aContentType.getCharset ();
+
+    if (GlobalDebug.isDebugMode ())
+    {
+      // Read all in String
+      final String sXML = EntityUtils.toString (aEntity, aCharset);
+
+      s_aLogger.info ("Got XML: <" + sXML + ">");
+
+      Document ret = null;
+      try
+      {
+        ret = DOMReader.readXMLDOM (sXML);
+      }
+      catch (final SAXException ex)
+      {}
+      if (ret == null)
+        throw new IllegalArgumentException ("Failed to parse as XML: " + sXML);
+      return ret;
+    }
+
+    // Read via reader to avoid duplication in memory
+    final Reader aReader = new InputStreamReader (aEntity.getContent (), aCharset);
+    try
+    {
+      return DOMReader.readXMLDOM (aReader);
+    }
+    catch (final SAXException ex)
+    {
+      throw new IllegalArgumentException ("Failed to parse as XML", ex);
+    }
   };
 
   private HttpClientResponseHelper ()

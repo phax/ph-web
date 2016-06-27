@@ -1,4 +1,4 @@
-package com.helger.http;
+package com.helger.httpclient;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

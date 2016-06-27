@@ -59,6 +59,10 @@
       <artifactId>ph-commons</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-web</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
     </dependency>
@@ -90,7 +94,7 @@
         <configuration>
           <instructions>
             <Export-Package>
-              com.helger.http.*
+              com.helger.httpclient.*
             </Export-Package>
             <Import-Package>
               !javax.annotation.*,*

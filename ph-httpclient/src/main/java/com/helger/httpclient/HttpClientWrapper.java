@@ -9,7 +9,7 @@
  * Unauthorized copying of this file, via any medium is
  * strictly prohibited.
  */
-package com.helger.http;
+package com.helger.httpclient;
 
 import java.nio.charset.CodingErrorAction;
 import java.security.KeyManagementException;

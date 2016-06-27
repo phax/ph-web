@@ -9,7 +9,7 @@
  * Unauthorized copying of this file, via any medium is
  * strictly prohibited.
  */
-package com.helger.http;
+package com.helger.httpclient;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

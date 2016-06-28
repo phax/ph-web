@@ -21,7 +21,11 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.protocol.RequestAcceptEncoding;
+import org.apache.http.client.protocol.RequestAddCookies;
+import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -34,6 +38,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLInitializationException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultRoutePlanner;
 import org.apache.http.impl.conn.DefaultSchemePortResolver;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -72,7 +77,10 @@ public class HttpClientWrapper
       if (aSSLContext != null)
         try
         {
-          aSSLFactory = new SSLConnectionSocketFactory (aSSLContext);
+          aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
+                                                        new String [] { "TLSv1" },
+                                                        null,
+                                                        SSLConnectionSocketFactory.getDefaultHostnameVerifier ());
         }
         catch (final SSLInitializationException ex)
         {
@@ -142,8 +150,10 @@ public class HttpClientWrapper
   public RequestConfig createRequestConfig ()
   {
     return RequestConfig.custom ()
-                        .setSocketTimeout (5000)
+                        .setCookieSpec (CookieSpecs.DEFAULT)
+                        .setSocketTimeout (10000)
                         .setConnectTimeout (5000)
+                        .setConnectionRequestTimeout (5000)
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (true)
                         .build ();
@@ -169,16 +179,24 @@ public class HttpClientWrapper
     final HttpRoutePlanner aRoutePlanner = createRoutePlanner ();
     final HttpHost aProxy = createProxyHost ();
 
-    return HttpClientBuilder.create ()
-                            .setConnectionManager (aConnMgr)
-                            .setDefaultRequestConfig (aRequestConfig)
-                            .setProxy (aProxy)
-                            .setRoutePlanner (aRoutePlanner);
+    final HttpClientBuilder aHCB = HttpClients.custom ()
+                                              .setConnectionManager (aConnMgr)
+                                              .setDefaultRequestConfig (aRequestConfig)
+                                              .setProxy (aProxy)
+                                              .setRoutePlanner (aRoutePlanner);
+    // Allow gzip,compress
+    aHCB.addInterceptorLast (new RequestAcceptEncoding ());
+    // Add cookies
+    aHCB.addInterceptorLast (new RequestAddCookies ());
+    // Un-gzip or uncompress
+    aHCB.addInterceptorLast (new ResponseContentEncoding ());
+    return aHCB;
   }
 
   @Nonnull
   public CloseableHttpClient createHttpClient ()
   {
-    return createHttpClientBuilder ().build ();
+    final HttpClientBuilder aBuilder = createHttpClientBuilder ();
+    return aBuilder.build ();
   }
 }

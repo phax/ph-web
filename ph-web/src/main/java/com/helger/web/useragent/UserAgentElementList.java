@@ -36,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 final class UserAgentElementList
 {
-  private final ICommonsList <Object> m_aList = new CommonsArrayList <> ();
+  private final ICommonsList <Object> m_aList = new CommonsArrayList<> ();
 
   public void add (@Nonnull final IPair <String, String> aPair)
   {
@@ -56,6 +56,7 @@ final class UserAgentElementList
     m_aList.add (aItems);
   }
 
+  @SuppressWarnings ("null")
   @Nullable
   public String getPairValue (@Nullable final String sKey)
   {

@@ -26,6 +26,7 @@ import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -33,6 +34,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLInitializationException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.DefaultRoutePlanner;
+import org.apache.http.impl.conn.DefaultSchemePortResolver;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.helger.commons.annotation.OverrideOnDemand;
@@ -153,16 +156,24 @@ public class HttpClientWrapper
   }
 
   @Nonnull
+  public HttpRoutePlanner createRoutePlanner ()
+  {
+    return new DefaultRoutePlanner (DefaultSchemePortResolver.INSTANCE);
+  }
+
+  @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
     final HttpClientConnectionManager aConnMgr = createConnectionManager ();
     final RequestConfig aRequestConfig = createRequestConfig ();
+    final HttpRoutePlanner aRoutePlanner = createRoutePlanner ();
     final HttpHost aProxy = createProxyHost ();
 
     return HttpClientBuilder.create ()
                             .setConnectionManager (aConnMgr)
                             .setDefaultRequestConfig (aRequestConfig)
-                            .setProxy (aProxy);
+                            .setProxy (aProxy)
+                            .setRoutePlanner (aRoutePlanner);
   }
 
   @Nonnull

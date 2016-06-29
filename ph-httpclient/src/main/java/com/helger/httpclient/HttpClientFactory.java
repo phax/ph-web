@@ -45,8 +45,17 @@ import com.helger.commons.charset.CCharset;
 @Immutable
 public class HttpClientFactory
 {
+  private final SSLContext m_aDefaultSSLContext;
+
   public HttpClientFactory ()
-  {}
+  {
+    this (null);
+  }
+
+  public HttpClientFactory (@Nullable final SSLContext aDefaultSSLContext)
+  {
+    m_aDefaultSSLContext = aDefaultSSLContext;
+  }
 
   /**
    * Create a custom SSLContext to use for the SSL Socket factory.
@@ -59,7 +68,7 @@ public class HttpClientFactory
   @OverrideOnDemand
   public SSLContext createSSLContext () throws GeneralSecurityException
   {
-    return null;
+    return m_aDefaultSSLContext;
   }
 
   @Nonnull

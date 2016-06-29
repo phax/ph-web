@@ -38,6 +38,12 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
 import com.helger.xml.serialize.read.DOMReader;
 
+/**
+ * This class contains some default response handler for basic data types that
+ * handles status codes appropriately.
+ * 
+ * @author Philip Helger
+ */
 @Immutable
 public final class HttpClientResponseHelper
 {

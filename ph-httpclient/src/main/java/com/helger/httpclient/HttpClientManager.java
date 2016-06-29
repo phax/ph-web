@@ -27,6 +27,11 @@ import org.apache.http.protocol.HttpContext;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.StreamHelper;
 
+/**
+ * A small wrapper around {@link CloseableHttpClient}.
+ * 
+ * @author Philip Helger
+ */
 public class HttpClientManager implements Closeable
 {
   private CloseableHttpClient m_aHttpClient;

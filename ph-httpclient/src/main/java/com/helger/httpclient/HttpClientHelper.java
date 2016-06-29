@@ -24,6 +24,11 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.web.http.EHTTPMethod;
 
+/**
+ * Some utility methods for creating and handling Apache httpclient objects.
+ *
+ * @author Philip Helger
+ */
 public final class HttpClientHelper
 {
   private HttpClientHelper ()

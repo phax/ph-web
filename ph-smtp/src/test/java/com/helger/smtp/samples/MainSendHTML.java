@@ -78,15 +78,8 @@ import com.helger.commons.lang.priviledged.IPrivilegedAction;
 
 public class MainSendHTML
 {
-
   public static void main (final String [] argv)
   {
-    new MainSendHTML (argv);
-  }
-
-  public MainSendHTML (final String [] argv)
-  {
-
     String to, subject = null, from = null, cc = null, bcc = null, url = null;
     String mailhost = null;
     final String mailer = "sendhtml";
@@ -288,11 +281,11 @@ public class MainSendHTML
     }
   }
 
-  public void collect (final BufferedReader in, final Message msg) throws MessagingException, IOException
+  private static void collect (final BufferedReader in, final Message msg) throws MessagingException, IOException
   {
     String line;
     final String subject = msg.getSubject ();
-    final StringBuffer sb = new StringBuffer ();
+    final StringBuilder sb = new StringBuilder ();
     sb.append ("<HTML>\n");
     sb.append ("<HEAD>\n");
     sb.append ("<TITLE>\n");

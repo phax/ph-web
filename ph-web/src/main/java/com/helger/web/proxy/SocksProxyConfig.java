@@ -67,8 +67,7 @@ public class SocksProxyConfig implements IProxyConfig
   public SocksProxyConfig (@Nonnull final String sHost, @Nonnegative final int nPort)
   {
     ValueEnforcer.notEmpty (sHost, "Host");
-    if (!NetworkPortHelper.isValidPort (nPort))
-      throw new IllegalArgumentException ("The passed port is invalid");
+    ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), () -> "The passed port " + nPort + " is invalid");
     m_sHost = sHost;
     m_nPort = nPort;
   }

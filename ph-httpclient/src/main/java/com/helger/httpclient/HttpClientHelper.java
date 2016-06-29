@@ -1,5 +1,7 @@
 package com.helger.httpclient;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
@@ -8,6 +10,7 @@ import javax.annotation.Nullable;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
@@ -27,6 +30,7 @@ import org.apache.http.protocol.HttpContext;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.web.http.EHTTPMethod;
+import com.helger.web.proxy.HttpProxyConfig;
 
 /**
  * Some utility methods for creating and handling Apache httpclient objects.
@@ -77,6 +81,36 @@ public final class HttpClientHelper
   {
     final Charset ret = aContentType.getCharset ();
     return ret != null ? ret : HTTP.DEF_CONTENT_CHARSET;
+  }
+
+  @Nullable
+  public static HttpHost createHttpHost (@Nullable final Proxy aProxy)
+  {
+    if (aProxy != null && aProxy.type () == Proxy.Type.HTTP)
+    {
+      if (aProxy.address () instanceof InetSocketAddress)
+      {
+        final InetSocketAddress aISA = (InetSocketAddress) aProxy.address ();
+        return new HttpHost (aISA.getHostName (), aISA.getPort ());
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  public static HttpHost createHttpHost (@Nullable final HttpProxyConfig aProxyConfig)
+  {
+    if (aProxyConfig != null)
+      return new HttpHost (aProxyConfig.getHost (), aProxyConfig.getPort ());
+    return null;
+  }
+
+  @Nullable
+  public static Credentials createCredentials (@Nullable final HttpProxyConfig aProxyConfig)
+  {
+    if (aProxyConfig != null && aProxyConfig.hasUserNameOrPassword ())
+      return new UsernamePasswordCredentials (aProxyConfig.getUserName (), aProxyConfig.getPassword ());
+    return null;
   }
 
   @Nonnull

@@ -52,7 +52,7 @@ public class HttpProxyConfig implements IProxyConfig
   private final int m_nPort;
   private final String m_sUserName;
   private final String m_sPassword;
-  private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
+  private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList<> ();
 
   public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
                           @Nonnull @Nonempty final String sHost,
@@ -76,10 +76,11 @@ public class HttpProxyConfig implements IProxyConfig
                           @Nullable final String sPassword,
                           @Nullable final List <String> aNonProxyHosts)
   {
-    if (!NetworkPortHelper.isValidPort (nPort))
-      throw new IllegalArgumentException ("The passed port is invalid: " + nPort);
-    m_eProxyType = ValueEnforcer.notNull (eProxyType, "ProxyType");
-    m_sHost = ValueEnforcer.notEmpty (sHost, "HostName");
+    ValueEnforcer.notNull (eProxyType, "ProxyType");
+    ValueEnforcer.notEmpty (sHost, "HostName");
+    ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), () -> "The passed port is invalid: " + nPort);
+    m_eProxyType = eProxyType;
+    m_sHost = sHost;
     m_nPort = nPort;
     m_sUserName = sUserName;
     m_sPassword = sPassword;
@@ -105,6 +106,11 @@ public class HttpProxyConfig implements IProxyConfig
   public int getPort ()
   {
     return m_nPort;
+  }
+
+  public boolean hasUserNameOrPassword ()
+  {
+    return StringHelper.hasText (m_sUserName) || m_sPassword != null;
   }
 
   @Nullable
@@ -171,11 +177,12 @@ public class HttpProxyConfig implements IProxyConfig
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("host", m_sHost)
-                                       .append ("port", m_nPort)
-                                       .append ("userName", m_sUserName)
-                                       .appendPassword ("password")
-                                       .append ("nonProxyHosts", m_aNonProxyHosts)
+    return new ToStringGenerator (this).append ("ProxyType", m_eProxyType)
+                                       .append ("Host", m_sHost)
+                                       .append ("Port", m_nPort)
+                                       .append ("UserName", m_sUserName)
+                                       .appendPassword ("Password")
+                                       .append ("NonProxyHosts", m_aNonProxyHosts)
                                        .toString ();
   }
 }

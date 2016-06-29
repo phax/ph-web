@@ -187,9 +187,6 @@ public enum EHttpProxyType implements IHasID <String>
   public static EHttpProxyType getFromURLProtocolOrDefault (@Nullable final IURLProtocol aURLProtocol,
                                                             @Nullable final EHttpProxyType eDefault)
   {
-    for (final EHttpProxyType eProxyType : values ())
-      if (eProxyType.m_aURLProtocol.equals (aURLProtocol))
-        return eProxyType;
-    return eDefault;
+    return EnumHelper.findFirst (EHttpProxyType.class, x -> x.m_aURLProtocol.equals (aURLProtocol), eDefault);
   }
 }

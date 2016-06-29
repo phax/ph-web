@@ -6,6 +6,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +20,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
@@ -75,13 +79,27 @@ public final class HttpClientHelper
     return ret != null ? ret : HTTP.DEF_CONTENT_CHARSET;
   }
 
-  @Nullable
+  @Nonnull
   public static HttpContext createHttpContext (@Nullable final HttpHost aProxy)
   {
-    if (aProxy == null)
-      return null;
-    final HttpClientContext ret = new HttpClientContext ();
-    ret.setRequestConfig (RequestConfig.custom ().setProxy (aProxy).build ());
+    return createHttpContext (aProxy, (Credentials) null);
+  }
+
+  @Nonnull
+  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
+                                               @Nullable final Credentials aProxyCredentials)
+  {
+    final HttpClientContext ret = HttpClientContext.create ();
+    if (aProxy != null)
+    {
+      ret.setRequestConfig (RequestConfig.custom ().setProxy (aProxy).build ());
+      if (aProxyCredentials != null)
+      {
+        final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+        aCredentialsProvider.setCredentials (new AuthScope (aProxy), aProxyCredentials);
+        ret.setCredentialsProvider (aCredentialsProvider);
+      }
+    }
     return ret;
   }
 }

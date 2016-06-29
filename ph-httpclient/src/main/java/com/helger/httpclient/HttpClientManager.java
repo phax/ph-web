@@ -29,7 +29,7 @@ import com.helger.commons.io.stream.StreamHelper;
 
 /**
  * A small wrapper around {@link CloseableHttpClient}.
- * 
+ *
  * @author Philip Helger
  */
 public class HttpClientManager implements Closeable

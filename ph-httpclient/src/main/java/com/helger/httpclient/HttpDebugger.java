@@ -16,7 +16,7 @@ import com.helger.commons.debug.GlobalDebug;
 /**
  * Some debugging for HTTP requests. Currently used in
  * {@link HttpClientManager}.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -45,6 +45,6 @@ public final class HttpDebugger
                       aRequest.getMethod () +
                       " " +
                       aRequest.getURI () +
-                      (aHttpContext != null ? " (with special context)" : ""));
+                      (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 }

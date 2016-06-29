@@ -56,6 +56,7 @@ public final class SocksProxyConfigTest
     }
   }
 
+  @SuppressWarnings ("unused")
   @Test
   @SuppressFBWarnings ({ "NP_NONNULL_PARAM_VIOLATION", "TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED" })
   public void testInvalid ()

@@ -5,6 +5,11 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -13,12 +18,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.web.http.EHTTPMethod;
 
+/**
+ * Some utility methods for creating and handling Apache httpclient objects.
+ *
+ * @author Philip Helger
+ */
 public final class HttpClientHelper
 {
   private HttpClientHelper ()
@@ -56,5 +70,36 @@ public final class HttpClientHelper
     if (StringHelper.hasNoText (sContentType))
       return null;
     return ContentType.create (sContentType, aCharset);
+  }
+
+  @Nonnull
+  public static Charset getCharset (@Nonnull final ContentType aContentType)
+  {
+    final Charset ret = aContentType.getCharset ();
+    return ret != null ? ret : HTTP.DEF_CONTENT_CHARSET;
+  }
+
+  @Nonnull
+  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy)
+  {
+    return createHttpContext (aProxy, (Credentials) null);
+  }
+
+  @Nonnull
+  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
+                                               @Nullable final Credentials aProxyCredentials)
+  {
+    final HttpClientContext ret = HttpClientContext.create ();
+    if (aProxy != null)
+    {
+      ret.setRequestConfig (RequestConfig.custom ().setProxy (aProxy).build ());
+      if (aProxyCredentials != null)
+      {
+        final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+        aCredentialsProvider.setCredentials (new AuthScope (aProxy), aProxyCredentials);
+        ret.setCredentialsProvider (aCredentialsProvider);
+      }
+    }
+    return ret;
   }
 }

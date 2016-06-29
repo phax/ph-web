@@ -16,8 +16,6 @@
  */
 package com.helger.web.useragent.uaprofile;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +47,7 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.commons.url.URLHelper;
 import com.helger.web.servlet.request.RequestHelper;
 
 /**
@@ -77,7 +76,7 @@ public final class UAProfileDatabase
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final ICommonsSet <UAProfile> s_aUniqueUAProfiles = new CommonsHashSet <> ();
+  private static final ICommonsSet <UAProfile> s_aUniqueUAProfiles = new CommonsHashSet<> ();
   @GuardedBy ("s_aRWLock")
   private static Consumer <UAProfile> s_aNewUAProfileCallback;
 
@@ -142,7 +141,7 @@ public final class UAProfileDatabase
     }
 
     // Parse the diffs
-    final ICommonsMap <Integer, String> aProfileDiffData = new CommonsHashMap <> ();
+    final ICommonsMap <Integer, String> aProfileDiffData = new CommonsHashMap<> ();
     while (aProfileDiffs.hasMoreElements ())
     {
       String sProfileDiff = aProfileDiffs.nextElement ();
@@ -234,8 +233,8 @@ public final class UAProfileDatabase
     }
 
     // Parse profile headers
-    final ICommonsList <String> aProfileData = new CommonsArrayList <> ();
-    final ICommonsMap <Integer, byte []> aProfileDiffDigests = new CommonsHashMap <> ();
+    final ICommonsList <String> aProfileData = new CommonsArrayList<> ();
+    final ICommonsMap <Integer, byte []> aProfileDiffDigests = new CommonsHashMap<> ();
     while (aProfiles.hasMoreElements ())
     {
       String sProfile = aProfiles.nextElement ();
@@ -287,15 +286,10 @@ public final class UAProfileDatabase
             else
             {
               // Assume it is a URL
-              try
-              {
-                new URL (sToken);
+              if (URLHelper.getAsURL (sToken) != null)
                 aProfileData.add (sToken);
-              }
-              catch (final MalformedURLException ex)
-              {
+              else
                 s_aLogger.error ("Failed to convert profile token '" + sToken + "' to a URL!");
-              }
             }
           }
         }
@@ -312,7 +306,7 @@ public final class UAProfileDatabase
     final ICommonsMap <Integer, String> aProfileDiffData = _getProfileDiffData (aHttpRequest, sExtNSValue);
 
     // Merge data and digest
-    final ICommonsMap <Integer, UAProfileDiff> aProfileDiffs = new CommonsHashMap <> ();
+    final ICommonsMap <Integer, UAProfileDiff> aProfileDiffs = new CommonsHashMap<> ();
     for (final Map.Entry <Integer, String> aEntry : aProfileDiffData.entrySet ())
     {
       final Integer aIndex = aEntry.getKey ();

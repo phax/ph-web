@@ -38,6 +38,12 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
 import com.helger.xml.serialize.read.DOMReader;
 
+/**
+ * This class contains some default response handler for basic data types that
+ * handles status codes appropriately.
+ * 
+ * @author Philip Helger
+ */
 @Immutable
 public final class HttpClientResponseHelper
 {
@@ -73,7 +79,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       return null;
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
     return EntityUtils.toString (aEntity, aCharset);
   };
 
@@ -82,7 +88,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {
@@ -107,7 +113,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {
@@ -132,7 +138,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {

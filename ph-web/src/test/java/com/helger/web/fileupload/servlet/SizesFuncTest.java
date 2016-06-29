@@ -17,7 +17,7 @@
 package com.helger.web.fileupload.servlet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
@@ -53,49 +54,51 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
   @Test
   public void testFileUpload () throws IOException, FileUploadException
   {
-    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-    int add = 16;
-    int num = 0;
-    for (int i = 0; i < 16384; i += add)
+    try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ())
     {
-      if (++add == 32)
+      int add = 16;
+      int num = 0;
+      for (int i = 0; i < 16384; i += add)
       {
-        add = 16;
+        if (++add == 32)
+        {
+          add = 16;
+        }
+        final String header = "-----1234\r\n" +
+                              "Content-Disposition: form-data; name=\"field" +
+                              (num++) +
+                              "\"\r\n" +
+                              "\r\n";
+        baos.write (header.getBytes (CCharset.CHARSET_US_ASCII_OBJ));
+        for (int j = 0; j < i; j++)
+        {
+          baos.write ((byte) j);
+        }
+        baos.write ("\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
       }
-      final String header = "-----1234\r\n" +
-                            "Content-Disposition: form-data; name=\"field" +
-                            (num++) +
-                            "\"\r\n" +
-                            "\r\n";
-      baos.write (header.getBytes (CCharset.CHARSET_US_ASCII_OBJ));
-      for (int j = 0; j < i; j++)
-      {
-        baos.write ((byte) j);
-      }
-      baos.write ("\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
-    }
-    baos.write ("-----1234--\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
+      baos.write ("-----1234--\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
 
-    final List <IFileItem> fileItems = parseUpload (baos.toByteArray ());
-    final Iterator <IFileItem> fileIter = fileItems.iterator ();
-    add = 16;
-    num = 0;
-    for (int i = 0; i < 16384; i += add)
-    {
-      if (++add == 32)
+      final ICommonsList <IFileItem> fileItems = parseUpload (baos.toByteArray ());
+      final Iterator <IFileItem> fileIter = fileItems.iterator ();
+      add = 16;
+      num = 0;
+      for (int i = 0; i < 16384; i += add)
       {
-        add = 16;
+        if (++add == 32)
+        {
+          add = 16;
+        }
+        final IFileItem item = fileIter.next ();
+        assertEquals ("field" + (num++), item.getFieldName ());
+        final byte [] bytes = item.get ();
+        assertEquals (i, bytes.length);
+        for (int j = 0; j < i; j++)
+        {
+          assertEquals ((byte) j, bytes[j]);
+        }
       }
-      final IFileItem item = fileIter.next ();
-      assertEquals ("field" + (num++), item.getFieldName ());
-      final byte [] bytes = item.get ();
-      assertEquals (i, bytes.length);
-      for (int j = 0; j < i; j++)
-      {
-        assertEquals ((byte) j, bytes[j]);
-      }
+      assertFalse (fileIter.hasNext ());
     }
-    assertTrue (!fileIter.hasNext ());
   }
 
   /**

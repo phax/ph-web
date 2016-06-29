@@ -11,6 +11,7 @@
  */
 package com.helger.httpclient;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.function.Supplier;
 
@@ -24,75 +25,56 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.scope.IScope;
-import com.helger.commons.scope.singleton.AbstractGlobalSingleton;
 
-public final class HttpClientManager extends AbstractGlobalSingleton
+public class HttpClientManager implements Closeable
 {
-  private static Supplier <CloseableHttpClient> s_aHttpClientSupplier = () -> new HttpClientWrapper ().createHttpClient ();
-
   private CloseableHttpClient m_aHttpClient;
 
-  public static void setHttpClientFactory (@Nonnull final Supplier <CloseableHttpClient> aHttpClientSupplier)
-  {
-    if (isGlobalSingletonInstantiated (HttpClientManager.class))
-      throw new IllegalStateException ("You cannot set the supplier after instantiation!");
-    s_aHttpClientSupplier = ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
-  }
-
-  @Deprecated
-  @UsedViaReflection
   public HttpClientManager ()
-  {}
-
-  @Nonnull
-  public static HttpClientManager getInstance ()
   {
-    return getGlobalSingleton (HttpClientManager.class);
+    this ( () -> new HttpClientFactory ().createHttpClient ());
   }
 
-  @Override
-  protected void onAfterInstantiation (@Nonnull final IScope aScope)
+  public HttpClientManager (@Nonnull final Supplier <CloseableHttpClient> aHttpClientSupplier)
   {
-    m_aHttpClient = s_aHttpClientSupplier.get ();
+    ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
+    m_aHttpClient = aHttpClientSupplier.get ();
   }
 
-  @Override
-  protected void onBeforeDestroy (@Nonnull final IScope aScope)
+  public void close () throws IOException
   {
     StreamHelper.close (m_aHttpClient);
     m_aHttpClient = null;
   }
 
   @Nonnull
-  public static CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
+  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
   {
     return execute (aRequest, (HttpContext) null);
   }
 
   @Nonnull
-  public static CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
-                                               @Nullable final HttpContext aHttpContext) throws IOException
+  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
+                                        @Nullable final HttpContext aHttpContext) throws IOException
   {
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    return getInstance ().m_aHttpClient.execute (aRequest, aHttpContext);
+    return m_aHttpClient.execute (aRequest, aHttpContext);
   }
 
   @Nullable
-  public static <T> T execute (@Nonnull final HttpUriRequest aRequest,
-                               @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
+                        @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
     return execute (aRequest, (HttpContext) null, aResponseHandler);
   }
 
   @Nullable
-  public static <T> T execute (@Nonnull final HttpUriRequest aRequest,
-                               @Nullable final HttpContext aHttpContext,
-                               @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
+                        @Nullable final HttpContext aHttpContext,
+                        @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    return getInstance ().m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
+    return m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
   }
 }

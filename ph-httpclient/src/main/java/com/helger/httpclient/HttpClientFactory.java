@@ -43,9 +43,9 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.charset.CCharset;
 
 @Immutable
-public class HttpClientWrapper
+public class HttpClientFactory
 {
-  public HttpClientWrapper ()
+  public HttpClientFactory ()
   {}
 
   /**

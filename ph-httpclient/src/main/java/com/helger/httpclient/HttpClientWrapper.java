@@ -19,7 +19,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.Consts;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -30,7 +29,6 @@ import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -39,11 +37,10 @@ import org.apache.http.conn.ssl.SSLInitializationException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultRoutePlanner;
-import org.apache.http.impl.conn.DefaultSchemePortResolver;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.charset.CCharset;
 
 @Immutable
 public class HttpClientWrapper
@@ -120,7 +117,7 @@ public class HttpClientWrapper
     return ConnectionConfig.custom ()
                            .setMalformedInputAction (CodingErrorAction.IGNORE)
                            .setUnmappableInputAction (CodingErrorAction.IGNORE)
-                           .setCharset (Consts.UTF_8)
+                           .setCharset (CCharset.CHARSET_UTF_8_OBJ)
                            .build ();
   }
 
@@ -166,24 +163,16 @@ public class HttpClientWrapper
   }
 
   @Nonnull
-  public HttpRoutePlanner createRoutePlanner ()
-  {
-    return new DefaultRoutePlanner (DefaultSchemePortResolver.INSTANCE);
-  }
-
-  @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
     final HttpClientConnectionManager aConnMgr = createConnectionManager ();
     final RequestConfig aRequestConfig = createRequestConfig ();
-    final HttpRoutePlanner aRoutePlanner = createRoutePlanner ();
     final HttpHost aProxy = createProxyHost ();
 
     final HttpClientBuilder aHCB = HttpClients.custom ()
                                               .setConnectionManager (aConnMgr)
                                               .setDefaultRequestConfig (aRequestConfig)
-                                              .setProxy (aProxy)
-                                              .setRoutePlanner (aRoutePlanner);
+                                              .setProxy (aProxy);
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());
     // Add cookies

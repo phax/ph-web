@@ -73,7 +73,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       return null;
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
     return EntityUtils.toString (aEntity, aCharset);
   };
 
@@ -82,7 +82,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {
@@ -107,7 +107,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {
@@ -132,7 +132,7 @@ public final class HttpClientResponseHelper
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = aContentType.getCharset ();
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (GlobalDebug.isDebugMode ())
     {

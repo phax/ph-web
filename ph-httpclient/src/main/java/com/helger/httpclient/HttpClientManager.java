@@ -21,6 +21,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UsedViaReflection;
@@ -68,15 +69,30 @@ public final class HttpClientManager extends AbstractGlobalSingleton
   @Nonnull
   public static CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
   {
-    HttpDebugger.beforeRequest (aRequest);
-    return getInstance ().m_aHttpClient.execute (aRequest);
+    return execute (aRequest, (HttpContext) null);
+  }
+
+  @Nonnull
+  public static CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
+                                               @Nullable final HttpContext aHttpContext) throws IOException
+  {
+    HttpDebugger.beforeRequest (aRequest, aHttpContext);
+    return getInstance ().m_aHttpClient.execute (aRequest, aHttpContext);
   }
 
   @Nullable
   public static <T> T execute (@Nonnull final HttpUriRequest aRequest,
                                @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
-    HttpDebugger.beforeRequest (aRequest);
-    return getInstance ().m_aHttpClient.execute (aRequest, aResponseHandler);
+    return execute (aRequest, (HttpContext) null, aResponseHandler);
+  }
+
+  @Nullable
+  public static <T> T execute (@Nonnull final HttpUriRequest aRequest,
+                               @Nullable final HttpContext aHttpContext,
+                               @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+  {
+    HttpDebugger.beforeRequest (aRequest, aHttpContext);
+    return getInstance ().m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
   }
 }

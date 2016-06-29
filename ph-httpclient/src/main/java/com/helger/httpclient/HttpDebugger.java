@@ -22,6 +22,11 @@ public final class HttpDebugger
   private HttpDebugger ()
   {}
 
+  public static boolean isEnabled ()
+  {
+    return s_aEnabled.get ();
+  }
+
   public static void setEnabled (final boolean bEnabled)
   {
     s_aEnabled.set (bEnabled);
@@ -29,7 +34,7 @@ public final class HttpDebugger
 
   public static void beforeRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext)
   {
-    if (s_aEnabled.get ())
+    if (isEnabled ())
       s_aLogger.info ("Before HTTP call: " +
                       aRequest.getMethod () +
                       " " +

@@ -19,6 +19,7 @@ package com.helger.web.useragent.browser;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.version.Version;
@@ -32,8 +33,7 @@ import com.helger.web.useragent.spider.WebSpiderInfo;
 public class BrowserInfoSpider extends BrowserInfo
 {
   /** Is it not */
-  @SuppressWarnings ("hiding")
-  public static final BrowserInfoSpider IS_IT_NOT = new BrowserInfoSpider ();
+  public static final BrowserInfoSpider IS_IT_NOT_SPIDER = new BrowserInfoSpider ();
 
   private final WebSpiderInfo m_aWebSpiderInfo;
 
@@ -42,12 +42,13 @@ public class BrowserInfoSpider extends BrowserInfo
     m_aWebSpiderInfo = null;
   }
 
-  public BrowserInfoSpider (final WebSpiderInfo aWebSpiderInfo)
+  public BrowserInfoSpider (@Nullable final WebSpiderInfo aWebSpiderInfo)
   {
     super (EBrowserType.SPIDER, new Version (0));
     m_aWebSpiderInfo = aWebSpiderInfo;
   }
 
+  @Nullable
   public String getSearchEngineName ()
   {
     return m_aWebSpiderInfo == null ? null : m_aWebSpiderInfo.getName ();

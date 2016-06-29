@@ -31,8 +31,7 @@ import com.helger.commons.version.Version;
 public class BrowserInfoIE extends BrowserInfo
 {
   /** Is it not */
-  @SuppressWarnings ("hiding")
-  public static final BrowserInfoIE IS_IT_NOT = new BrowserInfoIE ();
+  public static final BrowserInfoIE IS_IT_NOT_IE = new BrowserInfoIE ();
 
   private final boolean m_bIsIECompatibilityMode;
 

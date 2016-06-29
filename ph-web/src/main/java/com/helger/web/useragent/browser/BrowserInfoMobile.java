@@ -19,6 +19,7 @@ package com.helger.web.useragent.browser;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.version.Version;
@@ -31,8 +32,7 @@ import com.helger.commons.version.Version;
 public class BrowserInfoMobile extends BrowserInfo
 {
   /** Is it not */
-  @SuppressWarnings ("hiding")
-  public static final BrowserInfoMobile IS_IT_NOT = new BrowserInfoMobile ();
+  public static final BrowserInfoMobile IS_IT_NOT_MOBILE = new BrowserInfoMobile ();
 
   private final String m_sUA;
 
@@ -41,13 +41,14 @@ public class BrowserInfoMobile extends BrowserInfo
     m_sUA = null;
   }
 
-  public BrowserInfoMobile (final String sUA)
+  public BrowserInfoMobile (@Nullable final String sUA)
   {
     super (EBrowserType.MOBILE, new Version (0));
     m_sUA = sUA;
   }
 
   @Override
+  @Nullable
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
     return m_sUA;

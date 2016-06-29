@@ -184,10 +184,10 @@ final class UserAgent implements IUserAgent
             m_aInfoIE = new BrowserInfoIE (aVersion, false);
           }
           else
-            m_aInfoIE = BrowserInfoIE.IS_IT_NOT;
+            m_aInfoIE = BrowserInfoIE.IS_IT_NOT_IE;
         }
         else
-          m_aInfoIE = BrowserInfoIE.IS_IT_NOT;
+          m_aInfoIE = BrowserInfoIE.IS_IT_NOT_IE;
       }
       else
       {
@@ -383,7 +383,7 @@ final class UserAgent implements IUserAgent
     {
       final String sVersion = MobileBrowserManager.getFromUserAgent (m_sFullUserAgent);
       if (sVersion == null)
-        m_aInfoMobile = BrowserInfoMobile.IS_IT_NOT;
+        m_aInfoMobile = BrowserInfoMobile.IS_IT_NOT_MOBILE;
       else
         m_aInfoMobile = new BrowserInfoMobile (sVersion);
     }
@@ -397,7 +397,7 @@ final class UserAgent implements IUserAgent
     {
       final WebSpiderInfo aWebSpiderInfo = WebSpiderManager.getInstance ().getWebSpiderFromUserAgent (m_sFullUserAgent);
       if (aWebSpiderInfo == null)
-        m_aInfoWebSpider = BrowserInfoSpider.IS_IT_NOT;
+        m_aInfoWebSpider = BrowserInfoSpider.IS_IT_NOT_SPIDER;
       else
         m_aInfoWebSpider = new BrowserInfoSpider (aWebSpiderInfo);
     }
@@ -411,7 +411,7 @@ final class UserAgent implements IUserAgent
     {
       final String sApp = ApplicationUserAgentManager.getFromUserAgent (m_sFullUserAgent);
       if (sApp == null)
-        m_aInfoApplication = BrowserInfoSpider.IS_IT_NOT;
+        m_aInfoApplication = BrowserInfoSpider.IS_IT_NOT_SPIDER;
       else
         m_aInfoApplication = new BrowserInfo (EBrowserType.APPLICATION, Version.DEFAULT_VERSION);
     }

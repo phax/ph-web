@@ -45,12 +45,20 @@ public class HttpClientManager implements Closeable
   {
     ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
     m_aHttpClient = aHttpClientSupplier.get ();
+    if (m_aHttpClient == null)
+      throw new IllegalArgumentException ("The provided HttpClient factory created an invalid HttpClient!");
   }
 
   public void close () throws IOException
   {
     StreamHelper.close (m_aHttpClient);
     m_aHttpClient = null;
+  }
+
+  private void _checkClosed ()
+  {
+    if (m_aHttpClient == null)
+      throw new IllegalStateException ("This HttpClientManager was already closed!");
   }
 
   @Nonnull
@@ -63,6 +71,7 @@ public class HttpClientManager implements Closeable
   public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
                                         @Nullable final HttpContext aHttpContext) throws IOException
   {
+    _checkClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
     return m_aHttpClient.execute (aRequest, aHttpContext);
   }
@@ -79,6 +88,7 @@ public class HttpClientManager implements Closeable
                         @Nullable final HttpContext aHttpContext,
                         @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
+    _checkClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
     return m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
   }

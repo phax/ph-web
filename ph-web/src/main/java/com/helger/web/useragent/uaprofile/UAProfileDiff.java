@@ -35,9 +35,9 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.messagedigest.EMessageDigestAlgorithm;
-import com.helger.commons.messagedigest.MessageDigestValue;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.security.messagedigest.EMessageDigestAlgorithm;
+import com.helger.security.messagedigest.MessageDigestValue;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
 

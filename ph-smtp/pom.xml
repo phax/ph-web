@@ -30,7 +30,6 @@
   <description>Java library for simple mail sending based on javax.mail</description>
   <url>https://github.com/phax/ph-web/ph-smtp</url>
   <inceptionYear>2015</inceptionYear>
- 
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -38,12 +37,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
   <organization>
     <name>Philip Helger</name>
     <url>http://www.helger.com</url>
   </organization>
-
   <developers>
     <developer>
       <id>philip</id>
@@ -52,7 +49,6 @@
       <url>http://www.helger.com</url>
     </developer>
   </developers>
-
   <dependencies>
     <dependency>
       <groupId>com.helger</groupId>
@@ -74,20 +70,17 @@
       <groupId>com.helger</groupId>
       <artifactId>ph-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>dnsjava</groupId>
       <artifactId>dnsjava</artifactId>
       <optional>true</optional>
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
   <build>
     <plugins>
       <plugin>
@@ -96,12 +89,11 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>
-              com.helger.smtp.*
-            </Export-Package>
-            <Import-Package>
-              !javax.annotation.*,*
-            </Import-Package>
+            <Export-Package>com.helger.smtp.*</Export-Package>
+            <Import-Package>!javax.annotation.*,*</Import-Package>
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.smtp.config.ThirdPartyModuleProvider_ph_smtp,
+osgi.serviceloader; osgi.serviceloader=com.helger.smtp.config.MicroTypeConverterRegistrar_ph_smtp</Provide-Capability>
           </instructions>
         </configuration>
       </plugin>

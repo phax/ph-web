@@ -56,7 +56,6 @@ final class UserAgentElementList
     m_aList.add (aItems);
   }
 
-  @SuppressWarnings ("null")
   @Nullable
   public String getPairValue (@Nullable final String sKey)
   {

@@ -50,7 +50,7 @@ import com.helger.commons.charset.CCharset;
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
  * the {@link HttpClientManager}.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -82,7 +82,7 @@ public class HttpClientFactory
     return m_aDefaultSSLContext;
   }
 
-  @Nonnull
+  @Nullable
   public LayeredConnectionSocketFactory createSSLFactory ()
   {
     LayeredConnectionSocketFactory aSSLFactory = null;

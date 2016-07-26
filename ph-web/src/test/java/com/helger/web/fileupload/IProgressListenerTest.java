@@ -28,9 +28,11 @@ import java.nio.charset.Charset;
 
 import org.junit.Test;
 
+import com.helger.commons.CGlobal;
 import com.helger.commons.charset.CCharset;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
+import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.progress.IProgressListener;
@@ -122,7 +124,7 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
                          final long pContentLength,
                          final MockHttpServletRequest request) throws FileUploadException, IOException
   {
-    final ServletFileUpload upload = new ServletFileUpload (null);
+    final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null));
     final ProgressListenerImpl listener = new ProgressListenerImpl (pContentLength, NUM_ITEMS);
     upload.setProgressListener (listener);
     final IFileItemIterator iter = upload.getItemIterator (request);

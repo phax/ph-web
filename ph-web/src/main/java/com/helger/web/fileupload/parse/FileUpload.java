@@ -16,6 +16,8 @@
  */
 package com.helger.web.fileupload.parse;
 
+import javax.annotation.Nonnull;
+
 import com.helger.web.fileupload.IFileItemFactory;
 
 /**
@@ -54,7 +56,7 @@ public class FileUpload extends AbstractFileUploadBase
    * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
-  public FileUpload (final IFileItemFactory aFileItemFactory)
+  public FileUpload (@Nonnull final IFileItemFactory aFileItemFactory)
   {
     super ();
     m_aFileItemFactory = aFileItemFactory;
@@ -66,6 +68,7 @@ public class FileUpload extends AbstractFileUploadBase
    * @return The factory class for new file items.
    */
   @Override
+  @Nonnull
   public IFileItemFactory getFileItemFactory ()
   {
     return m_aFileItemFactory;

@@ -46,7 +46,7 @@ import com.helger.xml.serialize.read.DOMReader;
 /**
  * This class contains some default response handler for basic data types that
  * handles status codes appropriately.
- * 
+ *
  * @author Philip Helger
  */
 @Immutable
@@ -54,7 +54,7 @@ public final class HttpClientResponseHelper
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (HttpClientResponseHelper.class);
 
-  private static final ResponseHandler <HttpEntity> _RH_ENTITY = aHttpResponse -> {
+  public static final ResponseHandler <HttpEntity> RH_ENTITY = aHttpResponse -> {
     final StatusLine aStatusLine = aHttpResponse.getStatusLine ();
     final HttpEntity aEntity = aHttpResponse.getEntity ();
     if (aStatusLine.getStatusCode () >= 300)
@@ -73,14 +73,14 @@ public final class HttpClientResponseHelper
   };
 
   public static final ResponseHandler <byte []> RH_BYTE_ARRAY = aHttpResponse -> {
-    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
     return EntityUtils.toByteArray (aEntity);
   };
 
   public static final ResponseHandler <String> RH_STRING = aHttpResponse -> {
-    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
@@ -89,7 +89,7 @@ public final class HttpClientResponseHelper
   };
 
   public static final ResponseHandler <IJson> RH_JSON = aHttpResponse -> {
-    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
@@ -114,7 +114,7 @@ public final class HttpClientResponseHelper
   };
 
   public static final ResponseHandler <IMicroDocument> RH_MICRODOM = aHttpResponse -> {
-    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
@@ -139,7 +139,7 @@ public final class HttpClientResponseHelper
   };
 
   public static final ResponseHandler <Document> RH_XML = aHttpResponse -> {
-    final HttpEntity aEntity = _RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = RH_ENTITY.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
     final ContentType aContentType = ContentType.getOrDefault (aEntity);

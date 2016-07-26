@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.util.Comparator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.helger.commons.string.StringHelper;
@@ -53,7 +52,6 @@ public final class DefaultNetworkPortsTest
     assertEquals (ENetworkProtocol.UDP, DefaultNetworkPorts.UDP_175_vmnet.getProtocol ());
   }
 
-  @Ignore
   @Test
   public void exportIntoCodelist ()
   {

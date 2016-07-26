@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -57,7 +59,7 @@ public class HTTPHeaderMap implements
                            ICloneable <HTTPHeaderMap>,
                            Serializable
 {
-  private final ICommonsOrderedMap <String, ICommonsList <String>> m_aHeaders = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, ICommonsList <String>> m_aHeaders = new CommonsLinkedHashMap<> ();
 
   /**
    * Default constructor.
@@ -100,7 +102,7 @@ public class HTTPHeaderMap implements
     ICommonsList <String> aValues = m_aHeaders.get (sName);
     if (aValues == null)
     {
-      aValues = new CommonsArrayList <> (2);
+      aValues = new CommonsArrayList<> (2);
       m_aHeaders.put (sName, aValues);
     }
     return aValues;
@@ -378,7 +380,7 @@ public class HTTPHeaderMap implements
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderValues (@Nullable final String sName)
   {
-    return new CommonsArrayList <> (m_aHeaders.get (sName));
+    return new CommonsArrayList<> (m_aHeaders.get (sName));
   }
 
   /**
@@ -394,7 +396,7 @@ public class HTTPHeaderMap implements
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderValuesCaseInsensitive (@Nullable final String sName)
   {
-    final ICommonsList <String> ret = new CommonsArrayList <> ();
+    final ICommonsList <String> ret = new CommonsArrayList<> ();
     if (StringHelper.hasText (sName))
       for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
         if (sName.equalsIgnoreCase (aEntry.getKey ()))
@@ -453,5 +455,25 @@ public class HTTPHeaderMap implements
   public String toString ()
   {
     return new ToStringGenerator (this).append ("headers", m_aHeaders).toString ();
+  }
+
+  @Nonnull
+  public static HTTPHeaderMap createFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final HTTPHeaderMap ret = new HTTPHeaderMap ();
+    final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
+    while (aHeaders.hasMoreElements ())
+    {
+      final String sName = aHeaders.nextElement ();
+      final Enumeration <String> eHeaderValues = aHttpRequest.getHeaders (sName);
+      while (eHeaderValues.hasMoreElements ())
+      {
+        final String sValue = eHeaderValues.nextElement ();
+        ret.addHeader (sName, sValue);
+      }
+    }
+    return ret;
   }
 }

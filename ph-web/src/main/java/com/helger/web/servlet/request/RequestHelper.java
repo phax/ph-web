@@ -480,21 +480,7 @@ public final class RequestHelper
   @ReturnsMutableCopy
   public static HTTPHeaderMap getRequestHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    final HTTPHeaderMap ret = new HTTPHeaderMap ();
-    final Enumeration <?> eHeaders = aHttpRequest.getHeaderNames ();
-    while (eHeaders.hasMoreElements ())
-    {
-      final String sName = (String) eHeaders.nextElement ();
-      final Enumeration <?> eHeaderValues = aHttpRequest.getHeaders (sName);
-      while (eHeaderValues.hasMoreElements ())
-      {
-        final String sValue = (String) eHeaderValues.nextElement ();
-        ret.addHeader (sName, sValue);
-      }
-    }
-    return ret;
+    return HTTPHeaderMap.createFromRequest (aHttpRequest);
   }
 
   @Nonnull

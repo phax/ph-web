@@ -1,0 +1,1410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ports>
+  <defaultport port="0" protocol="tcp" name="spr-itunes/spl-itunes" desc="Shirt Pocket netTunes/launchTunes" />
+  <defaultport port="1" protocol="tcp" name="tcpmux" desc="TCP Port Service Multiplexer" />
+  <defaultport port="1" protocol="udp" name="tcpmux" desc="TCP Port Service Multiplexer" />
+  <defaultport port="2" protocol="tcp" name="compressnet" desc="Management Utility" />
+  <defaultport port="2" protocol="udp" name="compressnet" desc="Management Utility" />
+  <defaultport port="3" protocol="tcp" name="compressnet" desc="Compression Process" />
+  <defaultport port="3" protocol="udp" name="compressnet" desc="Compression Process" />
+  <defaultport port="5" protocol="tcp" name="rje" desc="Remote Job Entry" />
+  <defaultport port="5" protocol="udp" name="rje" desc="Remote Job Entry" />
+  <defaultport port="7" protocol="tcp" name="echo" desc="Echo" />
+  <defaultport port="7" protocol="udp" name="echo" desc="Echo" />
+  <defaultport port="9" protocol="tcp" name="discard" desc="Discard" />
+  <defaultport port="9" protocol="udp" name="discard" desc="Discard" />
+  <defaultport port="11" protocol="tcp" name="systat" desc="Active Users" />
+  <defaultport port="11" protocol="udp" name="systat" desc="Active Users" />
+  <defaultport port="13" protocol="tcp" name="daytime" desc="Daytime (RFC 867)" />
+  <defaultport port="13" protocol="udp" name="daytime" desc="Daytime (RFC 867)" />
+  <defaultport port="17" protocol="tcp" name="qotd" desc="Quote of the Day" />
+  <defaultport port="17" protocol="udp" name="qotd" desc="Quote of the Day" />
+  <defaultport port="18" protocol="tcp" name="msp" desc="Message Send Protocol" />
+  <defaultport port="18" protocol="udp" name="msp" desc="Message Send Protocol" />
+  <defaultport port="19" protocol="tcp" name="chargen" desc="Character Generator" />
+  <defaultport port="19" protocol="udp" name="chargen" desc="Character Generator" />
+  <defaultport port="20" protocol="tcp" name="ftp-data" desc="File Transfer [Default Data]" />
+  <defaultport port="20" protocol="udp" name="ftp-data" desc="File Transfer [Default Data]" />
+  <defaultport port="21" protocol="tcp" name="ftp" desc="File Transfer [Control]" />
+  <defaultport port="21" protocol="udp" name="ftp" desc="File Transfer [Control]" />
+  <defaultport port="22" protocol="tcp" name="ssh" desc="SSH Remote Login Protocol" />
+  <defaultport port="22" protocol="udp" name="ssh" desc="SSH Remote Login Protocol" />
+  <defaultport port="23" protocol="tcp" name="telnet" desc="Telnet" />
+  <defaultport port="23" protocol="udp" name="telnet" desc="Telnet" />
+  <defaultport port="24" protocol="tcp" desc="any private mail system" />
+  <defaultport port="24" protocol="udp" desc="any private mail system" />
+  <defaultport port="25" protocol="tcp" name="smtp" desc="Simple Mail Transfer" />
+  <defaultport port="25" protocol="udp" name="smtp" desc="Simple Mail Transfer" />
+  <defaultport port="27" protocol="tcp" name="nsw-fe" desc="NSW User System FE" />
+  <defaultport port="27" protocol="udp" name="nsw-fe" desc="NSW User System FE" />
+  <defaultport port="29" protocol="tcp" name="msg-icp" desc="MSG ICP" />
+  <defaultport port="29" protocol="udp" name="msg-icp" desc="MSG ICP" />
+  <defaultport port="31" protocol="tcp" name="msg-auth" desc="MSG Authentication" />
+  <defaultport port="31" protocol="udp" name="msg-auth" desc="MSG Authentication" />
+  <defaultport port="33" protocol="tcp" name="dsp" desc="Display Support Protocol" />
+  <defaultport port="33" protocol="udp" name="dsp" desc="Display Support Protocol" />
+  <defaultport port="35" protocol="tcp" desc="any private printer server" />
+  <defaultport port="35" protocol="udp" desc="any private printer server" />
+  <defaultport port="37" protocol="tcp" name="time" desc="Time" />
+  <defaultport port="37" protocol="udp" name="time" desc="Time" />
+  <defaultport port="38" protocol="tcp" name="rap" desc="Route Access Protocol" />
+  <defaultport port="38" protocol="udp" name="rap" desc="Route Access Protocol" />
+  <defaultport port="39" protocol="tcp" name="rlp" desc="Resource Location Protocol" />
+  <defaultport port="39" protocol="udp" name="rlp" desc="Resource Location Protocol" />
+  <defaultport port="41" protocol="tcp" name="graphics" desc="Graphics" />
+  <defaultport port="41" protocol="udp" name="graphics" desc="Graphics" />
+  <defaultport port="42" protocol="tcp" name="name" desc="Host Name Server" />
+  <defaultport port="42" protocol="tcp" name="nameserver" desc="Host Name Server" />
+  <defaultport port="42" protocol="udp" name="name" desc="Host Name Server" />
+  <defaultport port="42" protocol="udp" name="nameserver" desc="Host Name Server" />
+  <defaultport port="43" protocol="tcp" name="nicname" desc="Who Is" />
+  <defaultport port="43" protocol="udp" name="nicname" desc="Who Is" />
+  <defaultport port="44" protocol="tcp" name="mpm-flags" desc="MPM FLAGS Protocol" />
+  <defaultport port="44" protocol="udp" name="mpm-flags" desc="MPM FLAGS Protocol" />
+  <defaultport port="45" protocol="tcp" name="mpm" desc="Message Processing Module [recv]" />
+  <defaultport port="45" protocol="udp" name="mpm" desc="Message Processing Module [recv]" />
+  <defaultport port="46" protocol="tcp" name="mpm-snd" desc="MPM [default send]" />
+  <defaultport port="46" protocol="udp" name="mpm-snd" desc="MPM [default send]" />
+  <defaultport port="47" protocol="tcp" name="ni-ftp" desc="NI FTP" />
+  <defaultport port="47" protocol="udp" name="ni-ftp" desc="NI FTP" />
+  <defaultport port="48" protocol="tcp" name="auditd" desc="Digital Audit Daemon" />
+  <defaultport port="48" protocol="udp" name="auditd" desc="Digital Audit Daemon" />
+  <defaultport port="49" protocol="tcp" name="tacacs" desc="Login Host Protocol (TACACS)" />
+  <defaultport port="49" protocol="udp" name="tacacs" desc="Login Host Protocol (TACACS)" />
+  <defaultport port="50" protocol="tcp" name="re-mail-ck" desc="Remote Mail Checking Protocol" />
+  <defaultport port="50" protocol="udp" name="re-mail-ck" desc="Remote Mail Checking Protocol" />
+  <defaultport port="51" protocol="tcp" name="la-maint" desc="IMP Logical Address Maintenance" />
+  <defaultport port="51" protocol="udp" name="la-maint" desc="IMP Logical Address Maintenance" />
+  <defaultport port="52" protocol="tcp" name="xns-time" desc="XNS Time Protocol" />
+  <defaultport port="52" protocol="udp" name="xns-time" desc="XNS Time Protocol" />
+  <defaultport port="53" protocol="tcp" name="domain" desc="Domain Name Server" />
+  <defaultport port="53" protocol="udp" name="domain" desc="Domain Name Server" />
+  <defaultport port="54" protocol="tcp" name="xns-ch" desc="XNS Clearinghouse" />
+  <defaultport port="54" protocol="udp" name="xns-ch" desc="XNS Clearinghouse" />
+  <defaultport port="55" protocol="tcp" name="isi-gl" desc="ISI Graphics Language" />
+  <defaultport port="55" protocol="udp" name="isi-gl" desc="ISI Graphics Language" />
+  <defaultport port="56" protocol="tcp" name="xns-auth" desc="XNS Authentication" />
+  <defaultport port="56" protocol="udp" name="xns-auth" desc="XNS Authentication" />
+  <defaultport port="57" protocol="tcp" desc="any private terminal access" />
+  <defaultport port="57" protocol="udp" desc="any private terminal access" />
+  <defaultport port="58" protocol="tcp" name="xns-mail" desc="XNS Mail" />
+  <defaultport port="58" protocol="udp" name="xns-mail" desc="XNS Mail" />
+  <defaultport port="59" protocol="tcp" desc="any private file service" />
+  <defaultport port="59" protocol="udp" desc="any private file service" />
+  <defaultport port="60" protocol="tcp" desc="Unassigned" />
+  <defaultport port="60" protocol="udp" desc="Unassigned" />
+  <defaultport port="61" protocol="tcp" name="ni-mail" desc="NI MAIL" />
+  <defaultport port="61" protocol="udp" name="ni-mail" desc="NI MAIL" />
+  <defaultport port="62" protocol="tcp" name="acas" desc="ACA Services" />
+  <defaultport port="62" protocol="udp" name="acas" desc="ACA Services" />
+  <defaultport port="63" protocol="tcp" name="whois++" desc="whois++" />
+  <defaultport port="63" protocol="udp" name="whois++" desc="whois++" />
+  <defaultport port="64" protocol="tcp" name="covia" desc="Communications Integrator (CI)" />
+  <defaultport port="64" protocol="udp" name="covia" desc="Communications Integrator (CI)" />
+  <defaultport port="65" protocol="tcp" name="tacacs-ds" desc="TACACS-Database Service" />
+  <defaultport port="65" protocol="udp" name="tacacs-ds" desc="TACACS-Database Service" />
+  <defaultport port="66" protocol="tcp" name="sql*net" desc="Oracle SQL*NET" />
+  <defaultport port="66" protocol="udp" name="sql*net" desc="Oracle SQL*NET" />
+  <defaultport port="67" protocol="tcp" name="bootps" desc="Bootstrap Protocol Server" />
+  <defaultport port="67" protocol="udp" name="bootps" desc="Bootstrap Protocol Server" />
+  <defaultport port="68" protocol="tcp" name="bootpc" desc="Bootstrap Protocol Client" />
+  <defaultport port="68" protocol="udp" name="bootpc" desc="Bootstrap Protocol Client" />
+  <defaultport port="69" protocol="tcp" name="tftp" desc="Trivial File Transfer" />
+  <defaultport port="69" protocol="udp" name="tftp" desc="Trivial File Transfer" />
+  <defaultport port="70" protocol="tcp" name="gopher" desc="Gopher" />
+  <defaultport port="70" protocol="udp" name="gopher" desc="Gopher" />
+  <defaultport port="71" protocol="tcp" name="netrjs-1" desc="Remote Job Service" />
+  <defaultport port="71" protocol="udp" name="netrjs-1" desc="Remote Job Service" />
+  <defaultport port="72" protocol="tcp" name="netrjs-2" desc="Remote Job Service" />
+  <defaultport port="72" protocol="udp" name="netrjs-2" desc="Remote Job Service" />
+  <defaultport port="73" protocol="tcp" name="netrjs-3" desc="Remote Job Service" />
+  <defaultport port="73" protocol="udp" name="netrjs-3" desc="Remote Job Service" />
+  <defaultport port="74" protocol="tcp" name="netrjs-4" desc="Remote Job Service" />
+  <defaultport port="74" protocol="udp" name="netrjs-4" desc="Remote Job Service" />
+  <defaultport port="75" protocol="tcp" desc="any private dial out service" />
+  <defaultport port="75" protocol="udp" desc="any private dial out service" />
+  <defaultport port="76" protocol="tcp" name="deos" desc="Distributed External Object Store" />
+  <defaultport port="76" protocol="udp" name="deos" desc="Distributed External Object Store" />
+  <defaultport port="77" protocol="tcp" desc="any private RJE service" />
+  <defaultport port="77" protocol="udp" desc="any private RJE service" />
+  <defaultport port="78" protocol="tcp" name="vettcp" desc="vettcp" />
+  <defaultport port="78" protocol="udp" name="vettcp" desc="vettcp" />
+  <defaultport port="79" protocol="tcp" name="finger" desc="Finger" />
+  <defaultport port="79" protocol="udp" name="finger" desc="Finger" />
+  <defaultport port="80" protocol="tcp" name="http" desc="World Wide Web HTTP" />
+  <defaultport port="80" protocol="tcp" name="www" desc="World Wide Web HTTP" />
+  <defaultport port="80" protocol="tcp" name="www-http" desc="World Wide Web HTTP" />
+  <defaultport port="80" protocol="udp" name="http" desc="World Wide Web HTTP" />
+  <defaultport port="80" protocol="udp" name="www" desc="World Wide Web HTTP" />
+  <defaultport port="80" protocol="udp" name="www-http" desc="World Wide Web HTTP" />
+  <defaultport port="82" protocol="tcp" name="xfer" desc="XFER Utility" />
+  <defaultport port="82" protocol="udp" name="xfer" desc="XFER Utility" />
+  <defaultport port="83" protocol="tcp" name="mit-ml-dev" desc="MIT ML Device" />
+  <defaultport port="83" protocol="udp" name="mit-ml-dev" desc="MIT ML Device" />
+  <defaultport port="84" protocol="tcp" name="ctf" desc="Common Trace Facility" />
+  <defaultport port="84" protocol="udp" name="ctf" desc="Common Trace Facility" />
+  <defaultport port="85" protocol="tcp" name="mit-ml-dev" desc="MIT ML Device" />
+  <defaultport port="85" protocol="udp" name="mit-ml-dev" desc="MIT ML Device" />
+  <defaultport port="86" protocol="tcp" name="mfcobol" desc="Micro Focus Cobol" />
+  <defaultport port="86" protocol="udp" name="mfcobol" desc="Micro Focus Cobol" />
+  <defaultport port="87" protocol="tcp" desc="any private terminal link" />
+  <defaultport port="87" protocol="udp" desc="any private terminal link" />
+  <defaultport port="88" protocol="tcp" name="kerberos" desc="Kerberos" />
+  <defaultport port="88" protocol="udp" name="kerberos" desc="Kerberos" />
+  <defaultport port="89" protocol="tcp" name="su-mit-tg" desc="SU/MIT Telnet Gateway" />
+  <defaultport port="89" protocol="udp" name="su-mit-tg" desc="SU/MIT Telnet Gateway" />
+  <defaultport port="90" protocol="tcp" name="dnsix" desc="DNSIX Securit Attribute Token Map" />
+  <defaultport port="90" protocol="udp" name="dnsix" desc="DNSIX Securit Attribute Token Map" />
+  <defaultport port="91" protocol="tcp" name="mit-dov" desc="MIT Dover Spooler" />
+  <defaultport port="91" protocol="udp" name="mit-dov" desc="MIT Dover Spooler" />
+  <defaultport port="92" protocol="tcp" name="npp" desc="Network Printing Protocol" />
+  <defaultport port="92" protocol="udp" name="npp" desc="Network Printing Protocol" />
+  <defaultport port="93" protocol="tcp" name="dcp" desc="Device Control Protocol" />
+  <defaultport port="93" protocol="udp" name="dcp" desc="Device Control Protocol" />
+  <defaultport port="94" protocol="tcp" name="objcall" desc="Tivoli Object Dispatcher" />
+  <defaultport port="94" protocol="udp" name="objcall" desc="Tivoli Object Dispatcher" />
+  <defaultport port="95" protocol="tcp" name="supdup" desc="SUPDUP" />
+  <defaultport port="95" protocol="udp" name="supdup" desc="SUPDUP" />
+  <defaultport port="96" protocol="tcp" name="dixie" desc="DIXIE Protocol Specification" />
+  <defaultport port="96" protocol="udp" name="dixie" desc="DIXIE Protocol Specification" />
+  <defaultport port="97" protocol="tcp" name="swift-rvf" desc="Swift Remote Virtural File Protocol" />
+  <defaultport port="97" protocol="udp" name="swift-rvf" desc="Swift Remote Virtural File Protocol" />
+  <defaultport port="98" protocol="tcp" name="tacnews" desc="TAC News" />
+  <defaultport port="98" protocol="udp" name="tacnews" desc="TAC News" />
+  <defaultport port="99" protocol="tcp" name="metagram" desc="Metagram Relay" />
+  <defaultport port="99" protocol="udp" name="metagram" desc="Metagram Relay" />
+  <defaultport port="100" protocol="tcp" name="newacct" desc="[unauthorized use]" />
+  <defaultport port="101" protocol="tcp" name="hostname" desc="NIC Host Name Server" />
+  <defaultport port="101" protocol="udp" name="hostname" desc="NIC Host Name Server" />
+  <defaultport port="102" protocol="tcp" name="iso-tsap" desc="ISO-TSAP Class 0" />
+  <defaultport port="102" protocol="udp" name="iso-tsap" desc="ISO-TSAP Class 0" />
+  <defaultport port="103" protocol="tcp" name="gppitnp" desc="Genesis Point-to-Point Trans Net" />
+  <defaultport port="103" protocol="udp" name="gppitnp" desc="Genesis Point-to-Point Trans Net" />
+  <defaultport port="104" protocol="tcp" name="acr-nema" desc="ACR-NEMA Digital Imag. &amp; Comm. 300" />
+  <defaultport port="104" protocol="udp" name="acr-nema" desc="ACR-NEMA Digital Imag. &amp; Comm. 300" />
+  <defaultport port="105" protocol="tcp" name="csnet-ns" desc="Mailbox Name Nameserver" />
+  <defaultport port="105" protocol="tcp" name="cso" desc="CCSO name server protocol" />
+  <defaultport port="105" protocol="udp" name="csnet-ns" desc="Mailbox Name Nameserver" />
+  <defaultport port="105" protocol="udp" name="cso" desc="CCSO name server protocol" />
+  <defaultport port="106" protocol="tcp" name="3com-tsmux" desc="3COM-TSMUX" />
+  <defaultport port="106" protocol="udp" name="3com-tsmux" desc="3COM-TSMUX" />
+  <defaultport port="107" protocol="tcp" name="rtelnet" desc="Remote Telnet Service" />
+  <defaultport port="107" protocol="udp" name="rtelnet" desc="Remote Telnet Service" />
+  <defaultport port="108" protocol="tcp" name="snagas" desc="SNA Gateway Access Server" />
+  <defaultport port="108" protocol="udp" name="snagas" desc="SNA Gateway Access Server" />
+  <defaultport port="109" protocol="tcp" name="pop2" desc="Post Office Protocol - Version 2" />
+  <defaultport port="109" protocol="udp" name="pop2" desc="Post Office Protocol - Version 2" />
+  <defaultport port="110" protocol="tcp" name="pop3" desc="Post Office Protocol - Version 3" />
+  <defaultport port="110" protocol="udp" name="pop3" desc="Post Office Protocol - Version 3" />
+  <defaultport port="111" protocol="tcp" name="sunrpc" desc="SUN Remote Procedure Call" />
+  <defaultport port="111" protocol="udp" name="sunrpc" desc="SUN Remote Procedure Call" />
+  <defaultport port="112" protocol="tcp" name="mcidas" desc="McIDAS Data Transmission Protocol" />
+  <defaultport port="112" protocol="udp" name="mcidas" desc="McIDAS Data Transmission Protocol" />
+  <defaultport port="113" protocol="tcp" name="auth" desc="Authentication Service" />
+  <defaultport port="113" protocol="tcp" name="ident" />
+  <defaultport port="113" protocol="udp" name="auth" desc="Authentication Service" />
+  <defaultport port="115" protocol="tcp" name="sftp" desc="Simple File Transfer Protocol" />
+  <defaultport port="115" protocol="udp" name="sftp" desc="Simple File Transfer Protocol" />
+  <defaultport port="116" protocol="tcp" name="ansanotify" desc="ANSA REX Notify" />
+  <defaultport port="116" protocol="udp" name="ansanotify" desc="ANSA REX Notify" />
+  <defaultport port="117" protocol="tcp" name="uucp-path" desc="UUCP Path Service" />
+  <defaultport port="117" protocol="udp" name="uucp-path" desc="UUCP Path Service" />
+  <defaultport port="118" protocol="tcp" name="sqlserv" desc="SQL Services" />
+  <defaultport port="118" protocol="udp" name="sqlserv" desc="SQL Services" />
+  <defaultport port="119" protocol="tcp" name="nntp" desc="Network News Transfer Protocol" />
+  <defaultport port="119" protocol="udp" name="nntp" desc="Network News Transfer Protocol" />
+  <defaultport port="120" protocol="tcp" name="cfdptkt" desc="CFDPTKT" />
+  <defaultport port="120" protocol="udp" name="cfdptkt" desc="CFDPTKT" />
+  <defaultport port="121" protocol="tcp" name="erpc" desc="Encore Expedited Remote Pro.Call" />
+  <defaultport port="121" protocol="udp" name="erpc" desc="Encore Expedited Remote Pro.Call" />
+  <defaultport port="122" protocol="tcp" name="smakynet" desc="SMAKYNET" />
+  <defaultport port="122" protocol="udp" name="smakynet" desc="SMAKYNET" />
+  <defaultport port="123" protocol="tcp" name="ntp" desc="Network Time Protocol" />
+  <defaultport port="123" protocol="udp" name="ntp" desc="Network Time Protocol" />
+  <defaultport port="124" protocol="tcp" name="ansatrader" desc="ANSA REX Trader" />
+  <defaultport port="124" protocol="udp" name="ansatrader" desc="ANSA REX Trader" />
+  <defaultport port="125" protocol="tcp" name="locus-map" desc="Locus PC-Interface Net Map Ser" />
+  <defaultport port="125" protocol="udp" name="locus-map" desc="Locus PC-Interface Net Map Ser" />
+  <defaultport port="126" protocol="tcp" name="nxedit" desc="NXEdit" />
+  <defaultport port="126" protocol="udp" name="nxedit" desc="NXEdit" />
+  <defaultport port="127" protocol="tcp" name="locus-con" desc="Locus PC-Interface Conn Server" />
+  <defaultport port="127" protocol="udp" name="locus-con" desc="Locus PC-Interface Conn Server" />
+  <defaultport port="128" protocol="tcp" name="gss-xlicen" desc="GSS X License Verification" />
+  <defaultport port="128" protocol="udp" name="gss-xlicen" desc="GSS X License Verification" />
+  <defaultport port="129" protocol="tcp" name="pwdgen" desc="Password Generator Protocol" />
+  <defaultport port="129" protocol="udp" name="pwdgen" desc="Password Generator Protocol" />
+  <defaultport port="130" protocol="tcp" name="cisco-fna" desc="cisco FNATIVE" />
+  <defaultport port="130" protocol="udp" name="cisco-fna" desc="cisco FNATIVE" />
+  <defaultport port="131" protocol="tcp" name="cisco-tna" desc="cisco TNATIVE" />
+  <defaultport port="131" protocol="udp" name="cisco-tna" desc="cisco TNATIVE" />
+  <defaultport port="132" protocol="tcp" name="cisco-sys" desc="cisco SYSMAINT" />
+  <defaultport port="132" protocol="udp" name="cisco-sys" desc="cisco SYSMAINT" />
+  <defaultport port="133" protocol="tcp" name="statsrv" desc="Statistics Service" />
+  <defaultport port="133" protocol="udp" name="statsrv" desc="Statistics Service" />
+  <defaultport port="134" protocol="tcp" name="ingres-net" desc="INGRES-NET Service" />
+  <defaultport port="134" protocol="udp" name="ingres-net" desc="INGRES-NET Service" />
+  <defaultport port="135" protocol="tcp" name="epmap" desc="DCE endpoint resolution" />
+  <defaultport port="135" protocol="udp" name="epmap" desc="DCE endpoint resolution" />
+  <defaultport port="136" protocol="tcp" name="profile" desc="PROFILE Naming System" />
+  <defaultport port="136" protocol="udp" name="profile" desc="PROFILE Naming System" />
+  <defaultport port="137" protocol="tcp" name="netbios-ns" desc="NETBIOS Name Service" />
+  <defaultport port="137" protocol="udp" name="netbios-ns" desc="NETBIOS Name Service" />
+  <defaultport port="138" protocol="tcp" name="netbios-dgm" desc="NETBIOS Datagram Service" />
+  <defaultport port="138" protocol="udp" name="netbios-dgm" desc="NETBIOS Datagram Service" />
+  <defaultport port="139" protocol="tcp" name="netbios-ssn" desc="NETBIOS Session Service" />
+  <defaultport port="139" protocol="udp" name="netbios-ssn" desc="NETBIOS Session Service" />
+  <defaultport port="140" protocol="tcp" name="emfis-data" desc="EMFIS Data Service" />
+  <defaultport port="140" protocol="udp" name="emfis-data" desc="EMFIS Data Service" />
+  <defaultport port="141" protocol="tcp" name="emfis-cntl" desc="EMFIS Control Service" />
+  <defaultport port="141" protocol="udp" name="emfis-cntl" desc="EMFIS Control Service" />
+  <defaultport port="142" protocol="tcp" name="bl-idm" desc="Britton-Lee IDM" />
+  <defaultport port="142" protocol="udp" name="bl-idm" desc="Britton-Lee IDM" />
+  <defaultport port="143" protocol="tcp" name="imap" desc="Internet Message Access Protocol" />
+  <defaultport port="143" protocol="udp" name="imap" desc="Internet Message Access Protocol" />
+  <defaultport port="144" protocol="tcp" name="uma" desc="Universal Management Architecture" />
+  <defaultport port="144" protocol="udp" name="uma" desc="Universal Management Architecture" />
+  <defaultport port="145" protocol="tcp" name="uaac" desc="UAAC Protocol" />
+  <defaultport port="145" protocol="udp" name="uaac" desc="UAAC Protocol" />
+  <defaultport port="146" protocol="tcp" name="iso-tp0" desc="ISO-IP0" />
+  <defaultport port="146" protocol="udp" name="iso-tp0" desc="ISO-IP0" />
+  <defaultport port="147" protocol="tcp" name="iso-ip" desc="ISO-IP" />
+  <defaultport port="147" protocol="udp" name="iso-ip" desc="ISO-IP" />
+  <defaultport port="148" protocol="tcp" name="jargon" desc="Jargon" />
+  <defaultport port="148" protocol="udp" name="jargon" desc="Jargon" />
+  <defaultport port="149" protocol="tcp" name="aed-512" desc="AED 512 Emulation Service" />
+  <defaultport port="149" protocol="udp" name="aed-512" desc="AED 512 Emulation Service" />
+  <defaultport port="150" protocol="tcp" name="sql-net" desc="SQL-NET" />
+  <defaultport port="150" protocol="udp" name="sql-net" desc="SQL-NET" />
+  <defaultport port="151" protocol="tcp" name="hems" desc="HEMS" />
+  <defaultport port="151" protocol="udp" name="hems" desc="HEMS" />
+  <defaultport port="152" protocol="tcp" name="bftp" desc="Background File Transfer Program" />
+  <defaultport port="152" protocol="udp" name="bftp" desc="Background File Transfer Program" />
+  <defaultport port="153" protocol="tcp" name="sgmp" desc="SGMP" />
+  <defaultport port="153" protocol="udp" name="sgmp" desc="SGMP" />
+  <defaultport port="154" protocol="tcp" name="netsc-prod" desc="NETSC" />
+  <defaultport port="154" protocol="udp" name="netsc-prod" desc="NETSC" />
+  <defaultport port="155" protocol="tcp" name="netsc-dev" desc="NETSC" />
+  <defaultport port="155" protocol="udp" name="netsc-dev" desc="NETSC" />
+  <defaultport port="156" protocol="tcp" name="sqlsrv" desc="SQL Service" />
+  <defaultport port="156" protocol="udp" name="sqlsrv" desc="SQL Service" />
+  <defaultport port="157" protocol="tcp" name="knet-cmp" desc="KNET/VM Command/Message Protocol" />
+  <defaultport port="157" protocol="udp" name="knet-cmp" desc="KNET/VM Command/Message Protocol" />
+  <defaultport port="158" protocol="tcp" name="pcmail-srv" desc="PCMail Server" />
+  <defaultport port="158" protocol="udp" name="pcmail-srv" desc="PCMail Server" />
+  <defaultport port="159" protocol="tcp" name="nss-routing" desc="NSS-Routing" />
+  <defaultport port="159" protocol="udp" name="nss-routing" desc="NSS-Routing" />
+  <defaultport port="160" protocol="tcp" name="sgmp-traps" desc="SGMP-TRAPS" />
+  <defaultport port="160" protocol="udp" name="sgmp-traps" desc="SGMP-TRAPS" />
+  <defaultport port="161" protocol="tcp" name="snmp" desc="SNMP" />
+  <defaultport port="161" protocol="udp" name="snmp" desc="SNMP" />
+  <defaultport port="162" protocol="tcp" name="snmptrap" desc="SNMPTRAP" />
+  <defaultport port="162" protocol="udp" name="snmptrap" desc="SNMPTRAP" />
+  <defaultport port="163" protocol="tcp" name="cmip-man" desc="CMIP/TCP Manager" />
+  <defaultport port="163" protocol="udp" name="cmip-man" desc="CMIP/TCP Manager" />
+  <defaultport port="164" protocol="tcp" name="cmip-agent" desc="CMIP/TCP Agent" />
+  <defaultport port="164" protocol="udp" name="cmip-agent" desc="CMIP/TCP Agent" />
+  <defaultport port="165" protocol="tcp" name="xns-courier" desc="Xerox" />
+  <defaultport port="165" protocol="udp" name="xns-courier" desc="Xerox" />
+  <defaultport port="166" protocol="tcp" name="s-net" desc="Sirius Systems" />
+  <defaultport port="166" protocol="udp" name="s-net" desc="Sirius Systems" />
+  <defaultport port="167" protocol="tcp" name="namp" desc="NAMP" />
+  <defaultport port="167" protocol="udp" name="namp" desc="NAMP" />
+  <defaultport port="168" protocol="tcp" name="rsvd" desc="RSVD" />
+  <defaultport port="168" protocol="udp" name="rsvd" desc="RSVD" />
+  <defaultport port="169" protocol="tcp" name="send" desc="SEND" />
+  <defaultport port="169" protocol="udp" name="send" desc="SEND" />
+  <defaultport port="170" protocol="tcp" name="print-srv" desc="Network PostScript" />
+  <defaultport port="170" protocol="udp" name="print-srv" desc="Network PostScript" />
+  <defaultport port="171" protocol="tcp" name="multiplex" desc="Network Innovations Multiplex" />
+  <defaultport port="171" protocol="udp" name="multiplex" desc="Network Innovations Multiplex" />
+  <defaultport port="172" protocol="tcp" name="cl/1" desc="Network Innovations CL/1" />
+  <defaultport port="172" protocol="udp" name="cl/1" desc="Network Innovations CL/1" />
+  <defaultport port="173" protocol="tcp" name="xyplex-mux" desc="Xyplex" />
+  <defaultport port="173" protocol="udp" name="xyplex-mux" desc="Xyplex" />
+  <defaultport port="174" protocol="tcp" name="mailq" desc="MAILQ" />
+  <defaultport port="174" protocol="udp" name="mailq" desc="MAILQ" />
+  <defaultport port="175" protocol="tcp" name="vmnet" desc="VMNET" />
+  <defaultport port="175" protocol="udp" name="vmnet" desc="VMNET" />
+  <defaultport port="176" protocol="tcp" name="genrad-mux" desc="GENRAD-MUX" />
+  <defaultport port="176" protocol="udp" name="genrad-mux" desc="GENRAD-MUX" />
+  <defaultport port="177" protocol="tcp" name="xdmcp" desc="X Display Manager Control Protocol" />
+  <defaultport port="177" protocol="udp" name="xdmcp" desc="X Display Manager Control Protocol" />
+  <defaultport port="178" protocol="tcp" name="nextstep" desc="NextStep Window Server" />
+  <defaultport port="178" protocol="udp" name="nextstep" desc="NextStep Window Server" />
+  <defaultport port="179" protocol="tcp" name="bgp" desc="Border Gateway Protocol" />
+  <defaultport port="179" protocol="udp" name="bgp" desc="Border Gateway Protocol" />
+  <defaultport port="180" protocol="tcp" name="ris" desc="Intergraph" />
+  <defaultport port="180" protocol="udp" name="ris" desc="Intergraph" />
+  <defaultport port="181" protocol="tcp" name="unify" desc="Unify" />
+  <defaultport port="181" protocol="udp" name="unify" desc="Unify" />
+  <defaultport port="182" protocol="tcp" name="audit" desc="Unisys Audit SITP" />
+  <defaultport port="182" protocol="udp" name="audit" desc="Unisys Audit SITP" />
+  <defaultport port="183" protocol="tcp" name="ocbinder" desc="OCBinder" />
+  <defaultport port="183" protocol="udp" name="ocbinder" desc="OCBinder" />
+  <defaultport port="184" protocol="tcp" name="ocserver" desc="OCServer" />
+  <defaultport port="184" protocol="udp" name="ocserver" desc="OCServer" />
+  <defaultport port="185" protocol="tcp" name="remote-kis" desc="Remote-KIS" />
+  <defaultport port="185" protocol="udp" name="remote-kis" desc="Remote-KIS" />
+  <defaultport port="186" protocol="tcp" name="kis" desc="KIS Protocol" />
+  <defaultport port="186" protocol="udp" name="kis" desc="KIS Protocol" />
+  <defaultport port="187" protocol="tcp" name="aci" desc="Application Communication Interface" />
+  <defaultport port="187" protocol="udp" name="aci" desc="Application Communication Interface" />
+  <defaultport port="188" protocol="tcp" name="mumps" desc="Plus Five's MUMPS" />
+  <defaultport port="188" protocol="udp" name="mumps" desc="Plus Five's MUMPS" />
+  <defaultport port="189" protocol="tcp" name="qft" desc="Queued File Transport" />
+  <defaultport port="189" protocol="udp" name="qft" desc="Queued File Transport" />
+  <defaultport port="190" protocol="tcp" name="gacp" desc="Gateway Access Control Protocol" />
+  <defaultport port="190" protocol="udp" name="gacp" desc="Gateway Access Control Protocol" />
+  <defaultport port="191" protocol="tcp" name="prospero" desc="Prospero Directory Service" />
+  <defaultport port="191" protocol="udp" name="prospero" desc="Prospero Directory Service" />
+  <defaultport port="192" protocol="tcp" name="osu-nms" desc="OSU Network Monitoring System" />
+  <defaultport port="192" protocol="udp" name="osu-nms" desc="OSU Network Monitoring System" />
+  <defaultport port="193" protocol="tcp" name="srmp" desc="Spider Remote Monitoring Protocol" />
+  <defaultport port="193" protocol="udp" name="srmp" desc="Spider Remote Monitoring Protocol" />
+  <defaultport port="194" protocol="tcp" name="irc" desc="Internet Relay Chat Protocol" />
+  <defaultport port="194" protocol="udp" name="irc" desc="Internet Relay Chat Protocol" />
+  <defaultport port="195" protocol="tcp" name="dn6-nlm-aud" desc="DNSIX Network Level Module Audit" />
+  <defaultport port="195" protocol="udp" name="dn6-nlm-aud" desc="DNSIX Network Level Module Audit" />
+  <defaultport port="196" protocol="tcp" name="dn6-smm-red" desc="DNSIX Session Mgt Module Audit Redir" />
+  <defaultport port="196" protocol="udp" name="dn6-smm-red" desc="DNSIX Session Mgt Module Audit Redir" />
+  <defaultport port="197" protocol="tcp" name="dls" desc="Directory Location Service" />
+  <defaultport port="197" protocol="udp" name="dls" desc="Directory Location Service" />
+  <defaultport port="198" protocol="tcp" name="dls-mon" desc="Directory Location Service Monitor" />
+  <defaultport port="198" protocol="udp" name="dls-mon" desc="Directory Location Service Monitor" />
+  <defaultport port="199" protocol="tcp" name="smux" desc="SMUX" />
+  <defaultport port="199" protocol="udp" name="smux" desc="SMUX" />
+  <defaultport port="200" protocol="tcp" name="src" desc="IBM System Resource Controller" />
+  <defaultport port="200" protocol="udp" name="src" desc="IBM System Resource Controller" />
+  <defaultport port="201" protocol="tcp" name="at-rtmp" desc="AppleTalk Routing Maintenance" />
+  <defaultport port="201" protocol="udp" name="at-rtmp" desc="AppleTalk Routing Maintenance" />
+  <defaultport port="202" protocol="tcp" name="at-nbp" desc="AppleTalk Name Binding" />
+  <defaultport port="202" protocol="udp" name="at-nbp" desc="AppleTalk Name Binding" />
+  <defaultport port="203" protocol="tcp" name="at-3" desc="AppleTalk Unused" />
+  <defaultport port="203" protocol="udp" name="at-3" desc="AppleTalk Unused" />
+  <defaultport port="204" protocol="tcp" name="at-echo" desc="AppleTalk Echo" />
+  <defaultport port="204" protocol="udp" name="at-echo" desc="AppleTalk Echo" />
+  <defaultport port="205" protocol="tcp" name="at-5" desc="AppleTalk Unused" />
+  <defaultport port="205" protocol="udp" name="at-5" desc="AppleTalk Unused" />
+  <defaultport port="206" protocol="tcp" name="at-zis" desc="AppleTalk Zone Information" />
+  <defaultport port="206" protocol="udp" name="at-zis" desc="AppleTalk Zone Information" />
+  <defaultport port="207" protocol="tcp" name="at-7" desc="AppleTalk Unused" />
+  <defaultport port="207" protocol="udp" name="at-7" desc="AppleTalk Unused" />
+  <defaultport port="208" protocol="tcp" name="at-8" desc="AppleTalk Unused" />
+  <defaultport port="208" protocol="udp" name="at-8" desc="AppleTalk Unused" />
+  <defaultport port="209" protocol="tcp" name="qmtp" desc="The Quick Mail Transfer Protocol" />
+  <defaultport port="209" protocol="udp" name="qmtp" desc="The Quick Mail Transfer Protocol" />
+  <defaultport port="210" protocol="tcp" name="z39.50" desc="ANSI Z39.50" />
+  <defaultport port="210" protocol="udp" name="z39.50" desc="ANSI Z39.50" />
+  <defaultport port="211" protocol="tcp" name="914c/g" desc="Texas Instruments 914C/G Terminal" />
+  <defaultport port="211" protocol="udp" name="914c/g" desc="Texas Instruments 914C/G Terminal" />
+  <defaultport port="212" protocol="tcp" name="anet" desc="ATEXSSTR" />
+  <defaultport port="212" protocol="udp" name="anet" desc="ATEXSSTR" />
+  <defaultport port="213" protocol="tcp" name="ipx" desc="IPX" />
+  <defaultport port="213" protocol="udp" name="ipx" desc="IPX" />
+  <defaultport port="214" protocol="tcp" name="vmpwscs" desc="VM PWSCS" />
+  <defaultport port="214" protocol="udp" name="vmpwscs" desc="VM PWSCS" />
+  <defaultport port="215" protocol="tcp" name="softpc" desc="Insignia Solutions" />
+  <defaultport port="215" protocol="udp" name="softpc" desc="Insignia Solutions" />
+  <defaultport port="216" protocol="tcp" name="CAIlic" desc="Computer Associates Int'l License Server" />
+  <defaultport port="216" protocol="udp" name="CAIlic" desc="Computer Associates Int'l License Server" />
+  <defaultport port="217" protocol="tcp" name="dbase" desc="dBASE Unix" />
+  <defaultport port="217" protocol="udp" name="dbase" desc="dBASE Unix" />
+  <defaultport port="218" protocol="tcp" name="mpp" desc="Netix Message Posting Protocol" />
+  <defaultport port="218" protocol="udp" name="mpp" desc="Netix Message Posting Protocol" />
+  <defaultport port="219" protocol="tcp" name="uarps" desc="Unisys ARPs" />
+  <defaultport port="219" protocol="udp" name="uarps" desc="Unisys ARPs" />
+  <defaultport port="220" protocol="tcp" name="imap3" desc="Interactive Mail Access Protocol v3" />
+  <defaultport port="220" protocol="udp" name="imap3" desc="Interactive Mail Access Protocol v3" />
+  <defaultport port="221" protocol="tcp" name="fln-spx" desc="Berkeley rlogind with SPX auth" />
+  <defaultport port="221" protocol="udp" name="fln-spx" desc="Berkeley rlogind with SPX auth" />
+  <defaultport port="222" protocol="tcp" name="rsh-spx" desc="Berkeley rshd with SPX auth" />
+  <defaultport port="222" protocol="udp" name="rsh-spx" desc="Berkeley rshd with SPX auth" />
+  <defaultport port="223" protocol="tcp" name="cdc" desc="Certificate Distribution Center" />
+  <defaultport port="223" protocol="udp" name="cdc" desc="Certificate Distribution Center" />
+  <defaultport port="224" protocol="tcp" name="masqdialer" desc="masqdialer" />
+  <defaultport port="224" protocol="udp" name="masqdialer" desc="masqdialer" />
+  <defaultport port="242" protocol="tcp" name="direct" desc="Direct" />
+  <defaultport port="242" protocol="udp" name="direct" desc="Direct" />
+  <defaultport port="243" protocol="tcp" name="sur-meas" desc="Survey Measurement" />
+  <defaultport port="243" protocol="udp" name="sur-meas" desc="Survey Measurement" />
+  <defaultport port="244" protocol="tcp" name="inbusiness" desc="inbusiness" />
+  <defaultport port="244" protocol="udp" name="inbusiness" desc="inbusiness" />
+  <defaultport port="245" protocol="tcp" name="link" desc="LINK" />
+  <defaultport port="245" protocol="udp" name="link" desc="LINK" />
+  <defaultport port="246" protocol="tcp" name="dsp3270" desc="Display Systems Protocol" />
+  <defaultport port="246" protocol="udp" name="dsp3270" desc="Display Systems Protocol" />
+  <defaultport port="247" protocol="tcp" name="subntbcst_tftp" desc="SUBNTBCST_TFTP" />
+  <defaultport port="247" protocol="udp" name="subntbcst_tftp" desc="SUBNTBCST_TFTP" />
+  <defaultport port="248" protocol="tcp" name="bhfhs" desc="bhfhs" />
+  <defaultport port="248" protocol="udp" name="bhfhs" desc="bhfhs" />
+  <defaultport port="256" protocol="tcp" name="rap" desc="RAP" />
+  <defaultport port="256" protocol="udp" name="rap" desc="RAP" />
+  <defaultport port="257" protocol="tcp" name="set" desc="Secure Electronic Transaction" />
+  <defaultport port="257" protocol="udp" name="set" desc="Secure Electronic Transaction" />
+  <defaultport port="259" protocol="tcp" name="esro-gen" desc="Efficient Short Remote Operations" />
+  <defaultport port="259" protocol="udp" name="esro-gen" desc="Efficient Short Remote Operations" />
+  <defaultport port="260" protocol="tcp" name="openport" desc="Openport" />
+  <defaultport port="260" protocol="udp" name="openport" desc="Openport" />
+  <defaultport port="261" protocol="tcp" name="nsiiops" desc="IIOP Name Service over TLS/SSL" />
+  <defaultport port="261" protocol="udp" name="nsiiops" desc="IIOP Name Service over TLS/SSL" />
+  <defaultport port="262" protocol="tcp" name="arcisdms" desc="Arcisdms" />
+  <defaultport port="262" protocol="udp" name="arcisdms" desc="Arcisdms" />
+  <defaultport port="263" protocol="tcp" name="hdap" desc="HDAP" />
+  <defaultport port="263" protocol="udp" name="hdap" desc="HDAP" />
+  <defaultport port="264" protocol="tcp" name="bgmp" desc="BGMP" />
+  <defaultport port="264" protocol="udp" name="bgmp" desc="BGMP" />
+  <defaultport port="265" protocol="tcp" name="x-bone-ctl" desc="X-Bone CTL" />
+  <defaultport port="265" protocol="udp" name="x-bone-ctl" desc="X-Bone CTL" />
+  <defaultport port="266" protocol="tcp" name="sst" desc="SCSI on ST" />
+  <defaultport port="266" protocol="udp" name="sst" desc="SCSI on ST" />
+  <defaultport port="267" protocol="tcp" name="td-service" desc="Tobit David Service Layer" />
+  <defaultport port="267" protocol="udp" name="td-service" desc="Tobit David Service Layer" />
+  <defaultport port="268" protocol="tcp" name="td-replica" desc="Tobit David Replica" />
+  <defaultport port="268" protocol="udp" name="td-replica" desc="Tobit David Replica" />
+  <defaultport port="269" protocol="tcp" name="manet" desc="MANET Protocols" />
+  <defaultport port="269" protocol="udp" name="manet" desc="MANET Protocols" />
+  <defaultport port="280" protocol="tcp" name="http-mgmt" desc="http-mgmt" />
+  <defaultport port="280" protocol="udp" name="http-mgmt" desc="http-mgmt" />
+  <defaultport port="281" protocol="tcp" name="personal-link" desc="Personal Link" />
+  <defaultport port="281" protocol="udp" name="personal-link" desc="Personal Link" />
+  <defaultport port="282" protocol="tcp" name="cableport-ax" desc="Cable Port A/X" />
+  <defaultport port="282" protocol="udp" name="cableport-ax" desc="Cable Port A/X" />
+  <defaultport port="283" protocol="tcp" name="rescap" desc="rescap" />
+  <defaultport port="283" protocol="udp" name="rescap" desc="rescap" />
+  <defaultport port="284" protocol="tcp" name="corerjd" desc="corerjd" />
+  <defaultport port="284" protocol="udp" name="corerjd" desc="corerjd" />
+  <defaultport port="286" protocol="tcp" name="fxp" desc="FXP Communication" />
+  <defaultport port="286" protocol="udp" name="fxp" desc="FXP Communication" />
+  <defaultport port="287" protocol="tcp" name="k-block" desc="K-BLOCK" />
+  <defaultport port="287" protocol="udp" name="k-block" desc="K-BLOCK" />
+  <defaultport port="308" protocol="tcp" name="novastorbakcup" desc="Novastor Backup" />
+  <defaultport port="308" protocol="udp" name="novastorbakcup" desc="Novastor Backup" />
+  <defaultport port="309" protocol="tcp" name="entrusttime" desc="EntrustTime" />
+  <defaultport port="309" protocol="udp" name="entrusttime" desc="EntrustTime" />
+  <defaultport port="310" protocol="tcp" name="bhmds" desc="bhmds" />
+  <defaultport port="310" protocol="udp" name="bhmds" desc="bhmds" />
+  <defaultport port="311" protocol="tcp" name="asip-webadmin" desc="AppleShare IP WebAdmin" />
+  <defaultport port="311" protocol="udp" name="asip-webadmin" desc="AppleShare IP WebAdmin" />
+  <defaultport port="312" protocol="tcp" name="vslmp" desc="VSLMP" />
+  <defaultport port="312" protocol="udp" name="vslmp" desc="VSLMP" />
+  <defaultport port="313" protocol="tcp" name="magenta-logic" desc="Magenta Logic" />
+  <defaultport port="313" protocol="udp" name="magenta-logic" desc="Magenta Logic" />
+  <defaultport port="314" protocol="tcp" name="opalis-robot" desc="Opalis Robot" />
+  <defaultport port="314" protocol="udp" name="opalis-robot" desc="Opalis Robot" />
+  <defaultport port="315" protocol="tcp" name="dpsi" desc="DPSI" />
+  <defaultport port="315" protocol="udp" name="dpsi" desc="DPSI" />
+  <defaultport port="316" protocol="tcp" name="decauth" desc="decAuth" />
+  <defaultport port="316" protocol="udp" name="decauth" desc="decAuth" />
+  <defaultport port="317" protocol="tcp" name="zannet" desc="Zannet" />
+  <defaultport port="317" protocol="udp" name="zannet" desc="Zannet" />
+  <defaultport port="318" protocol="tcp" name="pkix-timestamp" desc="PKIX TimeStamp" />
+  <defaultport port="318" protocol="udp" name="pkix-timestamp" desc="PKIX TimeStamp" />
+  <defaultport port="319" protocol="tcp" name="ptp-event" desc="PTP Event" />
+  <defaultport port="319" protocol="udp" name="ptp-event" desc="PTP Event" />
+  <defaultport port="320" protocol="tcp" name="ptp-general" desc="PTP General" />
+  <defaultport port="320" protocol="udp" name="ptp-general" desc="PTP General" />
+  <defaultport port="321" protocol="tcp" name="pip" desc="PIP" />
+  <defaultport port="321" protocol="udp" name="pip" desc="PIP" />
+  <defaultport port="322" protocol="tcp" name="rtsps" desc="RTSPS" />
+  <defaultport port="322" protocol="udp" name="rtsps" desc="RTSPS" />
+  <defaultport port="333" protocol="tcp" name="texar" desc="Texar Security Port" />
+  <defaultport port="333" protocol="udp" name="texar" desc="Texar Security Port" />
+  <defaultport port="344" protocol="tcp" name="pdap" desc="Prospero Data Access Protocol" />
+  <defaultport port="344" protocol="udp" name="pdap" desc="Prospero Data Access Protocol" />
+  <defaultport port="345" protocol="tcp" name="pawserv" desc="Perf Analysis Workbench" />
+  <defaultport port="345" protocol="udp" name="pawserv" desc="Perf Analysis Workbench" />
+  <defaultport port="346" protocol="tcp" name="zserv" desc="Zebra server" />
+  <defaultport port="346" protocol="udp" name="zserv" desc="Zebra server" />
+  <defaultport port="347" protocol="tcp" name="fatserv" desc="Fatmen Server" />
+  <defaultport port="347" protocol="udp" name="fatserv" desc="Fatmen Server" />
+  <defaultport port="348" protocol="tcp" name="csi-sgwp" desc="Cabletron Management Protocol" />
+  <defaultport port="348" protocol="udp" name="csi-sgwp" desc="Cabletron Management Protocol" />
+  <defaultport port="349" protocol="tcp" name="mftp" desc="mftp" />
+  <defaultport port="349" protocol="udp" name="mftp" desc="mftp" />
+  <defaultport port="350" protocol="tcp" name="matip-type-a" desc="MATIP Type A" />
+  <defaultport port="350" protocol="udp" name="matip-type-a" desc="MATIP Type A" />
+  <defaultport port="351" protocol="tcp" name="bhoetty" desc="bhoetty (added 5/21/97)" />
+  <defaultport port="351" protocol="tcp" name="matip-type-b" desc="MATIP Type B" />
+  <defaultport port="351" protocol="udp" name="bhoetty" desc="bhoetty" />
+  <defaultport port="351" protocol="udp" name="matip-type-b" desc="MATIP Type B" />
+  <defaultport port="352" protocol="tcp" name="bhoedap4" desc="bhoedap4 (added 5/21/97)" />
+  <defaultport port="352" protocol="tcp" name="dtag-ste-sb" desc="DTAG (assigned long ago)" />
+  <defaultport port="352" protocol="udp" name="bhoedap4" desc="bhoedap4" />
+  <defaultport port="352" protocol="udp" name="dtag-ste-sb" desc="DTAG" />
+  <defaultport port="353" protocol="tcp" name="ndsauth" desc="NDSAUTH" />
+  <defaultport port="353" protocol="udp" name="ndsauth" desc="NDSAUTH" />
+  <defaultport port="354" protocol="tcp" name="bh611" desc="bh611" />
+  <defaultport port="354" protocol="udp" name="bh611" desc="bh611" />
+  <defaultport port="355" protocol="tcp" name="datex-asn" desc="DATEX-ASN" />
+  <defaultport port="355" protocol="udp" name="datex-asn" desc="DATEX-ASN" />
+  <defaultport port="356" protocol="tcp" name="cloanto-net-1" desc="Cloanto Net 1" />
+  <defaultport port="356" protocol="udp" name="cloanto-net-1" desc="Cloanto Net 1" />
+  <defaultport port="357" protocol="tcp" name="bhevent" desc="bhevent" />
+  <defaultport port="357" protocol="udp" name="bhevent" desc="bhevent" />
+  <defaultport port="358" protocol="tcp" name="shrinkwrap" desc="Shrinkwrap" />
+  <defaultport port="358" protocol="udp" name="shrinkwrap" desc="Shrinkwrap" />
+  <defaultport port="359" protocol="tcp" name="nsrmp" desc="Network Security Risk Management Protocol" />
+  <defaultport port="359" protocol="udp" name="nsrmp" desc="Network Security Risk Management Protocol" />
+  <defaultport port="360" protocol="tcp" name="scoi2odialog" desc="scoi2odialog" />
+  <defaultport port="360" protocol="udp" name="scoi2odialog" desc="scoi2odialog" />
+  <defaultport port="361" protocol="tcp" name="semantix" desc="Semantix" />
+  <defaultport port="361" protocol="udp" name="semantix" desc="Semantix" />
+  <defaultport port="362" protocol="tcp" name="srssend" desc="SRS Send" />
+  <defaultport port="362" protocol="udp" name="srssend" desc="SRS Send" />
+  <defaultport port="363" protocol="tcp" name="rsvp_tunnel" desc="RSVP Tunnel" />
+  <defaultport port="363" protocol="udp" name="rsvp_tunnel" desc="RSVP Tunnel" />
+  <defaultport port="364" protocol="tcp" name="aurora-cmgr" desc="Aurora CMGR" />
+  <defaultport port="364" protocol="udp" name="aurora-cmgr" desc="Aurora CMGR" />
+  <defaultport port="365" protocol="tcp" name="dtk" desc="DTK" />
+  <defaultport port="365" protocol="udp" name="dtk" desc="DTK" />
+  <defaultport port="366" protocol="tcp" name="odmr" desc="ODMR" />
+  <defaultport port="366" protocol="udp" name="odmr" desc="ODMR" />
+  <defaultport port="367" protocol="tcp" name="mortgageware" desc="MortgageWare" />
+  <defaultport port="367" protocol="udp" name="mortgageware" desc="MortgageWare" />
+  <defaultport port="368" protocol="tcp" name="qbikgdp" desc="QbikGDP" />
+  <defaultport port="368" protocol="udp" name="qbikgdp" desc="QbikGDP" />
+  <defaultport port="369" protocol="tcp" name="rpc2portmap" desc="rpc2portmap" />
+  <defaultport port="369" protocol="udp" name="rpc2portmap" desc="rpc2portmap" />
+  <defaultport port="370" protocol="tcp" name="codaauth2" desc="codaauth2" />
+  <defaultport port="370" protocol="udp" name="codaauth2" desc="codaauth2" />
+  <defaultport port="371" protocol="tcp" name="clearcase" desc="Clearcase" />
+  <defaultport port="371" protocol="udp" name="clearcase" desc="Clearcase" />
+  <defaultport port="372" protocol="tcp" name="ulistproc" desc="ListProcessor" />
+  <defaultport port="372" protocol="udp" name="ulistproc" desc="ListProcessor" />
+  <defaultport port="373" protocol="tcp" name="legent-1" desc="Legent Corporation" />
+  <defaultport port="373" protocol="udp" name="legent-1" desc="Legent Corporation" />
+  <defaultport port="374" protocol="tcp" name="legent-2" desc="Legent Corporation" />
+  <defaultport port="374" protocol="udp" name="legent-2" desc="Legent Corporation" />
+  <defaultport port="375" protocol="tcp" name="hassle" desc="Hassle" />
+  <defaultport port="375" protocol="udp" name="hassle" desc="Hassle" />
+  <defaultport port="376" protocol="tcp" name="nip" desc="Amiga Envoy Network Inquiry Proto" />
+  <defaultport port="376" protocol="udp" name="nip" desc="Amiga Envoy Network Inquiry Proto" />
+  <defaultport port="377" protocol="tcp" name="tnETOS" desc="NEC Corporation" />
+  <defaultport port="377" protocol="udp" name="tnETOS" desc="NEC Corporation" />
+  <defaultport port="378" protocol="tcp" name="dsETOS" desc="NEC Corporation" />
+  <defaultport port="378" protocol="udp" name="dsETOS" desc="NEC Corporation" />
+  <defaultport port="379" protocol="tcp" name="is99c" desc="TIA/EIA/IS-99 modem client" />
+  <defaultport port="379" protocol="udp" name="is99c" desc="TIA/EIA/IS-99 modem client" />
+  <defaultport port="380" protocol="tcp" name="is99s" desc="TIA/EIA/IS-99 modem server" />
+  <defaultport port="380" protocol="udp" name="is99s" desc="TIA/EIA/IS-99 modem server" />
+  <defaultport port="381" protocol="tcp" name="hp-collector" desc="hp performance data collector" />
+  <defaultport port="381" protocol="udp" name="hp-collector" desc="hp performance data collector" />
+  <defaultport port="382" protocol="tcp" name="hp-managed-node" desc="hp performance data managed node" />
+  <defaultport port="382" protocol="udp" name="hp-managed-node" desc="hp performance data managed node" />
+  <defaultport port="383" protocol="tcp" name="hp-alarm-mgr" desc="hp performance data alarm manager" />
+  <defaultport port="383" protocol="udp" name="hp-alarm-mgr" desc="hp performance data alarm manager" />
+  <defaultport port="384" protocol="tcp" name="arns" desc="A Remote Network Server System" />
+  <defaultport port="384" protocol="udp" name="arns" desc="A Remote Network Server System" />
+  <defaultport port="385" protocol="tcp" name="ibm-app" desc="IBM Application" />
+  <defaultport port="385" protocol="udp" name="ibm-app" desc="IBM Application" />
+  <defaultport port="386" protocol="tcp" name="asa" desc="ASA Message Router Object Def." />
+  <defaultport port="386" protocol="udp" name="asa" desc="ASA Message Router Object Def." />
+  <defaultport port="387" protocol="tcp" name="aurp" desc="Appletalk Update-Based Routing Pro." />
+  <defaultport port="387" protocol="udp" name="aurp" desc="Appletalk Update-Based Routing Pro." />
+  <defaultport port="388" protocol="tcp" name="unidata-ldm" desc="Unidata LDM" />
+  <defaultport port="388" protocol="udp" name="unidata-ldm" desc="Unidata LDM" />
+  <defaultport port="389" protocol="tcp" name="ldap" desc="Lightweight Directory Access Protocol" />
+  <defaultport port="389" protocol="udp" name="ldap" desc="Lightweight Directory Access Protocol" />
+  <defaultport port="390" protocol="tcp" name="uis" desc="UIS" />
+  <defaultport port="390" protocol="udp" name="uis" desc="UIS" />
+  <defaultport port="391" protocol="tcp" name="synotics-relay" desc="SynOptics SNMP Relay Port" />
+  <defaultport port="391" protocol="udp" name="synotics-relay" desc="SynOptics SNMP Relay Port" />
+  <defaultport port="392" protocol="tcp" name="synotics-broker" desc="SynOptics Port Broker Port" />
+  <defaultport port="392" protocol="udp" name="synotics-broker" desc="SynOptics Port Broker Port" />
+  <defaultport port="393" protocol="tcp" name="meta5" desc="Meta5" />
+  <defaultport port="393" protocol="udp" name="meta5" desc="Meta5" />
+  <defaultport port="394" protocol="tcp" name="embl-ndt" desc="EMBL Nucleic Data Transfer" />
+  <defaultport port="394" protocol="udp" name="embl-ndt" desc="EMBL Nucleic Data Transfer" />
+  <defaultport port="395" protocol="tcp" name="netcp" desc="NETscout Control Protocol" />
+  <defaultport port="395" protocol="udp" name="netcp" desc="NETscout Control Protocol" />
+  <defaultport port="396" protocol="tcp" name="netware-ip" desc="Novell Netware over IP" />
+  <defaultport port="396" protocol="udp" name="netware-ip" desc="Novell Netware over IP" />
+  <defaultport port="397" protocol="tcp" name="mptn" desc="Multi Protocol Trans. Net." />
+  <defaultport port="397" protocol="udp" name="mptn" desc="Multi Protocol Trans. Net." />
+  <defaultport port="398" protocol="tcp" name="kryptolan" desc="Kryptolan" />
+  <defaultport port="398" protocol="udp" name="kryptolan" desc="Kryptolan" />
+  <defaultport port="399" protocol="tcp" name="iso-tsap-c2" desc="ISO Transport Class 2 Non-Control over TCP" />
+  <defaultport port="399" protocol="udp" name="iso-tsap-c2" desc="ISO Transport Class 2 Non-Control over UDP" />
+  <defaultport port="400" protocol="tcp" name="osb-sd" desc="Oracle Secure Backup" />
+  <defaultport port="400" protocol="udp" name="osb-sd" desc="Oracle Secure Backup" />
+  <defaultport port="401" protocol="tcp" name="ups" desc="Uninterruptible Power Supply" />
+  <defaultport port="401" protocol="udp" name="ups" desc="Uninterruptible Power Supply" />
+  <defaultport port="402" protocol="tcp" name="genie" desc="Genie Protocol" />
+  <defaultport port="402" protocol="udp" name="genie" desc="Genie Protocol" />
+  <defaultport port="403" protocol="tcp" name="decap" desc="decap" />
+  <defaultport port="403" protocol="udp" name="decap" desc="decap" />
+  <defaultport port="404" protocol="tcp" name="nced" desc="nced" />
+  <defaultport port="404" protocol="udp" name="nced" desc="nced" />
+  <defaultport port="405" protocol="tcp" name="ncld" desc="ncld" />
+  <defaultport port="405" protocol="udp" name="ncld" desc="ncld" />
+  <defaultport port="406" protocol="tcp" name="imsp" desc="Interactive Mail Support Protocol" />
+  <defaultport port="406" protocol="udp" name="imsp" desc="Interactive Mail Support Protocol" />
+  <defaultport port="407" protocol="tcp" name="timbuktu" desc="Timbuktu" />
+  <defaultport port="407" protocol="udp" name="timbuktu" desc="Timbuktu" />
+  <defaultport port="408" protocol="tcp" name="prm-sm" desc="Prospero Resource Manager Sys. Man." />
+  <defaultport port="408" protocol="udp" name="prm-sm" desc="Prospero Resource Manager Sys. Man." />
+  <defaultport port="409" protocol="tcp" name="prm-nm" desc="Prospero Resource Manager Node Man." />
+  <defaultport port="409" protocol="udp" name="prm-nm" desc="Prospero Resource Manager Node Man." />
+  <defaultport port="410" protocol="tcp" name="decladebug" desc="DECLadebug Remote Debug Protocol" />
+  <defaultport port="410" protocol="udp" name="decladebug" desc="DECLadebug Remote Debug Protocol" />
+  <defaultport port="411" protocol="tcp" name="rmt" desc="Remote MT Protocol" />
+  <defaultport port="411" protocol="udp" name="rmt" desc="Remote MT Protocol" />
+  <defaultport port="412" protocol="tcp" name="synoptics-trap" desc="Trap Convention Port" />
+  <defaultport port="412" protocol="udp" name="synoptics-trap" desc="Trap Convention Port" />
+  <defaultport port="413" protocol="tcp" name="smsp" desc="Storage Management Services Protocol" />
+  <defaultport port="413" protocol="udp" name="smsp" desc="Storage Management Services Protocol" />
+  <defaultport port="414" protocol="tcp" name="infoseek" desc="InfoSeek" />
+  <defaultport port="414" protocol="udp" name="infoseek" desc="InfoSeek" />
+  <defaultport port="415" protocol="tcp" name="bnet" desc="BNet" />
+  <defaultport port="415" protocol="udp" name="bnet" desc="BNet" />
+  <defaultport port="416" protocol="tcp" name="silverplatter" desc="Silverplatter" />
+  <defaultport port="416" protocol="udp" name="silverplatter" desc="Silverplatter" />
+  <defaultport port="417" protocol="tcp" name="onmux" desc="Onmux" />
+  <defaultport port="417" protocol="udp" name="onmux" desc="Onmux" />
+  <defaultport port="418" protocol="tcp" name="hyper-g" desc="Hyper-G" />
+  <defaultport port="418" protocol="udp" name="hyper-g" desc="Hyper-G" />
+  <defaultport port="419" protocol="tcp" name="ariel1" desc="Ariel 1" />
+  <defaultport port="419" protocol="udp" name="ariel1" desc="Ariel 1" />
+  <defaultport port="420" protocol="tcp" name="smpte" desc="SMPTE" />
+  <defaultport port="420" protocol="udp" name="smpte" desc="SMPTE" />
+  <defaultport port="421" protocol="tcp" name="ariel2" desc="Ariel 2" />
+  <defaultport port="421" protocol="udp" name="ariel2" desc="Ariel 2" />
+  <defaultport port="422" protocol="tcp" name="ariel3" desc="Ariel 3" />
+  <defaultport port="422" protocol="udp" name="ariel3" desc="Ariel 3" />
+  <defaultport port="423" protocol="tcp" name="opc-job-start" desc="IBM Operations Planning and Control Start" />
+  <defaultport port="423" protocol="udp" name="opc-job-start" desc="IBM Operations Planning and Control Start" />
+  <defaultport port="424" protocol="tcp" name="opc-job-track" desc="IBM Operations Planning and Control Track" />
+  <defaultport port="424" protocol="udp" name="opc-job-track" desc="IBM Operations Planning and Control Track" />
+  <defaultport port="425" protocol="tcp" name="icad-el" desc="ICAD" />
+  <defaultport port="425" protocol="udp" name="icad-el" desc="ICAD" />
+  <defaultport port="426" protocol="tcp" name="smartsdp" desc="smartsdp" />
+  <defaultport port="426" protocol="udp" name="smartsdp" desc="smartsdp" />
+  <defaultport port="427" protocol="tcp" name="svrloc" desc="Server Location" />
+  <defaultport port="427" protocol="udp" name="svrloc" desc="Server Location" />
+  <defaultport port="428" protocol="tcp" name="ocs_cmu" desc="OCS_CMU" />
+  <defaultport port="428" protocol="udp" name="ocs_cmu" desc="OCS_CMU" />
+  <defaultport port="429" protocol="tcp" name="ocs_amu" desc="OCS_AMU" />
+  <defaultport port="429" protocol="udp" name="ocs_amu" desc="OCS_AMU" />
+  <defaultport port="430" protocol="tcp" name="utmpsd" desc="UTMPSD" />
+  <defaultport port="430" protocol="udp" name="utmpsd" desc="UTMPSD" />
+  <defaultport port="431" protocol="tcp" name="utmpcd" desc="UTMPCD" />
+  <defaultport port="431" protocol="udp" name="utmpcd" desc="UTMPCD" />
+  <defaultport port="432" protocol="tcp" name="iasd" desc="IASD" />
+  <defaultport port="432" protocol="udp" name="iasd" desc="IASD" />
+  <defaultport port="433" protocol="tcp" name="nnsp" desc="NNSP" />
+  <defaultport port="433" protocol="udp" name="nnsp" desc="NNSP" />
+  <defaultport port="434" protocol="tcp" name="mobileip-agent" desc="MobileIP-Agent" />
+  <defaultport port="434" protocol="udp" name="mobileip-agent" desc="MobileIP-Agent" />
+  <defaultport port="435" protocol="tcp" name="mobilip-mn" desc="MobilIP-MN" />
+  <defaultport port="435" protocol="udp" name="mobilip-mn" desc="MobilIP-MN" />
+  <defaultport port="436" protocol="tcp" name="dna-cml" desc="DNA-CML" />
+  <defaultport port="436" protocol="udp" name="dna-cml" desc="DNA-CML" />
+  <defaultport port="437" protocol="tcp" name="comscm" desc="comscm" />
+  <defaultport port="437" protocol="udp" name="comscm" desc="comscm" />
+  <defaultport port="438" protocol="tcp" name="dsfgw" desc="dsfgw" />
+  <defaultport port="438" protocol="udp" name="dsfgw" desc="dsfgw" />
+  <defaultport port="439" protocol="tcp" name="dasp" desc="dasp      Thomas Obermair" />
+  <defaultport port="439" protocol="udp" name="dasp" desc="dasp      tommy&amp;inlab.m.eunet.de" />
+  <defaultport port="440" protocol="tcp" name="sgcp" desc="sgcp" />
+  <defaultport port="440" protocol="udp" name="sgcp" desc="sgcp" />
+  <defaultport port="441" protocol="tcp" name="decvms-sysmgt" desc="decvms-sysmgt" />
+  <defaultport port="441" protocol="udp" name="decvms-sysmgt" desc="decvms-sysmgt" />
+  <defaultport port="442" protocol="tcp" name="cvc_hostd" desc="cvc_hostd" />
+  <defaultport port="442" protocol="udp" name="cvc_hostd" desc="cvc_hostd" />
+  <defaultport port="443" protocol="tcp" name="https" desc="http protocol over TLS/SSL" />
+  <defaultport port="443" protocol="udp" name="https" desc="http protocol over TLS/SSL" />
+  <defaultport port="444" protocol="tcp" name="snpp" desc="Simple Network Paging Protocol" />
+  <defaultport port="444" protocol="udp" name="snpp" desc="Simple Network Paging Protocol" />
+  <defaultport port="445" protocol="tcp" name="microsoft-ds" desc="Microsoft-DS" />
+  <defaultport port="445" protocol="udp" name="microsoft-ds" desc="Microsoft-DS" />
+  <defaultport port="446" protocol="tcp" name="ddm-rdb" desc="DDM-Remote Relational Database Access" />
+  <defaultport port="446" protocol="udp" name="ddm-rdb" desc="DDM-Remote Relational Database Access" />
+  <defaultport port="447" protocol="tcp" name="ddm-dfm" desc="DDM-Distributed File Management" />
+  <defaultport port="447" protocol="udp" name="ddm-dfm" desc="DDM-Distributed File Management" />
+  <defaultport port="448" protocol="tcp" name="ddm-ssl" desc="DDM-Remote DB Access Using Secure Sockets" />
+  <defaultport port="448" protocol="udp" name="ddm-ssl" desc="DDM-Remote DB Access Using Secure Sockets" />
+  <defaultport port="449" protocol="tcp" name="as-servermap" desc="AS Server Mapper" />
+  <defaultport port="449" protocol="udp" name="as-servermap" desc="AS Server Mapper" />
+  <defaultport port="450" protocol="tcp" name="tserver" desc="Computer Supported Telecomunication Applications" />
+  <defaultport port="450" protocol="udp" name="tserver" desc="Computer Supported Telecomunication Applications" />
+  <defaultport port="451" protocol="tcp" name="sfs-smp-net" desc="Cray Network Semaphore server" />
+  <defaultport port="451" protocol="udp" name="sfs-smp-net" desc="Cray Network Semaphore server" />
+  <defaultport port="452" protocol="tcp" name="sfs-config" desc="Cray SFS config server" />
+  <defaultport port="452" protocol="udp" name="sfs-config" desc="Cray SFS config server" />
+  <defaultport port="453" protocol="tcp" name="creativeserver" desc="CreativeServer" />
+  <defaultport port="453" protocol="udp" name="creativeserver" desc="CreativeServer" />
+  <defaultport port="454" protocol="tcp" name="contentserver" desc="ContentServer" />
+  <defaultport port="454" protocol="udp" name="contentserver" desc="ContentServer" />
+  <defaultport port="455" protocol="tcp" name="creativepartnr" desc="CreativePartnr" />
+  <defaultport port="455" protocol="udp" name="creativepartnr" desc="CreativePartnr" />
+  <defaultport port="456" protocol="tcp" name="macon-tcp" desc="macon-tcp" />
+  <defaultport port="456" protocol="udp" name="macon-udp" desc="macon-udp" />
+  <defaultport port="457" protocol="tcp" name="scohelp" desc="scohelp" />
+  <defaultport port="457" protocol="udp" name="scohelp" desc="scohelp" />
+  <defaultport port="458" protocol="tcp" name="appleqtc" desc="apple quick time" />
+  <defaultport port="458" protocol="udp" name="appleqtc" desc="apple quick time" />
+  <defaultport port="459" protocol="tcp" name="ampr-rcmd" desc="ampr-rcmd" />
+  <defaultport port="459" protocol="udp" name="ampr-rcmd" desc="ampr-rcmd" />
+  <defaultport port="460" protocol="tcp" name="skronk" desc="skronk" />
+  <defaultport port="460" protocol="udp" name="skronk" desc="skronk" />
+  <defaultport port="461" protocol="tcp" name="datasurfsrv" desc="DataRampSrv" />
+  <defaultport port="461" protocol="udp" name="datasurfsrv" desc="DataRampSrv" />
+  <defaultport port="462" protocol="tcp" name="datasurfsrvsec" desc="DataRampSrvSec" />
+  <defaultport port="462" protocol="udp" name="datasurfsrvsec" desc="DataRampSrvSec" />
+  <defaultport port="463" protocol="tcp" name="alpes" desc="alpes" />
+  <defaultport port="463" protocol="udp" name="alpes" desc="alpes" />
+  <defaultport port="464" protocol="tcp" name="kpasswd" desc="kpasswd" />
+  <defaultport port="464" protocol="udp" name="kpasswd" desc="kpasswd" />
+  <defaultport port="465" protocol="tcp" name="urd" desc="URL Rendesvous Directory for SSM" />
+  <defaultport port="465" protocol="udp" name="igmpv3lite" desc="IGMP over UDP for SSM" />
+  <defaultport port="466" protocol="tcp" name="digital-vrc" desc="digital-vrc" />
+  <defaultport port="466" protocol="udp" name="digital-vrc" desc="digital-vrc" />
+  <defaultport port="467" protocol="tcp" name="mylex-mapd" desc="mylex-mapd" />
+  <defaultport port="467" protocol="udp" name="mylex-mapd" desc="mylex-mapd" />
+  <defaultport port="468" protocol="tcp" name="photuris" desc="proturis" />
+  <defaultport port="468" protocol="udp" name="photuris" desc="proturis" />
+  <defaultport port="469" protocol="tcp" name="rcp" desc="Radio Control Protocol" />
+  <defaultport port="469" protocol="udp" name="rcp" desc="Radio Control Protocol" />
+  <defaultport port="470" protocol="tcp" name="scx-proxy" desc="scx-proxy" />
+  <defaultport port="470" protocol="udp" name="scx-proxy" desc="scx-proxy" />
+  <defaultport port="471" protocol="tcp" name="mondex" desc="Mondex" />
+  <defaultport port="471" protocol="udp" name="mondex" desc="Mondex" />
+  <defaultport port="472" protocol="tcp" name="ljk-login" desc="ljk-login" />
+  <defaultport port="472" protocol="udp" name="ljk-login" desc="ljk-login" />
+  <defaultport port="473" protocol="tcp" name="hybrid-pop" desc="hybrid-pop" />
+  <defaultport port="473" protocol="udp" name="hybrid-pop" desc="hybrid-pop" />
+  <defaultport port="474" protocol="tcp" name="tn-tl-w1" desc="tn-tl-w1" />
+  <defaultport port="474" protocol="udp" name="tn-tl-w2" desc="tn-tl-w2" />
+  <defaultport port="475" protocol="tcp" name="tcpnethaspsrv" desc="tcpnethaspsrv" />
+  <defaultport port="475" protocol="udp" name="tcpnethaspsrv" desc="tcpnethaspsrv" />
+  <defaultport port="476" protocol="tcp" name="tn-tl-fd1" desc="tn-tl-fd1" />
+  <defaultport port="476" protocol="udp" name="tn-tl-fd1" desc="tn-tl-fd1" />
+  <defaultport port="477" protocol="tcp" name="ss7ns" desc="ss7ns" />
+  <defaultport port="477" protocol="udp" name="ss7ns" desc="ss7ns" />
+  <defaultport port="478" protocol="tcp" name="spsc" desc="spsc" />
+  <defaultport port="478" protocol="udp" name="spsc" desc="spsc" />
+  <defaultport port="479" protocol="tcp" name="iafserver" desc="iafserver" />
+  <defaultport port="479" protocol="udp" name="iafserver" desc="iafserver" />
+  <defaultport port="480" protocol="tcp" name="iafdbase" desc="iafdbase" />
+  <defaultport port="480" protocol="udp" name="iafdbase" desc="iafdbase" />
+  <defaultport port="481" protocol="tcp" name="ph" desc="Ph service" />
+  <defaultport port="481" protocol="udp" name="ph" desc="Ph service" />
+  <defaultport port="482" protocol="tcp" name="bgs-nsi" desc="bgs-nsi" />
+  <defaultport port="482" protocol="udp" name="bgs-nsi" desc="bgs-nsi" />
+  <defaultport port="483" protocol="tcp" name="ulpnet" desc="ulpnet" />
+  <defaultport port="483" protocol="udp" name="ulpnet" desc="ulpnet" />
+  <defaultport port="484" protocol="tcp" name="integra-sme" desc="Integra Software Management Environment" />
+  <defaultport port="484" protocol="udp" name="integra-sme" desc="Integra Software Management Environment" />
+  <defaultport port="485" protocol="tcp" name="powerburst" desc="Air Soft Power Burst" />
+  <defaultport port="485" protocol="udp" name="powerburst" desc="Air Soft Power Burst" />
+  <defaultport port="486" protocol="tcp" name="avian" desc="avian" />
+  <defaultport port="486" protocol="udp" name="avian" desc="avian" />
+  <defaultport port="487" protocol="tcp" name="saft" desc="saft Simple Asynchronous File Transfer" />
+  <defaultport port="487" protocol="udp" name="saft" desc="saft Simple Asynchronous File Transfer" />
+  <defaultport port="488" protocol="tcp" name="gss-http" desc="gss-http" />
+  <defaultport port="488" protocol="udp" name="gss-http" desc="gss-http" />
+  <defaultport port="489" protocol="tcp" name="nest-protocol" desc="nest-protocol" />
+  <defaultport port="489" protocol="udp" name="nest-protocol" desc="nest-protocol" />
+  <defaultport port="490" protocol="tcp" name="micom-pfs" desc="micom-pfs" />
+  <defaultport port="490" protocol="udp" name="micom-pfs" desc="micom-pfs" />
+  <defaultport port="491" protocol="tcp" name="go-login" desc="go-login" />
+  <defaultport port="491" protocol="udp" name="go-login" desc="go-login" />
+  <defaultport port="492" protocol="tcp" name="ticf-1" desc="Transport Independent Convergence for FNA" />
+  <defaultport port="492" protocol="udp" name="ticf-1" desc="Transport Independent Convergence for FNA" />
+  <defaultport port="493" protocol="tcp" name="ticf-2" desc="Transport Independent Convergence for FNA" />
+  <defaultport port="493" protocol="udp" name="ticf-2" desc="Transport Independent Convergence for FNA" />
+  <defaultport port="494" protocol="tcp" name="pov-ray" desc="POV-Ray" />
+  <defaultport port="494" protocol="udp" name="pov-ray" desc="POV-Ray" />
+  <defaultport port="495" protocol="tcp" name="intecourier" desc="intecourier" />
+  <defaultport port="495" protocol="udp" name="intecourier" desc="intecourier" />
+  <defaultport port="496" protocol="tcp" name="pim-rp-disc" desc="PIM-RP-DISC" />
+  <defaultport port="496" protocol="udp" name="pim-rp-disc" desc="PIM-RP-DISC" />
+  <defaultport port="497" protocol="tcp" name="dantz" desc="dantz" />
+  <defaultport port="497" protocol="udp" name="dantz" desc="dantz" />
+  <defaultport port="498" protocol="tcp" name="siam" desc="siam" />
+  <defaultport port="498" protocol="udp" name="siam" desc="siam" />
+  <defaultport port="499" protocol="tcp" name="iso-ill" desc="ISO ILL Protocol" />
+  <defaultport port="499" protocol="udp" name="iso-ill" desc="ISO ILL Protocol" />
+  <defaultport port="500" protocol="tcp" name="isakmp" desc="isakmp" />
+  <defaultport port="500" protocol="udp" name="isakmp" desc="isakmp" />
+  <defaultport port="501" protocol="tcp" name="stmf" desc="STMF" />
+  <defaultport port="501" protocol="udp" name="stmf" desc="STMF" />
+  <defaultport port="502" protocol="tcp" name="asa-appl-proto" desc="asa-appl-proto" />
+  <defaultport port="502" protocol="udp" name="asa-appl-proto" desc="asa-appl-proto" />
+  <defaultport port="503" protocol="tcp" name="intrinsa" desc="Intrinsa" />
+  <defaultport port="503" protocol="udp" name="intrinsa" desc="Intrinsa" />
+  <defaultport port="504" protocol="tcp" name="citadel" desc="citadel" />
+  <defaultport port="504" protocol="udp" name="citadel" desc="citadel" />
+  <defaultport port="505" protocol="tcp" name="mailbox-lm" desc="mailbox-lm" />
+  <defaultport port="505" protocol="udp" name="mailbox-lm" desc="mailbox-lm" />
+  <defaultport port="506" protocol="tcp" name="ohimsrv" desc="ohimsrv" />
+  <defaultport port="506" protocol="udp" name="ohimsrv" desc="ohimsrv" />
+  <defaultport port="507" protocol="tcp" name="crs" desc="crs" />
+  <defaultport port="507" protocol="udp" name="crs" desc="crs" />
+  <defaultport port="508" protocol="tcp" name="xvttp" desc="xvttp" />
+  <defaultport port="508" protocol="udp" name="xvttp" desc="xvttp" />
+  <defaultport port="509" protocol="tcp" name="snare" desc="snare" />
+  <defaultport port="509" protocol="udp" name="snare" desc="snare" />
+  <defaultport port="510" protocol="tcp" name="fcp" desc="FirstClass Protocol" />
+  <defaultport port="510" protocol="udp" name="fcp" desc="FirstClass Protocol" />
+  <defaultport port="511" protocol="tcp" name="passgo" desc="PassGo" />
+  <defaultport port="511" protocol="udp" name="passgo" desc="PassGo" />
+  <defaultport port="512" protocol="tcp" name="exec" desc="remote process execution;" />
+  <defaultport port="512" protocol="udp" name="biff" desc="used by mail system to notify users" />
+  <defaultport port="512" protocol="udp" name="comsat" />
+  <defaultport port="513" protocol="tcp" name="login" desc="remote login a la telnet;" />
+  <defaultport port="513" protocol="udp" name="who" desc="maintains data bases showing who's" />
+  <defaultport port="514" protocol="tcp" name="shell" desc="cmd" />
+  <defaultport port="514" protocol="udp" name="syslog" />
+  <defaultport port="515" protocol="tcp" name="printer" desc="spooler" />
+  <defaultport port="515" protocol="udp" name="printer" desc="spooler" />
+  <defaultport port="516" protocol="tcp" name="videotex" desc="videotex" />
+  <defaultport port="516" protocol="udp" name="videotex" desc="videotex" />
+  <defaultport port="517" protocol="tcp" name="talk" desc="like tenex link, but across" />
+  <defaultport port="517" protocol="udp" name="talk" desc="like tenex link, but across" />
+  <defaultport port="518" protocol="tcp" name="ntalk" />
+  <defaultport port="518" protocol="udp" name="ntalk" />
+  <defaultport port="519" protocol="tcp" name="utime" desc="unixtime" />
+  <defaultport port="519" protocol="udp" name="utime" desc="unixtime" />
+  <defaultport port="520" protocol="tcp" name="efs" desc="extended file name server" />
+  <defaultport port="520" protocol="udp" name="router" desc="local routing process (on site);" />
+  <defaultport port="521" protocol="tcp" name="ripng" desc="ripng" />
+  <defaultport port="521" protocol="udp" name="ripng" desc="ripng" />
+  <defaultport port="522" protocol="tcp" name="ulp" desc="ULP" />
+  <defaultport port="522" protocol="udp" name="ulp" desc="ULP" />
+  <defaultport port="523" protocol="tcp" name="ibm-db2" desc="IBM-DB2" />
+  <defaultport port="523" protocol="udp" name="ibm-db2" desc="IBM-DB2" />
+  <defaultport port="524" protocol="tcp" name="ncp" desc="NCP" />
+  <defaultport port="524" protocol="udp" name="ncp" desc="NCP" />
+  <defaultport port="525" protocol="tcp" name="timed" desc="timeserver" />
+  <defaultport port="525" protocol="udp" name="timed" desc="timeserver" />
+  <defaultport port="526" protocol="tcp" name="tempo" desc="newdate" />
+  <defaultport port="526" protocol="udp" name="tempo" desc="newdate" />
+  <defaultport port="527" protocol="tcp" name="stx" desc="Stock IXChange" />
+  <defaultport port="527" protocol="udp" name="stx" desc="Stock IXChange" />
+  <defaultport port="528" protocol="tcp" name="custix" desc="Customer IXChange" />
+  <defaultport port="528" protocol="udp" name="custix" desc="Customer IXChange" />
+  <defaultport port="529" protocol="tcp" name="irc-serv" desc="IRC-SERV" />
+  <defaultport port="529" protocol="udp" name="irc-serv" desc="IRC-SERV" />
+  <defaultport port="530" protocol="tcp" name="courier" desc="rpc" />
+  <defaultport port="530" protocol="udp" name="courier" desc="rpc" />
+  <defaultport port="531" protocol="tcp" name="conference" desc="chat" />
+  <defaultport port="531" protocol="udp" name="conference" desc="chat" />
+  <defaultport port="532" protocol="tcp" name="netnews" desc="readnews" />
+  <defaultport port="532" protocol="udp" name="netnews" desc="readnews" />
+  <defaultport port="533" protocol="tcp" name="netwall" desc="for emergency broadcasts" />
+  <defaultport port="533" protocol="udp" name="netwall" desc="for emergency broadcasts" />
+  <defaultport port="534" protocol="tcp" name="windream" desc="windream Admin" />
+  <defaultport port="534" protocol="udp" name="windream" desc="windream Admin" />
+  <defaultport port="535" protocol="tcp" name="iiop" desc="iiop" />
+  <defaultport port="535" protocol="udp" name="iiop" desc="iiop" />
+  <defaultport port="536" protocol="tcp" name="opalis-rdv" desc="opalis-rdv" />
+  <defaultport port="536" protocol="udp" name="opalis-rdv" desc="opalis-rdv" />
+  <defaultport port="537" protocol="tcp" name="nmsp" desc="Networked Media Streaming Protocol" />
+  <defaultport port="537" protocol="udp" name="nmsp" desc="Networked Media Streaming Protocol" />
+  <defaultport port="538" protocol="tcp" name="gdomap" desc="gdomap" />
+  <defaultport port="538" protocol="udp" name="gdomap" desc="gdomap" />
+  <defaultport port="539" protocol="tcp" name="apertus-ldp" desc="Apertus Technologies Load Determination" />
+  <defaultport port="539" protocol="udp" name="apertus-ldp" desc="Apertus Technologies Load Determination" />
+  <defaultport port="540" protocol="tcp" name="uucp" desc="uucpd" />
+  <defaultport port="540" protocol="udp" name="uucp" desc="uucpd" />
+  <defaultport port="541" protocol="tcp" name="uucp-rlogin" desc="uucp-rlogin" />
+  <defaultport port="541" protocol="udp" name="uucp-rlogin" desc="uucp-rlogin" />
+  <defaultport port="542" protocol="tcp" name="commerce" desc="commerce" />
+  <defaultport port="542" protocol="udp" name="commerce" desc="commerce" />
+  <defaultport port="543" protocol="tcp" name="klogin" />
+  <defaultport port="543" protocol="udp" name="klogin" />
+  <defaultport port="544" protocol="tcp" name="kshell" desc="krcmd" />
+  <defaultport port="544" protocol="udp" name="kshell" desc="krcmd" />
+  <defaultport port="545" protocol="tcp" name="appleqtcsrvr" desc="appleqtcsrvr" />
+  <defaultport port="545" protocol="udp" name="appleqtcsrvr" desc="appleqtcsrvr" />
+  <defaultport port="546" protocol="tcp" name="dhcpv6-client" desc="DHCPv6 Client" />
+  <defaultport port="546" protocol="udp" name="dhcpv6-client" desc="DHCPv6 Client" />
+  <defaultport port="547" protocol="tcp" name="dhcpv6-server" desc="DHCPv6 Server" />
+  <defaultport port="547" protocol="udp" name="dhcpv6-server" desc="DHCPv6 Server" />
+  <defaultport port="548" protocol="tcp" name="afpovertcp" desc="AFP over TCP" />
+  <defaultport port="548" protocol="udp" name="afpovertcp" desc="AFP over TCP" />
+  <defaultport port="549" protocol="tcp" name="idfp" desc="IDFP" />
+  <defaultport port="549" protocol="udp" name="idfp" desc="IDFP" />
+  <defaultport port="550" protocol="tcp" name="new-rwho" desc="new-who" />
+  <defaultport port="550" protocol="udp" name="new-rwho" desc="new-who" />
+  <defaultport port="551" protocol="tcp" name="cybercash" desc="cybercash" />
+  <defaultport port="551" protocol="udp" name="cybercash" desc="cybercash" />
+  <defaultport port="552" protocol="tcp" name="devshr-nts" desc="DeviceShare" />
+  <defaultport port="552" protocol="udp" name="devshr-nts" desc="DeviceShare" />
+  <defaultport port="553" protocol="tcp" name="pirp" desc="pirp" />
+  <defaultport port="553" protocol="udp" name="pirp" desc="pirp" />
+  <defaultport port="554" protocol="tcp" name="rtsp" desc="Real Time Streaming Protocol (RTSP)" />
+  <defaultport port="554" protocol="udp" name="rtsp" desc="Real Time Streaming Protocol (RTSP)" />
+  <defaultport port="555" protocol="tcp" name="dsf" />
+  <defaultport port="555" protocol="udp" name="dsf" />
+  <defaultport port="556" protocol="tcp" name="remotefs" desc="rfs server" />
+  <defaultport port="556" protocol="udp" name="remotefs" desc="rfs server" />
+  <defaultport port="557" protocol="tcp" name="openvms-sysipc" desc="openvms-sysipc" />
+  <defaultport port="557" protocol="udp" name="openvms-sysipc" desc="openvms-sysipc" />
+  <defaultport port="558" protocol="tcp" name="sdnskmp" desc="SDNSKMP" />
+  <defaultport port="558" protocol="udp" name="sdnskmp" desc="SDNSKMP" />
+  <defaultport port="559" protocol="tcp" name="teedtap" desc="TEEDTAP" />
+  <defaultport port="559" protocol="udp" name="teedtap" desc="TEEDTAP" />
+  <defaultport port="560" protocol="tcp" name="rmonitor" desc="rmonitord" />
+  <defaultport port="560" protocol="udp" name="rmonitor" desc="rmonitord" />
+  <defaultport port="561" protocol="tcp" name="monitor" />
+  <defaultport port="561" protocol="udp" name="monitor" />
+  <defaultport port="562" protocol="tcp" name="chshell" desc="chcmd" />
+  <defaultport port="562" protocol="udp" name="chshell" desc="chcmd" />
+  <defaultport port="563" protocol="tcp" name="nntps" desc="nntp protocol over TLS/SSL (was snntp)" />
+  <defaultport port="563" protocol="udp" name="nntps" desc="nntp protocol over TLS/SSL (was snntp)" />
+  <defaultport port="564" protocol="tcp" name="9pfs" desc="plan 9 file service" />
+  <defaultport port="564" protocol="udp" name="9pfs" desc="plan 9 file service" />
+  <defaultport port="565" protocol="tcp" name="whoami" desc="whoami" />
+  <defaultport port="565" protocol="udp" name="whoami" desc="whoami" />
+  <defaultport port="566" protocol="tcp" name="streettalk" desc="streettalk" />
+  <defaultport port="566" protocol="udp" name="streettalk" desc="streettalk" />
+  <defaultport port="567" protocol="tcp" name="banyan-rpc" desc="banyan-rpc" />
+  <defaultport port="567" protocol="udp" name="banyan-rpc" desc="banyan-rpc" />
+  <defaultport port="568" protocol="tcp" name="ms-shuttle" desc="microsoft shuttle" />
+  <defaultport port="568" protocol="udp" name="ms-shuttle" desc="microsoft shuttle" />
+  <defaultport port="569" protocol="tcp" name="ms-rome" desc="microsoft rome" />
+  <defaultport port="569" protocol="udp" name="ms-rome" desc="microsoft rome" />
+  <defaultport port="570" protocol="tcp" name="meter" desc="demon" />
+  <defaultport port="570" protocol="udp" name="meter" desc="demon" />
+  <defaultport port="571" protocol="tcp" name="meter" desc="udemon" />
+  <defaultport port="571" protocol="udp" name="meter" desc="udemon" />
+  <defaultport port="572" protocol="tcp" name="sonar" desc="sonar" />
+  <defaultport port="572" protocol="udp" name="sonar" desc="sonar" />
+  <defaultport port="573" protocol="tcp" name="banyan-vip" desc="banyan-vip" />
+  <defaultport port="573" protocol="udp" name="banyan-vip" desc="banyan-vip" />
+  <defaultport port="574" protocol="tcp" name="ftp-agent" desc="FTP Software Agent System" />
+  <defaultport port="574" protocol="udp" name="ftp-agent" desc="FTP Software Agent System" />
+  <defaultport port="575" protocol="tcp" name="vemmi" desc="VEMMI" />
+  <defaultport port="575" protocol="udp" name="vemmi" desc="VEMMI" />
+  <defaultport port="576" protocol="tcp" name="ipcd" desc="ipcd" />
+  <defaultport port="576" protocol="udp" name="ipcd" desc="ipcd" />
+  <defaultport port="577" protocol="tcp" name="vnas" desc="vnas" />
+  <defaultport port="577" protocol="udp" name="vnas" desc="vnas" />
+  <defaultport port="578" protocol="tcp" name="ipdd" desc="ipdd" />
+  <defaultport port="578" protocol="udp" name="ipdd" desc="ipdd" />
+  <defaultport port="579" protocol="tcp" name="decbsrv" desc="decbsrv" />
+  <defaultport port="579" protocol="udp" name="decbsrv" desc="decbsrv" />
+  <defaultport port="580" protocol="tcp" name="sntp-heartbeat" desc="SNTP HEARTBEAT" />
+  <defaultport port="580" protocol="udp" name="sntp-heartbeat" desc="SNTP HEARTBEAT" />
+  <defaultport port="581" protocol="tcp" name="bdp" desc="Bundle Discovery Protocol" />
+  <defaultport port="581" protocol="udp" name="bdp" desc="Bundle Discovery Protocol" />
+  <defaultport port="582" protocol="tcp" name="scc-security" desc="SCC Security" />
+  <defaultport port="582" protocol="udp" name="scc-security" desc="SCC Security" />
+  <defaultport port="583" protocol="tcp" name="philips-vc" desc="Philips Video-Conferencing" />
+  <defaultport port="583" protocol="udp" name="philips-vc" desc="Philips Video-Conferencing" />
+  <defaultport port="584" protocol="tcp" name="keyserver" desc="Key Server" />
+  <defaultport port="584" protocol="udp" name="keyserver" desc="Key Server" />
+  <defaultport port="586" protocol="tcp" name="password-chg" desc="Password Change" />
+  <defaultport port="586" protocol="udp" name="password-chg" desc="Password Change" />
+  <defaultport port="587" protocol="tcp" name="submission" desc="Submission" />
+  <defaultport port="587" protocol="udp" name="submission" desc="Submission" />
+  <defaultport port="588" protocol="tcp" name="cal" desc="CAL" />
+  <defaultport port="588" protocol="udp" name="cal" desc="CAL" />
+  <defaultport port="589" protocol="tcp" name="eyelink" desc="EyeLink" />
+  <defaultport port="589" protocol="udp" name="eyelink" desc="EyeLink" />
+  <defaultport port="590" protocol="tcp" name="tns-cml" desc="TNS CML" />
+  <defaultport port="590" protocol="udp" name="tns-cml" desc="TNS CML" />
+  <defaultport port="591" protocol="tcp" name="http-alt" desc="FileMaker, Inc. - HTTP Alternate (see Port 80)" />
+  <defaultport port="591" protocol="udp" name="http-alt" desc="FileMaker, Inc. - HTTP Alternate (see Port 80)" />
+  <defaultport port="592" protocol="tcp" name="eudora-set" desc="Eudora Set" />
+  <defaultport port="592" protocol="udp" name="eudora-set" desc="Eudora Set" />
+  <defaultport port="593" protocol="tcp" name="http-rpc-epmap" desc="HTTP RPC Ep Map" />
+  <defaultport port="593" protocol="udp" name="http-rpc-epmap" desc="HTTP RPC Ep Map" />
+  <defaultport port="594" protocol="tcp" name="tpip" desc="TPIP" />
+  <defaultport port="594" protocol="udp" name="tpip" desc="TPIP" />
+  <defaultport port="595" protocol="tcp" name="cab-protocol" desc="CAB Protocol" />
+  <defaultport port="595" protocol="udp" name="cab-protocol" desc="CAB Protocol" />
+  <defaultport port="596" protocol="tcp" name="smsd" desc="SMSD" />
+  <defaultport port="596" protocol="udp" name="smsd" desc="SMSD" />
+  <defaultport port="597" protocol="tcp" name="ptcnameservice" desc="PTC Name Service" />
+  <defaultport port="597" protocol="udp" name="ptcnameservice" desc="PTC Name Service" />
+  <defaultport port="598" protocol="tcp" name="sco-websrvrmg3" desc="SCO Web Server Manager 3" />
+  <defaultport port="598" protocol="udp" name="sco-websrvrmg3" desc="SCO Web Server Manager 3" />
+  <defaultport port="599" protocol="tcp" name="acp" desc="Aeolon Core Protocol" />
+  <defaultport port="599" protocol="udp" name="acp" desc="Aeolon Core Protocol" />
+  <defaultport port="600" protocol="tcp" name="ipcserver" desc="Sun IPC server" />
+  <defaultport port="600" protocol="udp" name="ipcserver" desc="Sun IPC server" />
+  <defaultport port="601" protocol="tcp" name="syslog-conn" desc="Reliable Syslog Service" />
+  <defaultport port="601" protocol="udp" name="syslog-conn" desc="Reliable Syslog Service" />
+  <defaultport port="602" protocol="tcp" name="xmlrpc-beep" desc="XML-RPC over BEEP" />
+  <defaultport port="602" protocol="udp" name="xmlrpc-beep" desc="XML-RPC over BEEP" />
+  <defaultport port="603" protocol="tcp" name="idxp" desc="IDXP" />
+  <defaultport port="603" protocol="udp" name="idxp" desc="IDXP" />
+  <defaultport port="604" protocol="tcp" name="tunnel" desc="TUNNEL" />
+  <defaultport port="604" protocol="udp" name="tunnel" desc="TUNNEL" />
+  <defaultport port="605" protocol="tcp" name="soap-beep" desc="SOAP over BEEP" />
+  <defaultport port="605" protocol="udp" name="soap-beep" desc="SOAP over BEEP" />
+  <defaultport port="606" protocol="tcp" name="urm" desc="Cray Unified Resource Manager" />
+  <defaultport port="606" protocol="udp" name="urm" desc="Cray Unified Resource Manager" />
+  <defaultport port="607" protocol="tcp" name="nqs" desc="nqs" />
+  <defaultport port="607" protocol="udp" name="nqs" desc="nqs" />
+  <defaultport port="608" protocol="tcp" name="sift-uft" desc="Sender-Initiated/Unsolicited File Transfer" />
+  <defaultport port="608" protocol="udp" name="sift-uft" desc="Sender-Initiated/Unsolicited File Transfer" />
+  <defaultport port="609" protocol="tcp" name="npmp-trap" desc="npmp-trap" />
+  <defaultport port="609" protocol="udp" name="npmp-trap" desc="npmp-trap" />
+  <defaultport port="610" protocol="tcp" name="npmp-local" desc="npmp-local" />
+  <defaultport port="610" protocol="udp" name="npmp-local" desc="npmp-local" />
+  <defaultport port="611" protocol="tcp" name="npmp-gui" desc="npmp-gui" />
+  <defaultport port="611" protocol="udp" name="npmp-gui" desc="npmp-gui" />
+  <defaultport port="612" protocol="tcp" name="hmmp-ind" desc="HMMP Indication" />
+  <defaultport port="612" protocol="udp" name="hmmp-ind" desc="HMMP Indication" />
+  <defaultport port="613" protocol="tcp" name="hmmp-op" desc="HMMP Operation" />
+  <defaultport port="613" protocol="udp" name="hmmp-op" desc="HMMP Operation" />
+  <defaultport port="614" protocol="tcp" name="sshell" desc="SSLshell" />
+  <defaultport port="614" protocol="udp" name="sshell" desc="SSLshell" />
+  <defaultport port="615" protocol="tcp" name="sco-inetmgr" desc="Internet Configuration Manager" />
+  <defaultport port="615" protocol="udp" name="sco-inetmgr" desc="Internet Configuration Manager" />
+  <defaultport port="616" protocol="tcp" name="sco-sysmgr" desc="SCO System Administration Server" />
+  <defaultport port="616" protocol="udp" name="sco-sysmgr" desc="SCO System Administration Server" />
+  <defaultport port="617" protocol="tcp" name="sco-dtmgr" desc="SCO Desktop Administration Server" />
+  <defaultport port="617" protocol="udp" name="sco-dtmgr" desc="SCO Desktop Administration Server" />
+  <defaultport port="618" protocol="tcp" name="dei-icda" desc="DEI-ICDA" />
+  <defaultport port="618" protocol="udp" name="dei-icda" desc="DEI-ICDA" />
+  <defaultport port="619" protocol="tcp" name="compaq-evm" desc="Compaq EVM" />
+  <defaultport port="619" protocol="udp" name="compaq-evm" desc="Compaq EVM" />
+  <defaultport port="620" protocol="tcp" name="sco-websrvrmgr" desc="SCO WebServer Manager" />
+  <defaultport port="620" protocol="udp" name="sco-websrvrmgr" desc="SCO WebServer Manager" />
+  <defaultport port="621" protocol="tcp" name="escp-ip" desc="ESCP" />
+  <defaultport port="621" protocol="udp" name="escp-ip" desc="ESCP" />
+  <defaultport port="622" protocol="tcp" name="collaborator" desc="Collaborator" />
+  <defaultport port="622" protocol="udp" name="collaborator" desc="Collaborator" />
+  <defaultport port="623" protocol="tcp" name="oob-ws-http" desc="DMTF out-of-band web services management protocol" />
+  <defaultport port="623" protocol="udp" name="asf-rmcp" desc="ASF Remote Management and Control Protocol" />
+  <defaultport port="624" protocol="tcp" name="cryptoadmin" desc="Crypto Admin" />
+  <defaultport port="624" protocol="udp" name="cryptoadmin" desc="Crypto Admin" />
+  <defaultport port="625" protocol="tcp" name="dec_dlm" desc="DEC DLM" />
+  <defaultport port="625" protocol="udp" name="dec_dlm" desc="DEC DLM" />
+  <defaultport port="626" protocol="tcp" name="asia" desc="ASIA" />
+  <defaultport port="626" protocol="udp" name="asia" desc="ASIA" />
+  <defaultport port="627" protocol="tcp" name="passgo-tivoli" desc="PassGo Tivoli" />
+  <defaultport port="627" protocol="udp" name="passgo-tivoli" desc="PassGo Tivoli" />
+  <defaultport port="628" protocol="tcp" name="qmqp" desc="QMQP" />
+  <defaultport port="628" protocol="udp" name="qmqp" desc="QMQP" />
+  <defaultport port="629" protocol="tcp" name="3com-amp3" desc="3Com AMP3" />
+  <defaultport port="629" protocol="udp" name="3com-amp3" desc="3Com AMP3" />
+  <defaultport port="630" protocol="tcp" name="rda" desc="RDA" />
+  <defaultport port="630" protocol="udp" name="rda" desc="RDA" />
+  <defaultport port="631" protocol="tcp" name="ipp" desc="IPP (Internet Printing Protocol)" />
+  <defaultport port="631" protocol="udp" name="ipp" desc="IPP (Internet Printing Protocol)" />
+  <defaultport port="632" protocol="tcp" name="bmpp" desc="bmpp" />
+  <defaultport port="632" protocol="udp" name="bmpp" desc="bmpp" />
+  <defaultport port="633" protocol="tcp" name="servstat" desc="Service Status update (Sterling Software)" />
+  <defaultport port="633" protocol="udp" name="servstat" desc="Service Status update (Sterling Software)" />
+  <defaultport port="634" protocol="tcp" name="ginad" desc="ginad" />
+  <defaultport port="634" protocol="udp" name="ginad" desc="ginad" />
+  <defaultport port="635" protocol="tcp" name="rlzdbase" desc="RLZ DBase" />
+  <defaultport port="635" protocol="udp" name="rlzdbase" desc="RLZ DBase" />
+  <defaultport port="636" protocol="tcp" name="ldaps" desc="ldap protocol over TLS/SSL (was sldap)" />
+  <defaultport port="636" protocol="udp" name="ldaps" desc="ldap protocol over TLS/SSL (was sldap)" />
+  <defaultport port="637" protocol="tcp" name="lanserver" desc="lanserver" />
+  <defaultport port="637" protocol="udp" name="lanserver" desc="lanserver" />
+  <defaultport port="638" protocol="tcp" name="mcns-sec" desc="mcns-sec" />
+  <defaultport port="638" protocol="udp" name="mcns-sec" desc="mcns-sec" />
+  <defaultport port="639" protocol="tcp" name="msdp" desc="MSDP" />
+  <defaultport port="639" protocol="udp" name="msdp" desc="MSDP" />
+  <defaultport port="640" protocol="tcp" name="entrust-sps" desc="entrust-sps" />
+  <defaultport port="640" protocol="udp" name="entrust-sps" desc="entrust-sps" />
+  <defaultport port="641" protocol="tcp" name="repcmd" desc="repcmd" />
+  <defaultport port="641" protocol="udp" name="repcmd" desc="repcmd" />
+  <defaultport port="642" protocol="tcp" name="esro-emsdp" desc="ESRO-EMSDP V1.3" />
+  <defaultport port="642" protocol="udp" name="esro-emsdp" desc="ESRO-EMSDP V1.3" />
+  <defaultport port="643" protocol="tcp" name="sanity" desc="SANity" />
+  <defaultport port="643" protocol="udp" name="sanity" desc="SANity" />
+  <defaultport port="644" protocol="tcp" name="dwr" desc="dwr" />
+  <defaultport port="644" protocol="udp" name="dwr" desc="dwr" />
+  <defaultport port="645" protocol="tcp" name="pssc" desc="PSSC" />
+  <defaultport port="645" protocol="udp" name="pssc" desc="PSSC" />
+  <defaultport port="646" protocol="tcp" name="ldp" desc="LDP" />
+  <defaultport port="646" protocol="udp" name="ldp" desc="LDP" />
+  <defaultport port="647" protocol="tcp" name="dhcp-failover" desc="DHCP Failover" />
+  <defaultport port="647" protocol="udp" name="dhcp-failover" desc="DHCP Failover" />
+  <defaultport port="648" protocol="tcp" name="rrp" desc="Registry Registrar Protocol (RRP)" />
+  <defaultport port="648" protocol="udp" name="rrp" desc="Registry Registrar Protocol (RRP)" />
+  <defaultport port="649" protocol="tcp" name="cadview-3d" desc="Cadview-3d - streaming 3d models over the internet" />
+  <defaultport port="649" protocol="udp" name="cadview-3d" desc="Cadview-3d - streaming 3d models over the internet" />
+  <defaultport port="650" protocol="tcp" name="obex" desc="OBEX" />
+  <defaultport port="650" protocol="udp" name="obex" desc="OBEX" />
+  <defaultport port="651" protocol="tcp" name="ieee-mms" desc="IEEE MMS" />
+  <defaultport port="651" protocol="udp" name="ieee-mms" desc="IEEE MMS" />
+  <defaultport port="652" protocol="tcp" name="hello-port" desc="HELLO_PORT" />
+  <defaultport port="652" protocol="udp" name="hello-port" desc="HELLO_PORT" />
+  <defaultport port="653" protocol="tcp" name="repscmd" desc="RepCmd" />
+  <defaultport port="653" protocol="udp" name="repscmd" desc="RepCmd" />
+  <defaultport port="654" protocol="tcp" name="aodv" desc="AODV" />
+  <defaultport port="654" protocol="udp" name="aodv" desc="AODV" />
+  <defaultport port="655" protocol="tcp" name="tinc" desc="TINC" />
+  <defaultport port="655" protocol="udp" name="tinc" desc="TINC" />
+  <defaultport port="656" protocol="tcp" name="spmp" desc="SPMP" />
+  <defaultport port="656" protocol="udp" name="spmp" desc="SPMP" />
+  <defaultport port="657" protocol="tcp" name="rmc" desc="RMC" />
+  <defaultport port="657" protocol="udp" name="rmc" desc="RMC" />
+  <defaultport port="658" protocol="tcp" name="tenfold" desc="TenFold" />
+  <defaultport port="658" protocol="udp" name="tenfold" desc="TenFold" />
+  <defaultport port="660" protocol="tcp" name="mac-srvr-admin" desc="MacOS Server Admin" />
+  <defaultport port="660" protocol="udp" name="mac-srvr-admin" desc="MacOS Server Admin" />
+  <defaultport port="661" protocol="tcp" name="hap" desc="HAP" />
+  <defaultport port="661" protocol="udp" name="hap" desc="HAP" />
+  <defaultport port="662" protocol="tcp" name="pftp" desc="PFTP" />
+  <defaultport port="662" protocol="udp" name="pftp" desc="PFTP" />
+  <defaultport port="663" protocol="tcp" name="purenoise" desc="PureNoise" />
+  <defaultport port="663" protocol="udp" name="purenoise" desc="PureNoise" />
+  <defaultport port="664" protocol="tcp" name="oob-ws-https" desc="DMTF out-of-band secure web services management protocol" />
+  <defaultport port="664" protocol="udp" name="asf-secure-rmcp" desc="ASF Secure Remote Management and Control Protocol" />
+  <defaultport port="665" protocol="tcp" name="sun-dr" desc="Sun DR" />
+  <defaultport port="665" protocol="udp" name="sun-dr" desc="Sun DR" />
+  <defaultport port="666" protocol="tcp" name="doom" desc="doom Id Software" />
+  <defaultport port="666" protocol="tcp" name="mdqs" />
+  <defaultport port="666" protocol="udp" name="doom" desc="doom Id Software" />
+  <defaultport port="666" protocol="udp" name="mdqs" />
+  <defaultport port="667" protocol="tcp" name="disclose" desc="campaign contribution disclosures - SDR Technologies" />
+  <defaultport port="667" protocol="udp" name="disclose" desc="campaign contribution disclosures - SDR Technologies" />
+  <defaultport port="668" protocol="tcp" name="mecomm" desc="MeComm" />
+  <defaultport port="668" protocol="udp" name="mecomm" desc="MeComm" />
+  <defaultport port="669" protocol="tcp" name="meregister" desc="MeRegister" />
+  <defaultport port="669" protocol="udp" name="meregister" desc="MeRegister" />
+  <defaultport port="670" protocol="tcp" name="vacdsm-sws" desc="VACDSM-SWS" />
+  <defaultport port="670" protocol="udp" name="vacdsm-sws" desc="VACDSM-SWS" />
+  <defaultport port="671" protocol="tcp" name="vacdsm-app" desc="VACDSM-APP" />
+  <defaultport port="671" protocol="udp" name="vacdsm-app" desc="VACDSM-APP" />
+  <defaultport port="672" protocol="tcp" name="vpps-qua" desc="VPPS-QUA" />
+  <defaultport port="672" protocol="udp" name="vpps-qua" desc="VPPS-QUA" />
+  <defaultport port="673" protocol="tcp" name="cimplex" desc="CIMPLEX" />
+  <defaultport port="673" protocol="udp" name="cimplex" desc="CIMPLEX" />
+  <defaultport port="674" protocol="tcp" name="acap" desc="ACAP" />
+  <defaultport port="674" protocol="udp" name="acap" desc="ACAP" />
+  <defaultport port="675" protocol="tcp" name="dctp" desc="DCTP" />
+  <defaultport port="675" protocol="udp" name="dctp" desc="DCTP" />
+  <defaultport port="676" protocol="tcp" name="vpps-via" desc="VPPS Via" />
+  <defaultport port="676" protocol="udp" name="vpps-via" desc="VPPS Via" />
+  <defaultport port="677" protocol="tcp" name="vpp" desc="Virtual Presence Protocol" />
+  <defaultport port="677" protocol="udp" name="vpp" desc="Virtual Presence Protocol" />
+  <defaultport port="678" protocol="tcp" name="ggf-ncp" desc="GNU Generation Foundation NCP" />
+  <defaultport port="678" protocol="udp" name="ggf-ncp" desc="GNU Generation Foundation NCP" />
+  <defaultport port="679" protocol="tcp" name="mrm" desc="MRM" />
+  <defaultport port="679" protocol="udp" name="mrm" desc="MRM" />
+  <defaultport port="680" protocol="tcp" name="entrust-aaas" desc="entrust-aaas" />
+  <defaultport port="680" protocol="udp" name="entrust-aaas" desc="entrust-aaas" />
+  <defaultport port="681" protocol="tcp" name="entrust-aams" desc="entrust-aams" />
+  <defaultport port="681" protocol="udp" name="entrust-aams" desc="entrust-aams" />
+  <defaultport port="682" protocol="tcp" name="xfr" desc="XFR" />
+  <defaultport port="682" protocol="udp" name="xfr" desc="XFR" />
+  <defaultport port="683" protocol="tcp" name="corba-iiop" desc="CORBA IIOP" />
+  <defaultport port="683" protocol="udp" name="corba-iiop" desc="CORBA IIOP" />
+  <defaultport port="684" protocol="tcp" name="corba-iiop-ssl" desc="CORBA IIOP SSL" />
+  <defaultport port="684" protocol="udp" name="corba-iiop-ssl" desc="CORBA IIOP SSL" />
+  <defaultport port="685" protocol="tcp" name="mdc-portmapper" desc="MDC Port Mapper" />
+  <defaultport port="685" protocol="udp" name="mdc-portmapper" desc="MDC Port Mapper" />
+  <defaultport port="686" protocol="tcp" name="hcp-wismar" desc="Hardware Control Protocol Wismar" />
+  <defaultport port="686" protocol="udp" name="hcp-wismar" desc="Hardware Control Protocol Wismar" />
+  <defaultport port="687" protocol="tcp" name="asipregistry" desc="asipregistry" />
+  <defaultport port="687" protocol="udp" name="asipregistry" desc="asipregistry" />
+  <defaultport port="688" protocol="tcp" name="realm-rusd" desc="ApplianceWare managment protocol" />
+  <defaultport port="688" protocol="udp" name="realm-rusd" desc="ApplianceWare managment protocol" />
+  <defaultport port="689" protocol="tcp" name="nmap" desc="NMAP" />
+  <defaultport port="689" protocol="udp" name="nmap" desc="NMAP" />
+  <defaultport port="690" protocol="tcp" name="vatp" desc="Velazquez Application Transfer Protocol" />
+  <defaultport port="690" protocol="udp" name="vatp" desc="Velazquez Application Transfer Protocol" />
+  <defaultport port="691" protocol="tcp" name="msexch-routing" desc="MS Exchange Routing" />
+  <defaultport port="691" protocol="udp" name="msexch-routing" desc="MS Exchange Routing" />
+  <defaultport port="692" protocol="tcp" name="hyperwave-isp" desc="Hyperwave-ISP" />
+  <defaultport port="692" protocol="udp" name="hyperwave-isp" desc="Hyperwave-ISP" />
+  <defaultport port="693" protocol="tcp" name="connendp" desc="almanid Connection Endpoint" />
+  <defaultport port="693" protocol="udp" name="connendp" desc="almanid Connection Endpoint" />
+  <defaultport port="694" protocol="tcp" name="ha-cluster" desc="ha-cluster" />
+  <defaultport port="694" protocol="udp" name="ha-cluster" desc="ha-cluster" />
+  <defaultport port="695" protocol="tcp" name="ieee-mms-ssl" desc="IEEE-MMS-SSL" />
+  <defaultport port="695" protocol="udp" name="ieee-mms-ssl" desc="IEEE-MMS-SSL" />
+  <defaultport port="696" protocol="tcp" name="rushd" desc="RUSHD" />
+  <defaultport port="696" protocol="udp" name="rushd" desc="RUSHD" />
+  <defaultport port="697" protocol="tcp" name="uuidgen" desc="UUIDGEN" />
+  <defaultport port="697" protocol="udp" name="uuidgen" desc="UUIDGEN" />
+  <defaultport port="698" protocol="tcp" name="olsr" desc="OLSR" />
+  <defaultport port="698" protocol="udp" name="olsr" desc="OLSR" />
+  <defaultport port="699" protocol="tcp" name="accessnetwork" desc="Access Network" />
+  <defaultport port="699" protocol="udp" name="accessnetwork" desc="Access Network" />
+  <defaultport port="700" protocol="tcp" name="epp" desc="Extensible Provisioning Protocol" />
+  <defaultport port="700" protocol="udp" name="epp" desc="Extensible Provisioning Protocol" />
+  <defaultport port="701" protocol="tcp" name="lmp" desc="Link Management Protocol (LMP)" />
+  <defaultport port="701" protocol="udp" name="lmp" desc="Link Management Protocol (LMP)" />
+  <defaultport port="702" protocol="tcp" name="iris-beep" desc="IRIS over BEEP" />
+  <defaultport port="702" protocol="udp" name="iris-beep" desc="IRIS over BEEP" />
+  <defaultport port="704" protocol="tcp" name="elcsd" desc="errlog copy/server daemon" />
+  <defaultport port="704" protocol="udp" name="elcsd" desc="errlog copy/server daemon" />
+  <defaultport port="705" protocol="tcp" name="agentx" desc="AgentX" />
+  <defaultport port="705" protocol="udp" name="agentx" desc="AgentX" />
+  <defaultport port="706" protocol="tcp" name="silc" desc="SILC" />
+  <defaultport port="706" protocol="udp" name="silc" desc="SILC" />
+  <defaultport port="707" protocol="tcp" name="borland-dsj" desc="Borland DSJ" />
+  <defaultport port="707" protocol="udp" name="borland-dsj" desc="Borland DSJ" />
+  <defaultport port="709" protocol="tcp" name="entrust-kmsh" desc="Entrust Key Management Service Handler" />
+  <defaultport port="709" protocol="udp" name="entrust-kmsh" desc="Entrust Key Management Service Handler" />
+  <defaultport port="710" protocol="tcp" name="entrust-ash" desc="Entrust Administration Service Handler" />
+  <defaultport port="710" protocol="udp" name="entrust-ash" desc="Entrust Administration Service Handler" />
+  <defaultport port="711" protocol="tcp" name="cisco-tdp" desc="Cisco TDP" />
+  <defaultport port="711" protocol="udp" name="cisco-tdp" desc="Cisco TDP" />
+  <defaultport port="712" protocol="tcp" name="tbrpf" desc="TBRPF" />
+  <defaultport port="712" protocol="udp" name="tbrpf" desc="TBRPF" />
+  <defaultport port="713" protocol="tcp" name="iris-xpc" desc="IRIS over XPC" />
+  <defaultport port="713" protocol="udp" name="iris-xpc" desc="IRIS over XPC" />
+  <defaultport port="714" protocol="tcp" name="iris-xpcs" desc="IRIS over XPCS" />
+  <defaultport port="714" protocol="udp" name="iris-xpcs" desc="IRIS over XPCS" />
+  <defaultport port="715" protocol="tcp" name="iris-lwz" desc="IRIS-LWZ" />
+  <defaultport port="715" protocol="udp" name="iris-lwz" desc="IRIS-LWZ" />
+  <defaultport port="716" protocol="udp" name="pana" desc="PANA Messages" />
+  <defaultport port="729" protocol="tcp" name="netviewdm1" desc="IBM NetView DM/6000 Server/Client" />
+  <defaultport port="729" protocol="udp" name="netviewdm1" desc="IBM NetView DM/6000 Server/Client" />
+  <defaultport port="730" protocol="tcp" name="netviewdm2" desc="IBM NetView DM/6000 send/tcp" />
+  <defaultport port="730" protocol="udp" name="netviewdm2" desc="IBM NetView DM/6000 send/tcp" />
+  <defaultport port="731" protocol="tcp" name="netviewdm3" desc="IBM NetView DM/6000 receive/tcp" />
+  <defaultport port="731" protocol="udp" name="netviewdm3" desc="IBM NetView DM/6000 receive/tcp" />
+  <defaultport port="741" protocol="tcp" name="netgw" desc="netGW" />
+  <defaultport port="741" protocol="udp" name="netgw" desc="netGW" />
+  <defaultport port="742" protocol="tcp" name="netrcs" desc="Network based Rev. Cont. Sys." />
+  <defaultport port="742" protocol="udp" name="netrcs" desc="Network based Rev. Cont. Sys." />
+  <defaultport port="744" protocol="tcp" name="flexlm" desc="Flexible License Manager" />
+  <defaultport port="744" protocol="udp" name="flexlm" desc="Flexible License Manager" />
+  <defaultport port="747" protocol="tcp" name="fujitsu-dev" desc="Fujitsu Device Control" />
+  <defaultport port="747" protocol="udp" name="fujitsu-dev" desc="Fujitsu Device Control" />
+  <defaultport port="748" protocol="tcp" name="ris-cm" desc="Russell Info Sci Calendar Manager" />
+  <defaultport port="748" protocol="udp" name="ris-cm" desc="Russell Info Sci Calendar Manager" />
+  <defaultport port="749" protocol="tcp" name="kerberos-adm" desc="kerberos administration" />
+  <defaultport port="749" protocol="udp" name="kerberos-adm" desc="kerberos administration" />
+  <defaultport port="750" protocol="tcp" name="rfile" />
+  <defaultport port="750" protocol="udp" name="kerberos-iv" desc="kerberos version iv" />
+  <defaultport port="750" protocol="udp" name="loadav" />
+  <defaultport port="751" protocol="tcp" name="pump" />
+  <defaultport port="751" protocol="udp" name="pump" />
+  <defaultport port="752" protocol="tcp" name="qrh" />
+  <defaultport port="752" protocol="udp" name="qrh" />
+  <defaultport port="753" protocol="tcp" name="rrh" />
+  <defaultport port="753" protocol="udp" name="rrh" />
+  <defaultport port="754" protocol="tcp" name="tell" desc="send" />
+  <defaultport port="754" protocol="udp" name="tell" desc="send" />
+  <defaultport port="758" protocol="tcp" name="nlogin" />
+  <defaultport port="758" protocol="udp" name="nlogin" />
+  <defaultport port="759" protocol="tcp" name="con" />
+  <defaultport port="759" protocol="udp" name="con" />
+  <defaultport port="760" protocol="tcp" name="ns" />
+  <defaultport port="760" protocol="udp" name="ns" />
+  <defaultport port="761" protocol="tcp" name="rxe" />
+  <defaultport port="761" protocol="udp" name="rxe" />
+  <defaultport port="762" protocol="tcp" name="quotad" />
+  <defaultport port="762" protocol="udp" name="quotad" />
+  <defaultport port="763" protocol="tcp" name="cycleserv" />
+  <defaultport port="763" protocol="udp" name="cycleserv" />
+  <defaultport port="764" protocol="tcp" name="omserv" />
+  <defaultport port="764" protocol="udp" name="omserv" />
+  <defaultport port="765" protocol="tcp" name="webster" />
+  <defaultport port="765" protocol="udp" name="webster" />
+  <defaultport port="767" protocol="tcp" name="phonebook" desc="phone" />
+  <defaultport port="767" protocol="udp" name="phonebook" desc="phone" />
+  <defaultport port="769" protocol="tcp" name="vid" />
+  <defaultport port="769" protocol="udp" name="vid" />
+  <defaultport port="770" protocol="tcp" name="cadlock" />
+  <defaultport port="770" protocol="udp" name="cadlock" />
+  <defaultport port="771" protocol="tcp" name="rtip" />
+  <defaultport port="771" protocol="udp" name="rtip" />
+  <defaultport port="772" protocol="tcp" name="cycleserv2" />
+  <defaultport port="772" protocol="udp" name="cycleserv2" />
+  <defaultport port="773" protocol="tcp" name="submit" />
+  <defaultport port="773" protocol="udp" name="notify" />
+  <defaultport port="774" protocol="tcp" name="rpasswd" />
+  <defaultport port="774" protocol="udp" name="acmaint_dbd" />
+  <defaultport port="775" protocol="tcp" name="entomb" />
+  <defaultport port="775" protocol="udp" name="acmaint_transd" />
+  <defaultport port="776" protocol="tcp" name="wpages" />
+  <defaultport port="776" protocol="udp" name="wpages" />
+  <defaultport port="777" protocol="tcp" name="multiling-http" desc="Multiling HTTP" />
+  <defaultport port="777" protocol="udp" name="multiling-http" desc="Multiling HTTP" />
+  <defaultport port="780" protocol="tcp" name="wpgs" />
+  <defaultport port="780" protocol="udp" name="wpgs" />
+  <defaultport port="800" protocol="tcp" name="mdbs_daemon" />
+  <defaultport port="800" protocol="udp" name="mdbs_daemon" />
+  <defaultport port="801" protocol="tcp" name="device" />
+  <defaultport port="801" protocol="udp" name="device" />
+  <defaultport port="810" protocol="tcp" name="fcp-udp" desc="FCP" />
+  <defaultport port="810" protocol="udp" name="fcp-udp" desc="FCP Datagram" />
+  <defaultport port="828" protocol="tcp" name="itm-mcell-s" desc="itm-mcell-s" />
+  <defaultport port="828" protocol="udp" name="itm-mcell-s" desc="itm-mcell-s" />
+  <defaultport port="829" protocol="tcp" name="pkix-3-ca-ra" desc="PKIX-3 CA/RA" />
+  <defaultport port="829" protocol="udp" name="pkix-3-ca-ra" desc="PKIX-3 CA/RA" />
+  <defaultport port="830" protocol="tcp" name="netconf-ssh" desc="NETCONF over SSH" />
+  <defaultport port="830" protocol="udp" name="netconf-ssh" desc="NETCONF over SSH" />
+  <defaultport port="831" protocol="tcp" name="netconf-beep" desc="NETCONF over BEEP" />
+  <defaultport port="831" protocol="udp" name="netconf-beep" desc="NETCONF over BEEP" />
+  <defaultport port="832" protocol="tcp" name="netconfsoaphttp" desc="NETCONF for SOAP over HTTPS" />
+  <defaultport port="832" protocol="udp" name="netconfsoaphttp" desc="NETCONF for SOAP over HTTPS" />
+  <defaultport port="833" protocol="tcp" name="netconfsoapbeep" desc="NETCONF for SOAP over BEEP" />
+  <defaultport port="833" protocol="udp" name="netconfsoapbeep" desc="NETCONF for SOAP over BEEP" />
+  <defaultport port="847" protocol="tcp" name="dhcp-failover2" desc="dhcp-failover 2" />
+  <defaultport port="847" protocol="udp" name="dhcp-failover2" desc="dhcp-failover 2" />
+  <defaultport port="848" protocol="tcp" name="gdoi" desc="GDOI" />
+  <defaultport port="848" protocol="udp" name="gdoi" desc="GDOI" />
+  <defaultport port="860" protocol="tcp" name="iscsi" desc="iSCSI" />
+  <defaultport port="860" protocol="udp" name="iscsi" desc="iSCSI" />
+  <defaultport port="861" protocol="tcp" name="owamp-control" desc="OWAMP-Control" />
+  <defaultport port="861" protocol="udp" name="owamp-control" desc="OWAMP-Control" />
+  <defaultport port="862" protocol="tcp" name="twamp-control" desc="Two-way Active Measurement Protocol (TWAMP) Control" />
+  <defaultport port="862" protocol="udp" name="twamp-control" desc="Two-way Active Measurement Protocol (TWAMP) Control" />
+  <defaultport port="873" protocol="tcp" name="rsync" desc="rsync" />
+  <defaultport port="873" protocol="udp" name="rsync" desc="rsync" />
+  <defaultport port="886" protocol="tcp" name="iclcnet-locate" desc="ICL coNETion locate server" />
+  <defaultport port="886" protocol="udp" name="iclcnet-locate" desc="ICL coNETion locate server" />
+  <defaultport port="887" protocol="tcp" name="iclcnet_svinfo" desc="ICL coNETion server info" />
+  <defaultport port="887" protocol="udp" name="iclcnet_svinfo" desc="ICL coNETion server info" />
+  <defaultport port="888" protocol="tcp" name="accessbuilder" desc="AccessBuilder" />
+  <defaultport port="888" protocol="tcp" name="cddbp" desc="CD Database Protocol" />
+  <defaultport port="888" protocol="udp" name="accessbuilder" desc="AccessBuilder" />
+  <defaultport port="900" protocol="tcp" name="omginitialrefs" desc="OMG Initial Refs" />
+  <defaultport port="900" protocol="udp" name="omginitialrefs" desc="OMG Initial Refs" />
+  <defaultport port="901" protocol="tcp" name="smpnameres" desc="SMPNAMERES" />
+  <defaultport port="901" protocol="udp" name="smpnameres" desc="SMPNAMERES" />
+  <defaultport port="902" protocol="tcp" name="ideafarm-door" desc="self documenting Telnet Door" />
+  <defaultport port="902" protocol="udp" name="ideafarm-door" desc="self documenting Door: send 0x00 for info" />
+  <defaultport port="903" protocol="tcp" name="ideafarm-panic" desc="self documenting Telnet Panic Door" />
+  <defaultport port="903" protocol="udp" name="ideafarm-panic" desc="self documenting Panic Door: send 0x00 for info" />
+  <defaultport port="910" protocol="tcp" name="kink" desc="Kerberized Internet Negotiation of Keys (KINK)" />
+  <defaultport port="910" protocol="udp" name="kink" desc="Kerberized Internet Negotiation of Keys (KINK)" />
+  <defaultport port="911" protocol="tcp" name="xact-backup" desc="xact-backup" />
+  <defaultport port="911" protocol="udp" name="xact-backup" desc="xact-backup" />
+  <defaultport port="912" protocol="tcp" name="apex-mesh" desc="APEX relay-relay service" />
+  <defaultport port="912" protocol="udp" name="apex-mesh" desc="APEX relay-relay service" />
+  <defaultport port="913" protocol="tcp" name="apex-edge" desc="APEX endpoint-relay service" />
+  <defaultport port="913" protocol="udp" name="apex-edge" desc="APEX endpoint-relay service" />
+  <defaultport port="989" protocol="tcp" name="ftps-data" desc="ftp protocol, data, over TLS/SSL" />
+  <defaultport port="989" protocol="udp" name="ftps-data" desc="ftp protocol, data, over TLS/SSL" />
+  <defaultport port="990" protocol="tcp" name="ftps" desc="ftp protocol, control, over TLS/SSL" />
+  <defaultport port="990" protocol="udp" name="ftps" desc="ftp protocol, control, over TLS/SSL" />
+  <defaultport port="991" protocol="tcp" name="nas" desc="Netnews Administration System" />
+  <defaultport port="991" protocol="udp" name="nas" desc="Netnews Administration System" />
+  <defaultport port="992" protocol="tcp" name="telnets" desc="telnet protocol over TLS/SSL" />
+  <defaultport port="992" protocol="udp" name="telnets" desc="telnet protocol over TLS/SSL" />
+  <defaultport port="993" protocol="tcp" name="imaps" desc="imap4 protocol over TLS/SSL" />
+  <defaultport port="993" protocol="udp" name="imaps" desc="imap4 protocol over TLS/SSL" />
+  <defaultport port="994" protocol="tcp" name="ircs" desc="irc protocol over TLS/SSL" />
+  <defaultport port="994" protocol="udp" name="ircs" desc="irc protocol over TLS/SSL" />
+  <defaultport port="995" protocol="tcp" name="pop3s" desc="pop3 protocol over TLS/SSL (was spop3)" />
+  <defaultport port="995" protocol="udp" name="pop3s" desc="pop3 protocol over TLS/SSL (was spop3)" />
+  <defaultport port="996" protocol="tcp" name="vsinet" desc="vsinet" />
+  <defaultport port="996" protocol="udp" name="vsinet" desc="vsinet" />
+  <defaultport port="997" protocol="tcp" name="maitrd" />
+  <defaultport port="997" protocol="udp" name="maitrd" />
+  <defaultport port="998" protocol="tcp" name="busboy" />
+  <defaultport port="998" protocol="udp" name="puparp" />
+  <defaultport port="999" protocol="tcp" name="garcon" />
+  <defaultport port="999" protocol="tcp" name="puprouter" />
+  <defaultport port="999" protocol="udp" name="applix" desc="Applix ac" />
+  <defaultport port="999" protocol="udp" name="puprouter" />
+  <defaultport port="1000" protocol="tcp" name="cadlock2" />
+  <defaultport port="1000" protocol="udp" name="cadlock2" />
+  <defaultport port="1010" protocol="tcp" name="surf" desc="surf" />
+  <defaultport port="1010" protocol="udp" name="surf" desc="surf" />
+  <defaultport port="1021" protocol="tcp" name="exp1" desc="RFC3692-style Experiment 1 (*) [RFC4727]" />
+  <defaultport port="1021" protocol="udp" name="exp1" desc="RFC3692-style Experiment 1 (*) [RFC4727]" />
+  <defaultport port="1022" protocol="tcp" name="exp2" desc="RFC3692-style Experiment 2 (*) [RFC4727]" />
+  <defaultport port="1022" protocol="udp" name="exp2" desc="RFC3692-style Experiment 2 (*) [RFC4727]" />
+  <defaultport port="1023" protocol="tcp" desc="Reserved" />
+  <defaultport port="1023" protocol="udp" desc="Reserved" />
+</ports>

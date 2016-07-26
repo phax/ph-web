@@ -2,16 +2,16 @@
 # 
 # Copyright
 # 
-# Copyright (c) phloc systems 2004 - 2014
-# http://www.phloc.com
+# Copyright (c) Philip Helger 2014 - 2016
+# http://www.helger.com
 # 
 # All Rights Reserved
-# Use, duplication or disclosure restricted by phloc systems
+# Use, duplication or disclosure restricted by Philip Helger
 # 
-# Vienna, Austria, Europe, World, Milky Way, Universe, 2004 - 2014
+# Vienna, Austria, Europe, World, Milky Way, Universe, 2014 - 2016
 #
-# Created on: 2014-09-01T15:34:08.380+02:00
-# Created by: com.helger.web.supplementary.main.MainCreateMimeTypesFileNameMapForJavaxActivation
+# Created on: 2016-07-26T07:01:34.707Z
+# Created by: com.helger.mail.supplementary.main.MainCreateMimeTypesFileNameMapForJavaxActivation
 #
 type=application/STEP exts=step,stp
 type=application/acrobat exts=pdf
@@ -24,7 +24,7 @@ type=application/coreldraw exts=cdr
 type=application/dbase exts=dbf
 type=application/dbf exts=dbf
 type=application/dicom exts=dcm
-type=application/docbook+xml exts=docbook
+type=application/docbook+xml exts=dbk,docbook
 type=application/drafting exts=drw
 type=application/dsptype exts=tsp
 type=application/ecmascript exts=es
@@ -32,6 +32,7 @@ type=application/emf exts=emf
 type=application/envoy exts=evy
 type=application/epub+zip exts=epub
 type=application/font-woff exts=woff
+type=application/font-woff2 exts=woff2
 type=application/fractals exts=fif
 type=application/futuresplash exts=swf,spl
 type=application/gml+xml exts=gml
@@ -105,12 +106,12 @@ type=application/smil+xml exts=smil,smi,sml,kino
 type=application/solids exts=sol
 type=application/sql exts=sql
 type=application/stuffit exts=sit
-type=application/text+html exts=html,htm
 type=application/vnd.adobe.flash.movie exts=swf,spl
 type=application/vnd.android.package-archive exts=apk
 type=application/vnd.apple.keynote exts=key
 type=application/vnd.apple.mpegurl exts=m3u,m3u8
 type=application/vnd.corel-draw exts=cdr
+type=application/vnd.debian.binary-package exts=deb,udeb
 type=application/vnd.emusic-emusic_package exts=emp
 type=application/vnd.google-earth.kml+xml exts=kml
 type=application/vnd.google-earth.kmz exts=kmz
@@ -152,7 +153,7 @@ type=application/vnd.ms-wpl exts=wpl
 type=application/vnd.ms-xpsdocument exts=oxps,xps
 type=application/vnd.msaccess exts=mdb
 type=application/vnd.nintendo.snes.rom exts=sfc,smc
-type=application/vnd.oasis.docbook+xml exts=docbook
+type=application/vnd.oasis.docbook+xml exts=dbk,docbook
 type=application/vnd.oasis.opendocument.chart exts=odc
 type=application/vnd.oasis.opendocument.chart-template exts=otc
 type=application/vnd.oasis.opendocument.database exts=odb
@@ -209,7 +210,6 @@ type=application/vnd.sun.xml.writer.template exts=stw
 type=application/vnd.symbian.install exts=sis
 type=application/vnd.tcpdump.pcap exts=pcap,cap,dmp
 type=application/vnd.visio exts=vsd,vst,vsw,vss
-type=application/vnd.wap.xhtml+xml exts=wml
 type=application/vnd.wordperfect exts=wp,wp4,wp5,wp6,wpd,wpp
 type=application/winhlp exts=hlp
 type=application/wk1 exts=123,wk1,wk3,wk4,wks
@@ -259,14 +259,14 @@ type=application/x-dar exts=dar
 type=application/x-dbase exts=dbf
 type=application/x-dbf exts=dbf
 type=application/x-dc-rom exts=dc
-type=application/x-deb exts=deb
-type=application/x-debian-package exts=deb
+type=application/x-deb exts=deb,udeb
+type=application/x-debian-package exts=deb,udeb
 type=application/x-designer exts=ui
 type=application/x-desktop exts=desktop,kdelnk
 type=application/x-dia-diagram exts=dia
 type=application/x-dia-shape exts=shape
 type=application/x-director exts=dir,dxr
-type=application/x-docbook+xml exts=docbook
+type=application/x-docbook+xml exts=dbk,docbook
 type=application/x-dvi exts=dvi
 type=application/x-e-theme exts=etheme
 type=application/x-egon exts=egon
@@ -387,7 +387,7 @@ type=application/x-mswinurl exts=url
 type=application/x-msword exts=doc,dot
 type=application/x-mswrite exts=wri
 type=application/x-msx-rom exts=msx
-type=application/x-n64-rom exts=n64
+type=application/x-n64-rom exts=n64,z64,v64
 type=application/x-navi-animation exts=ani
 type=application/x-nes-rom exts=nes
 type=application/x-netcdf exts=cdf,nc
@@ -397,9 +397,11 @@ type=application/x-nzb exts=nzb
 type=application/x-object exts=o
 type=application/x-ogg exts=ogx
 type=application/x-oleo exts=oleo
+type=application/x-pagemaker exts=p65,pm,pm6,pmd
 type=application/x-pak exts=pak
 type=application/x-palm-database exts=prc,pdb,pqa,oprc
 type=application/x-par2 exts=PAR2,par2
+type=application/x-partial-download exts=wkdownload,crdownload,part
 type=application/x-pc-engine-rom exts=pce
 type=application/x-pcap exts=pcap,cap,dmp
 type=application/x-pdf exts=pdf
@@ -416,6 +418,7 @@ type=application/x-planperfect exts=pln
 type=application/x-pocket-word exts=psw
 type=application/x-pw exts=pw
 type=application/x-python-bytecode exts=pyc,pyo
+type=application/x-qpress exts=qp
 type=application/x-qtiplot exts=qti
 type=application/x-quattropro exts=wb1,wb2,wb3
 type=application/x-quicktime-media-link exts=qtl
@@ -497,6 +500,7 @@ type=application/xslt+xml exts=xsl,xslt
 type=application/xspf+xml exts=xspf
 type=application/ynd.ms-pkipko exts=pko
 type=application/zip exts=zip
+type=application/zlib exts=zz
 type=audio/3gpp exts=3gp,3gpp,3ga
 type=audio/3gpp-encrypted exts=3gp,3gpp,3ga
 type=audio/3gpp2 exts=3g2,3gp2,3gpp2
@@ -630,7 +634,6 @@ type=image/wmf exts=wmf
 type=image/x-3ds exts=3ds
 type=image/x-MS-bmp exts=bmp
 type=image/x-adobe-dng exts=dng
-type=image/x-apple-ios-png exts=png
 type=image/x-applix-graphics exts=ag
 type=image/x-bmp exts=bmp
 type=image/x-canon-cr2 exts=cr2
@@ -709,10 +712,10 @@ type=text/gedcom exts=ged,gedcom
 type=text/google-video-pointer exts=gvp
 type=text/h323 exts=323
 type=text/html exts=html,htm
-type=text/html-sandboxed exts=html,htm
 type=text/ico exts=ico
 type=text/iuls exts=uls
 type=text/javascript exts=js,jsm
+type=text/markdown exts=md,mkd,markdown
 type=text/mathml exts=mml
 type=text/plain exts=txt,asc,bas
 type=text/rdf exts=rdf,rdfs,owl
@@ -755,6 +758,7 @@ type=text/x-eiffel exts=e,eif
 type=text/x-emacs-lisp exts=el
 type=text/x-erlang exts=erl
 type=text/x-fortran exts=f,f90,f95,for
+type=text/x-genie exts=gs
 type=text/x-gettext-translation exts=po
 type=text/x-gettext-translation-template exts=pot
 type=text/x-go exts=go
@@ -794,7 +798,7 @@ type=text/x-patch exts=diff,patch
 type=text/x-po exts=po
 type=text/x-pot exts=pot
 type=text/x-python exts=py,pyx,wsgi
-type=text/x-qml exts=qml
+type=text/x-qml exts=qml,qmltypes,qmlproject
 type=text/x-reject exts=rej
 type=text/x-rpm-spec exts=spec
 type=text/x-scala exts=scala
@@ -825,7 +829,6 @@ type=text/x-vhdl exts=vhd,vhdl
 type=text/x-xmi exts=xmi
 type=text/x-xslfo exts=fo,xslfo
 type=text/x-yaml exts=yaml,yml
-type=text/xhtml+xml exts=xhtml
 type=text/xml exts=xml,xbl,xsd,rng
 type=text/xml-external-parsed-entity exts=ent
 type=text/yaml exts=yaml,yml
@@ -842,8 +845,8 @@ type=video/fli exts=fli,flc
 type=video/flv exts=flv
 type=video/gl exts=gl
 type=video/mp2t exts=m2t,m2ts,ts,mts,cpi,clpi,mpl,mpls,bdm,bdmv
-type=video/mp4 exts=mp4,m4v,f4v
-type=video/mp4v-es exts=mp4,m4v,f4v
+type=video/mp4 exts=mp4,m4v,f4v,lrv
+type=video/mp4v-es exts=mp4,m4v,f4v,lrv
 type=video/mpeg exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
 type=video/msvideo exts=avi,avf,divx
 type=video/ogg exts=ogv,ogg
@@ -861,7 +864,7 @@ type=video/x-flic exts=fli,flc
 type=video/x-flv exts=flv
 type=video/x-javafx exts=fxm
 type=video/x-la-asf exts=lsf,lsx
-type=video/x-m4v exts=mp4,m4v,f4v
+type=video/x-m4v exts=mp4,m4v,f4v,lrv
 type=video/x-matroska exts=mkv
 type=video/x-matroska-3d exts=mk3d
 type=video/x-mng exts=mng

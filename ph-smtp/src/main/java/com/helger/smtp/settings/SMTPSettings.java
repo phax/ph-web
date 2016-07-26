@@ -33,9 +33,9 @@ import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.network.port.NetworkPortHelper;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
-import com.helger.web.port.NetworkPortHelper;
 
 /**
  * Writable implementation of the {@link ISMTPSettings} interface.

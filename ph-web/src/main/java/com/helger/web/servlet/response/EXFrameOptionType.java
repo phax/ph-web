@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.lang.EnumHelper;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.CHTTPHeader;
 
 /**
  * The possible values for the X-Frame-Options HTTP header.

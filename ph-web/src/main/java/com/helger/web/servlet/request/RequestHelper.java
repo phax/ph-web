@@ -40,13 +40,13 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLData;
 import com.helger.commons.url.URLHelper;
-import com.helger.web.http.CHTTPHeader;
-import com.helger.web.http.EHTTPMethod;
-import com.helger.web.http.EHTTPVersion;
-import com.helger.web.http.HTTPHeaderMap;
-import com.helger.web.port.CNetworkPort;
-import com.helger.web.port.NetworkPortHelper;
-import com.helger.web.port.SchemeDefaultPortMapper;
+import com.helger.http.CHTTPHeader;
+import com.helger.http.EHTTPMethod;
+import com.helger.http.EHTTPVersion;
+import com.helger.http.HTTPHeaderMap;
+import com.helger.network.port.CNetworkPort;
+import com.helger.network.port.NetworkPortHelper;
+import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.web.servlet.ServletContextPathHolder;
 
 /**

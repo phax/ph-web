@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
-import com.helger.web.http.EHTTPMethod;
+import com.helger.http.EHTTPMethod;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
 

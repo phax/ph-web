@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.CHTTPHeader;
 import com.helger.web.mock.MockHttpServletRequest;
 
 /**

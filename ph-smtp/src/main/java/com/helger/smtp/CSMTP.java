@@ -22,7 +22,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
-import com.helger.web.port.DefaultNetworkPorts;
+import com.helger.network.port.DefaultNetworkPorts;
 
 /**
  * Contains some global web constants

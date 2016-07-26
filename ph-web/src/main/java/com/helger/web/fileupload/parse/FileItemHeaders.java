@@ -35,8 +35,8 @@ import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.http.CHTTPHeader;
 import com.helger.web.fileupload.IFileItemHeaders;
-import com.helger.web.http.CHTTPHeader;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.

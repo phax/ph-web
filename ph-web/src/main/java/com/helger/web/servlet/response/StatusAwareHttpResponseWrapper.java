@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.web.http.HTTPHeaderMap;
+import com.helger.http.HTTPHeaderMap;
 
 /**
  * A special {@link HttpServletResponseWrapper} that tracks the used status

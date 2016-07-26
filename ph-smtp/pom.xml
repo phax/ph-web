@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>ph-web-parent-pom</artifactId>
-    <version>8.2.0-SNAPSHOT</version>
+    <version>8.5.0-SNAPSHOT</version>
   </parent>
   <artifactId>ph-smtp</artifactId>
   <packaging>bundle</packaging>
@@ -68,7 +68,7 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
-      <artifactId>ph-web</artifactId>
+      <artifactId>ph-network</artifactId>
     </dependency>
     <dependency>
       <groupId>dnsjava</groupId>

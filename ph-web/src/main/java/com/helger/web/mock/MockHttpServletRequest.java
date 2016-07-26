@@ -77,11 +77,11 @@ import com.helger.commons.system.SystemHelper;
 import com.helger.commons.url.URLHelper;
 import com.helger.commons.url.URLParameter;
 import com.helger.commons.url.URLParameterList;
-import com.helger.web.http.AcceptCharsetHandler;
-import com.helger.web.http.CHTTPHeader;
-import com.helger.web.http.EHTTPMethod;
-import com.helger.web.http.EHTTPVersion;
-import com.helger.web.port.SchemeDefaultPortMapper;
+import com.helger.http.AcceptCharsetHandler;
+import com.helger.http.CHTTPHeader;
+import com.helger.http.EHTTPMethod;
+import com.helger.http.EHTTPVersion;
+import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.servlet.request.RequestHelper;
 

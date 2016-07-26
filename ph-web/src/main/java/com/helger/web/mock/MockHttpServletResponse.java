@@ -51,7 +51,7 @@ import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.port.SchemeDefaultPortMapper;
+import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.web.servlet.AbstractServletOutputStream;
 
 /**

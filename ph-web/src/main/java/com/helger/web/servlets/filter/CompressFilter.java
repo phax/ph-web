@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
-import com.helger.web.http.AcceptEncodingHandler;
-import com.helger.web.http.AcceptEncodingList;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.AcceptEncodingHandler;
+import com.helger.http.AcceptEncodingList;
+import com.helger.http.CHTTPHeader;
 import com.helger.web.servlet.response.ResponseHelperSettings;
 import com.helger.web.servlet.response.gzip.AbstractCompressedResponseWrapper;
 import com.helger.web.servlet.response.gzip.CompressFilterSettings;

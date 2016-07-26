@@ -45,8 +45,8 @@ import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.web.http.EHTTPMethod;
-import com.helger.web.proxy.HttpProxyConfig;
+import com.helger.http.EHTTPMethod;
+import com.helger.network.proxy.HttpProxyConfig;
 
 /**
  * Some utility methods for creating and handling Apache httpclient objects.

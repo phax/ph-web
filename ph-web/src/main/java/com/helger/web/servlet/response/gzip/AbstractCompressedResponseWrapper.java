@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.StringHelper;
-import com.helger.web.http.AcceptEncodingHandler;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.AcceptEncodingHandler;
+import com.helger.http.CHTTPHeader;
 import com.helger.web.servlet.response.ResponseHelper;
 import com.helger.web.servlet.response.StatusAwareHttpResponseWrapper;
 

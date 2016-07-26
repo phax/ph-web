@@ -33,7 +33,7 @@ import com.helger.commons.collection.ext.CommonsHashSet;
 import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.CHTTPHeader;
 
 /**
  * Central cache for known user agents (see HTTP header field

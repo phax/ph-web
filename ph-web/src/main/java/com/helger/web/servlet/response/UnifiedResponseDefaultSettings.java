@@ -32,9 +32,9 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.web.http.CHTTPHeader;
-import com.helger.web.http.CacheControlBuilder;
-import com.helger.web.http.HTTPHeaderMap;
+import com.helger.http.CHTTPHeader;
+import com.helger.http.CacheControlBuilder;
+import com.helger.http.HTTPHeaderMap;
 
 /**
  * This class encapsulates default settings to be applied to all

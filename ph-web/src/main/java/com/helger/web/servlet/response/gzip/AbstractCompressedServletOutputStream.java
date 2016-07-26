@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.CHTTPHeader;
 import com.helger.web.servlet.AbstractServletOutputStream;
 import com.helger.web.servlet.response.ResponseHelper;
 

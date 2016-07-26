@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.web.http.AcceptEncodingHandler;
-import com.helger.web.http.AcceptEncodingList;
-import com.helger.web.http.CHTTPHeader;
+import com.helger.http.AcceptEncodingHandler;
+import com.helger.http.AcceptEncodingList;
+import com.helger.http.CHTTPHeader;
 
 /**
  * Misc. helper methods on {@link HttpServletResponse} objects.<br>

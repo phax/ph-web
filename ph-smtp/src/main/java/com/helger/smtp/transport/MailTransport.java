@@ -55,12 +55,12 @@ import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.network.WebExceptionHelper;
 import com.helger.smtp.EmailGlobalSettings;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.settings.ISMTPSettings;
-import com.helger.web.WebExceptionHelper;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.sun.mail.smtp.SMTPAddressSucceededException;
 
@@ -112,7 +112,7 @@ public final class MailTransport
   @ReturnsMutableCopy
   public static ICommonsMap <String, String> createSessionProperties (@Nonnull final ISMTPSettings aSettings)
   {
-    final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
+    final ICommonsMap <String, String> ret = new CommonsHashMap<> ();
     final boolean bSMTPS = isUseSMTPS (aSettings);
 
     // Enable SSL?
@@ -200,10 +200,10 @@ public final class MailTransport
   @Nonnull
   public ICommonsOrderedMap <IMutableEmailData, MailTransportError> send (@Nullable final Collection <IMutableEmailData> aAllMessages)
   {
-    final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = new CommonsLinkedHashMap<> ();
     if (aAllMessages != null)
     {
-      final ICommonsList <IMutableEmailData> aRemainingMessages = new CommonsArrayList <> (aAllMessages);
+      final ICommonsList <IMutableEmailData> aRemainingMessages = new CommonsArrayList<> (aAllMessages);
       MailSendException aExceptionToBeRemembered = null;
 
       try
@@ -279,7 +279,7 @@ public final class MailTransport
               final ICommonsSet <String> aInvalid = CollectionHelper.newSetMapped (ex.getInvalidAddresses (),
                                                                                    Address::toString);
 
-              final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList <> ();
+              final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList<> ();
               Exception ex2;
               MessagingException bex = ex;
               while ((ex2 = bex.getNextException ()) != null && ex2 instanceof MessagingException)
@@ -310,9 +310,9 @@ public final class MailTransport
               }
 
               // Map addresses to details
-              final ICommonsOrderedSet <MailSendDetails> aValidSentExt = new CommonsLinkedHashSet <> ();
-              final ICommonsOrderedSet <MailSendDetails> aValidUnsentExt = new CommonsLinkedHashSet <> ();
-              final ICommonsOrderedSet <MailSendDetails> aInvalidExt = new CommonsLinkedHashSet <> ();
+              final ICommonsOrderedSet <MailSendDetails> aValidSentExt = new CommonsLinkedHashSet<> ();
+              final ICommonsOrderedSet <MailSendDetails> aValidUnsentExt = new CommonsLinkedHashSet<> ();
+              final ICommonsOrderedSet <MailSendDetails> aInvalidExt = new CommonsLinkedHashSet<> ();
               for (final MailSendDetails aFailure : aDetails)
               {
                 final String sAddress = aFailure.getAddress ();
@@ -356,7 +356,7 @@ public final class MailTransport
             }
             catch (final MessagingException ex)
             {
-              final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet <> ();
+              final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet<> ();
               final Consumer <IEmailAddress> aConsumer = a -> aInvalid.add (new MailSendDetails (false,
                                                                                                  a.getAddress (),
                                                                                                  "<generic error>",
@@ -369,8 +369,8 @@ public final class MailTransport
               final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
                                                                                   aEmailData,
                                                                                   aMimeMessage,
-                                                                                  new CommonsArrayList <> (),
-                                                                                  new CommonsArrayList <> (),
+                                                                                  new CommonsArrayList<> (),
+                                                                                  new CommonsArrayList<> (),
                                                                                   aInvalid);
               // Message not delivered
               for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)

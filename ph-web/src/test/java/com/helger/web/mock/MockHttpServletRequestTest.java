@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.web.http.EHTTPMethod;
+import com.helger.http.EHTTPMethod;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.

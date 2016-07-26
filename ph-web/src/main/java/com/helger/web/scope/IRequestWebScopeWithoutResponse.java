@@ -39,9 +39,9 @@ import com.helger.commons.scope.IRequestScope;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
+import com.helger.http.EHTTPMethod;
+import com.helger.http.EHTTPVersion;
 import com.helger.web.fileupload.IFileItem;
-import com.helger.web.http.EHTTPMethod;
-import com.helger.web.http.EHTTPVersion;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestHelper;
 

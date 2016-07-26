@@ -36,8 +36,8 @@ import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
+import com.helger.http.HTTPHeaderMap;
 import com.helger.web.annotation.IsOffline;
-import com.helger.web.http.HTTPHeaderMap;
 import com.helger.web.servlet.ServletContextPathHolder;
 
 /**

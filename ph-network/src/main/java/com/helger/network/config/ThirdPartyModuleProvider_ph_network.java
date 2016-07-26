@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.config;
+package com.helger.network.config;
 
 import javax.annotation.Nullable;
 
@@ -32,18 +32,18 @@ import com.helger.commons.version.Version;
  * @author Philip Helger
  */
 @IsSPIImplementation
-public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleProviderSPI
+public final class ThirdPartyModuleProvider_ph_network implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
-                                                                     "JCraft Inc.",
-                                                                     ELicense.BSD,
-                                                                     new Version (0, 1, 53),
-                                                                     "http://www.jcraft.com/jsch/",
-                                                                     true);
+  public static final IThirdPartyModule DNSJAVA = new ThirdPartyModule ("dnsjava",
+                                                                        "Brian Wellington",
+                                                                        ELicense.BSD,
+                                                                        new Version (2, 1, 7),
+                                                                        "http://www.xbill.org/dnsjava/",
+                                                                        true);
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()
   {
-    return new IThirdPartyModule [] { JSCH };
+    return new IThirdPartyModule [] { DNSJAVA };
   }
 }

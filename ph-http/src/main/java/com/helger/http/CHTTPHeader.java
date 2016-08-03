@@ -124,6 +124,23 @@ public final class CHTTPHeader
   public static final String X_WEBKIT_CSP = "X-WebKit-CSP";
   public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "Content-Security-Policy-Report-Only";
 
+  // AS2 headers
+  public static final String AS2_FROM = "AS2-From";
+  public static final String AS2_TO = "AS2-To";
+  public static final String AS2_VERSION = "AS2-Version";
+  public static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
+  public static final String DISPOSITION_NOTIFICATION_OPTIONS = "Disposition-Notification-Options";
+  public static final String DISPOSITION_NOTIFICATION_TO = "Disposition-Notification-To";
+  public static final String FROM = "From";
+  public static final String MESSAGE_ID = "Message-ID";
+  public static final String MIME_VERSION = "Mime-Version";
+  public static final String RECEIPT_DELIVERY_OPTION = "Receipt-Delivery-Option";
+  public static final String RECIPIENT_ADDRESS = "Recipient-Address";
+  public static final String SERVER = "Server";
+  public static final String SUBJECT = "Subject";
+  /** Defined by RFC 6017 */
+  public static final String EDIINT_FEATURES = "EDIINT-Features";
+
   // Special values
   public static final String VALUE_ALLOW_FROM = "ALLOW-FROM";
   public static final String VALUE_DENY = "DENY";

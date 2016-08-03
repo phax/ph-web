@@ -37,6 +37,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsIterable;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.datetime.PDTFactory;
@@ -55,7 +56,7 @@ import com.helger.datetime.util.PDTWebDateHelper;
 @NotThreadSafe
 public class HTTPHeaderMap implements
                            IHasSize,
-                           Iterable <Map.Entry <String, ICommonsList <String>>>,
+                           ICommonsIterable <Map.Entry <String, ICommonsList <String>>>,
                            ICloneable <HTTPHeaderMap>,
                            Serializable
 {

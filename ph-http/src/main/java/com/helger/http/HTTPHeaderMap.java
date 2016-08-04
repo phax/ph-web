@@ -23,6 +23,7 @@ import java.time.ZonedDateTime;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -100,13 +101,7 @@ public class HTTPHeaderMap implements
   @ReturnsMutableObject ("design")
   private ICommonsList <String> _getOrCreateHeaderList (@Nonnull @Nonempty final String sName)
   {
-    ICommonsList <String> aValues = m_aHeaders.get (sName);
-    if (aValues == null)
-    {
-      aValues = new CommonsArrayList<> (2);
-      m_aHeaders.put (sName, aValues);
-    }
-    return aValues;
+    return m_aHeaders.computeIfAbsent (sName, x -> new CommonsArrayList<> (2));
   }
 
   private void _setHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
@@ -114,9 +109,7 @@ public class HTTPHeaderMap implements
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
 
-    final ICommonsList <String> aValues = _getOrCreateHeaderList (sName);
-    aValues.clear ();
-    aValues.add (sValue);
+    _getOrCreateHeaderList (sName).set (sValue);
   }
 
   private void _addHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
@@ -385,6 +378,47 @@ public class HTTPHeaderMap implements
   }
 
   /**
+   * Get all header values matching the provided header name filter.
+   *
+   * @param aNameFilter
+   *        The name filter to be applied. May not be <code>null</code>.
+   * @return The list with all matching values of the first header matching the
+   *         passed filter. Never <code>null</code> but maybe empty.
+   * @since 8.5.1
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsList <String> getAllHeaderValuesByName (@Nonnull final Predicate <String> aNameFilter)
+  {
+    final ICommonsList <String> ret = new CommonsArrayList<> ();
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
+      if (aNameFilter.test (aEntry.getKey ()))
+      {
+        ret.addAll (aEntry.getValue ());
+        break;
+      }
+    return ret;
+  }
+
+  /**
+   * Get the first header value of the first header matching the provided header
+   * name filter.
+   *
+   * @param aNameFilter
+   *        The name filter to be applied. May not be <code>null</code>.
+   * @return <code>null</code> if no such header exists, or if the has no value.
+   * @since 8.5.1
+   */
+  @Nullable
+  public String getFirstHeaderValueByName (@Nonnull final Predicate <String> aNameFilter)
+  {
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
+      if (aNameFilter.test (aEntry.getKey ()))
+        return aEntry.getValue ().getFirst ();
+    return null;
+  }
+
+  /**
    * Get all header values doing a case insensitive match
    *
    * @param sName
@@ -397,15 +431,25 @@ public class HTTPHeaderMap implements
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderValuesCaseInsensitive (@Nullable final String sName)
   {
-    final ICommonsList <String> ret = new CommonsArrayList<> ();
-    if (StringHelper.hasText (sName))
-      for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
-        if (sName.equalsIgnoreCase (aEntry.getKey ()))
-        {
-          ret.addAll (aEntry.getValue ());
-          break;
-        }
-    return ret;
+    if (StringHelper.hasNoText (sName))
+      return new CommonsArrayList<> ();
+    return getAllHeaderValuesByName (x -> sName.equalsIgnoreCase (x));
+  }
+
+  /**
+   * Get the first header value doing a case insensitive match
+   *
+   * @param sName
+   *        The name to be searched.
+   * @return The first matching value or <code>null</code>.
+   * @since 8.5.1
+   */
+  @Nullable
+  public String getFirstHeaderValueCaseInsensitive (@Nullable final String sName)
+  {
+    if (StringHelper.hasNoText (sName))
+      return null;
+    return getFirstHeaderValueByName (x -> sName.equalsIgnoreCase (x));
   }
 
   public boolean containsHeaders (@Nullable final String sName)
@@ -416,7 +460,7 @@ public class HTTPHeaderMap implements
   public boolean containsHeadersCaseInsensitive (@Nullable final String sName)
   {
     return StringHelper.hasText (sName) &&
-           CollectionHelper.containsAny (m_aHeaders.keySet (), sHeaderName -> sName.equalsIgnoreCase (sHeaderName));
+           CollectionHelper.containsAny (m_aHeaders.keySet (), x -> sName.equalsIgnoreCase (x));
   }
 
   @Nonnull

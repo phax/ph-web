@@ -49,7 +49,7 @@ public class UseSystemProxyConfig implements IProxyConfig
     activateGloballyStatic ();
   }
 
-  public void activateGloballyStatic ()
+  public static void activateGloballyStatic ()
   {
     // Deactivate other proxy configurations
     HttpProxyConfig.deactivateGlobally ();

@@ -92,8 +92,7 @@
             <Export-Package>com.helger.smtp.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
             <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
-            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.smtp.config.ThirdPartyModuleProvider_ph_smtp,
-osgi.serviceloader; osgi.serviceloader=com.helger.smtp.config.MicroTypeConverterRegistrar_ph_smtp</Provide-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.smtp.config.MicroTypeConverterRegistrar_ph_smtp</Provide-Capability>
           </instructions>
         </configuration>
       </plugin>

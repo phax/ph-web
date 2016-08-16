@@ -107,7 +107,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   private boolean m_bInvalidated = false;
   private boolean m_bActive = true;
-  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
   private Charset m_aCharacterEncoding;
   private byte [] m_aContent;
   private String m_sContentType;
@@ -116,7 +116,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sScheme = DEFAULT_SCHEME;
   private String m_sServerName = DEFAULT_SERVER_NAME;
   private int m_nServerPort = DEFAULT_SERVER_PORT;
-  private final ICommonsList <Locale> m_aLocales = new CommonsArrayList <> ();
+  private final ICommonsList <Locale> m_aLocales = new CommonsArrayList<> ();
   private boolean m_bSecure = false;
   private final ServletContext m_aServletContext;
   private String m_sRemoteAddr = DEFAULT_REMOTE_ADDR;
@@ -127,13 +127,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private int m_nLocalPort = DEFAULT_SERVER_PORT;
   private String m_sAuthType;
   private Cookie [] m_aCookies;
-  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
+  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased<> ();
   private EHTTPMethod m_eMethod;
   private String m_sPathInfo;
   private String m_sContextPath = "";
   private String m_sQueryString;
   private String m_sRemoteUser;
-  private final ICommonsSet <String> m_aUserRoles = new CommonsHashSet <> ();
+  private final ICommonsSet <String> m_aUserRoles = new CommonsHashSet<> ();
   private Principal m_aUserPrincipal;
   private String m_sRequestURI;
   private String m_sServletPath = "";
@@ -458,7 +458,10 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public final MockHttpServletRequest addParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
-    m_aParameters.add (sName, sValue);
+    if (sValue != null)
+      m_aParameters.add (sName, sValue);
+    else
+      m_aParameters.add (sName);
     return this;
   }
 
@@ -549,7 +552,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String []> getParameterMap ()
   {
-    final ICommonsOrderedMap <String, String []> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String []> ret = new CommonsLinkedHashMap<> ();
     for (final String sParamName : m_aParameters.getAllParamNames ())
       ret.put (sParamName, getParameterValues (sParamName));
     return ret;

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.smtp.config;
+package com.helger.mail.config;
 
 import javax.annotation.Nullable;
 
@@ -32,12 +32,12 @@ import com.helger.commons.version.Version;
  * @author Philip Helger
  */
 @IsSPIImplementation
-public final class ThirdPartyModuleProvider_ph_smtp implements IThirdPartyModuleProviderSPI
+public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModuleProviderSPI
 {
   public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("JavaMail",
                                                                            "Oracle",
                                                                            ELicense.BSD,
-                                                                           new Version (1, 5, 5),
+                                                                           new Version (1, 5, 6),
                                                                            "http://javamail.java.net/");
 
   @Nullable

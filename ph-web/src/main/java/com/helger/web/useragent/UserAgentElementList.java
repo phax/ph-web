@@ -26,6 +26,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.pair.IPair;
+import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -61,8 +62,11 @@ final class UserAgentElementList
   {
     for (final Object aObj : m_aList)
       if (aObj instanceof IPair <?, ?>)
-        if (((IPair <?, ?>) aObj).getFirst ().equals (sKey))
-          return (String) ((IPair <?, ?>) aObj).getSecond ();
+      {
+        final IPair <?, ?> aPair = (IPair <?, ?>) aObj;
+        if (EqualsHelper.equals (aPair.getFirst (), sKey))
+          return (String) aPair.getSecond ();
+      }
     return null;
   }
 

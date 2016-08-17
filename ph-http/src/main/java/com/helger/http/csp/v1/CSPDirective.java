@@ -33,6 +33,7 @@ import com.helger.http.csp.ICSPDirective;
  * @author Philip Helger
  * @since 6.0.3
  */
+@Deprecated
 public class CSPDirective implements ICSPDirective
 {
   private final String m_sName;

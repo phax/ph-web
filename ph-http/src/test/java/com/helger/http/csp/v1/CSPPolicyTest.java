@@ -14,21 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.http.csp;
+package com.helger.http.csp.v1;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import com.helger.http.csp.v1.CSPDirective;
-import com.helger.http.csp.v1.CSPPolicy;
-import com.helger.http.csp.v1.CSPSourceList;
 
 /**
  * Test class for class {@link CSPPolicy}.
  *
  * @author Philip Helger
  */
+@Deprecated
 public final class CSPPolicyTest
 {
   @Test

@@ -22,12 +22,13 @@ import com.helger.http.csp.AbstractCSPPolicy;
 
 /**
  * CSP 1.0 policy. It's a list of {@link CSPDirective}.<br>
- * See http://www.w3.org/TR/CSP/
+ * See http://www.w3.org/TR/CSP1/
  *
  * @author Philip Helger
  * @since 6.0.3
  */
 @NotThreadSafe
+@Deprecated
 public class CSPPolicy extends AbstractCSPPolicy <CSPDirective>
 {
   public CSPPolicy ()

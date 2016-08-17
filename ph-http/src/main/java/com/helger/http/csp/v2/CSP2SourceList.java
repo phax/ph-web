@@ -24,12 +24,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.base64.Base64;
 import com.helger.commons.collection.ext.CommonsLinkedHashSet;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
+import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 
 /**
  * A source list to be used in a CSP 2.0 directive ({@link CSP2Directive}). It's
@@ -40,10 +42,13 @@ import com.helger.commons.url.ISimpleURL;
 @NotThreadSafe
 public class CSP2SourceList implements Serializable
 {
-  public static final String KEYWORD_HOST_ALL = "*";
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";
   public static final String KEYWORD_UNSAFE_EVAL = "'unsafe-eval'";
+  public static final String NONCE_PREFIX = "'nonce-";
+  public static final String NONCE_SUFFIX = "'";
+  public static final String HASH_PREFIX = "'";
+  public static final String HASH_SUFFIX = "'";
 
   private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet<> ();
 
@@ -67,8 +72,9 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addScheme (@Nonnull @Nonempty final String sScheme)
   {
     ValueEnforcer.notEmpty (sScheme, "Scheme");
-    if (sScheme.length () <= 1 || !sScheme.endsWith (":"))
-      throw new IllegalArgumentException ("Passed scheme '" + sScheme + "' is invalid!");
+    ValueEnforcer.isTrue (sScheme.length () > 1 &&
+                          sScheme.endsWith (":"),
+                          () -> "Passed scheme '" + sScheme + "' is invalid!");
     m_aList.add (sScheme);
     return this;
   }
@@ -103,18 +109,6 @@ public class CSP2SourceList implements Serializable
   }
 
   /**
-   * Add all hosts as "*"
-   *
-   * @return this
-   */
-  @Nonnull
-  public CSP2SourceList addHostAll ()
-  {
-    m_aList.add (KEYWORD_HOST_ALL);
-    return this;
-  }
-
-  /**
    * source expression 'self' represents the set of URIs which are in the same
    * origin as the protected resource
    *
@@ -144,6 +138,102 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addKeywordUnsafeEval ()
   {
     m_aList.add (KEYWORD_UNSAFE_EVAL);
+    return this;
+  }
+
+  /**
+   * Add the provided nonce value. The {@value #NONCE_PREFIX} and
+   * {@link #NONCE_SUFFIX} are added automatically. The byte array is
+   * automatically Bas64 encoded!
+   *
+   * @param aNonceValue
+   *        The plain nonce value. May not be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public CSP2SourceList addNonce (@Nonnull @Nonempty final byte [] aNonceValue)
+  {
+    ValueEnforcer.notEmpty (aNonceValue, "NonceValue");
+    return addNonce (Base64.safeEncodeBytes (aNonceValue));
+  }
+
+  /**
+   * Add the provided Base64 encoded nonce value. The {@value #NONCE_PREFIX} and
+   * {@link #NONCE_SUFFIX} are added automatically.
+   *
+   * @param sNonceBase64Value
+   *        The Base64 encoded nonce value
+   * @return this for chaining
+   */
+  @Nonnull
+  public CSP2SourceList addNonce (@Nonnull @Nonempty final String sNonceBase64Value)
+  {
+    ValueEnforcer.notEmpty (sNonceBase64Value, "NonceBase64Value");
+
+    m_aList.add (NONCE_PREFIX + sNonceBase64Value + NONCE_SUFFIX);
+    return this;
+  }
+
+  /**
+   * Add the provided nonce value. The {@value #HASH_PREFIX} and
+   * {@link #HASH_SUFFIX} are added automatically. The byte array is
+   * automatically Bas64 encoded!
+   *
+   * @param eMDAlgo
+   *        The message digest algorithm used. May only
+   *        {@link EMessageDigestAlgorithm#SHA_256},
+   *        {@link EMessageDigestAlgorithm#SHA_384} or
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
+   *        <code>null</code>.
+   * @param aHashValue
+   *        The plain hash digest value. May not be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo,
+                                 @Nonnull @Nonempty final byte [] aHashValue)
+  {
+    ValueEnforcer.notEmpty (aHashValue, "HashValue");
+    return addHash (eMDAlgo, Base64.safeEncodeBytes (aHashValue));
+  }
+
+  /**
+   * Add the provided Base64 encoded hash value. The {@value #HASH_PREFIX} and
+   * {@link #HASH_SUFFIX} are added automatically.
+   *
+   * @param eMDAlgo
+   *        The message digest algorithm used. May only
+   *        {@link EMessageDigestAlgorithm#SHA_256},
+   *        {@link EMessageDigestAlgorithm#SHA_384} or
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
+   *        <code>null</code>.
+   * @param sHashBase64Value
+   *        The Base64 encoded hash value
+   * @return this for chaining
+   */
+  @Nonnull
+  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo, @Nonnull final String sHashBase64Value)
+  {
+    ValueEnforcer.notNull (eMDAlgo, "MDAlgo");
+    ValueEnforcer.notEmpty (sHashBase64Value, "HashBase64Value");
+
+    String sAlgorithmName;
+    switch (eMDAlgo)
+    {
+      case SHA_256:
+        sAlgorithmName = "sha256";
+        break;
+      case SHA_384:
+        sAlgorithmName = "sha384";
+        break;
+      case SHA_512:
+        sAlgorithmName = "sha512";
+        break;
+      default:
+        throw new IllegalArgumentException ("Only SHA256, SHA384 and SHA512 are supported algorithms");
+    }
+
+    m_aList.add (HASH_PREFIX + sAlgorithmName + "-" + sHashBase64Value + HASH_SUFFIX);
     return this;
   }
 

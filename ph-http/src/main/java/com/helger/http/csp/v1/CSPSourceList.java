@@ -39,6 +39,7 @@ import com.helger.commons.url.ISimpleURL;
  * @since 6.0.3
  */
 @NotThreadSafe
+@Deprecated
 public class CSPSourceList implements Serializable
 {
   public static final String KEYWORD_HOST_ALL = "*";

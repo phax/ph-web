@@ -25,6 +25,7 @@ import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.http.RFC5234_BNF;
 import com.helger.http.csp.ICSPDirective;
 
 /**
@@ -37,6 +38,36 @@ public class CSP2Directive implements ICSPDirective
   private final String m_sName;
   private final String m_sValue;
 
+  public static boolean isValidName (@Nullable final String sName)
+  {
+    if (StringHelper.hasNoText (sName))
+    {
+      // Empty name is not allowed
+      return false;
+    }
+    final char [] aChars = sName.toCharArray ();
+    for (final char c : aChars)
+      if (!RFC5234_BNF.isAlpha (c) && !RFC5234_BNF.isDigit (c) && c != '-')
+        return false;
+
+    return true;
+  }
+
+  public static boolean isValidValue (@Nullable final String sValue)
+  {
+    if (StringHelper.hasNoText (sValue))
+    {
+      // Empty values are allowed
+      return true;
+    }
+    final char [] aChars = sValue.toCharArray ();
+    for (final char c : aChars)
+      if (!RFC5234_BNF.isWSP (c) && (!RFC5234_BNF.isVChar (c) || c == ';' || c == ','))
+        return false;
+
+    return true;
+  }
+
   public CSP2Directive (@Nonnull @Nonempty final String sName, @Nullable final CSP2SourceList aValue)
   {
     this (sName, aValue == null ? null : aValue.getAsString ());
@@ -44,15 +75,10 @@ public class CSP2Directive implements ICSPDirective
 
   public CSP2Directive (@Nonnull @Nonempty final String sName, @Nullable final String sValue)
   {
-    m_sName = ValueEnforcer.notEmpty (sName, "Name");
+    ValueEnforcer.isTrue (isValidName (sName), () -> "The CSP directive name '" + sName + "' is invalid!");
+    ValueEnforcer.isTrue (isValidValue (sValue), () -> "The CSP directive value '" + sValue + "' is invalid!");
+    m_sName = sName;
     m_sValue = sValue;
-    if (StringHelper.hasText (sValue))
-    {
-      if (sValue.indexOf (',') >= 0)
-        throw new IllegalArgumentException ("Value may not contain a comma (,): " + sValue);
-      if (sValue.indexOf (';') >= 0)
-        throw new IllegalArgumentException ("Value may not contain a semicolon (;): " + sValue);
-    }
   }
 
   @Nonnull

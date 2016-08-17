@@ -20,17 +20,20 @@ import java.io.Serializable;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
- * CSP 1.0 policy. See http://www.w3.org/TR/CSP/
+ * CSP 1.0 policy. It's a list of {@link CSPDirective}.<br>
+ * See http://www.w3.org/TR/CSP/
  *
  * @author Philip Helger
  * @since 6.0.3
@@ -38,10 +41,20 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 public class CSPPolicy implements Serializable
 {
-  private final ICommonsList <CSPDirective> m_aList = new CommonsArrayList <> ();
+  private final ICommonsList <CSPDirective> m_aList = new CommonsArrayList<> ();
 
   public CSPPolicy ()
   {}
+
+  public boolean isEmpty ()
+  {
+    return m_aList.isEmpty ();
+  }
+
+  public boolean isNotEmpty ()
+  {
+    return m_aList.isNotEmpty ();
+  }
 
   @Nonnegative
   public int getDirectiveCount ()
@@ -55,6 +68,24 @@ public class CSPPolicy implements Serializable
     ValueEnforcer.notNull (aDirective, "Directive");
     m_aList.add (aDirective);
     return this;
+  }
+
+  @Nonnull
+  public EChange removeDirective (@Nullable final CSPDirective aDirective)
+  {
+    return m_aList.removeObject (aDirective);
+  }
+
+  @Nonnull
+  public EChange removeDirectiveAtIndex (final int nIndex)
+  {
+    return m_aList.removeAtIndex (nIndex);
+  }
+
+  @Nonnull
+  public EChange removeAllDirectives ()
+  {
+    return m_aList.removeAll ();
   }
 
   @Nonnull

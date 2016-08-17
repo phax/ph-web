@@ -30,7 +30,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
- * A single CSP 1.0 directive.
+ * A single CSP 1.0 directive. It's a name-value-pair.
  *
  * @author Philip Helger
  * @since 6.0.3
@@ -175,7 +175,7 @@ public class CSPDirective implements IHasName, Serializable
   }
 
   /**
-   * he report-uri directive specifies a URI to which the user agent sends
+   * The report-uri directive specifies a URI to which the user agent sends
    * reports about policy violation.
    *
    * @param sValue

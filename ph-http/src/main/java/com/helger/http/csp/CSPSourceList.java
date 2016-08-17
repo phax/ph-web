@@ -32,7 +32,8 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 
 /**
- * A source list to be used in a CSP 1.0 directive.
+ * A source list to be used in a CSP 1.0 directive ({@link CSPDirective}). It's
+ * just a convenient way to build a CSP directive value.
  *
  * @author Philip Helger
  * @since 6.0.3
@@ -40,11 +41,12 @@ import com.helger.commons.url.ISimpleURL;
 @NotThreadSafe
 public class CSPSourceList implements Serializable
 {
+  public static final String KEYWORD_HOST_ALL = "*";
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";
   public static final String KEYWORD_UNSAFE_EVAL = "'unsafe-eval'";
 
-  private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet <> ();
+  private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet<> ();
 
   public CSPSourceList ()
   {}
@@ -109,7 +111,7 @@ public class CSPSourceList implements Serializable
   @Nonnull
   public CSPSourceList addHostAll ()
   {
-    m_aList.add ("*");
+    m_aList.add (KEYWORD_HOST_ALL);
     return this;
   }
 
@@ -146,6 +148,10 @@ public class CSPSourceList implements Serializable
     return this;
   }
 
+  /**
+   * @return The whole source list as a single string, separated by a blank
+   *         char.
+   */
   @Nonnull
   public String getAsString ()
   {

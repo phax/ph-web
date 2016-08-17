@@ -14,9 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.http.csp;
-
-import java.io.Serializable;
+package com.helger.http.csp.v1;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,9 +23,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.name.IHasName;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.http.csp.ICSPDirective;
 
 /**
  * A single CSP 1.0 directive. It's a name-value-pair.
@@ -35,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 6.0.3
  */
-public class CSPDirective implements IHasName, Serializable
+public class CSPDirective implements ICSPDirective
 {
   private final String m_sName;
   private final String m_sValue;
@@ -69,18 +67,6 @@ public class CSPDirective implements IHasName, Serializable
   public String getValue ()
   {
     return m_sValue;
-  }
-
-  public boolean hasValue ()
-  {
-    return StringHelper.hasText (m_sValue);
-  }
-
-  @Nonnull
-  @Nonempty
-  public String getAsString ()
-  {
-    return StringHelper.getConcatenatedOnDemand (m_sName, " ", m_sValue);
   }
 
   @Override

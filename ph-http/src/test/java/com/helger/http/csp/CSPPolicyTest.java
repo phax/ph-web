@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.http.csp.CSPDirective;
-import com.helger.http.csp.CSPPolicy;
-import com.helger.http.csp.CSPSourceList;
+import com.helger.http.csp.v1.CSPDirective;
+import com.helger.http.csp.v1.CSPPolicy;
+import com.helger.http.csp.v1.CSPSourceList;
 
 /**
  * Test class for class {@link CSPPolicy}.

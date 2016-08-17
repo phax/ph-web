@@ -32,18 +32,18 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
- * CSP 1.0 policy. It's a list of {@link CSPDirective}.<br>
- * See http://www.w3.org/TR/CSP/
+ * Abstract CSP policy declaration.
  *
  * @author Philip Helger
- * @since 6.0.3
+ * @param <T>
+ *        The CSP directive type
  */
 @NotThreadSafe
-public class CSPPolicy implements Serializable
+public class AbstractCSPPolicy <T extends ICSPDirective> implements Serializable
 {
-  private final ICommonsList <CSPDirective> m_aList = new CommonsArrayList<> ();
+  private final ICommonsList <T> m_aList = new CommonsArrayList<> ();
 
-  public CSPPolicy ()
+  public AbstractCSPPolicy ()
   {}
 
   public boolean isEmpty ()
@@ -63,7 +63,7 @@ public class CSPPolicy implements Serializable
   }
 
   @Nonnull
-  public CSPPolicy addDirective (@Nonnull final CSPDirective aDirective)
+  public AbstractCSPPolicy <T> addDirective (@Nonnull final T aDirective)
   {
     ValueEnforcer.notNull (aDirective, "Directive");
     m_aList.add (aDirective);
@@ -71,7 +71,7 @@ public class CSPPolicy implements Serializable
   }
 
   @Nonnull
-  public EChange removeDirective (@Nullable final CSPDirective aDirective)
+  public EChange removeDirective (@Nullable final T aDirective)
   {
     return m_aList.removeObject (aDirective);
   }
@@ -91,7 +91,7 @@ public class CSPPolicy implements Serializable
   @Nonnull
   public String getAsString ()
   {
-    return StringHelper.getImplodedNonEmpty ("; ", m_aList, CSPDirective::getAsString);
+    return StringHelper.getImplodedNonEmpty ("; ", m_aList, ICSPDirective::getAsString);
   }
 
   @Override
@@ -101,7 +101,7 @@ public class CSPPolicy implements Serializable
       return true;
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
-    final CSPPolicy rhs = (CSPPolicy) o;
+    final AbstractCSPPolicy <?> rhs = (AbstractCSPPolicy <?>) o;
     return m_aList.equals (rhs.m_aList);
   }
 

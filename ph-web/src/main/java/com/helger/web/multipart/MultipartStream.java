@@ -24,10 +24,11 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.web.ICloseable;
 
@@ -116,12 +117,12 @@ public final class MultipartStream
    * The maximum length of <code>header-part</code> that will be processed (10
    * kilobytes = 10240 bytes.).
    */
-  public static final int HEADER_PART_SIZE_MAX = 10240;
+  public static final int HEADER_PART_SIZE_MAX = 10 * CGlobal.BYTES_PER_KILOBYTE;
 
   /**
    * The default length of the buffer used for processing a request.
    */
-  private static final int DEFAULT_BUFSIZE = 4096;
+  private static final int DEFAULT_BUFSIZE = 4 * CGlobal.BYTES_PER_KILOBYTE;
 
   /**
    * A byte sequence that marks the end of <code>header-part</code> (
@@ -343,19 +344,13 @@ public final class MultipartStream
       }
 
       marker[1] = readByte ();
-      if (arrayequals (marker, STREAM_TERMINATOR, 2))
-      {
+      if (ArrayHelper.startsWith (marker, STREAM_TERMINATOR))
         bNextChunk = false;
-      }
       else
-        if (arrayequals (marker, FIELD_SEPARATOR, 2))
-        {
+        if (ArrayHelper.startsWith (marker, FIELD_SEPARATOR))
           bNextChunk = true;
-        }
         else
-        {
           throw new MultipartMalformedStreamException ("Unexpected characters follow a boundary");
-        }
     }
     catch (final IOException ex)
     {
@@ -408,8 +403,7 @@ public final class MultipartStream
   public String readHeaders () throws MultipartMalformedStreamException
   {
     // to support multi-byte characters
-    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ();
-    try
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream ())
     {
       int nHeaderSepIndex = 0;
       int nSize = 0;
@@ -440,10 +434,6 @@ public final class MultipartStream
       final Charset aCharsetToUse = m_sHeaderEncoding != null ? CharsetManager.getCharsetFromName (m_sHeaderEncoding)
                                                               : SystemHelper.getSystemCharset ();
       return aBAOS.getAsString (aCharsetToUse);
-    }
-    finally
-    {
-      StreamHelper.close (aBAOS);
     }
   }
 
@@ -545,31 +535,6 @@ public final class MultipartStream
   }
 
   /**
-   * Compares <code>count</code> first bytes in the arrays <code>a</code> and
-   * <code>b</code>.
-   *
-   * @param a
-   *        The first array to compare.
-   * @param b
-   *        The second array to compare.
-   * @param count
-   *        How many bytes should be compared.
-   * @return <code>true</code> if <code>count</code> first bytes in arrays
-   *         <code>a</code> and <code>b</code> are equal.
-   */
-  public static boolean arrayequals (final byte [] a, final byte [] b, final int count)
-  {
-    for (int i = 0; i < count; i++)
-    {
-      if (a[i] != b[i])
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
    * Searches for a byte of specified value in the <code>buffer</code>, starting
    * at the specified <code>position</code>.
    *
@@ -605,21 +570,14 @@ public final class MultipartStream
     {
       first = findByte (m_aBoundary[0], first);
       if (first == -1 || (first > maxpos))
-      {
         return -1;
-      }
+
       for (match = 1; match < m_nBoundaryLength; match++)
-      {
         if (m_aBuffer[first + match] != m_aBoundary[match])
-        {
           break;
-        }
-      }
     }
     if (match == m_nBoundaryLength)
-    {
       return first - 1;
-    }
     return -1;
   }
 

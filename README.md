@@ -1,17 +1,31 @@
 #ph-web
-Java library with common web stuff.
+Java library with common web stuff. It contains the following sub-projects:
+  * ph-network
+   * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
+  * ph-http
+    * Contains special HTTP related helpers 
+  * ph-httpclient
+    * Contains Apache HTTP client related helpers
+  * ph-mail
+    * Contains javax.mail related helpers
+  * ph-smtp
+    * Contains helper classes for asynchronous mail (re-)sending
+  * ph-web
+    * Other high-level abstraction for servlets, file-upload, browser information, sitemap, web scopes etc.
+  
+##News
 
-Versions <= 6.4.3 are compatible with ph-commons < 6.0.
-Versions >= 7.0.0 are compatible with ph-commons >= 6.0.
-Versions >= 8 require JDK 8.
+  * v8.5.0 - 2016-07-26
+    * Binds to ph-commons 8.3.0
 
-#Maven usage
+##Maven usage
 Add the following to your pom.xml to use this artifact:
+
 ```
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>7.1.0</version>
+  <version>x.y.z</version>
 </dependency>
 ```
 

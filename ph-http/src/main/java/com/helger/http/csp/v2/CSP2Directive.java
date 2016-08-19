@@ -25,7 +25,7 @@ import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.RFC5234_BNF;
+import com.helger.commons.text.util.ABNF;
 import com.helger.http.csp.ICSPDirective;
 
 /**
@@ -47,7 +47,7 @@ public class CSP2Directive implements ICSPDirective
     }
     final char [] aChars = sName.toCharArray ();
     for (final char c : aChars)
-      if (!RFC5234_BNF.isAlpha (c) && !RFC5234_BNF.isDigit (c) && c != '-')
+      if (!ABNF.isAlpha (c) && !ABNF.isDigit (c) && c != '-')
         return false;
 
     return true;
@@ -62,7 +62,7 @@ public class CSP2Directive implements ICSPDirective
     }
     final char [] aChars = sValue.toCharArray ();
     for (final char c : aChars)
-      if (!RFC5234_BNF.isWSP (c) && (!RFC5234_BNF.isVChar (c) || c == ';' || c == ','))
+      if (!ABNF.isWSP (c) && (!ABNF.isVChar (c) || c == ';' || c == ','))
         return false;
 
     return true;

@@ -19,6 +19,7 @@ package com.helger.web.scope.util;
 import java.util.TimerTask;
 
 import javax.annotation.Nonnull;
+import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -34,10 +35,18 @@ import com.helger.web.scope.mgr.WebScopeManager;
  */
 public abstract class AbstractWebScopeAwareTimerTask extends TimerTask
 {
+  private final ServletContext m_aSC;
   private final String m_sApplicationID;
 
   public AbstractWebScopeAwareTimerTask (@Nonnull @Nonempty final String sApplicationID)
   {
+    this (WebScopeManager.getGlobalScope ().getServletContext (), sApplicationID);
+  }
+
+  public AbstractWebScopeAwareTimerTask (@Nonnull final ServletContext aSC,
+                                         @Nonnull @Nonempty final String sApplicationID)
+  {
+    m_aSC = ValueEnforcer.notNull (aSC, "ServletContext");
     m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
   }
 
@@ -59,9 +68,7 @@ public abstract class AbstractWebScopeAwareTimerTask extends TimerTask
   {
     // Create the scope
     WebScopeManager.onRequestBegin (m_sApplicationID,
-                                    new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ()
-                                                                                  .getServletContext (),
-                                                                   false),
+                                    new OfflineHttpServletRequest (m_aSC, false),
                                     new MockHttpServletResponse ());
     try
     {

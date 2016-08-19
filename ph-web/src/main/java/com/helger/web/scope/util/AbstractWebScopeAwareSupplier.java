@@ -16,7 +16,10 @@
  */
 package com.helger.web.scope.util;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import com.helger.commons.annotation.Nonempty;
@@ -25,36 +28,44 @@ import com.helger.web.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * Abstract implementation of {@link Runnable} that handles WebScopes correctly.
+ * Abstract implementation of {@link Supplier} that handles WebScopes correctly.
  *
  * @author Philip Helger
+ * @param <DATATYPE>
+ *        The return type of the function.
  */
-public abstract class AbstractWebScopeAwareRunnable extends AbstractWebScopeAwareAction implements Runnable
+public abstract class AbstractWebScopeAwareSupplier <DATATYPE> extends AbstractWebScopeAwareAction
+                                                    implements Supplier <DATATYPE>
 {
-  public AbstractWebScopeAwareRunnable ()
+  public AbstractWebScopeAwareSupplier ()
   {
     this (WebScopeManager.getGlobalScope ().getServletContext (), WebScopeManager.getApplicationScope ().getID ());
   }
 
-  public AbstractWebScopeAwareRunnable (@Nonnull final ServletContext aSC,
+  public AbstractWebScopeAwareSupplier (@Nonnull final ServletContext aSC,
                                         @Nonnull @Nonempty final String sApplicationID)
   {
     super (aSC, sApplicationID);
   }
 
   /**
-   * Implement your code in here.
+   * Implement your code in here
+   *
+   * @return The return value of the {@link #get()} method.
    */
-  protected abstract void scopedRun ();
+  @Nullable
+  protected abstract DATATYPE scopedGet ();
 
-  public final void run ()
+  @Nullable
+  public final DATATYPE get ()
   {
     WebScopeManager.onRequestBegin (m_sApplicationID,
                                     new OfflineHttpServletRequest (m_aSC, false),
                                     new MockHttpServletResponse ());
     try
     {
-      scopedRun ();
+      final DATATYPE ret = scopedGet ();
+      return ret;
     }
     finally
     {

@@ -22,10 +22,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.callback.INonThrowingCallable;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.mock.MockHttpServletResponse;
 import com.helger.web.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -37,11 +35,10 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @param <DATATYPE>
  *        The return type of the function.
  */
-public abstract class AbstractWebScopeAwareCallable <DATATYPE> implements INonThrowingCallable <DATATYPE>
+@Deprecated
+public abstract class AbstractWebScopeAwareCallable <DATATYPE> extends AbstractWebScopeAwareAction
+                                                    implements INonThrowingCallable <DATATYPE>
 {
-  private final ServletContext m_aSC;
-  private final String m_sApplicationID;
-
   public AbstractWebScopeAwareCallable ()
   {
     this (WebScopeManager.getGlobalScope ().getServletContext (), WebScopeManager.getApplicationScope ().getID ());
@@ -50,21 +47,7 @@ public abstract class AbstractWebScopeAwareCallable <DATATYPE> implements INonTh
   public AbstractWebScopeAwareCallable (@Nonnull final ServletContext aSC,
                                         @Nonnull @Nonempty final String sApplicationID)
   {
-    m_aSC = ValueEnforcer.notNull (aSC, "ServletContext");
-    m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
-  }
-
-  @Nonnull
-  public ServletContext getServletContext ()
-  {
-    return m_aSC;
-  }
-
-  @Nonnull
-  @Nonempty
-  public String getApplicationID ()
-  {
-    return m_sApplicationID;
+    super (aSC, sApplicationID);
   }
 
   /**
@@ -90,13 +73,5 @@ public abstract class AbstractWebScopeAwareCallable <DATATYPE> implements INonTh
     {
       WebScopeManager.onRequestEnd ();
     }
-  }
-
-  @Override
-  public String toString ()
-  {
-    return new ToStringGenerator (this).append ("servletContext", m_aSC)
-                                       .append ("applicationID", m_sApplicationID)
-                                       .toString ();
   }
 }

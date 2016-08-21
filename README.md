@@ -15,8 +15,10 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
+  * v8.6.0 - 2016-08-21
+    * Binds to ph-commons 8.4.x
   * v8.5.0 - 2016-07-26
-    * Binds to ph-commons 8.3.0
+    * Binds to ph-commons 8.3.x
 
 ##Maven usage
 Add the following to your pom.xml to use this artifact:

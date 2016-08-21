@@ -57,10 +57,12 @@
     <dependency>
       <groupId>com.helger</groupId>
       <artifactId>ph-xml</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
       <artifactId>ph-json</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

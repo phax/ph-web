@@ -24,16 +24,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
-import org.w3c.dom.Document;
 
 import com.helger.commons.debug.GlobalDebug;
-import com.helger.httpclient.response.ResponseHandlerByteArray;
-import com.helger.httpclient.response.ResponseHandlerJson;
-import com.helger.httpclient.response.ResponseHandlerMicroDom;
-import com.helger.httpclient.response.ResponseHandlerString;
-import com.helger.httpclient.response.ResponseHandlerXml;
-import com.helger.json.IJson;
-import com.helger.xml.microdom.IMicroDocument;
 
 /**
  * This class contains some default response handler for basic data types that
@@ -61,16 +53,6 @@ public final class HttpClientResponseHelper
     }
     return aEntity;
   };
-
-  public static final ResponseHandler <byte []> RH_BYTE_ARRAY = new ResponseHandlerByteArray ();
-
-  public static final ResponseHandler <String> RH_STRING = new ResponseHandlerString ();
-
-  public static final ResponseHandler <IJson> RH_JSON = new ResponseHandlerJson ();
-
-  public static final ResponseHandler <IMicroDocument> RH_MICRODOM = new ResponseHandlerMicroDom ();
-
-  public static final ResponseHandler <Document> RH_XML = new ResponseHandlerXml ();
 
   private HttpClientResponseHelper ()
   {}

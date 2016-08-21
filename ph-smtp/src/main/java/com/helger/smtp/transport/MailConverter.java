@@ -169,7 +169,7 @@ public final class MailConverter
     {
       if (ex instanceof RuntimeException)
         throw (RuntimeException) ex;
-      throw new RuntimeException (ex);
+      throw new IllegalArgumentException (ex);
     }
   }
 }

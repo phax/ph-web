@@ -255,14 +255,14 @@ public abstract class AbstractFileUploadBase
   @ReturnsMutableCopy
   public ICommonsList <IFileItem> parseRequest (@Nonnull final IRequestContext aCtx) throws FileUploadException
   {
-    final ICommonsList <IFileItem> aItems = new CommonsArrayList <> ();
+    final ICommonsList <IFileItem> aItems = new CommonsArrayList<> ();
     boolean bSuccessful = false;
     try
     {
       final IFileItemIterator aItemIter = getItemIterator (aCtx);
       final IFileItemFactory aFileItemFactory = getFileItemFactory ();
       if (aFileItemFactory == null)
-        throw new NullPointerException ("No FileItemFactory has been set.");
+        throw new IllegalStateException ("No FileItemFactory has been set.");
 
       while (aItemIter.hasNext ())
       {

@@ -65,7 +65,7 @@ public final class WebScopeManager
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet <> ();
+  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet<> ();
 
   @PresentForCodeCoverage
   private static final WebScopeManager s_aInstance = new WebScopeManager ();
@@ -135,7 +135,8 @@ public final class WebScopeManager
   @Nonnull
   public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext)
   {
-    final IGlobalWebScope aGlobalScope = WebScopeFactoryProvider.getWebScopeFactory ().createGlobalScope (aServletContext);
+    final IGlobalWebScope aGlobalScope = WebScopeFactoryProvider.getWebScopeFactory ()
+                                                                .createGlobalScope (aServletContext);
     ScopeManager.setGlobalScope (aGlobalScope);
     return aGlobalScope;
   }
@@ -229,7 +230,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Application scope object is not an application web scope: " + String.valueOf (aAppScope), ex);
+      s_aLogger.warn ("Application scope object is not an application web scope: " + aAppScope, ex);
       return null;
     }
   }
@@ -297,7 +298,7 @@ public final class WebScopeManager
   public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
   {
     final ISessionWebScope aSessionWebScope = WebScopeFactoryProvider.getWebScopeFactory ()
-                                                                 .createSessionScope (aHttpSession);
+                                                                     .createSessionScope (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
     if (isSessionPassivationAllowed ())
     {
@@ -509,8 +510,8 @@ public final class WebScopeManager
                                                  @Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final IRequestWebScope aRequestScope = WebScopeFactoryProvider.getWebScopeFactory ().createRequestScope (aHttpRequest,
-                                                                                                         aHttpResponse);
+    final IRequestWebScope aRequestScope = WebScopeFactoryProvider.getWebScopeFactory ()
+                                                                  .createRequestScope (aHttpRequest, aHttpResponse);
     ScopeManager.setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
   }

@@ -21,8 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.http.HTTPStringHelper;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**

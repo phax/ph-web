@@ -18,6 +18,7 @@ package com.helger.web.fileupload;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -84,7 +85,7 @@ public final class StreamingFuncTest
         assertEquals ((byte) j, bytes[j]);
       }
     }
-    assertTrue (!fileIter.hasNext ());
+    assertFalse (fileIter.hasNext ());
   }
 
   /**
@@ -357,8 +358,8 @@ public final class StreamingFuncTest
     catch (final InvalidFileNameException e)
     {
       assertEquals (sFilename, e.getName ());
-      assertTrue (e.getMessage ().indexOf (sFilename) == -1);
-      assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
+      assertEquals (e.getMessage ().indexOf (sFilename), -1);
+      assertNotEquals (e.getMessage ().indexOf ("foo.exe\\0.png"), -1);
     }
     assertEquals ("foo.exe", fileItem.getNameSecure ());
   }

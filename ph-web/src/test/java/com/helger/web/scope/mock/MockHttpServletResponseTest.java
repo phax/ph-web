@@ -18,6 +18,7 @@ package com.helger.web.scope.mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -69,8 +70,8 @@ public final class MockHttpServletResponseTest
     aResp.setCharacterEncoding ("UTF-16");
     assertEquals ("UTF-16", aResp.getCharacterEncoding ());
     // It will fail in the selected charset
-    assertFalse (TEST_STRING.equals (aResp.getContentAsString (CCharset.CHARSET_UTF_16_OBJ)));
+    assertNotEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_UTF_16_OBJ));
     // Retrieving in the system charset will succeed
-    assertTrue (TEST_STRING.equals (aResp.getContentAsString (SystemHelper.getSystemCharset ())));
+    assertEquals (TEST_STRING, aResp.getContentAsString (SystemHelper.getSystemCharset ()));
   }
 }

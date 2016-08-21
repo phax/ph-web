@@ -24,7 +24,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
-import com.helger.web.fileupload.parse.ParameterParser;
 
 /**
  * Unit tests for {@link ParameterParser}.

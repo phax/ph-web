@@ -39,7 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
  *        The CSP directive type
  */
 @NotThreadSafe
-public class AbstractCSPPolicy <T extends ICSPDirective> implements Serializable
+public abstract class AbstractCSPPolicy <T extends ICSPDirective> implements Serializable
 {
   private final ICommonsList <T> m_aList = new CommonsArrayList<> ();
 

@@ -173,7 +173,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   private static ICommonsOrderedMap <String, Cookie> _createCookieMap ()
   {
-    return new CommonsLinkedHashMap <> ();
+    return new CommonsLinkedHashMap<> ();
   }
 
   /**
@@ -968,7 +968,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   protected ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return new CommonsLinkedHashMap <> (m_aCookies);
+    return new CommonsLinkedHashMap<> (m_aCookies);
   }
 
   /**
@@ -1491,7 +1491,7 @@ public class UnifiedResponse
         aSB.append (m_eContentDispositionType.getID ())
            .append ("; filename=\"")
            .append (m_sContentDispositionFilename)
-           .append ("\"");
+           .append ('"');
 
         // Check if we need an UTF-8 filename
         // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788

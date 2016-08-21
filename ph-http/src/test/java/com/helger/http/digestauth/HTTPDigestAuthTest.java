@@ -23,8 +23,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.helger.http.EHTTPMethod;
-import com.helger.http.digestauth.DigestAuthClientCredentials;
-import com.helger.http.digestauth.HTTPDigestAuth;
 
 /**
  * Test class for class {@link HTTPDigestAuth}.

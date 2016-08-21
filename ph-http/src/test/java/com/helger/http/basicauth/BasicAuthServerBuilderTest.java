@@ -21,8 +21,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.helger.http.basicauth.BasicAuthServerBuilder;
-
 /**
  * Test class for class {@link BasicAuthServerBuilder}.
  *

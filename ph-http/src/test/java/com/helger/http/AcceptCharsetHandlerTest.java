@@ -22,8 +22,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.equals.EqualsHelper;
-import com.helger.http.AcceptCharsetHandler;
-import com.helger.http.AcceptCharsetList;
 
 public final class AcceptCharsetHandlerTest
 {

@@ -86,9 +86,9 @@ public class MockServletContext implements ServletContext
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
   private String m_sContextPath = DEFAULT_SERVLET_CONTEXT_PATH;
-  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap <> ();
-  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap <> ();
-  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
+  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap<> ();
+  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap<> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
   private String m_sServletContextName = DEFAULT_SERVLET_CONTEXT_NAME;
   private final MockServletPool m_aServletPool;
   private boolean m_bInvalidated = false;
@@ -533,20 +533,19 @@ public class MockServletContext implements ServletContext
   }
 
   @UnsupportedOperation
-  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName, final String className)
+  public FilterRegistration.Dynamic addFilter (final String filterName, final String className)
   {
     throw new UnsupportedOperationException ();
   }
 
   @UnsupportedOperation
-  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName, final Filter filter)
+  public FilterRegistration.Dynamic addFilter (final String filterName, final Filter filter)
   {
     throw new UnsupportedOperationException ();
   }
 
   @UnsupportedOperation
-  public javax.servlet.FilterRegistration.Dynamic addFilter (final String filterName,
-                                                             final Class <? extends Filter> filterClass)
+  public FilterRegistration.Dynamic addFilter (final String filterName, final Class <? extends Filter> filterClass)
   {
     throw new UnsupportedOperationException ();
   }

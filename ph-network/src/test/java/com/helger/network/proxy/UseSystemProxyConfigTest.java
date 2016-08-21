@@ -18,8 +18,6 @@ package com.helger.network.proxy;
 
 import org.junit.Test;
 
-import com.helger.network.proxy.UseSystemProxyConfig;
-
 /**
  * Test class for class {@link UseSystemProxyConfig}.
  *

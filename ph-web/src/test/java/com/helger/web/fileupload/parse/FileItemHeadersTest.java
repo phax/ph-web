@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.web.fileupload.IFileItemHeaders;
-import com.helger.web.fileupload.parse.FileItemHeaders;
 
 /**
  * Unit tests {@link IFileItemHeaders} and {@link FileItemHeaders}.

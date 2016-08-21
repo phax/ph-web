@@ -21,8 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.helger.commons.mock.CommonsAssert;
-import com.helger.http.AcceptEncodingHandler;
-import com.helger.http.AcceptEncodingList;
 
 public final class AcceptEncodingHandlerTest
 {

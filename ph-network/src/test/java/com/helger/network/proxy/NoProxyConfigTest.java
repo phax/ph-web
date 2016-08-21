@@ -23,8 +23,6 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.network.proxy.NoProxyConfig;
-
 /**
  * Test class for class {@link NoProxyConfig}.
  *

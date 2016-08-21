@@ -26,10 +26,6 @@ import java.util.Comparator;
 import org.junit.Test;
 
 import com.helger.commons.string.StringHelper;
-import com.helger.network.port.DefaultNetworkPorts;
-import com.helger.network.port.ENetworkProtocol;
-import com.helger.network.port.INetworkPort;
-import com.helger.network.port.NetworkPort;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;

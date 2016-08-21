@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.network.proxy.IProxyConfig;
-import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ProxyAutoConfigHelperTest
 {

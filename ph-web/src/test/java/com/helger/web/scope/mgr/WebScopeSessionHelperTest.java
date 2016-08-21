@@ -19,6 +19,7 @@ package com.helger.web.scope.mgr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -178,18 +179,17 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             // Renew the session scope
             final ISessionWebScope aNewSessionScope = WebScopeSessionHelper.renewSessionScope (aHttpSession);
             assertNotNull (aNewSessionScope);
-            assertTrue (aNewSessionScope != aSessionScope);
+            assertNotSame (aNewSessionScope, aSessionScope);
             assertEquals (1, aNewSessionScope.getAttributeCount ());
             assertTrue (aNewSessionScope.containsAttribute ("x"));
             assertTrue (aNewSessionScope.getAttributeObject ("x") instanceof MockScopeRenewalAware);
             assertEquals (0, aSessionScope.getSessionApplicationScopeCount ());
 
             aRequest.invalidate ();
-
           }
           catch (final Exception ex)
           {
-            throw new RuntimeException (ex);
+            throw new IllegalStateException (ex);
           }
           finally
           {

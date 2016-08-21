@@ -29,7 +29,8 @@ import com.helger.commons.codec.IEncoder;
 import com.helger.commons.string.StringHelper;
 
 /**
- * RFC 5987 Encoder
+ * RFC 5987 Encoder. Character Set and Language Encoding for Hypertext Transfer
+ * Protocol (HTTP) Header Field Parameters
  *
  * @author Philip Helger
  */

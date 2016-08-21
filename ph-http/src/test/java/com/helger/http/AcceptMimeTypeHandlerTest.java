@@ -23,8 +23,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.equals.EqualsHelper;
-import com.helger.http.AcceptMimeTypeHandler;
-import com.helger.http.AcceptMimeTypeList;
 
 /**
  * Test class for class {@link AcceptMimeTypeHandler}

@@ -24,8 +24,6 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.network.proxy.SocksProxyConfig;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**

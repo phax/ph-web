@@ -44,13 +44,13 @@ import com.helger.http.HTTPHeaderMap;
  * @since 6.0.5
  */
 @ThreadSafe
-public class UnifiedResponseDefaultSettings
+public final class UnifiedResponseDefaultSettings
 {
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
   @GuardedBy ("s_aRWLock")
-  private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap <> ();
+  private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap<> ();
 
   private UnifiedResponseDefaultSettings ()
   {}

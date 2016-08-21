@@ -50,7 +50,7 @@ public final class MockGlobalWebSingletonWithScopeCtor extends AbstractGlobalWeb
   @Override
   protected void onDestroy (@Nonnull final IScope aScopeInDestruction) throws Exception
   {
-    if (m_aScope != aScopeInDestruction)
+    if (!m_aScope.equals (aScopeInDestruction))
       throw new IllegalStateException ("Saved scope differs from scope in destruction!");
     s_nDtorCount++;
   }

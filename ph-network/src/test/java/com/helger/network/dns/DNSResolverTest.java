@@ -25,8 +25,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.network.dns.DNSResolver;
-
 public final class DNSResolverTest
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (DNSResolverTest.class);

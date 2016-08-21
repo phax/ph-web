@@ -29,7 +29,8 @@ import com.helger.commons.codec.RFC1522BCodec;
 import com.helger.commons.codec.RFC1522QCodec;
 
 /**
- * RFC 2047 Helper
+ * RFC 2047 Helper. MIME (Multipurpose Internet Mail Extensions) Part Three:
+ * Message Header Extensions for Non-ASCII Text
  *
  * @author Apache Abdera
  */

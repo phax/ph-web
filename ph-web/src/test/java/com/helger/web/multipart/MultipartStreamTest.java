@@ -24,8 +24,6 @@ import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
-import com.helger.web.multipart.MultipartProgressNotifier;
-import com.helger.web.multipart.MultipartStream;
 
 /**
  * Unit tests {@link MultipartStream}.

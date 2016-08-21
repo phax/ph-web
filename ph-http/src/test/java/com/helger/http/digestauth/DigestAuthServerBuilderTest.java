@@ -23,8 +23,6 @@ import org.junit.Test;
 
 import com.helger.commons.state.ETriState;
 import com.helger.commons.url.SimpleURL;
-import com.helger.http.digestauth.DigestAuthServerBuilder;
-import com.helger.http.digestauth.HTTPDigestAuth;
 
 /**
  * Test class for class {@link DigestAuthServerBuilder}.

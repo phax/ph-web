@@ -22,9 +22,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.http.basicauth.BasicAuthClientCredentials;
-import com.helger.http.basicauth.HTTPBasicAuth;
-
 /**
  * Test class for class {@link HTTPBasicAuth}.
  *

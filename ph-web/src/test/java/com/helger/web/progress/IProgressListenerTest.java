@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.fileupload;
+package com.helger.web.progress;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +30,8 @@ import org.junit.Test;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.charset.CCharset;
+import com.helger.web.fileupload.IFileItemIterator;
+import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
@@ -38,7 +40,7 @@ import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.progress.IProgressListener;
 
 /**
- * Tests the progress listener.
+ * Test class for class {@link IProgressListener}.
  */
 public final class IProgressListenerTest extends AbstractFileUploadTestCase
 {

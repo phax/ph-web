@@ -27,7 +27,7 @@ import com.helger.security.messagedigest.EMessageDigestAlgorithm;
  *
  * @author Philip Helger
  */
-public final class CSPPolicy2Test
+public final class CSP2PolicyTest
 {
   @Test
   public void testBasic ()

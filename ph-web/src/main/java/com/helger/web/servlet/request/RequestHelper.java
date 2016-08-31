@@ -639,7 +639,7 @@ public final class RequestHelper
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (@Nullable final String sContentType)
+  public static boolean isMultipartContent (@Nullable final String sContentType)
   {
     return sContentType != null && sContentType.toLowerCase (Locale.US).startsWith (MULTIPART);
   }
@@ -653,7 +653,7 @@ public final class RequestHelper
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
+  public static boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
     if (getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
       return false;

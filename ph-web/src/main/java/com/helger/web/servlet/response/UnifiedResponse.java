@@ -47,6 +47,7 @@ import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.debug.GlobalDebug;
@@ -219,7 +220,7 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private String _getRequestURL ()
+  protected final String getRequestURL ()
   {
     if (m_sRequestURL == null)
       m_sRequestURL = RequestHelper.getURL (m_aHttpRequest);
@@ -228,17 +229,17 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private String _getLogPrefix ()
+  protected String getLogPrefix ()
   {
-    return "UnifiedResponse[" + m_nResponseID + "] to [" + _getRequestURL () + "]: ";
+    return "UnifiedResponse[" + m_nResponseID + "] to [" + getRequestURL () + "]: ";
   }
 
-  private void _info (@Nonnull final String sMsg)
+  protected void logInfo (@Nonnull final String sMsg)
   {
-    s_aLogger.info (_getLogPrefix () + sMsg);
+    s_aLogger.info (getLogPrefix () + sMsg);
   }
 
-  private void _showRequestInfo ()
+  protected final void showRequestInfo ()
   {
     if (!m_bAlreadyEmittedRequestHeaders)
     {
@@ -252,16 +253,16 @@ public class UnifiedResponse
     }
   }
 
-  private void _warn (@Nonnull final String sMsg)
+  protected void logWarn (@Nonnull final String sMsg)
   {
-    s_aLogger.warn (_getLogPrefix () + sMsg);
-    _showRequestInfo ();
+    s_aLogger.warn (getLogPrefix () + sMsg);
+    showRequestInfo ();
   }
 
-  private void _error (@Nonnull final String sMsg)
+  protected void logError (@Nonnull final String sMsg)
   {
-    s_aLogger.error (_getLogPrefix () + sMsg);
-    _showRequestInfo ();
+    s_aLogger.error (getLogPrefix () + sMsg);
+    showRequestInfo ();
   }
 
   /**
@@ -341,7 +342,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aCharset, "Charset");
     if (m_aCharset != null)
-      _info ("Overwriting charset from " + m_aCharset + " to " + aCharset);
+      logInfo ("Overwriting charset from " + m_aCharset + " to " + aCharset);
     m_aCharset = aCharset;
     return this;
   }
@@ -364,7 +365,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aMimeType, "MimeType");
     if (m_aMimeType != null)
-      _info ("Overwriting MimeType from " + m_aMimeType + " to " + aMimeType);
+      logInfo ("Overwriting MimeType from " + m_aMimeType + " to " + aMimeType);
     m_aMimeType = aMimeType;
     return this;
   }
@@ -378,7 +379,7 @@ public class UnifiedResponse
     if (aMimeType != null)
       setMimeType (aMimeType);
     else
-      _error ("Failed to resolve mime type from '" + sMimeType + "'");
+      logError ("Failed to resolve mime type from '" + sMimeType + "'");
     return this;
   }
 
@@ -442,7 +443,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aContent, "Content");
     if (hasContent ())
-      _info ("Overwriting content with byte array!");
+      logInfo ("Overwriting content with byte array!");
     m_aContent = aContent;
     m_aContentISP = null;
     return this;
@@ -460,7 +461,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aISP, "InputStreamProvider");
     if (hasContent ())
-      _info ("Overwriting content with content provider!");
+      logInfo ("Overwriting content with content provider!");
     m_aContent = null;
     m_aContentISP = aISP;
     return this;
@@ -492,7 +493,7 @@ public class UnifiedResponse
   public UnifiedResponse setLastModified (@Nonnull final LocalDateTime aDT)
   {
     if (m_eHTTPMethod != EHTTPMethod.GET && m_eHTTPMethod != EHTTPMethod.HEAD)
-      _warn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
+      logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
 
     m_aResponseHeaderMap.setDateHeader (CHTTPHeader.LAST_MODIFIED, aDT);
     return this;
@@ -523,7 +524,7 @@ public class UnifiedResponse
     if (!sETag.endsWith ("\""))
       throw new IllegalArgumentException ("Etag must end with a '\"' character: " + sETag);
     if (m_eHTTPMethod != EHTTPMethod.GET)
-      _warn ("Setting an ETag on a non-GET request may have no impact!");
+      logWarn ("Setting an ETag on a non-GET request may have no impact!");
 
     m_aResponseHeaderMap.setHeader (CHTTPHeader.ETAG, sETag);
     return this;
@@ -578,11 +579,11 @@ public class UnifiedResponse
     // -> Strip all paths and replace all invalid characters
     final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilename));
     if (!sFilename.equals (sFilenameToUse))
-      _warn ("Content-Dispostion filename was internally modified from '" +
-             sFilename +
-             "' to '" +
-             sFilenameToUse +
-             "'");
+      logWarn ("Content-Dispostion filename was internally modified from '" +
+               sFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // Disabled because of the extended UTF-8 handling (RFC 5987)
     if (false)
@@ -591,16 +592,16 @@ public class UnifiedResponse
       if (m_aContentDispositionEncoder == null)
         m_aContentDispositionEncoder = CCharset.CHARSET_ISO_8859_1_OBJ.newEncoder ();
       if (!m_aContentDispositionEncoder.canEncode (sFilenameToUse))
-        _error ("Content-Dispostion filename '" + sFilenameToUse + "' cannot be encoded to ISO-8859-1!");
+        logError ("Content-Dispostion filename '" + sFilenameToUse + "' cannot be encoded to ISO-8859-1!");
     }
 
     // Are we overwriting?
     if (m_sContentDispositionFilename != null)
-      _info ("Overwriting Content-Dispostion filename from '" +
-             m_sContentDispositionFilename +
-             "' to '" +
-             sFilenameToUse +
-             "'");
+      logInfo ("Overwriting Content-Dispostion filename from '" +
+               m_sContentDispositionFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // No URL encoding necessary.
     // Filename must be in ISO-8859-1
@@ -644,11 +645,11 @@ public class UnifiedResponse
     ValueEnforcer.notNull (aCacheControl, "CacheControl");
 
     if (m_aCacheControl != null)
-      _info ("Overwriting Cache-Control data from '" +
-             m_aCacheControl.getAsHTTPHeaderValue () +
-             "' to '" +
-             aCacheControl.getAsHTTPHeaderValue () +
-             "'");
+      logInfo ("Overwriting Cache-Control data from '" +
+               m_aCacheControl.getAsHTTPHeaderValue () +
+               "' to '" +
+               aCacheControl.getAsHTTPHeaderValue () +
+               "'");
     m_aCacheControl = aCacheControl;
     return this;
   }
@@ -796,7 +797,7 @@ public class UnifiedResponse
   private void _setStatus (@Nonnegative final int nStatusCode)
   {
     if (isStatusCodeDefined ())
-      _info ("Overwriting status code " + m_nStatusCode + " with " + nStatusCode);
+      logInfo ("Overwriting status code " + m_nStatusCode + " with " + nStatusCode);
     m_nStatusCode = nStatusCode;
   }
 
@@ -867,7 +868,7 @@ public class UnifiedResponse
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
     if (isRedirectDefined ())
-      _info ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + sRedirectTargetUrl + "'");
+      logInfo ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + sRedirectTargetUrl + "'");
     m_sRedirectTargetUrl = sRedirectTargetUrl;
     m_eRedirectMode = eRedirectMode;
     return this;
@@ -917,7 +918,7 @@ public class UnifiedResponse
     else
     {
       if (m_bWarnOnDuplicateCookies && m_aCookies.containsKey (sKey))
-        _warn ("Overwriting cookie '" + sKey + "' with the new value '" + aCookie.getValue () + "'");
+        logWarn ("Overwriting cookie '" + sKey + "' with the new value '" + aCookie.getValue () + "'");
     }
     m_aCookies.put (sKey, aCookie);
     return this;
@@ -1174,44 +1175,46 @@ public class UnifiedResponse
     final boolean bETag = m_aResponseHeaderMap.containsHeaders (CHTTPHeader.ETAG);
 
     if (bExpires && bIsHttp11)
-      _info ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getAllHeaderValues (CHTTPHeader.EXPIRES));
+      logInfo ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getAllHeaderValues (CHTTPHeader.EXPIRES));
 
     if (bExpires && bCacheControl)
-      _warn ("Expires and Cache-Control are both present. Cache-Control takes precedence!");
+      logWarn ("Expires and Cache-Control are both present. Cache-Control takes precedence!");
 
     if (bETag && !bIsHttp11)
-      _warn ("Sending an ETag for HTTP version " + m_eHTTPVersion + " has no effect!");
+      logWarn ("Sending an ETag for HTTP version " + m_eHTTPVersion + " has no effect!");
 
     if (!bExpires && !bCacheControl)
     {
       if (bLastModified || bETag)
-        _warn ("Validators (Last-Modified and ETag) have no effect if no Expires or Cache-Control is present");
+        logWarn ("Validators (Last-Modified and ETag) have no effect if no Expires or Cache-Control is present");
       else
-        _warn ("Response has no caching information at all");
+        logWarn ("Response has no caching information at all");
     }
 
     if (m_aCacheControl != null)
     {
       if (!bIsHttp11)
-        _warn ("Sending a Cache-Control header for HTTP version " + m_eHTTPVersion + " may have no or limited effect!");
+        logWarn ("Sending a Cache-Control header for HTTP version " +
+                 m_eHTTPVersion +
+                 " may have no or limited effect!");
 
       if (m_aCacheControl.isPrivate ())
       {
         if (m_aCacheControl.isPublic ())
-          _warn ("Cache-Control cannot be private and public at the same time");
+          logWarn ("Cache-Control cannot be private and public at the same time");
 
         if (m_aCacheControl.hasMaxAgeSeconds ())
-          _warn ("Cache-Control cannot be private and have a max-age definition");
+          logWarn ("Cache-Control cannot be private and have a max-age definition");
 
         if (m_aCacheControl.hasSharedMaxAgeSeconds ())
-          _warn ("Cache-Control cannot be private and have a s-maxage definition");
+          logWarn ("Cache-Control cannot be private and have a s-maxage definition");
       }
     }
   }
 
   @Nonnull
   @Nonempty
-  private static String _getAsStringMimeTypes (@Nonnull final ICommonsOrderedMap <IMimeType, QValue> aMap)
+  private static String _getAsStringMimeTypes (@Nonnull final ICommonsMap <IMimeType, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
     for (final Map.Entry <IMimeType, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
@@ -1225,7 +1228,7 @@ public class UnifiedResponse
 
   @Nonnull
   @Nonempty
-  private static String _getAsStringText (@Nonnull final ICommonsOrderedMap <String, QValue> aMap)
+  private static String _getAsStringText (@Nonnull final ICommonsMap <String, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ("{");
     for (final Map.Entry <String, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
@@ -1245,11 +1248,11 @@ public class UnifiedResponse
         m_aMimeType.equals (CMimeType.TEXT_CSS) &&
         nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
     {
-      _warn ("Internet Explorer has problems handling CSS files > " +
-             MAX_CSS_KB_FOR_IE +
-             "KB and this one has " +
-             nContentLength +
-             " bytes!");
+      logWarn ("Internet Explorer has problems handling CSS files > " +
+               MAX_CSS_KB_FOR_IE +
+               "KB and this one has " +
+               nContentLength +
+               " bytes!");
     }
   }
 
@@ -1323,12 +1326,12 @@ public class UnifiedResponse
             {
               // Copying failed -> this is a 500
               final boolean bResponseCommitted = aHttpResponse.isCommitted ();
-              _error ("Copying from " +
-                      m_aContentISP +
-                      " failed after " +
-                      aByteCount.longValue () +
-                      " bytes! Response is committed: " +
-                      bResponseCommitted);
+              logError ("Copying from " +
+                        m_aContentISP +
+                        " failed after " +
+                        aByteCount.longValue () +
+                        " bytes! Response is committed: " +
+                        bResponseCommitted);
 
               if (!bResponseCommitted)
                 aHttpResponse.sendError (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -1341,7 +1344,7 @@ public class UnifiedResponse
         // Set status 204 - no content; this is most likely a programming
         // error
         aHttpResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
-        _warn ("No content present for the response");
+        logWarn ("No content present for the response");
       }
   }
 
@@ -1370,19 +1373,19 @@ public class UnifiedResponse
     if (bIsRedirect)
     {
       if (bHasStatusCode)
-        _warn ("Ignoring provided status code because a redirect is specified!");
+        logWarn ("Ignoring provided status code because a redirect is specified!");
       if (!m_bAllowContentOnRedirect)
       {
         if (m_aCacheControl != null)
-          _info ("Ignoring provided Cache-Control because a redirect is specified!");
+          logInfo ("Ignoring provided Cache-Control because a redirect is specified!");
         if (m_sContentDispositionFilename != null)
-          _warn ("Ignoring provided Content-Dispostion filename because a redirect is specified!");
+          logWarn ("Ignoring provided Content-Dispostion filename because a redirect is specified!");
         if (m_aMimeType != null)
-          _warn ("Ignoring provided MimeType because a redirect is specified!");
+          logWarn ("Ignoring provided MimeType because a redirect is specified!");
         if (m_aCharset != null)
-          _warn ("Ignoring provided charset because a redirect is specified!");
+          logWarn ("Ignoring provided charset because a redirect is specified!");
         if (hasContent ())
-          _warn ("Ignoring provided content because a redirect is specified!");
+          logWarn ("Ignoring provided content because a redirect is specified!");
       }
 
       // Note: After using this method, the response should be
@@ -1419,25 +1422,25 @@ public class UnifiedResponse
     if (bHasStatusCode)
     {
       if (bIsRedirect)
-        _warn ("Overriding provided redirect because a status code is specified!");
+        logWarn ("Overriding provided redirect because a status code is specified!");
       if (!m_bAllowContentOnStatusCode)
       {
         if (m_aCacheControl != null)
-          _info ("Ignoring provided Cache-Control because a status code is specified!");
+          logInfo ("Ignoring provided Cache-Control because a status code is specified!");
         if (m_sContentDispositionFilename != null)
-          _warn ("Ignoring provided Content-Dispostion filename because a status code is specified!");
+          logWarn ("Ignoring provided Content-Dispostion filename because a status code is specified!");
         if (m_aMimeType != null)
-          _warn ("Ignoring provided MimeType because a status code is specified!");
+          logWarn ("Ignoring provided MimeType because a status code is specified!");
         if (m_aCharset != null)
-          _warn ("Ignoring provided charset because a status code is specified!");
+          logWarn ("Ignoring provided charset because a status code is specified!");
         if (hasContent ())
-          _warn ("Ignoring provided content because a status code is specified!");
+          logWarn ("Ignoring provided content because a status code is specified!");
       }
       if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
           !m_aResponseHeaderMap.containsHeaders (CHTTPHeader.WWW_AUTHENTICATE))
-        _warn ("Status code UNAUTHORIZED (401) is returned, but no " +
-               CHTTPHeader.WWW_AUTHENTICATE +
-               " HTTP response header is set!");
+        logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
+                 CHTTPHeader.WWW_AUTHENTICATE +
+                 " HTTP response header is set!");
 
       // Content may be present so, sendError is not an option here!
       if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContent == null)
@@ -1468,7 +1471,7 @@ public class UnifiedResponse
       if (StringHelper.hasText (sCacheControlValue))
         aHttpResponse.setHeader (CHTTPHeader.CACHE_CONTROL, sCacheControlValue);
       else
-        _warn ("An empty Cache-Control was provided!");
+        logWarn ("An empty Cache-Control was provided!");
     }
 
     if (m_sContentDispositionFilename != null)
@@ -1503,7 +1506,7 @@ public class UnifiedResponse
       aHttpResponse.setHeader (CHTTPHeader.CONTENT_DISPOSITION, aSB.toString ());
       if (m_aMimeType == null)
       {
-        _warn ("Content-Disposition is specified but no MimeType is set. Using the default download MimeType.");
+        logWarn ("Content-Disposition is specified but no MimeType is set. Using the default download MimeType.");
         aHttpResponse.setContentType (CMimeType.APPLICATION_FORCE_DOWNLOAD.getAsString ());
       }
     }
@@ -1518,10 +1521,10 @@ public class UnifiedResponse
       if (aQuality.isMinimumQuality ())
       {
         final ICommonsOrderedMap <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
-        _error ("MimeType '" +
-                sMimeType +
-                "' is not at all supported by the request. Allowed values are: " +
-                _getAsStringMimeTypes (aBetterValues));
+        logError ("MimeType '" +
+                  sMimeType +
+                  "' is not at all supported by the request. Allowed values are: " +
+                  _getAsStringMimeTypes (aBetterValues));
       }
       else
         if (aQuality.isLowValue ())
@@ -1533,38 +1536,38 @@ public class UnifiedResponse
             // Inform if the quality of the request is <= 50%!
             final ICommonsOrderedMap <IMimeType, QValue> aBetterValues = m_aAcceptMimeTypeList.getAllQValuesGreaterThan (aQuality.getQuality ());
             if (!aBetterValues.isEmpty ())
-              _warn ("MimeType '" +
-                     sMimeType +
-                     "' is not best supported by the request (" +
-                     aQuality +
-                     "). Better MimeTypes are: " +
-                     _getAsStringMimeTypes (aBetterValues));
+              logWarn ("MimeType '" +
+                       sMimeType +
+                       "' is not best supported by the request (" +
+                       aQuality +
+                       "). Better MimeTypes are: " +
+                       _getAsStringMimeTypes (aBetterValues));
           }
         }
 
       aHttpResponse.setContentType (sMimeType);
     }
     else
-      _warn ("No MimeType present");
+      logWarn ("No MimeType present");
 
     // Charset
     if (m_aCharset != null)
     {
       final String sCharset = m_aCharset.name ();
       if (m_aMimeType == null)
-        _warn ("If no MimeType present, the client cannot get notified about the character encoding '" +
-               sCharset +
-               "'");
+        logWarn ("If no MimeType present, the client cannot get notified about the character encoding '" +
+                 sCharset +
+                 "'");
 
       // Check with request charset
       final QValue aQuality = m_aAcceptCharsetList.getQValueOfCharset (sCharset);
       if (aQuality.isMinimumQuality ())
       {
         final ICommonsOrderedMap <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
-        _error ("Character encoding '" +
-                sCharset +
-                "' is not at all supported by the request. Allowed values are: " +
-                _getAsStringText (aBetterValues));
+        logError ("Character encoding '" +
+                  sCharset +
+                  "' is not at all supported by the request. Allowed values are: " +
+                  _getAsStringText (aBetterValues));
       }
       else
         if (aQuality.isLowValue ())
@@ -1572,25 +1575,25 @@ public class UnifiedResponse
           // Inform if the quality of the request is <= 50%!
           final ICommonsOrderedMap <String, QValue> aBetterValues = m_aAcceptCharsetList.getAllQValuesGreaterThan (aQuality.getQuality ());
           if (!aBetterValues.isEmpty ())
-            _warn ("Character encoding '" +
-                   sCharset +
-                   "' is not best supported by the request (" +
-                   aQuality +
-                   "). Better charsets are: " +
-                   _getAsStringText (aBetterValues));
+            logWarn ("Character encoding '" +
+                     sCharset +
+                     "' is not best supported by the request (" +
+                     aQuality +
+                     "). Better charsets are: " +
+                     _getAsStringText (aBetterValues));
         }
 
       aHttpResponse.setCharacterEncoding (sCharset);
     }
     else
       if (m_aMimeType == null)
-        _warn ("Also no character encoding present");
+        logWarn ("Also no character encoding present");
       else
         switch (m_aMimeType.getContentType ())
         {
           case TEXT:
           case MULTIPART:
-            _warn ("A character encoding for MimeType '" + m_aMimeType.getAsString () + "' is appreciated.");
+            logWarn ("A character encoding for MimeType '" + m_aMimeType.getAsString () + "' is appreciated.");
             break;
           default:
             // Do we need character encoding here as well???

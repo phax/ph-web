@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.util.Comparator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.helger.commons.string.StringHelper;
@@ -53,6 +54,7 @@ public final class DefaultNetworkPortsTest
   }
 
   @Test
+  @Ignore ("Enable when ports are added/changed")
   public void exportIntoCodelist ()
   {
     final IMicroDocument aDoc = new MicroDocument ();

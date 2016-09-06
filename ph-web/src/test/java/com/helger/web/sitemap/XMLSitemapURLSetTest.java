@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.error.IResourceErrorGroup;
+import com.helger.commons.error.list.IErrorList;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.commons.url.SimpleURL;
@@ -62,8 +62,8 @@ public final class XMLSitemapURLSetTest
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
 
     // Validate against the schema
-    final IResourceErrorGroup aErrors = XMLSchemaValidationHelper.validate (new ClassPathResource (CXMLSitemap.SCHEMA_SITEMAP_0_9),
-                                                                            new StringStreamSource (s.getAsXMLString ()));
+    final IErrorList aErrors = XMLSchemaValidationHelper.validate (new ClassPathResource (CXMLSitemap.SCHEMA_SITEMAP_0_9),
+                                                                   new StringStreamSource (s.getAsXMLString ()));
     assertTrue (aErrors.toString (), aErrors.isEmpty ());
   }
 

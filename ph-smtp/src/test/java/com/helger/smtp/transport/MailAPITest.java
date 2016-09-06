@@ -25,7 +25,7 @@ import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.email.EmailAddress;
-import com.helger.commons.error.EErrorLevel;
+import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.id.factory.MemoryIntIDFactory;
 import com.helger.commons.io.resource.ClassPathResource;

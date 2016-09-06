@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 
 import org.junit.Test;
 
-import com.helger.commons.error.IResourceErrorGroup;
+import com.helger.commons.error.list.IErrorList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.resource.ClassPathResource;
@@ -89,8 +89,8 @@ public final class XMLSitemapIndexTest
     assertNotNull (x.getAsDocument ());
 
     // Validate index against the schema
-    final IResourceErrorGroup aErrors = XMLSchemaValidationHelper.validate (new ClassPathResource (CXMLSitemap.SCHEMA_SITEINDEX_0_9),
-                                                                            new StringStreamSource (x.getAsXMLString ()));
+    final IErrorList aErrors = XMLSchemaValidationHelper.validate (new ClassPathResource (CXMLSitemap.SCHEMA_SITEINDEX_0_9),
+                                                                   new StringStreamSource (x.getAsXMLString ()));
     assertTrue (aErrors.toString (), aErrors.isEmpty ());
 
     _testWriteXMLSitemapeIndex (x);

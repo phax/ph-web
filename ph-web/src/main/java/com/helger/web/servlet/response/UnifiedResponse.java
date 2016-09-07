@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -761,7 +760,7 @@ public class UnifiedResponse
       case HTTP_10:
       {
         m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES,
-                                            PDTFactory.getCurrentLocalDate ().plus (nSeconds, ChronoUnit.SECONDS));
+                                            PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
         break;
       }
       case HTTP_11:

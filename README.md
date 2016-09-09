@@ -15,6 +15,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
+  * v8.6.1 - 2016-09-09
+    * Binds to ph-commons 8.5.x
   * v8.6.0 - 2016-08-21
     * Binds to ph-commons 8.4.x
   * v8.5.0 - 2016-07-26
@@ -27,7 +29,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>x.y.z</version>
+  <version>8.6.1</version>
 </dependency>
 ```
 

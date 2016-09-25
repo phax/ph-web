@@ -41,6 +41,7 @@ import com.helger.commons.scope.AbstractMapBasedScope;
 import com.helger.commons.scope.ScopeHelper;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.web.WebSettings;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.servlet.ServletContextPathHolder;
 import com.helger.web.servlet.request.IRequestParamMap;
@@ -306,13 +307,19 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String encodeURL (@Nonnull final String sURL)
   {
-    return getResponse ().encodeURL (sURL);
+    if (WebSettings.isEncodeURLs ())
+      return getResponse ().encodeURL (sURL);
+    // Return "as-is"
+    return sURL;
   }
 
   @Nonnull
   public String encodeRedirectURL (@Nonnull final String sURL)
   {
-    return getResponse ().encodeRedirectURL (sURL);
+    if (WebSettings.isEncodeURLs ())
+      return getResponse ().encodeRedirectURL (sURL);
+    // Return "as-is"
+    return sURL;
   }
 
   @Nonnull

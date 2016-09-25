@@ -71,6 +71,7 @@ import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.http.HTTPHeaderMap;
 import com.helger.http.QValue;
+import com.helger.web.WebSettings;
 import com.helger.web.encoding.RFC5987Encoder;
 import com.helger.web.servlet.request.RequestHelper;
 import com.helger.web.servlet.request.RequestLogger;
@@ -1389,7 +1390,8 @@ public class UnifiedResponse
 
       // Note: After using this method, the response should be
       // considered to be committed and should not be written to.
-      final String sRealTargetURL = aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl);
+      final String sRealTargetURL = WebSettings.isEncodeURLs () ? aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl)
+                                                                : m_sRedirectTargetUrl;
       switch (m_eRedirectMode)
       {
         case DEFAULT:

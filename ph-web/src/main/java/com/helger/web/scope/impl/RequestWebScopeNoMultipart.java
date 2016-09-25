@@ -197,12 +197,12 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (aValue instanceof String [])
     {
       // multiple values passed in the request
-      return new CommonsArrayList <> ((String []) aValue);
+      return new CommonsArrayList<> ((String []) aValue);
     }
     if (aValue instanceof String)
     {
       // single value passed in the request
-      return new CommonsArrayList <> ((String) aValue);
+      return new CommonsArrayList<> ((String) aValue);
     }
     return getAttributeAsListCustom (sName, aValue, aDefault);
   }
@@ -228,8 +228,8 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
   /**
    * This is a heuristic method to determine whether a request is for a file
-   * (e.g. x.jsp) or for a servlet. It is assumed that regular servlets don't
-   * have a '.' in their name!
+   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
+   * last dot is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
@@ -238,7 +238,19 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
    */
   public static boolean isFileBasedRequest (@Nonnull final String sServletPath)
   {
-    return sServletPath.indexOf ('.') >= 0;
+    final int nLastDot = sServletPath.lastIndexOf ('.');
+    if (nLastDot < 0)
+      return false;
+    final int nLastSlash = sServletPath.lastIndexOf ('/');
+    if (nLastSlash < 0)
+    {
+      // for e.g. "abc.def"
+      return true;
+    }
+
+    // true for e.g. "/path/paths/abc.def"
+    // false for e.g. "/path/pa.th/def"
+    return nLastDot > nLastSlash;
   }
 
   /**

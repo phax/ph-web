@@ -59,6 +59,34 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
   void addAttachment (@Nonnull IEmailAttachment aAttachment);
 
   /**
+   * Add all provided attachments.
+   *
+   * @param aAttachments
+   *        The attachments to be added. May be <code>null</code>.
+   * @since 8.6.3
+   */
+  default void addAllAttachments (@Nullable final IEmailAttachment... aAttachments)
+  {
+    if (aAttachments != null)
+      for (final IEmailAttachment aAttachment : aAttachments)
+        addAttachment (aAttachment);
+  }
+
+  /**
+   * Add all provided attachments.
+   *
+   * @param aAttachments
+   *        The attachments to be added. May be <code>null</code>.
+   * @since 8.6.3
+   */
+  default void addAllAttachments (@Nullable final Iterable <? extends IEmailAttachment> aAttachments)
+  {
+    if (aAttachments != null)
+      for (final IEmailAttachment aAttachment : aAttachments)
+        addAttachment (aAttachment);
+  }
+
+  /**
    * Remove the passed attachment.
    *
    * @param sFilename

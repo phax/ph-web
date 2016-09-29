@@ -18,6 +18,7 @@ package com.helger.smtp.data;
 
 import java.nio.charset.Charset;
 
+import javax.activation.FileTypeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,6 +35,7 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
   private static final String ATTR_FILENAME = "filename";
   private static final String ATTR_CHARSET = "charset";
   private static final String ATTR_DISPOSITION = "disposition";
+  private static final String ATTR_CONTENT_TYPE = "contenttype";
 
   @Nonnull
   public IMicroElement convertToMicroElement (@Nonnull final Object aSource,
@@ -43,9 +45,10 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     final IEmailAttachment aAttachment = (IEmailAttachment) aSource;
     final IMicroElement eAttachment = new MicroElement (sNamespaceURI, sTagName);
     eAttachment.setAttribute (ATTR_FILENAME, aAttachment.getFilename ());
-    if (aAttachment.getCharset () != null)
+    if (aAttachment.hasCharset ())
       eAttachment.setAttribute (ATTR_CHARSET, aAttachment.getCharset ().name ());
     eAttachment.setAttribute (ATTR_DISPOSITION, aAttachment.getDisposition ().getID ());
+    eAttachment.setAttribute (ATTR_CONTENT_TYPE, aAttachment.getContentType ());
     // Base64 encode
     eAttachment.appendText (Base64.encodeBytes (StreamHelper.getAllBytes (aAttachment.getInputStream ())));
     return eAttachment;
@@ -60,14 +63,23 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     final String sCharset = eAttachment.getAttributeValue (ATTR_CHARSET);
     final Charset aCharset = sCharset == null ? null : CharsetManager.getCharsetFromName (sCharset);
 
+    String sContentType = eAttachment.getAttributeValue (ATTR_CONTENT_TYPE);
+    if (sContentType == null)
+    {
+      // Soft migration 8.6.3
+      sContentType = FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename);
+    }
+
     final String sDisposition = eAttachment.getAttributeValue (ATTR_DISPOSITION);
     EEmailAttachmentDisposition eDisposition = EEmailAttachmentDisposition.getFromIDOrNull (sDisposition);
-    // migration
     if (eDisposition == null)
+    {
+      // migration
       eDisposition = EmailAttachment.DEFAULT_DISPOSITION;
+    }
 
     final byte [] aContent = Base64.safeDecode (eAttachment.getTextContent ());
 
-    return new EmailAttachment (sFilename, aContent, aCharset, eDisposition);
+    return new EmailAttachment (sFilename, aContent, aCharset, sContentType, eDisposition);
   }
 }

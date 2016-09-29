@@ -211,11 +211,11 @@ public class EmailAttachment implements IEmailAttachment
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("filename", m_sFilename)
-                                       .append ("inputStreamProvider", m_aInputStreamProvider)
-                                       .appendIfNotNull ("charset", m_aCharset)
-                                       .append ("contentType", m_sContentType)
-                                       .append ("disposition", m_eDisposition)
+    return new ToStringGenerator (this).append ("Filename", m_sFilename)
+                                       .append ("InputStreamProvider", m_aInputStreamProvider)
+                                       .appendIfNotNull ("Charset", m_aCharset)
+                                       .appendIfNotNull ("ContentType", m_sContentType)
+                                       .append ("Disposition", m_eDisposition)
                                        .toString ();
   }
 }

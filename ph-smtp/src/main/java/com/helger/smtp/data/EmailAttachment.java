@@ -68,7 +68,16 @@ public class EmailAttachment implements IEmailAttachment
                           @Nullable final Charset aCharset,
                           @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
-    this (sFilename, new ByteArrayInputStreamProvider (aContent), aCharset, eDisposition);
+    this (sFilename, aContent, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
+  }
+
+  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                          @Nonnull final byte [] aContent,
+                          @Nullable final Charset aCharset,
+                          @Nullable final String sContentType,
+                          @Nonnull final EEmailAttachmentDisposition eDisposition)
+  {
+    this (sFilename, new ByteArrayInputStreamProvider (aContent), aCharset, sContentType, eDisposition);
   }
 
   public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
@@ -89,10 +98,23 @@ public class EmailAttachment implements IEmailAttachment
                                                                        @Nullable final Charset aCharset,
                                                                        @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
+    this (sFilename,
+          aInputStreamProvider,
+          aCharset,
+          FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename),
+          eDisposition);
+  }
+
+  public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                                                                       @Nonnull final ISP aInputStreamProvider,
+                                                                       @Nullable final Charset aCharset,
+                                                                       @Nullable final String sContentType,
+                                                                       @Nonnull final EEmailAttachmentDisposition eDisposition)
+  {
     m_sFilename = ValueEnforcer.notEmpty (sFilename, "Filename");
     m_aInputStreamProvider = ValueEnforcer.notNull (aInputStreamProvider, "InputStreamProvider");
     m_aCharset = aCharset;
-    m_sContentType = FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename);
+    m_sContentType = sContentType;
     m_eDisposition = ValueEnforcer.notNull (eDisposition, "Disposition");
   }
 

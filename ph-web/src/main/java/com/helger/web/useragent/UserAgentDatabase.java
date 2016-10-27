@@ -48,7 +48,7 @@ public final class UserAgentDatabase
   private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDatabase.class);
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet <> ();
+  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet<> ();
   @GuardedBy ("s_aRWLock")
   private static Consumer <IUserAgent> s_aNewUserAgentCallback;
 
@@ -122,7 +122,23 @@ public final class UserAgentDatabase
         s_aLogger.warn ("No user agent was passed in the request!");
         aUserAgent = new UserAgent ("", new UserAgentElementList ());
       }
-      aHttpRequest.setAttribute (REQUEST_ATTR, aUserAgent);
+      try
+      {
+        aHttpRequest.setAttribute (REQUEST_ATTR, aUserAgent);
+      }
+      catch (final Throwable t)
+      {
+        // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
+        /**
+         * <pre>
+        java.lang.NullPointerException
+        1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
+        2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
+        3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
+         * </pre>
+         */
+        s_aLogger.warn ("Failed to set user agent in request", t);
+      }
     }
     return aUserAgent;
   }

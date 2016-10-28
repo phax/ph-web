@@ -32,6 +32,7 @@ import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept"
@@ -109,7 +110,7 @@ public final class AcceptMimeTypeHandler
     {
       final String sAcceptMimeTypes = aHttpRequest.getHeader (CHTTPHeader.ACCEPT);
       aValue = getAcceptMimeTypes (sAcceptMimeTypes);
-      aHttpRequest.setAttribute (AcceptMimeTypeList.class.getName (), aValue);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
     }
     return aValue;
   }

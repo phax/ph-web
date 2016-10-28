@@ -48,6 +48,7 @@ import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.URLHelper;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.servlet.request.RequestHelper;
 
 /**
@@ -356,7 +357,7 @@ public final class UAProfileDatabase
       if (aUAProfile == null)
         aUAProfile = UAProfile.EMPTY;
 
-      aHttpRequest.setAttribute (REQUEST_ATTR, aUAProfile);
+      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, aUAProfile);
       if (aUAProfile.isSet ())
       {
         final UAProfile aFinalUAProfile = aUAProfile;

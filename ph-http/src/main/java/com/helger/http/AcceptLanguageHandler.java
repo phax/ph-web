@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Language"
@@ -78,7 +79,7 @@ public final class AcceptLanguageHandler
     {
       final String sAcceptLanguage = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_LANGUAGE);
       aValue = getAcceptLanguages (sAcceptLanguage);
-      aHttpRequest.setAttribute (AcceptLanguageList.class.getName (), aValue);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
     }
     return aValue;
   }

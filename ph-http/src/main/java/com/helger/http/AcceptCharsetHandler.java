@@ -25,6 +25,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Charset"
@@ -81,7 +82,7 @@ public final class AcceptCharsetHandler
     {
       final String sAcceptCharset = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_CHARSET);
       aValue = getAcceptCharsets (sAcceptCharset);
-      aHttpRequest.setAttribute (AcceptCharsetList.class.getName (), aValue);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
     }
     return aValue;
   }

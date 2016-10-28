@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Encoding"
@@ -106,7 +107,7 @@ public final class AcceptEncodingHandler
     {
       final String sAcceptEncoding = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_ENCODING);
       aValue = getAcceptEncodings (sAcceptEncoding);
-      aHttpRequest.setAttribute (AcceptEncodingList.class.getName (), aValue);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
     }
     return aValue;
   }

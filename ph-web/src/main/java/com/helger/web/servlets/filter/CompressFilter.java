@@ -33,6 +33,7 @@ import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingHandler;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.servlet.response.ResponseHelperSettings;
 import com.helger.web.servlet.response.gzip.AbstractCompressedResponseWrapper;
 import com.helger.web.servlet.response.gzip.CompressFilterSettings;
@@ -96,7 +97,7 @@ public class CompressFilter implements Filter
         aResponse instanceof HttpServletResponse &&
         aRequest.getAttribute (REQUEST_ATTR) == null)
     {
-      aRequest.setAttribute (REQUEST_ATTR, Boolean.TRUE);
+      ServletHelper.setRequestAttribute (aRequest, REQUEST_ATTR, Boolean.TRUE);
       final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
       final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
 

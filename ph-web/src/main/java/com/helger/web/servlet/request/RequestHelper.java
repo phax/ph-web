@@ -44,6 +44,7 @@ import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.http.HTTPHeaderMap;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
@@ -493,7 +494,7 @@ public final class RequestHelper
     if (aValue == null)
     {
       aValue = RequestParamMap.createFromRequest (aHttpRequest);
-      aHttpRequest.setAttribute (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP, aValue);
+      ServletHelper.setRequestAttribute (aHttpRequest, SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP, aValue);
     }
     return aValue;
   }
@@ -659,5 +660,28 @@ public final class RequestHelper
       return false;
 
     return isMultipartContent (aHttpRequest.getContentType ());
+  }
+
+  public static void setHttpRequestAttribute (@Nonnull final HttpServletRequest aHttpRequest,
+                                              @Nonnull final String sAttrName,
+                                              @Nullable final Object aAttrValue)
+  {
+    try
+    {
+      aHttpRequest.setAttribute (sAttrName, aAttrValue);
+    }
+    catch (final Throwable t)
+    {
+      // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
+      /**
+       * <pre>
+      java.lang.NullPointerException
+      1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
+      2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
+      3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
+       * </pre>
+       */
+      s_aLogger.warn ("Failed to set attribute '" + sAttrName + "' in HTTP request", t);
+    }
   }
 }

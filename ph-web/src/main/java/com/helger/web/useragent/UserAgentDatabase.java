@@ -34,6 +34,7 @@ import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.CHTTPHeader;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Central cache for known user agents (see HTTP header field
@@ -122,23 +123,7 @@ public final class UserAgentDatabase
         s_aLogger.warn ("No user agent was passed in the request!");
         aUserAgent = new UserAgent ("", new UserAgentElementList ());
       }
-      try
-      {
-        aHttpRequest.setAttribute (REQUEST_ATTR, aUserAgent);
-      }
-      catch (final Throwable t)
-      {
-        // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
-        /**
-         * <pre>
-        java.lang.NullPointerException
-        1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
-        2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
-        3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
-         * </pre>
-         */
-        s_aLogger.warn ("Failed to set user agent in request", t);
-      }
+      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, aUserAgent);
     }
     return aUserAgent;
   }

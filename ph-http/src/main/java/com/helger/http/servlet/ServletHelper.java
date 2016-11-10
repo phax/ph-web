@@ -95,16 +95,17 @@ public final class ServletHelper
       {
         ret = aRequest.getQueryString ();
       }
-      catch (final NullPointerException ex)
+      catch (final Throwable t)
       {
         // fall through
         /**
          * <pre>
+         * java.lang.NullPointerException: null
          * at org.eclipse.jetty.server.Request.getQueryString(Request.java:1119) ~[jetty-server-9.3.13.v20161014.jar:9.3.13.v20161014]
          * at com.helger.web.servlet.request.RequestHelper.getURL(RequestHelper.java:340) ~[ph-web-8.6.2.jar:8.6.2]
          * </pre>
          */
-        s_aLogger.warn ("Failed to determine query string of HTTP request", ex);
+        s_aLogger.warn ("Failed to determine query string of HTTP request", t);
       }
     return ret;
   }

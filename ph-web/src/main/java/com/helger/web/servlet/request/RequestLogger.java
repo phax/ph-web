@@ -37,6 +37,7 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.HTTPHeaderMap;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.annotation.IsOffline;
 import com.helger.web.servlet.ServletContextPathHolder;
 
@@ -65,7 +66,7 @@ public final class RequestLogger
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
     if (s_aOfflineCache.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
@@ -94,7 +95,7 @@ public final class RequestLogger
       ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
       ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
       ret.put ("Protocol", aHttpRequest.getProtocol ());
-      ret.put ("QueryString", aHttpRequest.getQueryString ());
+      ret.put ("QueryString", ServletHelper.getRequestQueryString (aHttpRequest));
       ret.put ("RemoteAddr", aHttpRequest.getRemoteAddr ());
       ret.put ("RemoteHost", aHttpRequest.getRemoteHost ());
       ret.put ("RemotePort", Integer.toString (aHttpRequest.getRemotePort ()));
@@ -168,7 +169,7 @@ public final class RequestLogger
   @ReturnsMutableCopy
   public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
   {
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <String, ICommonsList <String>> aEntry : aMap)
     {
       final String sName = aEntry.getKey ();
@@ -212,7 +213,7 @@ public final class RequestLogger
   @Nonnull
   public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
                                                                       .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));

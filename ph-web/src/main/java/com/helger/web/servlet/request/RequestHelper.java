@@ -338,7 +338,7 @@ public final class RequestHelper
     ret.append (sRequestURI);
 
     // query string
-    final String sQueryString = aHttpRequest.getQueryString ();
+    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
     if (sQueryString != null)
       ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
 
@@ -365,7 +365,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sReqUrl = getRequestURI (aHttpRequest);
-    final String sQueryString = aHttpRequest.getQueryString (); // d=789&x=y
+    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest); // d=789&x=y
     if (StringHelper.hasText (sQueryString))
       return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
     return sReqUrl;

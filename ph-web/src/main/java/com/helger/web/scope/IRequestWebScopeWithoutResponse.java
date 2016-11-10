@@ -41,6 +41,7 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.servlet.request.IRequestParamMap;
 import com.helger.web.servlet.request.RequestHelper;
@@ -62,7 +63,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
   {
-    final ICommonsMap <String, IFileItem> ret = new CommonsHashMap <> ();
+    final ICommonsMap <String, IFileItem> ret = new CommonsHashMap<> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
@@ -80,7 +81,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
-    final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap <> ();
+    final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap<> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final String sAttrName = aEntry.getKey ();
@@ -103,7 +104,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
   {
-    final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
+    final ICommonsList <IFileItem> ret = new CommonsArrayList<> ();
     for (final Object aAttrValue : getAllAttributeValues ())
     {
       if (aAttrValue instanceof IFileItem)
@@ -456,7 +457,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    */
   default String getQueryString ()
   {
-    return getRequest ().getQueryString ();
+    return ServletHelper.getRequestQueryString (getRequest ());
   }
 
   /**

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.helger.http.EHTTPMethod;
+import com.helger.http.servlet.ServletHelper;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.
@@ -47,7 +48,7 @@ public final class MockHttpServletRequestTest
       assertEquals ("/servlet", c.getServletPath ());
       assertEquals ("", c.getPathInfo ());
       assertEquals (sContextPath + "/servlet", c.getRequestURI ());
-      assertEquals ("x=y", c.getQueryString ());
+      assertEquals ("x=y", ServletHelper.getRequestQueryString (c));
 
       c.setAllPaths (sContextPath + "/servlet/path/in/servlet#anchor");
       assertNull (c.getScheme ());

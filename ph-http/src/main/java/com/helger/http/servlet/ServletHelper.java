@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,4 +78,34 @@ public final class ServletHelper
     }
   }
 
+  /**
+   * Work around an exception that can occur in Jetty 9.3.13:
+   *
+   * @param aRequest
+   *        Source request
+   * @return <code>null</code> if request is <code>null</code> or if no query
+   *         string could be determined, or if none is present
+   */
+  @Nullable
+  public static String getRequestQueryString (@Nullable final HttpServletRequest aRequest)
+  {
+    String ret = null;
+    if (aRequest != null)
+      try
+      {
+        ret = aRequest.getQueryString ();
+      }
+      catch (final NullPointerException ex)
+      {
+        // fall through
+        /**
+         * <pre>
+         * at org.eclipse.jetty.server.Request.getQueryString(Request.java:1119) ~[jetty-server-9.3.13.v20161014.jar:9.3.13.v20161014]
+         * at com.helger.web.servlet.request.RequestHelper.getURL(RequestHelper.java:340) ~[ph-web-8.6.2.jar:8.6.2]
+         * </pre>
+         */
+        s_aLogger.warn ("Failed to determine query string of HTTP request", ex);
+      }
+    return ret;
+  }
 }

@@ -15,8 +15,9 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
-  * v.8.6.3
+  * v.8.6.3 - 2016-11-11
     * Binds to ph-commons 8.5.3
+    * Work around some Tomcat/Jetty exceptions
   * v8.6.2 - 2016-09-25
     * Added possibility to disable URL encoding (putting SESSION ID in URL) with WebSettings
   * v8.6.1 - 2016-09-09

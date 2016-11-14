@@ -46,7 +46,7 @@ public class HttpClientManager implements Closeable
     this ( () -> new HttpClientFactory ().createHttpClient ());
   }
 
-  public HttpClientManager (@Nonnull final Supplier <CloseableHttpClient> aHttpClientSupplier)
+  public HttpClientManager (@Nonnull final Supplier <? extends CloseableHttpClient> aHttpClientSupplier)
   {
     ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
     m_aHttpClient = aHttpClientSupplier.get ();

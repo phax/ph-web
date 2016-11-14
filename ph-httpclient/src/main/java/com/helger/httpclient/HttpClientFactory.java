@@ -95,7 +95,7 @@ public class HttpClientFactory
         try
         {
           aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
-                                                        new String [] { "TLSv1" },
+                                                        new String [] { "TLSv1", "TLSv1.1", "TLSv1.2" },
                                                         null,
                                                         SSLConnectionSocketFactory.getDefaultHostnameVerifier ());
         }

@@ -56,8 +56,8 @@ public final class CookieHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final ICommonsOrderedMap <String, Cookie> ret = new CommonsLinkedHashMap <> ();
-    ret.putAll (aHttpRequest.getCookies (), Cookie::getName, Function.identity ());
+    final ICommonsOrderedMap <String, Cookie> ret = new CommonsLinkedHashMap<> ();
+    ret.putAllMapped (aHttpRequest.getCookies (), Cookie::getName, Function.identity ());
     return ret;
   }
 

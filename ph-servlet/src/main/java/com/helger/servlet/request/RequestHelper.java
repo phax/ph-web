@@ -62,13 +62,13 @@ import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
-import com.helger.web.useragent.IUserAgent;
-import com.helger.web.useragent.UserAgent;
-import com.helger.web.useragent.UserAgentDatabase;
-import com.helger.web.useragent.UserAgentElementList;
-import com.helger.web.useragent.uaprofile.IUAProfileHeaderProvider;
-import com.helger.web.useragent.uaprofile.UAProfile;
-import com.helger.web.useragent.uaprofile.UAProfileDatabase;
+import com.helger.useragent.IUserAgent;
+import com.helger.useragent.UserAgent;
+import com.helger.useragent.UserAgentDatabase;
+import com.helger.useragent.UserAgentElementList;
+import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
+import com.helger.useragent.uaprofile.UAProfile;
+import com.helger.useragent.uaprofile.UAProfileDatabase;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.

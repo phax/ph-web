@@ -73,8 +73,8 @@ import com.helger.http.RFC5987Encoder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestLogger;
-import com.helger.web.useragent.browser.BrowserInfo;
-import com.helger.web.useragent.browser.EBrowserType;
+import com.helger.useragent.browser.BrowserInfo;
+import com.helger.useragent.browser.EBrowserType;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

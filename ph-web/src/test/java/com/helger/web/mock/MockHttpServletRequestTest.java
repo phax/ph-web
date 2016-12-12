@@ -44,7 +44,7 @@ public final class MockHttpServletRequestTest
       assertNull (c.getScheme ());
       assertNull (c.getServerName ());
       assertEquals (-1, c.getServerPort ());
-      assertEquals (sContextPath, c.getContextPath ());
+      assertEquals (sContextPath, ServletHelper.getRequestContextPath (c));
       assertEquals ("/servlet", c.getServletPath ());
       assertEquals ("", c.getPathInfo ());
       assertEquals (sContextPath + "/servlet", c.getRequestURI ());

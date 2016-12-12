@@ -81,8 +81,8 @@ import com.helger.http.AcceptCharsetHandler;
 import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
-import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.servlet.request.RequestHelper;
 
 /**
@@ -1063,20 +1063,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return this;
   }
 
-  /**
-   * Copy the session information from the existing request.
-   *
-   * @param aRequestScope
-   *        Request scope to use. May not be <code>null</code>.
-   * @return this
-   */
-  @Nonnull
-  public MockHttpServletRequest setSessionFromExistingRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
-  {
-    setSession (aRequestScope.getSession (false));
-    return this;
-  }
-
   @Nullable
   public HttpSession getSession (final boolean bCreate)
   {
@@ -1276,7 +1262,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         setPathInfo (sPath);
 
         // Update request URI
-        setRequestURI (getContextPath () + getServletPath () + getPathInfo ());
+        setRequestURI (ServletHelper.getRequestContextPath (this) + getServletPath () + getPathInfo ());
 
         // Request parameters
         setQueryString (aURI.getQuery ());

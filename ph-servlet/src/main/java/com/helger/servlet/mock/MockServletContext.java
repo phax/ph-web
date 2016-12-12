@@ -64,6 +64,7 @@ import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemProperties;
+import com.helger.servlet.ServletContextPathHolder;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -85,7 +86,7 @@ public class MockServletContext implements ServletContext
 
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
-  private String m_sContextPath = DEFAULT_SERVLET_CONTEXT_PATH;
+  private String m_sContextPath;
   private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap<> ();
   private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap<> ();
   private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
@@ -188,6 +189,7 @@ public class MockServletContext implements ServletContext
         m_sContextPath = sContextPath;
       else
         m_sContextPath = "/" + sContextPath;
+    ServletContextPathHolder.setServletContextPath (m_sContextPath);
   }
 
   /* This is a Servlet API 2.5 method. */

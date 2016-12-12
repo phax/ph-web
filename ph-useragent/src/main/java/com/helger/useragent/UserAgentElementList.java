@@ -91,7 +91,7 @@ public class UserAgentElementList
   /**
    * Search for a list item starting with the specified String.<br>
    * Example: any/version (list1; list2) any2/version2<br>
-   * -> This method is for searching for "list1" and "list2"
+   * &rarr; This method is for searching for "list1" and "list2"
    *
    * @param sPrefix
    *        The search string

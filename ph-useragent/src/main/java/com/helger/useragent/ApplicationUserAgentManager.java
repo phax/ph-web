@@ -22,8 +22,10 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsCollection;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.io.resource.ClassPathResource;
@@ -33,7 +35,7 @@ import com.helger.xml.microdom.util.XMLListHandler;
 @Immutable
 public final class ApplicationUserAgentManager
 {
-  private static ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
+  private static ICommonsSet <String> s_aSet = new CommonsHashSet<> ();
 
   static
   {
@@ -48,7 +50,7 @@ public final class ApplicationUserAgentManager
 
   private static void _readList (@Nonnull @Nonempty final String sPath)
   {
-    final ICommonsList <String> aList = new CommonsArrayList <> ();
+    final ICommonsList <String> aList = new CommonsArrayList<> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
     s_aSet.addAll (aList);
@@ -60,5 +62,12 @@ public final class ApplicationUserAgentManager
     if (StringHelper.hasNoText (sFullUserAgent))
       return null;
     return s_aSet.findFirst (sUAPart -> sFullUserAgent.contains (sUAPart));
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ICommonsCollection <String> getAllItems ()
+  {
+    return s_aSet.getClone ();
   }
 }

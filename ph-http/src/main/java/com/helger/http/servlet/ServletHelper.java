@@ -109,4 +109,38 @@ public final class ServletHelper
       }
     return ret;
   }
+
+  /**
+   * Work around an exception that can occur on Tomcat 8.0.20:
+   *
+   * @param aRequest
+   *        Source request
+   * @return Empty string if request is <code>null</code> or if no query string
+   *         could be determined, or if none is present
+   */
+  @Nonnull
+  public static String getRequestContextPath (@Nullable final HttpServletRequest aRequest)
+  {
+    String ret = "";
+    if (aRequest != null)
+      try
+      {
+        ret = aRequest.getContextPath ();
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        /**
+         * <pre>
+         * java.lang.NullPointerException: null
+        at org.apache.catalina.connector.Request.getServletContext(Request.java:1593) ~[catalina.jar:8.0.20]
+        at org.apache.catalina.connector.Request.getContextPath(Request.java:1910) ~[catalina.jar:8.0.20]
+        at org.apache.catalina.connector.RequestFacade.getContextPath(RequestFacade.java:783) ~[catalina.jar:8.0.20]
+        at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
+         * </pre>
+         */
+        s_aLogger.warn ("Failed to determine query string of HTTP request", t);
+      }
+    return ret;
+  }
 }

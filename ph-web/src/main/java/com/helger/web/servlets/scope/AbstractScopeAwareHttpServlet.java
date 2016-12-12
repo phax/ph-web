@@ -36,6 +36,7 @@ import com.helger.commons.statistics.IMutableStatisticsHandlerTimer;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.timing.StopWatch;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.web.servlet.request.RequestLogger;
@@ -171,7 +172,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
       logInvalidRequestSetup ("HTTP request has no scheme", aHttpRequest);
     if (aHttpRequest.getProtocol () == null)
       logInvalidRequestSetup ("HTTP request has no protocol", aHttpRequest);
-    if (aHttpRequest.getContextPath () == null)
+    if (ServletHelper.getRequestContextPath (aHttpRequest) == null)
       logInvalidRequestSetup ("HTTP request has no context path", aHttpRequest);
 
     final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,

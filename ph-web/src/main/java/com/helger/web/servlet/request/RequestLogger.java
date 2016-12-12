@@ -78,7 +78,7 @@ public final class RequestLogger
       ret.put ("CharacterEncoding", aHttpRequest.getCharacterEncoding ());
       ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
       ret.put ("ContentType", aHttpRequest.getContentType ());
-      ret.put ("ContextPath", aHttpRequest.getContextPath ());
+      ret.put ("ContextPath", ServletHelper.getRequestContextPath (aHttpRequest));
       try
       {
         ret.put ("ContextPath2", ServletContextPathHolder.getContextPath ());

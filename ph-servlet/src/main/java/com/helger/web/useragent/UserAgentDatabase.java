@@ -94,12 +94,10 @@ public final class UserAgentDatabase
     // Decrypt outside the lock
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
-    return s_aRWLock.writeLocked ( () -> {
-      if (s_aUniqueUserAgents.add (sUserAgent))
-        if (s_aNewUserAgentCallback != null)
-          s_aNewUserAgentCallback.accept (aUserAgent);
-      return aUserAgent;
-    });
+    final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUserAgents.add (sUserAgent));
+    if (bAdded && s_aNewUserAgentCallback != null)
+      s_aNewUserAgentCallback.accept (aUserAgent);
+    return aUserAgent;
   }
 
   /**

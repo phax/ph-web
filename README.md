@@ -15,6 +15,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
+  * v.8.6.4
+    * Binds to ph-commons 8.5.6
   * v.8.6.3 - 2016-11-11
     * Binds to ph-commons 8.5.3
     * Work around some Tomcat/Jetty exceptions

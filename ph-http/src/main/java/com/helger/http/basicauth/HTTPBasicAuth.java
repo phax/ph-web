@@ -90,13 +90,13 @@ public final class HTTPBasicAuth
     final String [] aElements = RegExHelper.getSplitToArray (sRealHeader, "\\s+", 2);
     if (aElements.length != 2)
     {
-      s_aLogger.error ("String is not Basic Auth");
+      s_aLogger.error ("String is not Basic Auth: " + sRealHeader);
       return null;
     }
 
     if (!aElements[0].equals (HEADER_VALUE_PREFIX_BASIC))
     {
-      s_aLogger.error ("String does not start with 'Basic'");
+      s_aLogger.error ("String does not start with 'Basic': " + sRealHeader);
       return null;
     }
 

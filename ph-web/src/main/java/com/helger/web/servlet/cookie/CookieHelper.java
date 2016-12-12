@@ -32,6 +32,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
+import com.helger.http.servlet.ServletHelper;
 import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
@@ -57,7 +58,7 @@ public final class CookieHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final ICommonsOrderedMap <String, Cookie> ret = new CommonsLinkedHashMap<> ();
-    ret.putAllMapped (aHttpRequest.getCookies (), Cookie::getName, Function.identity ());
+    ret.putAllMapped (ServletHelper.getRequestCookies (aHttpRequest), Cookie::getName, Function.identity ());
     return ret;
   }
 
@@ -67,7 +68,7 @@ public final class CookieHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (sCookieName, "CookieName");
 
-    final Cookie [] aCookies = aHttpRequest.getCookies ();
+    final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
         if (aCookie.getName ().equals (sCookieName))

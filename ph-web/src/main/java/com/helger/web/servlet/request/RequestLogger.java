@@ -254,6 +254,8 @@ public final class RequestLogger
     if (aCookie.getSecure ())
       aSB.append (" [secure]");
     aSB.append (" [version=").append (aCookie.getVersion ()).append (']');
+    if (StringHelper.hasText (aCookie.getComment ()))
+      aSB.append (" [comment=").append (aCookie.getComment ()).append (']');
     return aSB.toString ();
   }
 
@@ -262,7 +264,7 @@ public final class RequestLogger
   {
     final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Cookies:\n");
-    final Cookie [] aCookies = aHttpRequest.getCookies ();
+    final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
         aSB.append ("  ").append (aCookie.getName ()).append (" = ").append (getCookieValue (aCookie)).append ('\n');

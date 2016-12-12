@@ -367,9 +367,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return an array of all the <code>Cookies</code> included with this
    *         request, or <code>null</code> if the request has no cookies
    */
+  @Nullable
   default Cookie [] getCookies ()
   {
-    return getRequest ().getCookies ();
+    return ServletHelper.getRequestCookies (getRequest ());
   }
 
   /**

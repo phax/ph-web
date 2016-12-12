@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -115,8 +116,9 @@ public final class ServletHelper
    *
    * @param aRequest
    *        Source request
-   * @return Empty string if request is <code>null</code> or if no query string
-   *         could be determined, or if none is present
+   * @return Empty string if request is <code>null</code> or a String specifying
+   *         the portion of the request URI that indicates the context of the
+   *         request
    */
   @Nonnull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aRequest)
@@ -139,7 +141,40 @@ public final class ServletHelper
         at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
          * </pre>
          */
-        s_aLogger.warn ("Failed to determine query string of HTTP request", t);
+        s_aLogger.warn ("Failed to determine context path of HTTP request", t);
+      }
+    return ret;
+  }
+
+  /**
+   * Work around an exception that can occur on Tomcat 8.0.20:
+   *
+   * @param aRequest
+   *        Source request
+   * @return getRequestCookies
+   */
+  @Nullable
+  public static Cookie [] getRequestCookies (@Nullable final HttpServletRequest aRequest)
+  {
+    Cookie [] ret = null;
+    if (aRequest != null)
+      try
+      {
+        ret = aRequest.getCookies ();
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        /**
+         * <pre>
+         * java.lang.NullPointerException: null
+        at org.apache.catalina.connector.Request.parseCookies(Request.java:2943) ~[catalina.jar:8.0.20]
+        at org.apache.catalina.connector.Request.convertCookies(Request.java:2958) ~[catalina.jar:8.0.20]
+        at org.apache.catalina.connector.Request.getCookies(Request.java:1987) ~[catalina.jar:8.0.20]
+        at org.apache.catalina.connector.RequestFacade.getCookies(RequestFacade.java:662) ~[catalina.jar:8.0.20]
+         * </pre>
+         */
+        s_aLogger.warn ("Failed to determine cookies of HTTP request", t);
       }
     return ret;
   }

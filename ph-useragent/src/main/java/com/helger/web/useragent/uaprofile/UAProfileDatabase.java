@@ -16,7 +16,6 @@
  */
 package com.helger.web.useragent.uaprofile;
 
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -27,7 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +38,7 @@ import com.helger.commons.base64.Base64;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsCollection;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.collection.ext.ICommonsSet;
@@ -48,8 +47,7 @@ import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.URLHelper;
-import com.helger.servlet.ServletHelper;
-import com.helger.servlet.request.RequestHelper;
+import com.helger.http.CHTTPHeader;
 
 /**
  * Central cache for known UAProfiles.
@@ -59,20 +57,8 @@ import com.helger.servlet.request.RequestHelper;
 @ThreadSafe
 public final class UAProfileDatabase
 {
-  // See http://de.wikipedia.org/wiki/UAProf - references the device URL
-  public static final String X_WAP_PROFILE = "X-Wap-Profile";
-  public static final String PROFILE = "Profile";
-  public static final String WAP_PROFILE = "Wap-Profile";
-  public static final String MAN = "Man";
-  public static final String OPT = "Opt";
-
-  public static final String X_WAP_PROFILE_DIFF = "X-Wap-Profile-Diff";
-  public static final String PROFILE_DIFF = "Profile-Diff";
-  public static final String WAP_PROFILE_DIFF = "Wap-Profile-Diff";
-
   public static final int EXPECTED_MD5_DIGEST_LENGTH = 16;
 
-  private static final String REQUEST_ATTR = UAProfileDatabase.class.getName ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (UAProfileDatabase.class);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
@@ -129,23 +115,22 @@ public final class UAProfileDatabase
   }
 
   @Nonnull
-  private static ICommonsMap <Integer, String> _getProfileDiffData (@Nonnull final HttpServletRequest aHttpRequest,
+  private static ICommonsMap <Integer, String> _getProfileDiffData (@Nonnull final IUAProfileHeaderProvider aHeaderProvider,
                                                                     final String sExtNSValue)
   {
     // Determine the profile diffs to use
-    Enumeration <String> aProfileDiffs = RequestHelper.getRequestHeaders (aHttpRequest, X_WAP_PROFILE_DIFF);
-    if (!aProfileDiffs.hasMoreElements ())
+    ICommonsCollection <String> aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.X_WAP_PROFILE_DIFF);
+    if (aProfileDiffs.isEmpty ())
     {
-      aProfileDiffs = RequestHelper.getRequestHeaders (aHttpRequest, PROFILE_DIFF);
-      if (!aProfileDiffs.hasMoreElements ())
-        aProfileDiffs = RequestHelper.getRequestHeaders (aHttpRequest, WAP_PROFILE_DIFF);
+      aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.PROFILE_DIFF);
+      if (aProfileDiffs.isEmpty ())
+        aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.WAP_PROFILE_DIFF);
     }
 
     // Parse the diffs
     final ICommonsMap <Integer, String> aProfileDiffData = new CommonsHashMap<> ();
-    while (aProfileDiffs.hasMoreElements ())
+    for (String sProfileDiff : aProfileDiffs)
     {
-      String sProfileDiff = aProfileDiffs.nextElement ();
       sProfileDiff = sProfileDiff.trim ();
 
       // Find the profile diff index (e.g. '1;<?xml....')
@@ -174,10 +159,9 @@ public final class UAProfileDatabase
       final String sPrefix = _getUnifiedHeaderName (sExtNSValue + "-Profile-Diff-");
 
       // Extract all matching headers, in case non-consecutive numbers are used
-      final Enumeration <String> aAllHeaders = RequestHelper.getRequestHeaderNames (aHttpRequest);
-      while (aAllHeaders.hasMoreElements ())
+      for (String sHeaderName : aHeaderProvider.getAllHeaderNames ())
       {
-        final String sHeaderName = _getUnifiedHeaderName (aAllHeaders.nextElement ());
+        sHeaderName = _getUnifiedHeaderName (sHeaderName);
         if (sHeaderName.startsWith (sPrefix))
         {
           // We found a matching profile-diff header (e.g. "80-Profile-Diff-1")
@@ -185,7 +169,7 @@ public final class UAProfileDatabase
           if (nIndex != CGlobal.ILLEGAL_UINT)
           {
             // Handle profile diff
-            String sProfileDiff = aHttpRequest.getHeader (sHeaderName);
+            String sProfileDiff = aHeaderProvider.getHeader (sHeaderName);
             sProfileDiff = _getCleanedUp (sProfileDiff);
             aProfileDiffData.put (Integer.valueOf (nIndex), sProfileDiff);
           }
@@ -198,32 +182,32 @@ public final class UAProfileDatabase
   }
 
   @Nullable
-  public static UAProfile getUAProfileFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  public static UAProfile getUAProfileFromRequest (@Nonnull final IUAProfileHeaderProvider aHeaderProvider)
   {
-    ValueEnforcer.notNull (aHttpRequest, "httpRequest");
+    ValueEnforcer.notNull (aHeaderProvider, "HeaderProvider");
 
     // Determine the main profile to use
     String sExtNSValue = null;
-    Enumeration <String> aProfiles = RequestHelper.getRequestHeaders (aHttpRequest, X_WAP_PROFILE);
-    if (!aProfiles.hasMoreElements ())
+    ICommonsCollection <String> aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.X_WAP_PROFILE);
+    if (aProfiles.isEmpty ())
     {
-      aProfiles = RequestHelper.getRequestHeaders (aHttpRequest, PROFILE);
-      if (!aProfiles.hasMoreElements ())
+      aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.PROFILE);
+      if (aProfiles.isEmpty ())
       {
-        aProfiles = RequestHelper.getRequestHeaders (aHttpRequest, WAP_PROFILE);
-        if (!aProfiles.hasMoreElements ())
+        aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.WAP_PROFILE);
+        if (aProfiles.isEmpty ())
         {
           // Check CCPP headers
-          String sExt = aHttpRequest.getHeader (OPT);
+          String sExt = aHeaderProvider.getHeader (CHTTPHeader.OPT);
           if (sExt == null)
-            sExt = aHttpRequest.getHeader (MAN);
+            sExt = aHeaderProvider.getHeader (CHTTPHeader.MAN);
           if (sExt != null)
           {
             sExtNSValue = _getExtendedNamespaceValue (sExt);
             if (sExtNSValue != null)
             {
-              aProfiles = RequestHelper.getRequestHeaders (aHttpRequest, sExtNSValue + "-Profile");
-              if (!aProfiles.hasMoreElements ())
+              aProfiles = aHeaderProvider.getHeaders (sExtNSValue + "-Profile");
+              if (aProfiles.isEmpty ())
                 s_aLogger.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
             }
             else
@@ -236,9 +220,8 @@ public final class UAProfileDatabase
     // Parse profile headers
     final ICommonsList <String> aProfileData = new CommonsArrayList<> ();
     final ICommonsMap <Integer, byte []> aProfileDiffDigests = new CommonsHashMap<> ();
-    while (aProfiles.hasMoreElements ())
+    for (String sProfile : aProfiles)
     {
-      String sProfile = aProfiles.nextElement ();
       sProfile = _getCleanedUp (sProfile);
       if (StringHelper.hasText (sProfile))
       {
@@ -304,7 +287,7 @@ public final class UAProfileDatabase
     }
 
     // Read diffs
-    final ICommonsMap <Integer, String> aProfileDiffData = _getProfileDiffData (aHttpRequest, sExtNSValue);
+    final ICommonsMap <Integer, String> aProfileDiffData = _getProfileDiffData (aHeaderProvider, sExtNSValue);
 
     // Merge data and digest
     final ICommonsMap <Integer, UAProfileDiff> aProfileDiffs = new CommonsHashMap<> ();
@@ -337,40 +320,24 @@ public final class UAProfileDatabase
     return new UAProfile (aProfileData, aProfileDiffs);
   }
 
-  /**
-   * Get the user agent object from the given HTTP request.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object.
-   */
   @Nonnull
-  public static UAProfile getUAProfile (@Nonnull final HttpServletRequest aHttpRequest)
+  public static UAProfile getParsedUAProfile (@Nonnull final IUAProfileHeaderProvider aHeaderProvider)
   {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    UAProfile aUAProfile = (UAProfile) aHttpRequest.getAttribute (REQUEST_ATTR);
+    // Main extraction
+    final UAProfile aUAProfile = getUAProfileFromRequest (aHeaderProvider);
     if (aUAProfile == null)
+      return UAProfile.EMPTY;
+
+    if (aUAProfile.isSet ())
     {
-      // Extract HTTP header from request
-      aUAProfile = getUAProfileFromRequest (aHttpRequest);
-      if (aUAProfile == null)
-        aUAProfile = UAProfile.EMPTY;
-
-      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, aUAProfile);
-      if (aUAProfile.isSet ())
+      final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUAProfiles.add (aUAProfile));
+      if (bAdded)
       {
-        final UAProfile aFinalUAProfile = aUAProfile;
-        s_aRWLock.writeLocked ( () -> {
-          if (s_aUniqueUAProfiles.add (aFinalUAProfile))
-          {
-            if (s_aLogger.isDebugEnabled ())
-              s_aLogger.debug ("Found UA-Profile info: " + aFinalUAProfile.toString ());
+        if (s_aLogger.isDebugEnabled ())
+          s_aLogger.debug ("Found UA-Profile info: " + aUAProfile.toString ());
 
-            if (s_aNewUAProfileCallback != null)
-              s_aNewUAProfileCallback.accept (aFinalUAProfile);
-          }
-        });
+        if (s_aNewUAProfileCallback != null)
+          s_aNewUAProfileCallback.accept (aUAProfile);
       }
     }
     return aUAProfile;

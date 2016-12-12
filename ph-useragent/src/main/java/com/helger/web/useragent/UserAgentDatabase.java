@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,6 @@ import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.CHTTPHeader;
-import com.helger.servlet.ServletHelper;
 
 /**
  * Central cache for known user agents (see HTTP header field
@@ -45,8 +43,8 @@ import com.helger.servlet.ServletHelper;
 @ThreadSafe
 public final class UserAgentDatabase
 {
-  private static final String REQUEST_ATTR = UserAgentDatabase.class.getName ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDatabase.class);
+
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet<> ();
@@ -59,30 +57,9 @@ public final class UserAgentDatabase
   private UserAgentDatabase ()
   {}
 
-  public static void setNewUserAgentCallback (@Nullable final Consumer <IUserAgent> aCallback)
+  public static void setUserAgentCallback (@Nullable final Consumer <IUserAgent> aCallback)
   {
     s_aRWLock.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
-  }
-
-  /**
-   * Get the user agent from the given request.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to get the UA from.
-   * @return <code>null</code> if no user agent string is present
-   */
-  @Nullable
-  public static String getHttpUserAgentStringFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    // Use non-standard headers first
-    String sUserAgent = aHttpRequest.getHeader (CHTTPHeader.UA);
-    if (sUserAgent == null)
-    {
-      sUserAgent = aHttpRequest.getHeader (CHTTPHeader.X_DEVICE_USER_AGENT);
-      if (sUserAgent == null)
-        sUserAgent = aHttpRequest.getHeader (CHTTPHeader.USER_AGENT);
-    }
-    return sUserAgent;
   }
 
   @Nullable
@@ -95,33 +72,13 @@ public final class UserAgentDatabase
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
     final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUserAgents.add (sUserAgent));
-    if (bAdded && s_aNewUserAgentCallback != null)
-      s_aNewUserAgentCallback.accept (aUserAgent);
-    return aUserAgent;
-  }
-
-  /**
-   * Get the user agent object from the given HTTP request.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object.
-   */
-  @Nonnull
-  public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    IUserAgent aUserAgent = (IUserAgent) aHttpRequest.getAttribute (REQUEST_ATTR);
-    if (aUserAgent == null)
+    if (bAdded)
     {
-      // Extract HTTP header from request
-      final String sUserAgent = getHttpUserAgentStringFromRequest (aHttpRequest);
-      aUserAgent = getParsedUserAgent (sUserAgent);
-      if (aUserAgent == null)
-      {
-        s_aLogger.warn ("No user agent was passed in the request!");
-        aUserAgent = new UserAgent ("", new UserAgentElementList ());
-      }
-      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, aUserAgent);
+      if (s_aLogger.isDebugEnabled ())
+        s_aLogger.debug ("Found new UserAgent '" + sUserAgent + "'");
+
+      if (s_aNewUserAgentCallback != null)
+        s_aNewUserAgentCallback.accept (aUserAgent);
     }
     return aUserAgent;
   }

@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.ext.CommonsTreeMap;
-import com.helger.commons.collection.ext.ICommonsNavigableMap;
 import com.helger.commons.collection.ext.ICommonsSortedMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -64,11 +63,10 @@ public class UAProfile implements Serializable
     final int nDiffs = CollectionHelper.getSize (aProfileDiffData);
     if (nUrls == 0 && nDiffs == 0)
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
-
     if (nUrls > 1)
       s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
-    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
+    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap<> (aProfileDiffData);
   }
 
   /**
@@ -84,14 +82,16 @@ public class UAProfile implements Serializable
   @Nonnegative
   public int getDiffCount ()
   {
+    // May be null
     return CollectionHelper.getSize (m_aProfileDiffData);
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsNavigableMap <Integer, UAProfileDiff> getProfileDiffData ()
+  public ICommonsSortedMap <Integer, UAProfileDiff> getProfileDiffData ()
   {
-    return new CommonsTreeMap <> (m_aProfileDiffData);
+    // May be null
+    return new CommonsTreeMap<> (m_aProfileDiffData);
   }
 
   public boolean isSet ()

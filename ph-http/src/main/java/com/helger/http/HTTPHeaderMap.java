@@ -39,6 +39,7 @@ import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsIterable;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.lang.ICloneable;
 import com.helger.commons.lang.IHasSize;
@@ -357,6 +358,17 @@ public class HTTPHeaderMap implements
   public ICommonsOrderedMap <String, ICommonsList <String>> getAllHeaders ()
   {
     return m_aHeaders.getClone ();
+  }
+
+  /**
+   * @return A copy of all contained header names. Never <code>null</code>.
+   * @since 8.7.0
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsOrderedSet <String> getAllHeaderNames ()
+  {
+    return m_aHeaders.copyOfKeySet ();
   }
 
   /**

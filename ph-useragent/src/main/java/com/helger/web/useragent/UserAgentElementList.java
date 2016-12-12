@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.pair.IPair;
@@ -35,9 +36,19 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-final class UserAgentElementList
+public class UserAgentElementList
 {
-  private final ICommonsList <Object> m_aList = new CommonsArrayList<> ();
+  private final ICommonsList <Object> m_aList;
+
+  public UserAgentElementList ()
+  {
+    m_aList = new CommonsArrayList<> ();
+  }
+
+  public UserAgentElementList (@Nonnull final UserAgentElementList aOther)
+  {
+    m_aList = aOther.getAllElements ();
+  }
 
   public void add (@Nonnull final IPair <String, String> aPair)
   {
@@ -55,6 +66,13 @@ final class UserAgentElementList
   {
     ValueEnforcer.notNull (aItems, "Items");
     m_aList.add (aItems);
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsList <Object> getAllElements ()
+  {
+    return m_aList.getClone ();
   }
 
   @Nullable
@@ -119,6 +137,6 @@ final class UserAgentElementList
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (null).append ("items", m_aList).toString ();
+    return new ToStringGenerator (null).append ("List", m_aList).toString ();
   }
 }

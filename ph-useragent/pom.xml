@@ -24,11 +24,11 @@
     <version>8.7.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ph-servlet</artifactId>
+  <artifactId>ph-useragent</artifactId>
   <packaging>bundle</packaging>
-  <name>ph-servlet</name>
-  <description>Java library with Servlet related stuff</description>
-  <url>https://github.com/phax/ph-web/ph-servlet</url>
+  <name>ph-useragent</name>
+  <description>Java library with user agent/browser determination related stuff</description>
+  <url>https://github.com/phax/ph-web/ph-useragent</url>
   <inceptionYear>2016</inceptionYear>
   <licenses>
     <license>
@@ -60,20 +60,7 @@
     </dependency>
     <dependency>
       <groupId>com.helger</groupId>
-      <artifactId>ph-network</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
       <artifactId>ph-http</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.helger</groupId>
-      <artifactId>ph-useragent</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -89,7 +76,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>com.helger.servlet.*</Export-Package>
+            <Export-Package>com.helger.useragent.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
           </instructions>
         </configuration>

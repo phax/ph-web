@@ -33,7 +33,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.lang.GenericReflection;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.ISimpleURL;
@@ -61,6 +62,13 @@ import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
+import com.helger.web.useragent.IUserAgent;
+import com.helger.web.useragent.UserAgent;
+import com.helger.web.useragent.UserAgentDatabase;
+import com.helger.web.useragent.UserAgentElementList;
+import com.helger.web.useragent.uaprofile.IUAProfileHeaderProvider;
+import com.helger.web.useragent.uaprofile.UAProfile;
+import com.helger.web.useragent.uaprofile.UAProfileDatabase;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.
@@ -549,41 +557,6 @@ public final class RequestHelper
     return StringParser.parseLong (sContentLength, -1L);
   }
 
-  /**
-   * Get all request headers of the passed request in a correctly typed
-   * {@link Enumeration}.
-   *
-   * @param aHttpRequest
-   *        Source HTTP request. May not be <code>null</code>.
-   * @param sName
-   *        Name of the request header to retrieve.
-   * @return Never <code>null</code>.
-   */
-  @Nullable
-  public static Enumeration <String> getRequestHeaders (@Nonnull final HttpServletRequest aHttpRequest,
-                                                        @Nullable final String sName)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    return GenericReflection.uncheckedCast (aHttpRequest.getHeaders (sName));
-  }
-
-  /**
-   * Get all all request header names of the passed request in a correctly typed
-   * {@link Enumeration}.
-   *
-   * @param aHttpRequest
-   *        Source HTTP request. May not be <code>null</code>.
-   * @return Never <code>null</code>.
-   */
-  @Nullable
-  public static Enumeration <String> getRequestHeaderNames (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    return GenericReflection.uncheckedCast (aHttpRequest.getHeaderNames ());
-  }
-
   @Nullable
   private static <T> T _getRequestAttr (@Nonnull final HttpServletRequest aHttpRequest,
                                         @Nonnull @Nonempty final String sAttrName,
@@ -801,5 +774,94 @@ public final class RequestHelper
 
     final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
     return HTTPDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
+  }
+
+  /**
+   * Get the user agent from the given request.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to get the UA from.
+   * @return <code>null</code> if no user agent string is present
+   */
+  @Nullable
+  public static String getHttpUserAgentStringFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    // Use non-standard headers first
+    String sUserAgent = aHttpRequest.getHeader (CHTTPHeader.UA);
+    if (sUserAgent == null)
+    {
+      sUserAgent = aHttpRequest.getHeader (CHTTPHeader.X_DEVICE_USER_AGENT);
+      if (sUserAgent == null)
+        sUserAgent = aHttpRequest.getHeader (CHTTPHeader.USER_AGENT);
+    }
+    return sUserAgent;
+  }
+
+  /**
+   * Get the user agent object from the given HTTP request.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to extract the information from.
+   * @return A non-<code>null</code> user agent object.
+   */
+  @Nonnull
+  public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    IUserAgent aUserAgent = (IUserAgent) aHttpRequest.getAttribute (IUserAgent.class.getName ());
+    if (aUserAgent == null)
+    {
+      // Extract HTTP header from request
+      final String sUserAgent = getHttpUserAgentStringFromRequest (aHttpRequest);
+      aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
+      if (aUserAgent == null)
+      {
+        s_aLogger.warn ("No user agent was passed in the request!");
+        aUserAgent = new UserAgent ("", new UserAgentElementList ());
+      }
+      ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);
+    }
+    return aUserAgent;
+  }
+
+  /**
+   * Get the user agent object from the given HTTP request.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to extract the information from.
+   * @return A non-<code>null</code> user agent object.
+   */
+  @Nonnull
+  public static UAProfile getUAProfile (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    UAProfile aUAProfile = (UAProfile) aHttpRequest.getAttribute (UAProfile.class.getName ());
+    if (aUAProfile == null)
+    {
+      // Extract HTTP header from request
+      aUAProfile = UAProfileDatabase.getParsedUAProfile (new IUAProfileHeaderProvider ()
+      {
+        @Nonnull
+        @ReturnsMutableCopy
+        public ICommonsList <String> getAllHeaderNames ()
+        {
+          return CollectionHelper.newList (aHttpRequest.getHeaderNames ());
+        }
+
+        @Nonnull
+        @ReturnsMutableCopy
+        public ICommonsList <String> getHeaders (final String sName)
+        {
+          return CollectionHelper.newList (aHttpRequest.getHeaders (sName));
+        }
+
+        public String getHeader (final String sHeader)
+        {
+          return aHttpRequest.getHeader (sHeader);
+        }
+      });
+      ServletHelper.setRequestAttribute (aHttpRequest, UAProfile.class.getName (), aUAProfile);
+    }
+    return aUAProfile;
   }
 }

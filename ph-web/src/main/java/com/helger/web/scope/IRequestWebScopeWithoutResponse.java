@@ -860,7 +860,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default Enumeration <String> getRequestHeaders (@Nullable final String sName)
   {
-    return RequestHelper.getRequestHeaders (getRequest (), sName);
+    return getRequest ().getHeaders (sName);
   }
 
   /**
@@ -878,7 +878,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default Enumeration <String> getRequestHeaderNames ()
   {
-    return RequestHelper.getRequestHeaderNames (getRequest ());
+    return getRequest ().getHeaderNames ();
   }
 
   /**

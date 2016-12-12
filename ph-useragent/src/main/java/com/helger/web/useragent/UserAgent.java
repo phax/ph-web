@@ -36,7 +36,7 @@ import com.helger.web.useragent.spider.WebSpiderManager;
  *
  * @author Philip Helger
  */
-final class UserAgent implements IUserAgent
+public class UserAgent implements IUserAgent
 {
   private static final String GECKO_SEARCH_STRING = "Gecko";
   private static final String LYNX_SEARCH_STRING = "Lynx";
@@ -421,16 +421,20 @@ final class UserAgent implements IUserAgent
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("string", m_sFullUserAgent)
-                                       .append ("infos", m_aElements)
+    return new ToStringGenerator (this).append ("FullUserAgent", m_sFullUserAgent)
+                                       .append ("Elements", m_aElements)
                                        .append ("Firefox", getInfoFirefox ())
                                        .append ("IE", getInfoIE ())
-                                       .append (OPERA_SEARCH_STRING, getInfoOpera ())
-                                       .append (SAFARI_SEARCH_STRING, getInfoSafari ())
-                                       .append (CHROME_SEARCH_STRING, getInfoChrome ())
-                                       .append (GECKO_SEARCH_STRING, getInfoGeckoBased ())
+                                       .append ("Opera", getInfoOpera ())
+                                       .append ("Safari", getInfoSafari ())
+                                       .append ("Chrome", getInfoChrome ())
+                                       .append ("Vivaldi", getInfoVivaldi ())
+                                       .append ("Lynx", getInfoLynx ())
+                                       .append ("Gecko based", getInfoGeckoBased ())
+                                       .append ("Webkit based", getInfoWebKitBased ())
                                        .append ("Mobile", getInfoMobile ())
                                        .append ("WebSpider", getInfoWebSpider ())
+                                       .append ("Application", getInfoApplication ())
                                        .toString ();
   }
 }

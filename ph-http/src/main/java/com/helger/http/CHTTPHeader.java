@@ -124,6 +124,16 @@ public final class CHTTPHeader
   public static final String X_WEBKIT_CSP = "X-WebKit-CSP";
   public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "Content-Security-Policy-Report-Only";
 
+  // WAP-248-UAPROF-20011020-a
+  public static final String X_WAP_PROFILE = "X-Wap-Profile";
+  public static final String PROFILE = "Profile";
+  public static final String WAP_PROFILE = "Wap-Profile";
+  public static final String MAN = "Man";
+  public static final String OPT = "Opt";
+  public static final String X_WAP_PROFILE_DIFF = "X-Wap-Profile-Diff";
+  public static final String PROFILE_DIFF = "Profile-Diff";
+  public static final String WAP_PROFILE_DIFF = "Wap-Profile-Diff";
+
   // AS2 headers
   public static final String AS2_FROM = "AS2-From";
   public static final String AS2_TO = "AS2-To";

@@ -19,13 +19,11 @@ package com.helger.http;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
-import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Charset"
@@ -71,19 +69,5 @@ public final class AcceptCharsetHandler
       }
     }
     return ret;
-  }
-
-  @Nonnull
-  public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    // Check if a value is cached in the HTTP request
-    AcceptCharsetList aValue = (AcceptCharsetList) aHttpRequest.getAttribute (AcceptCharsetList.class.getName ());
-    if (aValue == null)
-    {
-      final String sAcceptCharset = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_CHARSET);
-      aValue = getAcceptCharsets (sAcceptCharset);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
-    }
-    return aValue;
   }
 }

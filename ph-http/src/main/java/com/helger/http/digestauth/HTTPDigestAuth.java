@@ -22,7 +22,6 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,6 @@ import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.HTTPStringHelper;
 import com.helger.security.messagedigest.EMessageDigestAlgorithm;
@@ -216,24 +214,6 @@ public final class HTTPDigestAuth
     }
 
     return aParams;
-  }
-
-  /**
-   * Get the Digest authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Digest Authentication header value.
-   */
-  @Nullable
-  public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
-    return getDigestAuthClientCredentials (sHeaderValue);
   }
 
   /**

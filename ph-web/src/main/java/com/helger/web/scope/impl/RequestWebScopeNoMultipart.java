@@ -41,12 +41,12 @@ import com.helger.commons.scope.AbstractMapBasedScope;
 import com.helger.commons.scope.ScopeHelper;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.request.IRequestParamMap;
+import com.helger.servlet.request.RequestHelper;
+import com.helger.servlet.request.RequestParamMap;
 import com.helger.web.WebSettings;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.servlet.ServletContextPathHolder;
-import com.helger.web.servlet.request.IRequestParamMap;
-import com.helger.web.servlet.request.RequestHelper;
-import com.helger.web.servlet.request.RequestParamMap;
 
 /**
  * A request web scopes that does not parse multipart requests.

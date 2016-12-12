@@ -18,21 +18,17 @@ package com.helger.http.basicauth;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.CHTTPHeader;
 import com.helger.http.digestauth.HTTPDigestAuth;
 
 /**
@@ -53,24 +49,6 @@ public final class HTTPBasicAuth
 
   private HTTPBasicAuth ()
   {}
-
-  /**
-   * Get the Basic authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Basic Authentication header value.
-   */
-  @Nullable
-  public static BasicAuthClientCredentials getBasicAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
-    return getBasicAuthClientCredentials (sHeaderValue);
-  }
 
   /**
    * Get the Basic authentication credentials from the passed HTTP header value.

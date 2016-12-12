@@ -30,10 +30,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
-import com.helger.http.AcceptEncodingHandler;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
-import com.helger.http.servlet.ServletHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.servlet.response.ResponseHelperSettings;
 import com.helger.web.servlet.response.gzip.AbstractCompressedResponseWrapper;
 import com.helger.web.servlet.response.gzip.CompressFilterSettings;
@@ -105,7 +105,7 @@ public class CompressFilter implements Filter
       // Accept-Encoding
       aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);
 
-      final AcceptEncodingList aAEL = AcceptEncodingHandler.getAcceptEncodings (aHttpRequest);
+      final AcceptEncodingList aAEL = RequestHelper.getAcceptEncodings (aHttpRequest);
 
       AbstractCompressedResponseWrapper aCompressedResponse = null;
 

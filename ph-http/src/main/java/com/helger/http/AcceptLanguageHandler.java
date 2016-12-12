@@ -19,12 +19,10 @@ package com.helger.http;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
-import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Language"
@@ -68,19 +66,5 @@ public final class AcceptLanguageHandler
       }
     }
     return ret;
-  }
-
-  @Nonnull
-  public static AcceptLanguageList getAcceptLanguages (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    // Check if a value is cached in the HTTP request
-    AcceptLanguageList aValue = (AcceptLanguageList) aHttpRequest.getAttribute (AcceptLanguageList.class.getName ());
-    if (aValue == null)
-    {
-      final String sAcceptLanguage = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_LANGUAGE);
-      aValue = getAcceptLanguages (sAcceptLanguage);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
-    }
-    return aValue;
   }
 }

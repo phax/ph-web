@@ -19,7 +19,6 @@ package com.helger.http;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,6 @@ import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
-import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept"
@@ -99,20 +97,6 @@ public final class AcceptMimeTypeHandler
       }
     }
     return ret;
-  }
-
-  @Nonnull
-  public static AcceptMimeTypeList getAcceptMimeTypes (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    // Check if a value is cached in the HTTP request
-    AcceptMimeTypeList aValue = (AcceptMimeTypeList) aHttpRequest.getAttribute (AcceptMimeTypeList.class.getName ());
-    if (aValue == null)
-    {
-      final String sAcceptMimeTypes = aHttpRequest.getHeader (CHTTPHeader.ACCEPT);
-      aValue = getAcceptMimeTypes (sAcceptMimeTypes);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
-    }
-    return aValue;
   }
 
   @Nullable

@@ -38,6 +38,7 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemHeaders;
@@ -54,7 +55,6 @@ import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.multipart.MultipartProgressNotifier;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.progress.IProgressListener;
-import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * <p>

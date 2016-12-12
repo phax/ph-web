@@ -48,8 +48,8 @@ import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.URLHelper;
-import com.helger.http.servlet.ServletHelper;
-import com.helger.web.servlet.request.RequestHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.RequestHelper;
 
 /**
  * Central cache for known UAProfiles.

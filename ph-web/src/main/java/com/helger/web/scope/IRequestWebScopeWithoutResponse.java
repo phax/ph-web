@@ -41,10 +41,10 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
-import com.helger.http.servlet.ServletHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.IRequestParamMap;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
-import com.helger.web.servlet.request.IRequestParamMap;
-import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * Interface for a single web request scope object that does not offer access to

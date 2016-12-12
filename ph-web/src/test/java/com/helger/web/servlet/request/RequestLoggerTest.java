@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
+import com.helger.servlet.request.RequestLogger;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.mock.MockServletContext;
 

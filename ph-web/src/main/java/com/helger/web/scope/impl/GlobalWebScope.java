@@ -26,10 +26,10 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.scope.GlobalScope;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.servlet.ServletContextPathHolder;
 import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeFactoryProvider;
-import com.helger.web.servlet.ServletContextPathHolder;
 
 /**
  * Implementation of the {@link IGlobalWebScope} interface for web applications.

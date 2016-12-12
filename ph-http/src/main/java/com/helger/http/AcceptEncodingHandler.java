@@ -19,7 +19,6 @@ package com.helger.http;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
-import com.helger.http.servlet.ServletHelper;
 
 /**
  * Handler for the request HTTP header field "Accept-Encoding"
@@ -96,19 +94,5 @@ public final class AcceptEncodingHandler
       }
     }
     return ret;
-  }
-
-  @Nonnull
-  public static AcceptEncodingList getAcceptEncodings (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    // Check if a value is cached in the HTTP request
-    AcceptEncodingList aValue = (AcceptEncodingList) aHttpRequest.getAttribute (AcceptEncodingList.class.getName ());
-    if (aValue == null)
-    {
-      final String sAcceptEncoding = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_ENCODING);
-      aValue = getAcceptEncodings (sAcceptEncoding);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
-    }
-    return aValue;
   }
 }

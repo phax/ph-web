@@ -24,7 +24,7 @@ import javax.servlet.ServletInputStream;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
-import com.helger.web.servlet.AbstractServletInputStream;
+import com.helger.servlet.io.AbstractServletInputStream;
 
 /**
  * A {@link ServletInputStream} for testing based on a predefined byte array or

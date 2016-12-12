@@ -61,9 +61,7 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.URLHelper;
-import com.helger.http.AcceptCharsetHandler;
 import com.helger.http.AcceptCharsetList;
-import com.helger.http.AcceptMimeTypeHandler;
 import com.helger.http.AcceptMimeTypeList;
 import com.helger.http.CHTTPHeader;
 import com.helger.http.CacheControlBuilder;
@@ -71,10 +69,10 @@ import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.http.HTTPHeaderMap;
 import com.helger.http.QValue;
+import com.helger.servlet.request.RequestHelper;
+import com.helger.servlet.request.RequestLogger;
 import com.helger.web.WebSettings;
 import com.helger.web.encoding.RFC5987Encoder;
-import com.helger.web.servlet.request.RequestHelper;
-import com.helger.web.servlet.request.RequestLogger;
 import com.helger.web.useragent.browser.BrowserInfo;
 import com.helger.web.useragent.browser.EBrowserType;
 
@@ -205,8 +203,8 @@ public class UnifiedResponse
     m_eHTTPVersion = ValueEnforcer.notNull (eHTTPVersion, "HTTPVersion");
     m_eHTTPMethod = ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HTTPRequest");
-    m_aAcceptCharsetList = AcceptCharsetHandler.getAcceptCharsets (aHttpRequest);
-    m_aAcceptMimeTypeList = AcceptMimeTypeHandler.getAcceptMimeTypes (aHttpRequest);
+    m_aAcceptCharsetList = RequestHelper.getAcceptCharsets (aHttpRequest);
+    m_aAcceptMimeTypeList = RequestHelper.getAcceptMimeTypes (aHttpRequest);
     m_aRequestHeaderMap = RequestHelper.getRequestHeaderMap (aHttpRequest);
 
     // Copy all default settings

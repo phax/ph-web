@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.http.AcceptEncodingHandler;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
+import com.helger.servlet.request.RequestHelper;
 
 /**
  * Misc. helper methods on {@link HttpServletResponse} objects.<br>
@@ -71,7 +71,7 @@ public final class ResponseHelper
     if (ResponseHelperSettings.isResponseCompressionEnabled ())
     {
       // Can we get resource transfer working with GZIP or deflate?
-      final AcceptEncodingList aAcceptEncodings = AcceptEncodingHandler.getAcceptEncodings (aHttpRequest);
+      final AcceptEncodingList aAcceptEncodings = RequestHelper.getAcceptEncodings (aHttpRequest);
 
       if (ResponseHelperSettings.isResponseGzipEnabled ())
       {
@@ -123,7 +123,7 @@ public final class ResponseHelper
     if (ResponseHelperSettings.isResponseCompressionEnabled ())
     {
       // Can we get resource transfer working with GZIP or deflate?
-      final AcceptEncodingList aAcceptEncodings = AcceptEncodingHandler.getAcceptEncodings (aHttpRequest);
+      final AcceptEncodingList aAcceptEncodings = RequestHelper.getAcceptEncodings (aHttpRequest);
 
       // Inform caches that responses may vary according to Accept-Encoding
       aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);

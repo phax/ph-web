@@ -36,10 +36,10 @@ import com.helger.commons.statistics.IMutableStatisticsHandlerTimer;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.timing.StopWatch;
-import com.helger.http.servlet.ServletHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.RequestLogger;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
-import com.helger.web.servlet.request.RequestLogger;
 import com.helger.xml.serialize.write.XMLWriterSettings;
 
 /**

@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
 
-import com.helger.web.annotation.IsOffline;
+import com.helger.servlet.annotation.IsOffline;
 
 /**
  * A special {@link MockHttpServletRequest} that throws

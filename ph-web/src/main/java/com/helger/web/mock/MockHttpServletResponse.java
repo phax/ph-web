@@ -52,7 +52,7 @@ import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
-import com.helger.web.servlet.AbstractServletOutputStream;
+import com.helger.servlet.io.AbstractServletOutputStream;
 
 /**
  * Mock implementation of {@link HttpServletResponse}.

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.servlet.cookie;
+package com.helger.servlet.cookie;
 
 import java.util.function.Function;
 
@@ -32,8 +32,8 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.servlet.ServletHelper;
-import com.helger.web.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletHelper;
 
 /**
  * Misc. helper methods on HTTP cookies.

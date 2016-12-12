@@ -105,17 +105,22 @@
       </dependency>
       <dependency>
         <groupId>com.helger</groupId>
+        <artifactId>ph-http</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
+        <artifactId>ph-servlet</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
         <artifactId>ph-mail</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-smtp</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.helger</groupId>
-        <artifactId>ph-http</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -151,9 +156,10 @@
   
   <modules>
     <module>ph-network</module>
+    <module>ph-http</module>
+    <module>ph-servlet</module>
     <module>ph-mail</module>
     <module>ph-smtp</module>
-    <module>ph-http</module>
     <module>ph-httpclient</module>
     <module>ph-web</module>
   </modules>

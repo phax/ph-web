@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.servlet.request;
+package com.helger.servlet.request;
 
 import java.util.Map;
 
@@ -37,9 +37,9 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.HTTPHeaderMap;
-import com.helger.http.servlet.ServletHelper;
-import com.helger.web.annotation.IsOffline;
-import com.helger.web.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.annotation.IsOffline;
 
 /**
  * Helper class to debug information passed to a JSP page or a servlet.

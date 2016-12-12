@@ -40,6 +40,7 @@ import org.junit.Test;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.exception.mock.MockIOException;
+import com.helger.servlet.io.AbstractServletInputStream;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
@@ -49,7 +50,6 @@ import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.multipart.MultipartMalformedStreamException;
-import com.helger.web.servlet.AbstractServletInputStream;
 
 /**
  * Unit test for items with varying sizes.

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.servlet.request;
+package com.helger.servlet.request;
 
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
@@ -40,15 +40,27 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLData;
 import com.helger.commons.url.URLHelper;
+import com.helger.http.AcceptCharsetHandler;
+import com.helger.http.AcceptCharsetList;
+import com.helger.http.AcceptEncodingHandler;
+import com.helger.http.AcceptEncodingList;
+import com.helger.http.AcceptLanguageHandler;
+import com.helger.http.AcceptLanguageList;
+import com.helger.http.AcceptMimeTypeHandler;
+import com.helger.http.AcceptMimeTypeList;
 import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.http.HTTPHeaderMap;
-import com.helger.http.servlet.ServletHelper;
+import com.helger.http.basicauth.BasicAuthClientCredentials;
+import com.helger.http.basicauth.HTTPBasicAuth;
+import com.helger.http.digestauth.DigestAuthClientCredentials;
+import com.helger.http.digestauth.HTTPDigestAuth;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
-import com.helger.web.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletHelper;
 
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.
@@ -481,7 +493,21 @@ public final class RequestHelper
   @ReturnsMutableCopy
   public static HTTPHeaderMap getRequestHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    return HTTPHeaderMap.createFromRequest (aHttpRequest);
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final HTTPHeaderMap ret = new HTTPHeaderMap ();
+    final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
+    while (aHeaders.hasMoreElements ())
+    {
+      final String sName = aHeaders.nextElement ();
+      final Enumeration <String> eHeaderValues = aHttpRequest.getHeaders (sName);
+      while (eHeaderValues.hasMoreElements ())
+      {
+        final String sValue = eHeaderValues.nextElement ();
+        ret.addHeader (sName, sValue);
+      }
+    }
+    return ret;
   }
 
   @Nonnull
@@ -683,5 +709,97 @@ public final class RequestHelper
        */
       s_aLogger.warn ("Failed to set attribute '" + sAttrName + "' in HTTP request", t);
     }
+  }
+
+  @Nonnull
+  public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    // Check if a value is cached in the HTTP request
+    AcceptCharsetList aValue = (AcceptCharsetList) aHttpRequest.getAttribute (AcceptCharsetList.class.getName ());
+    if (aValue == null)
+    {
+      final String sAcceptCharset = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_CHARSET);
+      aValue = AcceptCharsetHandler.getAcceptCharsets (sAcceptCharset);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
+    }
+    return aValue;
+  }
+
+  @Nonnull
+  public static AcceptEncodingList getAcceptEncodings (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    // Check if a value is cached in the HTTP request
+    AcceptEncodingList aValue = (AcceptEncodingList) aHttpRequest.getAttribute (AcceptEncodingList.class.getName ());
+    if (aValue == null)
+    {
+      final String sAcceptEncoding = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_ENCODING);
+      aValue = AcceptEncodingHandler.getAcceptEncodings (sAcceptEncoding);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
+    }
+    return aValue;
+  }
+
+  @Nonnull
+  public static AcceptLanguageList getAcceptLanguages (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    // Check if a value is cached in the HTTP request
+    AcceptLanguageList aValue = (AcceptLanguageList) aHttpRequest.getAttribute (AcceptLanguageList.class.getName ());
+    if (aValue == null)
+    {
+      final String sAcceptLanguage = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_LANGUAGE);
+      aValue = AcceptLanguageHandler.getAcceptLanguages (sAcceptLanguage);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
+    }
+    return aValue;
+  }
+
+  @Nonnull
+  public static AcceptMimeTypeList getAcceptMimeTypes (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    // Check if a value is cached in the HTTP request
+    AcceptMimeTypeList aValue = (AcceptMimeTypeList) aHttpRequest.getAttribute (AcceptMimeTypeList.class.getName ());
+    if (aValue == null)
+    {
+      final String sAcceptMimeTypes = aHttpRequest.getHeader (CHTTPHeader.ACCEPT);
+      aValue = AcceptMimeTypeHandler.getAcceptMimeTypes (sAcceptMimeTypes);
+      ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
+    }
+    return aValue;
+  }
+
+  /**
+   * Get the Basic authentication credentials from the passed HTTP servlet
+   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to be interpreted. May be <code>null</code>.
+   * @return <code>null</code> if the passed request does not contain a valid
+   *         HTTP Basic Authentication header value.
+   */
+  @Nullable
+  public static BasicAuthClientCredentials getBasicAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
+    return HTTPBasicAuth.getBasicAuthClientCredentials (sHeaderValue);
+  }
+
+  /**
+   * Get the Digest authentication credentials from the passed HTTP servlet
+   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to be interpreted. May be <code>null</code>.
+   * @return <code>null</code> if the passed request does not contain a valid
+   *         HTTP Digest Authentication header value.
+   */
+  @Nullable
+  public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
+    return HTTPDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
   }
 }

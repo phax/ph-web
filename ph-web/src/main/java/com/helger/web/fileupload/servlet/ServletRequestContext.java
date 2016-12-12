@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IRequestContext;
-import com.helger.web.servlet.request.RequestHelper;
 
 /**
  * <p>

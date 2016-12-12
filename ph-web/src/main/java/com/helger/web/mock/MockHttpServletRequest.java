@@ -81,9 +81,9 @@ import com.helger.http.AcceptCharsetHandler;
 import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
-import com.helger.http.servlet.ServletHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
-import com.helger.web.servlet.request.RequestHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.RequestHelper;
 
 /**
  * Mock implementation of {@link HttpServletRequest}.

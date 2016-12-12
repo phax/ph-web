@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.helger.http.EHTTPMethod;
-import com.helger.http.servlet.ServletHelper;
+import com.helger.servlet.ServletHelper;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.

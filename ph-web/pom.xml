@@ -80,6 +80,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-schedule</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <optional>true</optional>

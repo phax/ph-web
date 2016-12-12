@@ -31,10 +31,10 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.mock.MockHttpListener;
-import com.helger.web.mock.MockHttpServletRequest;
-import com.helger.web.mock.MockServletContext;
-import com.helger.web.mock.MockServletPool;
+import com.helger.servlet.mock.MockHttpListener;
+import com.helger.servlet.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockServletContext;
+import com.helger.servlet.mock.MockServletPool;
 import com.helger.web.servlets.scope.WebScopeListener;
 
 /**

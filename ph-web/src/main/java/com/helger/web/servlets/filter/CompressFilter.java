@@ -34,11 +34,11 @@ import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.web.servlet.response.ResponseHelperSettings;
-import com.helger.web.servlet.response.gzip.AbstractCompressedResponseWrapper;
-import com.helger.web.servlet.response.gzip.CompressFilterSettings;
-import com.helger.web.servlet.response.gzip.DeflateResponse;
-import com.helger.web.servlet.response.gzip.GZIPResponse;
+import com.helger.servlet.response.ResponseHelperSettings;
+import com.helger.servlet.response.gzip.AbstractCompressedResponseWrapper;
+import com.helger.servlet.response.gzip.CompressFilterSettings;
+import com.helger.servlet.response.gzip.DeflateResponse;
+import com.helger.servlet.response.gzip.GZIPResponse;
 
 /**
  * This is a generic filter that first tries to find whether "GZip" is

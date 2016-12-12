@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
-import com.helger.web.mock.MockHttpServletRequest;
 
 /**
  * Base class for deriving test cases.

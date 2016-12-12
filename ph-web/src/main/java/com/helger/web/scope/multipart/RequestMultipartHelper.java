@@ -33,13 +33,13 @@ import com.helger.commons.collection.multimap.IMultiMapListBased;
 import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.CWeb;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactoryProviderSPI;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
-import com.helger.web.mock.MockHttpServletRequest;
 import com.helger.web.progress.IProgressListener;
 import com.helger.web.progress.ProgressListenerProvider;
 

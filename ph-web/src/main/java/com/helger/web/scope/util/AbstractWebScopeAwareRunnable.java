@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.servlet.ServletContext;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.web.mock.MockHttpServletResponse;
-import com.helger.web.mock.OfflineHttpServletRequest;
+import com.helger.servlet.mock.MockHttpServletResponse;
+import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**

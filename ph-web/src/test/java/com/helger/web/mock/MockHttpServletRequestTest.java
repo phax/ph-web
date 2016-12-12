@@ -23,6 +23,8 @@ import org.junit.Test;
 
 import com.helger.http.EHTTPMethod;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockServletContext;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.

@@ -40,7 +40,7 @@ import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.datetime.util.PDTWebDateHelper;
-import com.helger.web.servlet.server.StaticServerInfo;
+import com.helger.servlet.StaticServerInfo;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;

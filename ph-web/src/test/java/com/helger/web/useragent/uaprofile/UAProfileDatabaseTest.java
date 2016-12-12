@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockHttpServletRequest;
 
 /**
  * Test class for class {@link UAProfileDatabase}.

@@ -4,6 +4,8 @@ Java library with common web stuff. It contains the following sub-projects:
    * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
   * ph-http
     * Contains special HTTP related helpers 
+  * ph-servlet
+    * Contains special javax.servlet related helpers 
   * ph-httpclient
     * Contains Apache HTTP client related helpers
   * ph-mail
@@ -15,8 +17,9 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
-  * v.8.6.4
+  * v.8.7.0
     * Binds to ph-commons 8.5.6
+    * Extracted new subproject `ph-servlet`
   * v.8.6.3 - 2016-11-11
     * Binds to ph-commons 8.5.3
     * Work around some Tomcat/Jetty exceptions

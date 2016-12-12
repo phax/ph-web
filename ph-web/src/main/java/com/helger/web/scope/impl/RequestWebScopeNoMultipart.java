@@ -42,10 +42,10 @@ import com.helger.commons.scope.ScopeHelper;
 import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
-import com.helger.web.WebSettings;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
@@ -307,7 +307,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String encodeURL (@Nonnull final String sURL)
   {
-    if (WebSettings.isEncodeURLs ())
+    if (ServletSettings.isEncodeURLs ())
       return getResponse ().encodeURL (sURL);
     // Return "as-is"
     return sURL;
@@ -316,7 +316,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String encodeRedirectURL (@Nonnull final String sURL)
   {
-    if (WebSettings.isEncodeURLs ())
+    if (ServletSettings.isEncodeURLs ())
       return getResponse ().encodeRedirectURL (sURL);
     // Return "as-is"
     return sURL;

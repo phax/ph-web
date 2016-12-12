@@ -52,6 +52,11 @@
   <dependencies>
     <dependency>
       <groupId>com.helger</groupId>
+      <artifactId>ph-xml</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.helger</groupId>
       <artifactId>ph-network</artifactId>
     </dependency>
     <dependency>

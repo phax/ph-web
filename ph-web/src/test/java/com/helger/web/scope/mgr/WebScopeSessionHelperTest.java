@@ -34,7 +34,7 @@ import org.junit.Test;
 
 import com.helger.commons.scope.IScopeRenewalAware;
 import com.helger.commons.scope.mgr.ScopeSessionManager;
-import com.helger.web.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;

@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.charset.CCharset;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.web.mock.MockHttpServletRequest;
 
 final class MockHttpServletRequestFactory
 {

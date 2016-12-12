@@ -32,7 +32,7 @@ import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.url.SimpleURL;
-import com.helger.web.servlet.server.StaticServerInfo;
+import com.helger.servlet.StaticServerInfo;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 

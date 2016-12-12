@@ -23,9 +23,9 @@ import javax.servlet.http.HttpSession;
 import org.junit.Rule;
 
 import com.helger.commons.mock.AbstractCommonsTestCase;
-import com.helger.web.mock.MockHttpServletRequest;
-import com.helger.web.mock.MockServletContext;
-import com.helger.web.mock.MockServletPool;
+import com.helger.servlet.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockServletContext;
+import com.helger.servlet.mock.MockServletPool;
 
 /**
  * Base class for JUnit tests where the initialization of the scopes happens

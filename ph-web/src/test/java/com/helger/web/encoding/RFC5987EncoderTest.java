@@ -20,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.helger.http.RFC5987Encoder;
+
 /**
  * Test class for class {@link RFC5987Encoder}.
  *

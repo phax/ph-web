@@ -31,12 +31,12 @@ import org.junit.Test;
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
-import com.helger.web.mock.MockHttpServletRequest;
 
 /**
  * Unit test for items with varying sizes.

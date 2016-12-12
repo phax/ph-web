@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import com.helger.commons.charset.CCharset;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.mock.MockHttpServletResponse;
+import com.helger.servlet.mock.MockHttpServletResponse;
 
 /**
  * Test class for class {@link MockHttpServletResponse}.

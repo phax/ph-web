@@ -169,6 +169,7 @@ public final class SessionWebScopeActivator implements
     // Writing is all handled in the writeObject method
 
     // Invoke callbacks on all attributes
+    if (m_aSessionWebScope != null)
     {
       for (final Object aValue : m_aSessionWebScope.getAllAttributeValues ())
         if (aValue instanceof ISessionWebScopePassivationHandler)
@@ -178,14 +179,14 @@ public final class SessionWebScopeActivator implements
         for (final Object aValue : aScope.getAllAttributeValues ())
           if (aValue instanceof ISessionWebScopePassivationHandler)
             ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
-    }
 
-    if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Successfully passivated session web scope '" +
-                      m_aSessionWebScope.getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
+        s_aLogger.info ("Successfully passivated session web scope '" +
+                        m_aSessionWebScope.getID () +
+                        "' of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
+    }
   }
 
   public void sessionDidActivate (@Nonnull final HttpSessionEvent aEvent)

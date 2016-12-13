@@ -34,6 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.scope.ISessionApplicationScope;
 import com.helger.commons.scope.ScopeHelper;
@@ -97,7 +98,7 @@ public final class SessionWebScopeActivator implements
       for (final Map.Entry <String, ISessionApplicationScope> aEntry : aSAScopes.entrySet ())
       {
         // Write scope ID
-        out.writeUTF (aEntry.getKey ());
+        StreamHelper.writeSafeUTF (out, aEntry.getKey ());
 
         final ISessionApplicationScope aScope = aEntry.getValue ();
         // Remember all attributes
@@ -145,7 +146,7 @@ public final class SessionWebScopeActivator implements
     final ICommonsMap <String, ISessionApplicationScope> aSAS = new CommonsHashMap <> (nSAScopes);
     for (int i = 0; i < nSAScopes; ++i)
     {
-      final String sScopeID = in.readUTF ();
+      final String sScopeID = StreamHelper.readSafeUTF (in);
       final ISessionApplicationScope aScope = (ISessionApplicationScope) in.readObject ();
       final ICommonsMap <String, Object> aScopeAttrs = (ICommonsMap <String, Object>) in.readObject ();
       aScope.setAttributes (aScopeAttrs);
@@ -197,13 +198,19 @@ public final class SessionWebScopeActivator implements
                                                                                                true);
 
     // Restore the read values into the scope
-    for (final Map.Entry <String, Object> aEntry : m_aAttrs.entrySet ())
-      aSessionWebScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
-    m_aAttrs.clear ();
+    if (m_aAttrs != null)
+    {
+      for (final Map.Entry <String, Object> aEntry : m_aAttrs.entrySet ())
+        aSessionWebScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
+      m_aAttrs.clear ();
+    }
 
-    for (final Map.Entry <String, ISessionApplicationScope> aEntry : m_aSessionApplicationScopes.entrySet ())
-      aSessionWebScope.restoreSessionApplicationScope (aEntry.getKey (), aEntry.getValue ());
-    m_aSessionApplicationScopes.clear ();
+    if (m_aSessionApplicationScopes != null)
+    {
+      for (final Map.Entry <String, ISessionApplicationScope> aEntry : m_aSessionApplicationScopes.entrySet ())
+        aSessionWebScope.restoreSessionApplicationScope (aEntry.getKey (), aEntry.getValue ());
+      m_aSessionApplicationScopes.clear ();
+    }
 
     // Remember for later passivation
     m_aSessionWebScope = aSessionWebScope;

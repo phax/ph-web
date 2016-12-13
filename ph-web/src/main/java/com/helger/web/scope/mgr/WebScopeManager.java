@@ -65,7 +65,7 @@ public final class WebScopeManager
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet<> ();
+  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet <> ();
 
   @PresentForCodeCoverage
   private static final WebScopeManager s_aInstance = new WebScopeManager ();
@@ -94,6 +94,7 @@ public final class WebScopeManager
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
     s_aSessionPassivationAllowed.set (bSessionPassivationAllowed);
+    s_aLogger.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
 
     // For passivation to work, the session scopes may not be invalidated at the
     // end of the global scope!

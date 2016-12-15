@@ -661,29 +661,6 @@ public final class RequestHelper
     return isMultipartContent (aHttpRequest.getContentType ());
   }
 
-  public static void setHttpRequestAttribute (@Nonnull final HttpServletRequest aHttpRequest,
-                                              @Nonnull final String sAttrName,
-                                              @Nullable final Object aAttrValue)
-  {
-    try
-    {
-      aHttpRequest.setAttribute (sAttrName, aAttrValue);
-    }
-    catch (final Throwable t)
-    {
-      // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
-      /**
-       * <pre>
-      java.lang.NullPointerException
-      1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
-      2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
-      3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
-       * </pre>
-       */
-      s_aLogger.warn ("Failed to set attribute '" + sAttrName + "' in HTTP request", t);
-    }
-  }
-
   @Nonnull
   public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
   {

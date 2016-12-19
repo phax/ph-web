@@ -142,6 +142,7 @@ public final class ServletHelper
          * </pre>
          */
         s_aLogger.warn ("Failed to determine context path of HTTP request", t);
+        ret = ServletContextPathHolder.getContextPath ();
       }
     return ret;
   }

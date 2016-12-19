@@ -17,6 +17,7 @@
 package com.helger.servlet;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
@@ -55,6 +56,29 @@ public final class ServletContextPathHolder
                        sServletContextPath +
                        "'");
     s_sServletContextPath = sServletContextPath;
+    s_aLogger.info ("The context path was set to '" + sServletContextPath + "'!");
+  }
+
+  /**
+   * @return <code>true</code> if a servlet context path was set.
+   * @see #setServletContextPath(String)
+   * @since 8.7.1
+   */
+  public static boolean hasServletContextPath ()
+  {
+    return s_sCustomContextPath != null;
+  }
+
+  /**
+   * @return The default servlet context path. May be <code>null</code>.
+   * @since 8.7.1
+   * @see #setServletContextPath(String)
+   * @see #getContextPath()
+   */
+  @Nullable
+  public static String getServletContextPath ()
+  {
+    return s_sServletContextPath;
   }
 
   /**
@@ -92,6 +116,18 @@ public final class ServletContextPathHolder
   }
 
   /**
+   * @return The custom context path. May be <code>null</code>.
+   * @since 8.7.1
+   * @see #setCustomContextPath(String)
+   * @see #getContextPath()
+   */
+  @Nullable
+  public static String getCustomContextPath ()
+  {
+    return s_sCustomContextPath;
+  }
+
+  /**
    * Returns the context path of the web application.
    * <p>
    * The context path is the portion of the request URI that is used to select
@@ -120,9 +156,13 @@ public final class ServletContextPathHolder
     return ret;
   }
 
+  /**
+   * Clears both servlet context and custom context path.
+   */
   public static void clearContextPath ()
   {
     s_sServletContextPath = null;
     s_sCustomContextPath = null;
+    s_aLogger.info ("The context paths were cleared!");
   }
 }

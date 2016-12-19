@@ -49,6 +49,13 @@ public final class ServletHelper
    * Safe version of <code>ServletRequest.setAttribute (String, Object)</code>
    * to work around an error in certain Tomcat versions.
    *
+   * <pre>
+  java.lang.NullPointerException
+  1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
+  2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
+  3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
+   * </pre>
+   *
    * @param aRequest
    *        Servlet request. May not be <code>null</code>.
    * @param sAttrName
@@ -68,12 +75,6 @@ public final class ServletHelper
     {
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
       /**
-       * <pre>
-      java.lang.NullPointerException
-      1.: org.apache.catalina.connector.Request.notifyAttributeAssigned(Request.java:1493)
-      2.: org.apache.catalina.connector.Request.setAttribute(Request.java:1483)
-      3.: org.apache.catalina.connector.RequestFacade.setAttribute(RequestFacade.java:539)
-       * </pre>
        */
       s_aLogger.warn ("Failed to set attribute '" + sAttrName + "' in HTTP request", t);
     }
@@ -82,8 +83,14 @@ public final class ServletHelper
   /**
    * Work around an exception that can occur in Jetty 9.3.13:
    *
+   * <pre>
+  java.lang.NullPointerException: null
+  at org.eclipse.jetty.server.Request.getQueryString(Request.java:1119) ~[jetty-server-9.3.13.v20161014.jar:9.3.13.v20161014]
+  at com.helger.web.servlet.request.RequestHelper.getURL(RequestHelper.java:340) ~[ph-web-8.6.2.jar:8.6.2]
+   * </pre>
+   *
    * @param aRequest
-   *        Source request
+   *        Source request. May be <code>null</code>.
    * @return <code>null</code> if request is <code>null</code> or if no query
    *         string could be determined, or if none is present
    */
@@ -99,13 +106,6 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        /**
-         * <pre>
-         * java.lang.NullPointerException: null
-         * at org.eclipse.jetty.server.Request.getQueryString(Request.java:1119) ~[jetty-server-9.3.13.v20161014.jar:9.3.13.v20161014]
-         * at com.helger.web.servlet.request.RequestHelper.getURL(RequestHelper.java:340) ~[ph-web-8.6.2.jar:8.6.2]
-         * </pre>
-         */
         s_aLogger.warn ("Failed to determine query string of HTTP request", t);
       }
     return ret;
@@ -114,8 +114,16 @@ public final class ServletHelper
   /**
    * Work around an exception that can occur on Tomcat 8.0.20:
    *
+   * <pre>
+  java.lang.NullPointerException: null
+  at org.apache.catalina.connector.Request.getServletContext(Request.java:1593) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.Request.getContextPath(Request.java:1910) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.RequestFacade.getContextPath(RequestFacade.java:783) ~[catalina.jar:8.0.20]
+  at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
+   * </pre>
+   *
    * @param aRequest
-   *        Source request
+   *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or a String specifying
    *         the portion of the request URI that indicates the context of the
    *         request
@@ -132,15 +140,6 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        /**
-         * <pre>
-         * java.lang.NullPointerException: null
-        at org.apache.catalina.connector.Request.getServletContext(Request.java:1593) ~[catalina.jar:8.0.20]
-        at org.apache.catalina.connector.Request.getContextPath(Request.java:1910) ~[catalina.jar:8.0.20]
-        at org.apache.catalina.connector.RequestFacade.getContextPath(RequestFacade.java:783) ~[catalina.jar:8.0.20]
-        at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
-         * </pre>
-         */
         s_aLogger.warn ("Failed to determine context path of HTTP request", t);
         ret = ServletContextPathHolder.getContextPath ();
       }
@@ -150,8 +149,16 @@ public final class ServletHelper
   /**
    * Work around an exception that can occur on Tomcat 8.0.20:
    *
+   * <pre>
+  java.lang.NullPointerException: null
+  at org.apache.catalina.connector.Request.parseCookies(Request.java:2943) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.Request.convertCookies(Request.java:2958) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.Request.getCookies(Request.java:1987) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.RequestFacade.getCookies(RequestFacade.java:662) ~[catalina.jar:8.0.20]
+   * </pre>
+   *
    * @param aRequest
-   *        Source request
+   *        Source request. May be <code>null</code>.
    * @return getRequestCookies
    */
   @Nullable
@@ -166,15 +173,6 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        /**
-         * <pre>
-         * java.lang.NullPointerException: null
-        at org.apache.catalina.connector.Request.parseCookies(Request.java:2943) ~[catalina.jar:8.0.20]
-        at org.apache.catalina.connector.Request.convertCookies(Request.java:2958) ~[catalina.jar:8.0.20]
-        at org.apache.catalina.connector.Request.getCookies(Request.java:1987) ~[catalina.jar:8.0.20]
-        at org.apache.catalina.connector.RequestFacade.getCookies(RequestFacade.java:662) ~[catalina.jar:8.0.20]
-         * </pre>
-         */
         s_aLogger.warn ("Failed to determine cookies of HTTP request", t);
       }
     return ret;

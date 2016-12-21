@@ -19,10 +19,13 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
-  * v.8.7.0 - 2016-12-12
+  * v8.7.1 - 2016-12-21
+    * API extensions
+    * Logging and JavaDoc improvements
+  * v8.7.0 - 2016-12-12
     * Binds to ph-commons 8.5.6
     * Extracted new subprojects `ph-servlet` and `ph-useragent`
-  * v.8.6.3 - 2016-11-11
+  * v8.6.3 - 2016-11-11
     * Binds to ph-commons 8.5.3
     * Work around some Tomcat/Jetty exceptions
   * v8.6.2 - 2016-09-25
@@ -41,7 +44,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>8.7.0</version>
+  <version>8.7.1</version>
 </dependency>
 ```
 

@@ -76,7 +76,7 @@ public final class ServletHelper
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
       /**
        */
-      s_aLogger.warn ("Failed to set attribute '" + sAttrName + "' in HTTP request", t);
+      s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", t);
     }
   }
 
@@ -106,7 +106,7 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("Failed to determine query string of HTTP request", t);
+        s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", t);
       }
     return ret;
   }
@@ -140,7 +140,7 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("Failed to determine context path of HTTP request", t);
+        s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
         ret = ServletContextPathHolder.getContextPath ();
       }
     return ret;
@@ -173,7 +173,7 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("Failed to determine cookies of HTTP request", t);
+        s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", t);
       }
     return ret;
   }

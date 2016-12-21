@@ -49,12 +49,13 @@ public final class ServletContextPathHolder
   public static void setServletContextPath (@Nonnull final String sServletContextPath)
   {
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
-    if (s_sCustomContextPath != null)
+    if (s_sServletContextPath != null)
       s_aLogger.error ("Overwriting servlet context path '" +
                        s_sServletContextPath +
                        "' with '" +
                        sServletContextPath +
-                       "'");
+                       "'",
+                       new IllegalStateException ("Just for tracking how this happens"));
     s_sServletContextPath = sServletContextPath;
     s_aLogger.info ("The context path was set to '" + sServletContextPath + "'!");
   }
@@ -101,7 +102,8 @@ public final class ServletContextPathHolder
                        s_sCustomContextPath +
                        "' with '" +
                        sCustomContextPath +
-                       "'");
+                       "'",
+                       new IllegalStateException ("Just for tracking how this happens"));
     s_sCustomContextPath = sCustomContextPath;
     s_aLogger.info ("The context path was manually overridden to use '" + sCustomContextPath + "'!");
   }

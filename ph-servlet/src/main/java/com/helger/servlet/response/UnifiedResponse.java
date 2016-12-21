@@ -732,6 +732,8 @@ public class UnifiedResponse
         setCacheControl (aCacheControlBuilder);
         break;
       }
+      default:
+        throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
     }
     return this;
   }
@@ -769,6 +771,8 @@ public class UnifiedResponse
         setCacheControl (aCacheControlBuilder);
         break;
       }
+      default:
+        throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
     }
     return this;
   }
@@ -1406,6 +1410,8 @@ public class UnifiedResponse
               // For HTTP 1.1 send 303
               aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
               break;
+            default:
+              throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
           }
           // Set the location header
           aHttpResponse.addHeader (CHTTPHeader.LOCATION, sRealTargetURL);

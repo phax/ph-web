@@ -56,8 +56,12 @@ import com.helger.commons.charset.CCharset;
 @Immutable
 public class HttpClientFactory
 {
+  private boolean m_bUseSystemProperties = false;
   private final SSLContext m_aDefaultSSLContext;
 
+  /**
+   * Default constructor without a special SSL context.
+   */
   public HttpClientFactory ()
   {
     this (null);
@@ -66,6 +70,54 @@ public class HttpClientFactory
   public HttpClientFactory (@Nullable final SSLContext aDefaultSSLContext)
   {
     m_aDefaultSSLContext = aDefaultSSLContext;
+  }
+
+  /**
+   * Enable the usage of system properties in the HTTP client?<br>
+   * Supported properties are (source:
+   * http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClientBuilder.html):
+   * <ul>
+   * <li>ssl.TrustManagerFactory.algorithm</li>
+   * <li>javax.net.ssl.trustStoreType</li>
+   * <li>javax.net.ssl.trustStore</li>
+   * <li>javax.net.ssl.trustStoreProvider</li>
+   * <li>javax.net.ssl.trustStorePassword</li>
+   * <li>ssl.KeyManagerFactory.algorithm</li>
+   * <li>javax.net.ssl.keyStoreType</li>
+   * <li>javax.net.ssl.keyStore</li>
+   * <li>javax.net.ssl.keyStoreProvider</li>
+   * <li>javax.net.ssl.keyStorePassword</li>
+   * <li>https.protocols</li>
+   * <li>https.cipherSuites</li>
+   * <li>http.proxyHost</li>
+   * <li>http.proxyPort</li>
+   * <li>http.nonProxyHosts</li>
+   * <li>http.keepAlive</li>
+   * <li>http.maxConnections</li>
+   * <li>http.agent</li>
+   * </ul>
+   *
+   * @param bUseSystemProperties
+   *        <code>true</code> if system properties should be used,
+   *        <code>false</code> if not.
+   * @return this for chaining
+   * @since 8.7.1
+   */
+  @Nonnull
+  public HttpClientFactory setUseSystemProperties (final boolean bUseSystemProperties)
+  {
+    m_bUseSystemProperties = bUseSystemProperties;
+    return this;
+  }
+
+  /**
+   * @return <code>true</code> if system properties for HTTP client should be
+   *         used, <code>false</code> if not. Default is <code>false</code>.
+   * @since 8.7.1
+   */
+  public boolean isUseSystemProperties ()
+  {
+    return m_bUseSystemProperties;
   }
 
   /**
@@ -199,6 +251,8 @@ public class HttpClientFactory
     aHCB.addInterceptorLast (new RequestAddCookies ());
     // Un-gzip or uncompress
     aHCB.addInterceptorLast (new ResponseContentEncoding ());
+    if (m_bUseSystemProperties)
+      aHCB.useSystemProperties ();
     return aHCB;
   }
 

@@ -39,6 +39,8 @@ public abstract class AbstractWebScopeAwareSupplier <DATATYPE> extends AbstractW
 {
   public AbstractWebScopeAwareSupplier ()
   {
+    // Don't use "MockServletContext" to avoid that the global Servlet Context
+    // Path is overriden!
     this (WebScopeManager.getGlobalScope ().getServletContext (), WebScopeManager.getApplicationScope ().getID ());
   }
 

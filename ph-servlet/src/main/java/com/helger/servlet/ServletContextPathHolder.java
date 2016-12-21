@@ -49,7 +49,7 @@ public final class ServletContextPathHolder
   public static void setServletContextPath (@Nonnull final String sServletContextPath)
   {
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
-    if (s_sServletContextPath != null)
+    if (s_sServletContextPath != null && !s_sServletContextPath.equals (sServletContextPath))
       s_aLogger.error ("Overwriting servlet context path '" +
                        s_sServletContextPath +
                        "' with '" +
@@ -97,7 +97,7 @@ public final class ServletContextPathHolder
   public static void setCustomContextPath (@Nonnull final String sCustomContextPath)
   {
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
-    if (s_sCustomContextPath != null)
+    if (s_sCustomContextPath != null && !s_sCustomContextPath.equals (sCustomContextPath))
       s_aLogger.error ("Overwriting custom context path '" +
                        s_sCustomContextPath +
                        "' with '" +

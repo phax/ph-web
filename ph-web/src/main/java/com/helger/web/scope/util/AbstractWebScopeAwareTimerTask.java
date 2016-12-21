@@ -40,6 +40,8 @@ public abstract class AbstractWebScopeAwareTimerTask extends TimerTask
 
   public AbstractWebScopeAwareTimerTask (@Nonnull @Nonempty final String sApplicationID)
   {
+    // Don't use "MockServletContext" to avoid that the global Servlet Context
+    // Path is overriden!
     this (WebScopeManager.getGlobalScope ().getServletContext (), sApplicationID);
   }
 

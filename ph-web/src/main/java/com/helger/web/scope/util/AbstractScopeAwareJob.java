@@ -65,6 +65,8 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   @OverrideOnDemand
   protected MockHttpServletRequest createMockHttpServletRequest ()
   {
+    // Don't use "MockServletContext" to avoid that the global Servlet Context
+    // Path is overriden!
     final OfflineHttpServletRequest ret = new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ()
                                                                                         .getServletContext (),
                                                                          false);

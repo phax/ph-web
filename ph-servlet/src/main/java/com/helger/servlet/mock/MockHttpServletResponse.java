@@ -44,7 +44,6 @@ import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.locale.IHasLocale;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeTypeHelper;
 import com.helger.commons.mime.MimeTypeParser;
@@ -60,7 +59,7 @@ import com.helger.servlet.io.AbstractServletOutputStream;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class MockHttpServletResponse implements HttpServletResponse, IHasLocale
+public class MockHttpServletResponse implements HttpServletResponse
 {
   public static final int DEFAULT_SERVER_PORT = SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP);
   public static final Charset DEFAULT_CHARSET_OBJ = CCharset.CHARSET_UTF_8_OBJ;

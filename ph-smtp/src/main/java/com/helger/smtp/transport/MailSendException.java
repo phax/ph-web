@@ -16,7 +16,7 @@
  */
 package com.helger.smtp.transport;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Central exception in case something's wrong with mail sending.
@@ -30,7 +30,7 @@ public class MailSendException extends Exception
     this (sMsg, null);
   }
 
-  public MailSendException (final String sMsg, @Nonnull final Throwable aCause)
+  public MailSendException (final String sMsg, @Nullable final Throwable aCause)
   {
     super (sMsg + (aCause == null ? "" : " caused by " + aCause.getMessage ()), aCause);
   }

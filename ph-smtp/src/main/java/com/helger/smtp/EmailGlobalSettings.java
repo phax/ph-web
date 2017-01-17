@@ -82,9 +82,9 @@ public final class EmailGlobalSettings
 
   // Transport settings
   @GuardedBy ("s_aRWLock")
-  private static ICommonsList <ConnectionListener> s_aConnectionListeners = new CommonsArrayList <> ();
+  private static ICommonsList <ConnectionListener> s_aConnectionListeners = new CommonsArrayList<> ();
   @GuardedBy ("s_aRWLock")
-  private static ICommonsList <IEmailDataTransportListener> s_aEmailDataTransportListeners = new CommonsArrayList <> ();
+  private static ICommonsList <IEmailDataTransportListener> s_aEmailDataTransportListeners = new CommonsArrayList<> ();
 
   private EmailGlobalSettings ()
   {}
@@ -314,7 +314,7 @@ public final class EmailGlobalSettings
     if (aConnectionListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> EChange.valueOf (s_aConnectionListeners.remove (aConnectionListener)));
+    return s_aRWLock.writeLocked ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
   }
 
   /**
@@ -377,7 +377,7 @@ public final class EmailGlobalSettings
     if (aEmailDataTransportListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> EChange.valueOf (s_aEmailDataTransportListeners.remove (aEmailDataTransportListener)));
+    return s_aRWLock.writeLocked ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
   }
 
   /**
@@ -425,7 +425,7 @@ public final class EmailGlobalSettings
   {
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp.protocol").setLevel (bDebug ? Level.FINEST : Level.INFO);
-    SystemProperties.setPropertyValue ("mail.socket.debug", Boolean.toString (bDebug));
+    SystemProperties.setPropertyValue ("mail.socket.debug", bDebug);
     SystemProperties.setPropertyValue ("java.security.debug", bDebug ? "certpath" : null);
     SystemProperties.setPropertyValue ("javax.net.debug", bDebug ? "trustmanager" : null);
   }

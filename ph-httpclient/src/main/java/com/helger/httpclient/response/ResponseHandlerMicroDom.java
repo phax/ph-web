@@ -34,10 +34,14 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.httpclient.HttpClientHelper;
-import com.helger.httpclient.HttpClientResponseHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
 
+/**
+ * Convert a valid HTTP response to an {@link IMicroDocument} object.
+ *
+ * @author Philip Helger
+ */
 public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerMicroDom.class);
@@ -45,9 +49,10 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
   @Nullable
   public IMicroDocument handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
-    final HttpEntity aEntity = HttpClientResponseHelper.RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
+
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 

@@ -29,14 +29,20 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.helger.httpclient.HttpClientHelper;
-import com.helger.httpclient.HttpClientResponseHelper;
 
+/**
+ * Convert a valid HTTP response to a simple String object using the provided
+ * charset. The fallback content type used internally is text/plain with charset
+ * iso-8859-1.
+ *
+ * @author Philip Helger
+ */
 public class ResponseHandlerString implements ResponseHandler <String>
 {
   @Nullable
   public String handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
-    final HttpEntity aEntity = HttpClientResponseHelper.RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
     final ContentType aContentType = ContentType.getOrDefault (aEntity);

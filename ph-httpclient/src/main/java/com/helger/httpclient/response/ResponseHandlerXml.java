@@ -36,9 +36,13 @@ import org.xml.sax.SAXException;
 
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.httpclient.HttpClientHelper;
-import com.helger.httpclient.HttpClientResponseHelper;
 import com.helger.xml.serialize.read.DOMReader;
 
+/**
+ * Convert a valid HTTP response to a DOM {@link Document} object.
+ *
+ * @author Philip Helger
+ */
 public class ResponseHandlerXml implements ResponseHandler <Document>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerXml.class);
@@ -46,9 +50,10 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
   @Nullable
   public Document handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
-    final HttpEntity aEntity = HttpClientResponseHelper.RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
+
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 

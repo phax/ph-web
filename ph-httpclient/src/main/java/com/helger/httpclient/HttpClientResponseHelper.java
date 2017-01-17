@@ -18,14 +18,10 @@ package com.helger.httpclient;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.util.EntityUtils;
 
-import com.helger.commons.debug.GlobalDebug;
+import com.helger.httpclient.response.ResponseHandlerHttpEntity;
 
 /**
  * This class contains some default response handler for basic data types that
@@ -34,25 +30,10 @@ import com.helger.commons.debug.GlobalDebug;
  * @author Philip Helger
  */
 @Immutable
+@Deprecated
 public final class HttpClientResponseHelper
 {
-  public static final ResponseHandler <HttpEntity> RH_ENTITY = aHttpResponse -> {
-    final StatusLine aStatusLine = aHttpResponse.getStatusLine ();
-    final HttpEntity aEntity = aHttpResponse.getEntity ();
-    if (aStatusLine.getStatusCode () >= 300)
-    {
-      EntityUtils.consume (aEntity);
-      String sMessage = aStatusLine.getReasonPhrase () + " [" + aStatusLine.getStatusCode () + "]";
-      if (GlobalDebug.isDebugMode ())
-      {
-        sMessage += "\nAll " + aHttpResponse.getAllHeaders ().length + " headers returned";
-        for (final Header aHeader : aHttpResponse.getAllHeaders ())
-          sMessage += "\n  " + aHeader.getName () + "=" + aHeader.getValue ();
-      }
-      throw new HttpResponseException (aStatusLine.getStatusCode (), sMessage);
-    }
-    return aEntity;
-  };
+  public static final ResponseHandler <HttpEntity> RH_ENTITY = ResponseHandlerHttpEntity.INSTANCE;
 
   private HttpClientResponseHelper ()
   {}

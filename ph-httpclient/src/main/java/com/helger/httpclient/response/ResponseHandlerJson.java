@@ -35,10 +35,14 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.StringHelper;
 import com.helger.httpclient.HttpClientHelper;
-import com.helger.httpclient.HttpClientResponseHelper;
 import com.helger.json.IJson;
 import com.helger.json.serialize.JsonReader;
 
+/**
+ * Convert a valid HTTP response to an {@link IJson} object.
+ *
+ * @author Philip Helger
+ */
 public class ResponseHandlerJson implements ResponseHandler <IJson>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerJson.class);
@@ -46,9 +50,10 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
   @Nullable
   public IJson handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
-    final HttpEntity aEntity = HttpClientResponseHelper.RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
+
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 

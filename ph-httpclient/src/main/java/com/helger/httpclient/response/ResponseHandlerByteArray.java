@@ -26,14 +26,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
-import com.helger.httpclient.HttpClientResponseHelper;
-
+/**
+ * Convert a valid HTTP response to a byte array.
+ * 
+ * @author Philip Helger
+ */
 public class ResponseHandlerByteArray implements ResponseHandler <byte []>
 {
   @Nullable
   public byte [] handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
-    final HttpEntity aEntity = HttpClientResponseHelper.RH_ENTITY.handleResponse (aHttpResponse);
+    final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
     return EntityUtils.toByteArray (aEntity);

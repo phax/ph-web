@@ -19,6 +19,7 @@ package com.helger.httpclient.response;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
@@ -28,6 +29,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.httpclient.HttpClientHelper;
 
 /**
@@ -39,14 +41,32 @@ import com.helger.httpclient.HttpClientHelper;
  */
 public class ResponseHandlerString implements ResponseHandler <String>
 {
+  private final ContentType m_aDefault;
+
+  public ResponseHandlerString ()
+  {
+    this (ContentType.DEFAULT_TEXT);
+  }
+
+  public ResponseHandlerString (@Nonnull final ContentType aDefault)
+  {
+    m_aDefault = ValueEnforcer.notNull (aDefault, "Default");
+  }
+
   @Nullable
   public String handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
-    final ContentType aContentType = ContentType.getOrDefault (aEntity);
+
+    ContentType aContentType = ContentType.get (aEntity);
+    if (aContentType == null)
+      aContentType = m_aDefault;
+
+    // Default to ISO-8859-1 internally
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
+
     return EntityUtils.toString (aEntity, aCharset);
   }
 }

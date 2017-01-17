@@ -54,7 +54,7 @@ import com.helger.commons.charset.CCharset;
  * @author Philip Helger
  */
 @Immutable
-public class HttpClientFactory
+public class HttpClientFactory implements IHttpClientProvider
 {
   private boolean m_bUseSystemProperties = false;
   private final SSLContext m_aDefaultSSLContext;

@@ -43,13 +43,19 @@ public class HttpClientManager implements Closeable
 
   public HttpClientManager ()
   {
-    this ( () -> new HttpClientFactory ().createHttpClient ());
+    this (new HttpClientFactory ());
   }
 
+  @Deprecated
   public HttpClientManager (@Nonnull final Supplier <? extends CloseableHttpClient> aHttpClientSupplier)
   {
+    this ((IHttpClientProvider) () -> aHttpClientSupplier.get ());
+  }
+
+  public HttpClientManager (@Nonnull final IHttpClientProvider aHttpClientSupplier)
+  {
     ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
-    m_aHttpClient = aHttpClientSupplier.get ();
+    m_aHttpClient = aHttpClientSupplier.createHttpClient ();
     if (m_aHttpClient == null)
       throw new IllegalArgumentException ("The provided HttpClient factory created an invalid HttpClient!");
   }

@@ -184,13 +184,18 @@ public class HttpClientFactory
   }
 
   @Nonnull
-  public ConnectionConfig createConnectionConfig ()
+  public ConnectionConfig.Builder createConnectionConfigBuilder ()
   {
     return ConnectionConfig.custom ()
                            .setMalformedInputAction (CodingErrorAction.IGNORE)
                            .setUnmappableInputAction (CodingErrorAction.IGNORE)
-                           .setCharset (CCharset.CHARSET_UTF_8_OBJ)
-                           .build ();
+                           .setCharset (CCharset.CHARSET_UTF_8_OBJ);
+  }
+
+  @Nonnull
+  public ConnectionConfig createConnectionConfig ()
+  {
+    return createConnectionConfigBuilder ().build ();
   }
 
   @Nonnull
@@ -216,7 +221,7 @@ public class HttpClientFactory
   }
 
   @Nonnull
-  public RequestConfig createRequestConfig ()
+  public RequestConfig.Builder createRequestConfigBuilder ()
   {
     return RequestConfig.custom ()
                         .setCookieSpec (CookieSpecs.DEFAULT)
@@ -224,8 +229,13 @@ public class HttpClientFactory
                         .setConnectTimeout (5000)
                         .setConnectionRequestTimeout (5000)
                         .setCircularRedirectsAllowed (false)
-                        .setRedirectsEnabled (true)
-                        .build ();
+                        .setRedirectsEnabled (true);
+  }
+
+  @Nonnull
+  public RequestConfig createRequestConfig ()
+  {
+    return createRequestConfigBuilder ().build ();
   }
 
   @Nullable
@@ -251,6 +261,8 @@ public class HttpClientFactory
     aHCB.addInterceptorLast (new RequestAddCookies ());
     // Un-gzip or uncompress
     aHCB.addInterceptorLast (new ResponseContentEncoding ());
+
+    // Enable usage of Java networking system properties
     if (m_bUseSystemProperties)
       aHCB.useSystemProperties ();
     return aHCB;

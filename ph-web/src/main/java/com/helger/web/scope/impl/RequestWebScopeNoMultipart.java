@@ -93,6 +93,14 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
                       ScopeHelper.getDebugStackTrace ());
   }
 
+  /**
+   * Callback method to add special attributes.
+   *
+   * @return <code>true</code> if some attributes were added, <code>false</code>
+   *         if not. If special attributes were added, existing attributes are
+   *         kept and will not be overwritten with HTTP servlet request
+   *         parameters!
+   */
   @OverrideOnDemand
   protected boolean addSpecialRequestAttributes ()
   {

@@ -629,10 +629,8 @@ public final class RequestHelper
   }
 
   /**
-   * <p>
    * Utility method that determines whether the request contains multipart
    * content.
-   * </p>
    *
    * @param sContentType
    *        The content type to be checked. May be <code>null</code>.
@@ -659,6 +657,37 @@ public final class RequestHelper
       return false;
 
     return isMultipartContent (aHttpRequest.getContentType ());
+  }
+
+  /**
+   * Utility method that determines whether the request contains
+   * <code>multipart/form-data</code> content.
+   *
+   * @param sContentType
+   *        The content type to be checked. May be <code>null</code>.
+   * @return <code>true</code> if the request is multipart/form-data;
+   *         <code>false</code> otherwise.
+   */
+  public static boolean isMultipartFormDataContent (@Nullable final String sContentType)
+  {
+    return sContentType != null && sContentType.toLowerCase (Locale.US).startsWith (MULTIPART_FORM_DATA);
+  }
+
+  /**
+   * Utility method that determines whether the request contains multipart
+   * content.
+   *
+   * @param aHttpRequest
+   *        The servlet request to be evaluated. Must be non-null.
+   * @return <code>true</code> if the request is multipart; <code>false</code>
+   *         otherwise.
+   */
+  public static boolean isMultipartFormDataContent (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    if (getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
+      return false;
+
+    return isMultipartFormDataContent (aHttpRequest.getContentType ());
   }
 
   @Nonnull

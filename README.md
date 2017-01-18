@@ -19,6 +19,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
+  * v8.7.2
+    * Request multipart parsing for uploaded files is now limited to MIME type "multipart/form-data"
   * v8.7.1 - 2016-12-21
     * API extensions
     * Logging and JavaDoc improvements

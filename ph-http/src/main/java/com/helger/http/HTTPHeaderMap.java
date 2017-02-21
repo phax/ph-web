@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnegative;
@@ -348,9 +349,7 @@ public class HTTPHeaderMap implements
   {
     ValueEnforcer.notNull (aOther, "Other");
 
-    for (final Map.Entry <String, ICommonsList <String>> aEntry : aOther.m_aHeaders.entrySet ())
-      for (final String sValue : aEntry.getValue ())
-        _addHeader (aEntry.getKey (), sValue);
+    aOther.forEachSingleHeader ( (k, v) -> _addHeader (k, v));
   }
 
   @Nonnull
@@ -504,6 +503,23 @@ public class HTTPHeaderMap implements
   public HTTPHeaderMap getClone ()
   {
     return new HTTPHeaderMap (this);
+  }
+
+  /**
+   * Invoke the provided consumer for every name/value pair.
+   *
+   * @param aConsumer
+   *        Consumer to be invoked. May not be <code>null</code>.
+   * @since 8.7.3
+   */
+  public void forEachSingleHeader (@Nonnull final BiConsumer <String, String> aConsumer)
+  {
+    for (final Map.Entry <String, ICommonsList <String>> aEntry : m_aHeaders.entrySet ())
+    {
+      final String sKey = aEntry.getKey ();
+      for (final String sValue : aEntry.getValue ())
+        aConsumer.accept (sKey, sValue);
+    }
   }
 
   @Override

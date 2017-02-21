@@ -71,6 +71,11 @@
       <artifactId>ph-useragent</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.helger</groupId>
+      <artifactId>ph-json</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <scope>provided</scope>

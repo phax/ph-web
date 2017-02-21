@@ -19,6 +19,9 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ##News
 
+  * v8.7.3 - in progress
+    * API extensions
+    * Added package `com.helger.servlet.logging` based on https://github.com/librucha/servlet-logging-filter
   * v8.7.2 - 2017-01-18
     * Request multipart parsing for uploaded files is now limited to MIME type "multipart/form-data"
   * v8.7.1 - 2016-12-21

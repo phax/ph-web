@@ -30,8 +30,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
+import com.helger.http.HTTPHeaderMap;
 import com.helger.servlet.request.RequestHelper;
 
 /**
@@ -185,5 +187,26 @@ public final class ResponseHelper
       aHttpResponse.setContentLength ((int) nContentLength);
     else
       aHttpResponse.setHeader (CHTTPHeader.CONTENT_LENGTH, Long.toString (nContentLength));
+  }
+
+  /**
+   * Get a complete response header map as a copy.
+   *
+   * @param aHttpResponse
+   *        The source HTTP response. May not be <code>null</code>.
+   * @return Never <code>null</code>.
+   * @since 8.7.3
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public static HTTPHeaderMap getResponseHeaderMap (@Nonnull final HttpServletResponse aHttpResponse)
+  {
+    ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
+
+    final HTTPHeaderMap ret = new HTTPHeaderMap ();
+    for (final String sName : aHttpResponse.getHeaderNames ())
+      for (final String sValue : aHttpResponse.getHeaders (sName))
+        ret.addHeader (sName, sValue);
+    return ret;
   }
 }

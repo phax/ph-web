@@ -52,7 +52,8 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
 
   public void writeContentTo (final OutputStream aOS) throws IOException
   {
-    m_aOS.m_aBAOS.writeTo (aOS);
+    if (!m_aDelegate.isCommitted () && m_aOS.m_aBAOS.isNotEmpty ())
+      m_aOS.m_aBAOS.writeTo (aOS);
   }
 
   private class LoggingServletOutpuStream extends ServletOutputStream

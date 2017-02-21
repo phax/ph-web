@@ -1,6 +1,7 @@
 package com.helger.servlet.logging;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 import javax.servlet.Filter;
@@ -24,17 +25,29 @@ import com.helger.servlet.response.ResponseHelper;
 
 public class LoggingFilter implements Filter
 {
+  private static final AtomicBoolean ENABLED = new AtomicBoolean (true);
+
   private Logger m_aLogger = LoggerFactory.getLogger (getClass ());
   private int m_nMaxContentSize = 1024;
   private final ICommonsSet <String> m_aExcludedPaths = new CommonsHashSet<> ();
   private String m_sRequestPrefix = "REQUEST: ";
   private String m_sResponsePrefix = "RESPONSE: ";
 
+  public static void setGloballyEnabled (final boolean bEnabled)
+  {
+    ENABLED.set (bEnabled);
+  }
+
+  public static boolean isGloballyEnabled ()
+  {
+    return ENABLED.get ();
+  }
+
   public LoggingFilter ()
   {}
 
   @Override
-  public void init (final FilterConfig aFilterConfig) throws ServletException
+  public void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
   {
     final String sLoggerName = aFilterConfig.getInitParameter ("loggerName");
     if (StringHelper.hasText (sLoggerName))
@@ -67,14 +80,14 @@ public class LoggingFilter implements Filter
     aLoggingRequest.setPath (requestWrapper.getRequestURI ());
     aLoggingRequest.setParams (requestWrapper.isFormPost () ? null : requestWrapper.getParameters ());
     aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (requestWrapper));
-    final String content = requestWrapper.getContent ();
+    final String sContent = requestWrapper.getContent ();
     if (m_aLogger.isTraceEnabled () || m_nMaxContentSize <= 0)
     {
-      aLoggingRequest.setBody (content);
+      aLoggingRequest.setBody (sContent);
     }
     else
     {
-      aLoggingRequest.setBody (content.substring (0, Math.min (content.length (), m_nMaxContentSize)));
+      aLoggingRequest.setBody (sContent.substring (0, Math.min (sContent.length (), m_nMaxContentSize)));
     }
 
     return aLoggingRequest.getAsJson ().getAsJsonString ();
@@ -113,7 +126,7 @@ public class LoggingFilter implements Filter
   protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse)
   {
-    boolean bLog = m_aLogger.isDebugEnabled ();
+    boolean bLog = isGloballyEnabled () && m_aLogger.isInfoEnabled ();
     if (bLog)
     {
       // Check for excluded path
@@ -145,9 +158,9 @@ public class LoggingFilter implements Filter
       final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest);
       final LoggingHttpServletResponseWrapper aResponseWrapper = new LoggingHttpServletResponseWrapper (aHttpResponse);
 
-      m_aLogger.debug (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
+      m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
       aFilterChain.doFilter (aRequestWrapper, aResponseWrapper);
-      m_aLogger.debug (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
+      m_aLogger.info (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
 
       aResponseWrapper.writeContentTo (aHttpResponse.getOutputStream ());
     }

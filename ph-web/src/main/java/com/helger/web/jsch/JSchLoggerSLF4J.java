@@ -81,6 +81,6 @@ public class JSchLoggerSLF4J implements com.jcraft.jsch.Logger
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("logger", m_aLogger).toString ();
+    return new ToStringGenerator (this).append ("logger", m_aLogger).getToString ();
   }
 }

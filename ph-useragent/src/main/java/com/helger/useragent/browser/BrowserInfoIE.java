@@ -65,9 +65,9 @@ public class BrowserInfoIE extends BrowserInfo
   public String toString ()
   {
     if (isItNot ())
-      return new ToStringGenerator (null).append ("isIt", "not").toString ();
+      return new ToStringGenerator (null).append ("isIt", "not").getToString ();
     return ToStringGenerator.getDerived (super.toString ())
                             .append ("ieCompatibilityMode", m_bIsIECompatibilityMode)
-                            .toString ();
+                            .getToString ();
   }
 }

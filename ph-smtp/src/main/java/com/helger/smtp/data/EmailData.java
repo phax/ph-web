@@ -327,7 +327,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
                             .append ("subject", m_sSubject)
                             .append ("body", m_sBody)
                             .appendIfNotNull ("attachments", m_aAttachments)
-                            .toString ();
+                            .getToString ();
   }
 
   /**

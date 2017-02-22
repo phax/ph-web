@@ -19,6 +19,7 @@ package com.helger.mail.supplementary.main;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
@@ -27,7 +28,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.io.stream.StreamHelper;
@@ -56,7 +56,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     try
     {
       // build map from MimeType to list of extensions
-      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <> ();
+      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased<> ();
 
       for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
         for (final String sExt : aInfo.getAllExtensions ())
@@ -68,7 +68,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
         }
 
       // write file in format iso-8859-1!
-      w = new PrintWriter (new File (sDestPath), CCharset.CHARSET_ISO_8859_1);
+      w = new PrintWriter (new File (sDestPath), StandardCharsets.ISO_8859_1.name ());
 
       // write header
       for (final String sLine : VendorInfo.getFileHeaderLines ())

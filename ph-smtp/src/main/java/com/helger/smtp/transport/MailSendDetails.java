@@ -107,6 +107,6 @@ public class MailSendDetails implements Serializable
                                        .append ("Command", m_sCommand)
                                        .append ("ErrorMessage", m_sErrorMessage)
                                        .append ("ErrorCode", m_eErrorCode)
-                                       .toString ();
+                                       .getToString ();
   }
 }

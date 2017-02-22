@@ -22,43 +22,36 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.script.ScriptException;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resource.URLResource;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
 {
   public static String getProxyAutoConfigFunction (final IReadableResource aRes,
-                                                   final String sCharset) throws IOException
+                                                   final Charset aCharset) throws IOException
   {
-    InputStream aIS = null;
-    BufferedReader aReader = null;
-    try
+    final InputStream aIS = aRes.getInputStream ();
+    if (aIS != null)
     {
-      aIS = aRes.getInputStream ();
-      if (aIS != null)
+      try (BufferedReader aReader = new BufferedReader (new InputStreamReader (aIS, aCharset)))
       {
-        aReader = new BufferedReader (new InputStreamReader (aIS, sCharset));
         String sLine;
         final StringBuilder aAutoConfigScript = new StringBuilder ();
         while ((sLine = aReader.readLine ()) != null)
           aAutoConfigScript.append (sLine).append ('\n');
         return aAutoConfigScript.toString ();
       }
-      return null;
     }
-    finally
-    {
-      StreamHelper.close (aReader);
-    }
+    return null;
   }
 
   @Test
@@ -66,9 +59,9 @@ public final class ReadWPADFuncTest
   {
     // Works for Intercent-ER
     final String sAutoProxyConfig = false ? getProxyAutoConfigFunction (new URLResource ("http://wpad.ente.regione.emr.it/wpad.dat"),
-                                                                        CCharset.CHARSET_ISO_8859_1)
+                                                                        StandardCharsets.ISO_8859_1)
                                           : getProxyAutoConfigFunction (new URLResource ("http://wpad/wpad.dat"),
-                                                                        CCharset.CHARSET_ISO_8859_1);
+                                                                        StandardCharsets.ISO_8859_1);
     if (sAutoProxyConfig != null)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);
@@ -83,7 +76,7 @@ public final class ReadWPADFuncTest
     {
       final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" +
                                                                                          sFile),
-                                                                  CCharset.CHARSET_ISO_8859_1);
+                                                                  StandardCharsets.ISO_8859_1);
       assertNotNull (sFile + " failed", sAutoProxyConfig);
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);
       assertNotNull (sFile + " failed", aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));

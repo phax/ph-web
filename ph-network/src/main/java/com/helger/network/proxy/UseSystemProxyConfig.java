@@ -72,6 +72,6 @@ public class UseSystemProxyConfig implements IProxyConfig
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).toString ();
+    return new ToStringGenerator (this).getToString ();
   }
 }

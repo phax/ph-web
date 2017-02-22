@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.ext.ICommonsMap;
@@ -95,14 +95,14 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * provided by the sender. Media subtypes of the "text" type are defined to
    * have a default charset value of "ISO-8859-1" when received via HTTP.
    */
-  public static final String DEFAULT_CHARSET = CCharset.CHARSET_ISO_8859_1;
+  public static final String DEFAULT_CHARSET = StandardCharsets.ISO_8859_1.name ();
 
   /**
    * Default content charset to be used when no explicit charset parameter is
    * provided by the sender. Media subtypes of the "text" type are defined to
    * have a default charset value of "ISO-8859-1" when received via HTTP.
    */
-  public static final Charset DEFAULT_CHARSET_OBJ = CCharset.CHARSET_ISO_8859_1_OBJ;
+  public static final Charset DEFAULT_CHARSET_OBJ = StandardCharsets.ISO_8859_1;
 
   /**
    * UID used in unique file name generation.
@@ -651,6 +651,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
                                        .append ("isFormField", m_bIsFormField)
                                        .append ("fieldName", m_sFieldName)
                                        .append ("headers", m_aHeaders)
-                                       .toString ();
+                                       .getToString ();
   }
 }

@@ -94,6 +94,6 @@ public class ByteArrayDataSource implements IExtendedDataSource
     return new ToStringGenerator (this).append ("byte#", ArrayHelper.getSize (m_aBytes))
                                        .append ("Name", m_sName)
                                        .append ("ContentType", m_sContentType)
-                                       .toString ();
+                                       .getToString ();
   }
 }

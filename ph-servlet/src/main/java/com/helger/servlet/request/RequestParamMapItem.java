@@ -42,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
 public final class RequestParamMapItem implements Serializable
 {
   private String m_sValue;
-  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap<> ();
 
   public RequestParamMapItem ()
   {}
@@ -110,7 +110,7 @@ public final class RequestParamMapItem implements Serializable
   {
     return new ToStringGenerator (null).appendIfNotNull ("Value", m_sValue)
                                        .appendIf ("Children", m_aChildren, CollectionHelper::isNotEmpty)
-                                       .toString ();
+                                       .getToString ();
   }
 
   @Nullable

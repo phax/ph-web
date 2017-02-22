@@ -124,6 +124,6 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("ServletContext", m_aSC).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("ServletContext", m_aSC).getToString ();
   }
 }

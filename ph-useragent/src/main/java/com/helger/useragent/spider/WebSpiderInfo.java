@@ -115,6 +115,6 @@ public final class WebSpiderInfo implements IHasID <String>, Serializable
                                        .appendIfNotNull ("name", m_sName)
                                        .appendIfNotNull ("type", m_eType)
                                        .appendIfNotNull ("info", m_sInfo)
-                                       .toString ();
+                                       .getToString ();
   }
 }

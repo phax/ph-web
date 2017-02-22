@@ -83,6 +83,6 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("factory", m_aFactory).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("factory", m_aFactory).getToString ();
   }
 }

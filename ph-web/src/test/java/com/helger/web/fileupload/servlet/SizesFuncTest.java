@@ -21,6 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
@@ -69,14 +69,14 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
                               (num++) +
                               "\"\r\n" +
                               "\r\n";
-        baos.write (header.getBytes (CCharset.CHARSET_US_ASCII_OBJ));
+        baos.write (header.getBytes (StandardCharsets.US_ASCII));
         for (int j = 0; j < i; j++)
         {
           baos.write ((byte) j);
         }
-        baos.write ("\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
+        baos.write ("\r\n".getBytes (StandardCharsets.US_ASCII));
       }
-      baos.write ("-----1234--\r\n".getBytes (CCharset.CHARSET_US_ASCII_OBJ));
+      baos.write ("-----1234--\r\n".getBytes (StandardCharsets.US_ASCII));
 
       final ICommonsList <IFileItem> fileItems = parseUpload (baos.toByteArray ());
       final Iterator <IFileItem> fileIter = fileItems.iterator ();
@@ -120,25 +120,25 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
 
     ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (-1);
-    HttpServletRequest req = new MockHttpServletRequest ().setContent (request.getBytes (CCharset.CHARSET_US_ASCII_OBJ))
+    HttpServletRequest req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII))
                                                           .setContentType (CONTENT_TYPE);
     List <IFileItem> fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     IFileItem item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get (), CCharset.CHARSET_US_ASCII_OBJ));
+    assertEquals ("This is the content of the file\n", new String (item.get (), StandardCharsets.US_ASCII));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (40);
-    req = new MockHttpServletRequest ().setContent (request.getBytes (CCharset.CHARSET_US_ASCII_OBJ))
+    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII))
                                        .setContentType (CONTENT_TYPE);
     fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get (), CCharset.CHARSET_US_ASCII_OBJ));
+    assertEquals ("This is the content of the file\n", new String (item.get (), StandardCharsets.US_ASCII));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (30);
-    req = new MockHttpServletRequest ().setContent (request.getBytes (CCharset.CHARSET_US_ASCII_OBJ))
+    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII))
                                        .setContentType (CONTENT_TYPE);
     try
     {

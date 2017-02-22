@@ -19,11 +19,10 @@ package com.helger.web.fileupload.parse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.junit.Test;
-
-import com.helger.commons.charset.CCharset;
 
 /**
  * Unit tests for {@link ParameterParser}.
@@ -76,7 +75,7 @@ public final class ParameterParserTest
     final ParameterParser parser = new ParameterParser ();
     parser.setLowerCaseNames (true);
     final Map <String, String> params = parser.parse (s, ';');
-    assertEquals (CCharset.CHARSET_UTF_8, params.get ("charset"));
+    assertEquals (StandardCharsets.UTF_8.name (), params.get ("charset"));
   }
 
   @Test

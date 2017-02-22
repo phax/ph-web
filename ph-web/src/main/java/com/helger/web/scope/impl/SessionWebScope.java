@@ -150,6 +150,6 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("httpSession", m_aHttpSession).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("httpSession", m_aHttpSession).getToString ();
   }
 }

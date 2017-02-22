@@ -28,6 +28,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.exception.mock.MockIOException;
 import com.helger.servlet.io.AbstractServletInputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
@@ -331,7 +331,7 @@ public final class StreamingFuncTest
                             "\r\n" +
                             "value2\r\n" +
                             "-----1234--\r\n";
-    final byte [] aReqBytes = aRequest.getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final byte [] aReqBytes = aRequest.getBytes (StandardCharsets.US_ASCII);
 
     final IFileItemIterator fileItemIter = _parseUploadToIterator (aReqBytes);
     final IFileItemStream fileItemStream = fileItemIter.next ();

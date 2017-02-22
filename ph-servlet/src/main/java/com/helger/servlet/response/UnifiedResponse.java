@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Map;
@@ -42,7 +43,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
@@ -588,7 +588,7 @@ public class UnifiedResponse
     {
       // Check if encoding as ISO-8859-1 is possible
       if (m_aContentDispositionEncoder == null)
-        m_aContentDispositionEncoder = CCharset.CHARSET_ISO_8859_1_OBJ.newEncoder ();
+        m_aContentDispositionEncoder = StandardCharsets.ISO_8859_1.newEncoder ();
       if (!m_aContentDispositionEncoder.canEncode (sFilenameToUse))
         logError ("Content-Dispostion filename '" + sFilenameToUse + "' cannot be encoded to ISO-8859-1!");
     }
@@ -1487,7 +1487,7 @@ public class UnifiedResponse
           m_aRequestBrowserInfo.getVersion ().getMajor () <= 8)
       {
         // Special case for IE <= 8
-        final Charset aCharsetToUse = m_aCharset != null ? m_aCharset : CCharset.CHARSET_UTF_8_OBJ;
+        final Charset aCharsetToUse = m_aCharset != null ? m_aCharset : StandardCharsets.UTF_8;
         aSB.append (m_eContentDispositionType.getID ())
            .append ("; filename=")
            .append (URLHelper.urlEncode (m_sContentDispositionFilename, aCharsetToUse));

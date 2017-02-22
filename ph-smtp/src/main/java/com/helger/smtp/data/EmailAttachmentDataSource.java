@@ -46,6 +46,6 @@ public class EmailAttachmentDataSource extends InputStreamProviderDataSource imp
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("disposition", m_eDisposition).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("disposition", m_eDisposition).getToString ();
   }
 }

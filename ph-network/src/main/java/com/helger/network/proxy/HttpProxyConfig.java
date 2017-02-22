@@ -183,6 +183,6 @@ public class HttpProxyConfig implements IProxyConfig
                                        .append ("UserName", m_sUserName)
                                        .appendPassword ("Password")
                                        .append ("NonProxyHosts", m_aNonProxyHosts)
-                                       .toString ();
+                                       .getToString ();
   }
 }

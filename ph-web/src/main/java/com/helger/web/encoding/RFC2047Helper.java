@@ -17,13 +17,13 @@
 package com.helger.web.encoding;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.codec.DecodeException;
 import com.helger.commons.codec.RFC1522BCodec;
 import com.helger.commons.codec.RFC1522QCodec;
@@ -43,7 +43,7 @@ public final class RFC2047Helper
     Q
   }
 
-  public static final Charset DEFAULT_CHARSET = CCharset.CHARSET_UTF_8_OBJ;
+  public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
   private static final RFC2047Helper s_aInstance = new RFC2047Helper ();

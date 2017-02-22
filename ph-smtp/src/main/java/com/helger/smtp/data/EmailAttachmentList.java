@@ -51,7 +51,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAttachmentList.class);
 
-  private final ICommonsOrderedMap <String, IEmailAttachment> m_aMap = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, IEmailAttachment> m_aMap = new CommonsLinkedHashMap<> ();
 
   public EmailAttachmentList ()
   {}
@@ -163,6 +163,6 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("map", m_aMap).toString ();
+    return new ToStringGenerator (this).append ("map", m_aMap).getToString ();
   }
 }

@@ -129,6 +129,6 @@ public class SocksProxyConfig implements IProxyConfig
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("host", m_sHost).append ("port", m_nPort).toString ();
+    return new ToStringGenerator (this).append ("host", m_sHost).append ("port", m_nPort).getToString ();
   }
 }

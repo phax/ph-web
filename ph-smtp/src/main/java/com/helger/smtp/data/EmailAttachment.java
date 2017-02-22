@@ -216,6 +216,6 @@ public class EmailAttachment implements IEmailAttachment
                                        .appendIfNotNull ("Charset", m_aCharset)
                                        .appendIfNotNull ("ContentType", m_sContentType)
                                        .append ("Disposition", m_eDisposition)
-                                       .toString ();
+                                       .getToString ();
   }
 }

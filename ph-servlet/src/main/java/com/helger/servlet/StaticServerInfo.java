@@ -131,7 +131,7 @@ public class StaticServerInfo implements Serializable
                                        .append ("contextPath", m_sContextPath)
                                        .append ("fullServerPath", m_sFullServerPath)
                                        .append ("fullServerAndContextPath", m_sFullServerAndContextPath)
-                                       .toString ();
+                                       .getToString ();
   }
 
   @Nonnull

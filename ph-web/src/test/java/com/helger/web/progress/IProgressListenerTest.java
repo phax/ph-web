@@ -25,11 +25,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
 import com.helger.commons.CGlobal;
-import com.helger.commons.charset.CCharset;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.IFileItemStream;
@@ -37,14 +37,13 @@ import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
-import com.helger.web.progress.IProgressListener;
 
 /**
  * Test class for class {@link IProgressListener}.
  */
 public final class IProgressListenerTest extends AbstractFileUploadTestCase
 {
-  private static final Charset US_ASCII = CCharset.CHARSET_US_ASCII_OBJ;
+  private static final Charset US_ASCII = StandardCharsets.US_ASCII;
 
   private static class ProgressListenerImpl implements IProgressListener
   {

@@ -137,6 +137,6 @@ public class UserAgentElementList
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (null).append ("List", m_aList).toString ();
+    return new ToStringGenerator (null).append ("List", m_aList).getToString ();
   }
 }

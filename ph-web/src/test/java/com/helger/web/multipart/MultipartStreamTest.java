@@ -19,10 +19,10 @@ package com.helger.web.multipart;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 
 /**
@@ -38,9 +38,9 @@ public final class MultipartStreamTest
   public void testThreeParamConstructor () throws Exception
   {
     final String sStrData = "foobar";
-    final byte [] aContents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final byte [] aContents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
     final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
-    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
     final int nBufSize = aBoundary.length;
     final MultipartStream ms = new MultipartStream (aIS,
                                                     aBoundary,
@@ -53,9 +53,9 @@ public final class MultipartStreamTest
   public void testTwoParamConstructor () throws Exception
   {
     final String sStrData = "foobar";
-    final byte [] contents = sStrData.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final byte [] contents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
     final InputStream aIS = new NonBlockingByteArrayInputStream (contents);
-    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
     final MultipartStream ms = new MultipartStream (aIS,
                                                     aBoundary,
                                                     new MultipartProgressNotifier (null, contents.length));

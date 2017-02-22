@@ -17,11 +17,11 @@
 package com.helger.smtp;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CCharset;
 import com.helger.network.port.DefaultNetworkPorts;
 
 /**
@@ -46,7 +46,7 @@ public final class CSMTP
   public static final int DEFAULT_PORT_SECURE_POP3 = 995;
 
   /** Default charset for SMTP: UTF-8 */
-  public static final Charset CHARSET_SMTP_OBJ = CCharset.CHARSET_UTF_8_OBJ;
+  public static final Charset CHARSET_SMTP_OBJ = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
   private static final CSMTP s_aInstance = new CSMTP ();

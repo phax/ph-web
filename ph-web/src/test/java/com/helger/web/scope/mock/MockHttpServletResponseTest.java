@@ -22,9 +22,10 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.system.SystemHelper;
 import com.helger.servlet.mock.MockHttpServletResponse;
 
@@ -42,10 +43,10 @@ public final class MockHttpServletResponseTest
   {
     // create a new Servlet context for testing
     final MockHttpServletResponse aResp = new MockHttpServletResponse ();
-    assertEquals (CCharset.CHARSET_UTF_8, aResp.getCharacterEncoding ());
+    assertEquals (StandardCharsets.UTF_8.name (), aResp.getCharacterEncoding ());
     aResp.getWriter ().write (TEST_STRING);
     assertFalse (aResp.isCommitted ());
-    assertEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_UTF_8_OBJ));
+    assertEquals (TEST_STRING, aResp.getContentAsString (StandardCharsets.UTF_8));
     assertTrue (aResp.isCommitted ());
 
     // Start over
@@ -54,10 +55,10 @@ public final class MockHttpServletResponseTest
     assertNull (aResp.getCharacterEncoding ());
     assertFalse (aResp.isCommitted ());
     // Set character encoding before writing
-    aResp.setCharacterEncoding (CCharset.CHARSET_ISO_8859_1);
+    aResp.setCharacterEncoding (StandardCharsets.ISO_8859_1);
     aResp.getWriter ().write (TEST_STRING);
-    assertEquals (CCharset.CHARSET_ISO_8859_1, aResp.getCharacterEncoding ());
-    assertEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_ISO_8859_1_OBJ));
+    assertEquals (StandardCharsets.ISO_8859_1.name (), aResp.getCharacterEncoding ());
+    assertEquals (TEST_STRING, aResp.getContentAsString (StandardCharsets.ISO_8859_1));
 
     // Start over again
     aResp.setCommitted (false);
@@ -67,10 +68,10 @@ public final class MockHttpServletResponseTest
     // Write in the system charset
     aResp.getWriter ().write (TEST_STRING);
     // Set character encoding after writing
-    aResp.setCharacterEncoding ("UTF-16");
-    assertEquals ("UTF-16", aResp.getCharacterEncoding ());
+    aResp.setCharacterEncoding (StandardCharsets.UTF_16);
+    assertEquals (StandardCharsets.UTF_16.name (), aResp.getCharacterEncoding ());
     // It will fail in the selected charset
-    assertNotEquals (TEST_STRING, aResp.getContentAsString (CCharset.CHARSET_UTF_16_OBJ));
+    assertNotEquals (TEST_STRING, aResp.getContentAsString (StandardCharsets.UTF_16));
     // Retrieving in the system charset will succeed
     assertEquals (TEST_STRING, aResp.getContentAsString (SystemHelper.getSystemCharset ()));
   }

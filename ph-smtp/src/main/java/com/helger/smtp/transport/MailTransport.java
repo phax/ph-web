@@ -454,6 +454,6 @@ public final class MailTransport
     return new ToStringGenerator (this).append ("settings", m_aSMTPSettings)
                                        .append ("properties", m_aMailProperties)
                                        .append ("session", m_aSession)
-                                       .toString ();
+                                       .getToString ();
   }
 }

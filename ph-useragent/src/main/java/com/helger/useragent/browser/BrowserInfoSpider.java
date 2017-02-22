@@ -64,7 +64,7 @@ public class BrowserInfoSpider extends BrowserInfo
   public String toString ()
   {
     if (isItNot ())
-      return new ToStringGenerator (null).append ("isIt", "not").toString ();
-    return ToStringGenerator.getDerived (super.toString ()).appendIfNotNull ("info", m_aWebSpiderInfo).toString ();
+      return new ToStringGenerator (null).append ("isIt", "not").getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).appendIfNotNull ("info", m_aWebSpiderInfo).getToString ();
   }
 }

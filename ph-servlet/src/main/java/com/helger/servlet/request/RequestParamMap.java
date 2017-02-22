@@ -68,7 +68,7 @@ public class RequestParamMap implements IRequestParamMap
   private static String s_sClose = DEFAULT_CLOSE;
 
   /** Linked hash map for consistent results */
-  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aMap = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aMap = new CommonsLinkedHashMap<> ();
 
   public RequestParamMap ()
   {}
@@ -308,7 +308,7 @@ public class RequestParamMap implements IRequestParamMap
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("map", m_aMap).toString ();
+    return new ToStringGenerator (this).append ("map", m_aMap).getToString ();
   }
 
   @Nonnull

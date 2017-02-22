@@ -58,7 +58,7 @@ public class BrowserInfoMobile extends BrowserInfo
   public String toString ()
   {
     if (isItNot ())
-      return new ToStringGenerator (null).append ("isIt", "not").toString ();
-    return ToStringGenerator.getDerived (super.toString ()).appendIfNotNull ("info", m_sUA).toString ();
+      return new ToStringGenerator (null).append ("isIt", "not").getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).appendIfNotNull ("info", m_sUA).getToString ();
   }
 }

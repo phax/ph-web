@@ -17,11 +17,11 @@
 package com.helger.web;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CCharset;
 
 /**
  * Contains some global web constants
@@ -32,9 +32,9 @@ import com.helger.commons.charset.CCharset;
 public final class CWeb
 {
   /** Default charset for requests: UTF-8 */
-  public static final Charset CHARSET_REQUEST_OBJ = CCharset.CHARSET_UTF_8_OBJ;
+  public static final Charset CHARSET_REQUEST_OBJ = StandardCharsets.UTF_8;
   /** Default charset for multipart requests: UTF-8 */
-  public static final Charset CHARSET_MULTIPART_OBJ = CCharset.CHARSET_UTF_8_OBJ;
+  public static final Charset CHARSET_MULTIPART_OBJ = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
   private static final CWeb s_aInstance = new CWeb ();

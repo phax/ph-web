@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -35,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.ext.CommonsArrayList;
@@ -62,7 +62,7 @@ import com.helger.servlet.io.AbstractServletOutputStream;
 public class MockHttpServletResponse implements HttpServletResponse
 {
   public static final int DEFAULT_SERVER_PORT = SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP);
-  public static final Charset DEFAULT_CHARSET_OBJ = CCharset.CHARSET_UTF_8_OBJ;
+  public static final Charset DEFAULT_CHARSET_OBJ = StandardCharsets.UTF_8;
   private static final int DEFAULT_BUFFER_SIZE = 4096;
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockHttpServletResponse.class);
 
@@ -95,8 +95,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   private Locale m_aLocale = Locale.getDefault ();
 
   // HttpServletResponse properties
-  private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList <> ();
-  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
+  private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList<> ();
+  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased<> ();
   private int m_nStatus = HttpServletResponse.SC_OK;
   private String m_sErrorMessage;
   private String m_sRedirectedUrl;
@@ -409,7 +409,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nonnull
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
-    return new CommonsArrayList <> (m_aHeaders.get (_unifyHeaderName (sName)));
+    return new CommonsArrayList<> (m_aHeaders.get (_unifyHeaderName (sName)));
   }
 
   /**

@@ -64,7 +64,7 @@ public final class XMLSitemapIndex implements Serializable
   private static final String ELEMENT_LASTMOD = "lastmod";
   private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapIndex.class);
 
-  private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList <> ();
+  private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList<> ();
   private final boolean m_bUseGZip;
 
   /**
@@ -277,6 +277,6 @@ public final class XMLSitemapIndex implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("URLSets", m_aURLSets).append ("useGZip", m_bUseGZip).toString ();
+    return new ToStringGenerator (this).append ("URLSets", m_aURLSets).append ("useGZip", m_bUseGZip).getToString ();
   }
 }

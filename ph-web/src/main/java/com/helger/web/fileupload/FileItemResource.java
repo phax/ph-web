@@ -122,6 +122,6 @@ public final class FileItemResource implements IReadableResource
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (null).append ("fileItem", m_aFileItem).toString ();
+    return new ToStringGenerator (null).append ("fileItem", m_aFileItem).getToString ();
   }
 }

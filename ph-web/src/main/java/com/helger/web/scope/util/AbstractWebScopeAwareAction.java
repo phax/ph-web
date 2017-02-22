@@ -60,6 +60,6 @@ public abstract class AbstractWebScopeAwareAction
   {
     return new ToStringGenerator (this).append ("servletContext", m_aSC)
                                        .append ("applicationID", m_sApplicationID)
-                                       .toString ();
+                                       .getToString ();
   }
 }

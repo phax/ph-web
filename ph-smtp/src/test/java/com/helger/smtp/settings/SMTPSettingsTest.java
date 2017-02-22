@@ -21,9 +21,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.xml.mock.XMLTestHelper;
 
 /**
@@ -40,7 +41,7 @@ public final class SMTPSettingsTest
                                                19,
                                                "anyuser",
                                                "secret",
-                                               CCharset.CHARSET_UTF_8_OBJ,
+                                               StandardCharsets.UTF_8,
                                                true);
     assertEquals ("mail.example.com", aSettings.getHostName ());
     assertEquals (19, aSettings.getPort ());
@@ -54,7 +55,7 @@ public final class SMTPSettingsTest
                                   19,
                                   "anyuser",
                                   "secret",
-                                  CCharset.CHARSET_UTF_8_OBJ,
+                                  StandardCharsets.UTF_8,
                                   true,
                                   true,
                                   5000,

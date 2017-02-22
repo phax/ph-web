@@ -122,6 +122,6 @@ public class UAProfile implements Serializable
   {
     return new ToStringGenerator (this).appendIfNotNull ("profileUrl", m_sProfileUrl)
                                        .appendIfNotNull ("profileDiff", m_aProfileDiffData)
-                                       .toString ();
+                                       .getToString ();
   }
 }

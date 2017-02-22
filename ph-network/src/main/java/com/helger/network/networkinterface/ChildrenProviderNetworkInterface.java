@@ -60,6 +60,6 @@ public class ChildrenProviderNetworkInterface implements IChildrenProvider <Netw
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).toString ();
+    return new ToStringGenerator (this).getToString ();
   }
 }

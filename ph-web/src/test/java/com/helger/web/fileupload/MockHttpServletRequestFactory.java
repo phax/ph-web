@@ -16,10 +16,11 @@
  */
 package com.helger.web.fileupload;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 
@@ -28,7 +29,7 @@ final class MockHttpServletRequestFactory
   @Nonnull
   public static HttpServletRequest createHttpServletRequestWithNullContentType ()
   {
-    final byte [] requestData = "foobar".getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final byte [] requestData = "foobar".getBytes (StandardCharsets.US_ASCII);
     return new MockHttpServletRequest ().setContent (requestData);
   }
 
@@ -40,14 +41,14 @@ final class MockHttpServletRequestFactory
     for (final String sFilename : aFilenames)
       sbRequestData.append (sFilename);
 
-    final byte [] requestData = sbRequestData.toString ().getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final byte [] requestData = sbRequestData.toString ().getBytes (StandardCharsets.US_ASCII);
 
     return new MockHttpServletRequest ().setContent (requestData).setContentType (RequestHelper.MULTIPART_FORM_DATA);
   }
 
   public static HttpServletRequest createInvalidHttpServletRequest ()
   {
-    final byte [] requestData = "foobar".getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final byte [] requestData = "foobar".getBytes (StandardCharsets.US_ASCII);
     return new MockHttpServletRequest ().setContent (requestData).setContentType (RequestHelper.MULTIPART_FORM_DATA);
   }
 }

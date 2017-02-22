@@ -440,6 +440,6 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
                                        .append ("connectionTimeout", m_nConnectionTimeoutMilliSecs)
                                        .append ("timeout", m_nTimeoutMilliSecs)
                                        .append ("debugSMTP", m_bDebugSMTP)
-                                       .toString ();
+                                       .getToString ();
   }
 }

@@ -281,6 +281,6 @@ public final class FailedMailData implements ITypedObject <String>, Serializable
                                        .appendIfNotNull ("originalSentDateTime", m_aOriginalSentDateTime)
                                        .appendIfNotNull ("emailData", m_aEmailData)
                                        .appendIfNotNull ("error", m_aError)
-                                       .toString ();
+                                       .getToString ();
   }
 }

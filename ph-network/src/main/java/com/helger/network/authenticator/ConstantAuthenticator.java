@@ -82,6 +82,6 @@ public class ConstantAuthenticator extends Authenticator
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("userName", m_sUserName).appendPassword ("password").toString ();
+    return new ToStringGenerator (this).append ("userName", m_sUserName).appendPassword ("password").getToString ();
   }
 }

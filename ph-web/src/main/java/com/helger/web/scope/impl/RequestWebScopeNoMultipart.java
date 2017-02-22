@@ -342,6 +342,6 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return ToStringGenerator.getDerived (super.toString ())
                             .append ("httpRequest", m_aHttpRequest)
                             .append ("httpResponse", m_aHttpResponse)
-                            .toString ();
+                            .getToString ();
   }
 }

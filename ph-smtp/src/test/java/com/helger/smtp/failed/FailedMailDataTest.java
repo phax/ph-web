@@ -22,11 +22,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.Nonnull;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.exception.mock.MockException;
@@ -56,7 +57,7 @@ public final class FailedMailDataTest
   @Nonnull
   private static SMTPSettings _createSMTPSettings ()
   {
-    return new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", CCharset.CHARSET_UTF_8_OBJ, true);
+    return new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", StandardCharsets.UTF_8, true);
   }
 
   @Nonnull
@@ -80,10 +81,9 @@ public final class FailedMailDataTest
     aData.setSubject ("This is a test");
     aData.setBody ("This is my mail that failed\nIt contains a lot of information.\nBla bla bla\nAll the best to you.");
     final EmailAttachmentList aAttachments = new EmailAttachmentList ();
-    aAttachments.addAttachment (new EmailAttachment ("file1.txt",
-                                                     "Bla foo fasel".getBytes (CCharset.CHARSET_UTF_8_OBJ)));
+    aAttachments.addAttachment (new EmailAttachment ("file1.txt", "Bla foo fasel".getBytes (StandardCharsets.UTF_8)));
     aAttachments.addAttachment (new EmailAttachment ("file2.txt",
-                                                     "Bla foo fasel. Bla foo fasel.".getBytes (CCharset.CHARSET_UTF_8_OBJ)));
+                                                     "Bla foo fasel. Bla foo fasel.".getBytes (StandardCharsets.UTF_8)));
     aData.setAttachments (aAttachments);
     // Some custom attributes for fun
     aData.setAttribute ("Attr1", "3.14");

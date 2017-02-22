@@ -51,7 +51,7 @@ public class MockEventListenerList
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
-  private final ICommonsList <EventListener> m_aListener = new CommonsArrayList <> ();
+  private final ICommonsList <EventListener> m_aListener = new CommonsArrayList<> ();
 
   public MockEventListenerList ()
   {}
@@ -161,6 +161,6 @@ public class MockEventListenerList
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("listeners", m_aListener).toString ();
+    return new ToStringGenerator (this).append ("listeners", m_aListener).getToString ();
   }
 }

@@ -16,9 +16,10 @@
  */
 package com.helger.web.fileupload.parse;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.HttpServletRequest;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
@@ -49,7 +50,7 @@ public abstract class AbstractFileUploadTestCase
 
   protected final ICommonsList <IFileItem> parseUpload (final String content) throws FileUploadException
   {
-    final byte [] bytes = content.getBytes (CCharset.CHARSET_US_ASCII_OBJ);
+    final byte [] bytes = content.getBytes (StandardCharsets.US_ASCII);
     return parseUpload (bytes, CONTENT_TYPE);
   }
 }

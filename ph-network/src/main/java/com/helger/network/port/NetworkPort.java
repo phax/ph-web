@@ -105,6 +105,6 @@ public class NetworkPort implements INetworkPort
                                        .append ("protocol", m_eProtocol)
                                        .append ("name", m_sName)
                                        .append ("description", m_sDescription)
-                                       .toString ();
+                                       .getToString ();
   }
 }

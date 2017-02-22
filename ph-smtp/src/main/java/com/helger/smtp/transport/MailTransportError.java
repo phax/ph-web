@@ -71,6 +71,8 @@ public class MailTransportError implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Throwable", m_aThrowable).append ("Details", m_aDetails).toString ();
+    return new ToStringGenerator (this).append ("Throwable", m_aThrowable)
+                                       .append ("Details", m_aDetails)
+                                       .getToString ();
   }
 }

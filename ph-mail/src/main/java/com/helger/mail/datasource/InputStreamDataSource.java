@@ -94,6 +94,6 @@ public class InputStreamDataSource implements IExtendedDataSource
     return new ToStringGenerator (this).append ("IS", m_aIS)
                                        .append ("Name", m_sName)
                                        .append ("ContentType", m_sContentType)
-                                       .toString ();
+                                       .getToString ();
   }
 }

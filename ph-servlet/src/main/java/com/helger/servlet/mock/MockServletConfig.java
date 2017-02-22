@@ -44,7 +44,7 @@ public class MockServletConfig implements ServletConfig
 {
   private final ServletContext m_aSC;
   private final String m_sServletName;
-  private final ICommonsOrderedMap <String, String> m_aServletInitParams = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, String> m_aServletInitParams = new CommonsLinkedHashMap<> ();
 
   /**
    * Constructor without servlet init parameters.
@@ -132,6 +132,6 @@ public class MockServletConfig implements ServletConfig
     return new ToStringGenerator (this).append ("servletContext", m_aSC)
                                        .append ("servletName", m_sServletName)
                                        .append ("servletInitParams", m_aServletInitParams)
-                                       .toString ();
+                                       .getToString ();
   }
 }

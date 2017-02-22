@@ -17,6 +17,7 @@
 package com.helger.httpclient;
 
 import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
 import javax.annotation.Nonnull;
@@ -45,7 +46,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.charset.CCharset;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
@@ -189,7 +189,7 @@ public class HttpClientFactory implements IHttpClientProvider
     return ConnectionConfig.custom ()
                            .setMalformedInputAction (CodingErrorAction.IGNORE)
                            .setUnmappableInputAction (CodingErrorAction.IGNORE)
-                           .setCharset (CCharset.CHARSET_UTF_8_OBJ);
+                           .setCharset (StandardCharsets.UTF_8);
   }
 
   @Nonnull

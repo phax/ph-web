@@ -26,16 +26,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
-import com.helger.web.fileupload.parse.DiskFileItem;
-import com.helger.web.fileupload.parse.DiskFileItemFactory;
 
 /**
  * Serialization Unit tests for {@link DiskFileItem}.
@@ -199,7 +197,7 @@ public final class DiskFileItemTest
       if (count > 9)
         count = 0;
     }
-    return buffer.toString ().getBytes (CCharset.CHARSET_ISO_8859_1_OBJ);
+    return buffer.toString ().getBytes (StandardCharsets.ISO_8859_1);
   }
 
   /**
@@ -242,7 +240,7 @@ public final class DiskFileItemTest
     // Deserialize the test object
     Object result = null;
     try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (baos.toByteArray ());
-        final ObjectInputStream ois = new ObjectInputStream (bais))
+         final ObjectInputStream ois = new ObjectInputStream (bais))
     {
       result = ois.readObject ();
     }

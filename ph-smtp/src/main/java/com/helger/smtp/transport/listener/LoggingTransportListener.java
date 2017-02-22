@@ -125,6 +125,6 @@ public class LoggingTransportListener implements IEmailDataTransportListener
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).toString ();
+    return new ToStringGenerator (this).getToString ();
   }
 }

@@ -91,9 +91,9 @@ public class BrowserInfo implements IHasDisplayText
   public String toString ()
   {
     if (isItNot ())
-      return new ToStringGenerator (null).append ("isIt", "not").toString ();
+      return new ToStringGenerator (null).append ("isIt", "not").getToString ();
     return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType)
                                        .appendIfNotNull ("version", m_aVersion)
-                                       .toString ();
+                                       .getToString ();
   }
 }

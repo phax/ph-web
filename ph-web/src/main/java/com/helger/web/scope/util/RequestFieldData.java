@@ -200,7 +200,7 @@ public class RequestFieldData implements Serializable
     ICommonsList <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
-      aDefault = new CommonsArrayList <> (sDefaultValue);
+      aDefault = new CommonsArrayList<> (sDefaultValue);
     return getScope ().getAttributeAsList (m_sFieldName, aDefault);
   }
 
@@ -258,6 +258,6 @@ public class RequestFieldData implements Serializable
   {
     return new ToStringGenerator (this).append ("fieldName", m_sFieldName)
                                        .append ("defaultValue", m_sDefaultValue)
-                                       .toString ();
+                                       .getToString ();
   }
 }

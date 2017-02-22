@@ -165,7 +165,7 @@ public class IPV4Addr implements Serializable
                                        .append ("ip1", m_nIP1)
                                        .append ("ip2", m_nIP2)
                                        .append ("ip3", m_nIP3)
-                                       .toString ();
+                                       .getToString ();
   }
 
   /**

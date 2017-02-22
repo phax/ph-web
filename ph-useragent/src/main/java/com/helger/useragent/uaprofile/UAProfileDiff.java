@@ -17,6 +17,7 @@
 package com.helger.useragent.uaprofile;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
@@ -30,7 +31,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.equals.EqualsHelper;
@@ -71,7 +71,7 @@ public class UAProfileDiff implements Serializable
     {
       // Verify MD5 digest
       final byte [] aCalcedDigest = MessageDigestValue.create (CharsetManager.getAsBytes (sData,
-                                                                                          CCharset.CHARSET_UTF_8_OBJ),
+                                                                                          StandardCharsets.UTF_8),
                                                                EMessageDigestAlgorithm.MD5)
                                                       .getAllDigestBytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
@@ -137,6 +137,6 @@ public class UAProfileDiff implements Serializable
     return new ToStringGenerator (this).append ("data", m_sData)
                                        .appendIfNotNull ("digest", m_aMD5Digest)
                                        .appendIfNotNull ("document", m_aDocument)
-                                       .toString ();
+                                       .getToString ();
   }
 }

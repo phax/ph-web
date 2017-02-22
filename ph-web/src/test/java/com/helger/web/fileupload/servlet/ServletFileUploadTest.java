@@ -21,11 +21,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.helger.commons.charset.CCharset;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
@@ -212,20 +212,20 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
                            "...contents of file2.gif...\r\n" +
                            "--BbC04y--\r\n" +
                            "--AaB03x--";
-    final List <IFileItem> fileItems = parseUpload (request.getBytes (CCharset.CHARSET_US_ASCII_OBJ), contentType);
+    final List <IFileItem> fileItems = parseUpload (request.getBytes (StandardCharsets.US_ASCII), contentType);
     assertEquals (3, fileItems.size ());
     final IFileItem item0 = fileItems.get (0);
     assertEquals ("field1", item0.getFieldName ());
     assertNull (item0.getName ());
-    assertEquals ("Joe Blow", new String (item0.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
+    assertEquals ("Joe Blow", new String (item0.get (), StandardCharsets.ISO_8859_1));
     final IFileItem item1 = fileItems.get (1);
     assertEquals ("pics", item1.getFieldName ());
     assertEquals ("file1.txt", item1.getName ());
-    assertEquals ("... contents of file1.txt ...", new String (item1.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
+    assertEquals ("... contents of file1.txt ...", new String (item1.get (), StandardCharsets.ISO_8859_1));
     final IFileItem item2 = fileItems.get (2);
     assertEquals ("pics", item2.getFieldName ());
     assertEquals ("file2.gif", item2.getName ());
-    assertEquals ("...contents of file2.gif...", new String (item2.get (), CCharset.CHARSET_ISO_8859_1_OBJ));
+    assertEquals ("...contents of file2.gif...", new String (item2.get (), StandardCharsets.ISO_8859_1));
   }
 
   /**

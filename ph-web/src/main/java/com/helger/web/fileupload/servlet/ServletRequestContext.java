@@ -87,6 +87,6 @@ public class ServletRequestContext implements IRequestContext
   {
     return new ToStringGenerator (this).append ("contentLength", getContentLength ())
                                        .append ("contentType", getContentType ())
-                                       .toString ();
+                                       .getToString ();
   }
 }

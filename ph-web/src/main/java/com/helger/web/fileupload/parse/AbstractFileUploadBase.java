@@ -19,6 +19,7 @@ package com.helger.web.fileupload.parse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
@@ -359,7 +359,7 @@ public abstract class AbstractFileUploadBase
     final String sBoundaryStr = aParams.get ("boundary");
     if (sBoundaryStr == null)
       return null;
-    return CharsetManager.getAsBytes (sBoundaryStr, CCharset.CHARSET_ISO_8859_1_OBJ);
+    return CharsetManager.getAsBytes (sBoundaryStr, StandardCharsets.ISO_8859_1);
   }
 
   /**

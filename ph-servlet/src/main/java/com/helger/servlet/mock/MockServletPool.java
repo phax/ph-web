@@ -109,14 +109,14 @@ public class MockServletPool
     {
       return new ToStringGenerator (this).append ("servlet", m_aServlet)
                                          .append ("servletPath", m_sServletPath)
-                                         .toString ();
+                                         .getToString ();
     }
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletPool.class);
 
   private final MockServletContext m_aSC;
-  private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList <> ();
+  private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList<> ();
   private boolean m_bInvalidated = false;
 
   public MockServletPool (@Nonnull final MockServletContext aSC)
@@ -217,7 +217,7 @@ public class MockServletPool
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
-    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
+    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList<> ();
     if (StringHelper.hasText (sPath))
       m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
     final int nMatchingItems = aMatchingItems.size ();

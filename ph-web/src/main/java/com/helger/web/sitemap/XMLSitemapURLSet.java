@@ -54,7 +54,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
   private static final int XML_HEADER_LENGTH = 38 + 60 + 9;
 
   private int m_nOutputLength = XML_HEADER_LENGTH;
-  private final ICommonsList <XMLSitemapURL> m_aURLs = new CommonsArrayList <> ();
+  private final ICommonsList <XMLSitemapURL> m_aURLs = new CommonsArrayList<> ();
   private LocalDateTime m_aPrevLastModification;
   private LocalDateTime m_aLastModification;
 
@@ -195,6 +195,6 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
                                        .appendIfNotNull ("lastModification", m_aLastModification)
                                        .appendIfNotNull ("prevLastModification", m_aPrevLastModification)
                                        .append ("outputLength", m_nOutputLength)
-                                       .toString ();
+                                       .getToString ();
   }
 }

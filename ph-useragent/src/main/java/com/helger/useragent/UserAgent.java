@@ -435,6 +435,6 @@ public class UserAgent implements IUserAgent
                                        .append ("Mobile", getInfoMobile ())
                                        .append ("WebSpider", getInfoWebSpider ())
                                        .append ("Application", getInfoApplication ())
-                                       .toString ();
+                                       .getToString ();
   }
 }

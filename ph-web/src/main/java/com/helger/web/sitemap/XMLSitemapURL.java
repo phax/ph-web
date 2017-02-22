@@ -223,6 +223,6 @@ public final class XMLSitemapURL implements IHasLastModificationDateTime, Serial
                                        .appendIfNotNull ("changeFrequency", m_eChangeFreq)
                                        .appendIfNotNull ("priority", m_sPriority)
                                        .append ("outputLength", m_nOutputLength)
-                                       .toString ();
+                                       .getToString ();
   }
 }

@@ -254,6 +254,6 @@ public class DigestAuthClientCredentials implements Serializable
                                        .appendIfNotNull ("opaque", m_sOpaque)
                                        .appendIfNotNull ("messageQop", m_sMessageQOP)
                                        .append ("noncecount", m_nNonceCount)
-                                       .toString ();
+                                       .getToString ();
   }
 }

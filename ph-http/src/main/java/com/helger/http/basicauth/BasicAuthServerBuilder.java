@@ -21,6 +21,7 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.HTTPStringHelper;
@@ -44,8 +45,7 @@ public class BasicAuthServerBuilder implements Serializable
   @Nonnull
   public BasicAuthServerBuilder setRealm (@Nonnull final String sRealm)
   {
-    if (!HTTPStringHelper.isQuotedTextContent (sRealm))
-      throw new IllegalArgumentException ("realm is invalid: " + sRealm);
+    ValueEnforcer.isTrue (HTTPStringHelper.isQuotedTextContent (sRealm), () -> "Realm is invalid: " + sRealm);
 
     m_sRealm = sRealm;
     return this;
@@ -71,6 +71,6 @@ public class BasicAuthServerBuilder implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("realm", m_sRealm).toString ();
+    return new ToStringGenerator (this).append ("realm", m_sRealm).getToString ();
   }
 }

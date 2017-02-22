@@ -268,6 +268,6 @@ public class CSP2SourceList implements Serializable
   @Nonnull
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("list", m_aList).toString ();
+    return new ToStringGenerator (this).append ("list", m_aList).getToString ();
   }
 }

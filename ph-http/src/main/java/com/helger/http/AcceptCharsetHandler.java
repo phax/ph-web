@@ -16,12 +16,13 @@
  */
 package com.helger.http;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 
@@ -36,7 +37,7 @@ public final class AcceptCharsetHandler
   /** Any charset */
   public static final String ANY_CHARSET = "*";
   /** Default charset iso-8859-1 */
-  public static final String DEFAULT_CHARSET = CCharset.CHARSET_ISO_8859_1;
+  public static final String DEFAULT_CHARSET = StandardCharsets.ISO_8859_1.name ();
 
   @PresentForCodeCoverage
   private static final AcceptCharsetHandler s_aInstance = new AcceptCharsetHandler ();

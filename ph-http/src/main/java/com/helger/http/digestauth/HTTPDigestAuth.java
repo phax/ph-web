@@ -17,6 +17,7 @@
 package com.helger.http.digestauth;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -29,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
@@ -59,7 +59,7 @@ public final class HTTPDigestAuth
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (HTTPDigestAuth.class);
   private static final char SEPARATOR = ':';
-  private static final Charset CHARSET = CCharset.CHARSET_ISO_8859_1_OBJ;
+  private static final Charset CHARSET = StandardCharsets.ISO_8859_1;
 
   @PresentForCodeCoverage
   private static final HTTPDigestAuth s_aInstance = new HTTPDigestAuth ();

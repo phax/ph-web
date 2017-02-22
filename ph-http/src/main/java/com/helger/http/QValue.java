@@ -155,6 +155,6 @@ public class QValue implements Comparable <QValue>, Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (null).append ("quality", m_dQuality).toString ();
+    return new ToStringGenerator (null).append ("Quality", m_dQuality).getToString ();
   }
 }

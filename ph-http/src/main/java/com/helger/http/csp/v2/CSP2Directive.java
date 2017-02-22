@@ -114,7 +114,7 @@ public class CSP2Directive implements ICSPDirective
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("name", m_sName).appendIfNotNull ("value", m_sValue).toString ();
+    return new ToStringGenerator (this).append ("name", m_sName).appendIfNotNull ("value", m_sValue).getToString ();
   }
 
   @Nonnull

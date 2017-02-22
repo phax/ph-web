@@ -17,6 +17,7 @@
 package com.helger.http.basicauth;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.digestauth.HTTPDigestAuth;
@@ -41,7 +41,7 @@ public final class HTTPBasicAuth
 {
   public static final String HEADER_VALUE_PREFIX_BASIC = "Basic";
   static final char USERNAME_PASSWORD_SEPARATOR = ':';
-  static final Charset CHARSET = CCharset.CHARSET_ISO_8859_1_OBJ;
+  static final Charset CHARSET = StandardCharsets.ISO_8859_1;
   private static final Logger s_aLogger = LoggerFactory.getLogger (HTTPDigestAuth.class);
 
   @PresentForCodeCoverage

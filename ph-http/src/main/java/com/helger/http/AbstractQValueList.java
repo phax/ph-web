@@ -36,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
 public abstract class AbstractQValueList <KEYTYPE extends Serializable> implements Serializable
 {
   // Maps something to quality
-  protected final ICommonsOrderedMap <KEYTYPE, QValue> m_aMap = new CommonsLinkedHashMap <> ();
+  protected final ICommonsOrderedMap <KEYTYPE, QValue> m_aMap = new CommonsLinkedHashMap<> ();
 
   public AbstractQValueList ()
   {}
@@ -52,7 +52,7 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @ReturnsMutableCopy
   public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesLowerThan (final double dQuality)
   {
-    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -66,7 +66,7 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @ReturnsMutableCopy
   public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesLowerOrEqual (final double dQuality)
   {
-    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -80,7 +80,7 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @ReturnsMutableCopy
   public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesGreaterThan (final double dQuality)
   {
-    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -94,7 +94,7 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @ReturnsMutableCopy
   public final ICommonsOrderedMap <KEYTYPE, QValue> getAllQValuesGreaterOrEqual (final double dQuality)
   {
-    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap <> ();
+    final ICommonsOrderedMap <KEYTYPE, QValue> ret = new CommonsLinkedHashMap<> ();
     for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
     {
       final QValue aQValue = aEntry.getValue ();
@@ -107,6 +107,6 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("map", m_aMap).toString ();
+    return new ToStringGenerator (this).append ("map", m_aMap).getToString ();
   }
 }

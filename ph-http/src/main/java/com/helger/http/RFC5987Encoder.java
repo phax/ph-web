@@ -17,13 +17,13 @@
 package com.helger.http;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CCharset;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.codec.IEncoder;
 import com.helger.commons.string.StringHelper;
@@ -116,7 +116,7 @@ public class RFC5987Encoder implements IEncoder <String, String>
 
   public RFC5987Encoder ()
   {
-    this (CCharset.CHARSET_UTF_8_OBJ);
+    this (StandardCharsets.UTF_8);
   }
 
   public RFC5987Encoder (@Nonnull final Charset aCharset)
@@ -148,7 +148,7 @@ public class RFC5987Encoder implements IEncoder <String, String>
   @Nonnull
   public static String getRFC5987EncodedUTF8 (@Nonnull final String sSrc)
   {
-    return getRFC5987Encoded (sSrc, CCharset.CHARSET_UTF_8_OBJ);
+    return getRFC5987Encoded (sSrc, StandardCharsets.UTF_8);
   }
 
   @Nonnull

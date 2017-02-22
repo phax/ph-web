@@ -525,6 +525,6 @@ public class HTTPHeaderMap implements
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("headers", m_aHeaders).toString ();
+    return new ToStringGenerator (this).append ("Headers", m_aHeaders).getToString ();
   }
 }

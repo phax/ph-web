@@ -16,16 +16,18 @@
  */
 package com.helger.network.proxy.autoconf;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
 
 import javax.script.ScriptException;
 
 import org.junit.Test;
 
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.network.proxy.EHttpProxyType;
+import com.helger.network.proxy.HttpProxyConfig;
 import com.helger.network.proxy.IProxyConfig;
 
 public final class ProxyAutoConfigHelperTest
@@ -55,9 +57,19 @@ public final class ProxyAutoConfigHelperTest
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (new ClassPathResource ("proxyautoconf/pacfiles/" +
                                                                                                  sFile));
-      final List <IProxyConfig> aPC = aPACHelper.getProxyListForURL ("http://www.orf.at/index.html", "www.orf.at");
+      final ICommonsList <IProxyConfig> aPC = aPACHelper.getProxyListForURL ("http://www.orf.at/index.html",
+                                                                             "www.orf.at");
       assertNotNull (sFile + " failed", aPC);
       assertFalse (sFile + " failed", aPC.isEmpty ());
     }
+  }
+
+  @Test
+  public void testExplicit () throws ScriptException
+  {
+    final String sCode = "function FindProxyForURL(url, host) { return \"PROXY 1.2.3.4:8080\"; }";
+    final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sCode);
+    assertEquals (new HttpProxyConfig (EHttpProxyType.HTTP, "1.2.3.4", 8080),
+                  aPACHelper.getProxyListForURL ("any", "host").getFirst ());
   }
 }

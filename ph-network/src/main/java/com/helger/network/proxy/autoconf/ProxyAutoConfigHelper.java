@@ -86,12 +86,11 @@ public final class ProxyAutoConfigHelper
   @Nullable
   public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
-    // Call "FindProxyForURL"
+    // Call "FindProxyForURL" that must be defined in the PAC file!
     final Object aResult = s_aScriptEngine.eval ("FindProxyForURL('" + sURL + "', '" + sHost + "')");
     if (aResult == null)
       return null;
 
-    // FIXME parse result:
     /*
      * Return Value Format The JavaScript function returns a single string. If
      * the string is null, no proxies should be used. The string can contain any
@@ -106,10 +105,11 @@ public final class ProxyAutoConfigHelper
   @Nonnull
   public ICommonsList <IProxyConfig> getProxyListForURL (final String sURL, final String sHost) throws ScriptException
   {
-    final ICommonsList <IProxyConfig> ret = new CommonsArrayList<> ();
+    final ICommonsList <IProxyConfig> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
     if (sProxyCode != null)
     {
+      // parse result of PAC call
       sProxyCode = sProxyCode.trim ();
       if (sProxyCode.length () > 0)
       {

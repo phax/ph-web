@@ -31,6 +31,8 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
@@ -52,7 +54,7 @@ public class HttpProxyConfig implements IProxyConfig
   private final int m_nPort;
   private final String m_sUserName;
   private final String m_sPassword;
-  private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList<> ();
+  private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
 
   public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
                           @Nonnull @Nonempty final String sHost,
@@ -172,6 +174,34 @@ public class HttpProxyConfig implements IProxyConfig
   public Proxy getAsProxy ()
   {
     return new Proxy (Proxy.Type.HTTP, new InetSocketAddress (m_sHost, m_nPort));
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final HttpProxyConfig rhs = (HttpProxyConfig) o;
+    return m_eProxyType.equals (rhs.m_eProxyType) &&
+           m_sHost.equals (rhs.m_sHost) &&
+           m_nPort == rhs.m_nPort &&
+           EqualsHelper.equals (m_sUserName, rhs.m_sUserName) &&
+           EqualsHelper.equals (m_sPassword, rhs.m_sPassword) &&
+           EqualsHelper.equals (m_aNonProxyHosts, rhs.m_aNonProxyHosts);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_eProxyType)
+                                       .append (m_sHost)
+                                       .append (m_nPort)
+                                       .append (m_sUserName)
+                                       .append (m_sPassword)
+                                       .append (m_aNonProxyHosts)
+                                       .getHashCode ();
   }
 
   @Override

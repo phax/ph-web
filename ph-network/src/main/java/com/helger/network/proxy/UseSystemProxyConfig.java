@@ -21,6 +21,7 @@ import java.net.Proxy;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
@@ -67,6 +68,22 @@ public class UseSystemProxyConfig implements IProxyConfig
   public Proxy getAsProxy ()
   {
     return null;
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).getHashCode ();
   }
 
   @Override

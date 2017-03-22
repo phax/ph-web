@@ -21,11 +21,14 @@ import java.net.Proxy;
 
 import javax.annotation.Nullable;
 
+import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
+
 /**
  * Base interface for the proxy configuration.
  *
  * @author Philip Helger
  */
+@MustImplementEqualsAndHashcode
 public interface IProxyConfig extends Serializable
 {
   /**

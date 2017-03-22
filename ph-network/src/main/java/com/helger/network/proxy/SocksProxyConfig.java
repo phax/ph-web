@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.system.SystemProperties;
 import com.helger.network.port.NetworkPortHelper;
@@ -124,6 +125,23 @@ public class SocksProxyConfig implements IProxyConfig
   public Proxy getAsProxy ()
   {
     return new Proxy (Proxy.Type.SOCKS, new InetSocketAddress (m_sHost, m_nPort));
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final SocksProxyConfig rhs = (SocksProxyConfig) o;
+    return m_sHost.equals (rhs.m_sHost) && m_nPort == rhs.m_nPort;
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_sHost).append (m_nPort).getHashCode ();
   }
 
   @Override

@@ -23,6 +23,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Address;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
@@ -35,6 +37,8 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 @Immutable
 public final class DNSResolver
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (DNSResolver.class);
+
   @PresentForCodeCoverage
   private static final DNSResolver s_aInstance = new DNSResolver ();
 
@@ -69,6 +73,27 @@ public final class DNSResolver
     if (aAddress == null)
       return null;
     return new IPV4Addr (aAddress.getAddress ()).getAsString ();
+  }
+
+  @Nonnull
+  public static String dnsResolveEx (final String sHostName)
+  {
+    final StringBuilder aSB = new StringBuilder ();
+    try
+    {
+      final InetAddress [] list = InetAddress.getAllByName (sHostName);
+      for (final InetAddress inetAddress : list)
+      {
+        if (aSB.length () > 0)
+          aSB.append ("; ");
+        aSB.append (inetAddress.getHostAddress ());
+      }
+    }
+    catch (final UnknownHostException e)
+    {
+      s_aLogger.error ("DNS name not resolvable " + sHostName, e);
+    }
+    return aSB.toString ();
   }
 
   @Nonnull

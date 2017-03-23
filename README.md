@@ -1,4 +1,4 @@
-#ph-web
+# ph-web
 Java library with common web stuff. It contains the following sub-projects:
   * ph-network
    * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
@@ -17,8 +17,10 @@ Java library with common web stuff. It contains the following sub-projects:
   * ph-web
     * Other high-level abstraction for servlets, file-upload, browser information, sitemap, web scopes etc.
   
-##News
+## News
 
+  * v8.7.4 - work in progress
+    * Improved PAC support to also handle IP6 addresses and `dnsResolveEx`
   * v8.7.3 - 2017-03-02
     * API extensions
     * Added package `com.helger.servlet.logging` based on https://github.com/librucha/servlet-logging-filter
@@ -42,7 +44,7 @@ Java library with common web stuff. It contains the following sub-projects:
   * v8.5.0 - 2016-07-26
     * Binds to ph-commons 8.3.x
 
-##Maven usage
+## Maven usage
 Add the following to your pom.xml to use this artifact:
 
 ```

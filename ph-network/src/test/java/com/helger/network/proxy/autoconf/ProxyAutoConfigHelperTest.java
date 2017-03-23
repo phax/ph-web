@@ -19,44 +19,49 @@ package com.helger.network.proxy.autoconf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import javax.annotation.Nonnull;
 import javax.script.ScriptException;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.commons.io.resource.IReadableResource;
 import com.helger.network.proxy.EHttpProxyType;
 import com.helger.network.proxy.HttpProxyConfig;
 import com.helger.network.proxy.IProxyConfig;
+import com.helger.network.proxy.NoProxyConfig;
 
+/**
+ * Unit test class for class {@link ProxyAutoConfigHelper}.
+ *
+ * @author Philip Helger
+ */
 public final class ProxyAutoConfigHelperTest
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelperTest.class);
   private static final String [] PAC_FILES = new String [] { "brz-proxy.pac",
                                                              "wikipedia-pac.js",
                                                              "returnproxy-complex.js",
                                                              "returnproxy-simple-with-loadbalancing.js",
                                                              "returnproxy-simple.js",
-                                                             "ente.regione.emr.it.js" };
-
-  @Test
-  public void testFindProxyForURL () throws ScriptException
-  {
-    for (final String sFile : PAC_FILES)
-    {
-      final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (new ClassPathResource ("proxyautoconf/pacfiles/" +
-                                                                                                 sFile));
-      assertNotNull (sFile + " failed", aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
-    }
-  }
+                                                             "ente.regione.emr.it.js",
+                                                             "example1.js",
+                                                             "example2.js" };
 
   @Test
   public void testGetProxyListForURL () throws ScriptException
   {
     for (final String sFile : PAC_FILES)
     {
-      final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (new ClassPathResource ("proxyautoconf/pacfiles/" +
-                                                                                                 sFile));
+      s_aLogger.info ("Reading " + sFile);
+      final IReadableResource aRes = new ClassPathResource ("proxyautoconf/pacfiles/" + sFile);
+      assertTrue (aRes.exists ());
+      final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (aRes);
       final ICommonsList <IProxyConfig> aPC = aPACHelper.getProxyListForURL ("http://www.orf.at/index.html",
                                                                              "www.orf.at");
       assertNotNull (sFile + " failed", aPC);
@@ -64,12 +69,24 @@ public final class ProxyAutoConfigHelperTest
     }
   }
 
+  @Nonnull
+  private static IProxyConfig _getResolved (final String sJS) throws ScriptException
+  {
+    final String sCode = "function FindProxyForURL(url, host) { " + sJS + " }";
+    final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sCode);
+    return aPACHelper.getProxyListForURL ("any", "host").getFirst ();
+  }
+
   @Test
   public void testExplicit () throws ScriptException
   {
-    final String sCode = "function FindProxyForURL(url, host) { return \"PROXY 1.2.3.4:8080\"; }";
-    final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sCode);
     assertEquals (new HttpProxyConfig (EHttpProxyType.HTTP, "1.2.3.4", 8080),
-                  aPACHelper.getProxyListForURL ("any", "host").getFirst ());
+                  _getResolved ("return 'PROXY 1.2.3.4:8080';"));
+    assertEquals (new NoProxyConfig (),
+                  _getResolved ("return isInNetEx('127.0.0.1', '127.0.0.0/16') ? 'DIRECT' : 'PROXY 1.2.3.4:8080';"));
+    assertEquals (new NoProxyConfig (),
+                  _getResolved ("return isInNetEx('127.0.0.1', '127.0.0.0/24') ? 'DIRECT' : 'PROXY 1.2.3.4:8080';"));
+    assertEquals (new NoProxyConfig (),
+                  _getResolved ("return isInNetEx('127.0.1.0', '127.0.0.0/24') ? 'PROXY 1.2.3.4:8080' : 'DIRECT';"));
   }
 }

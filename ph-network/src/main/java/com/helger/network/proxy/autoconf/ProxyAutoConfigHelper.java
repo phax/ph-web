@@ -33,6 +33,7 @@ import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
+import com.helger.commons.timing.StopWatch;
 import com.helger.commons.url.URLProtocolRegistry;
 import com.helger.network.dns.DNSResolver;
 import com.helger.network.proxy.EHttpProxyType;
@@ -52,13 +53,20 @@ public final class ProxyAutoConfigHelper
   {
     try
     {
+      final StopWatch aSW = StopWatch.createdStarted ();
       s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return " +
                             DNSResolver.class.getName () +
                             ".dnsResolve(hostName); }");
+      s_aScriptEngine.eval ("var dnsResolveEx = function(hostName){ return " +
+                            DNSResolver.class.getName () +
+                            ".dnsResolveEx(hostName); }");
       s_aScriptEngine.eval ("var myIpAddress = function(){ return " +
                             DNSResolver.class.getName () +
                             ".getMyIpAddress(); }");
       s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
+      final long nMS = aSW.stopAndGetMillis ();
+      if (nMS > 100)
+        s_aLogger.info ("Initial PAC script compilaiton took " + nMS + " ms");
     }
     catch (final ScriptException ex)
     {
@@ -86,8 +94,9 @@ public final class ProxyAutoConfigHelper
   @Nullable
   public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
-    // Call "FindProxyForURL" that must be defined in the PAC file!
-    final Object aResult = s_aScriptEngine.eval ("FindProxyForURL('" + sURL + "', '" + sHost + "')");
+    // Call "FindProxyForURL" or "FindProxyForURLEx" that must be defined in the
+    // PAC file!
+    final Object aResult = s_aScriptEngine.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
     if (aResult == null)
       return null;
 

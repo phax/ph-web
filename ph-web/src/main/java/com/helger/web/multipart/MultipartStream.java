@@ -114,10 +114,10 @@ public final class MultipartStream
   public static final byte DASH = 0x2D;
 
   /**
-   * The maximum length of <code>header-part</code> that will be processed (10
+   * The maximum length of <code>header-part</code> that will be processed (20
    * kilobytes = 10240 bytes.).
    */
-  public static final int HEADER_PART_SIZE_MAX = 10 * CGlobal.BYTES_PER_KILOBYTE;
+  public static final int HEADER_PART_SIZE_MAX = 20 * CGlobal.BYTES_PER_KILOBYTE;
 
   /**
    * The default length of the buffer used for processing a request.
@@ -392,9 +392,6 @@ public final class MultipartStream
    * <p>
    * Headers are returned verbatim to the input stream, including the trailing
    * <code>CRLF</code> marker. Parsing is left to the application.
-   * <p>
-   * <strong>TODO</strong> allow limiting maximum header size to protect against
-   * abuse.
    *
    * @return The <code>header-part</code> of the current encapsulation.
    * @throws MultipartMalformedStreamException

@@ -18,7 +18,6 @@ package com.helger.network.proxy.autoconf.functest;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +31,7 @@ import org.junit.Test;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resource.URLResource;
+import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
@@ -42,7 +42,8 @@ public final class ReadWPADFuncTest
     final InputStream aIS = aRes.getInputStream ();
     if (aIS != null)
     {
-      try (BufferedReader aReader = new BufferedReader (new InputStreamReader (aIS, aCharset)))
+      try (final NonBlockingBufferedReader aReader = new NonBlockingBufferedReader (new InputStreamReader (aIS,
+                                                                                                           aCharset)))
       {
         String sLine;
         final StringBuilder aAutoConfigScript = new StringBuilder ();

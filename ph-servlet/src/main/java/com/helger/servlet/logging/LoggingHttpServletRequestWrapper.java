@@ -137,8 +137,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     }
     catch (final IOException e)
     {
-      e.printStackTrace ();
-      throw new IllegalStateException ();
+      throw new IllegalStateException (e);
     }
   }
 

@@ -198,6 +198,9 @@
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>
+            <!-- uses BufferedReader as return type -->
+            <exclude>**/LoggingHttpServletRequestWrapper*</exclude>
+            <exclude>**/MockHttpServletRequest*</exclude>
           </excludes>
         </configuration>
         <!-- local executions are ignored -->

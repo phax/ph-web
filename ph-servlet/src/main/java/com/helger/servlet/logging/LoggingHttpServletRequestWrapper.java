@@ -61,7 +61,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     {
       return m_aDelegate.getReader ();
     }
-    return new BufferedReader (new InputStreamReader (getInputStream ()));
+    return new BufferedReader (new InputStreamReader (getInputStream (), _getCharset ()));
   }
 
   @Override
@@ -109,23 +109,29 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     return m_aParameterMap.get (name);
   }
 
+  @Nonnull
+  private Charset _getCharset ()
+  {
+    final String sRequestEncoding = m_aDelegate.getCharacterEncoding ();
+    final Charset aCharset = sRequestEncoding != null ? CharsetManager.getCharsetFromName (sRequestEncoding)
+                                                      : StandardCharsets.UTF_8;
+    return aCharset;
+  }
+
   public String getContent ()
   {
     try
     {
-      final String requestEncoding = m_aDelegate.getCharacterEncoding ();
-      final Charset aCharset = requestEncoding != null ? CharsetManager.getCharsetFromName (requestEncoding)
-                                                       : StandardCharsets.UTF_8;
       String sNormalizedContent;
       if (m_aParameterMap.isEmpty ())
       {
         m_aContent = StreamHelper.getAllBytes (m_aDelegate.getInputStream ());
-        sNormalizedContent = new String (m_aContent, aCharset);
+        sNormalizedContent = new String (m_aContent, _getCharset ());
       }
       else
       {
         sNormalizedContent = getContentFromParameterMap (m_aParameterMap);
-        m_aContent = sNormalizedContent.getBytes (aCharset);
+        m_aContent = sNormalizedContent.getBytes (_getCharset ());
       }
       return StringHelper.hasNoText (sNormalizedContent) ? "[EMPTY]" : sNormalizedContent;
     }

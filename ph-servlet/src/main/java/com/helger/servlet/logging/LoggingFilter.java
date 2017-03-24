@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.ext.CommonsHashSet;
 import com.helger.commons.collection.ext.ICommonsSet;
+import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
@@ -59,7 +60,7 @@ public class LoggingFilter implements Filter
 
     final String sExcludedPaths = aFilterConfig.getInitParameter ("excludedPaths");
     if (StringHelper.hasText (sExcludedPaths))
-      m_aExcludedPaths.setAll (sExcludedPaths.split ("\\s*,\\s*"));
+      m_aExcludedPaths.setAll (RegExHelper.getSplitToArray (sExcludedPaths, "\\s*,\\s*"));
 
     final String sRequestPrefix = aFilterConfig.getInitParameter ("requestPrefix");
     if (StringHelper.hasText (sRequestPrefix))

@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.Nonnull;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.io.stream.StreamHelper;
 
 public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrapper
 {
@@ -34,15 +36,21 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   @Override
   public PrintWriter getWriter () throws IOException
   {
-    return new PrintWriter (m_aOS.m_aBAOS);
+    return new PrintWriter (StreamHelper.createWriter (m_aOS.m_aBAOS, _getCharset ()));
+  }
+
+  @Nonnull
+  private Charset _getCharset ()
+  {
+    final String sResponseEncoding = m_aDelegate.getCharacterEncoding ();
+    final Charset aCharset = sResponseEncoding != null ? CharsetManager.getCharsetFromName (sResponseEncoding)
+                                                       : StandardCharsets.UTF_8;
+    return aCharset;
   }
 
   public String getContentAsString ()
   {
-    final String responseEncoding = m_aDelegate.getCharacterEncoding ();
-    final Charset aCharset = responseEncoding != null ? CharsetManager.getCharsetFromName (responseEncoding)
-                                                      : StandardCharsets.UTF_8;
-    return m_aOS.m_aBAOS.getAsString (aCharset);
+    return m_aOS.m_aBAOS.getAsString (_getCharset ());
   }
 
   public byte [] getContentAsBytes ()

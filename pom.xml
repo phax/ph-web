@@ -181,4 +181,27 @@
     <module>ph-httpclient</module>
     <module>ph-web</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>de.thetaphi</groupId>
+        <artifactId>forbiddenapis</artifactId>
+        <configuration>
+          <signaturesArtifacts>
+            <signaturesArtifact>
+              <groupId>com.helger</groupId>
+              <artifactId>ph-forbidden-apis</artifactId>
+              <version>1.0.0-SNAPSHOT</version>
+              <type>jar</type>
+              <path>forbidden-apis.txt</path>
+            </signaturesArtifact>
+          </signaturesArtifacts>
+          <excludes>
+          </excludes>
+        </configuration>
+        <!-- local executions are ignored -->
+      </plugin>
+    </plugins>
+  </build>
 </project>

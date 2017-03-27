@@ -19,6 +19,8 @@ package com.helger.smtp.data;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 
 import com.helger.commons.mock.CommonsTestHelper;
@@ -34,7 +36,7 @@ public final class EmailAttachmentTest
   @Test
   public void testBasic ()
   {
-    final EmailAttachment a = new EmailAttachment ("test.txt", "Inhalt".getBytes ());
+    final EmailAttachment a = new EmailAttachment ("test.txt", "Inhalt".getBytes (StandardCharsets.ISO_8859_1));
     assertEquals ("test.txt", a.getFilename ());
     assertEquals ("text/plain", a.getContentType ());
     assertNotNull (a.getInputStreamProvider ());

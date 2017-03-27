@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -30,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
 import com.helger.commons.CGlobal;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.IFileItemStream;
@@ -87,23 +87,26 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
   public void testProgressListener () throws Exception
   {
     final int NUM_ITEMS = 512;
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    for (int i = 0; i < NUM_ITEMS; i++)
+    byte [] contents;
+    try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ())
     {
-      final String header = "-----1234\r\n" +
-                            "Content-Disposition: form-data; name=\"field" +
-                            (i + 1) +
-                            "\"\r\n" +
-                            "\r\n";
-      baos.write (header.getBytes (US_ASCII));
-      for (int j = 0; j < 16384 + i; j++)
+      for (int i = 0; i < NUM_ITEMS; i++)
       {
-        baos.write ((byte) j);
+        final String header = "-----1234\r\n" +
+                              "Content-Disposition: form-data; name=\"field" +
+                              (i + 1) +
+                              "\"\r\n" +
+                              "\r\n";
+        baos.write (header.getBytes (US_ASCII));
+        for (int j = 0; j < 16384 + i; j++)
+        {
+          baos.write ((byte) j);
+        }
+        baos.write ("\r\n".getBytes (US_ASCII));
       }
-      baos.write ("\r\n".getBytes (US_ASCII));
+      baos.write ("-----1234--\r\n".getBytes (US_ASCII));
+      contents = baos.toByteArray ();
     }
-    baos.write ("-----1234--\r\n".getBytes (US_ASCII));
-    final byte [] contents = baos.toByteArray ();
 
     MockHttpServletRequest request = new MockHttpServletRequest ().setContent (contents)
                                                                   .setContentType ("multipart/form-data; boundary=---1234");

@@ -22,15 +22,12 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletInputStream;
@@ -39,7 +36,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.exception.mock.MockIOException;
+import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.exception.FileUploadException;
@@ -66,7 +66,7 @@ public final class StreamingFuncTest
   public void testFileUpload () throws Exception
   {
     final byte [] request = _newRequest ();
-    final List <IFileItem> fileItems = _parseUploadToList (request);
+    final ICommonsList <IFileItem> fileItems = _parseUploadToList (request);
     final Iterator <IFileItem> fileIter = fileItems.iterator ();
     int add = 16;
     int num = 0;
@@ -121,17 +121,15 @@ public final class StreamingFuncTest
   public void testIOException () throws IOException
   {
     final byte [] request = _newRequest ();
-    final InputStream stream = new FilterInputStream (new ByteArrayInputStream (request))
+    final InputStream stream = new FilterInputStream (new NonBlockingByteArrayInputStream (request))
     {
-      private int num;
+      private int m_nNum;
 
       @Override
       public int read () throws IOException
       {
-        if (++num > 123)
-        {
+        if (++m_nNum > 123)
           throw new MockIOException ("123");
-        }
         return super.read ();
       }
 
@@ -141,10 +139,8 @@ public final class StreamingFuncTest
         for (int i = 0; i < pLen; i++)
         {
           final int res = read ();
-          if (res == -1)
-          {
+          if (res < 0)
             return i == 0 ? -1 : i;
-          }
           pB[pOff + i] = (byte) res;
         }
         return pLen;
@@ -157,7 +153,7 @@ public final class StreamingFuncTest
     }
     catch (final FileUploadException e)
     {
-      assertTrue (e.getCause () instanceof IOException);
+      assertTrue (e.getCause () instanceof MockIOException);
       assertEquals ("123", e.getCause ().getMessage ());
     }
   }
@@ -172,22 +168,24 @@ public final class StreamingFuncTest
   public void testFILEUPLOAD135 () throws Exception
   {
     final byte [] request = _newShortRequest ();
-    final ByteArrayInputStream bais = new ByteArrayInputStream (request);
-    final List <IFileItem> fileItems = _parseUploadToList (new InputStream ()
+    ICommonsList <IFileItem> fileItems;
+    try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (request))
     {
-      @Override
-      public int read () throws IOException
+      fileItems = _parseUploadToList (new InputStream ()
       {
-        return bais.read ();
-      }
+        @Override
+        public int read () throws IOException
+        {
+          return bais.read ();
+        }
 
-      @Override
-      public int read (final byte b[], final int off, final int len) throws IOException
-      {
-        return bais.read (b, off, Math.min (len, 3));
-      }
-
-    }, request.length);
+        @Override
+        public int read (final byte b[], final int off, final int len) throws IOException
+        {
+          return bais.read (b, off, Math.min (len, 3));
+        }
+      }, request.length);
+    }
     final Iterator <IFileItem> fileIter = fileItems.iterator ();
     assertTrue (fileIter.hasNext ());
     final IFileItem item = fileIter.next ();
@@ -210,14 +208,15 @@ public final class StreamingFuncTest
     return upload.getItemIterator (new ServletRequestContext (request));
   }
 
-  private List <IFileItem> _parseUploadToList (final byte [] bytes) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final byte [] bytes) throws FileUploadException
   {
-    return _parseUploadToList (new ByteArrayInputStream (bytes), bytes.length);
+    return _parseUploadToList (new NonBlockingByteArrayInputStream (bytes), bytes.length);
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  private List <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream,
+                                                       final int pLength) throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -260,31 +259,32 @@ public final class StreamingFuncTest
 
   private static byte [] _newShortRequest () throws IOException
   {
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    try (final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII"))
+    try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
+         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
       osw.write (_getHeader ("field"));
       osw.write ("123");
       osw.write ("\r\n");
       osw.write (_getFooter ());
+      osw.flush ();
+      return baos.toByteArray ();
     }
-    return baos.toByteArray ();
   }
 
   private static byte [] _newRequest () throws IOException
   {
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-    try (final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII"))
+    try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
+         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
-      int add = 16;
-      int num = 0;
-      for (int i = 0; i < 16384; i += add)
+      int nAdd = 16;
+      int nNum = 0;
+      for (int i = 0; i < 16384; i += nAdd)
       {
-        if (++add == 32)
+        if (++nAdd == 32)
         {
-          add = 16;
+          nAdd = 16;
         }
-        osw.write (_getHeader ("field" + (num++)));
+        osw.write (_getHeader ("field" + (nNum++)));
         osw.flush ();
         for (int j = 0; j < i; j++)
         {
@@ -293,8 +293,9 @@ public final class StreamingFuncTest
         osw.write ("\r\n");
       }
       osw.write (_getFooter ());
+      osw.flush ();
+      return baos.toByteArray ();
     }
-    return baos.toByteArray ();
   }
 
   /**
@@ -348,8 +349,8 @@ public final class StreamingFuncTest
     }
     assertEquals ("foo.exe", fileItemStream.getNameSecure ());
 
-    final List <IFileItem> fileItems = _parseUploadToList (aReqBytes);
-    final IFileItem fileItem = fileItems.get (0);
+    final ICommonsList <IFileItem> fileItems = _parseUploadToList (aReqBytes);
+    final IFileItem fileItem = fileItems.getFirst ();
     try
     {
       fileItem.getName ();

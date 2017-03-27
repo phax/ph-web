@@ -201,6 +201,8 @@
             <!-- uses BufferedReader as return type -->
             <exclude>**/LoggingHttpServletRequestWrapper*</exclude>
             <exclude>**/MockHttpServletRequest*</exclude>
+            <exclude>**/MailTransport*</exclude>
+            <exclude>**/samples/*</exclude>
           </excludes>
         </configuration>
         <!-- local executions are ignored -->

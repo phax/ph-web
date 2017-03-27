@@ -21,6 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 
 import com.helger.xml.mock.XMLTestHelper;
@@ -42,15 +44,15 @@ public final class EmailAttachmentListTest
     assertNotNull (aList.getAllAttachments ());
     assertNotNull (aList.getAsDataSourceList ());
 
-    aList.addAttachment (new EmailAttachment ("test.txt", "Inhalt".getBytes ()));
+    aList.addAttachment (new EmailAttachment ("test.txt", "Inhalt".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
     assertEquals (1, aList.getSize ());
 
-    aList.addAttachment (new EmailAttachment ("test2.txt", "Inhalt2".getBytes ()));
+    aList.addAttachment (new EmailAttachment ("test2.txt", "Inhalt2".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
     assertEquals (2, aList.getSize ());
 
-    aList.addAttachment (new EmailAttachment ("test2.txt", "Override".getBytes ()));
+    aList.addAttachment (new EmailAttachment ("test2.txt", "Override".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
     assertEquals (2, aList.getSize ());
 

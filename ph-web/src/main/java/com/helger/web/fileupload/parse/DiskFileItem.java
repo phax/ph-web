@@ -107,7 +107,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * UID used in unique file name generation.
    */
-  private static final String UID = UUID.randomUUID ().toString ().replace (':', '_').replace ('-', '_');
+  private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (),
+                                                                                      ':',
+                                                                                      '_'),
+                                                             '-',
+                                                             '_');
 
   /**
    * Counter used in unique identifier generation.

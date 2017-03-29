@@ -19,7 +19,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ## News
 
-  * v8.7.4 - work in progress
+  * v8.7.4 - 2017-03-29
     * Improved PAC support to also handle IP6 addresses and `dnsResolveEx`
     * Updated to ph-commons 8.6.3
     * Updated to ph-schedule 3.6.1

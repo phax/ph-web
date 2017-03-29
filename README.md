@@ -22,6 +22,7 @@ Java library with common web stuff. It contains the following sub-projects:
   * v8.7.4 - work in progress
     * Improved PAC support to also handle IP6 addresses and `dnsResolveEx`
     * Updated to ph-commons 8.6.3
+    * Updated to ph-schedule 3.6.1
   * v8.7.3 - 2017-03-02
     * API extensions
     * Added package `com.helger.servlet.logging` based on https://github.com/librucha/servlet-logging-filter
@@ -48,7 +49,7 @@ Java library with common web stuff. It contains the following sub-projects:
 ## Maven usage
 Add the following to your pom.xml to use this artifact:
 
-```
+```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>

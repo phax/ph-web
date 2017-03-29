@@ -66,7 +66,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>8.6.2</version>
+        <version>8.6.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -192,16 +192,16 @@
             <signaturesArtifact>
               <groupId>com.helger</groupId>
               <artifactId>ph-forbidden-apis</artifactId>
-              <version>1.0.0-SNAPSHOT</version>
+              <version>1.0.0</version>
               <type>jar</type>
               <path>forbidden-apis.txt</path>
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>
             <!-- uses BufferedReader as return type -->
-            <exclude>**/LoggingHttpServletRequestWrapper*</exclude>
-            <exclude>**/MockHttpServletRequest*</exclude>
-            <exclude>**/MailTransport*</exclude>
+            <exclude>**/LoggingHttpServletRequestWrapper.class</exclude>
+            <exclude>**/MockHttpServletRequest.class</exclude>
+            <exclude>**/MailTransport.class</exclude>
             <exclude>**/samples/*</exclude>
           </excludes>
         </configuration>

@@ -16,6 +16,7 @@
  */
 package com.helger.web.fileupload;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import javax.annotation.Nonnull;
@@ -33,7 +34,7 @@ import com.helger.commons.collection.ext.ICommonsList;
  * @author Michael C. Macaluso
  * @since 1.3
  */
-public interface IFileItemHeaders
+public interface IFileItemHeaders extends Serializable
 {
   /**
    * Returns the value of the specified part header as a <code>String</code>. If

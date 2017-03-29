@@ -684,23 +684,23 @@ public final class MultipartStream
     /**
      * Reads bytes into the given buffer.
      *
-     * @param b
+     * @param aBuf
      *        The destination buffer, where to write to.
-     * @param off
+     * @param nOfs
      *        Offset of the first byte in the buffer.
-     * @param len
+     * @param nLen
      *        Maximum number of bytes to read.
      * @return Number of bytes, which have been actually read, or -1 for EOF.
      * @throws IOException
      *         An I/O error occurred.
      */
     @Override
-    public int read (final byte [] b, final int off, final int len) throws IOException
+    public int read (final byte [] aBuf, final int nOfs, final int nLen) throws IOException
     {
       if (m_bClosed)
         throw new MultipartItemSkippedException ();
 
-      if (len == 0)
+      if (nLen == 0)
         return 0;
 
       int res = available ();
@@ -710,8 +710,8 @@ public final class MultipartStream
         if (res == 0)
           return -1;
       }
-      res = Math.min (res, len);
-      System.arraycopy (m_aBuffer, m_nHead, b, off, res);
+      res = Math.min (res, nLen);
+      System.arraycopy (m_aBuffer, m_nHead, aBuf, nOfs, res);
       m_nHead += res;
       m_nTotal += res;
       return res;

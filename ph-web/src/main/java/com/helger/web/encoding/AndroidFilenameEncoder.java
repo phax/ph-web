@@ -16,6 +16,8 @@
  */
 package com.helger.web.encoding;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,7 +31,7 @@ import com.helger.commons.codec.IEncoder;
  *
  * @author Philip Helger
  */
-public class AndroidFilenameEncoder implements IEncoder <String, String>
+public class AndroidFilenameEncoder implements IEncoder <String, String>, Serializable
 {
   public static final char DEFAULT_REPLACEMENT_CHAR = '_';
   private static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-+,@£$€!½§~'=()[]{}0123456789";

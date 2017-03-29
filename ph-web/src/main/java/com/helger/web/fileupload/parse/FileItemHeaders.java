@@ -16,7 +16,6 @@
  */
 package com.helger.web.fileupload.parse;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -45,7 +44,7 @@ import com.helger.web.fileupload.IFileItemHeaders;
  * @since 1.3
  */
 @ThreadSafe
-public class FileItemHeaders implements IFileItemHeaders, Serializable
+public class FileItemHeaders implements IFileItemHeaders
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
@@ -67,10 +66,8 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    return m_aRWLock.readLocked ( () -> {
-      final ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
-    });
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLocked ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
   }
 
   @Nullable
@@ -98,10 +95,8 @@ public class FileItemHeaders implements IFileItemHeaders, Serializable
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    return m_aRWLock.readLocked ( () -> {
-      final ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
-      return IteratorHelper.getIterator (aHeaderValueList);
-    });
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLocked ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    return IteratorHelper.getIterator (aHeaderValueList);
   }
 
   @Nonnull

@@ -16,6 +16,8 @@
  */
 package com.helger.web.progress;
 
+import java.io.Serializable;
+
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 
@@ -24,7 +26,7 @@ import javax.annotation.Nonnegative;
  * stuff like that.
  */
 @FunctionalInterface
-public interface IProgressListener
+public interface IProgressListener extends Serializable
 {
   /**
    * Updates the listeners status information.

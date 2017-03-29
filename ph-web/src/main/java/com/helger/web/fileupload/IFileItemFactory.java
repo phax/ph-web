@@ -17,6 +17,7 @@
 package com.helger.web.fileupload;
 
 import java.io.File;
+import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,7 +35,7 @@ import com.helger.commons.collection.ext.ICommonsList;
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItemFactory.java 479262 2006-11-26 03:09:24Z niallp $
  */
-public interface IFileItemFactory
+public interface IFileItemFactory extends Serializable
 {
   /**
    * Define where to store files

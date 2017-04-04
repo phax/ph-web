@@ -17,7 +17,6 @@
 package com.helger.web.servlets.scope;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -289,7 +288,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     if (s_aLogger.isDebugEnabled ())
       s_aLogger.debug ("Servlet(" +
                        getClass ().getSimpleName () +
-                       "): asynSup=" +
+                       "): asyncSupported=" +
                        aHttpRequest.isAsyncSupported () +
                        "; asyncStarted=" +
                        aHttpRequest.isAsyncStarted ());
@@ -298,34 +297,43 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     {
       // Run asynchronously
       final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
-
-      s_aES.execute ( () -> {
+      final Runnable aAsyncRunner = () -> {
         try
         {
           if (s_aLogger.isDebugEnabled ())
             s_aLogger.debug ("ASYNC request processing started: " + aAsyncContext.getRequest ());
           _perform (aAsyncContext.getRequest (), aAsyncContext.getResponse (), aRunner, aTimer);
         }
-        catch (IOException | ServletException ex)
+        catch (final Throwable t)
         {
-          s_aLogger.error ("Error processing async request", ex);
+          s_aLogger.error ("Error processing async request", t);
           try
           {
-            aAsyncContext.getResponse ()
-                         .getWriter ()
-                         .write ("Internal error processing request. Please try again later.");
+            aAsyncContext.getResponse ().getWriter ().write (
+                                                             "Internal error processing request. Please try again later. Technical details: " +
+                                                             t.getClass ().getName () +
+                                                             ":" +
+                                                             t.getMessage ());
           }
-          catch (final IOException ex2)
+          catch (final Throwable t2)
           {
-            s_aLogger.error ("Error writing first exception to response", ex2);
-            throw new UncheckedIOException (ex2);
+            s_aLogger.error ("Error writing first exception to response", t2);
           }
         }
         finally
         {
-          aAsyncContext.complete ();
+          try
+          {
+            aAsyncContext.complete ();
+          }
+          catch (final Throwable t)
+          {
+            s_aLogger.error ("Error completing async context", t);
+          }
         }
-      });
+      };
+
+      s_aES.execute (aAsyncRunner);
     }
     else
     {

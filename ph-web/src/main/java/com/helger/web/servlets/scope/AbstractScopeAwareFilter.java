@@ -120,7 +120,7 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpFilter
     if (s_aLogger.isDebugEnabled ())
       s_aLogger.debug ("Filter(" +
                        getClass ().getSimpleName () +
-                       "): asynSup=" +
+                       "): asyncSupported=" +
                        aHttpRequest.isAsyncSupported () +
                        "; asyncStarted=" +
                        aHttpRequest.isAsyncStarted ());

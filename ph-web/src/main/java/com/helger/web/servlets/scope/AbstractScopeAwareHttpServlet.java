@@ -17,8 +17,7 @@
 package com.helger.web.servlets.scope;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.concurrent.BasicThreadFactory;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
@@ -42,7 +40,9 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.timing.StopWatch;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.async.AsyncServletRunnerExecutorService;
 import com.helger.servlet.async.ExtAsyncContext;
+import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.servlet.request.RequestLogger;
 import com.helger.web.scope.IRequestWebScope;
@@ -80,6 +80,31 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   private static final IMutableStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
                                                                                                             "$TRACE");
 
+  private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerExecutorService ();
+
+  /**
+   * Set the async runner to be used.
+   *
+   * @param aAsyncServletRunner
+   *        The runner to be used. May not be <code>null</code>.
+   * @since 8.7.5
+   */
+  public static void setAsyncServletRunner (@Nonnull final IAsyncServletRunner aAsyncServletRunner)
+  {
+    ValueEnforcer.notNull (aAsyncServletRunner, "AsyncServletRunner");
+    s_aAsyncServletRunner = aAsyncServletRunner;
+  }
+
+  /**
+   * @return The global async runner. Never <code>null</code>.
+   * @since 8.7.5
+   */
+  @Nonnull
+  public static IAsyncServletRunner getAsyncServletRunner ()
+  {
+    return s_aAsyncServletRunner;
+  }
+
   private final ServletAsyncSpec m_aAsyncSpec;
   // Determine in "init" method
   private transient String m_sStatusApplicationID;
@@ -98,6 +123,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
    *
    * @param aAsyncSpec
    *        The async/sync spec to be used. May not be <code>null</code>.
+   * @since 8.7.5
    */
   protected AbstractScopeAwareHttpServlet (@Nonnull final ServletAsyncSpec aAsyncSpec)
   {
@@ -107,12 +133,17 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   /**
    * @return <code>true</code> if this servlet acts synchronously,
    *         <code>false</code> if it acts asynchronously.
+   * @since 8.7.5
    */
   public final boolean isAsynchronous ()
   {
     return m_aAsyncSpec.isAsynchronous ();
   }
 
+  /**
+   * @return The internal async spec. Never <code>null</code>.
+   * @since 8.7.5
+   */
   @Nonnull
   protected final ServletAsyncSpec internalGetAsyncSpec ()
   {
@@ -163,6 +194,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   public final void destroy ()
   {
     onDestroy ();
+    s_aAsyncServletRunner.shutdown ();
     super.destroy ();
   }
 
@@ -277,9 +309,6 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     }
   }
 
-  private static ExecutorService s_aES = Executors.newCachedThreadPool (new BasicThreadFactory.Builder ().setNamingPattern ("servlet-async-worker-%d")
-                                                                                                         .build ());
-
   private void _run (@Nonnull final HttpServletRequest aHttpRequest,
                      @Nonnull final HttpServletResponse aHttpResponse,
                      @Nonnull final IRunner aRunner,
@@ -297,23 +326,25 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     {
       // Run asynchronously
       final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
-      final Runnable aAsyncRunner = () -> {
+      // This could theoretically a member except that it references aRunner and
+      // aTimer
+      final Consumer <ExtAsyncContext> aAsyncRunner = aEAC -> {
         try
         {
           if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("ASYNC request processing started: " + aAsyncContext.getRequest ());
-          _perform (aAsyncContext.getRequest (), aAsyncContext.getResponse (), aRunner, aTimer);
+            s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
+          _perform (aEAC.getRequest (), aEAC.getResponse (), aRunner, aTimer);
         }
         catch (final Throwable t)
         {
           s_aLogger.error ("Error processing async request", t);
           try
           {
-            aAsyncContext.getResponse ().getWriter ().write (
-                                                             "Internal error processing request. Please try again later. Technical details: " +
-                                                             t.getClass ().getName () +
-                                                             ":" +
-                                                             t.getMessage ());
+            aEAC.getResponse ().getWriter ().write (
+                                                    "Internal error processing request. Please try again later. Technical details: " +
+                                                    t.getClass ().getName () +
+                                                    ":" +
+                                                    t.getMessage ());
           }
           catch (final Throwable t2)
           {
@@ -324,7 +355,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
         {
           try
           {
-            aAsyncContext.complete ();
+            aEAC.complete ();
           }
           catch (final Throwable t)
           {
@@ -333,7 +364,8 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
         }
       };
 
-      s_aES.execute (aAsyncRunner);
+      // Put into async processing queue
+      s_aAsyncServletRunner.runAsync (aAsyncRunner, aAsyncContext);
     }
     else
     {

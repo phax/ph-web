@@ -337,11 +337,11 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Error processing async request", t);
+          s_aLogger.error ("Error processing async request " + aEAC.getRequest (), t);
           try
           {
             aEAC.getResponse ().getWriter ().write (
-                                                    "Internal error processing request. Please try again later. Technical details: " +
+                                                    "Internal error processing your request. Please try again later. Technical details: " +
                                                     t.getClass ().getName () +
                                                     ":" +
                                                     t.getMessage ());
@@ -365,7 +365,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
       };
 
       // Put into async processing queue
-      s_aAsyncServletRunner.runAsync (aAsyncRunner, aAsyncContext);
+      s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aAsyncRunner, aAsyncContext);
     }
     else
     {

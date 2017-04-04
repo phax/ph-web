@@ -19,6 +19,8 @@ package com.helger.servlet.async;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Abstract layer to customize the handling of running a servlet request
@@ -31,12 +33,21 @@ public interface IAsyncServletRunner
 {
   /**
    * Run a servlet request asynchronously.
+   *
+   * @param aOriginalHttpResponse
+   *        Original HTTP request. Never <code>null</code>.
+   * @param aOriginalHttpRequest
+   *        Original HTTP response. Never <code>null</code>.
    * @param aAsyncRunner
-   *        The main runner that does the heavy lifting.
+   *        The main runner that does the heavy lifting. Never
+   *        <code>null</code>.
    * @param aAsyncContext
-   *        The async execution context.
+   *        The async execution context. Never <code>null</code>.
    */
-  void runAsync (@Nonnull Consumer <ExtAsyncContext> aAsyncRunner, @Nonnull ExtAsyncContext aAsyncContext);
+  void runAsync (@Nonnull HttpServletRequest aOriginalHttpRequest,
+                 @Nonnull HttpServletResponse aOriginalHttpResponse,
+                 @Nonnull Consumer <ExtAsyncContext> aAsyncRunner,
+                 @Nonnull ExtAsyncContext aAsyncContext);
 
   /**
    * Close all resources potentially allocated.

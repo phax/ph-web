@@ -21,13 +21,15 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.concurrent.BasicThreadFactory;
 import com.helger.commons.concurrent.ManagedExecutorService;
 
 /**
  * Default implementation of {@link IAsyncServletRunner}
- * 
+ *
  * @author Philip Helger
  * @since 8.7.5
  */
@@ -39,7 +41,9 @@ public class AsyncServletRunnerExecutorService implements IAsyncServletRunner
   public AsyncServletRunnerExecutorService ()
   {}
 
-  public void runAsync (@Nonnull final Consumer <ExtAsyncContext> aAsyncRunner,
+  public void runAsync (@Nonnull final HttpServletRequest aOriginalHttpRequest,
+                        @Nonnull final HttpServletResponse aOriginalHttpResponse,
+                        @Nonnull final Consumer <ExtAsyncContext> aAsyncRunner,
                         @Nonnull final ExtAsyncContext aAsyncContext)
   {
     m_aES.submit ( () -> aAsyncRunner.accept (aAsyncContext));

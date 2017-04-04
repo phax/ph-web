@@ -65,6 +65,7 @@ import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemProperties;
 import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletHelper;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -87,9 +88,9 @@ public class MockServletContext implements ServletContext
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
   private String m_sContextPath;
-  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap<> ();
-  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap<> ();
-  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap<> ();
+  private final ICommonsMap <String, ServletContext> m_aContexts = new CommonsHashMap <> ();
+  private final ICommonsOrderedMap <String, String> m_aInitParameters = new CommonsLinkedHashMap <> ();
+  private final ICommonsMap <String, Object> m_aAttributes = new CommonsHashMap <> ();
   private String m_sServletContextName = DEFAULT_SERVLET_CONTEXT_NAME;
   private final MockServletPool m_aServletPool;
   private boolean m_bInvalidated = false;
@@ -433,7 +434,7 @@ public class MockServletContext implements ServletContext
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     // Find matching servlet
-    final String sServletPath = aHttpRequest.getServletPath ();
+    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
     final Servlet aServlet = m_aServletPool.getServletOfPath (sServletPath);
     if (aServlet == null)
     {

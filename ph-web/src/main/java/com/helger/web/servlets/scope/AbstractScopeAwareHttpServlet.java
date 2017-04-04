@@ -17,6 +17,9 @@
 package com.helger.web.servlets.scope;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -28,15 +31,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.concurrent.BasicThreadFactory;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.IMutableStatisticsHandlerTimer;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.timing.StopWatch;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.async.ExtAsyncContext;
+import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.servlet.request.RequestLogger;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
@@ -73,7 +81,44 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   private static final IMutableStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
                                                                                                             "$TRACE");
 
-  private String m_sApplicationID;
+  private final ServletAsyncSpec m_aAsyncSpec;
+  // Determine in "init" method
+  private transient String m_sStatusApplicationID;
+
+  /**
+   * Default constructor for synchronous servlets.
+   */
+  protected AbstractScopeAwareHttpServlet ()
+  {
+    // By default synchronous
+    this (ServletAsyncSpec.createSync ());
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param aAsyncSpec
+   *        The async/sync spec to be used. May not be <code>null</code>.
+   */
+  protected AbstractScopeAwareHttpServlet (@Nonnull final ServletAsyncSpec aAsyncSpec)
+  {
+    m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
+  }
+
+  /**
+   * @return <code>true</code> if this servlet acts synchronously,
+   *         <code>false</code> if it acts asynchronously.
+   */
+  public final boolean isAsynchronous ()
+  {
+    return m_aAsyncSpec.isAsynchronous ();
+  }
+
+  @Nonnull
+  protected final ServletAsyncSpec internalGetAsyncSpec ()
+  {
+    return m_aAsyncSpec;
+  }
 
   /**
    * @return The application ID for this servlet.
@@ -100,9 +145,9 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   public final void init () throws ServletException
   {
     super.init ();
-    m_sApplicationID = getApplicationID ();
-    if (StringHelper.hasNoText (m_sApplicationID))
-      throw new InitializationException ("Failed retrieve a valid application ID!");
+    m_sStatusApplicationID = getApplicationID ();
+    if (StringHelper.hasNoText (m_sStatusApplicationID))
+      throw new InitializationException ("Failed retrieve a valid application ID! Please override getApplicationID()");
     onInit ();
   }
 
@@ -151,7 +196,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   {
     final StringBuilder aSB = new StringBuilder (sMsg).append (":\n");
     aSB.append (RequestLogger.getRequestComplete (aHttpRequest));
-    s_aLogger.warn (aSB.toString ());
+    s_aLogger.error (aSB.toString ());
   }
 
   /**
@@ -175,12 +220,118 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     if (ServletHelper.getRequestContextPath (aHttpRequest) == null)
       logInvalidRequestSetup ("HTTP request has no context path", aHttpRequest);
 
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
+    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
                                                                                              aHttpRequest,
                                                                                              aHttpResponse);
     _ensureResponseCharset (aHttpResponse);
     s_aCounterRequests.increment ();
     return aRequestScopeInitializer;
+  }
+
+  /**
+   * Dummy interface matching the on... protected methods so I can pass them as
+   * method references.
+   *
+   * @author Philip Helger
+   * @since 8.7.5
+   */
+  private static interface IRunner
+  {
+    void run (@Nonnull final HttpServletRequest aHttpRequest,
+              @Nonnull final HttpServletResponse aHttpResponse,
+              @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
+  }
+
+  /**
+   * Run a servlet request synchronously.
+   *
+   * @param aHttpRequest
+   *        HTTP request
+   * @param aHttpResponse
+   *        HTTP response
+   * @param aRunner
+   *        Method reference to the protected "on..." method that does the main
+   *        work
+   * @param aTimer
+   *        The time to which this is to be added.
+   * @throws ServletException
+   *         On error
+   * @throws IOException
+   *         On error
+   * @since 8.7.5
+   */
+  private void _perform (@Nonnull final HttpServletRequest aHttpRequest,
+                         @Nonnull final HttpServletResponse aHttpResponse,
+                         @Nonnull final IRunner aRunner,
+                         @Nonnull final IMutableStatisticsHandlerTimer aTimer) throws ServletException, IOException
+  {
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
+    final StopWatch aSW = StopWatch.createdStarted ();
+    try
+    {
+      aRunner.run (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
+    }
+    finally
+    {
+      aTimer.addTime (aSW.stopAndGetMillis ());
+      aRequestScopeInitializer.destroyScope ();
+    }
+  }
+
+  private static ExecutorService s_aES = Executors.newCachedThreadPool (new BasicThreadFactory.Builder ().setNamingPattern ("servlet-async-worker-%d")
+                                                                                                         .build ());
+
+  private void _run (@Nonnull final HttpServletRequest aHttpRequest,
+                     @Nonnull final HttpServletResponse aHttpResponse,
+                     @Nonnull final IRunner aRunner,
+                     @Nonnull final IMutableStatisticsHandlerTimer aTimer) throws ServletException, IOException
+  {
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("Servlet(" +
+                       getClass ().getSimpleName () +
+                       "): asynSup=" +
+                       aHttpRequest.isAsyncSupported () +
+                       "; asyncStarted=" +
+                       aHttpRequest.isAsyncStarted ());
+
+    if (m_aAsyncSpec.isAsynchronous ())
+    {
+      // Run asynchronously
+      final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
+
+      s_aES.execute ( () -> {
+        try
+        {
+          if (s_aLogger.isDebugEnabled ())
+            s_aLogger.debug ("ASYNC request processing started: " + aAsyncContext.getRequest ());
+          _perform (aAsyncContext.getRequest (), aAsyncContext.getResponse (), aRunner, aTimer);
+        }
+        catch (IOException | ServletException ex)
+        {
+          s_aLogger.error ("Error processing async request", ex);
+          try
+          {
+            aAsyncContext.getResponse ()
+                         .getWriter ()
+                         .write ("Internal error processing request. Please try again later.");
+          }
+          catch (final IOException ex2)
+          {
+            s_aLogger.error ("Error writing first exception to response", ex2);
+            throw new UncheckedIOException (ex2);
+          }
+        }
+        finally
+        {
+          aAsyncContext.complete ();
+        }
+      });
+    }
+    else
+    {
+      // Run synchronously
+      _perform (aHttpRequest, aHttpResponse, aRunner, aTimer);
+    }
   }
 
   /**
@@ -209,17 +360,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doDelete (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onDelete (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlDelete.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onDelete, s_aTimerHdlDelete);
   }
 
   /**
@@ -248,17 +389,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doGet (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onGet (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlGet.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onGet, s_aTimerHdlGet);
   }
 
   /**
@@ -287,17 +418,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doHead (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onHead (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlHead.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onHead, s_aTimerHdlHead);
   }
 
   /**
@@ -326,17 +447,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doOptions (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onOptions (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlOptions.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onOptions, s_aTimerHdlOptions);
   }
 
   /**
@@ -365,17 +476,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPost (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onPost (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlPost.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onPost, s_aTimerHdlPost);
   }
 
   /**
@@ -404,17 +505,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPut (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onPut (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlPut.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onPut, s_aTimerHdlPut);
   }
 
   /**
@@ -443,16 +534,14 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doTrace (@Nonnull final HttpServletRequest aHttpRequest,
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
-    try
-    {
-      onTrace (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      s_aTimerHdlTrace.addTime (aSW.stopAndGetMillis ());
-      aRequestScopeInitializer.destroyScope ();
-    }
+    _run (aHttpRequest, aHttpResponse, this::onTrace, s_aTimerHdlTrace);
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("AsyncSpec", m_aAsyncSpec)
+                                       .append ("ApplicationID", m_sStatusApplicationID)
+                                       .getToString ();
   }
 }

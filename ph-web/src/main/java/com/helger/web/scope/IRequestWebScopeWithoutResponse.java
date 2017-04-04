@@ -63,7 +63,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
   {
-    final ICommonsMap <String, IFileItem> ret = new CommonsHashMap<> ();
+    final ICommonsMap <String, IFileItem> ret = new CommonsHashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
@@ -81,7 +81,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
-    final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap<> ();
+    final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap <> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
     {
       final String sAttrName = aEntry.getKey ();
@@ -104,7 +104,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
   {
-    final ICommonsList <IFileItem> ret = new CommonsArrayList<> ();
+    final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
     for (final Object aAttrValue : getAllAttributeValues ())
     {
       if (aAttrValue instanceof IFileItem)
@@ -594,7 +594,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   default String getServletPath ()
   {
-    return getRequest ().getServletPath ();
+    return ServletHelper.getRequestServletPath (getRequest ());
   }
 
   /**

@@ -19,6 +19,7 @@ package com.helger.servlet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -81,6 +82,82 @@ public final class ServletHelper
   }
 
   /**
+   * Work around an exception that can occur on Tomcat 8.0.20:
+   *
+   * <pre>
+  java.lang.NullPointerException: null
+  at org.apache.catalina.connector.Request.getServletContext(Request.java:1593) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.Request.getContextPath(Request.java:1910) ~[catalina.jar:8.0.20]
+  at org.apache.catalina.connector.RequestFacade.getContextPath(RequestFacade.java:783) ~[catalina.jar:8.0.20]
+  at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
+   * </pre>
+   *
+   * @param aRequest
+   *        Source request. May be <code>null</code>.
+   * @return Empty string if request is <code>null</code> or a String specifying
+   *         the portion of the request URI that indicates the context of the
+   *         request
+   */
+  @Nonnull
+  public static String getRequestContextPath (@Nullable final HttpServletRequest aRequest)
+  {
+    String ret = null;
+    if (aRequest != null)
+      try
+      {
+        if (aRequest.isAsyncSupported () && aRequest.isAsyncStarted ())
+          ret = (String) aRequest.getAttribute (AsyncContext.ASYNC_CONTEXT_PATH);
+        else
+          ret = aRequest.getContextPath ();
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
+      }
+
+    if (ret == null)
+    {
+      // Fallback
+      ret = ServletContextPathHolder.getContextPath ();
+    }
+
+    return ret;
+  }
+
+  /**
+   * Get the path info of an request, supporting sync and async requests.
+   *
+   * @param aRequest
+   *        Source request. May be <code>null</code>.
+   * @return Empty string if request is <code>null</code> or a the path info.
+   */
+  @Nonnull
+  public static String getRequestPathInfo (@Nullable final HttpServletRequest aRequest)
+  {
+    String ret = null;
+    if (aRequest != null)
+      try
+      {
+        // They may return null!
+        if (aRequest.isAsyncSupported () && aRequest.isAsyncStarted ())
+          ret = (String) aRequest.getAttribute (AsyncContext.ASYNC_PATH_INFO);
+        else
+          ret = aRequest.getPathInfo ();
+      }
+      catch (final UnsupportedOperationException ex)
+      {
+        // Offline request - fall through
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", t);
+      }
+    return ret == null ? "" : ret;
+  }
+
+  /**
    * Work around an exception that can occur in Jetty 9.3.13:
    *
    * <pre>
@@ -101,7 +178,10 @@ public final class ServletHelper
     if (aRequest != null)
       try
       {
-        ret = aRequest.getQueryString ();
+        if (aRequest.isAsyncSupported () && aRequest.isAsyncStarted ())
+          ret = (String) aRequest.getAttribute (AsyncContext.ASYNC_QUERY_STRING);
+        else
+          ret = aRequest.getQueryString ();
       }
       catch (final Throwable t)
       {
@@ -112,36 +192,60 @@ public final class ServletHelper
   }
 
   /**
-   * Work around an exception that can occur on Tomcat 8.0.20:
-   *
-   * <pre>
-  java.lang.NullPointerException: null
-  at org.apache.catalina.connector.Request.getServletContext(Request.java:1593) ~[catalina.jar:8.0.20]
-  at org.apache.catalina.connector.Request.getContextPath(Request.java:1910) ~[catalina.jar:8.0.20]
-  at org.apache.catalina.connector.RequestFacade.getContextPath(RequestFacade.java:783) ~[catalina.jar:8.0.20]
-  at com.helger.web.servlet.request.RequestLogger.getRequestFieldMap(RequestLogger.java:81) ~[ph-web-8.6.3.jar:8.6.3]
-   * </pre>
+   * Get the request URI of an request, supporting sync and async requests.
    *
    * @param aRequest
    *        Source request. May be <code>null</code>.
-   * @return Empty string if request is <code>null</code> or a String specifying
-   *         the portion of the request URI that indicates the context of the
-   *         request
+   * @return Empty string if request is <code>null</code> or the request URI.
    */
   @Nonnull
-  public static String getRequestContextPath (@Nullable final HttpServletRequest aRequest)
+  public static String getRequestRequestURI (@Nullable final HttpServletRequest aRequest)
   {
     String ret = "";
     if (aRequest != null)
       try
       {
-        ret = aRequest.getContextPath ();
+        if (aRequest.isAsyncSupported () && aRequest.isAsyncStarted ())
+          ret = (String) aRequest.getAttribute (AsyncContext.ASYNC_REQUEST_URI);
+        else
+          ret = aRequest.getRequestURI ();
       }
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
-        ret = ServletContextPathHolder.getContextPath ();
+        s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", t);
+      }
+    return ret;
+  }
+
+  /**
+   * Get the servlet path of an request, supporting sync and async requests.
+   *
+   * @param aRequest
+   *        Source request. May be <code>null</code>.
+   * @return Empty string if request is <code>null</code> or the servlet path.
+   * @since 8.7.5
+   */
+  @Nonnull
+  public static String getRequestServletPath (@Nullable final HttpServletRequest aRequest)
+  {
+    String ret = "";
+    if (aRequest != null)
+      try
+      {
+        if (aRequest.isAsyncSupported () && aRequest.isAsyncStarted ())
+          ret = (String) aRequest.getAttribute (AsyncContext.ASYNC_SERVLET_PATH);
+        else
+          ret = aRequest.getServletPath ();
+      }
+      catch (final UnsupportedOperationException ex)
+      {
+        // Offline request - fall through
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", t);
       }
     return ret;
   }

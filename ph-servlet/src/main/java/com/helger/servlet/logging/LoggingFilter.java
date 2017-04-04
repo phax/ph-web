@@ -20,12 +20,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,16 +34,18 @@ import com.helger.commons.collection.ext.CommonsHashSet;
 import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.servlet.ServletHelper;
+import com.helger.servlet.filter.AbstractHttpFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 
-public class LoggingFilter implements Filter
+public class LoggingFilter extends AbstractHttpFilter
 {
   private static final AtomicBoolean ENABLED = new AtomicBoolean (true);
 
   private Logger m_aLogger = LoggerFactory.getLogger (getClass ());
   private int m_nMaxContentSize = 1024;
-  private final ICommonsSet <String> m_aExcludedPaths = new CommonsHashSet<> ();
+  private final ICommonsSet <String> m_aExcludedPaths = new CommonsHashSet <> ();
   private String m_sRequestPrefix = "REQUEST: ";
   private String m_sResponsePrefix = "RESPONSE: ";
 
@@ -89,15 +88,15 @@ public class LoggingFilter implements Filter
 
   @Nonnull
   @OverrideOnDemand
-  protected String getRequestDescription (@Nonnull final LoggingHttpServletRequestWrapper requestWrapper)
+  protected String getRequestDescription (@Nonnull final LoggingHttpServletRequestWrapper aRequestWrapper)
   {
     final LoggingRequest aLoggingRequest = new LoggingRequest ();
-    aLoggingRequest.setSender (requestWrapper.getLocalAddr ());
-    aLoggingRequest.setMethod (requestWrapper.getMethod ());
-    aLoggingRequest.setPath (requestWrapper.getRequestURI ());
-    aLoggingRequest.setParams (requestWrapper.isFormPost () ? null : requestWrapper.getParameters ());
-    aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (requestWrapper));
-    final String sContent = requestWrapper.getContent ();
+    aLoggingRequest.setSender (aRequestWrapper.getLocalAddr ());
+    aLoggingRequest.setMethod (aRequestWrapper.getMethod ());
+    aLoggingRequest.setPath (ServletHelper.getRequestRequestURI (aRequestWrapper));
+    aLoggingRequest.setParams (aRequestWrapper.isFormPost () ? null : aRequestWrapper.getParameters ());
+    aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (aRequestWrapper));
+    final String sContent = aRequestWrapper.getContent ();
     if (m_aLogger.isTraceEnabled () || m_nMaxContentSize <= 0)
     {
       aLoggingRequest.setBody (sContent);
@@ -147,29 +146,22 @@ public class LoggingFilter implements Filter
     if (bLog)
     {
       // Check for excluded path
-      final String sRequestURI = aHttpRequest.getRequestURI ();
-      for (final String excludedPath : m_aExcludedPaths)
-      {
-        if (sRequestURI.startsWith (excludedPath))
+      final String sRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
+      for (final String sExcludedPath : m_aExcludedPaths)
+        if (sRequestURI.startsWith (sExcludedPath))
         {
           bLog = false;
           break;
         }
-      }
     }
     return bLog;
   }
 
   @Override
-  public void doFilter (final ServletRequest aRequest,
-                        final ServletResponse aResponse,
-                        final FilterChain aFilterChain) throws IOException, ServletException
+  public void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                            @Nonnull final HttpServletResponse aHttpResponse,
+                            @Nonnull final FilterChain aFilterChain) throws IOException, ServletException
   {
-    if (!(aRequest instanceof HttpServletRequest) || !(aResponse instanceof HttpServletResponse))
-      throw new ServletException ("LoggingFilter just supports HTTP requests");
-
-    final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-    final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
     if (isLogRequest (aHttpRequest, aHttpResponse))
     {
       final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest);
@@ -186,9 +178,4 @@ public class LoggingFilter implements Filter
       aFilterChain.doFilter (aHttpRequest, aHttpResponse);
     }
   }
-
-  @Override
-  public void destroy ()
-  {}
-
 }

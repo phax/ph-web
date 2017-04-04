@@ -19,12 +19,9 @@ package com.helger.web.servlets.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,6 +30,7 @@ import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.filter.AbstractHttpFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelperSettings;
 import com.helger.servlet.response.gzip.AbstractCompressedResponseWrapper;
@@ -47,12 +45,13 @@ import com.helger.servlet.response.gzip.GZIPResponse;
  *
  * @author Philip Helger
  */
-public class CompressFilter implements Filter
+public class CompressFilter extends AbstractHttpFilter
 {
   private static final String REQUEST_ATTR = CompressFilter.class.getName ();
   private static final IMutableStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
                                                                                                             "$none");
 
+  @Override
   public void init (@Nonnull final FilterConfig aFilterConfig)
   {
     // Mark the filter as loaded
@@ -63,7 +62,7 @@ public class CompressFilter implements Filter
     ResponseHelperSettings.setResponseCompressionEnabled (false);
   }
 
-  private static void _performCompressed (@Nonnull final ServletRequest aRequest,
+  private static void _performCompressed (@Nonnull final HttpServletRequest aRequest,
                                           @Nonnull final FilterChain aChain,
                                           @Nonnull final HttpServletResponse aHttpResponse,
                                           @Nonnull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException,
@@ -88,18 +87,14 @@ public class CompressFilter implements Filter
     }
   }
 
-  public void doFilter (@Nonnull final ServletRequest aRequest,
-                        @Nonnull final ServletResponse aResponse,
-                        @Nonnull final FilterChain aChain) throws IOException, ServletException
+  @Override
+  public void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                            @Nonnull final HttpServletResponse aHttpResponse,
+                            @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
-    if (CompressFilterSettings.isResponseCompressionEnabled () &&
-        aRequest instanceof HttpServletRequest &&
-        aResponse instanceof HttpServletResponse &&
-        aRequest.getAttribute (REQUEST_ATTR) == null)
+    if (CompressFilterSettings.isResponseCompressionEnabled () && aHttpRequest.getAttribute (REQUEST_ATTR) == null)
     {
-      ServletHelper.setRequestAttribute (aRequest, REQUEST_ATTR, Boolean.TRUE);
-      final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-      final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
+      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, Boolean.TRUE);
 
       // Inform caches that responses may vary according to
       // Accept-Encoding
@@ -127,7 +122,7 @@ public class CompressFilter implements Filter
 
       if (aCompressedResponse != null)
       {
-        _performCompressed (aRequest, aChain, aHttpResponse, aCompressedResponse);
+        _performCompressed (aHttpRequest, aChain, aHttpResponse, aCompressedResponse);
         return;
       }
 
@@ -136,9 +131,6 @@ public class CompressFilter implements Filter
     }
 
     // Perform as is
-    aChain.doFilter (aRequest, aResponse);
+    aChain.doFilter (aHttpRequest, aHttpResponse);
   }
-
-  public void destroy ()
-  {}
 }

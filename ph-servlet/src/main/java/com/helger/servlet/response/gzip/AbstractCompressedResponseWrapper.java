@@ -36,6 +36,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.AcceptEncodingHandler;
 import com.helger.http.CHTTPHeader;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
@@ -313,7 +314,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
                       ", " +
                       m_nMinCompressSize +
                       ") on " +
-                      m_aHttpRequest.getRequestURI ());
+                      ServletHelper.getRequestRequestURI (m_aHttpRequest));
 
     return createCompressedOutputStream (m_aHttpRequest,
                                          (HttpServletResponse) getResponse (),

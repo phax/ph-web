@@ -66,7 +66,7 @@ public final class RequestLogger
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     if (s_aOfflineCache.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
@@ -91,7 +91,7 @@ public final class RequestLogger
       ret.put ("LocalName", aHttpRequest.getLocalName ());
       ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
       ret.put ("Method", aHttpRequest.getMethod ());
-      ret.put ("PathInfo", aHttpRequest.getPathInfo ());
+      ret.put ("PathInfo", ServletHelper.getRequestPathInfo (aHttpRequest));
       ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
       ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
       ret.put ("Protocol", aHttpRequest.getProtocol ());
@@ -101,7 +101,7 @@ public final class RequestLogger
       ret.put ("RemotePort", Integer.toString (aHttpRequest.getRemotePort ()));
       ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
       ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
-      ret.put ("RequestURI", aHttpRequest.getRequestURI ());
+      ret.put ("RequestURI", ServletHelper.getRequestRequestURI (aHttpRequest));
       try
       {
         ret.put ("RequestURI2", RequestHelper.getRequestURI (aHttpRequest));
@@ -122,7 +122,7 @@ public final class RequestLogger
       ret.put ("Scheme", aHttpRequest.getScheme ());
       ret.put ("ServerName", aHttpRequest.getServerName ());
       ret.put ("ServerPort", Integer.toString (aHttpRequest.getServerPort ()));
-      ret.put ("ServletPath", aHttpRequest.getServletPath ());
+      ret.put ("ServletPath", ServletHelper.getRequestServletPath (aHttpRequest));
     }
     final HttpSession aSession = aHttpRequest.getSession (false);
     if (aSession != null)
@@ -169,7 +169,7 @@ public final class RequestLogger
   @ReturnsMutableCopy
   public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
   {
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <String, ICommonsList <String>> aEntry : aMap)
     {
       final String sName = aEntry.getKey ();
@@ -213,7 +213,7 @@ public final class RequestLogger
   @Nonnull
   public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap<> ();
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
                                                                       .entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));

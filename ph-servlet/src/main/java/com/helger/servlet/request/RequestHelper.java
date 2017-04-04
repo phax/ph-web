@@ -185,23 +185,13 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    String sServletPath;
-    String sPathInfo;
-    try
-    {
-      sServletPath = aHttpRequest.getServletPath ();
-      sPathInfo = StringHelper.getNotNull (aHttpRequest.getPathInfo (), "");
-    }
-    catch (final UnsupportedOperationException ex)
-    {
-      // For the com.helger.web.mock.OfflineHttpServletRequest
-      sServletPath = "";
-      sPathInfo = "";
-    }
-
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
-    final String sRequestURI = ServletContextPathHolder.getContextPath () + sServletPath + sPathInfo;
+    final String sContextPath = ServletContextPathHolder.getContextPath ();
+    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
+
+    final String sRequestURI = sContextPath + sServletPath + sPathInfo;
     if (StringHelper.hasNoText (sRequestURI))
       return sRequestURI;
 
@@ -224,7 +214,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sPathInfo = aHttpRequest.getPathInfo ();
+    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
     if (StringHelper.hasNoText (sPathInfo))
       return sPathInfo;
 
@@ -282,7 +272,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sPathWithinApp = getPathWithinServletContext (aHttpRequest);
-    final String sServletPath = aHttpRequest.getServletPath ();
+    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
     if (sPathWithinApp.startsWith (sServletPath))
       return sPathWithinApp.substring (sServletPath.length ());
 
@@ -359,7 +349,7 @@ public final class RequestHelper
 
     // query string
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
-    if (sQueryString != null)
+    if (StringHelper.hasText (sQueryString))
       ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
 
     return ret.toString ();

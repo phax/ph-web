@@ -19,20 +19,22 @@ package com.helger.web.servlets.scope;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.string.ToStringGenerator;
+import com.helger.servlet.filter.AbstractHttpFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
@@ -41,14 +43,17 @@ import com.helger.web.scope.request.RequestScopeInitializer;
  * The scope initialization happens before the main action is executed, and the
  * scope destruction happens after <b>all</b> the whole filter chain finished!
  * If more than one scope aware filter are present in the filter chain, only the
- * filter invoked first creates the request scope. Succeeding scope aeware
+ * filter invoked first creates the request scope. Succeeding scope aware
  * filters wont create a request scope.
  *
  * @author Philip Helger
  */
-public abstract class AbstractScopeAwareFilter implements Filter
+public abstract class AbstractScopeAwareFilter extends AbstractHttpFilter
 {
-  private String m_sApplicationID;
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareFilter.class);
+
+  // Set in "init" method
+  private transient String m_sStatusApplicationID;
 
   /**
    * Determine the application ID to be used, based on the passed filter
@@ -76,10 +81,11 @@ public abstract class AbstractScopeAwareFilter implements Filter
   protected void onInit (@Nonnull final FilterConfig aFilterConfig) throws ServletException
   {}
 
+  @Override
   public final void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
   {
-    m_sApplicationID = getApplicationID (aFilterConfig);
-    if (StringHelper.hasNoText (m_sApplicationID))
+    m_sStatusApplicationID = getApplicationID (aFilterConfig);
+    if (StringHelper.hasNoText (m_sStatusApplicationID))
       throw new InitializationException ("Failed retrieve a valid application ID!");
     onInit (aFilterConfig);
   }
@@ -106,42 +112,44 @@ public abstract class AbstractScopeAwareFilter implements Filter
                                          @Nonnull HttpServletResponse aHttpResponse,
                                          @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
 
-  public final void doFilter (final ServletRequest aRequest,
-                              final ServletResponse aResponse,
-                              final FilterChain aChain) throws IOException, ServletException
+  @Override
+  public final void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                                  @Nonnull final HttpServletResponse aHttpResponse,
+                                  @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
-    if (aRequest instanceof HttpServletRequest && aResponse instanceof HttpServletResponse)
-    {
-      final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-      final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("Filter(" +
+                       getClass ().getSimpleName () +
+                       "): asynSup=" +
+                       aHttpRequest.isAsyncSupported () +
+                       "; asyncStarted=" +
+                       aHttpRequest.isAsyncStarted ());
 
-      // Check if a scope needs to be created
-      final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
-                                                                                               aHttpRequest,
-                                                                                               aHttpResponse);
-      try
+    // Check if a scope needs to be created
+    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
+                                                                                             aHttpRequest,
+                                                                                             aHttpResponse);
+    try
+    {
+      // Apply any optional filter
+      if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
       {
-        // Apply any optional filter
-        if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
-        {
-          // Continue as usual
-          aChain.doFilter (aRequest, aResponse);
-        }
-      }
-      finally
-      {
-        // And destroy the scope depending on its creation state
-        aRequestScopeInitializer.destroyScope ();
+        // Continue as usual
+        aChain.doFilter (aHttpRequest, aHttpResponse);
       }
     }
-    else
+    finally
     {
-      // No scope handling
-      aChain.doFilter (aRequest, aResponse);
+      // And destroy the scope depending on its creation state
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
-  @OverrideOnDemand
-  public void destroy ()
-  {}
+  @Override
+  public String toString ()
+  {
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("ApplicationID", m_sStatusApplicationID)
+                            .getToString ();
+  }
 }

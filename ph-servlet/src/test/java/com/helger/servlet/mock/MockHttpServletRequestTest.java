@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.mock;
+package com.helger.servlet.mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -23,8 +23,6 @@ import org.junit.Test;
 
 import com.helger.http.EHTTPMethod;
 import com.helger.servlet.ServletHelper;
-import com.helger.servlet.mock.MockHttpServletRequest;
-import com.helger.servlet.mock.MockServletContext;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.
@@ -47,19 +45,19 @@ public final class MockHttpServletRequestTest
       assertNull (c.getServerName ());
       assertEquals (-1, c.getServerPort ());
       assertEquals (sContextPath, ServletHelper.getRequestContextPath (c));
-      assertEquals ("/servlet", c.getServletPath ());
-      assertEquals ("", c.getPathInfo ());
-      assertEquals (sContextPath + "/servlet", c.getRequestURI ());
+      assertEquals ("/servlet", ServletHelper.getRequestServletPath (c));
+      assertEquals ("", ServletHelper.getRequestPathInfo (c));
+      assertEquals (sContextPath + "/servlet", ServletHelper.getRequestRequestURI (c));
       assertEquals ("x=y", ServletHelper.getRequestQueryString (c));
 
       c.setAllPaths (sContextPath + "/servlet/path/in/servlet#anchor");
       assertNull (c.getScheme ());
       assertNull (c.getServerName ());
       assertEquals (-1, c.getServerPort ());
-      assertEquals (sContextPath, c.getContextPath ());
-      assertEquals ("/servlet", c.getServletPath ());
-      assertEquals ("/path/in/servlet", c.getPathInfo ());
-      assertEquals (sContextPath + "/servlet/path/in/servlet", c.getRequestURI ());
+      assertEquals (sContextPath, ServletHelper.getRequestContextPath (c));
+      assertEquals ("/servlet", ServletHelper.getRequestServletPath (c));
+      assertEquals ("/path/in/servlet", ServletHelper.getRequestPathInfo (c));
+      assertEquals (sContextPath + "/servlet/path/in/servlet", ServletHelper.getRequestRequestURI (c));
       assertNull (c.getQueryString ());
     }
     finally

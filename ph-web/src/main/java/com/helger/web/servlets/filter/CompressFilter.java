@@ -30,7 +30,7 @@ import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingList;
 import com.helger.http.CHTTPHeader;
 import com.helger.servlet.ServletHelper;
-import com.helger.servlet.filter.AbstractHttpFilter;
+import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelperSettings;
 import com.helger.servlet.response.gzip.AbstractCompressedResponseWrapper;
@@ -45,7 +45,7 @@ import com.helger.servlet.response.gzip.GZIPResponse;
  *
  * @author Philip Helger
  */
-public class CompressFilter extends AbstractHttpFilter
+public class CompressFilter extends AbstractHttpServletFilter
 {
   private static final String REQUEST_ATTR = CompressFilter.class.getName ();
   private static final IMutableStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +

@@ -35,11 +35,11 @@ import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.servlet.ServletHelper;
-import com.helger.servlet.filter.AbstractHttpFilter;
+import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 
-public class LoggingFilter extends AbstractHttpFilter
+public class LoggingFilter extends AbstractHttpServletFilter
 {
   private static final AtomicBoolean ENABLED = new AtomicBoolean (true);
 

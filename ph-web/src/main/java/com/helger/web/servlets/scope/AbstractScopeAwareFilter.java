@@ -34,7 +34,7 @@ import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.servlet.filter.AbstractHttpFilter;
+import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
@@ -48,7 +48,7 @@ import com.helger.web.scope.request.RequestScopeInitializer;
  *
  * @author Philip Helger
  */
-public abstract class AbstractScopeAwareFilter extends AbstractHttpFilter
+public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareFilter.class);
 

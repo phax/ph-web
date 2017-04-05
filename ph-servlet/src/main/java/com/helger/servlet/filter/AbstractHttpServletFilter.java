@@ -37,7 +37,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  * @since 8.7.5
  */
-public abstract class AbstractHttpFilter extends AbstractServletFilter
+public abstract class AbstractHttpServletFilter extends AbstractServletFilter
 {
   /**
    * Implement this main filtering method in subclasses.

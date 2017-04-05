@@ -10,15 +10,46 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
+import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 
-final class AsyncHttpServletHandler implements IHttpServletHandler
+/**
+ * A special {@link IHttpServletHandler} that allows to run requests
+ * asynchronously.
+ * 
+ * @author Philip Helger
+ */
+public final class AsyncHttpServletHandler implements IHttpServletHandler
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncHttpServletHandler.class);
+  private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
+
+  /**
+   * Set the async runner to be used.
+   *
+   * @param aAsyncServletRunner
+   *        The runner to be used. May not be <code>null</code>.
+   */
+  public static void setAsyncServletRunner (@Nonnull final IAsyncServletRunner aAsyncServletRunner)
+  {
+    ValueEnforcer.notNull (aAsyncServletRunner, "AsyncServletRunner");
+    s_aAsyncServletRunner = aAsyncServletRunner;
+  }
+
+  /**
+   * @return The global async runner. Never <code>null</code>.
+   */
+  @Nonnull
+  public static IAsyncServletRunner getAsyncServletRunner ()
+  {
+    return s_aAsyncServletRunner;
+  }
 
   private final ServletAsyncSpec m_aAsyncSpec;
   private final IHttpServletHandler m_aOriginalHandler;
@@ -26,14 +57,14 @@ final class AsyncHttpServletHandler implements IHttpServletHandler
   public AsyncHttpServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
                                   @Nonnull final IHttpServletHandler aOriginalHandler)
   {
-    m_aAsyncSpec = aAsyncSpec;
-    m_aOriginalHandler = aOriginalHandler;
+    m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
+    m_aOriginalHandler = ValueEnforcer.notNull (aOriginalHandler, "OriginalHandler");
   }
 
-  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
-                      @Nonnull final HttpServletResponse aHttpResponse,
-                      @Nonnull final EHTTPVersion eHttpVersion,
-                      @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
+  private void _handleAsync (@Nonnull final HttpServletRequest aHttpRequest,
+                             @Nonnull final HttpServletResponse aHttpResponse,
+                             @Nonnull final EHTTPVersion eHttpVersion,
+                             @Nonnull final EHTTPMethod eHttpMethod)
   {
     final ExtAsyncContext aExtAsyncCtx = ExtAsyncContext.create (aHttpRequest,
                                                                  aHttpResponse,
@@ -42,7 +73,7 @@ final class AsyncHttpServletHandler implements IHttpServletHandler
                                                                  m_aAsyncSpec);
 
     // Put into async processing queue
-    AbstractAsyncHttpServlet.getAsyncServletRunner ().runAsync (aHttpRequest, aHttpResponse, aExtAsyncCtx, () -> {
+    s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aExtAsyncCtx, () -> {
       try
       {
         m_aOriginalHandler.handle (aExtAsyncCtx.getRequest (),
@@ -78,6 +109,23 @@ final class AsyncHttpServletHandler implements IHttpServletHandler
         }
       }
     });
+  }
+
+  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
+                      @Nonnull final HttpServletResponse aHttpResponse,
+                      @Nonnull final EHTTPVersion eHttpVersion,
+                      @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
+  {
+    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
+    {
+      // Run asynchronously
+      _handleAsync (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+    }
+    else
+    {
+      // Run synchronously
+      m_aOriginalHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+    }
   }
 
   @Override

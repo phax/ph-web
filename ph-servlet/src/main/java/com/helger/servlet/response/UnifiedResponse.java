@@ -172,18 +172,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   private static ICommonsOrderedMap <String, Cookie> _createCookieMap ()
   {
-    return new CommonsLinkedHashMap<> ();
-  }
-
-  /**
-   * Constructor
-   *
-   * @param aHttpRequest
-   *        The main HTTP request
-   */
-  public UnifiedResponse (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    this (RequestHelper.getHttpVersion (aHttpRequest), RequestHelper.getHttpMethod (aHttpRequest), aHttpRequest);
+    return new CommonsLinkedHashMap <> ();
   }
 
   /**
@@ -971,7 +960,7 @@ public class UnifiedResponse
   @ReturnsMutableCopy
   protected ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return new CommonsLinkedHashMap<> (m_aCookies);
+    return new CommonsLinkedHashMap <> (m_aCookies);
   }
 
   /**
@@ -1612,5 +1601,21 @@ public class UnifiedResponse
 
     // Write the body to the response
     _applyContent (aHttpResponse);
+  }
+
+  /**
+   * Factory method
+   *
+   * @param aHttpRequest
+   *        The main HTTP request. May not be <code>null</code>.
+   * @return New {@link UnifiedResponse}. Never <code>null</code>.
+   * @since 8.8.0
+   */
+  @Nonnull
+  public static UnifiedResponse createSimple (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest),
+                                RequestHelper.getHttpMethod (aHttpRequest),
+                                aHttpRequest);
   }
 }

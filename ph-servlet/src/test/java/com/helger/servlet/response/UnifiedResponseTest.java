@@ -20,10 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.junit.Test;
 
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.http.CHTTPHeader;
 import com.helger.servlet.mock.MockHttpServletRequest;
 
@@ -37,14 +36,14 @@ public final class UnifiedResponseTest
   @Test
   public void testSetStrictTransportSecurity ()
   {
-    final UnifiedResponse aResponse = new UnifiedResponse (new MockHttpServletRequest ());
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
     assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY));
     final int nMaxAgeSeconds = 60000;
     final boolean bIncludeSubdomains = true;
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
     assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY));
-    final List <String> aValues = aResponse.getResponseHeaderMap ()
-                                           .getAllHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
+    final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
+                                                   .getAllHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
     assertEquals (1, aValues.size ());
     assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
   }
@@ -52,14 +51,14 @@ public final class UnifiedResponseTest
   @Test
   public void testSetAllowMimeSniffing ()
   {
-    final UnifiedResponse aResponse = new UnifiedResponse (new MockHttpServletRequest ());
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
     assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (true);
     assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (false);
     assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
-    final List <String> aValues = aResponse.getResponseHeaderMap ()
-                                           .getAllHeaderValues (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+    final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
+                                                   .getAllHeaderValues (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
     assertEquals (1, aValues.size ());
     assertEquals (CHTTPHeader.VALUE_NOSNIFF, aValues.get (0));
   }
@@ -70,19 +69,19 @@ public final class UnifiedResponseTest
     final String sName = "FOO";
     final String sValue = "BAR";
     final String sValue2 = "NARF";
-    final UnifiedResponse aResponse = new UnifiedResponse (new MockHttpServletRequest ());
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
     assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (sName));
     {
       aResponse.addCustomResponseHeader (sName, sValue);
       assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final List <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
+      final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (1, aValues.size ());
       assertEquals (sValue, aValues.get (0));
     }
     {
       aResponse.addCustomResponseHeader (sName, sValue2);
       assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final List <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
+      final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (2, aValues.size ());
       assertEquals (sValue, aValues.get (0));
       assertEquals (sValue2, aValues.get (1));

@@ -179,31 +179,6 @@ public abstract class AbstractHttpServlet extends GenericServlet
     return StringHelper.getImplodedMapped (", ", _getAllowedHTTPMethods (), EHTTPMethod::getName);
   }
 
-  /**
-   * Get the effective handler to use.
-   *
-   * @param aHandler
-   *        Handler. Never <code>null</code>.
-   * @param aHttpRequest
-   *        Current HTTP request. Never <code>null</code>.
-   * @param aHttpResponse
-   *        Current HTTP response. Never <code>null</code>.
-   * @param eHttpVersion
-   *        Current HTTP request version. Never <code>null</code>.
-   * @param eHttpMethod
-   *        Current HTTP request method. Never <code>null</code>.
-   * @return The effective handler. May not be <code>null</code>.
-   */
-  @OverrideOnDemand
-  protected IHttpServletHandler getEffectiveHandler (@Nonnull final IHttpServletHandler aHandler,
-                                                     @Nonnull final HttpServletRequest aHttpRequest,
-                                                     @Nonnull final HttpServletResponse aHttpResponse,
-                                                     @Nonnull final EHTTPVersion eHttpVersion,
-                                                     @Nonnull final EHTTPMethod eHttpMethod)
-  {
-    return aHandler;
-  }
-
   private void _internalService (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse,
                                  @Nonnull final EHTTPVersion eHttpVersion,
@@ -218,16 +193,9 @@ public abstract class AbstractHttpServlet extends GenericServlet
       final StopWatch aSW = StopWatch.createdStarted ();
       try
       {
-        // Determine the effective handler - may add some layers
-        final IHttpServletHandler aEffectiveHandler = getEffectiveHandler (aHandler,
-                                                                           aHttpRequest,
-                                                                           aHttpResponse,
-                                                                           eHttpVersion,
-                                                                           eHttpMethod);
-
         // This may indirectly call "_internalService" again (e.g. for HEAD
         // requests)
-        aEffectiveHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+        aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
 
         // Handled and no exception
         s_aCounterRequestsHandled.increment ();

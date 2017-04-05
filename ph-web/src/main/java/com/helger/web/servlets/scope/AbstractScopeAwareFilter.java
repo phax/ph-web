@@ -51,6 +51,9 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
   // Set in "init" method
   private transient String m_sStatusApplicationID;
 
+  protected AbstractScopeAwareFilter ()
+  {}
+
   /**
    * Determine the application ID to be used, based on the passed filter
    * configuration. This method is only invoked once on startup.

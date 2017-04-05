@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -63,6 +64,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {}
 
   @Override
+  @OverridingMethodsMustInvokeSuper
   public void init () throws ServletException
   {
     final FilterConfig aFilterConfig = getFilterConfig ();

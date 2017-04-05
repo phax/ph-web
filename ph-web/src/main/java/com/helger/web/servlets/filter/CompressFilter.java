@@ -19,11 +19,13 @@ package com.helger.web.servlets.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingList;
@@ -46,14 +48,20 @@ import com.helger.servlet.response.gzip.GZIPResponse;
  */
 public class CompressFilter extends AbstractHttpServletFilter
 {
-  private static final String REQUEST_ATTR = CompressFilter.class.getName ();
+  private static final String REQUEST_ATTR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                             CompressFilter.class.getName ();
   private static final IMutableStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
                                                                                                             "$none");
 
+  public CompressFilter ()
+  {}
+
   @Override
+  @OverridingMethodsMustInvokeSuper
   public void init () throws ServletException
   {
     super.init ();
+
     // Mark the filter as loaded
     CompressFilterSettings.markFilterLoaded ();
 

@@ -48,9 +48,4 @@ public interface IAsyncServletRunner
                  @Nonnull HttpServletResponse aOriginalHttpResponse,
                  @Nonnull Consumer <ExtAsyncContext> aAsyncRunner,
                  @Nonnull ExtAsyncContext aAsyncContext);
-
-  /**
-   * Close all resources potentially allocated.
-   */
-  void shutdown ();
 }

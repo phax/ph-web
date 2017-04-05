@@ -29,7 +29,7 @@ public abstract class AbstractServletOutputStream extends ServletOutputStream
   @Override
   public boolean isReady ()
   {
-    throw new UnsupportedOperationException ("isReady is not supported!");
+    return false;
   }
 
   @Override

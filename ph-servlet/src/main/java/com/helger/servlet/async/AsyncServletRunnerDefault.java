@@ -16,16 +16,11 @@
  */
 package com.helger.servlet.async;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.helger.commons.concurrent.BasicThreadFactory;
-import com.helger.commons.concurrent.ManagedExecutorService;
 
 /**
  * Default implementation of {@link IAsyncServletRunner}
@@ -33,12 +28,9 @@ import com.helger.commons.concurrent.ManagedExecutorService;
  * @author Philip Helger
  * @since 8.7.5
  */
-public class AsyncServletRunnerExecutorService implements IAsyncServletRunner
+public class AsyncServletRunnerDefault implements IAsyncServletRunner
 {
-  private final ExecutorService m_aES = Executors.newCachedThreadPool (new BasicThreadFactory.Builder ().setNamingPattern ("servlet-async-worker-%d")
-                                                                                                        .build ());
-
-  public AsyncServletRunnerExecutorService ()
+  public AsyncServletRunnerDefault ()
   {}
 
   public void runAsync (@Nonnull final HttpServletRequest aOriginalHttpRequest,
@@ -46,11 +38,9 @@ public class AsyncServletRunnerExecutorService implements IAsyncServletRunner
                         @Nonnull final Consumer <ExtAsyncContext> aAsyncRunner,
                         @Nonnull final ExtAsyncContext aAsyncContext)
   {
-    m_aES.submit ( () -> aAsyncRunner.accept (aAsyncContext));
-  }
-
-  public void shutdown ()
-  {
-    ManagedExecutorService.shutdownAndWaitUntilAllTasksAreFinished (m_aES);
+    final Runnable r = () -> aAsyncRunner.accept (aAsyncContext);
+    // Important to use "start" and to not use a custom ExecutorService, as this
+    // "start" method assigns all the necessary variables etc.
+    aAsyncContext.getAsyncContext ().start (r);
   }
 }

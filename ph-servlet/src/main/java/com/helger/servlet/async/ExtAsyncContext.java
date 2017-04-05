@@ -63,7 +63,7 @@ public class ExtAsyncContext
   public HttpServletRequest getRequest ()
   {
     final HttpServletRequest ret = (HttpServletRequest) m_aAsyncContext.getRequest ();
-    if (!m_bSetAttrs)
+    if (!m_bSetAttrs && false)
     {
       ret.setAttribute (AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
       ret.setAttribute (AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);

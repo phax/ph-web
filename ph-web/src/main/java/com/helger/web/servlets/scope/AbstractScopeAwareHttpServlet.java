@@ -41,7 +41,7 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.timing.StopWatch;
 import com.helger.http.EHTTPMethod;
 import com.helger.servlet.ServletHelper;
-import com.helger.servlet.async.AsyncServletRunnerExecutorService;
+import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
@@ -81,7 +81,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   private static final IMutableStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
                                                                                                             "$TRACE");
 
-  private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerExecutorService ();
+  private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
 
   /**
    * Set the async runner to be used.
@@ -195,7 +195,6 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   public final void destroy ()
   {
     onDestroy ();
-    s_aAsyncServletRunner.shutdown ();
     super.destroy ();
   }
 

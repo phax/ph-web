@@ -74,6 +74,6 @@ public enum EHTTPMethod implements IHasName
   @Nullable
   public static EHTTPMethod getFromNameOrNull (@Nullable final String sName)
   {
-    return EnumHelper.getFromNameCaseInsensitiveOrNull (EHTTPMethod.class, sName);
+    return EnumHelper.getFromNameOrNull (EHTTPMethod.class, sName);
   }
 }

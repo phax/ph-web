@@ -29,13 +29,13 @@ public abstract class AbstractServletInputStream extends ServletInputStream
   @Override
   public boolean isReady ()
   {
-    throw new UnsupportedOperationException ("isReady is not supported!");
+    return false;
   }
 
   @Override
   public boolean isFinished ()
   {
-    throw new UnsupportedOperationException ("isFinished is not supported!");
+    return false;
   }
 
   @Override

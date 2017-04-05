@@ -95,9 +95,10 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
    *         For non IO errors
    */
   @Nonnull
-  protected abstract EContinue doFilter (@Nonnull HttpServletRequest aHttpRequest,
-                                         @Nonnull HttpServletResponse aHttpResponse,
-                                         @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
+  protected abstract EContinue doHttpFilter (@Nonnull HttpServletRequest aHttpRequest,
+                                             @Nonnull HttpServletResponse aHttpResponse,
+                                             @Nonnull IRequestWebScope aRequestScope) throws IOException,
+                                                                                      ServletException;
 
   @Override
   public final void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
@@ -111,7 +112,7 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
     try
     {
       // Apply any optional filter
-      if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
+      if (doHttpFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
       {
         // Continue as usual
         aChain.doFilter (aHttpRequest, aHttpResponse);

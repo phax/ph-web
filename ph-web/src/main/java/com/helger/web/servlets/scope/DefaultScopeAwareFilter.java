@@ -25,7 +25,8 @@ import com.helger.web.scope.IRequestWebScope;
 
 /**
  * A simple Servlet filter that surrounds each and every call with the necessary
- * scope begin and end calls.
+ * scope begin and end calls. This does make sense as an easy way to ensure that
+ * every call is scoped.
  *
  * @author Philip Helger
  */
@@ -33,9 +34,9 @@ public class DefaultScopeAwareFilter extends AbstractScopeAwareFilter
 {
   @Override
   @Nonnull
-  protected EContinue doFilter (@Nonnull final HttpServletRequest aHttpRequest,
-                                @Nonnull final HttpServletResponse aHttpResponse,
-                                @Nonnull final IRequestWebScope aRequestScope)
+  protected EContinue doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                                    @Nonnull final HttpServletResponse aHttpResponse,
+                                    @Nonnull final IRequestWebScope aRequestScope)
   {
     // No filtering
     return EContinue.CONTINUE;

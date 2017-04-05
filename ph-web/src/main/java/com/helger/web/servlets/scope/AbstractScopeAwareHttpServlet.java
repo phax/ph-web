@@ -39,6 +39,7 @@ import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.timing.StopWatch;
+import com.helger.http.EHTTPMethod;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.async.AsyncServletRunnerExecutorService;
 import com.helger.servlet.async.ExtAsyncContext;
@@ -311,6 +312,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 
   private void _run (@Nonnull final HttpServletRequest aHttpRequest,
                      @Nonnull final HttpServletResponse aHttpResponse,
+                     @Nonnull final EHTTPMethod eHTTPMethod,
                      @Nonnull final IRunner aRunner,
                      @Nonnull final IMutableStatisticsHandlerTimer aTimer) throws ServletException, IOException
   {
@@ -322,7 +324,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                        "; asyncStarted=" +
                        aHttpRequest.isAsyncStarted ());
 
-    if (m_aAsyncSpec.isAsynchronous ())
+    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHTTPMethod))
     {
       // Run asynchronously
       final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
@@ -400,7 +402,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doDelete (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onDelete, s_aTimerHdlDelete);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.DELETE, this::onDelete, s_aTimerHdlDelete);
   }
 
   /**
@@ -429,7 +431,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doGet (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onGet, s_aTimerHdlGet);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.GET, this::onGet, s_aTimerHdlGet);
   }
 
   /**
@@ -458,7 +460,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doHead (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onHead, s_aTimerHdlHead);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.HEAD, this::onHead, s_aTimerHdlHead);
   }
 
   /**
@@ -487,7 +489,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doOptions (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onOptions, s_aTimerHdlOptions);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.OPTIONS, this::onOptions, s_aTimerHdlOptions);
   }
 
   /**
@@ -516,7 +518,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPost (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onPost, s_aTimerHdlPost);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.POST, this::onPost, s_aTimerHdlPost);
   }
 
   /**
@@ -545,7 +547,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPut (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onPut, s_aTimerHdlPut);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.PUT, this::onPut, s_aTimerHdlPut);
   }
 
   /**
@@ -574,7 +576,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doTrace (@Nonnull final HttpServletRequest aHttpRequest,
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, this::onTrace, s_aTimerHdlTrace);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.TRACE, this::onTrace, s_aTimerHdlTrace);
   }
 
   @Override

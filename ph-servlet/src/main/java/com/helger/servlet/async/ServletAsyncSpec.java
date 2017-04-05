@@ -16,6 +16,9 @@
  */
 package com.helger.servlet.async;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,10 +27,12 @@ import javax.servlet.AsyncContext;
 import javax.servlet.AsyncListener;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.http.EHTTPMethod;
 
 /**
  * This class encapsulates all the parameters necessary to handle asynchronous
@@ -42,11 +47,15 @@ public class ServletAsyncSpec
   /** The constant defining "no timeout defined" */
   public static final long NO_TIMEOUT = 0L;
   /** The constant for synchronous invocations */
-  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false, NO_TIMEOUT, null);
+  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false,
+                                                                         NO_TIMEOUT,
+                                                                         (Iterable <? extends AsyncListener>) null,
+                                                                         (Set <EHTTPMethod>) null);
 
   private final boolean m_bAsynchronous;
   private final long m_nTimeoutMillis;
   private final ICommonsList <AsyncListener> m_aAsyncListeners;
+  private final EnumSet <EHTTPMethod> m_aAsyncHTTPMethods;
 
   /**
    * Constructor
@@ -54,24 +63,35 @@ public class ServletAsyncSpec
    * @param bAsynchronous
    *        <code>true</code> for asynchronous stuff, <code>false</code> for
    *        synchronous spec.
+   * @param nTimeoutMillis
+   *        The timeout in milliseconds. Must be &le; 0 for synchronous usage.
    * @param aAsyncListeners
    *        {@link AsyncListener}s to be added to the AsyncContext. Must be
    *        <code>null</code> for synchronous usage.
-   * @param nTimeoutMillis
-   *        The timeout in milliseconds. Must be &le; 0 for synchronous usage.
+   * @param aAsyncHTTPMethods
+   *        The HTTP methods that are available for async usage. May neither be
+   *        <code>null</code> nor empty in async mode.
    */
   protected ServletAsyncSpec (final boolean bAsynchronous,
                               @CheckForSigned final long nTimeoutMillis,
-                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners)
+                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
+                              @Nullable final Set <EHTTPMethod> aAsyncHTTPMethods)
   {
-    if (!bAsynchronous)
+    if (bAsynchronous)
+    {
+      ValueEnforcer.notEmptyNoNullValue (aAsyncHTTPMethods, "AsyncHTTPMethods");
+    }
+    else
     {
       ValueEnforcer.isLE0 (nTimeoutMillis, "TimeoutMillis");
       ValueEnforcer.isNull (aAsyncListeners, "AsyncListeners");
+      ValueEnforcer.isNull (aAsyncHTTPMethods, "AsyncHTTPMethods");
     }
     m_bAsynchronous = bAsynchronous;
     m_nTimeoutMillis = nTimeoutMillis;
     m_aAsyncListeners = new CommonsArrayList <> (aAsyncListeners);
+    m_aAsyncHTTPMethods = aAsyncHTTPMethods == null ? EnumSet.noneOf (EHTTPMethod.class)
+                                                    : EnumSet.copyOf (aAsyncHTTPMethods);
   }
 
   /**
@@ -95,7 +115,10 @@ public class ServletAsyncSpec
 
   /**
    * @return <code>true</code> for asynchronous, <code>false</code> for
-   *         synchronous.
+   *         synchronous. If it is asynchronous the HTTP method is also a
+   *         determinator for whether a request is to be handled asynchronously
+   *         or not.
+   * @see #isAsyncHTTPMethod(EHTTPMethod)
    */
   public boolean isAsynchronous ()
   {
@@ -122,6 +145,23 @@ public class ServletAsyncSpec
     return m_aAsyncListeners.isNotEmpty ();
   }
 
+  /**
+   * @return A set with all async HTTP methods. Only non-empty for asynchronous
+   *         specs. Never <code>null</code>.
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  public EnumSet <EHTTPMethod> getAllAsyncHTTPMethods ()
+  {
+    return EnumSet.copyOf (m_aAsyncHTTPMethods);
+  }
+
+  public boolean isAsyncHTTPMethod (@Nonnull final EHTTPMethod eHTTPMethod)
+  {
+    ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
+    return m_aAsyncHTTPMethods.contains (eHTTPMethod);
+  }
+
   public void applyToAsyncContext (@Nonnull final AsyncContext aAsyncCtx)
   {
     if (!isAsynchronous ())
@@ -137,8 +177,9 @@ public class ServletAsyncSpec
   public String toString ()
   {
     return new ToStringGenerator (this).append ("Asynchronous", m_bAsynchronous)
-                                       .append ("AsyncListeners", m_aAsyncListeners)
                                        .appendIf ("TimeoutMillis", m_nTimeoutMillis, (final long x) -> x > 0)
+                                       .append ("AsyncListeners", m_aAsyncListeners)
+                                       .append ("AsyncHTTPMethods", m_aAsyncHTTPMethods)
                                        .getToString ();
   }
 
@@ -159,41 +200,16 @@ public class ServletAsyncSpec
    *        Timeout in milliseconds. Only value &gt; 0 are considered.
    * @param aAsyncListeners
    *        The async listeners to use. May be <code>null</code>.
+   * @param aAsyncHTTPMethods
+   *        The HTTP methods that are available for async usage. May neither be
+   *        <code>null</code> nor empty.
    * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
    */
   @Nonnull
   public static ServletAsyncSpec createAsync (@CheckForSigned final long nTimeoutMillis,
-                                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners)
+                                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
+                                              @Nonnull @Nonempty final Set <EHTTPMethod> aAsyncHTTPMethods)
   {
-    return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners);
-  }
-
-  /**
-   * Create an async spec.
-   *
-   * @param nTimeoutMillis
-   *        Timeout in milliseconds. Only value &gt; 0 are considered.
-   * @param aAsyncListeners
-   *        The async listeners to use. May be <code>null</code>.
-   * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
-   */
-  @Nonnull
-  public static ServletAsyncSpec createAsync (@CheckForSigned final long nTimeoutMillis,
-                                              @Nullable final AsyncListener... aAsyncListeners)
-  {
-    return createAsync (nTimeoutMillis, new CommonsArrayList <> (aAsyncListeners));
-  }
-
-  /**
-   * Create an async spec without a timeout.
-   *
-   * @param aAsyncListeners
-   *        The async listeners to use. May be <code>null</code>.
-   * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
-   */
-  @Nonnull
-  public static ServletAsyncSpec createAsync (@Nullable final AsyncListener... aAsyncListeners)
-  {
-    return createAsync (NO_TIMEOUT, aAsyncListeners);
+    return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners, aAsyncHTTPMethods);
   }
 }

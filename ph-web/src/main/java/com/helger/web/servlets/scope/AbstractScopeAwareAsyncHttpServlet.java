@@ -54,8 +54,7 @@ public abstract class AbstractScopeAwareAsyncHttpServlet extends AbstractAsyncHt
    */
   protected AbstractScopeAwareAsyncHttpServlet ()
   {
-    // By default synchronous
-    this (ServletAsyncSpec.createSync ());
+    super ();
   }
 
   /**
@@ -95,19 +94,22 @@ public abstract class AbstractScopeAwareAsyncHttpServlet extends AbstractAsyncHt
 
   @Override
   protected void onServiceRequest (@Nonnull final IHttpServletHandler aOriginalHandler,
-                                   @Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse,
-                                   @Nonnull final EHTTPVersion eHttpVersion,
-                                   @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
+                                   @Nonnull final HttpServletRequest aOriginalHttpRequest,
+                                   @Nonnull final HttpServletResponse aOriginalHttpResponse,
+                                   @Nonnull final EHTTPVersion eOriginalHttpVersion,
+                                   @Nonnull final EHTTPMethod eOriginalHttpMethod) throws ServletException, IOException
   {
-    final IHttpServletHandler aScopedHandler = (aHttpRequest1, aHttpResponse1, eHTTPVersion, eHTTPMethod) -> {
+    final IHttpServletHandler aScopedHandler = (aParamHttpRequest,
+                                                aParamHttpResponse,
+                                                eParamHttpVersion,
+                                                eParamHttpMethod) -> {
       final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
-                                                                                               aHttpRequest,
-                                                                                               aHttpResponse);
+                                                                                               aParamHttpRequest,
+                                                                                               aParamHttpResponse);
       try
       {
         // Pass to original handler
-        aOriginalHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+        aOriginalHandler.handle (aParamHttpRequest, aParamHttpResponse, eParamHttpVersion, eParamHttpMethod);
       }
       finally
       {
@@ -116,7 +118,7 @@ public abstract class AbstractScopeAwareAsyncHttpServlet extends AbstractAsyncHt
     };
 
     // Process sync/async with scoped handler
-    super.onServiceRequest (aScopedHandler, aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+    super.onServiceRequest (aScopedHandler, aOriginalHttpRequest, aOriginalHttpResponse, eOriginalHttpVersion, eOriginalHttpMethod);
   }
 
   @Override

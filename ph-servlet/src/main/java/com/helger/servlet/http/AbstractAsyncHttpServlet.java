@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2014-2017 Philip Helger (www.helger.com)
+ * philip[at]helger[dot]com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.helger.servlet.http;
 
 import java.io.IOException;
@@ -75,8 +91,8 @@ public abstract class AbstractAsyncHttpServlet extends AbstractHttpServlet
   }
 
   /**
-   * @return <code>true</code> if this servlet acts synchronously,
-   *         <code>false</code> if it acts asynchronously.
+   * @return <code>true</code> if this servlet acts synchronously (for certain
+   *         HTTP methods), <code>false</code> if it acts asynchronously.
    */
   public final boolean isAsynchronous ()
   {
@@ -92,80 +108,68 @@ public abstract class AbstractAsyncHttpServlet extends AbstractHttpServlet
     return m_aAsyncSpec;
   }
 
-  private static class AsyncRunner
+  @Override
+  protected void onServiceRequest (@Nonnull final IHttpServletHandler aOriginalHandler,
+                                   @Nonnull final HttpServletRequest aOriginalHttpRequest,
+                                   @Nonnull final HttpServletResponse aOriginalHttpResponse,
+                                   @Nonnull final EHTTPVersion eOriginalHttpVersion,
+                                   @Nonnull final EHTTPMethod eOriginalHttpMethod) throws ServletException, IOException
   {
-    private final IHttpServletHandler m_aHandler;
-
-    public AsyncRunner (@Nonnull final IHttpServletHandler aHandler)
+    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eOriginalHttpMethod))
     {
-      m_aHandler = aHandler;
-    }
+      // Run asynchronously
 
-    public void run (final ExtAsyncContext2 aEAC)
-    {
-      try
-      {
-        if (s_aLogger.isDebugEnabled ())
-          s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
+      final ExtAsyncContext2 aEAC = ExtAsyncContext2.create (aOriginalHttpRequest,
+                                                             aOriginalHttpResponse,
+                                                             eOriginalHttpVersion,
+                                                             eOriginalHttpMethod,
+                                                             m_aAsyncSpec);
 
-        m_aHandler.handle (aEAC.getRequest (), aEAC.getResponse (), aEAC.getHTTPVersion (), aEAC.getHTTPMethod ());
-      }
-      catch (final Throwable t)
-      {
-        s_aLogger.error ("Error processing async request " + aEAC.getRequest (), t);
+      // Put into async processing queue
+      s_aAsyncServletRunner.runAsync (aOriginalHttpRequest, aOriginalHttpResponse, aEAC, () -> {
         try
         {
-          final String sErrorMsg = "Internal error processing your request. Please try again later. Technical details: " +
-                                   t.getClass ().getName () +
-                                   ":" +
-                                   t.getMessage ();
-          aEAC.getResponse ().getWriter ().write (sErrorMsg);
-        }
-        catch (final Throwable t2)
-        {
-          s_aLogger.error ("Error writing first exception to response", t2);
-        }
-      }
-      finally
-      {
-        try
-        {
-          aEAC.complete ();
+          if (s_aLogger.isDebugEnabled ())
+            s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
+
+          aOriginalHandler.handle (aEAC.getRequest (),
+                                   aEAC.getResponse (),
+                                   aEAC.getHTTPVersion (),
+                                   aEAC.getHTTPMethod ());
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Error completing async context", t);
+          s_aLogger.error ("Error processing async request " + aEAC.getRequest (), t);
+          try
+          {
+            final String sErrorMsg = "Internal error processing your request. Please try again later. Technical details: " +
+                                     t.getClass ().getName () +
+                                     ":" +
+                                     t.getMessage ();
+            aEAC.getResponse ().getWriter ().write (sErrorMsg);
+          }
+          catch (final Throwable t2)
+          {
+            s_aLogger.error ("Error writing first exception to response", t2);
+          }
         }
-      }
-    }
-  }
-
-  @Override
-  protected void onServiceRequest (@Nonnull final IHttpServletHandler aHandler,
-                                   @Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse,
-                                   @Nonnull final EHTTPVersion eHttpVersion,
-                                   @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
-  {
-    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
-    {
-      // Run asynchronously
-      final ExtAsyncContext2 aAsyncContext = ExtAsyncContext2.create (aHttpRequest,
-                                                                      aHttpResponse,
-                                                                      eHttpVersion,
-                                                                      eHttpMethod,
-                                                                      m_aAsyncSpec);
-      final AsyncRunner aAsyncRunner = new AsyncRunner (aHandler);
-
-      // Put into async processing queue
-      s_aAsyncServletRunner.runAsync (aHttpRequest,
-                                      aHttpResponse,
-                                      aAsyncContext,
-                                      () -> aAsyncRunner.run (aAsyncContext));
+        finally
+        {
+          try
+          {
+            aEAC.complete ();
+          }
+          catch (final Throwable t)
+          {
+            s_aLogger.error ("Error completing async context", t);
+          }
+        }
+      });
     }
     else
     {
-      aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+      // Run synchronously
+      aOriginalHandler.handle (aOriginalHttpRequest, aOriginalHttpResponse, eOriginalHttpVersion, eOriginalHttpMethod);
     }
   }
 

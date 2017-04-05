@@ -209,7 +209,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   }
 
   /**
-   * @return The {@link EHTTPVersion} matching the {@link #getProtocol()}
+   * @return The {@link EHTTPVersion} of the request.
    */
   @Nullable
   default EHTTPVersion getHttpVersion ()

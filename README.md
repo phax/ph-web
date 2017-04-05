@@ -19,6 +19,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 ## News
 
+  * v8.8.0 - work in progress
+    * New HTTP servlet class hierarchy for better separation of concerns
   * v8.7.4 - 2017-03-29
     * Improved PAC support to also handle IP6 addresses and `dnsResolveEx`
     * Updated to ph-commons 8.6.3

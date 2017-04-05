@@ -26,11 +26,13 @@ import javax.annotation.concurrent.Immutable;
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncListener;
 
+import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 
@@ -211,5 +213,13 @@ public class ServletAsyncSpec
                                               @Nonnull @Nonempty final Set <EHTTPMethod> aAsyncHTTPMethods)
   {
     return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners, aAsyncHTTPMethods);
+  }
+
+  @Nonnull
+  public static ServletAsyncSpec createAsyncDefault ()
+  {
+    return createAsync (GlobalDebug.isDebugMode () ? 0 : 30 * CGlobal.MILLISECONDS_PER_SECOND,
+                        null,
+                        EnumSet.of (EHTTPMethod.GET, EHTTPMethod.HEAD));
   }
 }

@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 
@@ -61,5 +62,11 @@ public class HttpServletHandlerTRACE implements IHttpServletHandler
     aHttpResponse.setContentType ("message/http");
     aHttpResponse.setContentLength (aSB.length ());
     aHttpResponse.getOutputStream ().print (aSB.toString ());
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).getToString ();
   }
 }

@@ -16,8 +16,6 @@
  */
 package com.helger.web.servlets.scope;
 
-import java.io.IOException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.ServletException;
@@ -35,7 +33,6 @@ import com.helger.http.EHTTPVersion;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.servlet.http.AbstractAsyncHttpServlet;
 import com.helger.servlet.http.IHttpServletHandler;
-import com.helger.web.scope.request.RequestScopeInitializer;
 
 /**
  * A thin wrapper around an {AbstractAsyncHttpServlet} that encapsulates the
@@ -93,32 +90,19 @@ public abstract class AbstractScopeAwareAsyncHttpServlet extends AbstractAsyncHt
   }
 
   @Override
-  protected void onServiceRequest (@Nonnull final IHttpServletHandler aOriginalHandler,
-                                   @Nonnull final HttpServletRequest aOriginalHttpRequest,
-                                   @Nonnull final HttpServletResponse aOriginalHttpResponse,
-                                   @Nonnull final EHTTPVersion eOriginalHttpVersion,
-                                   @Nonnull final EHTTPMethod eOriginalHttpMethod) throws ServletException, IOException
+  @OverridingMethodsMustInvokeSuper
+  protected IHttpServletHandler getEffectiveHandler (@Nonnull final IHttpServletHandler aHandler,
+                                                     @Nonnull final HttpServletRequest aHttpRequest,
+                                                     @Nonnull final HttpServletResponse aHttpResponse,
+                                                     @Nonnull final EHTTPVersion eHttpVersion,
+                                                     @Nonnull final EHTTPMethod eHttpMethod)
   {
-    final IHttpServletHandler aScopedHandler = (aParamHttpRequest,
-                                                aParamHttpResponse,
-                                                eParamHttpVersion,
-                                                eParamHttpMethod) -> {
-      final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
-                                                                                               aParamHttpRequest,
-                                                                                               aParamHttpResponse);
-      try
-      {
-        // Pass to original handler
-        aOriginalHandler.handle (aParamHttpRequest, aParamHttpResponse, eParamHttpVersion, eParamHttpMethod);
-      }
-      finally
-      {
-        aRequestScopeInitializer.destroyScope ();
-      }
-    };
-
-    // Process sync/async with scoped handler
-    super.onServiceRequest (aScopedHandler, aOriginalHttpRequest, aOriginalHttpResponse, eOriginalHttpVersion, eOriginalHttpMethod);
+    final IHttpServletHandler aHandlerToBeScoped = super.getEffectiveHandler (aHandler,
+                                                                              aHttpRequest,
+                                                                              aHttpResponse,
+                                                                              eHttpVersion,
+                                                                              eHttpMethod);
+    return new ScopingHttpServletHandler (m_sStatusApplicationID, aHandlerToBeScoped);
   }
 
   @Override

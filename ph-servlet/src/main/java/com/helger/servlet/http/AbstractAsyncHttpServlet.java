@@ -16,22 +16,16 @@
  */
 package com.helger.servlet.http;
 
-import java.io.IOException;
-
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.servlet.async.AsyncServletRunnerDefault;
-import com.helger.servlet.async.ExtAsyncContext2;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 
@@ -43,11 +37,7 @@ import com.helger.servlet.async.ServletAsyncSpec;
  */
 public abstract class AbstractAsyncHttpServlet extends AbstractHttpServlet
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractAsyncHttpServlet.class);
-
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
-
-  private final ServletAsyncSpec m_aAsyncSpec;
 
   /**
    * Set the async runner to be used.
@@ -69,6 +59,8 @@ public abstract class AbstractAsyncHttpServlet extends AbstractHttpServlet
   {
     return s_aAsyncServletRunner;
   }
+
+  private final ServletAsyncSpec m_aAsyncSpec;
 
   /**
    * Default constructor for synchronous servlets.
@@ -109,68 +101,27 @@ public abstract class AbstractAsyncHttpServlet extends AbstractHttpServlet
   }
 
   @Override
-  protected void onServiceRequest (@Nonnull final IHttpServletHandler aOriginalHandler,
-                                   @Nonnull final HttpServletRequest aOriginalHttpRequest,
-                                   @Nonnull final HttpServletResponse aOriginalHttpResponse,
-                                   @Nonnull final EHTTPVersion eOriginalHttpVersion,
-                                   @Nonnull final EHTTPMethod eOriginalHttpMethod) throws ServletException, IOException
+  @OverridingMethodsMustInvokeSuper
+  protected IHttpServletHandler getEffectiveHandler (@Nonnull final IHttpServletHandler aHandler,
+                                                     @Nonnull final HttpServletRequest aHttpRequest,
+                                                     @Nonnull final HttpServletResponse aHttpResponse,
+                                                     @Nonnull final EHTTPVersion eHttpVersion,
+                                                     @Nonnull final EHTTPMethod eHttpMethod)
   {
-    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eOriginalHttpMethod))
+    final IHttpServletHandler aHandlerToBeWrapped = super.getEffectiveHandler (aHandler,
+                                                                               aHttpRequest,
+                                                                               aHttpResponse,
+                                                                               eHttpVersion,
+                                                                               eHttpMethod);
+
+    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
     {
       // Run asynchronously
-
-      final ExtAsyncContext2 aEAC = ExtAsyncContext2.create (aOriginalHttpRequest,
-                                                             aOriginalHttpResponse,
-                                                             eOriginalHttpVersion,
-                                                             eOriginalHttpMethod,
-                                                             m_aAsyncSpec);
-
-      // Put into async processing queue
-      s_aAsyncServletRunner.runAsync (aOriginalHttpRequest, aOriginalHttpResponse, aEAC, () -> {
-        try
-        {
-          if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
-
-          aOriginalHandler.handle (aEAC.getRequest (),
-                                   aEAC.getResponse (),
-                                   aEAC.getHTTPVersion (),
-                                   aEAC.getHTTPMethod ());
-        }
-        catch (final Throwable t)
-        {
-          s_aLogger.error ("Error processing async request " + aEAC.getRequest (), t);
-          try
-          {
-            final String sErrorMsg = "Internal error processing your request. Please try again later. Technical details: " +
-                                     t.getClass ().getName () +
-                                     ":" +
-                                     t.getMessage ();
-            aEAC.getResponse ().getWriter ().write (sErrorMsg);
-          }
-          catch (final Throwable t2)
-          {
-            s_aLogger.error ("Error writing first exception to response", t2);
-          }
-        }
-        finally
-        {
-          try
-          {
-            aEAC.complete ();
-          }
-          catch (final Throwable t)
-          {
-            s_aLogger.error ("Error completing async context", t);
-          }
-        }
-      });
+      return new AsyncHttpServletHandler (m_aAsyncSpec, aHandlerToBeWrapped);
     }
-    else
-    {
-      // Run synchronously
-      aOriginalHandler.handle (aOriginalHttpRequest, aOriginalHttpResponse, eOriginalHttpVersion, eOriginalHttpMethod);
-    }
+
+    // Run synchronously
+    return aHandlerToBeWrapped;
   }
 
   @Override

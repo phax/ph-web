@@ -69,15 +69,21 @@ public abstract class AbstractHttpServlet extends GenericServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractHttpServlet.class);
   private static final IMutableStatisticsHandlerCounter s_aCounterRequestsTotal = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
-                                                                                                                       "$requests-total");
+                                                                                                                       "$requests.total");
   private static final IMutableStatisticsHandlerCounter s_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
-                                                                                                                          "$requests-accepted");
+                                                                                                                          "$requests.accepted");
   private static final IMutableStatisticsHandlerCounter s_aCounterRequestsHandled = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
-                                                                                                                         "$requests-handled");
+                                                                                                                         "$requests.handled");
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionTotal = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+                                                                                                                                           "$requests-per-version.total");
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionHandled = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+                                                                                                                                             "$requests-per-version.handled");
   private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodTotal = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
-                                                                                                                                          "$requests-per-method-total");
+                                                                                                                                          "$requests-per-method.total");
   private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodHandled = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
-                                                                                                                                            "$requests-per-method-handled");
+                                                                                                                                            "$requests-per-method.handled");
+  private final IMutableStatisticsHandlerKeyedCounter m_aCounterHttpMethodUnhandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
+                                                                                                                                "$method.unhandled");
   private static final IMutableStatisticsHandlerKeyedTimer s_aTimer = StatisticsManager.getKeyedTimerHandler (AbstractHttpServlet.class);
 
   /** The main handler map */
@@ -174,9 +180,7 @@ public abstract class AbstractHttpServlet extends GenericServlet
   }
 
   /**
-   * Invoked the provided handler to execute this service. If you overwrite this
-   * method ensure to invoke
-   * {@link IHttpServletHandler#handle(HttpServletRequest, HttpServletResponse, EHTTPVersion, EHTTPMethod)}.
+   * Get the effective handler to use.
    *
    * @param aHandler
    *        Handler. Never <code>null</code>.
@@ -188,19 +192,16 @@ public abstract class AbstractHttpServlet extends GenericServlet
    *        Current HTTP request version. Never <code>null</code>.
    * @param eHttpMethod
    *        Current HTTP request method. Never <code>null</code>.
-   * @throws ServletException
-   *         On business error
-   * @throws IOException
-   *         On IO error
+   * @return The effective handler. May not be <code>null</code>.
    */
   @OverrideOnDemand
-  protected void onServiceRequest (@Nonnull final IHttpServletHandler aHandler,
-                                   @Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse,
-                                   @Nonnull final EHTTPVersion eHttpVersion,
-                                   @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
+  protected IHttpServletHandler getEffectiveHandler (@Nonnull final IHttpServletHandler aHandler,
+                                                     @Nonnull final HttpServletRequest aHttpRequest,
+                                                     @Nonnull final HttpServletResponse aHttpResponse,
+                                                     @Nonnull final EHTTPVersion eHttpVersion,
+                                                     @Nonnull final EHTTPMethod eHttpMethod)
   {
-    aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+    return aHandler;
   }
 
   private void _internalService (@Nonnull final HttpServletRequest aHttpRequest,
@@ -211,15 +212,26 @@ public abstract class AbstractHttpServlet extends GenericServlet
     final IHttpServletHandler aHandler = m_aHandler.get (eHttpMethod);
     if (aHandler != null)
     {
+      // Supported method
+
       // Invoke handler
       final StopWatch aSW = StopWatch.createdStarted ();
       try
       {
+        // Determine the effective handler - may add some layers
+        final IHttpServletHandler aEffectiveHandler = getEffectiveHandler (aHandler,
+                                                                           aHttpRequest,
+                                                                           aHttpResponse,
+                                                                           eHttpVersion,
+                                                                           eHttpMethod);
+
         // This may indirectly call "_internalService" again (e.g. for HEAD
         // requests)
-        onServiceRequest (aHandler, aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+        aEffectiveHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+
         // Handled and no exception
         s_aCounterRequestsHandled.increment ();
+        s_aCounterRequestsPerVersionHandled.increment (eHttpVersion.getName ());
         s_aCounterRequestsPerMethodHandled.increment (eHttpMethod.getName ());
       }
       finally
@@ -231,6 +243,8 @@ public abstract class AbstractHttpServlet extends GenericServlet
     else
     {
       // Unsupported method
+      m_aCounterHttpMethodUnhandled.increment (eHttpMethod.getName ());
+
       aHttpResponse.setHeader (CHTTPHeader.ALLOW, _getAllowString ());
       if (eHttpVersion == EHTTPVersion.HTTP_11)
         aHttpResponse.sendError (HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -318,6 +332,8 @@ public abstract class AbstractHttpServlet extends GenericServlet
     }
     else
     {
+      s_aCounterRequestsPerVersionTotal.increment (eHTTPVersion.getName ());
+
       // Determine HTTP method
       final String sMethod = aHttpRequest.getMethod ();
       final EHTTPMethod eHTTPMethod = EHTTPMethod.getFromNameOrNull (sMethod);

@@ -17,7 +17,6 @@
 package com.helger.web.servlets.scope;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -29,17 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.EHTTPMethod;
-import com.helger.servlet.async.AsyncServletRunnerDefault;
-import com.helger.servlet.async.ExtAsyncContext;
-import com.helger.servlet.async.IAsyncServletRunner;
-import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xml.serialize.write.XMLWriterSettings;
@@ -59,75 +52,14 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareHttpServlet.class);
 
-  private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
-
-  /**
-   * Set the async runner to be used.
-   *
-   * @param aAsyncServletRunner
-   *        The runner to be used. May not be <code>null</code>.
-   * @since 8.7.5
-   */
-  public static void setAsyncServletRunner (@Nonnull final IAsyncServletRunner aAsyncServletRunner)
-  {
-    ValueEnforcer.notNull (aAsyncServletRunner, "AsyncServletRunner");
-    s_aAsyncServletRunner = aAsyncServletRunner;
-  }
-
-  /**
-   * @return The global async runner. Never <code>null</code>.
-   * @since 8.7.5
-   */
-  @Nonnull
-  public static IAsyncServletRunner getAsyncServletRunner ()
-  {
-    return s_aAsyncServletRunner;
-  }
-
-  private final ServletAsyncSpec m_aAsyncSpec;
   // Determine in "init" method
   private transient String m_sStatusApplicationID;
 
   /**
-   * Default constructor for synchronous servlets.
+   * Default constructor
    */
   protected AbstractScopeAwareHttpServlet ()
-  {
-    // By default synchronous
-    this (ServletAsyncSpec.createSync ());
-  }
-
-  /**
-   * Constructor.
-   *
-   * @param aAsyncSpec
-   *        The async/sync spec to be used. May not be <code>null</code>.
-   * @since 8.7.5
-   */
-  protected AbstractScopeAwareHttpServlet (@Nonnull final ServletAsyncSpec aAsyncSpec)
-  {
-    m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
-  }
-
-  /**
-   * @return <code>true</code> if this servlet acts synchronously,
-   *         <code>false</code> if it acts asynchronously.
-   * @since 8.7.5
-   */
-  public final boolean isAsynchronous ()
-  {
-    return m_aAsyncSpec.isAsynchronous ();
-  }
-
-  /**
-   * @return The internal async spec. Never <code>null</code>.
-   * @since 8.7.5
-   */
-  @Nonnull
-  protected final ServletAsyncSpec internalGetAsyncSpec ()
-  {
-    return m_aAsyncSpec;
-  }
+  {}
 
   /**
    * @return The application ID for this servlet.
@@ -256,66 +188,6 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
     }
   }
 
-  private void _run (@Nonnull final HttpServletRequest aHttpRequest,
-                     @Nonnull final HttpServletResponse aHttpResponse,
-                     @Nonnull final EHTTPMethod eHttpMethod,
-                     @Nonnull final IRunner aRunner) throws ServletException, IOException
-  {
-    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
-    {
-      // Run asynchronously
-      final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
-      // This could theoretically a member except that it references aRunner and
-      // aTimer
-      final Consumer <ExtAsyncContext> aAsyncRunner = aEAC -> {
-        try
-        {
-          if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
-          _runScoped (aEAC.getRequest (), aEAC.getResponse (), aRunner);
-        }
-        catch (final Throwable t)
-        {
-          s_aLogger.error ("Error processing async request " + aEAC.getRequest (), t);
-          try
-          {
-            aEAC.getResponse ().getWriter ().write (
-                                                    "Internal error processing your request. Please try again later. Technical details: " +
-                                                    t.getClass ().getName () +
-                                                    ":" +
-                                                    t.getMessage ());
-          }
-          catch (final Throwable t2)
-          {
-            s_aLogger.error ("Error writing first exception to response", t2);
-          }
-        }
-        finally
-        {
-          try
-          {
-            aEAC.complete ();
-          }
-          catch (final Throwable t)
-          {
-            s_aLogger.error ("Error completing async context", t);
-          }
-        }
-      };
-
-      // Put into async processing queue
-      s_aAsyncServletRunner.runAsync (aHttpRequest,
-                                      aHttpResponse,
-                                      aAsyncContext,
-                                      () -> aAsyncRunner.accept (aAsyncContext));
-    }
-    else
-    {
-      // Run synchronously
-      _runScoped (aHttpRequest, aHttpResponse, aRunner);
-    }
-  }
-
   /**
    * Implement HTTP DELETE
    *
@@ -342,7 +214,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doDelete (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.DELETE, this::onDelete);
+    _runScoped (aHttpRequest, aHttpResponse, this::onDelete);
   }
 
   /**
@@ -371,7 +243,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doGet (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.GET, this::onGet);
+    _runScoped (aHttpRequest, aHttpResponse, this::onGet);
   }
 
   /**
@@ -400,7 +272,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doHead (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.HEAD, this::onHead);
+    _runScoped (aHttpRequest, aHttpResponse, this::onHead);
   }
 
   /**
@@ -429,7 +301,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doOptions (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.OPTIONS, this::onOptions);
+    _runScoped (aHttpRequest, aHttpResponse, this::onOptions);
   }
 
   /**
@@ -458,7 +330,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPost (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.POST, this::onPost);
+    _runScoped (aHttpRequest, aHttpResponse, this::onPost);
   }
 
   /**
@@ -487,7 +359,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPut (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.PUT, this::onPut);
+    _runScoped (aHttpRequest, aHttpResponse, this::onPut);
   }
 
   /**
@@ -516,14 +388,12 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doTrace (@Nonnull final HttpServletRequest aHttpRequest,
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.TRACE, this::onTrace);
+    _runScoped (aHttpRequest, aHttpResponse, this::onTrace);
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("AsyncSpec", m_aAsyncSpec)
-                                       .append ("ApplicationID", m_sStatusApplicationID)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("ApplicationID", m_sStatusApplicationID).getToString ();
   }
 }

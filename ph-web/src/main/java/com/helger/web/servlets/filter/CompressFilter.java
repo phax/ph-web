@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,8 +51,9 @@ public class CompressFilter extends AbstractHttpServletFilter
                                                                                                             "$none");
 
   @Override
-  public void init (@Nonnull final FilterConfig aFilterConfig)
+  public void init () throws ServletException
   {
+    super.init ();
     // Mark the filter as loaded
     CompressFilterSettings.markFilterLoaded ();
 

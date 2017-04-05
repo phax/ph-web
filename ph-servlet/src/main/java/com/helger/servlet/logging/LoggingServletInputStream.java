@@ -19,12 +19,10 @@ package com.helger.servlet.logging;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.servlet.io.AbstractServletInputStream;
 
-class LoggingServletInputStream extends ServletInputStream
+class LoggingServletInputStream extends AbstractServletInputStream
 {
   private final InputStream m_aIS;
 
@@ -44,10 +42,6 @@ class LoggingServletInputStream extends ServletInputStream
   {
     return true;
   }
-
-  @Override
-  public void setReadListener (final ReadListener readListener)
-  {}
 
   @Override
   public int read () throws IOException

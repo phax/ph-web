@@ -19,15 +19,13 @@ package com.helger.web.servlets.scope;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
@@ -50,8 +48,6 @@ import com.helger.web.scope.request.RequestScopeInitializer;
  */
 public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareFilter.class);
-
   // Set in "init" method
   private transient String m_sStatusApplicationID;
 
@@ -59,35 +55,26 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
    * Determine the application ID to be used, based on the passed filter
    * configuration. This method is only invoked once on startup.
    *
-   * @param aFilterConfig
-   *        The filter configuration
-   * @return The application ID for this filter.
+   * @return The application ID for this filter. May neither be
+   *         <code>null</code> nor empty.
    */
   @OverrideOnDemand
-  protected String getApplicationID (@Nonnull final FilterConfig aFilterConfig)
+  @Nonnull
+  @Nonempty
+  protected String getApplicationID ()
   {
     return ClassHelper.getClassLocalName (getClass ());
   }
 
-  /**
-   * Initialize the filter
-   *
-   * @param aFilterConfig
-   *        Filter configuration from servlet container
-   * @throws ServletException
-   *         If something goes wrong
-   */
-  @OverrideOnDemand
-  protected void onInit (@Nonnull final FilterConfig aFilterConfig) throws ServletException
-  {}
-
   @Override
-  public final void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
+  @OverrideOnDemand
+  @OverridingMethodsMustInvokeSuper
+  public void init () throws ServletException
   {
-    m_sStatusApplicationID = getApplicationID (aFilterConfig);
+    super.init ();
+    m_sStatusApplicationID = getApplicationID ();
     if (StringHelper.hasNoText (m_sStatusApplicationID))
       throw new InitializationException ("Failed retrieve a valid application ID!");
-    onInit (aFilterConfig);
   }
 
   /**
@@ -117,14 +104,6 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Filter(" +
-                       getClass ().getSimpleName () +
-                       "): asyncSupported=" +
-                       aHttpRequest.isAsyncSupported () +
-                       "; asyncStarted=" +
-                       aHttpRequest.isAsyncStarted ());
-
     // Check if a scope needs to be created
     final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
                                                                                              aHttpRequest,

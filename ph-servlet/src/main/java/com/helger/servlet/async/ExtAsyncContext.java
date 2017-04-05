@@ -81,6 +81,11 @@ public class ExtAsyncContext
     return (HttpServletResponse) m_aAsyncContext.getResponse ();
   }
 
+  public void start (@Nonnull final Runnable r)
+  {
+    m_aAsyncContext.start (r);
+  }
+
   public void complete ()
   {
     m_aAsyncContext.complete ();

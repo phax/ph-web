@@ -63,8 +63,10 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {}
 
   @Override
-  public void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
+  public void init () throws ServletException
   {
+    final FilterConfig aFilterConfig = getFilterConfig ();
+
     final String sLoggerName = aFilterConfig.getInitParameter ("loggerName");
     if (StringHelper.hasText (sLoggerName))
       m_aLogger = LoggerFactory.getLogger (sLoggerName);

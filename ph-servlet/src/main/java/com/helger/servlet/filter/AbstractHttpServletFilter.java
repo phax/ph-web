@@ -27,8 +27,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.string.ToStringGenerator;
-
 /**
  * An abstract {@link Filter} implementation that only works with
  * {@link HttpServletRequest} and {@link HttpServletResponse}. All other request
@@ -55,7 +53,7 @@ public abstract class AbstractHttpServletFilter extends AbstractServletFilter
    */
   public abstract void doHttpFilter (@Nonnull HttpServletRequest aHttpRequest,
                                      @Nonnull HttpServletResponse aHttpResponse,
-                                     @Nonnull final FilterChain aChain) throws IOException, ServletException;
+                                     @Nonnull FilterChain aChain) throws IOException, ServletException;
 
   public final void doFilter (@Nonnull final ServletRequest aRequest,
                               @Nonnull final ServletResponse aResponse,
@@ -72,11 +70,5 @@ public abstract class AbstractHttpServletFilter extends AbstractServletFilter
       // Ignore and continue
       aChain.doFilter (aRequest, aResponse);
     }
-  }
-
-  @Override
-  public String toString ()
-  {
-    return new ToStringGenerator (this).getToString ();
   }
 }

@@ -33,19 +33,13 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
-import com.helger.commons.statistics.IMutableStatisticsHandlerTimer;
-import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.timing.StopWatch;
 import com.helger.http.EHTTPMethod;
-import com.helger.servlet.ServletHelper;
 import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
-import com.helger.servlet.request.RequestLogger;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xml.serialize.write.XMLWriterSettings;
@@ -64,22 +58,6 @@ import com.helger.xml.serialize.write.XMLWriterSettings;
 public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareHttpServlet.class);
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequests = StatisticsManager.getCounterHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                                  "$requests");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlDelete = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                             "$DELETE");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlGet = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                          "$GET");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlHead = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                           "$HEAD");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlOptions = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                              "$OPTIONS");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlPost = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                           "$POST");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlPut = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                          "$PUT");
-  private static final IMutableStatisticsHandlerTimer s_aTimerHdlTrace = StatisticsManager.getTimerHandler (AbstractScopeAwareHttpServlet.class.getName () +
-                                                                                                            "$TRACE");
 
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
 
@@ -195,13 +173,12 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   public final void destroy ()
   {
     onDestroy ();
-    super.destroy ();
   }
 
   /*
    * This method is required to ensure that the HTTP response is correctly
    * encoded. Normally this is done via the charset filter, but if a
-   * non-existing URL is accesses then the error redirect happens without the
+   * non-existing URL is accessed then the error redirect happens without the
    * charset filter ever called.
    */
   private static void _ensureResponseCharset (@Nonnull final HttpServletResponse aHttpResponse)
@@ -211,23 +188,6 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
       s_aLogger.info ("Setting response charset to " + XMLWriterSettings.DEFAULT_XML_CHARSET);
       aHttpResponse.setCharacterEncoding (XMLWriterSettings.DEFAULT_XML_CHARSET);
     }
-  }
-
-  /**
-   * This method logs errors, in case a HttpServletRequest object is missing
-   * basic information
-   *
-   * @param sMsg
-   *        The concrete message to emit. May not be <code>null</code>.
-   * @param aHttpRequest
-   *        The current HTTP request. May not be <code>null</code>.
-   */
-  @OverrideOnDemand
-  protected void logInvalidRequestSetup (@Nonnull final String sMsg, @Nonnull final HttpServletRequest aHttpRequest)
-  {
-    final StringBuilder aSB = new StringBuilder (sMsg).append (":\n");
-    aSB.append (RequestLogger.getRequestComplete (aHttpRequest));
-    s_aLogger.error (aSB.toString ());
   }
 
   /**
@@ -244,18 +204,10 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected RequestScopeInitializer beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                                    @Nonnull final HttpServletResponse aHttpResponse)
   {
-    if (aHttpRequest.getScheme () == null)
-      logInvalidRequestSetup ("HTTP request has no scheme", aHttpRequest);
-    if (aHttpRequest.getProtocol () == null)
-      logInvalidRequestSetup ("HTTP request has no protocol", aHttpRequest);
-    if (ServletHelper.getRequestContextPath (aHttpRequest) == null)
-      logInvalidRequestSetup ("HTTP request has no context path", aHttpRequest);
-
     final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
                                                                                              aHttpRequest,
                                                                                              aHttpResponse);
     _ensureResponseCharset (aHttpResponse);
-    s_aCounterRequests.increment ();
     return aRequestScopeInitializer;
   }
 
@@ -283,47 +235,33 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
    * @param aRunner
    *        Method reference to the protected "on..." method that does the main
    *        work
-   * @param aTimer
-   *        The time to which this is to be added.
    * @throws ServletException
    *         On error
    * @throws IOException
    *         On error
    * @since 8.7.5
    */
-  private void _perform (@Nonnull final HttpServletRequest aHttpRequest,
-                         @Nonnull final HttpServletResponse aHttpResponse,
-                         @Nonnull final IRunner aRunner,
-                         @Nonnull final IMutableStatisticsHandlerTimer aTimer) throws ServletException, IOException
+  private void _runScoped (@Nonnull final HttpServletRequest aHttpRequest,
+                           @Nonnull final HttpServletResponse aHttpResponse,
+                           @Nonnull final IRunner aRunner) throws ServletException, IOException
   {
     final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
       aRunner.run (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
-      aTimer.addTime (aSW.stopAndGetMillis ());
       aRequestScopeInitializer.destroyScope ();
     }
   }
 
   private void _run (@Nonnull final HttpServletRequest aHttpRequest,
                      @Nonnull final HttpServletResponse aHttpResponse,
-                     @Nonnull final EHTTPMethod eHTTPMethod,
-                     @Nonnull final IRunner aRunner,
-                     @Nonnull final IMutableStatisticsHandlerTimer aTimer) throws ServletException, IOException
+                     @Nonnull final EHTTPMethod eHttpMethod,
+                     @Nonnull final IRunner aRunner) throws ServletException, IOException
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Servlet(" +
-                       getClass ().getSimpleName () +
-                       "): asyncSupported=" +
-                       aHttpRequest.isAsyncSupported () +
-                       "; asyncStarted=" +
-                       aHttpRequest.isAsyncStarted ());
-
-    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHTTPMethod))
+    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
     {
       // Run asynchronously
       final ExtAsyncContext aAsyncContext = ExtAsyncContext.create (aHttpRequest, aHttpResponse, m_aAsyncSpec);
@@ -334,7 +272,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
         {
           if (s_aLogger.isDebugEnabled ())
             s_aLogger.debug ("ASYNC request processing started: " + aEAC.getRequest ());
-          _perform (aEAC.getRequest (), aEAC.getResponse (), aRunner, aTimer);
+          _runScoped (aEAC.getRequest (), aEAC.getResponse (), aRunner);
         }
         catch (final Throwable t)
         {
@@ -366,12 +304,15 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
       };
 
       // Put into async processing queue
-      s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aAsyncRunner, aAsyncContext);
+      s_aAsyncServletRunner.runAsync (aHttpRequest,
+                                      aHttpResponse,
+                                      aAsyncContext,
+                                      () -> aAsyncRunner.accept (aAsyncContext));
     }
     else
     {
       // Run synchronously
-      _perform (aHttpRequest, aHttpResponse, aRunner, aTimer);
+      _runScoped (aHttpRequest, aHttpResponse, aRunner);
     }
   }
 
@@ -401,7 +342,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doDelete (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.DELETE, this::onDelete, s_aTimerHdlDelete);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.DELETE, this::onDelete);
   }
 
   /**
@@ -430,7 +371,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doGet (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.GET, this::onGet, s_aTimerHdlGet);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.GET, this::onGet);
   }
 
   /**
@@ -459,7 +400,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doHead (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.HEAD, this::onHead, s_aTimerHdlHead);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.HEAD, this::onHead);
   }
 
   /**
@@ -488,7 +429,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doOptions (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.OPTIONS, this::onOptions, s_aTimerHdlOptions);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.OPTIONS, this::onOptions);
   }
 
   /**
@@ -517,7 +458,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPost (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.POST, this::onPost, s_aTimerHdlPost);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.POST, this::onPost);
   }
 
   /**
@@ -546,7 +487,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPut (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.PUT, this::onPut, s_aTimerHdlPut);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.PUT, this::onPut);
   }
 
   /**
@@ -575,7 +516,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doTrace (@Nonnull final HttpServletRequest aHttpRequest,
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    _run (aHttpRequest, aHttpResponse, EHTTPMethod.TRACE, this::onTrace, s_aTimerHdlTrace);
+    _run (aHttpRequest, aHttpResponse, EHTTPMethod.TRACE, this::onTrace);
   }
 
   @Override

@@ -16,8 +16,6 @@
  */
 package com.helger.servlet.async;
 
-import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,12 +33,18 @@ public class AsyncServletRunnerDefault implements IAsyncServletRunner
 
   public void runAsync (@Nonnull final HttpServletRequest aOriginalHttpRequest,
                         @Nonnull final HttpServletResponse aOriginalHttpResponse,
-                        @Nonnull final Consumer <ExtAsyncContext> aAsyncRunner,
-                        @Nonnull final ExtAsyncContext aAsyncContext)
+                        @Nonnull final ExtAsyncContext aAsyncContext,
+                        @Nonnull final Runnable aRunnable)
   {
-    final Runnable r = () -> aAsyncRunner.accept (aAsyncContext);
+    final Runnable aRealRunner = () -> {
+      // Debug - safe references to original req/resp
+      final HttpServletRequest o1 = aOriginalHttpRequest;
+      final HttpServletResponse o2 = aOriginalHttpResponse;
+      if (o1 != null && o2 != null)
+        aRunnable.run ();
+    };
     // Important to use "start" and to not use a custom ExecutorService, as this
     // "start" method assigns all the necessary variables etc.
-    aAsyncContext.getAsyncContext ().start (r);
+    aAsyncContext.start (aRealRunner);
   }
 }

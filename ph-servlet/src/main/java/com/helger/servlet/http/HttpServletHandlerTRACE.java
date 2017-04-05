@@ -20,19 +20,21 @@ import com.helger.http.EHTTPVersion;
  * @author Servlet Spec 3.1
  * @since 8.7.5
  */
-public class HttpTraceHandler implements IHttpServletHandler
+public class HttpServletHandlerTRACE implements IHttpServletHandler
 {
   private static final String CRLF = "\r\n";
 
-  public void handle (final HttpServletRequest aHttpRequest,
-                      final HttpServletResponse aHttpResponse,
+  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
+                      @Nonnull final HttpServletResponse aHttpResponse,
                       @Nonnull final EHTTPVersion eHTTPVersion,
                       @Nonnull final EHTTPMethod eHTTPMethod) throws ServletException, IOException
   {
-    final StringBuilder aSB = new StringBuilder ("TRACE ").append (aHttpRequest.getRequestURI ())
-                                                          .append (' ')
-                                                          .append (aHttpRequest.getProtocol ())
-                                                          .append (CRLF);
+    final StringBuilder aSB = new StringBuilder ().append (EHTTPMethod.TRACE.getName ())
+                                                  .append (' ')
+                                                  .append (aHttpRequest.getRequestURI ())
+                                                  .append (' ')
+                                                  .append (aHttpRequest.getProtocol ())
+                                                  .append (CRLF);
     final Enumeration <String> aReqHeaderEnum = aHttpRequest.getHeaderNames ();
     while (aReqHeaderEnum.hasMoreElements ())
     {

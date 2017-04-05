@@ -16,8 +16,6 @@
  */
 package com.helger.servlet.async;
 
-import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,19 +31,18 @@ public interface IAsyncServletRunner
 {
   /**
    * Run a servlet request asynchronously.
-   *
-   * @param aOriginalHttpResponse
-   *        Original HTTP request. Never <code>null</code>.
    * @param aOriginalHttpRequest
    *        Original HTTP response. Never <code>null</code>.
-   * @param aAsyncRunner
-   *        The main runner that does the heavy lifting. Never
-   *        <code>null</code>.
+   * @param aOriginalHttpResponse
+   *        Original HTTP request. Never <code>null</code>.
    * @param aAsyncContext
    *        The async execution context. Never <code>null</code>.
+   * @param aRunnable
+   *        The main runner that does the heavy lifting. Never
+   *        <code>null</code>.
    */
   void runAsync (@Nonnull HttpServletRequest aOriginalHttpRequest,
                  @Nonnull HttpServletResponse aOriginalHttpResponse,
-                 @Nonnull Consumer <ExtAsyncContext> aAsyncRunner,
-                 @Nonnull ExtAsyncContext aAsyncContext);
+                 @Nonnull ExtAsyncContext aAsyncContext,
+                 @Nonnull Runnable aRunnable);
 }

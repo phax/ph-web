@@ -17,6 +17,7 @@
 package com.helger.servlet.filter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -32,8 +33,33 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public abstract class AbstractServletFilter implements Filter
 {
+  private FilterConfig m_aFilterConfig;
+
+  /**
+   * @return The {@link FilterConfig} object used in the initialization. May
+   *         only be <code>null</code> before {@link #init(FilterConfig)} is
+   *         called.
+   */
+  @Nullable
+  public final FilterConfig getFilterConfig ()
+  {
+    return m_aFilterConfig;
+  }
+
+  public final void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
+  {
+    m_aFilterConfig = aFilterConfig;
+    init ();
+  }
+
+  /**
+   * Init this filter
+   * 
+   * @throws ServletException
+   *         In case of an error
+   */
   @OverrideOnDemand
-  public void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
+  public void init () throws ServletException
   {}
 
   @OverrideOnDemand
@@ -43,6 +69,6 @@ public abstract class AbstractServletFilter implements Filter
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).getToString ();
+    return new ToStringGenerator (this).append ("FilterConfig", m_aFilterConfig).getToString ();
   }
 }

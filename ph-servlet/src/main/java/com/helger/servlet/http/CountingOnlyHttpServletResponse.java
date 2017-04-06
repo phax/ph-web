@@ -32,9 +32,9 @@ import com.helger.http.CHTTPHeader;
  * swallows that body, counting the bytes in order to set the content length
  * appropriately. All other methods delegate directly to the wrapped HTTP
  * Servlet Response object.
- * 
+ *
  * @author Servlet Spec 3.1
- * @since 8.7.5
+ * @since 8.8.0
  */
 class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
 {

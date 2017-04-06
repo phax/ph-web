@@ -63,7 +63,7 @@ import com.helger.servlet.request.RequestLogger;
  * </ul>
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 public abstract class AbstractHttpServlet extends GenericServlet
 {
@@ -97,15 +97,15 @@ public abstract class AbstractHttpServlet extends GenericServlet
   public AbstractHttpServlet ()
   {
     // This handler is always the same, so it is registered here for convenience
-    setHandler (EHTTPMethod.TRACE, new HttpServletHandlerTRACE ());
+    registerHandler (EHTTPMethod.TRACE, new HttpServletHandlerTRACE ());
     // Default HEAD handler -> invoke with GET
-    setHandler (EHTTPMethod.HEAD, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
+    registerHandler (EHTTPMethod.HEAD, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
       final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
       _internalService (aHttpRequest, aResponseWrapper, eHttpVersion, EHTTPMethod.GET);
       aResponseWrapper.setContentLengthAutomatically ();
     });
     // Default OPTIONS handler
-    setHandler (EHTTPMethod.OPTIONS, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
+    registerHandler (EHTTPMethod.OPTIONS, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
       // Build Allow response header - that's it
       aHttpResponse.setHeader (CHTTPHeader.ALLOW, _getAllowString ());
     });
@@ -129,7 +129,8 @@ public abstract class AbstractHttpServlet extends GenericServlet
    * @param aHandler
    *        The handler to register. May not be <code>null</code>.
    */
-  protected final void setHandler (@Nonnull final EHTTPMethod eHTTPMethod, @Nonnull final IHttpServletHandler aHandler)
+  protected final void registerHandler (@Nonnull final EHTTPMethod eHTTPMethod,
+                                        @Nonnull final IHttpServletHandler aHandler)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     ValueEnforcer.notNull (aHandler, "Handler");

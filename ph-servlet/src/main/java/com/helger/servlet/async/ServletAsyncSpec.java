@@ -41,7 +41,7 @@ import com.helger.http.EHTTPMethod;
  * servlet requests.
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 @Immutable
 public class ServletAsyncSpec

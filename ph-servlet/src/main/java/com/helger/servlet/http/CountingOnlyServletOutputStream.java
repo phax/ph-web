@@ -28,7 +28,7 @@ import com.helger.servlet.io.AbstractServletOutputStream;
  * Servlet output stream that gobbles up all its data.
  *
  * @author Servlet Spec 3.1
- * @since 8.7.5
+ * @since 8.8.0
  */
 class CountingOnlyServletOutputStream extends AbstractServletOutputStream
 {

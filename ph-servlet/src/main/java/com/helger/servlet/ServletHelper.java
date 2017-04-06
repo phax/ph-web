@@ -224,7 +224,7 @@ public final class ServletHelper
    * @param aRequest
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or the servlet path.
-   * @since 8.7.5
+   * @since 8.8.0
    */
   @Nonnull
   public static String getRequestServletPath (@Nullable final HttpServletRequest aRequest)

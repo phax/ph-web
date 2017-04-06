@@ -29,7 +29,7 @@ import com.helger.http.EHTTPVersion;
  * Extended {@link AsyncContext} type.
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 public class ExtAsyncContext
 {

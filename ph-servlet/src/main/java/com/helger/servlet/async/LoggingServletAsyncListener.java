@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * A logging implementation of {@link AsyncListener}.
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 @Immutable
 public class LoggingServletAsyncListener extends AbstractServletAsyncListener

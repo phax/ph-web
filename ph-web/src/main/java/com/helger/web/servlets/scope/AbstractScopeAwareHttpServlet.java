@@ -148,7 +148,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
    * method references.
    *
    * @author Philip Helger
-   * @since 8.7.5
+   * @since 8.8.0
    */
   private static interface IRunner
   {
@@ -171,7 +171,7 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
    *         On error
    * @throws IOException
    *         On error
-   * @since 8.7.5
+   * @since 8.8.0
    */
   private void _runScoped (@Nonnull final HttpServletRequest aHttpRequest,
                            @Nonnull final HttpServletResponse aHttpResponse,

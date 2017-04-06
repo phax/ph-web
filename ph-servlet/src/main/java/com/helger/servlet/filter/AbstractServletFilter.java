@@ -29,7 +29,7 @@ import com.helger.commons.string.ToStringGenerator;
  * An abstract {@link Filter} implementation that performs nothing by default
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 public abstract class AbstractServletFilter implements Filter
 {
@@ -54,7 +54,7 @@ public abstract class AbstractServletFilter implements Filter
 
   /**
    * Init this filter
-   * 
+   *
    * @throws ServletException
    *         In case of an error
    */

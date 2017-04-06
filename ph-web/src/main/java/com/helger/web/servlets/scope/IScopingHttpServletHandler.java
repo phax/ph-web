@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.servlet.http;
+package com.helger.web.servlets.scope;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.web.scope.IRequestWebScope;
 
 /**
  * HTTP servlet handler for a single HTTP methods.
@@ -34,7 +35,7 @@ import com.helger.http.EHTTPVersion;
  * @since 8.8.0
  */
 @FunctionalInterface
-public interface IHttpServletHandler extends Serializable
+public interface IScopingHttpServletHandler extends Serializable
 {
   /**
    * Handle the servlet action for a certain request and response.
@@ -47,6 +48,8 @@ public interface IHttpServletHandler extends Serializable
    *        HTTP version. Never <code>null</code>.
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
+   * @param aRequestScope
+   *        The current request scope.
    * @throws ServletException
    *         On business error
    * @throws IOException
@@ -55,5 +58,6 @@ public interface IHttpServletHandler extends Serializable
   void handle (@Nonnull HttpServletRequest aHttpRequest,
                @Nonnull HttpServletResponse aHttpResponse,
                @Nonnull EHTTPVersion eHttpVersion,
-               @Nonnull EHTTPMethod eHttpMethod) throws ServletException, IOException;
+               @Nonnull EHTTPMethod eHttpMethod,
+               @Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

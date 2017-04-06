@@ -29,7 +29,7 @@ import com.helger.commons.string.ToStringGenerator;
  * An empty implementation of {@link AsyncListener}.
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 @Immutable
 public abstract class AbstractServletAsyncListener implements AsyncListener

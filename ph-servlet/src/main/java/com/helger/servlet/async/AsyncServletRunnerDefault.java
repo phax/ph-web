@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * Default implementation of {@link IAsyncServletRunner}
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 public class AsyncServletRunnerDefault implements IAsyncServletRunner
 {

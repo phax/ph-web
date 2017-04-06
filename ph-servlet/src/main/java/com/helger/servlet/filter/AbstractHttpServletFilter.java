@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * and response types are not handled.
  *
  * @author Philip Helger
- * @since 8.7.5
+ * @since 8.8.0
  */
 public abstract class AbstractHttpServletFilter extends AbstractServletFilter
 {

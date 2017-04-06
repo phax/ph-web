@@ -35,7 +35,7 @@ import com.helger.http.EHTTPVersion;
  * to override this method.
  *
  * @author Servlet Spec 3.1
- * @since 8.7.5
+ * @since 8.8.0
  */
 public class HttpServletHandlerTRACE implements IHttpServletHandler
 {

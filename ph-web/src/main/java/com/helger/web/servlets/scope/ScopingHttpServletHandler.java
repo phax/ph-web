@@ -29,18 +29,19 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.servlet.http.IHttpServletHandler;
+import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
 public final class ScopingHttpServletHandler implements IHttpServletHandler
 {
   private final String m_sApplicationID;
-  private final IHttpServletHandler m_aOriginalHandler;
+  private final IScopingHttpServletHandler m_aNestedHandler;
 
   public ScopingHttpServletHandler (@Nonnull @Nonempty final String sApplicationID,
-                                    @Nonnull final IHttpServletHandler aOriginalHandler)
+                                    @Nonnull final IScopingHttpServletHandler aNestedHandler)
   {
     m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
-    m_aOriginalHandler = ValueEnforcer.notNull (aOriginalHandler, "OriginalHandler");
+    m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
   public void handle (@Nonnull final HttpServletRequest aHttpRequest,
@@ -54,7 +55,8 @@ public final class ScopingHttpServletHandler implements IHttpServletHandler
     try
     {
       // Pass to original handler
-      m_aOriginalHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+      final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
+      m_aNestedHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
     }
     finally
     {
@@ -66,7 +68,7 @@ public final class ScopingHttpServletHandler implements IHttpServletHandler
   public String toString ()
   {
     return new ToStringGenerator (this).append ("ApplicationID", m_sApplicationID)
-                                       .append ("OriginalHandler", m_aOriginalHandler)
+                                       .append ("NestedHandler", m_aNestedHandler)
                                        .getToString ();
   }
 }

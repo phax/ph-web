@@ -38,7 +38,7 @@ import com.helger.servlet.async.ServletAsyncSpec;
 /**
  * A special {@link IHttpServletHandler} that allows to run requests
  * asynchronously.
- * 
+ *
  * @author Philip Helger
  */
 public final class AsyncHttpServletHandler implements IHttpServletHandler
@@ -68,13 +68,13 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
   }
 
   private final ServletAsyncSpec m_aAsyncSpec;
-  private final IHttpServletHandler m_aOriginalHandler;
+  private final IHttpServletHandler m_aNestedHandler;
 
   public AsyncHttpServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                                  @Nonnull final IHttpServletHandler aOriginalHandler)
+                                  @Nonnull final IHttpServletHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
-    m_aOriginalHandler = ValueEnforcer.notNull (aOriginalHandler, "OriginalHandler");
+    m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
   private void _handleAsync (@Nonnull final HttpServletRequest aHttpRequest,
@@ -92,10 +92,10 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
     s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aExtAsyncCtx, () -> {
       try
       {
-        m_aOriginalHandler.handle (aExtAsyncCtx.getRequest (),
-                                   aExtAsyncCtx.getResponse (),
-                                   aExtAsyncCtx.getHTTPVersion (),
-                                   aExtAsyncCtx.getHTTPMethod ());
+        m_aNestedHandler.handle (aExtAsyncCtx.getRequest (),
+                                 aExtAsyncCtx.getResponse (),
+                                 aExtAsyncCtx.getHTTPVersion (),
+                                 aExtAsyncCtx.getHTTPMethod ());
       }
       catch (final Throwable t)
       {
@@ -140,7 +140,7 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
     else
     {
       // Run synchronously
-      m_aOriginalHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+      m_aNestedHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
     }
   }
 
@@ -148,7 +148,7 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
   public String toString ()
   {
     return new ToStringGenerator (this).append ("AsyncSpec", m_aAsyncSpec)
-                                       .append ("OriginalHandler", m_aOriginalHandler)
+                                       .append ("OriginalHandler", m_aNestedHandler)
                                        .getToString ();
   }
 }

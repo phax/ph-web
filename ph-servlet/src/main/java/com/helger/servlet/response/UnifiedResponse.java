@@ -510,8 +510,8 @@ public class UnifiedResponse
       throw new IllegalArgumentException ("Etag must start with a '\"' character or with 'W/\"': " + sETag);
     if (!sETag.endsWith ("\""))
       throw new IllegalArgumentException ("Etag must end with a '\"' character: " + sETag);
-    if (m_eHTTPMethod != EHTTPMethod.GET)
-      logWarn ("Setting an ETag on a non-GET request may have no impact!");
+    if (m_eHTTPMethod != EHTTPMethod.GET && m_eHTTPMethod != EHTTPMethod.HEAD)
+      logWarn ("Setting an ETag on a non-GET/HEAD request may have no impact!");
 
     m_aResponseHeaderMap.setHeader (CHTTPHeader.ETAG, sETag);
     return this;
@@ -535,6 +535,11 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * Remove the ETag if present.
+   *
+   * @return this
+   */
   @Nonnull
   public UnifiedResponse removeETag ()
   {
@@ -542,6 +547,17 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * Set the content disposition type (e.g. for PDF/Excel downloads). The
+   * default is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}. This value is only
+   * used if a content disposition filename is defined.
+   *
+   * @param eContentDispositionType
+   *        The content disposition type to be used. May not be
+   *        <code>null</code>.
+   * @return this
+   * @see #setContentDispositionFilename(String)
+   */
   @Nonnull
   public UnifiedResponse setContentDispositionType (@Nonnull final EContentDispositionType eContentDispositionType)
   {
@@ -551,12 +567,25 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * @return The current content disposition type. Never <code>null</code>.
+   *         Default is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}.
+   */
   @Nonnull
   public EContentDispositionType getContentDispositionType ()
   {
     return m_eContentDispositionType;
   }
 
+  /**
+   * Set the content disposition filename for attachment download.
+   *
+   * @param sFilename
+   *        The filename for attachment download to use. May neither be
+   *        <code>null</code> nor empty.
+   * @return this
+   * @see #removeContentDispositionFilename()
+   */
   @Nonnull
   public UnifiedResponse setContentDispositionFilename (@Nonnull @Nonempty final String sFilename)
   {
@@ -597,12 +626,22 @@ public class UnifiedResponse
     return this;
   }
 
+  /**
+   * @return The current content disposition filename. May be <code>null</code>
+   *         if not set.
+   */
   @Nullable
   public String getContentDispositionFilename ()
   {
     return m_sContentDispositionFilename;
   }
 
+  /**
+   * Remove the current content disposition filename. This method can be called
+   * if a filename is set or not.
+   * 
+   * @return this
+   */
   @Nonnull
   public UnifiedResponse removeContentDispositionFilename ()
   {

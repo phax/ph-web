@@ -454,7 +454,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nonnull
   public String getString (@Nonnull final Charset aCharset)
   {
-    return CharsetManager.getAsString (get (), aCharset);
+    return new String (get (), aCharset);
   }
 
   /**
@@ -467,10 +467,9 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nonnull
   public String getString ()
   {
-    final byte [] aRawData = get ();
     final String asCharset = getCharSet ();
     final Charset aCharset = asCharset == null ? DEFAULT_CHARSET_OBJ : CharsetManager.getCharsetFromName (asCharset);
-    return CharsetManager.getAsString (aRawData, aCharset);
+    return getString (aCharset);
   }
 
   /**

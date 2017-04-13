@@ -43,7 +43,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
@@ -411,7 +410,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (sContent, "Content");
     setCharset (aCharset);
-    setContent (CharsetManager.getAsBytes (sContent, aCharset));
+    setContent (sContent.getBytes (aCharset));
     return this;
   }
 
@@ -639,7 +638,7 @@ public class UnifiedResponse
   /**
    * Remove the current content disposition filename. This method can be called
    * if a filename is set or not.
-   * 
+   *
    * @return this
    */
   @Nonnull

@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.codec.IEncoder;
 import com.helger.commons.string.StringHelper;
 
@@ -130,7 +129,7 @@ public class RFC5987Encoder implements IEncoder <String, String>
     ValueEnforcer.notNull (sSrc, "Src");
 
     final StringBuilder aSB = new StringBuilder (sSrc.length () * 2);
-    for (final byte b : CharsetManager.getAsBytes (sSrc, aCharset))
+    for (final byte b : sSrc.getBytes (aCharset))
     {
       if (Arrays.binarySearch (ALLOWED_BYTES, b) >= 0)
         aSB.append ((char) b);

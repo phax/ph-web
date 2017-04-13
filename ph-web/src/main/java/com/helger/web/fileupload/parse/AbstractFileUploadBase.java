@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsMap;
@@ -255,7 +254,7 @@ public abstract class AbstractFileUploadBase
   @ReturnsMutableCopy
   public ICommonsList <IFileItem> parseRequest (@Nonnull final IRequestContext aCtx) throws FileUploadException
   {
-    final ICommonsList <IFileItem> aItems = new CommonsArrayList<> ();
+    final ICommonsList <IFileItem> aItems = new CommonsArrayList <> ();
     boolean bSuccessful = false;
     try
     {
@@ -359,7 +358,7 @@ public abstract class AbstractFileUploadBase
     final String sBoundaryStr = aParams.get ("boundary");
     if (sBoundaryStr == null)
       return null;
-    return CharsetManager.getAsBytes (sBoundaryStr, StandardCharsets.ISO_8859_1);
+    return sBoundaryStr.getBytes (StandardCharsets.ISO_8859_1);
   }
 
   /**

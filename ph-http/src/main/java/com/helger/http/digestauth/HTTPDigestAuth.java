@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
@@ -100,7 +99,7 @@ public final class HTTPDigestAuth
     }
     nIndex++;
 
-    final ICommonsOrderedMap <String, String> aParams = new CommonsLinkedHashMap<> ();
+    final ICommonsOrderedMap <String, String> aParams = new CommonsLinkedHashMap <> ();
     while (true)
     {
       // Skip all spaces
@@ -291,8 +290,7 @@ public final class HTTPDigestAuth
   @Nonnull
   private static String _md5 (@Nonnull final String s)
   {
-    return MessageDigestValue.create (CharsetManager.getAsBytes (s, CHARSET), EMessageDigestAlgorithm.MD5)
-                             .getHexEncodedDigestString ();
+    return MessageDigestValue.create (s.getBytes (CHARSET), EMessageDigestAlgorithm.MD5).getHexEncodedDigestString ();
   }
 
   /**

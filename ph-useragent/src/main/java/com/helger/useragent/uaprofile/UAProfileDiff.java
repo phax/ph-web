@@ -31,7 +31,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -70,8 +69,7 @@ public class UAProfileDiff implements Serializable
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestValue.create (CharsetManager.getAsBytes (sData,
-                                                                                          StandardCharsets.UTF_8),
+      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
                                                                EMessageDigestAlgorithm.MD5)
                                                       .getAllDigestBytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))

@@ -45,6 +45,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 
@@ -57,7 +58,11 @@ import com.helger.commons.annotation.OverrideOnDemand;
 @Immutable
 public class HttpClientFactory implements IHttpClientProvider
 {
-  private boolean m_bUseSystemProperties = false;
+  public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
+  public static final boolean DEFAULT_USE_DNS_CACHE = true;
+
+  private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
+  private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private final SSLContext m_aDefaultSSLContext;
 
   /**
@@ -71,6 +76,16 @@ public class HttpClientFactory implements IHttpClientProvider
   public HttpClientFactory (@Nullable final SSLContext aDefaultSSLContext)
   {
     m_aDefaultSSLContext = aDefaultSSLContext;
+  }
+
+  /**
+   * @return <code>true</code> if system properties for HTTP client should be
+   *         used, <code>false</code> if not. Default is <code>false</code>.
+   * @since 8.7.1
+   */
+  public boolean isUseSystemProperties ()
+  {
+    return m_bUseSystemProperties;
   }
 
   /**
@@ -112,13 +127,29 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return <code>true</code> if system properties for HTTP client should be
-   *         used, <code>false</code> if not. Default is <code>false</code>.
-   * @since 8.7.1
+   * @return <code>true</code> if DNS client caching is enabled (default),
+   *         <code>false</code> if it is disabled.
+   * @since 8.8.0
    */
-  public boolean isUseSystemProperties ()
+  public boolean isUseDNSClientCache ()
   {
-    return m_bUseSystemProperties;
+    return m_bUseDNSClientCache;
+  }
+
+  /**
+   * Enable or disable DNS client caching. By default caching is enabled.
+   *
+   * @param bUseDNSClientCache
+   *        <code>true</code> to use DNS caching, <code>false</code> to disable
+   *        it.
+   * @return this for chaining
+   * @since 8.8.0
+   */
+  @Nonnull
+  public HttpClientFactory setUseDNSClientCache (final boolean bUseDNSClientCache)
+  {
+    m_bUseDNSClientCache = bUseDNSClientCache;
+    return this;
   }
 
   /**
@@ -212,12 +243,15 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The DNS resolver to be used for
    *         {@link PoolingHttpClientConnectionManager}. May be
    *         <code>null</code> to use the default.
+   * @see #isUseDNSClientCache()
+   * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
    */
   @Nullable
   public DnsResolver createDNSResolver ()
   {
-    return null;
+    // If caching is active, use the default System resolver
+    return m_bUseDNSClientCache ? SystemDefaultDnsResolver.INSTANCE : NonCachingDnsResolver.INSTANCE;
   }
 
   @Nonnull

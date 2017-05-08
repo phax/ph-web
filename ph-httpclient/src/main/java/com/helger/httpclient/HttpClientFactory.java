@@ -34,6 +34,7 @@ import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.DnsResolver;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
@@ -183,6 +184,11 @@ public class HttpClientFactory implements IHttpClientProvider
     return aSSLFactory;
   }
 
+  /**
+   * @return The connection builder used by the
+   *         {@link PoolingHttpClientConnectionManager} to create the default
+   *         connection configuration.
+   */
   @Nonnull
   public ConnectionConfig.Builder createConnectionConfigBuilder ()
   {
@@ -192,10 +198,26 @@ public class HttpClientFactory implements IHttpClientProvider
                            .setCharset (StandardCharsets.UTF_8);
   }
 
+  /**
+   * @return The default connection configuration used by the
+   *         {@link PoolingHttpClientConnectionManager}.
+   */
   @Nonnull
   public ConnectionConfig createConnectionConfig ()
   {
     return createConnectionConfigBuilder ().build ();
+  }
+
+  /**
+   * @return The DNS resolver to be used for
+   *         {@link PoolingHttpClientConnectionManager}. May be
+   *         <code>null</code> to use the default.
+   * @since 8.8.0
+   */
+  @Nullable
+  public DnsResolver createDNSResolver ()
+  {
+    return null;
   }
 
   @Nonnull
@@ -205,18 +227,21 @@ public class HttpClientFactory implements IHttpClientProvider
     if (aSSLFactory == null)
       throw new IllegalStateException ("Failed to create SSL SocketFactory");
 
-    final Registry <ConnectionSocketFactory> sfr = RegistryBuilder.<ConnectionSocketFactory> create ()
-                                                                  .register ("http",
-                                                                             PlainConnectionSocketFactory.getSocketFactory ())
-                                                                  .register ("https", aSSLFactory)
-                                                                  .build ();
-
-    final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (sfr);
+    final Registry <ConnectionSocketFactory> aConSocketRegistry = RegistryBuilder.<ConnectionSocketFactory> create ()
+                                                                                 .register ("http",
+                                                                                            PlainConnectionSocketFactory.getSocketFactory ())
+                                                                                 .register ("https", aSSLFactory)
+                                                                                 .build ();
+    final DnsResolver aDNSResolver = createDNSResolver ();
+    final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (aConSocketRegistry,
+                                                                                                aDNSResolver);
     aConnMgr.setDefaultMaxPerRoute (100);
     aConnMgr.setMaxTotal (200);
     aConnMgr.setValidateAfterInactivity (1000);
+
     final ConnectionConfig aConnectionConfig = createConnectionConfig ();
     aConnMgr.setDefaultConnectionConfig (aConnectionConfig);
+
     return aConnMgr;
   }
 

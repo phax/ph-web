@@ -18,7 +18,6 @@ package com.helger.httpclient;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,12 +43,6 @@ public class HttpClientManager implements Closeable
   public HttpClientManager ()
   {
     this (new HttpClientFactory ());
-  }
-
-  @Deprecated
-  public HttpClientManager (@Nonnull final Supplier <? extends CloseableHttpClient> aHttpClientSupplier)
-  {
-    this ((IHttpClientProvider) () -> aHttpClientSupplier.get ());
   }
 
   public HttpClientManager (@Nonnull final IHttpClientProvider aHttpClientSupplier)

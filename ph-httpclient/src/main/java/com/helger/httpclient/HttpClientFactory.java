@@ -26,6 +26,9 @@ import javax.annotation.concurrent.Immutable;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
@@ -41,6 +44,7 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLInitializationException;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -64,6 +68,8 @@ public class HttpClientFactory implements IHttpClientProvider
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private final SSLContext m_aDefaultSSLContext;
+  private HttpHost m_aProxy;
+  private Credentials m_aProxyCredentials;
 
   /**
    * Default constructor without a special SSL context.
@@ -297,10 +303,53 @@ public class HttpClientFactory implements IHttpClientProvider
     return createRequestConfigBuilder ().build ();
   }
 
-  @Nullable
-  public HttpHost createProxyHost ()
+  /**
+   * Set a proxy host without proxy server credentials.
+   *
+   * @param aProxy
+   *        The proxy host to be used. May be <code>null</code>.
+   * @since 8.8.0
+   * @see #setProxy(HttpHost, Credentials)
+   */
+  public void setProxy (@Nullable final HttpHost aProxy)
   {
-    return null;
+    setProxy (aProxy, (Credentials) null);
+  }
+
+  /**
+   * Set proxy host and proxy credentials.
+   *
+   * @param aProxy
+   *        The proxy host to be used. May be <code>null</code>.
+   * @param aProxyCredentials
+   *        The proxy server credentials to be used. May be <code>null</code>.
+   *        They are only used if a proxy host is present! Usually they are of
+   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
+   * @since 8.8.0
+   * @see #setProxy(HttpHost)
+   */
+  public void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
+  {
+    m_aProxy = aProxy;
+    m_aProxyCredentials = aProxyCredentials;
+  }
+
+  /**
+   * @return The proxy host to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public HttpHost getProxyHost ()
+  {
+    return m_aProxy;
+  }
+
+  /**
+   * @return The proxy server creentials to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public Credentials getProxyCredentials ()
+  {
+    return m_aProxyCredentials;
   }
 
   @Nonnull
@@ -308,12 +357,21 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     final HttpClientConnectionManager aConnMgr = createConnectionManager ();
     final RequestConfig aRequestConfig = createRequestConfig ();
-    final HttpHost aProxy = createProxyHost ();
+    final HttpHost aProxyHost = getProxyHost ();
+    final Credentials aProxyCredentials = getProxyCredentials ();
 
     final HttpClientBuilder aHCB = HttpClients.custom ()
                                               .setConnectionManager (aConnMgr)
                                               .setDefaultRequestConfig (aRequestConfig)
-                                              .setProxy (aProxy);
+                                              .setProxy (aProxyHost);
+
+    if (aProxyHost != null && aProxyCredentials != null)
+    {
+      final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+      aCredentialsProvider.setCredentials (new AuthScope (aProxyHost), aProxyCredentials);
+      aHCB.setDefaultCredentialsProvider (aCredentialsProvider);
+    }
+
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());
     // Add cookies

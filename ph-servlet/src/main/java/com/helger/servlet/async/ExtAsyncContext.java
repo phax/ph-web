@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.servlet.ServletHelper;
 
 /**
  * Extended {@link AsyncContext} type.
@@ -86,11 +87,11 @@ public class ExtAsyncContext
     final HttpServletRequest ret = (HttpServletRequest) m_aAsyncContext.getRequest ();
     if (!m_bSetAttrs && false)
     {
-      ret.setAttribute (AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
-      ret.setAttribute (AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
-      ret.setAttribute (AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
-      ret.setAttribute (AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
-      ret.setAttribute (AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
+      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
+      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
+      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
+      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
+      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
       m_bSetAttrs = true;
     }
     return ret;

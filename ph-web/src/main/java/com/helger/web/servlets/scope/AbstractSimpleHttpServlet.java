@@ -171,7 +171,7 @@ public abstract class AbstractSimpleHttpServlet extends AbstractHttpServlet
 
     @Nonnull
     @Nonempty
-    protected final String getApplicationID ()
+    protected String getApplicationID ()
     {
       return m_sApplicationID;
     }

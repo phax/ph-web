@@ -38,24 +38,25 @@ import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.ext.CommonsHashMap;
 import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.mime.CMimeType;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.EHTTPMethod;
 
 public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
 {
-  private static final String FORM_CONTENT_TYPE = "application/x-www-form-urlencoded";
+  private static final String FORM_CONTENT_TYPE = CMimeType.APPLICATION_X_WWW_FORM_URLENCODED.getAsString ();
   private static final String METHOD_POST = EHTTPMethod.POST.getName ();
 
   private byte [] m_aContent;
   private final Map <String, String []> m_aParameterMap;
   private final HttpServletRequest m_aDelegate;
 
-  public LoggingHttpServletRequestWrapper (@Nonnull final HttpServletRequest request)
+  public LoggingHttpServletRequestWrapper (@Nonnull final HttpServletRequest aRequest)
   {
-    super (request);
-    m_aDelegate = request;
+    super (aRequest);
+    m_aDelegate = aRequest;
     if (isFormPost ())
-      m_aParameterMap = request.getParameterMap ();
+      m_aParameterMap = aRequest.getParameterMap ();
     else
       m_aParameterMap = Collections.emptyMap ();
   }
@@ -64,9 +65,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public ServletInputStream getInputStream () throws IOException
   {
     if (ArrayHelper.isEmpty (m_aContent))
-    {
       return m_aDelegate.getInputStream ();
-    }
+
     return new LoggingServletInputStream (m_aContent);
   }
 
@@ -74,24 +74,20 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public BufferedReader getReader () throws IOException
   {
     if (ArrayHelper.isEmpty (m_aContent))
-    {
       return m_aDelegate.getReader ();
-    }
+
     return new BufferedReader (new InputStreamReader (getInputStream (), _getCharset ()));
   }
 
   @Override
-  public String getParameter (final String name)
+  public String getParameter (final String sName)
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
-    {
-      return super.getParameter (name);
-    }
-    final String [] values = m_aParameterMap.get (name);
+      return super.getParameter (sName);
+
+    final String [] values = m_aParameterMap.get (sName);
     if (values != null && values.length > 0)
-    {
       return values[0];
-    }
     return Arrays.toString (values);
   }
 
@@ -99,9 +95,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public Map <String, String []> getParameterMap ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
-    {
       return super.getParameterMap ();
-    }
+
     return m_aParameterMap;
   }
 
@@ -109,9 +104,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public Enumeration <String> getParameterNames ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
-    {
       return super.getParameterNames ();
-    }
+
     return new ParamNameEnumeration (m_aParameterMap.keySet ());
   }
 
@@ -119,9 +113,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public String [] getParameterValues (final String name)
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
-    {
       return super.getParameterValues (name);
-    }
+
     return m_aParameterMap.get (name);
   }
 
@@ -146,7 +139,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
       }
       else
       {
-        sNormalizedContent = getContentFromParameterMap (m_aParameterMap);
+        sNormalizedContent = _getContentFromParameterMap (m_aParameterMap);
         m_aContent = sNormalizedContent.getBytes (_getCharset ());
       }
       return StringHelper.hasNoText (sNormalizedContent) ? "[EMPTY]" : sNormalizedContent;
@@ -157,10 +150,10 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     }
   }
 
-  private String getContentFromParameterMap (final Map <String, String []> parameterMap)
+  private String _getContentFromParameterMap (@Nonnull final Map <String, String []> aParameterMap)
   {
     final StringBuilder aSB = new StringBuilder ();
-    for (final Map.Entry <String, String []> aEntry : parameterMap.entrySet ())
+    for (final Map.Entry <String, String []> aEntry : aParameterMap.entrySet ())
       for (final String sValue : aEntry.getValue ())
       {
         if (aSB.length () > 0)
@@ -173,7 +166,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   @Nonnull
   public ICommonsMap <String, String> getParameters ()
   {
-    final ICommonsMap <String, String> ret = new CommonsHashMap<> ();
+    final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
     for (final Map.Entry <String, String []> aEntry : getParameterMap ().entrySet ())
     {
       final String sKey = aEntry.getKey ();

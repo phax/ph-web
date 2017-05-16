@@ -33,6 +33,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import com.helger.commons.annotation.CodingStyleguideUnaware;
 import com.helger.commons.charset.CharsetManager;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.ext.CommonsHashMap;
@@ -48,6 +49,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   private static final String METHOD_POST = EHTTPMethod.POST.getName ();
 
   private byte [] m_aContent;
+  @CodingStyleguideUnaware
   private final Map <String, String []> m_aParameterMap;
   private final HttpServletRequest m_aDelegate;
 

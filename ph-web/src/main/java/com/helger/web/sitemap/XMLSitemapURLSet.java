@@ -31,7 +31,6 @@ import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
-import com.helger.datetime.util.PDTHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
@@ -54,7 +53,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
   private static final int XML_HEADER_LENGTH = 38 + 60 + 9;
 
   private int m_nOutputLength = XML_HEADER_LENGTH;
-  private final ICommonsList <XMLSitemapURL> m_aURLs = new CommonsArrayList<> ();
+  private final ICommonsList <XMLSitemapURL> m_aURLs = new CommonsArrayList <> ();
   private LocalDateTime m_aPrevLastModification;
   private LocalDateTime m_aLastModification;
 
@@ -72,7 +71,7 @@ public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Ser
     if (aURLLastModified != null)
     {
       // Is the URL modification later than the current maximum
-      if (m_aLastModification == null || PDTHelper.isGreater (aURLLastModified, m_aLastModification))
+      if (m_aLastModification == null || aURLLastModified.isAfter (m_aLastModification))
       {
         m_aPrevLastModification = m_aLastModification;
         m_aLastModification = aURLLastModified;

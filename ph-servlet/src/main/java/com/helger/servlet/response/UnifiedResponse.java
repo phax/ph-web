@@ -1340,7 +1340,7 @@ public class UnifiedResponse
             // We do have an input stream
             // -> copy it to the response
             final OutputStream aOS = aHttpResponse.getOutputStream ();
-            final MutableLong aByteCount = new MutableLong ();
+            final MutableLong aByteCount = new MutableLong (0);
 
             if (StreamHelper.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
             {

@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -53,6 +54,7 @@ import com.helger.network.proxy.HttpProxyConfig;
  *
  * @author Philip Helger
  */
+@Immutable
 public final class HttpClientHelper
 {
   private HttpClientHelper ()
@@ -95,8 +97,14 @@ public final class HttpClientHelper
   @Nonnull
   public static Charset getCharset (@Nonnull final ContentType aContentType)
   {
+    return getCharset (aContentType, HTTP.DEF_CONTENT_CHARSET);
+  }
+
+  @Nullable
+  public static Charset getCharset (@Nonnull final ContentType aContentType, @Nullable final Charset aDefault)
+  {
     final Charset ret = aContentType.getCharset ();
-    return ret != null ? ret : HTTP.DEF_CONTENT_CHARSET;
+    return ret != null ? ret : aDefault;
   }
 
   @Nullable

@@ -17,23 +17,14 @@
 package com.helger.httpclient.response;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
-
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.string.StringHelper;
-import com.helger.httpclient.HttpClientHelper;
 
 /**
  * Base response handler that checks the status code and handles only status
@@ -51,33 +42,14 @@ public class ResponseHandlerHttpEntity implements ResponseHandler <HttpEntity>
   {}
 
   @Nullable
-  public HttpEntity handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
+  public HttpEntity handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     final StatusLine aStatusLine = aHttpResponse.getStatusLine ();
     final HttpEntity aEntity = aHttpResponse.getEntity ();
     if (aStatusLine.getStatusCode () >= 300)
     {
-      ContentType aContentType = ContentType.get (aEntity);
-      if (aContentType == null)
-        aContentType = ContentType.DEFAULT_TEXT;
-
-      // Default to ISO-8859-1 internally
-      final Charset aCharset = HttpClientHelper.getCharset (aContentType);
-      final String sResponseBody = EntityUtils.toString (aEntity, aCharset);
-
-      String sMessage = aStatusLine.getReasonPhrase () + " [" + aStatusLine.getStatusCode () + "]";
-      if (GlobalDebug.isDebugMode ())
-      {
-        sMessage += "\nAll " + aHttpResponse.getAllHeaders ().length + " headers returned";
-        for (final Header aHeader : aHttpResponse.getAllHeaders ())
-          sMessage += "\n  " + aHeader.getName () + "=" + aHeader.getValue ();
-      }
-      if (StringHelper.hasText (sResponseBody))
-        sMessage += "\nResponse Body:\n" + sResponseBody;
-      else
-        sMessage += "\nNo Response Body present!";
-
-      throw new HttpResponseException (aStatusLine.getStatusCode (), sMessage);
+      // Consume entity and throw
+      throw ExtendedHttpResponseException.create (aStatusLine, aHttpResponse, aEntity);
     }
     return aEntity;
   }

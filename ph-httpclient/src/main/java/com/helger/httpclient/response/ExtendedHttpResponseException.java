@@ -152,10 +152,10 @@ public class ExtendedHttpResponseException extends HttpResponseException
   public String getMessage ()
   {
     final StringBuilder aSB = new StringBuilder ();
-    aSB.append (m_aStatusLine.getReasonPhrase ()).append (" [").append (m_aStatusLine.getStatusCode ()).append ("]\n");
+    aSB.append (m_aStatusLine.getReasonPhrase ()).append (" [").append (m_aStatusLine.getStatusCode ()).append (']');
 
     final Header [] aHeaders = m_aHttpResponse.getAllHeaders ();
-    aSB.append ("\nAll ").append (aHeaders.length).append (" headers returned\n");
+    aSB.append ("\nAll ").append (aHeaders.length).append (" headers returned");
     for (final Header aHeader : aHeaders)
       aSB.append ("\n  ").append (aHeader.getName ()).append ('=').append (aHeader.getValue ());
 

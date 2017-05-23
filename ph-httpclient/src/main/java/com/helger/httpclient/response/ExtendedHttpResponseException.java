@@ -153,14 +153,22 @@ public class ExtendedHttpResponseException extends HttpResponseException
   {
     final StringBuilder aSB = new StringBuilder ();
     aSB.append (m_aStatusLine.getReasonPhrase ()).append (" [").append (m_aStatusLine.getStatusCode ()).append ("]\n");
-    aSB.append ("\nAll ").append (m_aHttpResponse.getAllHeaders ().length).append (" headers returned\n");
-    for (final Header aHeader : m_aHttpResponse.getAllHeaders ())
+
+    final Header [] aHeaders = m_aHttpResponse.getAllHeaders ();
+    aSB.append ("\nAll ").append (aHeaders.length).append (" headers returned\n");
+    for (final Header aHeader : aHeaders)
       aSB.append ("\n  ").append (aHeader.getName ()).append ('=').append (aHeader.getValue ());
 
     if (m_aResponseBody != null)
-      aSB.append ("\nResponse Body:\n").append (getResponseBodyAsString ());
+    {
+      aSB.append ("\nResponse Body (in ")
+         .append (getResponseCharset ().name ())
+         .append ("):\n")
+         .append (getResponseBodyAsString ());
+    }
     else
       aSB.append ("\nNo Response Body present!");
+
     return aSB.toString ();
   }
 

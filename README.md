@@ -19,7 +19,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-  * v8.8.1 - work in progress
+  * v8.8.1 - 2017-05-29
     * Improved exception handling in HTTP client helper
   * v8.8.0 - 2017-05-10
     * New HTTP servlet class hierarchy for better separation of concerns

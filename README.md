@@ -17,12 +17,14 @@ Java library with common web stuff. It contains the following sub-projects:
   * ph-web
     * Other high-level abstraction for servlets, file-upload, browser information, sitemap, web scopes etc.
   
-## News
+# News and noteworthy
 
-  * v8.8.0 - work in progress
+  * v8.8.1 - work in progress
+    * Improved exception handling in HTTP client helper
+  * v8.8.0 - 2017-05-10
     * New HTTP servlet class hierarchy for better separation of concerns
     * Started new Servlet base infrastructure
-    * Added possibility to disable DNS client caching in HttpClient
+    * Added possibility to disable DNS client caching in `HttpClient`
   * v8.7.4 - 2017-03-29
     * Improved PAC support to also handle IP6 addresses and `dnsResolveEx`
     * Updated to ph-commons 8.6.3
@@ -50,14 +52,14 @@ Java library with common web stuff. It contains the following sub-projects:
   * v8.5.0 - 2016-07-26
     * Binds to ph-commons 8.3.x
 
-## Maven usage
+# Maven usage
 Add the following to your pom.xml to use this artifact:
 
 ```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>8.7.4</version>
+  <version>8.8.0</version>
 </dependency>
 ```
 

@@ -69,7 +69,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * The default implementation of the {@link IFileItem} interface.
  * <p>
  * After retrieving an instance you may either request all contents of file at
- * once using {@link #get()} or request an {@link java.io.InputStream
+ * once using {@link #directGet()} or request an {@link java.io.InputStream
  * InputStream} with {@link #getInputStream()} and process the file without
  * attempting to load it into memory, which may come handy with large files.
  *
@@ -419,7 +419,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @ReturnsMutableObject ("Speed")
   @SuppressFBWarnings ("EI_EXPOSE_REP")
   @Nullable
-  public byte [] get ()
+  public byte [] directGet ()
   {
     if (isInMemory ())
     {
@@ -443,27 +443,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
-  /**
-   * Returns the contents of the file as a String, using the specified encoding.
-   * This method uses {@link #get()} to retrieve the contents of the file.
-   *
-   * @param aCharset
-   *        The charset to use.
-   * @return The contents of the file, as a string.
-   */
-  @Nonnull
-  public String getString (@Nonnull final Charset aCharset)
-  {
-    return new String (get (), aCharset);
-  }
-
-  /**
-   * Returns the contents of the file as a String, using the default character
-   * encoding. This method uses {@link #get()} to retrieve the contents of the
-   * file.
-   *
-   * @return The contents of the file, as a string.
-   */
   @Nonnull
   public String getString ()
   {
@@ -498,7 +477,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     ValueEnforcer.notNull (aDstFile, "DstFile");
 
     if (isInMemory ())
-      return SimpleFileIO.writeFile (aDstFile, get ());
+      return SimpleFileIO.writeFile (aDstFile, directGet ());
 
     final File aOutputFile = getStoreLocation ();
     if (aOutputFile != null)

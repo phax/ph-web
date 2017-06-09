@@ -65,7 +65,7 @@ public final class DiskFileItemTest
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
@@ -74,7 +74,7 @@ public final class DiskFileItemTest
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
-      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
 
       // Compare FileItem's (except byte[])
       _compareFileItems (item, newItem);
@@ -100,7 +100,7 @@ public final class DiskFileItemTest
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
@@ -109,7 +109,7 @@ public final class DiskFileItemTest
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
-      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
 
       // Compare FileItem's (except byte[])
       _compareFileItems (item, newItem);
@@ -136,7 +136,7 @@ public final class DiskFileItemTest
     // Check state is as expected
     assertFalse ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
@@ -145,7 +145,7 @@ public final class DiskFileItemTest
 
       // Test deserialized content is as expected
       assertFalse ("Check in memory", newItem.isInMemory ());
-      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
 
       // Compare FileItem's (except byte[])
       _compareFileItems (item, newItem);

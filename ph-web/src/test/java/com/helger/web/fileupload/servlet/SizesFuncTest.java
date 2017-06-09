@@ -90,7 +90,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
         }
         final IFileItem item = fileIter.next ();
         assertEquals ("field" + (num++), item.getFieldName ());
-        final byte [] bytes = item.get ();
+        final byte [] bytes = item.directGet ();
         assertEquals (i, bytes.length);
         for (int j = 0; j < i; j++)
         {
@@ -125,7 +125,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
     List <IFileItem> fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     IFileItem item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get (), StandardCharsets.US_ASCII));
+    assertEquals ("This is the content of the file\n", new String (item.directGet (), StandardCharsets.US_ASCII));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (40);
@@ -134,7 +134,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
     fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     item = fileItems.get (0);
-    assertEquals ("This is the content of the file\n", new String (item.get (), StandardCharsets.US_ASCII));
+    assertEquals ("This is the content of the file\n", new String (item.directGet (), StandardCharsets.US_ASCII));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (30);

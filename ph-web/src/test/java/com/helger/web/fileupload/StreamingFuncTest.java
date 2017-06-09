@@ -78,7 +78,7 @@ public final class StreamingFuncTest
       }
       final IFileItem item = fileIter.next ();
       assertEquals ("field" + (num++), item.getFieldName ());
-      final byte [] bytes = item.get ();
+      final byte [] bytes = item.directGet ();
       assertEquals (i, bytes.length);
       for (int j = 0; j < i; j++)
       {
@@ -190,7 +190,7 @@ public final class StreamingFuncTest
     assertTrue (fileIter.hasNext ());
     final IFileItem item = fileIter.next ();
     assertEquals ("field", item.getFieldName ());
-    final byte [] bytes = item.get ();
+    final byte [] bytes = item.directGet ();
     assertEquals (3, bytes.length);
     assertEquals ((byte) '1', bytes[0]);
     assertEquals ((byte) '2', bytes[1]);

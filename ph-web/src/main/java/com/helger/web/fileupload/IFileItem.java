@@ -41,9 +41,9 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  * {@link com.helger.web.fileupload.parse.FileUpload FileUpload} instance (see
  * {@link com.helger.web.fileupload.servlet.ServletFileUpload#parseRequest(javax.servlet.http.HttpServletRequest)}
  * ), you may either request all contents of the file at once using
- * {@link #get()} or request an {@link java.io.InputStream InputStream} with
- * {@link #getInputStream()} and process the file without attempting to load it
- * into memory, which may come handy with large files.
+ * {@link #directGet()} or request an {@link java.io.InputStream InputStream}
+ * with {@link #getInputStream()} and process the file without attempting to
+ * load it into memory, which may come handy with large files.
  * <p>
  * While this interface does not extend <code>javax.activation.DataSource</code>
  * per se (to avoid a seldom used dependency), several of the defined methods
@@ -140,25 +140,38 @@ public interface IFileItem extends Serializable, DataSource, IHasInputStream
 
   /**
    * @return The contents of the file item as an array of bytes.
+   * @deprecated Use {@link #directGet()} instead.
    */
-  byte [] get ();
+  @Deprecated
+  default byte [] get ()
+  {
+    return directGet ();
+  }
+
+  /**
+   * @return The contents of the file item as an array of bytes.
+   */
+  byte [] directGet ();
 
   /**
    * Returns the contents of the file item as a String, using the specified
-   * encoding. This method uses {@link #get()} to retrieve the contents of the
-   * item.
+   * encoding. This method uses {@link #directGet()} to retrieve the contents of
+   * the item.
    *
    * @param aEncoding
    *        The character encoding to use.
    * @return The contents of the item, as a string.
    */
   @Nonnull
-  String getString (@Nonnull Charset aEncoding);
+  default String getString (@Nonnull final Charset aEncoding)
+  {
+    return new String (directGet (), aEncoding);
+  }
 
   /**
    * Returns the contents of the file item as a String, using the default
    * character encoding (if one provided, it is used). This method uses
-   * {@link #get()} to retrieve the contents of the item.
+   * {@link #directGet()} to retrieve the contents of the item.
    *
    * @return The contents of the item, as a string.
    */

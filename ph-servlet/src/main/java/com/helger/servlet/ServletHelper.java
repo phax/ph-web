@@ -219,6 +219,31 @@ public final class ServletHelper
   }
 
   /**
+   * Get the request URL of an request, supporting sync and async requests.
+   *
+   * @param aRequest
+   *        Source request. May be <code>null</code>.
+   * @return Empty {@link StringBuffer} if request is <code>null</code> or the
+   *         request URL.
+   */
+  @Nonnull
+  public static StringBuffer getRequestRequestURL (@Nullable final HttpServletRequest aRequest)
+  {
+    StringBuffer ret = null;
+    if (aRequest != null)
+      try
+      {
+        ret = aRequest.getRequestURL ();
+      }
+      catch (final Throwable t)
+      {
+        // fall through
+        s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", t);
+      }
+    return ret != null ? ret : new StringBuffer ();
+  }
+
+  /**
    * Get the servlet path of an request, supporting sync and async requests.
    *
    * @param aRequest

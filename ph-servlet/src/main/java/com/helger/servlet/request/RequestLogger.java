@@ -110,7 +110,7 @@ public final class RequestLogger
       {
         // No global web scope available
       }
-      ret.put ("RequestURL", aHttpRequest.getRequestURL ().toString ());
+      ret.put ("RequestURL", ServletHelper.getRequestRequestURL (aHttpRequest).toString ());
       try
       {
         ret.put ("RequestURL2", RequestHelper.getRequestURL (aHttpRequest).toString ());

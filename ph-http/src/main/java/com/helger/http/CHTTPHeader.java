@@ -36,6 +36,7 @@ public final class CHTTPHeader
   public static final String AGE = "Age";
   public static final String ALLOW = "Allow";
   public static final String CACHE_CONTROL = "Cache-Control";
+  public static final String CONTENT_DESCRIPTION = "Content-Description";
   public static final String CONTENT_DISPOSITION = "Content-Disposition";
   public static final String CONTENT_ENCODING = "Content-Encoding";
   public static final String CONTENT_TYPE = "Content-Type";

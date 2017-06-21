@@ -46,6 +46,28 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerMicroDom.class);
 
+  private final boolean m_bDebugMode;
+
+  public ResponseHandlerMicroDom ()
+  {
+    this (GlobalDebug.isDebugMode ());
+  }
+
+  public ResponseHandlerMicroDom (final boolean bDebugMode)
+  {
+    m_bDebugMode = bDebugMode;
+  }
+
+  /**
+   * @return <code>true</code> if debug mode is enabled, <code>false</code> if
+   *         not.
+   * @since 8.8.2
+   */
+  public boolean isDebugMode ()
+  {
+    return m_bDebugMode;
+  }
+
   @Nullable
   public IMicroDocument handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
@@ -56,7 +78,7 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
-    if (GlobalDebug.isDebugMode ())
+    if (m_bDebugMode)
     {
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);

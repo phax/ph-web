@@ -47,6 +47,28 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerJson.class);
 
+  private final boolean m_bDebugMode;
+
+  public ResponseHandlerJson ()
+  {
+    this (GlobalDebug.isDebugMode ());
+  }
+
+  public ResponseHandlerJson (final boolean bDebugMode)
+  {
+    m_bDebugMode = bDebugMode;
+  }
+
+  /**
+   * @return <code>true</code> if debug mode is enabled, <code>false</code> if
+   *         not.
+   * @since 8.8.2
+   */
+  public boolean isDebugMode ()
+  {
+    return m_bDebugMode;
+  }
+
   @Nullable
   public IJson handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
@@ -57,7 +79,7 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
-    if (GlobalDebug.isDebugMode ())
+    if (m_bDebugMode)
     {
       // Read all in String
       final String sJson = StringHelper.trim (EntityUtils.toString (aEntity, aCharset));

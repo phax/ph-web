@@ -47,6 +47,28 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerXml.class);
 
+  private final boolean m_bDebugMode;
+
+  public ResponseHandlerXml ()
+  {
+    this (GlobalDebug.isDebugMode ());
+  }
+
+  public ResponseHandlerXml (final boolean bDebugMode)
+  {
+    m_bDebugMode = bDebugMode;
+  }
+
+  /**
+   * @return <code>true</code> if debug mode is enabled, <code>false</code> if
+   *         not.
+   * @since 8.8.2
+   */
+  public boolean isDebugMode ()
+  {
+    return m_bDebugMode;
+  }
+
   @Nullable
   public Document handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
@@ -57,7 +79,7 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
-    if (GlobalDebug.isDebugMode ())
+    if (m_bDebugMode)
     {
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);

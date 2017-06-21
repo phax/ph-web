@@ -19,6 +19,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+  * v8.8.2 - work in progress
+    * Made debug flag in certain `ResponseHandler*` implementations customizable 
   * v8.8.1 - 2017-05-29
     * Improved exception handling in HTTP client helper
   * v8.8.0 - 2017-05-10

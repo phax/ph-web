@@ -16,9 +16,11 @@
  */
 package com.helger.servlet;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
@@ -35,16 +37,43 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
  * @author Philip Helger
  * @since 8.6.3
  */
-@Immutable
+@ThreadSafe
 public final class ServletHelper
 {
+  public static final boolean DEFAULT_LOG_EXCEPTIONS = false;
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (ServletHelper.class);
+  private static final AtomicBoolean s_aLogExceptions = new AtomicBoolean (DEFAULT_LOG_EXCEPTIONS);
 
   @PresentForCodeCoverage
   private static final ServletHelper s_aInstance = new ServletHelper ();
 
   private ServletHelper ()
   {}
+
+  /**
+   * Enable or disable the logging of caught exceptions. By default they are not
+   * logged.
+   *
+   * @param bLog
+   *        <code>true</code> to enable logging, <code>false</code> to disable
+   *        logging.
+   * @since 8.8.2
+   */
+  public static void setLogExceptions (final boolean bLog)
+  {
+    s_aLogExceptions.set (bLog);
+  }
+
+  /**
+   * @return <code>true</code> to log exceptions, <code>false</code> to omit
+   *         caught exceptions.
+   * @since 8.8.2
+   */
+  public static boolean isLogExceptions ()
+  {
+    return s_aLogExceptions.get ();
+  }
 
   /**
    * Safe version of <code>ServletRequest.setAttribute (String, Object)</code>
@@ -75,9 +104,8 @@ public final class ServletHelper
     catch (final Throwable t)
     {
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
-      /**
-       */
-      s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", t);
+      if (isLogExceptions ())
+        s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", t);
     }
   }
 
@@ -113,7 +141,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
       }
 
     if (ret == null)
@@ -152,7 +181,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", t);
       }
     return ret == null ? "" : ret;
   }
@@ -186,7 +216,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", t);
       }
     return ret;
   }
@@ -213,7 +244,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", t);
       }
     return ret;
   }
@@ -238,7 +270,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", t);
       }
     return ret != null ? ret : new StringBuffer ();
   }
@@ -270,7 +303,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", t);
       }
     return ret;
   }
@@ -302,7 +336,8 @@ public final class ServletHelper
       catch (final Throwable t)
       {
         // fall through
-        s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", t);
+        if (isLogExceptions ())
+          s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", t);
       }
     return ret;
   }

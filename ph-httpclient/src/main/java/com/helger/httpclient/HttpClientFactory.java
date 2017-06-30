@@ -23,6 +23,7 @@ import java.security.GeneralSecurityException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpHost;
@@ -68,6 +69,7 @@ public class HttpClientFactory implements IHttpClientProvider
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private final SSLContext m_aDefaultSSLContext;
+  private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
 
@@ -159,6 +161,32 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * @return The current hostname verifier to be used. Default to
+   *         <code>null</code>.
+   * @since 8.8.2
+   */
+  @Nullable
+  public HostnameVerifier getHostnameVerifier ()
+  {
+    return m_aHostnameVerifier;
+  }
+
+  /**
+   * Set the hostname verifier to be used.
+   *
+   * @param aHostnameVerifier
+   *        Verifier to be used. May be <code>null</code>.
+   * @return this for chaining
+   * @since 8.8.2
+   */
+  @Nonnull
+  public HttpClientFactory setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
+  {
+    m_aHostnameVerifier = aHostnameVerifier;
+    return this;
+  }
+
+  /**
    * Create a custom SSLContext to use for the SSL Socket factory.
    *
    * @return <code>null</code> if no custom context is present.
@@ -177,6 +205,11 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
 
+    // Custom hostname verifier prefered
+    HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
+    if (aHostnameVerifier == null)
+      aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
+
     // First try with a custom SSL context
     try
     {
@@ -187,7 +220,7 @@ public class HttpClientFactory implements IHttpClientProvider
           aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
                                                         new String [] { "TLSv1", "TLSv1.1", "TLSv1.2" },
                                                         null,
-                                                        SSLConnectionSocketFactory.getDefaultHostnameVerifier ());
+                                                        aHostnameVerifier);
         }
         catch (final SSLInitializationException ex)
         {

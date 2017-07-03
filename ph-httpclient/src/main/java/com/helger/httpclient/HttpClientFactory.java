@@ -51,6 +51,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultDnsResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 
@@ -65,6 +67,8 @@ public class HttpClientFactory implements IHttpClientProvider
 {
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
+
+  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpClientFactory.class);
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -215,21 +219,18 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       final SSLContext aSSLContext = createSSLContext ();
       if (aSSLContext != null)
-        try
-        {
-          aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
-                                                        new String [] { "TLSv1", "TLSv1.1", "TLSv1.2" },
-                                                        null,
-                                                        aHostnameVerifier);
-        }
-        catch (final SSLInitializationException ex)
-        {
-          // Fall through
-        }
+      {
+        aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
+                                                      new String [] { "TLSv1.2", "TLSv1.1", "TLSv1" },
+                                                      null,
+                                                      aHostnameVerifier);
+      }
     }
-    catch (final GeneralSecurityException ex)
+    catch (final GeneralSecurityException | SSLInitializationException ex)
     {
       // Fall through
+      s_aLogger.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
+                      ex);
     }
 
     if (aSSLFactory == null)

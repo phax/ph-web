@@ -19,7 +19,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-  * v8.8.2 - work in progress
+  * v8.8.2 - 2017-07-04
     * Made debug flag in certain `ResponseHandler*` implementations customizable
     * `ServletHelper` caught Exception logging can now be enabled and disabled
     * Custom `HostnameVerifier` in `HttpClientFactory`
@@ -64,7 +64,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>8.8.0</version>
+  <version>8.8.2</version>
 </dependency>
 ```
 

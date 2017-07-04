@@ -22,7 +22,8 @@ Java library with common web stuff. It contains the following sub-projects:
   * v8.8.2 - work in progress
     * Made debug flag in certain `ResponseHandler*` implementations customizable
     * `ServletHelper` caught Exception logging can now be enabled and disabled
-    * Custom `HostnameVerifier` in `HttpClientFactory` 
+    * Custom `HostnameVerifier` in `HttpClientFactory`
+    * `HttpDebugger` has an `afterRequest` method now 
   * v8.8.1 - 2017-05-29
     * Improved exception handling in HTTP client helper
   * v8.8.0 - 2017-05-10

@@ -54,6 +54,14 @@ public final class HttpDebugger
     s_aEnabled.set (bEnabled);
   }
 
+  /**
+   * Call before an invocation
+   * 
+   * @param aRequest
+   *        The request to be executed. May not be <code>null</code>.
+   * @param aHttpContext
+   *        The special HTTP content for this call. May be <code>null</code>.
+   */
   public static void beforeRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
@@ -62,5 +70,22 @@ public final class HttpDebugger
                       " " +
                       aRequest.getURI () +
                       (aHttpContext != null ? " (with special HTTP context)" : ""));
+  }
+
+  /**
+   * Call after an invocation.
+   *
+   * @param aRequest
+   *        The source request. May not be modified internally. May not be
+   *        <code>null</code>.
+   * @param aResponse
+   *        The response object retrieved. May be anything including
+   *        <code>null</code>.
+   * @since 8.8.2
+   */
+  public static <T> void afterRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final T aResponse)
+  {
+    if (isEnabled ())
+      s_aLogger.info ("After HTTP call: " + aRequest.getMethod () + ". Response: " + aResponse);
   }
 }

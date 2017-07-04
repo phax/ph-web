@@ -45,17 +45,33 @@ public class ResponseHandlerString implements ResponseHandler <String>
 
   public ResponseHandlerString ()
   {
+    // text/plain with ISO-8859-1
     this (ContentType.DEFAULT_TEXT);
   }
 
   public ResponseHandlerString (@Nonnull final ContentType aDefault)
   {
-    m_aDefault = ValueEnforcer.notNull (aDefault, "Default");
+    ValueEnforcer.notNull (aDefault, "Default");
+    ValueEnforcer.notNull (aDefault.getCharset (), "DefaultContentType.Charset");
+    m_aDefault = aDefault;
+  }
+
+  @Nonnull
+  public ContentType getDefaultContentType ()
+  {
+    return m_aDefault;
+  }
+
+  @Nonnull
+  public Charset getDefaultCharset ()
+  {
+    return m_aDefault.getCharset ();
   }
 
   @Nullable
   public String handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
   {
+    // Convert to entity
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
@@ -65,7 +81,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
       aContentType = m_aDefault;
 
     // Default to ISO-8859-1 internally
-    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aDefault.getCharset ());
 
     return EntityUtils.toString (aEntity, aCharset);
   }

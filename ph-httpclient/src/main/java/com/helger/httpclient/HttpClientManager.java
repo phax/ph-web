@@ -50,7 +50,7 @@ public class HttpClientManager implements Closeable
     ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
     m_aHttpClient = aHttpClientSupplier.createHttpClient ();
     if (m_aHttpClient == null)
-      throw new IllegalArgumentException ("The provided HttpClient factory created an invalid HttpClient!");
+      throw new IllegalArgumentException ("The provided HttpClient factory created an invalid (null) HttpClient!");
   }
 
   public void close () throws IOException
@@ -59,27 +59,83 @@ public class HttpClientManager implements Closeable
     m_aHttpClient = null;
   }
 
-  private void _checkClosed ()
+  /**
+   * @return <code>true</code> if this manager is already closed, and no further
+   *         requests can be executed, <code>false</code> if this manager is not
+   *         yet closed.
+   * @since 8.8.2
+   */
+  public final boolean isClosed ()
   {
-    if (m_aHttpClient == null)
+    return m_aHttpClient == null;
+  }
+
+  protected final void checkIfClosed ()
+  {
+    if (isClosed ())
       throw new IllegalStateException ("This HttpClientManager was already closed!");
   }
 
+  /**
+   * Execute the provided request without any special context. Caller is
+   * responsible for consuming the response correctly!
+   *
+   * @param aRequest
+   *        The request to be executed. May not be <code>null</code>.
+   * @return The response to be evaluated. Never <code>null</code>.
+   * @throws IOException
+   *         In case of error
+   * @throws IllegalStateException
+   *         If this manager was already closed!
+   */
   @Nonnull
   public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
   {
     return execute (aRequest, (HttpContext) null);
   }
 
+  /**
+   * Execute the provided request with an optional special context. Caller is
+   * responsible for consuming the response correctly!
+   *
+   * @param aRequest
+   *        The request to be executed. May not be <code>null</code>.
+   * @param aHttpContext
+   *        The optional context to be used. May be <code>null</code> to
+   * @return The response to be evaluated. Never <code>null</code>.
+   * @throws IOException
+   *         In case of error
+   * @throws IllegalStateException
+   *         If this manager was already closed!
+   */
   @Nonnull
   public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
                                         @Nullable final HttpContext aHttpContext) throws IOException
   {
-    _checkClosed ();
+    checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    return m_aHttpClient.execute (aRequest, aHttpContext);
+    final CloseableHttpResponse ret = m_aHttpClient.execute (aRequest, aHttpContext);
+    HttpDebugger.afterRequest (aRequest, ret);
+    return ret;
   }
 
+  /**
+   * Execute the provided request without any special context. The response
+   * handler is invoked as a callback. This method automatically cleans up all
+   * used resources and as such is preferred over the execute methods returning
+   * the CloseableHttpResponse.
+   *
+   * @param aRequest
+   *        The request to be executed. May not be <code>null</code>.
+   * @param aResponseHandler
+   *        The response handler to be executed. May not be <code>null</code>.
+   * @return The evaluated response of the response handler. May be
+   *         <code>null</code>.
+   * @throws IOException
+   *         In case of error
+   * @throws IllegalStateException
+   *         If this manager was already closed!
+   */
   @Nullable
   public <T> T execute (@Nonnull final HttpUriRequest aRequest,
                         @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
@@ -87,13 +143,34 @@ public class HttpClientManager implements Closeable
     return execute (aRequest, (HttpContext) null, aResponseHandler);
   }
 
+  /**
+   * Execute the provided request with an optional special context. The response
+   * handler is invoked as a callback. This method automatically cleans up all
+   * used resources and as such is preferred over the execute methods returning
+   * the CloseableHttpResponse.
+   *
+   * @param aRequest
+   *        The request to be executed. May not be <code>null</code>.
+   * @param aHttpContext
+   *        The optional context to be used. May be <code>null</code> to
+   * @param aResponseHandler
+   *        The response handler to be executed. May not be <code>null</code>.
+   * @return The evaluated response of the response handler. May be
+   *         <code>null</code>.
+   * @throws IOException
+   *         In case of error
+   * @throws IllegalStateException
+   *         If this manager was already closed!
+   */
   @Nullable
   public <T> T execute (@Nonnull final HttpUriRequest aRequest,
                         @Nullable final HttpContext aHttpContext,
                         @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
-    _checkClosed ();
+    checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    return m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
+    final T ret = m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
+    HttpDebugger.afterRequest (aRequest, ret);
+    return ret;
   }
 }

@@ -140,6 +140,7 @@ public final class MainTransport implements ConnectionListener, TransportListene
   public MainTransport ()
   {}
 
+  @SuppressWarnings ("resource")
   public void go (final Session session, final InternetAddress [] toAddr, final InternetAddress from)
   {
     Transport trans = null;

@@ -112,7 +112,7 @@ public final class MailTransport
   @ReturnsMutableCopy
   public static ICommonsMap <String, String> createSessionProperties (@Nonnull final ISMTPSettings aSettings)
   {
-    final ICommonsMap <String, String> ret = new CommonsHashMap<> ();
+    final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
     final boolean bSMTPS = isUseSMTPS (aSettings);
 
     // Enable SSL?
@@ -200,16 +200,14 @@ public final class MailTransport
   @Nonnull
   public ICommonsOrderedMap <IMutableEmailData, MailTransportError> send (@Nullable final Collection <IMutableEmailData> aAllMessages)
   {
-    final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = new CommonsLinkedHashMap<> ();
+    final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = new CommonsLinkedHashMap <> ();
     if (aAllMessages != null)
     {
-      final ICommonsList <IMutableEmailData> aRemainingMessages = new CommonsArrayList<> (aAllMessages);
+      final ICommonsList <IMutableEmailData> aRemainingMessages = new CommonsArrayList <> (aAllMessages);
       MailSendException aExceptionToBeRemembered = null;
 
-      try
+      try (final Transport aTransport = m_aSession.getTransport (m_bSMTPS ? SMTPS_PROTOCOL : SMTP_PROTOCOL))
       {
-        final Transport aTransport = m_aSession.getTransport (m_bSMTPS ? SMTPS_PROTOCOL : SMTP_PROTOCOL);
-
         // Add global listeners (if present)
         for (final ConnectionListener aConnectionListener : EmailGlobalSettings.getAllConnectionListeners ())
           aTransport.addConnectionListener (aConnectionListener);
@@ -223,179 +221,165 @@ public final class MailTransport
                             m_aSMTPSettings.getUserName (),
                             m_aSMTPSettings.getPassword ());
 
-        try
+        // For all messages
+        for (final IMutableEmailData aEmailData : aAllMessages)
         {
-          // For all messages
-          for (final IMutableEmailData aEmailData : aAllMessages)
+          final MimeMessage aMimeMessage = new MimeMessage (m_aSession);
+          try
           {
-            final MimeMessage aMimeMessage = new MimeMessage (m_aSession);
-            try
+            // convert from IEmailData to MimeMessage
+            MailConverter.fillMimeMessage (aMimeMessage, aEmailData, m_aSMTPSettings.getCharsetObj ());
+
+            // Ensure a sent date is present
+            if (aMimeMessage.getSentDate () == null)
+              aMimeMessage.setSentDate (new Date ());
+
+            // Get an explicitly specified message ID
+            final String sMessageID = aMimeMessage.getMessageID ();
+
+            // This creates a new message ID (besides other things)
+            aMimeMessage.saveChanges ();
+
+            if (sMessageID != null)
             {
-              // convert from IEmailData to MimeMessage
-              MailConverter.fillMimeMessage (aMimeMessage, aEmailData, m_aSMTPSettings.getCharsetObj ());
-
-              // Ensure a sent date is present
-              if (aMimeMessage.getSentDate () == null)
-                aMimeMessage.setSentDate (new Date ());
-
-              // Get an explicitly specified message ID
-              final String sMessageID = aMimeMessage.getMessageID ();
-
-              // This creates a new message ID (besides other things)
-              aMimeMessage.saveChanges ();
-
-              if (sMessageID != null)
-              {
-                // Preserve explicitly specified message id...
-                aMimeMessage.setHeader (HEADER_MESSAGE_ID, sMessageID);
-              }
-              aMimeMessage.setHeader ("X-Mailer", X_MAILER);
-
-              s_aLogger.info ("Delivering mail from " +
-                              Arrays.toString (aMimeMessage.getFrom ()) +
-                              " to " +
-                              Arrays.toString (aMimeMessage.getAllRecipients ()) +
-                              " with subject '" +
-                              aMimeMessage.getSubject () +
-                              "' and message ID '" +
-                              aMimeMessage.getMessageID () +
-                              "'");
-
-              // Main transmit - always throws an exception
-              aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
-              throw new IllegalStateException ("Never expected to come beyong sendMessage!");
+              // Preserve explicitly specified message id...
+              aMimeMessage.setHeader (HEADER_MESSAGE_ID, sMessageID);
             }
-            catch (final SendFailedException ex)
-            {
-              /*
-               * Extract all addresses: the valid addresses to which the message
-               * was sent, the valid address to which the message was not sent
-               * and the invalid addresses
-               */
-              final ICommonsSet <String> aValidSent = CollectionHelper.newSetMapped (ex.getValidSentAddresses (),
-                                                                                     Address::toString);
-              final ICommonsSet <String> aValidUnsent = CollectionHelper.newSetMapped (ex.getValidUnsentAddresses (),
-                                                                                       Address::toString);
-              final ICommonsSet <String> aInvalid = CollectionHelper.newSetMapped (ex.getInvalidAddresses (),
-                                                                                   Address::toString);
+            aMimeMessage.setHeader ("X-Mailer", X_MAILER);
 
-              final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList<> ();
-              Exception ex2;
-              MessagingException bex = ex;
-              while ((ex2 = bex.getNextException ()) != null && ex2 instanceof MessagingException)
+            s_aLogger.info ("Delivering mail from " +
+                            Arrays.toString (aMimeMessage.getFrom ()) +
+                            " to " +
+                            Arrays.toString (aMimeMessage.getAllRecipients ()) +
+                            " with subject '" +
+                            aMimeMessage.getSubject () +
+                            "' and message ID '" +
+                            aMimeMessage.getMessageID () +
+                            "'");
+
+            // Main transmit - always throws an exception
+            aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
+            throw new IllegalStateException ("Never expected to come beyong sendMessage!");
+          }
+          catch (final SendFailedException ex)
+          {
+            /*
+             * Extract all addresses: the valid addresses to which the message
+             * was sent, the valid address to which the message was not sent and
+             * the invalid addresses
+             */
+            final ICommonsSet <String> aValidSent = CollectionHelper.newSetMapped (ex.getValidSentAddresses (),
+                                                                                   Address::toString);
+            final ICommonsSet <String> aValidUnsent = CollectionHelper.newSetMapped (ex.getValidUnsentAddresses (),
+                                                                                     Address::toString);
+            final ICommonsSet <String> aInvalid = CollectionHelper.newSetMapped (ex.getInvalidAddresses (),
+                                                                                 Address::toString);
+
+            final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList <> ();
+            Exception ex2;
+            MessagingException bex = ex;
+            while ((ex2 = bex.getNextException ()) != null && ex2 instanceof MessagingException)
+            {
+              if (ex2 instanceof SMTPAddressFailedException)
               {
-                if (ex2 instanceof SMTPAddressFailedException)
+                final SMTPAddressFailedException ssfe = (SMTPAddressFailedException) ex2;
+                aDetails.add (new MailSendDetails (false,
+                                                   ssfe.getAddress ().toString (),
+                                                   ssfe.getCommand (),
+                                                   ssfe.getMessage ().trim (),
+                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
+                                                                                      ESMTPErrorCode.FALLBACK)));
+              }
+              else
+                if (ex2 instanceof SMTPAddressSucceededException)
                 {
-                  final SMTPAddressFailedException ssfe = (SMTPAddressFailedException) ex2;
-                  aDetails.add (new MailSendDetails (false,
+                  final SMTPAddressSucceededException ssfe = (SMTPAddressSucceededException) ex2;
+                  aDetails.add (new MailSendDetails (true,
                                                      ssfe.getAddress ().toString (),
                                                      ssfe.getCommand (),
                                                      ssfe.getMessage ().trim (),
                                                      ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
                                                                                         ESMTPErrorCode.FALLBACK)));
                 }
-                else
-                  if (ex2 instanceof SMTPAddressSucceededException)
-                  {
-                    final SMTPAddressSucceededException ssfe = (SMTPAddressSucceededException) ex2;
-                    aDetails.add (new MailSendDetails (true,
-                                                       ssfe.getAddress ().toString (),
-                                                       ssfe.getCommand (),
-                                                       ssfe.getMessage ().trim (),
-                                                       ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
-                                                                                          ESMTPErrorCode.FALLBACK)));
-                  }
 
-                bex = (MessagingException) ex2;
-              }
-
-              // Map addresses to details
-              final ICommonsOrderedSet <MailSendDetails> aValidSentExt = new CommonsLinkedHashSet<> ();
-              final ICommonsOrderedSet <MailSendDetails> aValidUnsentExt = new CommonsLinkedHashSet<> ();
-              final ICommonsOrderedSet <MailSendDetails> aInvalidExt = new CommonsLinkedHashSet<> ();
-              for (final MailSendDetails aFailure : aDetails)
-              {
-                final String sAddress = aFailure.getAddress ();
-                if (aValidSent.contains (sAddress))
-                  aValidSentExt.add (aFailure);
-                else
-                  if (aValidUnsent.contains (sAddress))
-                    aValidUnsentExt.add (aFailure);
-                  else
-                    aInvalidExt.add (aFailure);
-              }
-
-              final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
-                                                                                  aEmailData,
-                                                                                  aMimeMessage,
-                                                                                  aValidSentExt,
-                                                                                  aValidUnsentExt,
-                                                                                  aInvalidExt);
-              if (aValidUnsent.isEmpty () && aInvalid.isEmpty () && aValidSent.isNotEmpty ())
-              {
-                // Message delivered
-                for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)
-                  aEmailDataTransportListener.messageDelivered (aEvent);
-
-                // Remove message from list of remaining
-                s_aStatsCountSuccess.increment ();
-              }
-              else
-              {
-                // Message not delivered
-                for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)
-                  aEmailDataTransportListener.messageNotDelivered (aEvent);
-
-                // Sending exactly this message failed
-                aFailedMessages.put (aEmailData, new MailTransportError (ex, aDetails));
-                s_aStatsCountFailed.increment ();
-              }
-              // Remove message from list of remaining as we put it in the
-              // failed message list manually in case of error
-              aRemainingMessages.remove (aEmailData);
+              bex = (MessagingException) ex2;
             }
-            catch (final MessagingException ex)
-            {
-              final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet<> ();
-              final Consumer <IEmailAddress> aConsumer = a -> aInvalid.add (new MailSendDetails (false,
-                                                                                                 a.getAddress (),
-                                                                                                 "<generic error>",
-                                                                                                 ex.getMessage (),
-                                                                                                 ESMTPErrorCode.FALLBACK));
-              aEmailData.forEachTo (aConsumer);
-              aEmailData.forEachCc (aConsumer);
-              aEmailData.forEachBcc (aConsumer);
 
-              final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
-                                                                                  aEmailData,
-                                                                                  aMimeMessage,
-                                                                                  new CommonsArrayList<> (),
-                                                                                  new CommonsArrayList<> (),
-                                                                                  aInvalid);
+            // Map addresses to details
+            final ICommonsOrderedSet <MailSendDetails> aValidSentExt = new CommonsLinkedHashSet <> ();
+            final ICommonsOrderedSet <MailSendDetails> aValidUnsentExt = new CommonsLinkedHashSet <> ();
+            final ICommonsOrderedSet <MailSendDetails> aInvalidExt = new CommonsLinkedHashSet <> ();
+            for (final MailSendDetails aFailure : aDetails)
+            {
+              final String sAddress = aFailure.getAddress ();
+              if (aValidSent.contains (sAddress))
+                aValidSentExt.add (aFailure);
+              else
+                if (aValidUnsent.contains (sAddress))
+                  aValidUnsentExt.add (aFailure);
+                else
+                  aInvalidExt.add (aFailure);
+            }
+
+            final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
+                                                                                aEmailData,
+                                                                                aMimeMessage,
+                                                                                aValidSentExt,
+                                                                                aValidUnsentExt,
+                                                                                aInvalidExt);
+            if (aValidUnsent.isEmpty () && aInvalid.isEmpty () && aValidSent.isNotEmpty ())
+            {
+              // Message delivered
+              for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)
+                aEmailDataTransportListener.messageDelivered (aEvent);
+
+              // Remove message from list of remaining
+              s_aStatsCountSuccess.increment ();
+            }
+            else
+            {
               // Message not delivered
               for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)
                 aEmailDataTransportListener.messageNotDelivered (aEvent);
 
               // Sending exactly this message failed
-              aFailedMessages.put (aEmailData, new MailTransportError (ex));
-              // Remove message from list of remaining as we put it in the
-              // failed message list manually
-              aRemainingMessages.remove (aEmailData);
+              aFailedMessages.put (aEmailData, new MailTransportError (ex, aDetails));
               s_aStatsCountFailed.increment ();
             }
-          } // for messages
-        }
-        finally
-        {
-          try
-          {
-            aTransport.close ();
+            // Remove message from list of remaining as we put it in the
+            // failed message list manually in case of error
+            aRemainingMessages.remove (aEmailData);
           }
           catch (final MessagingException ex)
           {
-            aExceptionToBeRemembered = new MailSendException ("Failed to close mail transport", ex);
+            final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet <> ();
+            final Consumer <IEmailAddress> aConsumer = a -> aInvalid.add (new MailSendDetails (false,
+                                                                                               a.getAddress (),
+                                                                                               "<generic error>",
+                                                                                               ex.getMessage (),
+                                                                                               ESMTPErrorCode.FALLBACK));
+            aEmailData.forEachTo (aConsumer);
+            aEmailData.forEachCc (aConsumer);
+            aEmailData.forEachBcc (aConsumer);
+
+            final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
+                                                                                aEmailData,
+                                                                                aMimeMessage,
+                                                                                new CommonsArrayList <> (),
+                                                                                new CommonsArrayList <> (),
+                                                                                aInvalid);
+            // Message not delivered
+            for (final IEmailDataTransportListener aEmailDataTransportListener : aEmailDataTransportListeners)
+              aEmailDataTransportListener.messageNotDelivered (aEvent);
+
+            // Sending exactly this message failed
+            aFailedMessages.put (aEmailData, new MailTransportError (ex));
+            // Remove message from list of remaining as we put it in the
+            // failed message list manually
+            aRemainingMessages.remove (aEmailData);
+            s_aStatsCountFailed.increment ();
           }
-        }
+        } // for all messages
       }
       catch (final AuthenticationFailedException ex)
       {

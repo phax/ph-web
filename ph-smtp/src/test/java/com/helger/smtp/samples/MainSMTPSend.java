@@ -79,10 +79,8 @@ import com.sun.mail.smtp.SMTPTransport;
  * @author Max Spivak
  * @author Bill Shannon
  */
-
 public class MainSMTPSend
 {
-
   /*
    * Example of how to extend the SMTPTransport class. This example illustrates
    * how to issue the XACT command before the SMTPTransport issues the DATA
@@ -94,6 +92,7 @@ public class MainSMTPSend
    * super.data(); } }
    */
 
+  @SuppressWarnings ("resource")
   public static void main (final String [] argv)
   {
     String to, subject = null, from = null, cc = null, bcc = null, url = null;
@@ -316,20 +315,15 @@ public class MainSMTPSend
        * we're going to use some SMTP-specific features for demonstration
        * purposes so we need to manage the Transport object explicitly.
        */
-      final SMTPTransport t = (SMTPTransport) session.getTransport (prot);
-      try
+      try (final SMTPTransport t = (SMTPTransport) session.getTransport (prot))
       {
         if (auth)
           t.connect (mailhost, user, password);
         else
           t.connect ();
         t.sendMessage (msg, msg.getAllRecipients ());
-      }
-      finally
-      {
         if (verbose)
           System.out.println ("Response: " + t.getLastServerResponse ());
-        t.close ();
       }
 
       System.out.println ("\nMail was sent successfully.");

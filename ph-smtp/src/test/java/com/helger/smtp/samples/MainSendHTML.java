@@ -75,9 +75,9 @@ import com.helger.commons.lang.priviledged.IPrivilegedAction;
  * @author Bill Shannon
  * @author Max Spivak
  */
-
 public class MainSendHTML
 {
+  @SuppressWarnings ("resource")
   public static void main (final String [] argv)
   {
     String to, subject = null, from = null, cc = null, bcc = null, url = null;

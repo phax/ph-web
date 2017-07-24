@@ -21,6 +21,7 @@ Java library with common web stuff. It contains the following sub-projects:
 
   * v8.8.3 - work in progress
     * Updated to javax.mail 1.6.0
+    * Added HTTP Referrer-Policy header support
   * v8.8.2 - 2017-07-04
     * Made debug flag in certain `ResponseHandler*` implementations customizable
     * `ServletHelper` caught Exception logging can now be enabled and disabled

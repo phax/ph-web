@@ -32,9 +32,9 @@ import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.IWebScopeFactory;
 import com.helger.web.scope.impl.ApplicationWebScope;
 import com.helger.web.scope.impl.GlobalWebScope;
-import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.impl.SessionApplicationWebScope;
 import com.helger.web.scope.impl.SessionWebScope;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
 /**
  * Web version of the scope factory.
@@ -75,6 +75,6 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
   public IRequestWebScope createRequestScope (@Nonnull final HttpServletRequest aHttpRequest,
                                               @Nonnull final HttpServletResponse aHttpResponse)
   {
-    return new RequestWebScope (aHttpRequest, aHttpResponse);
+    return new RequestWebScopeMultipart (aHttpRequest, aHttpResponse);
   }
 }

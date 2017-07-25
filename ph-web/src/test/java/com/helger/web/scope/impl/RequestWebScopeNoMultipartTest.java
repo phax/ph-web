@@ -31,9 +31,10 @@ import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.web.scope.mock.WebScopeTestRule;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
 /**
- * Test class for class {@link RequestWebScopeNoMultipart}.
+ * Test class for class {@link RequestWebScope}.
  *
  * @author Philip Helger
  */
@@ -52,7 +53,7 @@ public final class RequestWebScopeNoMultipartTest
     aRequest.addParameter ("b", "...");
     aRequest.addParameter ("c", "...");
     assertEquals (5, aRequest.getParameterMap ().size ());
-    final RequestWebScope aRequestScope = new RequestWebScope (aRequest, new MockHttpServletResponse ());
+    final RequestWebScopeMultipart aRequestScope = new RequestWebScopeMultipart (aRequest, new MockHttpServletResponse ());
     aRequestScope.initScope ();
     final IRequestParamMap aRPM = aRequestScope.getRequestParamMap ();
     assertNotNull (aRPM);

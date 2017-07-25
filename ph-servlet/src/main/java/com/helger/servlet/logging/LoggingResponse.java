@@ -21,7 +21,7 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.http.HTTPHeaderMap;
+import com.helger.commons.http.HTTPHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
 

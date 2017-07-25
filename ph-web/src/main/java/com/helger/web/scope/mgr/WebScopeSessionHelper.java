@@ -29,12 +29,12 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.scope.IScopeRenewalAware;
-import com.helger.commons.scope.ISessionApplicationScope;
-import com.helger.commons.scope.mgr.ScopeSessionManager;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.state.EChange;
+import com.helger.scope.IScopeRenewalAware;
+import com.helger.scope.ISessionApplicationScope;
+import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 
@@ -88,7 +88,7 @@ public final class WebScopeSessionHelper
   {
     // restore the session scope attributes
     for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSessionScopeValues.entrySet ())
-      aNewSessionScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
+      aNewSessionScope.attrs ().setAttribute (aEntry.getKey (), aEntry.getValue ());
 
     // restore the session application scope attributes
     for (final Map.Entry <String, ? extends Map <String, IScopeRenewalAware>> aEntry : aSessionApplicationScopeValues.entrySet ())
@@ -99,7 +99,7 @@ public final class WebScopeSessionHelper
 
       // Put all attributes in
       for (final Map.Entry <String, IScopeRenewalAware> aInnerEntry : aEntry.getValue ().entrySet ())
-        aNewSessionApplicationScope.setAttribute (aInnerEntry.getKey (), aInnerEntry.getValue ());
+        aNewSessionApplicationScope.attrs ().setAttribute (aInnerEntry.getKey (), aInnerEntry.getValue ());
     }
   }
 

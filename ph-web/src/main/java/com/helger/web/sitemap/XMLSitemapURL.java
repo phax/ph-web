@@ -25,13 +25,13 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
-import com.helger.datetime.util.PDTWebDateHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.serialize.write.EXMLCharMode;

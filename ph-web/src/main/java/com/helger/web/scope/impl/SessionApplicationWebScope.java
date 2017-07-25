@@ -19,15 +19,14 @@ package com.helger.web.scope.impl;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.SessionApplicationScope;
-import com.helger.commons.state.EChange;
+import com.helger.commons.state.EContinue;
+import com.helger.scope.SessionApplicationScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 
 /**
@@ -45,15 +44,10 @@ public class SessionApplicationWebScope extends SessionApplicationScope implemen
   public SessionApplicationWebScope (@Nonnull @Nonempty final String sScopeID)
   {
     super (sScopeID);
-  }
-
-  @Override
-  @Nonnull
-  public EChange setAttribute (@Nonnull final String sName, @Nullable final Object aNewValueValue)
-  {
-    if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
-      s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
-
-    return super.setAttribute (sName, aNewValueValue);
+    attrs ().beforeSetAttributeCallbacks ().add ( (aName, aNewValueValue) -> {
+      if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
+        s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
+      return EContinue.CONTINUE;
+    });
   }
 }

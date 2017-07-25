@@ -28,10 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.SessionScope;
-import com.helger.commons.state.EChange;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.scope.SessionScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeFactoryProvider;
@@ -57,6 +56,12 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   {
     super (aHttpSession.getId ());
     m_aHttpSession = aHttpSession;
+
+    attrs ().beforeSetAttributeCallbacks ().add ( (aName, aNewValueValue) -> {
+      if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
+        s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
+      return EContinue.CONTINUE;
+    });
   }
 
   @Override
@@ -69,7 +74,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
       {
         final String sAttrName = (String) aAttrNames.nextElement ();
         final Object aAttrValue = m_aHttpSession.getAttribute (sAttrName);
-        setAttribute (sAttrName, aAttrValue);
+        attrs ().setAttribute (sAttrName, aAttrValue);
       }
   }
 
@@ -94,16 +99,6 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
     // Continue with the regular destruction
     return EContinue.CONTINUE;
-  }
-
-  @Override
-  @Nonnull
-  public EChange setAttribute (@Nonnull final String sName, @Nullable final Object aNewValue)
-  {
-    if (aNewValue != null && !(aNewValue instanceof Serializable))
-      s_aLogger.warn ("Value of class " + aNewValue.getClass ().getName () + " should implement Serializable!");
-
-    return super.setAttribute (sName, aNewValue);
   }
 
   @Override

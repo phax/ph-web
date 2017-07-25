@@ -16,15 +16,13 @@
  */
 package com.helger.smtp.data;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.ICommonsIterable;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
+import com.helger.commons.collection.impl.ICommonsIterable;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.IHasSize;
 
 /**
@@ -32,7 +30,7 @@ import com.helger.commons.lang.IHasSize;
  *
  * @author Philip Helger
  */
-public interface IEmailAttachmentList extends IHasSize, ICommonsIterable <IEmailAttachment>, Serializable
+public interface IEmailAttachmentList extends IHasSize, ICommonsIterable <IEmailAttachment>
 {
   /**
    * Check if an attachment for the passed file name is contained.

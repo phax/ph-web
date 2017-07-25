@@ -25,11 +25,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.scope.mgr.ScopeManager;
+import com.helger.commons.http.CHTTPHeader;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingList;
-import com.helger.http.CHTTPHeader;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;

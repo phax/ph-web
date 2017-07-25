@@ -35,7 +35,7 @@ import com.helger.mail.address.InternetAddressHelper;
  *
  * @author Philip Helger
  */
-public interface IMutableEmailData extends IEmailData, IMutableAttributeContainerAny <String>
+public interface IMutableEmailData extends IEmailData
 {
   @Nonnull
   IMutableEmailData setEmailType (@Nonnull EEmailType eType);
@@ -368,4 +368,6 @@ public interface IMutableEmailData extends IEmailData, IMutableAttributeContaine
    */
   @Nonnull
   IMutableEmailData setAttachments (@Nullable IEmailAttachmentList aAttachments);
+
+  IMutableAttributeContainerAny <String> attrs ();
 }

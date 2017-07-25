@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ELockType;
 import com.helger.commons.annotation.MustBeLocked;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.concurrent.BasicThreadFactory;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.datetime.PDTFactory;
@@ -76,7 +76,7 @@ public final class MailAPI
                                                                                                                 "$mails.queued");
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> s_aQueueCache = new CommonsHashMap<> ();
+  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> s_aQueueCache = new CommonsHashMap <> ();
   // Just to have custom named threads....
   private static final ThreadFactory s_aThreadFactory = new BasicThreadFactory.Builder ().setNamingPattern ("MailAPI-%d")
                                                                                          .setDaemon (true)
@@ -146,7 +146,7 @@ public final class MailAPI
       s_aQueueCache.put (aSMTPSettings, aSMTPQueue);
 
       // and start running the queue
-      s_aSenderThreadPool.submit (aSMTPQueue);
+      s_aSenderThreadPool.submit (aSMTPQueue::collect);
     }
     return aSMTPQueue;
   }
@@ -176,7 +176,7 @@ public final class MailAPI
   public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings,
                                     @Nonnull final IMutableEmailData aMailData)
   {
-    final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <IMutableEmailData> (aMailData));
+    final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <> (aMailData));
     return ESuccess.valueOf (nQueuedMails == 1);
   }
 

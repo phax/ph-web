@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.CGlobal;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.state.EChange;
-import com.helger.datetime.util.PDTWebDateHelper;
 
 /**
  * Contains the settings for the {@link ResponseHelper} class.

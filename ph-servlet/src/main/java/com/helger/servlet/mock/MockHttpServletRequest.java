@@ -50,23 +50,24 @@ import javax.servlet.http.Part;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.CommonsHashSet;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsCollection;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
-import com.helger.commons.collection.ext.ICommonsSet;
-import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsHashSet;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsCollection;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.http.CHTTPHeader;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -78,7 +79,6 @@ import com.helger.commons.url.URLHelper;
 import com.helger.commons.url.URLParameter;
 import com.helger.commons.url.URLParameterList;
 import com.helger.http.AcceptCharsetHandler;
-import com.helger.http.CHTTPHeader;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.network.port.SchemeDefaultPortMapper;
@@ -299,7 +299,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   public void setCharacterEncoding (@Nullable final String sCharacterEncoding)
   {
-    setCharacterEncoding (sCharacterEncoding == null ? null : CharsetManager.getCharsetFromName (sCharacterEncoding));
+    setCharacterEncoding (sCharacterEncoding == null ? null : CharsetHelper.getCharsetFromName (sCharacterEncoding));
   }
 
   public void setCharacterEncoding (@Nullable final Charset aCharacterEncoding)

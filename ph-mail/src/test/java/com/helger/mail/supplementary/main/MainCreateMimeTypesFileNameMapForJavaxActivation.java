@@ -28,8 +28,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
-import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.vendor.VendorInfo;

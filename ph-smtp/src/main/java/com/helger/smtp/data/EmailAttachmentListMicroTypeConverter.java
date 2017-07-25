@@ -24,16 +24,15 @@ import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 
-public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeConverter
+public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeConverter <EmailAttachmentList>
 {
   private static final String ELEMENT_ATTACHMENT = "attachment";
 
   @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final Object aSource,
+  public IMicroElement convertToMicroElement (@Nonnull final EmailAttachmentList aAttachmentList,
                                               @Nullable final String sNamespaceURI,
                                               @Nonnull final String sTagName)
   {
-    final EmailAttachmentList aAttachmentList = (EmailAttachmentList) aSource;
     final IMicroElement eAttachmentList = new MicroElement (sNamespaceURI, sTagName);
     for (final IEmailAttachment aAttachment : aAttachmentList.directGetAllAttachments ())
       eAttachmentList.appendChild (MicroTypeConverter.convertToMicroElement (aAttachment,

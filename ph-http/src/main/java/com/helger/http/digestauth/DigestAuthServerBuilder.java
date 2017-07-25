@@ -23,8 +23,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.ext.CommonsLinkedHashSet;
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
@@ -32,8 +32,8 @@ import com.helger.http.HTTPStringHelper;
 
 /**
  * Helper class to build the value of the
- * {@link com.helger.http.CHTTPHeader#WWW_AUTHENTICATE} value send from the
- * server to client.
+ * {@link com.helger.commons.http.CHTTPHeader#WWW_AUTHENTICATE} value send from
+ * the server to client.
  *
  * @author Philip Helger
  */
@@ -41,12 +41,12 @@ import com.helger.http.HTTPStringHelper;
 public class DigestAuthServerBuilder implements Serializable
 {
   private String m_sRealm;
-  private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet<> ();
+  private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet <> ();
   private String m_sNonce;
   private String m_sOpaque;
   private ETriState m_eStale = ETriState.UNDEFINED;
   private String m_sAlgorithm;
-  private final ICommonsOrderedSet <String> m_aQOPs = new CommonsLinkedHashSet<> ();
+  private final ICommonsOrderedSet <String> m_aQOPs = new CommonsLinkedHashSet <> ();
 
   public DigestAuthServerBuilder ()
   {}

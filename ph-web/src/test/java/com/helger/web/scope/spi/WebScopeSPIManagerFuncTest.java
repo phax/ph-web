@@ -20,10 +20,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.commons.scope.ISessionScope;
-import com.helger.commons.scope.ScopeHelper;
-import com.helger.commons.scope.mgr.ScopeManager;
-import com.helger.commons.scope.spi.ScopeSPIManager;
+import com.helger.scope.ISessionScope;
+import com.helger.scope.ScopeHelper;
+import com.helger.scope.mgr.ScopeManager;
+import com.helger.scope.spi.ScopeSPIManager;
 
 /**
  * Test class for class {@link ScopeSPIManager}.

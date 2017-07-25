@@ -31,8 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.http.CHTTPHeader;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.http.CHTTPHeader;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
 

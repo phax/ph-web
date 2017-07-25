@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
-import com.helger.commons.scope.IGlobalScope;
+import com.helger.scope.IGlobalScope;
 
 /**
  * Interface for a global web scope.

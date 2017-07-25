@@ -30,11 +30,10 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.attr.IAttributeContainer;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -68,7 +67,7 @@ public class RequestParamMap implements IRequestParamMap
   private static String s_sClose = DEFAULT_CLOSE;
 
   /** Linked hash map for consistent results */
-  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aMap = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aMap = new CommonsLinkedHashMap <> ();
 
   public RequestParamMap ()
   {}
@@ -317,15 +316,6 @@ public class RequestParamMap implements IRequestParamMap
     final RequestParamMap ret = new RequestParamMap ();
     for (final Map.Entry <String, Object> aEntry : aAttrCont.entrySet ())
       ret.put (aEntry.getKey (), aEntry.getValue ());
-    return ret;
-  }
-
-  @Nonnull
-  public static IRequestParamMap create (@Nonnull final IAttributeContainer <String, ?> aAttrCont)
-  {
-    final RequestParamMap ret = new RequestParamMap ();
-    for (final String sName : aAttrCont.getAllAttributeNames ())
-      ret.put (sName, aAttrCont.getAttributeObject (sName));
     return ret;
   }
 

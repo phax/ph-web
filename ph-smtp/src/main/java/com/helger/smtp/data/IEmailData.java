@@ -16,6 +16,7 @@
  */
 package com.helger.smtp.data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
@@ -23,8 +24,9 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.IAttributeContainer;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.IEmailAddress;
 
 /**
@@ -35,7 +37,7 @@ import com.helger.commons.email.IEmailAddress;
  *
  * @author Philip Helger
  */
-public interface IEmailData extends IAttributeContainer <String, Object>
+public interface IEmailData extends Serializable
 {
   /**
    * @return The type of the email - text or html.
@@ -57,7 +59,7 @@ public interface IEmailData extends IAttributeContainer <String, Object>
    * @return never <code>null</code>
    */
   @Nonnull
-  ICommonsList <? extends IEmailAddress> getAllReplyTo ();
+  ICommonsList <IEmailAddress> getAllReplyTo ();
 
   /**
    * @return Number of reply-to addresses. Always &ge; 0.
@@ -71,7 +73,7 @@ public interface IEmailData extends IAttributeContainer <String, Object>
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <? extends IEmailAddress> getAllTo ();
+  ICommonsList <IEmailAddress> getAllTo ();
 
   /**
    * Perform something for each TO-receiver
@@ -93,7 +95,7 @@ public interface IEmailData extends IAttributeContainer <String, Object>
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <? extends IEmailAddress> getAllCc ();
+  ICommonsList <IEmailAddress> getAllCc ();
 
   /**
    * Perform something for each CC-receiver
@@ -115,7 +117,7 @@ public interface IEmailData extends IAttributeContainer <String, Object>
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <? extends IEmailAddress> getAllBcc ();
+  ICommonsList <IEmailAddress> getAllBcc ();
 
   /**
    * Perform something for each BCC-receiver
@@ -165,4 +167,8 @@ public interface IEmailData extends IAttributeContainer <String, Object>
    */
   @Nullable
   IEmailAttachmentList getAttachments ();
+
+  @Nonnull
+  @ReturnsMutableObject
+  IAttributeContainer <String, Object> attrs ();
 }

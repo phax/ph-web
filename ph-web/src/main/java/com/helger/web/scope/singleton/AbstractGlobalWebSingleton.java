@@ -19,8 +19,8 @@ package com.helger.web.scope.singleton;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.scope.singleton.AbstractSingleton;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 

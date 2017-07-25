@@ -31,9 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.HTTPHeaderMap;
 import com.helger.http.AcceptEncodingList;
-import com.helger.http.CHTTPHeader;
-import com.helger.http.HTTPHeaderMap;
 import com.helger.servlet.request.RequestHelper;
 
 /**

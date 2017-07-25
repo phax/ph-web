@@ -28,7 +28,7 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
 
@@ -59,8 +59,7 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   private Charset _getCharset ()
   {
     final String sResponseEncoding = m_aDelegate.getCharacterEncoding ();
-    final Charset aCharset = sResponseEncoding != null ? CharsetManager.getCharsetFromName (sResponseEncoding)
-                                                       : StandardCharsets.UTF_8;
+    final Charset aCharset = CharsetHelper.getCharsetFromNameOrNull (sResponseEncoding, StandardCharsets.UTF_8);
     return aCharset;
   }
 

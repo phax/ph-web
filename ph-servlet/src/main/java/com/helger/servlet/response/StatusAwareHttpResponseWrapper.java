@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.http.HTTPHeaderMap;
+import com.helger.commons.http.HTTPHeaderMap;
 
 /**
  * A special {@link HttpServletResponseWrapper} that tracks the used status
@@ -95,7 +95,7 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   public void reset ()
   {
     super.reset ();
-    m_aHeaderMap.clear ();
+    m_aHeaderMap.removeAll ();
   }
 
   @Override

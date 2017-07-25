@@ -17,8 +17,8 @@
 package com.helger.web.scope.spi;
 
 import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.scope.IApplicationScope;
-import com.helger.commons.scope.spi.IApplicationScopeSPI;
+import com.helger.scope.IApplicationScope;
+import com.helger.scope.spi.IApplicationScopeSPI;
 
 @IsSPIImplementation
 public final class MockApplicationWebScopeSPI extends AbstractWebScopeSPI implements IApplicationScopeSPI

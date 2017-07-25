@@ -38,9 +38,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileIOError;
@@ -446,8 +446,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nonnull
   public String getString ()
   {
-    final String asCharset = getCharSet ();
-    final Charset aCharset = asCharset == null ? DEFAULT_CHARSET_OBJ : CharsetManager.getCharsetFromName (asCharset);
+    final String sCharset = getCharSet ();
+    final Charset aCharset = CharsetHelper.getCharsetFromNameOrNull (sCharset, DEFAULT_CHARSET_OBJ);
     return getString (aCharset);
   }
 

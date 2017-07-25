@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.ICommonsCollection;
-import com.helger.commons.scope.ISessionScope;
-import com.helger.commons.scope.mgr.ScopeSessionManager;
+import com.helger.commons.collection.impl.ICommonsCollection;
+import com.helger.scope.ISessionScope;
+import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionWebScope;
 
 /**

@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.IScope;
-import com.helger.commons.scope.mgr.ScopeManager;
+import com.helger.scope.IScope;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -64,7 +64,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     final String sRequestValue = super.getRequestValueWithoutDefault ();
     // Allow empty values!
     if (sRequestValue != null)
-      WebScopeManager.getSessionScope (true).setAttribute (getSessionFieldName (), sRequestValue);
+      WebScopeManager.getSessionScope (true).attrs ().setAttribute (getSessionFieldName (), sRequestValue);
   }
 
   @Override
@@ -73,6 +73,6 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     final String sSuperDefaultValue = super.getDefaultValue ();
     final IScope aSessionScope = WebScopeManager.getSessionScope (false);
     return aSessionScope == null ? sSuperDefaultValue
-                                 : aSessionScope.getAttributeAsString (getSessionFieldName (), sSuperDefaultValue);
+                                 : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);
   }
 }

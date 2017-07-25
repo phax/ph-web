@@ -33,15 +33,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsSet;
-import com.helger.commons.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.IMimeType;
@@ -95,8 +95,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   private Locale m_aLocale = Locale.getDefault ();
 
   // HttpServletResponse properties
-  private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList<> ();
-  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased<> ();
+  private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList <> ();
+  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
   private int m_nStatus = HttpServletResponse.SC_OK;
   private String m_sErrorMessage;
   private String m_sRedirectedUrl;
@@ -152,7 +152,7 @@ public class MockHttpServletResponse implements HttpServletResponse
 
   public void setCharacterEncoding (@Nullable final String sCharacterEncoding)
   {
-    setCharacterEncoding (sCharacterEncoding == null ? null : CharsetManager.getCharsetFromName (sCharacterEncoding));
+    setCharacterEncoding (CharsetHelper.getCharsetFromNameOrNull (sCharacterEncoding));
   }
 
   public void setCharacterEncoding (@Nullable final Charset aCharacterEncoding)
@@ -409,7 +409,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nonnull
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
-    return new CommonsArrayList<> (m_aHeaders.get (_unifyHeaderName (sName)));
+    return new CommonsArrayList <> (m_aHeaders.get (_unifyHeaderName (sName)));
   }
 
   /**

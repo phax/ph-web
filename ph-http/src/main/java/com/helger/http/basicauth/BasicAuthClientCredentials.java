@@ -98,7 +98,7 @@ public class BasicAuthClientCredentials implements Serializable
 
   /**
    * Create the request HTTP header value for use with the
-   * {@link com.helger.http.CHTTPHeader#AUTHORIZATION} header name.
+   * {@link com.helger.commons.http.CHTTPHeader#AUTHORIZATION} header name.
    *
    * @return The HTTP header value to use. Neither <code>null</code> nor empty.
    */

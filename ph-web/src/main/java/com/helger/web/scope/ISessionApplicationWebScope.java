@@ -16,7 +16,7 @@
  */
 package com.helger.web.scope;
 
-import com.helger.commons.scope.ISessionApplicationScope;
+import com.helger.scope.ISessionApplicationScope;
 
 /**
  * Interface for a single session application scope object.

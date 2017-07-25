@@ -24,13 +24,13 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ContainsSoftMigration;
 import com.helger.commons.base64.Base64;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 
-public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConverter
+public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConverter <EmailAttachment>
 {
   private static final String ATTR_FILENAME = "filename";
   private static final String ATTR_CHARSET = "charset";
@@ -38,11 +38,10 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
   private static final String ATTR_CONTENT_TYPE = "contenttype";
 
   @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final Object aSource,
+  public IMicroElement convertToMicroElement (@Nonnull final EmailAttachment aAttachment,
                                               @Nullable final String sNamespaceURI,
                                               @Nonnull final String sTagName)
   {
-    final IEmailAttachment aAttachment = (IEmailAttachment) aSource;
     final IMicroElement eAttachment = new MicroElement (sNamespaceURI, sTagName);
     eAttachment.setAttribute (ATTR_FILENAME, aAttachment.getFilename ());
     if (aAttachment.hasCharset ())
@@ -61,7 +60,7 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     final String sFilename = eAttachment.getAttributeValue (ATTR_FILENAME);
 
     final String sCharset = eAttachment.getAttributeValue (ATTR_CHARSET);
-    final Charset aCharset = sCharset == null ? null : CharsetManager.getCharsetFromName (sCharset);
+    final Charset aCharset = sCharset == null ? null : CharsetHelper.getCharsetFromName (sCharset);
 
     String sContentType = eAttachment.getAttributeValue (ATTR_CONTENT_TYPE);
     if (sContentType == null)

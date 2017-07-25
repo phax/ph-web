@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import com.helger.commons.id.IHasID;
 import com.helger.commons.mock.AbstractCommonsTestCase;
-import com.helger.useragent.spider.WebSpiderInfo;
-import com.helger.useragent.spider.WebSpiderManager;
 
 /**
  * Test class for class {@link WebSpiderManager}.

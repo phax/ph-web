@@ -26,8 +26,8 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.StringHelper;
@@ -169,7 +169,7 @@ public class RequestFieldData implements Serializable
   @Nullable
   protected final String getRequestValueWithoutDefault ()
   {
-    return getScope ().getAttributeAsString (m_sFieldName, null);
+    return getScope ().attrs ().getAsString (m_sFieldName, null);
   }
 
   /**
@@ -181,7 +181,7 @@ public class RequestFieldData implements Serializable
   @Nonnull
   public final String getRequestValue ()
   {
-    return getScope ().getAttributeAsString (m_sFieldName, getDefaultValue ());
+    return getScope ().attrs ().getAsString (m_sFieldName, getDefaultValue ());
   }
 
   /**
@@ -200,7 +200,7 @@ public class RequestFieldData implements Serializable
     ICommonsList <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
-      aDefault = new CommonsArrayList<> (sDefaultValue);
+      aDefault = new CommonsArrayList <> (sDefaultValue);
     return getScope ().getAttributeAsList (m_sFieldName, aDefault);
   }
 

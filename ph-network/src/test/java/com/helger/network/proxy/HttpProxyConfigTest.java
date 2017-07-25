@@ -26,7 +26,7 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsArrayList;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

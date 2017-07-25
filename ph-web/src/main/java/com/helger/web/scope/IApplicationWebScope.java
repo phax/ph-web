@@ -16,7 +16,7 @@
  */
 package com.helger.web.scope;
 
-import com.helger.commons.scope.IApplicationScope;
+import com.helger.scope.IApplicationScope;
 
 /**
  * Interface for an application web scope.

@@ -19,7 +19,7 @@ package com.helger.web.scope.singleton;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.scope.IScope;
+import com.helger.scope.IScope;
 
 /**
  * Mock implementation of {@link AbstractGlobalWebSingleton}

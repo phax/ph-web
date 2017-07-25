@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.system.SystemHelper;
@@ -428,8 +428,8 @@ public final class MultipartStream
         aBAOS.write (b);
       }
 
-      final Charset aCharsetToUse = m_sHeaderEncoding != null ? CharsetManager.getCharsetFromName (m_sHeaderEncoding)
-                                                              : SystemHelper.getSystemCharset ();
+      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrNull (m_sHeaderEncoding,
+                                                                            SystemHelper.getSystemCharset ());
       return aBAOS.getAsString (aCharsetToUse);
     }
   }

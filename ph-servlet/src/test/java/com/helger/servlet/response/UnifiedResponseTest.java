@@ -22,8 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.http.CHTTPHeader;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.http.CHTTPHeader;
 import com.helger.servlet.mock.MockHttpServletRequest;
 
 /**

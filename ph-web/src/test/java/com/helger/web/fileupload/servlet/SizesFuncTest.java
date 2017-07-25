@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;

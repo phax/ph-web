@@ -28,14 +28,12 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.mock.CommonsAssert;
 import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.servlet.request.IRequestParamMap;
-import com.helger.servlet.request.RequestParamMap;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

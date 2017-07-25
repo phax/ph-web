@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.mock.ScopeAwareTestSetup;
+import com.helger.scope.mock.ScopeAwareTestSetup;
 import com.helger.servlet.mock.MockServletRequestListener;
 import com.helger.web.scope.mgr.WebScopeManager;
 

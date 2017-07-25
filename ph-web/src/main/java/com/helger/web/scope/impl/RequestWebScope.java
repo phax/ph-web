@@ -40,6 +40,6 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
   @OverrideOnDemand
   protected boolean addSpecialRequestAttributes ()
   {
-    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, this::setAttribute);
+    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, attrs ()::setAttribute);
   }
 }

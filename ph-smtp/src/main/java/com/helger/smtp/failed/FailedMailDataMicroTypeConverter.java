@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.typeconvert.TypeConverter;
-import com.helger.datetime.util.PDTWebDateHelper;
 import com.helger.smtp.data.EmailData;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
@@ -43,7 +43,7 @@ import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
-public final class FailedMailDataMicroTypeConverter implements IMicroTypeConverter
+public final class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <FailedMailData>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (FailedMailDataMicroTypeConverter.class);
   private static final String ATTR_ID = "id";
@@ -60,11 +60,10 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
   private static final String ATTR_ERROR_CODE = "errcode";
 
   @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final Object aSource,
+  public IMicroElement convertToMicroElement (@Nonnull final FailedMailData aFailedMail,
                                               @Nullable final String sNamespaceURI,
                                               @Nonnull final String sTagName)
   {
-    final FailedMailData aFailedMail = (FailedMailData) aSource;
     final IMicroElement eFailedMail = new MicroElement (sNamespaceURI, sTagName);
 
     eFailedMail.setAttribute (ATTR_ID, aFailedMail.getID ());
@@ -154,7 +153,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
     MailTransportError aError = null;
     if (aException != null)
     {
-      final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList<> ();
+      final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList <> ();
       for (final IMicroElement eDetails : eFailedMail.getAllChildElements (ELEMENT_DETAILS))
       {
         final boolean bAddressValid = StringParser.parseBool (eDetails.getAttributeValue (ATTR_ADDRESS_VALID));

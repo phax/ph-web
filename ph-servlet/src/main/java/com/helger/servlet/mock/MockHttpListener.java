@@ -25,7 +25,7 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionListener;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsList;
 
 /**
  * This class globally holds the HTTP listeners ({@link ServletContextListener}

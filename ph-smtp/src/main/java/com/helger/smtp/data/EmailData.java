@@ -26,10 +26,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.attr.MapBasedAttributeContainerAny;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.CommonsTreeMap;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.attr.AttributeContainerAny;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -43,24 +43,22 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class EmailData extends MapBasedAttributeContainerAny <String> implements IMutableEmailData
+public class EmailData implements IMutableEmailData
 {
   private EEmailType m_eEmailType;
   private IEmailAddress m_aFrom;
-  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList<> ();
-  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList<> ();
+  private final ICommonsList <IEmailAddress> m_aReplyTo = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aTo = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aCc = new CommonsArrayList <> ();
+  private final ICommonsList <IEmailAddress> m_aBcc = new CommonsArrayList <> ();
   private LocalDateTime m_aSentDateTime;
   private String m_sSubject;
   private String m_sBody;
   private IMutableEmailAttachmentList m_aAttachments;
+  private final AttributeContainerAny <String> m_aAttrs = new AttributeContainerAny <> ();
 
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
-    // CommonsTreeMap for consistent serialization compared to a regular
-    // CommonsHashMap
-    super (true, new CommonsTreeMap<> ());
     setEmailType (eEmailType);
   }
 
@@ -108,7 +106,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <? extends IEmailAddress> getAllReplyTo ()
+  public ICommonsList <IEmailAddress> getAllReplyTo ()
   {
     return m_aReplyTo.getClone ();
   }
@@ -136,7 +134,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <? extends IEmailAddress> getAllTo ()
+  public ICommonsList <IEmailAddress> getAllTo ()
   {
     return m_aTo.getClone ();
   }
@@ -169,7 +167,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <? extends IEmailAddress> getAllCc ()
+  public ICommonsList <IEmailAddress> getAllCc ()
   {
     return m_aCc.getClone ();
   }
@@ -202,7 +200,7 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <? extends IEmailAddress> getAllBcc ()
+  public ICommonsList <IEmailAddress> getAllBcc ()
   {
     return m_aBcc.getClone ();
   }
@@ -279,12 +277,19 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
     return this;
   }
 
+  @Nonnull
+  @ReturnsMutableObject
+  public AttributeContainerAny <String> attrs ()
+  {
+    return m_aAttrs;
+  }
+
   @Override
   public boolean equals (final Object o)
   {
     if (o == this)
       return true;
-    if (!super.equals (o))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final EmailData rhs = (EmailData) o;
     return EqualsHelper.equals (m_aFrom, rhs.m_aFrom) &&
@@ -295,39 +300,39 @@ public class EmailData extends MapBasedAttributeContainerAny <String> implements
            EqualsHelper.equals (m_aSentDateTime, rhs.m_aSentDateTime) &&
            EqualsHelper.equals (m_sSubject, rhs.m_sSubject) &&
            EqualsHelper.equals (m_sBody, rhs.m_sBody) &&
-           EqualsHelper.equals (m_aAttachments, rhs.m_aAttachments);
+           EqualsHelper.equals (m_aAttachments, rhs.m_aAttachments) &&
+           m_aAttrs.equals (rhs.m_aAttrs);
   }
 
   @Override
   public int hashCode ()
   {
-    return HashCodeGenerator.getDerived (super.hashCode ())
-                            .append (m_aFrom)
-                            .append (m_aReplyTo)
-                            .append (m_aTo)
-                            .append (m_aCc)
-                            .append (m_aBcc)
-                            .append (m_aSentDateTime)
-                            .append (m_sSubject)
-                            .append (m_sBody)
-                            .append (m_aAttachments)
-                            .getHashCode ();
+    return new HashCodeGenerator (this).append (m_aFrom)
+                                       .append (m_aReplyTo)
+                                       .append (m_aTo)
+                                       .append (m_aCc)
+                                       .append (m_aBcc)
+                                       .append (m_aSentDateTime)
+                                       .append (m_sSubject)
+                                       .append (m_sBody)
+                                       .append (m_aAttachments)
+                                       .append (m_aAttrs)
+                                       .getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("from", m_aFrom)
-                            .appendIfNotNull ("replyTo", m_aReplyTo)
-                            .append ("to", m_aTo)
-                            .appendIfNotNull ("cc", m_aCc)
-                            .appendIfNotNull ("bcc", m_aBcc)
-                            .append ("sendDate", m_aSentDateTime)
-                            .append ("subject", m_sSubject)
-                            .append ("body", m_sBody)
-                            .appendIfNotNull ("attachments", m_aAttachments)
-                            .getToString ();
+    return new ToStringGenerator (this).append ("from", m_aFrom)
+                                       .appendIfNotNull ("replyTo", m_aReplyTo)
+                                       .append ("to", m_aTo)
+                                       .appendIfNotNull ("cc", m_aCc)
+                                       .appendIfNotNull ("bcc", m_aBcc)
+                                       .append ("sendDate", m_aSentDateTime)
+                                       .append ("subject", m_sSubject)
+                                       .append ("body", m_sBody)
+                                       .appendIfNotNull ("attachments", m_aAttachments)
+                                       .getToString ();
   }
 
   /**

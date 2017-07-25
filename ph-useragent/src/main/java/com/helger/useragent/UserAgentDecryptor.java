@@ -21,10 +21,10 @@ import java.util.regex.Matcher;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.collection.pair.Pair;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.pair.Pair;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.util.StringScanner;

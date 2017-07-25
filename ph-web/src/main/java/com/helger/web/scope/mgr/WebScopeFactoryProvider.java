@@ -25,8 +25,7 @@ import com.helger.web.scope.IWebScopeFactory;
 
 /**
  * The meta scope factory holding both the factory for non-web scopes as well as
- * the factory for web-scopes. See
- * {@link com.helger.commons.scope.mgr.MetaScopeFactory}
+ * the factory for web-scopes. See {@link com.helger.scope.mgr.MetaScopeFactory}
  *
  * @author Philip Helger
  */

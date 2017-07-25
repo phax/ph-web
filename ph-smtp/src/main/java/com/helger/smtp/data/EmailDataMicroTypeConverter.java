@@ -28,19 +28,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.ContainsSoftMigration;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.datetime.util.PDTWebDateHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
-public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
+public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <EmailData>
 {
   private static final String ATTR_TYPE = "type";
   private static final String ATTR_ADDRESS = "address";
@@ -68,11 +68,10 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
   }
 
   @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final Object aSource,
+  public IMicroElement convertToMicroElement (@Nonnull final EmailData aEmailData,
                                               @Nullable final String sNamespaceURI,
                                               @Nonnull final String sTagName)
   {
-    final EmailData aEmailData = (EmailData) aSource;
     final IMicroElement eEmailData = new MicroElement (sNamespaceURI, sTagName);
     eEmailData.setAttribute (ATTR_TYPE, aEmailData.getEmailType ().getID ());
 
@@ -100,7 +99,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
                                                                       sNamespaceURI,
                                                                       ELEMENT_ATTACHMENTS));
 
-    for (final Map.Entry <String, Object> aEntry : aEmailData.getAllAttributes ()
+    for (final Map.Entry <String, Object> aEntry : aEmailData.attrs ()
                                                              .getSortedByKey (Comparator.naturalOrder ())
                                                              .entrySet ())
     {
@@ -141,22 +140,22 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
     final IMicroElement eFrom = eEmailData.getFirstChildElement (ELEMENT_FROM);
     aEmailData.setFrom (_readEmailAddress (eFrom));
 
-    final ICommonsList <IEmailAddress> aReplyTos = new CommonsArrayList<> ();
+    final ICommonsList <IEmailAddress> aReplyTos = new CommonsArrayList <> ();
     for (final IMicroElement eReplyTo : eEmailData.getAllChildElements (ELEMENT_REPLYTO))
       aReplyTos.add (_readEmailAddress (eReplyTo));
     aEmailData.setReplyTo (aReplyTos);
 
-    final ICommonsList <IEmailAddress> aTos = new CommonsArrayList<> ();
+    final ICommonsList <IEmailAddress> aTos = new CommonsArrayList <> ();
     for (final IMicroElement eTo : eEmailData.getAllChildElements (ELEMENT_TO))
       aTos.add (_readEmailAddress (eTo));
     aEmailData.setTo (aTos);
 
-    final ICommonsList <IEmailAddress> aCcs = new CommonsArrayList<> ();
+    final ICommonsList <IEmailAddress> aCcs = new CommonsArrayList <> ();
     for (final IMicroElement eCc : eEmailData.getAllChildElements (ELEMENT_CC))
       aCcs.add (_readEmailAddress (eCc));
     aEmailData.setCc (aCcs);
 
-    final ICommonsList <IEmailAddress> aBccs = new CommonsArrayList<> ();
+    final ICommonsList <IEmailAddress> aBccs = new CommonsArrayList <> ();
     for (final IMicroElement eBcc : eEmailData.getAllChildElements (ELEMENT_BCC))
       aBccs.add (_readEmailAddress (eBcc));
     aEmailData.setBcc (aBccs);
@@ -197,7 +196,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter
     }
 
     for (final IMicroElement eCustom : eEmailData.getAllChildElements (ELEMENT_CUSTOM))
-      aEmailData.setAttribute (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
+      aEmailData.attrs ().setAttribute (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
 
     return aEmailData;
   }

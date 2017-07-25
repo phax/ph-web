@@ -21,14 +21,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.scope.IApplicationScope;
-import com.helger.commons.scope.IGlobalScope;
-import com.helger.commons.scope.IRequestScope;
-import com.helger.commons.scope.ISessionApplicationScope;
-import com.helger.commons.scope.ISessionScope;
-import com.helger.commons.scope.mgr.IScopeFactory;
-import com.helger.commons.scope.mgr.MetaScopeFactory;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.scope.IApplicationScope;
+import com.helger.scope.IGlobalScope;
+import com.helger.scope.IRequestScope;
+import com.helger.scope.ISessionApplicationScope;
+import com.helger.scope.ISessionScope;
+import com.helger.scope.mgr.IScopeFactory;
+import com.helger.scope.mgr.MetaScopeFactory;
 
 /**
  * A special {@link IScopeFactory} implementation that throws unsupported

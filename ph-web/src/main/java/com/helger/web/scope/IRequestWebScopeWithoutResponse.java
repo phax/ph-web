@@ -29,18 +29,18 @@ import javax.servlet.http.HttpSession;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.scope.IRequestScope;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
+import com.helger.scope.IRequestScope;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
@@ -64,7 +64,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
   {
     final ICommonsMap <String, IFileItem> ret = new CommonsHashMap <> ();
-    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    for (final Map.Entry <String, Object> aEntry : attrs ().entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
       if (aAttrValue instanceof IFileItem)
@@ -82,7 +82,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
     final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap <> ();
-    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    for (final Map.Entry <String, Object> aEntry : attrs ().entrySet ())
     {
       final String sAttrName = aEntry.getKey ();
       final Object aAttrValue = aEntry.getValue ();
@@ -105,7 +105,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
   {
     final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
-    for (final Object aAttrValue : getAllAttributeValues ())
+    for (final Object aAttrValue : attrs ().values ())
     {
       if (aAttrValue instanceof IFileItem)
         ret.add ((IFileItem) aAttrValue);
@@ -130,7 +130,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default IFileItem getAttributeAsFileItem (@Nullable final String sAttrName)
   {
-    final Object aObject = getAttributeObject (sAttrName);
+    final Object aObject = attrs ().get (sAttrName);
     return aObject instanceof IFileItem ? (IFileItem) aObject : null;
   }
 
@@ -191,7 +191,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   default Charset getCharset ()
   {
     final String sEncoding = getRequest ().getCharacterEncoding ();
-    return StringHelper.hasNoText (sEncoding) ? null : CharsetManager.getCharsetFromName (sEncoding);
+    return StringHelper.hasNoText (sEncoding) ? null : CharsetHelper.getCharsetFromName (sEncoding);
   }
 
   /**

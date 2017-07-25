@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.ISessionScope;
+import com.helger.scope.ISessionScope;
 
 /**
  * Interface for a single session scope object.

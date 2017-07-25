@@ -19,7 +19,7 @@ package com.helger.useragent.uaprofile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.collection.ext.ICommonsCollection;
+import com.helger.commons.collection.impl.ICommonsCollection;
 
 public interface IUAProfileHeaderProvider
 {

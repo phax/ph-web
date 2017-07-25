@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.scope.mgr.ScopeManager;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 

@@ -26,12 +26,11 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.attr.AttributeValueConverter;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.IHasSize;
+import com.helger.commons.typeconvert.TypeConverter;
 
 /**
  * A request parameter map. It handles complex request parameters and lets you
@@ -56,43 +55,39 @@ public interface IRequestParamMap extends IHasSize, Serializable
   default boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? bDefault : AttributeValueConverter.getAsBoolean (sPath, aItem.getValue (), bDefault);
+    return aItem == null ? bDefault : TypeConverter.convertToBoolean (aItem.getValue (), bDefault);
   }
 
   default double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? dDefault : AttributeValueConverter.getAsDouble (sPath, aItem.getValue (), dDefault);
+    return aItem == null ? dDefault : TypeConverter.convertToDouble (aItem.getValue (), dDefault);
   }
 
   default int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? nDefault : AttributeValueConverter.getAsInt (sPath, aItem.getValue (), nDefault);
+    return aItem == null ? nDefault : TypeConverter.convertToInt (aItem.getValue (), nDefault);
   }
 
   default long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
-    return aItem == null ? nDefault : AttributeValueConverter.getAsLong (sPath, aItem.getValue (), nDefault);
+    return aItem == null ? nDefault : TypeConverter.convertToLong (aItem.getValue (), nDefault);
   }
 
   @Nullable
   default BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : AttributeValueConverter.getAsBigInteger (ArrayHelper.getLast (aPath),
-                                                                           aItem.getValue (),
-                                                                           null);
+    return aItem == null ? null : TypeConverter.convertIfNecessary (aItem.getValue (), BigInteger.class);
   }
 
   @Nullable
   default BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : AttributeValueConverter.getAsBigDecimal (ArrayHelper.getLast (aPath),
-                                                                           aItem.getValue (),
-                                                                           null);
+    return aItem == null ? null : TypeConverter.convertIfNecessary (aItem.getValue (), BigDecimal.class);
   }
 
   @Nullable

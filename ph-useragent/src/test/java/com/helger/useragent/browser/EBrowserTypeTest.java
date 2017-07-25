@@ -23,8 +23,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.helger.useragent.browser.EBrowserType;
-
 /**
  * Test class for class {@link EBrowserType}.
  *

@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.helger.commons.annotation.CodingStyleguideUnaware;
-import com.helger.commons.charset.CharsetManager;
+import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.string.StringHelper;
@@ -124,9 +124,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   private Charset _getCharset ()
   {
     final String sRequestEncoding = m_aDelegate.getCharacterEncoding ();
-    final Charset aCharset = sRequestEncoding != null ? CharsetManager.getCharsetFromName (sRequestEncoding)
-                                                      : StandardCharsets.UTF_8;
-    return aCharset;
+    return CharsetHelper.getCharsetFromNameOrNull (sRequestEncoding, StandardCharsets.UTF_8);
   }
 
   public String getContent ()

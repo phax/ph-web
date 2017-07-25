@@ -22,12 +22,12 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.state.ESuccess;
 import com.helger.quartz.IJob;
 import com.helger.quartz.IJobExecutionContext;
 import com.helger.quartz.JobDataMap;
 import com.helger.schedule.job.AbstractJob;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;

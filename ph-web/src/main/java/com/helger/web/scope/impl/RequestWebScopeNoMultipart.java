@@ -32,15 +32,16 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsMap;
+import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.scope.AbstractMapBasedScope;
-import com.helger.commons.scope.ScopeHelper;
-import com.helger.commons.scope.mgr.ScopeManager;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.scope.AbstractMapBasedScope;
+import com.helger.scope.ScopeHelper;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.IRequestParamMap;
@@ -86,10 +87,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
 
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request web scope '" +
-                      getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
+      s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -117,7 +115,8 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     // parameters can only be extracted once!
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
-    if (getAndSetAttributeFlag (REQUEST_ATTR_SCOPE_INITED))
+    final IMutableAttributeContainerAny <String> aAttrs = attrs ();
+    if (aAttrs.getAndSetAttributeFlag (REQUEST_ATTR_SCOPE_INITED))
     {
       s_aLogger.warn ("Scope was already inited: " + toString ());
       return;
@@ -133,15 +132,15 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
       final String sParamName = (String) aEnum.nextElement ();
 
       // Avoid double setting a parameter!
-      if (bAddedSpecialRequestAttrs && containsAttribute (sParamName))
+      if (bAddedSpecialRequestAttrs && aAttrs.containsKey (sParamName))
         continue;
 
       // Check if it is a single value or not
       final String [] aParamValues = m_aHttpRequest.getParameterValues (sParamName);
       if (aParamValues.length == 1)
-        setAttribute (sParamName, aParamValues[0]);
+        aAttrs.setAttribute (sParamName, aParamValues[0]);
       else
-        setAttribute (sParamName, aParamValues);
+        aAttrs.setAttribute (sParamName, aParamValues);
     }
 
     postAttributeInit ();
@@ -159,10 +158,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   protected void postDestroy ()
   {
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request web scope '" +
-                      getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
+      s_aLogger.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
 
@@ -202,16 +198,16 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   public ICommonsList <String> getAttributeAsList (@Nullable final String sName,
                                                    @Nullable final ICommonsList <String> aDefault)
   {
-    final Object aValue = getAttributeObject (sName);
+    final Object aValue = attrs ().get (sName);
     if (aValue instanceof String [])
     {
       // multiple values passed in the request
-      return new CommonsArrayList<> ((String []) aValue);
+      return new CommonsArrayList <> ((String []) aValue);
     }
     if (aValue instanceof String)
     {
       // single value passed in the request
-      return new CommonsArrayList<> ((String) aValue);
+      return new CommonsArrayList <> ((String) aValue);
     }
     return getAttributeAsListCustom (sName, aValue, aDefault);
   }
@@ -220,17 +216,17 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   public IRequestParamMap getRequestParamMap ()
   {
     // Check if a value is cached in the scope
-    IRequestParamMap aValue = getCastedAttribute (REQUEST_ATTR_REQUESTPARAMMAP);
+    IRequestParamMap aValue = attrs ().getCastedValue (REQUEST_ATTR_REQUESTPARAMMAP);
     if (aValue == null)
     {
       // Use all attributes except the internal ones
-      final ICommonsMap <String, Object> aAttrs = getAllAttributes ();
+      final ICommonsMap <String, Object> aAttrs = attrs ().getClone ();
       // Remove all special internal attributes
       aAttrs.remove (REQUEST_ATTR_SCOPE_INITED);
 
       // Request the map and put it in scope
       aValue = RequestParamMap.create (aAttrs);
-      setAttribute (REQUEST_ATTR_REQUESTPARAMMAP, aValue);
+      attrs ().setAttribute (REQUEST_ATTR_REQUESTPARAMMAP, aValue);
     }
     return aValue;
   }

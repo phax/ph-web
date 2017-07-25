@@ -32,10 +32,10 @@ import com.helger.commons.annotation.CodingStyleguideUnaware;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
-import com.helger.commons.collection.ext.ICommonsOrderedSet;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
@@ -51,7 +51,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAttachmentList.class);
 
-  private final ICommonsOrderedMap <String, IEmailAttachment> m_aMap = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, IEmailAttachment> m_aMap = new CommonsLinkedHashMap <> ();
 
   public EmailAttachmentList ()
   {}
@@ -98,7 +98,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
   }
 
   @Nonnull
-  public EChange clear ()
+  public EChange removeAll ()
   {
     return m_aMap.removeAll ();
   }

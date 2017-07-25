@@ -27,12 +27,9 @@ import javax.annotation.Nullable;
 import org.junit.Test;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.ICommonsCollection;
+import com.helger.commons.collection.impl.ICommonsCollection;
+import com.helger.commons.http.HTTPHeaderMap;
 import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.http.HTTPHeaderMap;
-import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
-import com.helger.useragent.uaprofile.UAProfile;
-import com.helger.useragent.uaprofile.UAProfileDatabase;
 
 /**
  * Test class for class {@link UAProfileDatabase}.

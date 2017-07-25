@@ -23,18 +23,20 @@ import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.Cookie;
 
+import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.HTTPHeaderMap;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.http.CHTTPHeader;
 import com.helger.http.CacheControlBuilder;
-import com.helger.http.HTTPHeaderMap;
+import com.helger.http.EHTTPReferrerPolicy;
 
 /**
  * This class encapsulates default settings to be applied to all
@@ -50,7 +52,16 @@ public final class UnifiedResponseDefaultSettings
   @GuardedBy ("s_aRWLock")
   private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
   @GuardedBy ("s_aRWLock")
-  private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap<> ();
+  private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap <> ();
+
+  {
+    // Sensible defaults
+    setAllowMimeSniffing (false);
+    setEnableXSSFilter (true);
+    setStrictTransportSecurity (CGlobal.SECONDS_PER_HOUR, true);
+    setXFrameOptions (EXFrameOptionType.SAMEORIGIN, null);
+    setReferrerPolicy (EHTTPReferrerPolicy.NONE);
+  }
 
   private UnifiedResponseDefaultSettings ()
   {}
@@ -160,6 +171,20 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
+   * Set the default referrer policy to use. See
+   * https://scotthelme.co.uk/a-new-security-header-referrer-policy/
+   *
+   * @param eReferrerPolicy
+   *        Policy to use. May not be <code>null</code>.
+   */
+  public static void setReferrerPolicy (@Nonnull final EHTTPReferrerPolicy eReferrerPolicy)
+  {
+    ValueEnforcer.notNull (eReferrerPolicy, "ReferrerPolicy");
+
+    setResponseHeader (CHTTPHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
+  }
+
+  /**
    * Sets a response header to the response according to the passed name and
    * value. An existing header entry with the same name is overridden.
    *
@@ -173,9 +198,7 @@ public final class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
 
-    s_aRWLock.writeLocked ( () -> {
-      s_aResponseHeaderMap.setHeader (sName, sValue);
-    });
+    s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.setHeader (sName, sValue));
   }
 
   /**
@@ -193,9 +216,7 @@ public final class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
 
-    s_aRWLock.writeLocked ( () -> {
-      s_aResponseHeaderMap.addHeader (sName, sValue);
-    });
+    s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.addHeader (sName, sValue));
   }
 
   /**
@@ -227,7 +248,7 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllResponseHeaders ()
   {
-    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.clear ());
+    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.removeAll ());
   }
 
   /**
@@ -277,7 +298,7 @@ public final class UnifiedResponseDefaultSettings
     if (StringHelper.hasNoText (sName))
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> EChange.valueOf (s_aCookies.remove (sName) != null));
+    return s_aRWLock.writeLocked ( () -> s_aCookies.removeObject (sName));
   }
 
   /**

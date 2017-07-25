@@ -26,8 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.version.Version;
-import com.helger.useragent.IUserAgent;
-import com.helger.useragent.UserAgentDecryptor;
 
 public final class UserAgentDecryptorTest
 {

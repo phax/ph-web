@@ -17,8 +17,8 @@
 package com.helger.web.scope.spi;
 
 import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.scope.IRequestScope;
-import com.helger.commons.scope.spi.IRequestScopeSPI;
+import com.helger.scope.IRequestScope;
+import com.helger.scope.spi.IRequestScopeSPI;
 
 @IsSPIImplementation
 public final class MockThrowingRequestWebScopeSPI extends AbstractThrowingWebScopeSPI implements IRequestScopeSPI

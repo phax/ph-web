@@ -24,9 +24,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.scope.IScope;
-import com.helger.commons.scope.singleton.AbstractGlobalSingleton;
 import com.helger.commons.state.ESuccess;
+import com.helger.scope.IScope;
+import com.helger.scope.singleton.AbstractGlobalSingleton;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;

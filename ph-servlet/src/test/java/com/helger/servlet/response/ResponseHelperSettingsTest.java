@@ -24,8 +24,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.helger.servlet.response.ResponseHelperSettings;
-
 /**
  * Test class for class {@link ResponseHelperSettings}.
  *

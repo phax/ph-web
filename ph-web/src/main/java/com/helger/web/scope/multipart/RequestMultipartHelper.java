@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.collection.multimap.IMultiMapListBased;
+import com.helger.collection.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.CGlobal;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.collection.multimap.IMultiMapListBased;
-import com.helger.commons.collection.multimap.MultiHashMapArrayListBased;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.servlet.mock.MockHttpServletRequest;

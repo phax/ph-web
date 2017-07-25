@@ -25,7 +25,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.helger.http.CHTTPHeader;
+import com.helger.commons.http.CHTTPHeader;
 
 /**
  * A response that includes no body, for use in (dumb) "HEAD" support. This just

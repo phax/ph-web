@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.ESuccess;

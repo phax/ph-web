@@ -53,11 +53,12 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.ext.CommonsHashMap;
-import com.helger.commons.collection.ext.CommonsLinkedHashMap;
-import com.helger.commons.collection.ext.ICommonsMap;
-import com.helger.commons.collection.ext.ICommonsOrderedMap;
-import com.helger.commons.collection.ext.ICommonsSet;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.collection.iterate.EmptyEnumeration;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
 import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
@@ -283,14 +284,14 @@ public class MockServletContext implements ServletContext
   @Nonnull
   public Enumeration <Servlet> getServlets ()
   {
-    return IteratorHelper.<Servlet> getEmptyEnumeration ();
+    return new EmptyEnumeration <> ();
   }
 
   @Deprecated
   @Nonnull
   public Enumeration <String> getServletNames ()
   {
-    return IteratorHelper.<String> getEmptyEnumeration ();
+    return new EmptyEnumeration <> ();
   }
 
   public void log (@Nullable final String message)

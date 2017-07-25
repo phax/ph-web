@@ -8,19 +8,20 @@ Java library with common web stuff. It contains the following sub-projects:
     * Contains User-Agent/Browser related helpers 
   * ph-servlet
     * Contains special javax.servlet related helpers 
-  * ph-httpclient
-    * Contains Apache HTTP client related helpers
   * ph-mail
     * Contains javax.mail related helpers
   * ph-smtp
     * Contains helper classes for asynchronous mail (re-)sending
+  * ph-httpclient
+    * Contains Apache HTTP client related helpers
   * ph-web
     * Other high-level abstraction for servlets, file-upload, browser information, sitemap, web scopes etc.
   
 # News and noteworthy
 
-  * v8.8.3 - work in progress
+  * v9.0.0 - work in progress
     * Updated to javax.mail 1.6.0
+    * Updated to ph-commons 9.0.0
     * Added HTTP Referrer-Policy header support
   * v8.8.2 - 2017-07-04
     * Made debug flag in certain `ResponseHandler*` implementations customizable

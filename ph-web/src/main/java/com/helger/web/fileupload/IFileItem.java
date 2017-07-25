@@ -140,16 +140,6 @@ public interface IFileItem extends Serializable, DataSource, IHasInputStream
 
   /**
    * @return The contents of the file item as an array of bytes.
-   * @deprecated Use {@link #directGet()} instead.
-   */
-  @Deprecated
-  default byte [] get ()
-  {
-    return directGet ();
-  }
-
-  /**
-   * @return The contents of the file item as an array of bytes.
    */
   byte [] directGet ();
 

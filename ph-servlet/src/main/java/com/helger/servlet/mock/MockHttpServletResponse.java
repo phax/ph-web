@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
@@ -170,17 +169,6 @@ public class MockHttpServletResponse implements HttpServletResponse
   public Charset getCharacterEncodingObj ()
   {
     return m_aCharacterEncoding;
-  }
-
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  public String getCharacterEncodingOrDefault ()
-  {
-    String ret = getCharacterEncoding ();
-    if (ret == null)
-      ret = SystemHelper.getSystemCharsetName ();
-    return ret;
   }
 
   @Nonnull

@@ -78,25 +78,6 @@ public final class RequestMultipartHelper
    *        uploads) should be extracted.
    * @param aConsumer
    *        A consumer that takes either {@link IFileItem} or
-   *        {@link IFileItem}[]
-   * @return <code>true</code> if something was added
-   * @deprecated Use
-   *             {@link #handleMultipartFormData(HttpServletRequest,BiConsumer)}
-   *             instead
-   */
-  @Deprecated
-  public static boolean handleMultipart (@Nonnull final HttpServletRequest aHttpRequest,
-                                         @Nonnull final BiConsumer <String, Object> aConsumer)
-  {
-    return handleMultipartFormData (aHttpRequest, aConsumer);
-  }
-
-  /**
-   * @param aHttpRequest
-   *        Source HTTP request from which multipart/form-data (aka file
-   *        uploads) should be extracted.
-   * @param aConsumer
-   *        A consumer that takes either {@link IFileItem} or
    *        {@link IFileItem}[] or {@link String} or {@link String}[].
    * @return <code>true</code> if something was added
    */
@@ -140,8 +121,8 @@ public final class RequestMultipartHelper
       }
 
       // Group all items with the same name together
-      final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased<> ();
-      final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased<> ();
+      final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <> ();
+      final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased <> ();
       final ICommonsList <IFileItem> aFileItems = aUpload.parseRequest (aHttpRequest);
       for (final IFileItem aFileItem : aFileItems)
       {

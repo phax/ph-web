@@ -168,7 +168,10 @@ public interface IEmailData extends Serializable
   @Nullable
   IEmailAttachmentList getAttachments ();
 
+  /**
+   * @return Custom attributes. Never <code>null</code>.
+   */
   @Nonnull
   @ReturnsMutableObject
-  IAttributeContainer <String, Object> attrs ();
+  IAttributeContainer <String, String> customAttrs ();
 }

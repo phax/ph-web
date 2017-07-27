@@ -86,8 +86,8 @@ public final class FailedMailDataTest
                                                      "Bla foo fasel. Bla foo fasel.".getBytes (StandardCharsets.UTF_8)));
     aData.setAttachments (aAttachments);
     // Some custom attributes for fun
-    aData.attrs ().setAttribute ("Attr1", "3.14");
-    aData.attrs ().setAttribute ("Attr2", "Test attribute\nWe are multiline!");
+    aData.customAttrs ().putIn ("Attr1", "3.14");
+    aData.customAttrs ().putIn ("Attr2", "Test attribute\nWe are multiline!");
     return aData;
   }
 

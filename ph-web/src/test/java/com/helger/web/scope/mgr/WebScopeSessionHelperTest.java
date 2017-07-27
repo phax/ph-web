@@ -73,28 +73,28 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
   public void testRenewSessionScopeDefault ()
   {
     ISessionWebScope aWS = WebScopeManager.getSessionScope (true);
-    aWS.attrs ().setAttribute ("a1", new MockScopeRenewalAware ("session1"));
-    aWS.attrs ().setAttribute ("a2", new MockScopeRenewalAware ("session2"));
-    aWS.attrs ().setAttribute ("a21", "session21");
+    aWS.attrs ().putIn ("a1", new MockScopeRenewalAware ("session1"));
+    aWS.attrs ().putIn ("a2", new MockScopeRenewalAware ("session2"));
+    aWS.attrs ().putIn ("a21", "session21");
     assertEquals (3, aWS.attrs ().size ());
 
     // Contains renewal and non-renewal aware attrs
     ISessionApplicationWebScope aAWS1 = aWS.getSessionApplicationScope ("app1", true);
-    aAWS1.attrs ().setAttribute ("a3", new MockScopeRenewalAware ("session3"));
-    aAWS1.attrs ().setAttribute ("a4", new MockScopeRenewalAware ("session4"));
-    aAWS1.attrs ().setAttribute ("a41", "session41");
+    aAWS1.attrs ().putIn ("a3", new MockScopeRenewalAware ("session3"));
+    aAWS1.attrs ().putIn ("a4", new MockScopeRenewalAware ("session4"));
+    aAWS1.attrs ().putIn ("a41", "session41");
     assertEquals (3, aAWS1.attrs ().size ());
 
     // Contains only renewal aware attrs
     ISessionApplicationWebScope aAWS2 = aWS.getSessionApplicationScope ("app2", true);
-    aAWS2.attrs ().setAttribute ("a5", new MockScopeRenewalAware ("session5"));
-    aAWS2.attrs ().setAttribute ("a6", new MockScopeRenewalAware ("session6"));
+    aAWS2.attrs ().putIn ("a5", new MockScopeRenewalAware ("session5"));
+    aAWS2.attrs ().putIn ("a6", new MockScopeRenewalAware ("session6"));
     assertEquals (2, aAWS2.attrs ().size ());
 
     // Contains only non-renewal aware attrs
     ISessionApplicationWebScope aAWS3 = aWS.getSessionApplicationScope ("app3", true);
-    aAWS3.attrs ().setAttribute ("a7", "session7");
-    aAWS3.attrs ().setAttribute ("a8", "session8");
+    aAWS3.attrs ().putIn ("a7", "session7");
+    aAWS3.attrs ().putIn ("a8", "session8");
     assertEquals (2, aAWS3.attrs ().size ());
 
     assertEquals (3, aWS.getAllSessionApplicationScopes ().size ());
@@ -164,10 +164,10 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             final ISessionWebScope aSessionScope = WebScopeManager.getSessionScope (true);
             assertNotNull (aSessionScope);
             assertSame (aHttpSession, aSessionScope.getSession ());
-            aSessionScope.attrs ().setAttribute ("x", new MockScopeRenewalAware ("bla"));
-            aSessionScope.attrs ().setAttribute ("y", "bla");
+            aSessionScope.attrs ().putIn ("x", new MockScopeRenewalAware ("bla"));
+            aSessionScope.attrs ().putIn ("y", "bla");
             assertEquals (2, aSessionScope.attrs ().size ());
-            aSessionScope.getSessionApplicationScope ("app", true).attrs ().setAttribute ("x", "y");
+            aSessionScope.getSessionApplicationScope ("app", true).attrs ().putIn ("x", "y");
             assertEquals (1, aSessionScope.getSessionApplicationScopeCount ());
 
             // Wait until all sessions are created

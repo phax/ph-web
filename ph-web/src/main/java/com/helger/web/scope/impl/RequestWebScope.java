@@ -143,12 +143,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       if (aParamValues.length == 1)
       {
         // Convert from String[] to String
-        aParams.setAttribute (sParamName, aParamValues[0]);
+        aParams.putIn (sParamName, aParamValues[0]);
       }
       else
       {
         // Use String[] as is
-        aParams.setAttribute (sParamName, aParamValues);
+        aParams.putIn (sParamName, aParamValues);
       }
     }
 
@@ -187,7 +187,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     {
       // Request the map and put it in scope
       aRPM = RequestParamMap.create (params ());
-      attrs ().setAttribute (REQUEST_ATTR_REQUESTPARAMMAP, aRPM);
+      attrs ().putIn (REQUEST_ATTR_REQUESTPARAMMAP, aRPM);
     }
     return aRPM;
   }

@@ -27,7 +27,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.attr.AttributeContainerAny;
+import com.helger.commons.collection.attr.AttributeContainer;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.IEmailAddress;
@@ -55,7 +55,7 @@ public class EmailData implements IMutableEmailData
   private String m_sSubject;
   private String m_sBody;
   private IMutableEmailAttachmentList m_aAttachments;
-  private final AttributeContainerAny <String> m_aAttrs = new AttributeContainerAny <> ();
+  private final AttributeContainer <String, String> m_aCustomAttrs = new AttributeContainer <> ();
 
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
@@ -279,9 +279,9 @@ public class EmailData implements IMutableEmailData
 
   @Nonnull
   @ReturnsMutableObject
-  public AttributeContainerAny <String> attrs ()
+  public AttributeContainer <String, String> customAttrs ()
   {
-    return m_aAttrs;
+    return m_aCustomAttrs;
   }
 
   @Override
@@ -301,7 +301,7 @@ public class EmailData implements IMutableEmailData
            EqualsHelper.equals (m_sSubject, rhs.m_sSubject) &&
            EqualsHelper.equals (m_sBody, rhs.m_sBody) &&
            EqualsHelper.equals (m_aAttachments, rhs.m_aAttachments) &&
-           m_aAttrs.equals (rhs.m_aAttrs);
+           m_aCustomAttrs.equals (rhs.m_aCustomAttrs);
   }
 
   @Override
@@ -316,7 +316,7 @@ public class EmailData implements IMutableEmailData
                                        .append (m_sSubject)
                                        .append (m_sBody)
                                        .append (m_aAttachments)
-                                       .append (m_aAttrs)
+                                       .append (m_aCustomAttrs)
                                        .getHashCode ();
   }
 
@@ -332,6 +332,7 @@ public class EmailData implements IMutableEmailData
                                        .append ("subject", m_sSubject)
                                        .append ("body", m_sBody)
                                        .appendIfNotNull ("attachments", m_aAttachments)
+                                       .append ("CustomAttrs", m_aCustomAttrs)
                                        .getToString ();
   }
 

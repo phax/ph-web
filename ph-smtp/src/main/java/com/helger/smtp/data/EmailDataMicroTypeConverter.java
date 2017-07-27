@@ -24,16 +24,12 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.helger.commons.annotation.ContainsSoftMigration;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
-import com.helger.commons.lang.ClassHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
@@ -56,8 +52,6 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
   private static final String ELEMENT_ATTACHMENTS = "attachments";
   private static final String ELEMENT_CUSTOM = "custom";
   private static final String ATTR_ID = "id";
-
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EmailDataMicroTypeConverter.class);
 
   private static void _writeEmailAddress (@Nonnull final IMicroElement eParent,
                                           @Nonnull final IEmailAddress aEmailAddress)
@@ -99,23 +93,13 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
                                                                       sNamespaceURI,
                                                                       ELEMENT_ATTACHMENTS));
 
-    for (final Map.Entry <String, Object> aEntry : aEmailData.attrs ()
+    for (final Map.Entry <String, String> aEntry : aEmailData.customAttrs ()
                                                              .getSortedByKey (Comparator.naturalOrder ())
                                                              .entrySet ())
     {
-      final Object aValue = aEntry.getValue ();
-      if (!(aValue instanceof String))
-      {
-        s_aLogger.error ("Not converting EmailData attribute '" +
-                         aEntry.getKey () +
-                         "' because the value is not of type String but of type " +
-                         ClassHelper.getClassName (aValue));
-        continue;
-      }
-
       final IMicroElement eCustom = eEmailData.appendElement (sNamespaceURI, ELEMENT_CUSTOM);
       eCustom.setAttribute (ATTR_ID, aEntry.getKey ());
-      eCustom.appendText ((String) aValue);
+      eCustom.appendText (aEntry.getValue ());
     }
 
     return eEmailData;
@@ -196,7 +180,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     }
 
     for (final IMicroElement eCustom : eEmailData.getAllChildElements (ELEMENT_CUSTOM))
-      aEmailData.attrs ().setAttribute (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
+      aEmailData.customAttrs ().putIn (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
 
     return aEmailData;
   }

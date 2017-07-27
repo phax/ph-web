@@ -74,7 +74,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
       {
         final String sAttrName = (String) aAttrNames.nextElement ();
         final Object aAttrValue = m_aHttpSession.getAttribute (sAttrName);
-        attrs ().setAttribute (sAttrName, aAttrValue);
+        attrs ().putIn (sAttrName, aAttrValue);
       }
   }
 

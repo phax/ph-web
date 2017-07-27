@@ -64,7 +64,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     final String sRequestValue = super.getRequestValueWithoutDefault ();
     // Allow empty values!
     if (sRequestValue != null)
-      WebScopeManager.getSessionScope (true).attrs ().setAttribute (getSessionFieldName (), sRequestValue);
+      WebScopeManager.getSessionScope (true).attrs ().putIn (getSessionFieldName (), sRequestValue);
   }
 
   @Override

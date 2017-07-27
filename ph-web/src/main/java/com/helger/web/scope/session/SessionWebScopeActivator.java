@@ -110,7 +110,7 @@ public final class SessionWebScopeActivator implements
         out.writeObject (aScope);
 
         // restore the original attributes after serialization
-        aScope.attrs ().setAttributes (aOrigAttrs);
+        aScope.attrs ().putAllIn (aOrigAttrs);
 
         // Determine all relevant attributes to passivate
         final ICommonsMap <String, Object> aRelevantObjects = new CommonsHashMap <> ();
@@ -149,7 +149,7 @@ public final class SessionWebScopeActivator implements
       final String sScopeID = StreamHelper.readSafeUTF (in);
       final ISessionApplicationScope aScope = (ISessionApplicationScope) in.readObject ();
       final ICommonsMap <String, Object> aScopeAttrs = (ICommonsMap <String, Object>) in.readObject ();
-      aScope.attrs ().setAttributes (aScopeAttrs);
+      aScope.attrs ().putAllIn (aScopeAttrs);
       aSAS.put (sScopeID, aScope);
     }
     m_aSessionApplicationScopes = aSAS;
@@ -201,7 +201,7 @@ public final class SessionWebScopeActivator implements
     // Restore the read values into the scope
     if (m_aAttrs != null)
     {
-      aSessionWebScope.attrs ().setAttributes (m_aAttrs);
+      aSessionWebScope.attrs ().putAllIn (m_aAttrs);
       m_aAttrs.clear ();
     }
 

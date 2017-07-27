@@ -50,11 +50,11 @@ public final class EmailDataTest
     CommonsTestHelper.testDefaultSerialization (aEmailData);
     XMLTestHelper.testMicroTypeConversion (aEmailData);
 
-    assertEquals (0, aEmailData.attrs ().size ());
-    aEmailData.attrs ().setAttribute ("test", "foo");
-    assertEquals (1, aEmailData.attrs ().size ());
-    aEmailData.attrs ().setAttribute ("test2", "bar");
-    assertEquals (2, aEmailData.attrs ().size ());
+    assertEquals (0, aEmailData.customAttrs ().size ());
+    aEmailData.customAttrs ().putIn ("test", "foo");
+    assertEquals (1, aEmailData.customAttrs ().size ());
+    aEmailData.customAttrs ().putIn ("test2", "bar");
+    assertEquals (2, aEmailData.customAttrs ().size ());
 
     XMLTestHelper.testMicroTypeConversion (aEmailData);
     CommonsTestHelper.testDefaultSerialization (aEmailData);

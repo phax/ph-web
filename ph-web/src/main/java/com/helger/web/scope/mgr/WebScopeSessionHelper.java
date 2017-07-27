@@ -88,7 +88,7 @@ public final class WebScopeSessionHelper
   {
     // restore the session scope attributes
     for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSessionScopeValues.entrySet ())
-      aNewSessionScope.attrs ().setAttribute (aEntry.getKey (), aEntry.getValue ());
+      aNewSessionScope.attrs ().putIn (aEntry.getKey (), aEntry.getValue ());
 
     // restore the session application scope attributes
     for (final Map.Entry <String, ? extends Map <String, IScopeRenewalAware>> aEntry : aSessionApplicationScopeValues.entrySet ())
@@ -99,7 +99,7 @@ public final class WebScopeSessionHelper
 
       // Put all attributes in
       for (final Map.Entry <String, IScopeRenewalAware> aInnerEntry : aEntry.getValue ().entrySet ())
-        aNewSessionApplicationScope.attrs ().setAttribute (aInnerEntry.getKey (), aInnerEntry.getValue ());
+        aNewSessionApplicationScope.attrs ().putIn (aInnerEntry.getKey (), aInnerEntry.getValue ());
     }
   }
 

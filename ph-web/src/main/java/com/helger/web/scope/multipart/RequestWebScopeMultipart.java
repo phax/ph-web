@@ -41,6 +41,6 @@ public class RequestWebScopeMultipart extends RequestWebScope
   @OverrideOnDemand
   protected EChange addSpecialRequestParams ()
   {
-    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::setAttribute);
+    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::putIn);
   }
 }

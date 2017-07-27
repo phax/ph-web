@@ -24,7 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.mail.internet.InternetAddress;
 
-import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.attr.IMutableAttributeContainer;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.mail.address.InternetAddressHelper;
@@ -369,5 +370,7 @@ public interface IMutableEmailData extends IEmailData
   @Nonnull
   IMutableEmailData setAttachments (@Nullable IEmailAttachmentList aAttachments);
 
-  IMutableAttributeContainerAny <String> attrs ();
+  @Nonnull
+  @ReturnsMutableObject
+  IMutableAttributeContainer <String, String> customAttrs ();
 }

@@ -33,6 +33,7 @@ import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
+import com.helger.commons.state.EChange;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.CWeb;
@@ -79,22 +80,23 @@ public final class RequestMultipartHelper
    * @param aConsumer
    *        A consumer that takes either {@link IFileItem} or
    *        {@link IFileItem}[] or {@link String} or {@link String}[].
-   * @return <code>true</code> if something was added
+   * @return {@link EChange#CHANGED} if something was added
    */
-  public static boolean handleMultipartFormData (@Nonnull final HttpServletRequest aHttpRequest,
+  @Nonnull
+  public static EChange handleMultipartFormData (@Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final BiConsumer <String, Object> aConsumer)
   {
     if (aHttpRequest instanceof MockHttpServletRequest)
     {
       // First check, because some of the contained methods throw
       // UnsupportedOperationExceptions
-      return false;
+      return EChange.UNCHANGED;
     }
 
     if (!RequestHelper.isMultipartFormDataContent (aHttpRequest))
     {
       // It's not a multipart request
-      return false;
+      return EChange.UNCHANGED;
     }
 
     // It is a multipart request!
@@ -169,6 +171,6 @@ public final class RequestMultipartHelper
     {
       s_aLogger.error ("Error parsing multipart request content", ex);
     }
-    return bAddedFileUploadItems;
+    return EChange.valueOf (bAddedFileUploadItems);
   }
 }

@@ -42,5 +42,8 @@ public interface IRequestWebScope extends IRequestWebScopeWithoutResponse
    *         In case of an error
    */
   @Nonnull
-  OutputStream getOutputStream () throws IOException;
+  default OutputStream getOutputStream () throws IOException
+  {
+    return getResponse ().getOutputStream ();
+  }
 }

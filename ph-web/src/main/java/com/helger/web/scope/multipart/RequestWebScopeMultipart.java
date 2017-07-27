@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.state.EChange;
 import com.helger.web.scope.impl.RequestWebScope;
 
 /**
@@ -31,15 +32,15 @@ import com.helger.web.scope.impl.RequestWebScope;
 public class RequestWebScopeMultipart extends RequestWebScope
 {
   public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest,
-                          @Nonnull final HttpServletResponse aHttpResponse)
+                                   @Nonnull final HttpServletResponse aHttpResponse)
   {
     super (aHttpRequest, aHttpResponse);
   }
 
   @Override
   @OverrideOnDemand
-  protected boolean addSpecialRequestAttributes ()
+  protected EChange addSpecialRequestParams ()
   {
-    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, attrs ()::setAttribute);
+    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::setAttribute);
   }
 }

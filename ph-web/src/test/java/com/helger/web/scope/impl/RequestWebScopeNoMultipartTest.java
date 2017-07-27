@@ -22,11 +22,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Map;
-
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.request.IRequestParamMap;
@@ -53,7 +52,8 @@ public final class RequestWebScopeNoMultipartTest
     aRequest.addParameter ("b", "...");
     aRequest.addParameter ("c", "...");
     assertEquals (5, aRequest.getParameterMap ().size ());
-    final RequestWebScopeMultipart aRequestScope = new RequestWebScopeMultipart (aRequest, new MockHttpServletResponse ());
+    final RequestWebScopeMultipart aRequestScope = new RequestWebScopeMultipart (aRequest,
+                                                                                 new MockHttpServletResponse ());
     aRequestScope.initScope ();
     final IRequestParamMap aRPM = aRequestScope.getRequestParamMap ();
     assertNotNull (aRPM);
@@ -69,7 +69,7 @@ public final class RequestWebScopeNoMultipartTest
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aRPM.getMap ("page_name");
     assertEquals (2, aNames.getSize ());
-    final Map <String, String> aValueMap = aNames.getAsValueMap ();
+    final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));
     assertEquals ("english name", aValueMap.get ("en"));

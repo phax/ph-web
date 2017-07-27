@@ -32,7 +32,7 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
@@ -155,9 +155,9 @@ public class RequestFieldData implements Serializable
    * @return The current request scope to use.
    */
   @Nonnull
-  protected static final IRequestWebScope getScope ()
+  protected static final IRequestParamContainer getParams ()
   {
-    return WebScopeManager.getRequestScope ();
+    return WebScopeManager.getRequestScope ().params ();
   }
 
   /**
@@ -169,7 +169,7 @@ public class RequestFieldData implements Serializable
   @Nullable
   protected final String getRequestValueWithoutDefault ()
   {
-    return getScope ().attrs ().getAsString (m_sFieldName, null);
+    return getParams ().getAsString (m_sFieldName, null);
   }
 
   /**
@@ -181,7 +181,7 @@ public class RequestFieldData implements Serializable
   @Nonnull
   public final String getRequestValue ()
   {
-    return getScope ().attrs ().getAsString (m_sFieldName, getDefaultValue ());
+    return getParams ().getAsString (m_sFieldName, getDefaultValue ());
   }
 
   /**
@@ -201,7 +201,7 @@ public class RequestFieldData implements Serializable
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
       aDefault = new CommonsArrayList <> (sDefaultValue);
-    return getScope ().getAttributeAsList (m_sFieldName, aDefault);
+    return getParams ().getAttributeAsStringList (m_sFieldName, aDefault);
   }
 
   /**
@@ -256,8 +256,8 @@ public class RequestFieldData implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("fieldName", m_sFieldName)
-                                       .append ("defaultValue", m_sDefaultValue)
+    return new ToStringGenerator (this).append ("FieldName", m_sFieldName)
+                                       .append ("DefaultValue", m_sDefaultValue)
                                        .getToString ();
   }
 }

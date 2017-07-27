@@ -16,15 +16,11 @@
  */
 package com.helger.web.scope.impl;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +28,14 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
+import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.scope.AbstractMapBasedScope;
+import com.helger.scope.AbstractScope;
 import com.helger.scope.ScopeHelper;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
@@ -47,6 +43,7 @@ import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
+import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
@@ -54,10 +51,13 @@ import com.helger.web.scope.IRequestWebScope;
  *
  * @author Philip Helger
  */
-public class RequestWebScope extends AbstractMapBasedScope implements IRequestWebScope
+public class RequestWebScope extends AbstractScope implements IRequestWebScope
 {
+  private static final class ParamContainer extends AttributeContainerAny <String> implements IRequestParamContainer
+  {}
+
   // Because of transient field
-  private static final long serialVersionUID = 78563987233146L;
+  private static final long serialVersionUID = 78563987233147L;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
@@ -67,6 +67,7 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
 
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;
+  private final ParamContainer m_aParams = new ParamContainer ();
 
   @Nonnull
   @Nonempty
@@ -78,7 +79,7 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
   }
 
   public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
-                                     @Nonnull final HttpServletResponse aHttpResponse)
+                          @Nonnull final HttpServletResponse aHttpResponse)
   {
     super (_createScopeID (aHttpRequest));
 
@@ -92,17 +93,18 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
   }
 
   /**
-   * Callback method to add special attributes.
+   * Callback method to add special parameters.
    *
-   * @return <code>true</code> if some attributes were added, <code>false</code>
-   *         if not. If special attributes were added, existing attributes are
-   *         kept and will not be overwritten with HTTP servlet request
-   *         parameters!
+   * @return {@link EChange#CHANGED} if some attributes were added,
+   *         <code>false</code> if not. If special attributes were added,
+   *         existing attributes are kept and will not be overwritten with HTTP
+   *         servlet request parameters!
    */
   @OverrideOnDemand
-  protected boolean addSpecialRequestAttributes ()
+  @Nonnull
+  protected EChange addSpecialRequestParams ()
   {
-    return false;
+    return EChange.UNCHANGED;
   }
 
   @OverrideOnDemand
@@ -123,7 +125,8 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
     }
 
     // where some extra items (like file items) handled?
-    final boolean bAddedSpecialRequestAttrs = addSpecialRequestAttributes ();
+    final IRequestParamContainer aParams = params ();
+    final boolean bAddedSpecialRequestParams = addSpecialRequestParams ().isChanged ();
 
     // set parameters as attributes (handles GET and POST parameters)
     final Enumeration <?> aEnum = m_aHttpRequest.getParameterNames ();
@@ -132,15 +135,21 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
       final String sParamName = (String) aEnum.nextElement ();
 
       // Avoid double setting a parameter!
-      if (bAddedSpecialRequestAttrs && aAttrs.containsKey (sParamName))
+      if (bAddedSpecialRequestParams && aParams.containsKey (sParamName))
         continue;
 
       // Check if it is a single value or not
       final String [] aParamValues = m_aHttpRequest.getParameterValues (sParamName);
       if (aParamValues.length == 1)
-        aAttrs.setAttribute (sParamName, aParamValues[0]);
+      {
+        // Convert from String[] to String
+        aParams.setAttribute (sParamName, aParamValues[0]);
+      }
       else
-        aAttrs.setAttribute (sParamName, aParamValues);
+      {
+        // Use String[] as is
+        aParams.setAttribute (sParamName, aParamValues);
+      }
     }
 
     postAttributeInit ();
@@ -162,73 +171,25 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
                       ScopeHelper.getDebugStackTrace ());
   }
 
-  @Nullable
-  public final String getSessionID (final boolean bCreateIfNotExisting)
+  @Nonnull
+  @ReturnsMutableObject
+  public final IRequestParamContainer params ()
   {
-    final HttpSession aSession = getSession (bCreateIfNotExisting);
-    return aSession == null ? null : aSession.getId ();
-  }
-
-  /**
-   * Try to convert the passed value into a {@link ICommonsList} of
-   * {@link String}. This method is only called, if the passed value is non-
-   * <code>null</code>, if it is not an String array or a single String.
-   *
-   * @param sName
-   *        The name of the parameter to be queried. Just for informational
-   *        purposes.
-   * @param aValue
-   *        The retrieved non-<code>null</code> attribute value which is neither
-   *        a String nor a String array.
-   * @param aDefault
-   *        The default value to be returned, in case no type conversion could
-   *        be found.
-   * @return The converted value or the default value.
-   */
-  @Nullable
-  @OverrideOnDemand
-  protected ICommonsList <String> getAttributeAsListCustom (@Nullable final String sName,
-                                                            @Nonnull final Object aValue,
-                                                            @Nullable final ICommonsList <String> aDefault)
-  {
-    return aDefault;
-  }
-
-  @Nullable
-  public ICommonsList <String> getAttributeAsList (@Nullable final String sName,
-                                                   @Nullable final ICommonsList <String> aDefault)
-  {
-    final Object aValue = attrs ().get (sName);
-    if (aValue instanceof String [])
-    {
-      // multiple values passed in the request
-      return new CommonsArrayList <> ((String []) aValue);
-    }
-    if (aValue instanceof String)
-    {
-      // single value passed in the request
-      return new CommonsArrayList <> ((String) aValue);
-    }
-    return getAttributeAsListCustom (sName, aValue, aDefault);
+    return m_aParams;
   }
 
   @Nonnull
   public IRequestParamMap getRequestParamMap ()
   {
     // Check if a value is cached in the scope
-    IRequestParamMap aValue = attrs ().getCastedValue (REQUEST_ATTR_REQUESTPARAMMAP);
-    if (aValue == null)
+    IRequestParamMap aRPM = attrs ().getCastedValue (REQUEST_ATTR_REQUESTPARAMMAP);
+    if (aRPM == null)
     {
-      // Use all attributes except the internal ones
-      final ICommonsMap <String, Object> aAttrs = attrs ().getClone ();
-      // Remove all special internal attributes
-      aAttrs.remove (REQUEST_ATTR_SCOPE_INITED);
-
       // Request the map and put it in scope
-      aValue = RequestParamMap.create (aAttrs);
-      attrs ().setAttribute (REQUEST_ATTR_REQUESTPARAMMAP, aValue);
+      aRPM = RequestParamMap.create (params ());
+      attrs ().setAttribute (REQUEST_ATTR_REQUESTPARAMMAP, aRPM);
     }
-    return aValue;
+    return aRPM;
   }
 
   /**
@@ -326,18 +287,13 @@ public class RequestWebScope extends AbstractMapBasedScope implements IRequestWe
     return sURL;
   }
 
-  @Nonnull
-  public OutputStream getOutputStream () throws IOException
-  {
-    return getResponse ().getOutputStream ();
-  }
-
   @Override
   public String toString ()
   {
     return ToStringGenerator.getDerived (super.toString ())
-                            .append ("httpRequest", m_aHttpRequest)
-                            .append ("httpResponse", m_aHttpResponse)
+                            .append ("HttpRequest", m_aHttpRequest)
+                            .append ("HttpResponse", m_aHttpResponse)
+                            .append ("Params", m_aParams)
                             .getToString ();
   }
 }

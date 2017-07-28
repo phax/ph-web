@@ -55,6 +55,13 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @ReturnsMutableObject
   IRequestParamContainer params ();
 
+  // Deprecated
+  @Nullable
+  default String getAttributeAsString (@Nullable final String sFieldName)
+  {
+    return params ().getAsString (sFieldName);
+  }
+
   /**
    * @return A cached request param map for this request. Never
    *         <code>null</code>.

@@ -201,7 +201,7 @@ public class RequestFieldData implements Serializable
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
       aDefault = new CommonsArrayList <> (sDefaultValue);
-    return getParams ().getAttributeAsStringList (m_sFieldName, aDefault);
+    return getParams ().getAsStringList (m_sFieldName, aDefault);
   }
 
   /**

@@ -164,13 +164,13 @@ public interface IRequestParamContainer extends IMutableAttributeContainerAny <S
     ValueEnforcer.notNull (sFieldValue, "FieldValue");
 
     // Get all values for the field name
-    ICommonsOrderedSet <String> aValues = getAttributeAsStringSet (sFieldName);
+    ICommonsOrderedSet <String> aValues = getAsStringSet (sFieldName);
     if (aValues != null)
       return aValues.contains (sFieldValue);
 
     // Check if the hidden parameter for "checkbox is contained in the request"
     // is present?
-    aValues = getAttributeAsStringSet (getHiddenFieldName (sFieldName));
+    aValues = getAsStringSet (getHiddenFieldName (sFieldName));
     if (aValues != null && aValues.contains (sFieldValue))
       return false;
 

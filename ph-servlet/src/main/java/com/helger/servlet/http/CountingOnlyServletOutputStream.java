@@ -30,7 +30,7 @@ import com.helger.servlet.io.AbstractServletOutputStream;
  * @author Servlet Spec 3.1
  * @since 8.8.0
  */
-class CountingOnlyServletOutputStream extends AbstractServletOutputStream
+public class CountingOnlyServletOutputStream extends AbstractServletOutputStream
 {
   private int m_nContentLength = 0;
 

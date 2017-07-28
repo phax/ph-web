@@ -36,25 +36,25 @@ import com.helger.commons.http.CHTTPHeader;
  * @author Servlet Spec 3.1
  * @since 8.8.0
  */
-class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
+public class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
 {
   private final CountingOnlyServletOutputStream m_aCountOnlyOS;
   private PrintWriter m_aWriter;
   private boolean m_bContentLengthSet;
   private boolean m_bUsingOutputStream;
 
-  CountingOnlyHttpServletResponse (final HttpServletResponse aResponse)
+  public CountingOnlyHttpServletResponse (final HttpServletResponse aResponse)
   {
     super (aResponse);
     m_aCountOnlyOS = new CountingOnlyServletOutputStream ();
   }
 
-  boolean isContentLengthSet ()
+  public boolean isContentLengthSet ()
   {
     return m_bContentLengthSet;
   }
 
-  void setContentLengthAutomatically ()
+  public void setContentLengthAutomatically ()
   {
     if (!m_bContentLengthSet)
     {

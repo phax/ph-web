@@ -13,6 +13,7 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.fileupload.IFileItem;
 
@@ -150,6 +151,28 @@ public interface IRequestParamContainer extends IMutableAttributeContainerAny <S
       if (containsKey (getHiddenFieldName (sFieldName)))
         return false;
     }
+
+    // Neither nor - default!
+    return bDefaultValue;
+  }
+
+  default boolean hasCheckBoxValue (@Nonnull @Nonempty final String sFieldName,
+                                    @Nonnull final String sFieldValue,
+                                    final boolean bDefaultValue)
+  {
+    ValueEnforcer.notEmpty (sFieldName, "FieldName");
+    ValueEnforcer.notNull (sFieldValue, "FieldValue");
+
+    // Get all values for the field name
+    ICommonsOrderedSet <String> aValues = getAttributeAsStringSet (sFieldName);
+    if (aValues != null)
+      return aValues.contains (sFieldValue);
+
+    // Check if the hidden parameter for "checkbox is contained in the request"
+    // is present?
+    aValues = getAttributeAsStringSet (getHiddenFieldName (sFieldName));
+    if (aValues != null && aValues.contains (sFieldValue))
+      return false;
 
     // Neither nor - default!
     return bDefaultValue;

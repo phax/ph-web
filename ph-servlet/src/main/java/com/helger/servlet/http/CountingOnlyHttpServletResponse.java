@@ -40,7 +40,7 @@ class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
 {
   private final CountingOnlyServletOutputStream m_aCountOnlyOS;
   private PrintWriter m_aWriter;
-  private boolean m_bDidSetContentLength;
+  private boolean m_bContentLengthSet;
   private boolean m_bUsingOutputStream;
 
   CountingOnlyHttpServletResponse (final HttpServletResponse aResponse)
@@ -49,9 +49,14 @@ class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
     m_aCountOnlyOS = new CountingOnlyServletOutputStream ();
   }
 
+  boolean isContentLengthSet ()
+  {
+    return m_bContentLengthSet;
+  }
+
   void setContentLengthAutomatically ()
   {
-    if (!m_bDidSetContentLength)
+    if (!m_bContentLengthSet)
     {
       if (m_aWriter != null)
         m_aWriter.flush ();
@@ -63,20 +68,20 @@ class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
   public void setContentLength (final int len)
   {
     super.setContentLength (len);
-    m_bDidSetContentLength = true;
+    m_bContentLengthSet = true;
   }
 
   @Override
   public void setContentLengthLong (final long len)
   {
     super.setContentLengthLong (len);
-    m_bDidSetContentLength = true;
+    m_bContentLengthSet = true;
   }
 
   private void _checkHeader (final String name)
   {
     if (CHTTPHeader.CONTENT_LENGTH.equalsIgnoreCase (name))
-      m_bDidSetContentLength = true;
+      m_bContentLengthSet = true;
   }
 
   @Override
@@ -124,8 +129,8 @@ class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
 
     if (m_aWriter == null)
     {
-      final OutputStreamWriter w = new OutputStreamWriter (m_aCountOnlyOS, getCharacterEncoding ());
-      m_aWriter = new PrintWriter (w);
+      final OutputStreamWriter aOSW = new OutputStreamWriter (m_aCountOnlyOS, getCharacterEncoding ());
+      m_aWriter = new PrintWriter (aOSW);
     }
     return m_aWriter;
   }

@@ -36,14 +36,14 @@ import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 
 /**
- * A special {@link IHttpServletHandler} that allows to run requests
+ * A special {@link IXServletHandler} that allows to run requests
  * asynchronously.
  *
  * @author Philip Helger
  */
-public final class AsyncHttpServletHandler implements IHttpServletHandler
+public final class AsyncXServletHandler implements IXServletHandler
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncHttpServletHandler.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncXServletHandler.class);
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
 
   /**
@@ -68,10 +68,10 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
   }
 
   private final ServletAsyncSpec m_aAsyncSpec;
-  private final IHttpServletHandler m_aNestedHandler;
+  private final IXServletHandler m_aNestedHandler;
 
-  public AsyncHttpServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                                  @Nonnull final IHttpServletHandler aNestedHandler)
+  public AsyncXServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
+                               @Nonnull final IXServletHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
@@ -127,12 +127,17 @@ public final class AsyncHttpServletHandler implements IHttpServletHandler
     });
   }
 
+  public boolean isRunAsynchronously (@Nonnull final EHTTPMethod eHttpMethod)
+  {
+    return m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod);
+  }
+
   public void handle (@Nonnull final HttpServletRequest aHttpRequest,
                       @Nonnull final HttpServletResponse aHttpResponse,
                       @Nonnull final EHTTPVersion eHttpVersion,
                       @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
   {
-    if (m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod))
+    if (isRunAsynchronously (eHttpMethod))
     {
       // Run asynchronously
       _handleAsync (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);

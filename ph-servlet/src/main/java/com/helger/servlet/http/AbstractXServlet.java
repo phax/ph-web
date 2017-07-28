@@ -65,45 +65,48 @@ import com.helger.servlet.request.RequestLogger;
  * @author Philip Helger
  * @since 8.8.0
  */
-public abstract class AbstractHttpServlet extends GenericServlet
+public abstract class AbstractXServlet extends GenericServlet
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractHttpServlet.class);
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsTotal = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
+  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsTotal = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                        "$requests.total");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                           "$requests.accepted");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsHandled = StatisticsManager.getCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsHandled = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                          "$requests.handled");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionTotal = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionTotal = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                                            "$requests-per-version.total");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionHandled = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionHandled = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                                              "$requests-per-version.handled");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodTotal = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodTotal = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                                           "$requests-per-method.total");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodHandled = StatisticsManager.getKeyedCounterHandler (AbstractHttpServlet.class.getName () +
+  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodHandled = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
                                                                                                                                             "$requests-per-method.handled");
   private final IMutableStatisticsHandlerKeyedCounter m_aCounterHttpMethodUnhandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
                                                                                                                                 "$method.unhandled");
-  private static final IMutableStatisticsHandlerKeyedTimer s_aTimer = StatisticsManager.getKeyedTimerHandler (AbstractHttpServlet.class);
+  private static final IMutableStatisticsHandlerKeyedTimer s_aTimer = StatisticsManager.getKeyedTimerHandler (AbstractXServlet.class);
 
   /** The main handler map */
-  private final ICommonsMap <EHTTPMethod, IHttpServletHandler> m_aHandler = new CommonsEnumMap <> (EHTTPMethod.class);
+  private final ICommonsMap <EHTTPMethod, IXServletHandler> m_aHandler = new CommonsEnumMap <> (EHTTPMethod.class);
+
   /** The fallback charset to be used, if none is present! */
   private Charset m_aFallbackCharset = StandardCharsets.UTF_8;
 
   /**
    * Does nothing, because this is an abstract class.
    */
-  public AbstractHttpServlet ()
+  public AbstractXServlet ()
   {
     // This handler is always the same, so it is registered here for convenience
-    registerHandler (EHTTPMethod.TRACE, new HttpServletHandlerTRACE ());
+    registerHandler (EHTTPMethod.TRACE, new XServletHandlerTRACE ());
+
     // Default HEAD handler -> invoke with GET
     registerHandler (EHTTPMethod.HEAD, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
       final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
       _internalService (aHttpRequest, aResponseWrapper, eHttpVersion, EHTTPMethod.GET);
       aResponseWrapper.setContentLengthAutomatically ();
     });
+
     // Default OPTIONS handler
     registerHandler (EHTTPMethod.OPTIONS, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod) -> {
       // Build Allow response header - that's it
@@ -130,7 +133,7 @@ public abstract class AbstractHttpServlet extends GenericServlet
    *        The handler to register. May not be <code>null</code>.
    */
   protected final void registerHandler (@Nonnull final EHTTPMethod eHTTPMethod,
-                                        @Nonnull final IHttpServletHandler aHandler)
+                                        @Nonnull final IXServletHandler aHandler)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     ValueEnforcer.notNull (aHandler, "Handler");
@@ -185,33 +188,11 @@ public abstract class AbstractHttpServlet extends GenericServlet
                                  @Nonnull final EHTTPVersion eHttpVersion,
                                  @Nonnull final EHTTPMethod eHttpMethod) throws ServletException, IOException
   {
-    final IHttpServletHandler aHandler = m_aHandler.get (eHttpMethod);
-    if (aHandler != null)
+    // Find the handler for the HTTP method
+    final IXServletHandler aHandler = m_aHandler.get (eHttpMethod);
+    if (aHandler == null)
     {
-      // Supported method
-
-      // Invoke handler
-      final StopWatch aSW = StopWatch.createdStarted ();
-      try
-      {
-        // This may indirectly call "_internalService" again (e.g. for HEAD
-        // requests)
-        aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
-
-        // Handled and no exception
-        s_aCounterRequestsHandled.increment ();
-        s_aCounterRequestsPerVersionHandled.increment (eHttpVersion.getName ());
-        s_aCounterRequestsPerMethodHandled.increment (eHttpMethod.getName ());
-      }
-      finally
-      {
-        // Timer per HTTP method
-        s_aTimer.addTime (eHttpMethod.getName (), aSW.stopAndGetMillis ());
-      }
-    }
-    else
-    {
-      // Unsupported method
+      // HTTP method is not supported by this servlet!
       m_aCounterHttpMethodUnhandled.increment (eHttpMethod.getName ());
 
       aHttpResponse.setHeader (CHTTPHeader.ALLOW, _getAllowString ());
@@ -219,6 +200,26 @@ public abstract class AbstractHttpServlet extends GenericServlet
         aHttpResponse.sendError (HttpServletResponse.SC_METHOD_NOT_ALLOWED);
       else
         aHttpResponse.sendError (HttpServletResponse.SC_BAD_REQUEST);
+      return;
+    }
+
+    // HTTP method is supported by this servlet implementation
+    final StopWatch aSW = StopWatch.createdStarted ();
+    try
+    {
+      // This may indirectly call "_internalService" again (e.g. for HEAD
+      // requests, which calls GET internally)
+      aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod);
+
+      // Handled and no exception
+      s_aCounterRequestsHandled.increment ();
+      s_aCounterRequestsPerVersionHandled.increment (eHttpVersion.getName ());
+      s_aCounterRequestsPerMethodHandled.increment (eHttpMethod.getName ());
+    }
+    finally
+    {
+      // Timer per HTTP method
+      s_aTimer.addTime (eHttpMethod.getName (), aSW.stopAndGetMillis ());
     }
   }
 
@@ -290,7 +291,7 @@ public abstract class AbstractHttpServlet extends GenericServlet
 
     s_aCounterRequestsTotal.increment ();
 
-    // Determine HTTP version
+    // Ensure a valid HTTP version is provided
     final String sProtocol = aHttpRequest.getProtocol ();
     final EHTTPVersion eHTTPVersion = EHTTPVersion.getFromNameOrNull (sProtocol);
     if (eHTTPVersion == null)
@@ -298,31 +299,29 @@ public abstract class AbstractHttpServlet extends GenericServlet
       // HTTP version disallowed
       logInvalidRequestSetup ("Request has unsupported HTTP version (" + sProtocol + ")!", aHttpRequest);
       aHttpResponse.sendError (HttpServletResponse.SC_HTTP_VERSION_NOT_SUPPORTED);
+      return;
     }
-    else
+
+    // Ensure a valid HTTP method is provided
+    final String sMethod = aHttpRequest.getMethod ();
+    final EHTTPMethod eHTTPMethod = EHTTPMethod.getFromNameOrNull (sMethod);
+    if (eHTTPMethod == null)
     {
-      s_aCounterRequestsPerVersionTotal.increment (eHTTPVersion.getName ());
-
-      // Determine HTTP method
-      final String sMethod = aHttpRequest.getMethod ();
-      final EHTTPMethod eHTTPMethod = EHTTPMethod.getFromNameOrNull (sMethod);
-      if (eHTTPMethod == null)
-      {
-        // HTTP method unknown
-        logInvalidRequestSetup ("Request has unsupported HTTP method (" + sMethod + ")!", aHttpRequest);
-        aHttpResponse.sendError (HttpServletResponse.SC_NOT_IMPLEMENTED);
-      }
-      else
-      {
-        s_aCounterRequestsAccepted.increment ();
-        s_aCounterRequestsPerMethodTotal.increment (eHTTPMethod.getName ());
-
-        ensureResponseCharset (aHttpResponse);
-
-        // Determine handler
-        _internalService (aHttpRequest, aHttpResponse, eHTTPVersion, eHTTPMethod);
-      }
+      // HTTP method unknown
+      logInvalidRequestSetup ("Request has unsupported HTTP method (" + sMethod + ")!", aHttpRequest);
+      aHttpResponse.sendError (HttpServletResponse.SC_NOT_IMPLEMENTED);
+      return;
     }
+
+    // HTTP version and method are valid
+    s_aCounterRequestsPerVersionTotal.increment (eHTTPVersion.getName ());
+    s_aCounterRequestsPerMethodTotal.increment (eHTTPMethod.getName ());
+    s_aCounterRequestsAccepted.increment ();
+
+    ensureResponseCharset (aHttpResponse);
+
+    // Determine handler
+    _internalService (aHttpRequest, aHttpResponse, eHTTPVersion, eHTTPMethod);
   }
 
   @Override

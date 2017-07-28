@@ -33,9 +33,9 @@ import com.helger.commons.state.EContinue;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
 import com.helger.servlet.async.ServletAsyncSpec;
-import com.helger.servlet.http.AbstractHttpServlet;
-import com.helger.servlet.http.AsyncHttpServletHandler;
-import com.helger.servlet.http.IHttpServletHandler;
+import com.helger.servlet.http.AbstractXServlet;
+import com.helger.servlet.http.AsyncXServletHandler;
+import com.helger.servlet.http.IXServletHandler;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
@@ -52,7 +52,7 @@ import com.helger.web.scope.IRequestWebScopeWithoutResponse;
  * @author Philip Helger
  * @since 8.8.0
  */
-public abstract class AbstractSimpleHttpServlet extends AbstractHttpServlet
+public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
 {
   public static interface ISimpleHandler
   {
@@ -265,8 +265,8 @@ public abstract class AbstractSimpleHttpServlet extends AbstractHttpServlet
                                         @Nonnull @Nonempty final String sApplicationID,
                                         @Nonnull final ISimpleHandler aSimpleHandler)
   {
-    final IHttpServletHandler aRealHandler = new AsyncHttpServletHandler (aAsyncSpec,
-                                                                          new ScopingHttpServletHandler (sApplicationID,
+    final IXServletHandler aRealHandler = new AsyncXServletHandler (aAsyncSpec,
+                                                                          new ScopingXServletHandler (sApplicationID,
                                                                                                          new ToUnifiedResponseHttpServletHandler (aSimpleHandler,
                                                                                                                                                   sApplicationID)));
     super.registerHandler (eMethod, aRealHandler);

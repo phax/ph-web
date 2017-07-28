@@ -34,7 +34,7 @@ import com.helger.http.EHTTPVersion;
  * @since 8.8.0
  */
 @FunctionalInterface
-public interface IHttpServletHandler extends Serializable
+public interface IXServletHandler extends Serializable
 {
   /**
    * Handle the servlet action for a certain request and response.

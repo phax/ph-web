@@ -28,17 +28,17 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
-import com.helger.servlet.http.IHttpServletHandler;
+import com.helger.servlet.http.IXServletHandler;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
-public final class ScopingHttpServletHandler implements IHttpServletHandler
+public final class ScopingXServletHandler implements IXServletHandler
 {
   private final String m_sApplicationID;
   private final IScopingHttpServletHandler m_aNestedHandler;
 
-  public ScopingHttpServletHandler (@Nonnull @Nonempty final String sApplicationID,
-                                    @Nonnull final IScopingHttpServletHandler aNestedHandler)
+  public ScopingXServletHandler (@Nonnull @Nonempty final String sApplicationID,
+                                 @Nonnull final IScopingHttpServletHandler aNestedHandler)
   {
     m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");

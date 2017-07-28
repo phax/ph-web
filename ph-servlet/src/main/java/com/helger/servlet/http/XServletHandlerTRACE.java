@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHTTPMethod;
 import com.helger.http.EHTTPVersion;
@@ -37,9 +38,10 @@ import com.helger.http.EHTTPVersion;
  * @author Servlet Spec 3.1
  * @since 8.8.0
  */
-public class HttpServletHandlerTRACE implements IHttpServletHandler
+public class XServletHandlerTRACE implements IXServletHandler
 {
   private static final String CRLF = "\r\n";
+  private static final String CONTENT_TYPE = EMimeContentType.MESSAGE.buildMimeType ("http").getAsString ();
 
   public void handle (@Nonnull final HttpServletRequest aHttpRequest,
                       @Nonnull final HttpServletResponse aHttpResponse,
@@ -59,7 +61,7 @@ public class HttpServletHandlerTRACE implements IHttpServletHandler
       aSB.append (sHeaderName).append (": ").append (aHttpRequest.getHeader (sHeaderName)).append (CRLF);
     }
 
-    aHttpResponse.setContentType ("message/http");
+    aHttpResponse.setContentType (CONTENT_TYPE);
     aHttpResponse.setContentLength (aSB.length ());
     aHttpResponse.getOutputStream ().print (aSB.toString ());
   }

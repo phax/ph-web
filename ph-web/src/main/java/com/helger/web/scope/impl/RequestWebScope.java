@@ -118,7 +118,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
     final IMutableAttributeContainerAny <String> aAttrs = attrs ();
-    if (aAttrs.getAndSetAttributeFlag (REQUEST_ATTR_SCOPE_INITED))
+    if (aAttrs.getAndSetFlag (REQUEST_ATTR_SCOPE_INITED))
     {
       s_aLogger.warn ("Scope was already inited: " + toString ());
       return;

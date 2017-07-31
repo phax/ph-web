@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.mock.CommonsTestHelper;
 
 /**
@@ -40,9 +40,9 @@ public final class UAProfileDatabaseTest
 {
   private static final class MockProvider implements IUAProfileHeaderProvider
   {
-    private final HTTPHeaderMap m_aMap;
+    private final HttpHeaderMap m_aMap;
 
-    public MockProvider (@Nonnull final HTTPHeaderMap aMap)
+    public MockProvider (@Nonnull final HttpHeaderMap aMap)
     {
       m_aMap = aMap;
     }
@@ -71,7 +71,7 @@ public final class UAProfileDatabaseTest
   @Test
   public void testCCPP ()
   {
-    final HTTPHeaderMap aMap = new HTTPHeaderMap ();
+    final HttpHeaderMap aMap = new HttpHeaderMap ();
 
     // No headers set
     UAProfile aProfile = UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap));
@@ -117,7 +117,7 @@ public final class UAProfileDatabaseTest
   @Test
   public void testUAProfSingleDiff ()
   {
-    final HTTPHeaderMap aMap = new HTTPHeaderMap ();
+    final HttpHeaderMap aMap = new HttpHeaderMap ();
 
     aMap.addHeader ("x-wap-profile", "\"1-diGacUwQ6eeOlaWB6cFEag==\"");
     UAProfile aProfile = UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap));
@@ -150,7 +150,7 @@ public final class UAProfileDatabaseTest
   @Test
   public void testUAProfMultiDiff ()
   {
-    final HTTPHeaderMap aMap = new HTTPHeaderMap ();
+    final HttpHeaderMap aMap = new HttpHeaderMap ();
     aMap.addHeader ("x-wap-profile",
                     "\"1-diGacUwQ6eeOlaWB6cFEag==\", \"2-diGacUwQ6eeOlaWB6cFEag==\", \"3-diGacUwQ6eeOlaWB6cFEag==\"");
     aMap.addHeader ("x-wap-profile-diff",

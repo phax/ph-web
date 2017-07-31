@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.servlet.mock.MockHttpServletRequest;
 
 /**
@@ -37,30 +37,30 @@ public final class UnifiedResponseTest
   public void testSetStrictTransportSecurity ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY));
+    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
     final int nMaxAgeSeconds = 60000;
     final boolean bIncludeSubdomains = true;
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
-    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY));
+    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
     final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
-                                                   .getAllHeaderValues (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
+                                                   .getAllHeaderValues (CHttpHeader.STRICT_TRANSPORT_SECURITY);
     assertEquals (1, aValues.size ());
-    assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
+    assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
   }
 
   @Test
   public void testSetAllowMimeSniffing ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
+    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (true);
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
+    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (false);
-    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS));
+    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
-                                                   .getAllHeaderValues (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+                                                   .getAllHeaderValues (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     assertEquals (1, aValues.size ());
-    assertEquals (CHTTPHeader.VALUE_NOSNIFF, aValues.get (0));
+    assertEquals (CHttpHeader.VALUE_NOSNIFF, aValues.get (0));
   }
 
   @Test

@@ -98,7 +98,7 @@ public class BasicAuthClientCredentials implements Serializable
 
   /**
    * Create the request HTTP header value for use with the
-   * {@link com.helger.commons.http.CHTTPHeader#AUTHORIZATION} header name.
+   * {@link com.helger.commons.http.CHttpHeader#AUTHORIZATION} header name.
    *
    * @return The HTTP header value to use. Neither <code>null</code> nor empty.
    */
@@ -107,9 +107,9 @@ public class BasicAuthClientCredentials implements Serializable
   public String getRequestValue ()
   {
     final String sCombined = StringHelper.getConcatenatedOnDemand (m_sUserName,
-                                                                   HTTPBasicAuth.USERNAME_PASSWORD_SEPARATOR,
+                                                                   HttpBasicAuth.USERNAME_PASSWORD_SEPARATOR,
                                                                    m_sPassword);
-    return HTTPBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, HTTPBasicAuth.CHARSET);
+    return HttpBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, HttpBasicAuth.CHARSET);
   }
 
   @Override

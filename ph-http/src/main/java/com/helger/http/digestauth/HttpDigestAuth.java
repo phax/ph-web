@@ -33,8 +33,8 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.EHTTPMethod;
-import com.helger.http.HTTPStringHelper;
+import com.helger.http.EHttpMethod;
+import com.helger.http.HttpStringHelper;
 import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 import com.helger.security.messagedigest.MessageDigestValue;
 
@@ -44,7 +44,7 @@ import com.helger.security.messagedigest.MessageDigestValue;
  * @author Philip Helger
  */
 @Immutable
-public final class HTTPDigestAuth
+public final class HttpDigestAuth
 {
   public static final String HEADER_VALUE_PREFIX_DIGEST = "Digest";
 
@@ -56,14 +56,14 @@ public final class HTTPDigestAuth
   public static final String QOP_AUTH_INT = "auth-int";
   public static final String DEFAULT_QOP = QOP_AUTH;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HTTPDigestAuth.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpDigestAuth.class);
   private static final char SEPARATOR = ':';
   private static final Charset CHARSET = StandardCharsets.ISO_8859_1;
 
   @PresentForCodeCoverage
-  private static final HTTPDigestAuth s_aInstance = new HTTPDigestAuth ();
+  private static final HttpDigestAuth s_aInstance = new HttpDigestAuth ();
 
-  private HTTPDigestAuth ()
+  private HttpDigestAuth ()
   {}
 
   /**
@@ -92,7 +92,7 @@ public final class HTTPDigestAuth
     final char [] aChars = sRealHeader.toCharArray ();
     int nIndex = HEADER_VALUE_PREFIX_DIGEST.length ();
 
-    if (nIndex >= aChars.length || !HTTPStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
+    if (nIndex >= aChars.length || !HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
     {
       s_aLogger.error ("No whitespace after 'Digest'");
       return null;
@@ -103,12 +103,12 @@ public final class HTTPDigestAuth
     while (true)
     {
       // Skip all spaces
-      while (nIndex < aChars.length && HTTPStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
+      while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
 
       // Find token name
       int nStartIndex = nIndex;
-      while (nIndex < aChars.length && HTTPStringHelper.isTokenChar (aChars[nIndex]))
+      while (nIndex < aChars.length && HttpStringHelper.isTokenChar (aChars[nIndex]))
         nIndex++;
       if (nStartIndex == nIndex)
       {
@@ -118,7 +118,7 @@ public final class HTTPDigestAuth
       final String sToken = sRealHeader.substring (nStartIndex, nIndex);
 
       // Skip all spaces
-      while (nIndex < aChars.length && HTTPStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
+      while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
 
       if (nIndex >= aChars.length || aChars[nIndex] != '=')
@@ -129,7 +129,7 @@ public final class HTTPDigestAuth
       nIndex++;
 
       // Skip all spaces
-      while (nIndex < aChars.length && HTTPStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
+      while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
 
       if (nIndex >= aChars.length)
@@ -139,19 +139,19 @@ public final class HTTPDigestAuth
       }
 
       String sValue;
-      if (aChars[nIndex] == HTTPStringHelper.QUOTEDTEXT_BEGIN)
+      if (aChars[nIndex] == HttpStringHelper.QUOTEDTEXT_BEGIN)
       {
         // Quoted string
         ++nIndex;
         nStartIndex = nIndex;
-        while (nIndex < aChars.length && HTTPStringHelper.isQuotedTextChar (aChars[nIndex]))
+        while (nIndex < aChars.length && HttpStringHelper.isQuotedTextChar (aChars[nIndex]))
           nIndex++;
         if (nIndex >= aChars.length)
         {
           s_aLogger.error ("Unexpected EOF in quoted text for '" + sToken + "'");
           return null;
         }
-        if (aChars[nIndex] != HTTPStringHelper.QUOTEDTEXT_END)
+        if (aChars[nIndex] != HttpStringHelper.QUOTEDTEXT_END)
         {
           s_aLogger.error ("Quoted string of token '" +
                            sToken +
@@ -169,7 +169,7 @@ public final class HTTPDigestAuth
       {
         // Token
         nStartIndex = nIndex;
-        while (nIndex < aChars.length && HTTPStringHelper.isTokenChar (aChars[nIndex]))
+        while (nIndex < aChars.length && HttpStringHelper.isTokenChar (aChars[nIndex]))
           nIndex++;
         if (nStartIndex == nIndex)
         {
@@ -187,7 +187,7 @@ public final class HTTPDigestAuth
       aParams.put (sToken, sValue);
 
       // Skip all spaces
-      while (nIndex < aChars.length && HTTPStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
+      while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
 
       // Check if there are any additional parameters
@@ -359,7 +359,7 @@ public final class HTTPDigestAuth
    * @return The created DigestAuthCredentials
    */
   @Nonnull
-  public static DigestAuthClientCredentials createDigestAuthClientCredentials (@Nonnull final EHTTPMethod eMethod,
+  public static DigestAuthClientCredentials createDigestAuthClientCredentials (@Nonnull final EHttpMethod eMethod,
                                                                                @Nonnull @Nonempty final String sDigestURI,
                                                                                @Nonnull @Nonempty final String sUserName,
                                                                                @Nonnull final String sPassword,

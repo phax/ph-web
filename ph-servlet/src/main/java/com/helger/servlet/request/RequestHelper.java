@@ -35,8 +35,8 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.http.CHTTPHeader;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.CHttpHeader;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.url.ISimpleURL;
@@ -51,12 +51,12 @@ import com.helger.http.AcceptLanguageHandler;
 import com.helger.http.AcceptLanguageList;
 import com.helger.http.AcceptMimeTypeHandler;
 import com.helger.http.AcceptMimeTypeList;
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.http.basicauth.BasicAuthClientCredentials;
-import com.helger.http.basicauth.HTTPBasicAuth;
+import com.helger.http.basicauth.HttpBasicAuth;
 import com.helger.http.digestauth.DigestAuthClientCredentials;
-import com.helger.http.digestauth.HTTPDigestAuth;
+import com.helger.http.digestauth.HttpDigestAuth;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
@@ -445,7 +445,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return aHttpRequest.getHeader (CHTTPHeader.REFERER);
+    return aHttpRequest.getHeader (CHttpHeader.REFERER);
   }
 
   /**
@@ -456,12 +456,12 @@ public final class RequestHelper
    * @return <code>null</code> if no supported HTTP version is contained
    */
   @Nullable
-  public static EHTTPVersion getHttpVersion (@Nonnull final HttpServletRequest aHttpRequest)
+  public static EHttpVersion getHttpVersion (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sProtocol = aHttpRequest.getProtocol ();
-    return EHTTPVersion.getFromNameOrNull (sProtocol);
+    return EHttpVersion.getFromNameOrNull (sProtocol);
   }
 
   /**
@@ -472,12 +472,12 @@ public final class RequestHelper
    * @return <code>null</code> if no supported HTTP method is contained
    */
   @Nullable
-  public static EHTTPMethod getHttpMethod (@Nonnull final HttpServletRequest aHttpRequest)
+  public static EHttpMethod getHttpMethod (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sMethod = aHttpRequest.getMethod ();
-    return EHTTPMethod.getFromNameOrNull (sMethod);
+    return EHttpMethod.getFromNameOrNull (sMethod);
   }
 
   /**
@@ -489,11 +489,11 @@ public final class RequestHelper
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static HTTPHeaderMap getRequestHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static HttpHeaderMap getRequestHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final HTTPHeaderMap ret = new HTTPHeaderMap ();
+    final HttpHeaderMap ret = new HttpHeaderMap ();
     final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
     while (aHeaders.hasMoreElements ())
     {
@@ -526,7 +526,7 @@ public final class RequestHelper
   /**
    * Get the content length of the passed request. This is not done using
    * <code>request.getContentLength()</code> but instead parsing the HTTP header
-   * field {@link CHTTPHeader#CONTENT_LENGTH} manually!
+   * field {@link CHttpHeader#CONTENT_LENGTH} manually!
    *
    * @param aHttpRequest
    *        Source HTTP request. May not be <code>null</code>.
@@ -543,7 +543,7 @@ public final class RequestHelper
       return aHttpRequest.getContentLength ();
     }
 
-    final String sContentLength = aHttpRequest.getHeader (CHTTPHeader.CONTENT_LENGTH);
+    final String sContentLength = aHttpRequest.getHeader (CHttpHeader.CONTENT_LENGTH);
     return StringParser.parseLong (sContentLength, -1L);
   }
 
@@ -643,7 +643,7 @@ public final class RequestHelper
    */
   public static boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    if (getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
+    if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
     return isMultipartContent (aHttpRequest.getContentType ());
@@ -674,7 +674,7 @@ public final class RequestHelper
    */
   public static boolean isMultipartFormDataContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    if (getHttpMethod (aHttpRequest) != EHTTPMethod.POST)
+    if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
     return isMultipartFormDataContent (aHttpRequest.getContentType ());
@@ -687,7 +687,7 @@ public final class RequestHelper
     AcceptCharsetList aValue = (AcceptCharsetList) aHttpRequest.getAttribute (AcceptCharsetList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptCharset = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_CHARSET);
+      final String sAcceptCharset = aHttpRequest.getHeader (CHttpHeader.ACCEPT_CHARSET);
       aValue = AcceptCharsetHandler.getAcceptCharsets (sAcceptCharset);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
     }
@@ -701,7 +701,7 @@ public final class RequestHelper
     AcceptEncodingList aValue = (AcceptEncodingList) aHttpRequest.getAttribute (AcceptEncodingList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptEncoding = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_ENCODING);
+      final String sAcceptEncoding = aHttpRequest.getHeader (CHttpHeader.ACCEPT_ENCODING);
       aValue = AcceptEncodingHandler.getAcceptEncodings (sAcceptEncoding);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
     }
@@ -715,7 +715,7 @@ public final class RequestHelper
     AcceptLanguageList aValue = (AcceptLanguageList) aHttpRequest.getAttribute (AcceptLanguageList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptLanguage = aHttpRequest.getHeader (CHTTPHeader.ACCEPT_LANGUAGE);
+      final String sAcceptLanguage = aHttpRequest.getHeader (CHttpHeader.ACCEPT_LANGUAGE);
       aValue = AcceptLanguageHandler.getAcceptLanguages (sAcceptLanguage);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
     }
@@ -729,7 +729,7 @@ public final class RequestHelper
     AcceptMimeTypeList aValue = (AcceptMimeTypeList) aHttpRequest.getAttribute (AcceptMimeTypeList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptMimeTypes = aHttpRequest.getHeader (CHTTPHeader.ACCEPT);
+      final String sAcceptMimeTypes = aHttpRequest.getHeader (CHttpHeader.ACCEPT);
       aValue = AcceptMimeTypeHandler.getAcceptMimeTypes (sAcceptMimeTypes);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
     }
@@ -738,7 +738,7 @@ public final class RequestHelper
 
   /**
    * Get the Basic authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
+   * request from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
@@ -750,13 +750,13 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
-    return HTTPBasicAuth.getBasicAuthClientCredentials (sHeaderValue);
+    final String sHeaderValue = aHttpRequest.getHeader (CHttpHeader.AUTHORIZATION);
+    return HttpBasicAuth.getBasicAuthClientCredentials (sHeaderValue);
   }
 
   /**
    * Get the Digest authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHTTPHeader#AUTHORIZATION}.
+   * request from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
@@ -768,8 +768,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = aHttpRequest.getHeader (CHTTPHeader.AUTHORIZATION);
-    return HTTPDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
+    final String sHeaderValue = aHttpRequest.getHeader (CHttpHeader.AUTHORIZATION);
+    return HttpDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
   }
 
   /**
@@ -783,12 +783,12 @@ public final class RequestHelper
   public static String getHttpUserAgentStringFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Use non-standard headers first
-    String sUserAgent = aHttpRequest.getHeader (CHTTPHeader.UA);
+    String sUserAgent = aHttpRequest.getHeader (CHttpHeader.UA);
     if (sUserAgent == null)
     {
-      sUserAgent = aHttpRequest.getHeader (CHTTPHeader.X_DEVICE_USER_AGENT);
+      sUserAgent = aHttpRequest.getHeader (CHttpHeader.X_DEVICE_USER_AGENT);
       if (sUserAgent == null)
-        sUserAgent = aHttpRequest.getHeader (CHTTPHeader.USER_AGENT);
+        sUserAgent = aHttpRequest.getHeader (CHttpHeader.USER_AGENT);
     }
     return sUserAgent;
   }

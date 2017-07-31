@@ -25,7 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.http.AcceptEncodingList;
@@ -106,7 +106,7 @@ public class CompressFilter extends AbstractHttpServletFilter
 
       // Inform caches that responses may vary according to
       // Accept-Encoding
-      aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);
+      aHttpResponse.setHeader (CHttpHeader.VARY, CHttpHeader.ACCEPT_ENCODING);
 
       final AcceptEncodingList aAEL = RequestHelper.getAcceptEncodings (aHttpRequest);
 

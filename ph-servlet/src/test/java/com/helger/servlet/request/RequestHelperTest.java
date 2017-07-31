@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
 
@@ -40,7 +40,7 @@ public final class RequestHelperTest
     try
     {
       final MockHttpServletRequest r = new MockHttpServletRequest (aSC,
-                                                                   EHTTPMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
+                                                                   EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));
       r.addParameter ("abc", "xyz");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));

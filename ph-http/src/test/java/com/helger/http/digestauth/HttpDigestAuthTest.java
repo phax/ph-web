@@ -22,34 +22,34 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 
 /**
- * Test class for class {@link HTTPDigestAuth}.
+ * Test class for class {@link HttpDigestAuth}.
  *
  * @author Philip Helger
  */
-public final class HTTPDigestAuthTest
+public final class HttpDigestAuthTest
 {
   @Test
   public void testGetDigestAuthValues ()
   {
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ((String) null));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials (""));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("bla"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("bla foo"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("Basic"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Basic  "));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username="));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=ä"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=abc x"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=abc ,"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\""));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc"));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\","));
-    assertNull (HTTPDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\" , "));
-    final DigestAuthClientCredentials aUP = HTTPDigestAuth.getDigestAuthClientCredentials ("Digest username=\"Mufasa\",\r\n" +
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ((String) null));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials (""));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("bla"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("bla foo"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("Basic"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Basic  "));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username="));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=ä"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=abc x"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=abc ,"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\""));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc"));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\","));
+    assertNull (HttpDigestAuth.getDigestAuthClientCredentials ("  Digest  username=\"abc\" , "));
+    final DigestAuthClientCredentials aUP = HttpDigestAuth.getDigestAuthClientCredentials ("Digest username=\"Mufasa\",\r\n" +
                                                                                            "     realm=\"testrealm@host.com\",\r\n" +
                                                                                            "     nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",\r\n" +
                                                                                            "     uri=\"/dir/index.html\",\r\n" +
@@ -74,7 +74,7 @@ public final class HTTPDigestAuthTest
   @Test
   public void testCreate ()
   {
-    final DigestAuthClientCredentials aUP = HTTPDigestAuth.createDigestAuthClientCredentials (EHTTPMethod.GET,
+    final DigestAuthClientCredentials aUP = HttpDigestAuth.createDigestAuthClientCredentials (EHttpMethod.GET,
                                                                                               "/dir/index.html",
                                                                                               "Mufasa",
                                                                                               "Circle Of Life",
@@ -83,7 +83,7 @@ public final class HTTPDigestAuthTest
                                                                                               null,
                                                                                               "0a4f113b",
                                                                                               "5ccc069c403ebaf9f0171e9517f40e41",
-                                                                                              HTTPDigestAuth.QOP_AUTH,
+                                                                                              HttpDigestAuth.QOP_AUTH,
                                                                                               1);
     assertNotNull (aUP);
     assertEquals ("6629fae49393a05397450978507c4ef1", aUP.getResponse ());

@@ -33,7 +33,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.fileupload.IFileItemHeaders;
 
@@ -73,19 +73,19 @@ public class FileItemHeaders implements IFileItemHeaders
   @Nullable
   public String getHeaderContentDisposition ()
   {
-    return getHeader (CHTTPHeader.CONTENT_DISPOSITION);
+    return getHeader (CHttpHeader.CONTENT_DISPOSITION);
   }
 
   @Nullable
   public String getHeaderContentType ()
   {
-    return getHeader (CHTTPHeader.CONTENT_TYPE);
+    return getHeader (CHttpHeader.CONTENT_TYPE);
   }
 
   @Nullable
   public String getHeaderContentLength ()
   {
-    return getHeader (CHTTPHeader.CONTENT_LENGTH);
+    return getHeader (CHttpHeader.CONTENT_LENGTH);
   }
 
   @Nonnull

@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.http.CHTTPHeader;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.CHttpHeader;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.http.AcceptEncodingList;
 import com.helger.servlet.request.RequestHelper;
 
@@ -128,13 +128,13 @@ public final class ResponseHelper
       final AcceptEncodingList aAcceptEncodings = RequestHelper.getAcceptEncodings (aHttpRequest);
 
       // Inform caches that responses may vary according to Accept-Encoding
-      aHttpResponse.setHeader (CHTTPHeader.VARY, CHTTPHeader.ACCEPT_ENCODING);
+      aHttpResponse.setHeader (CHttpHeader.VARY, CHttpHeader.ACCEPT_ENCODING);
 
       final String sGZipEncoding = aAcceptEncodings.getUsedGZIPEncoding ();
       if (sGZipEncoding != null && ResponseHelperSettings.isResponseGzipEnabled ())
       {
         // Use GZip
-        aHttpResponse.setHeader (CHTTPHeader.CONTENT_ENCODING, sGZipEncoding);
+        aHttpResponse.setHeader (CHttpHeader.CONTENT_ENCODING, sGZipEncoding);
         aOS = new GZIPOutputStream (aHttpResponse.getOutputStream ());
       }
       else
@@ -143,7 +143,7 @@ public final class ResponseHelper
         if (sDeflateEncoding != null && ResponseHelperSettings.isResponseDeflateEnabled ())
         {
           // Use Deflate
-          aHttpResponse.setHeader (CHTTPHeader.CONTENT_ENCODING, sDeflateEncoding);
+          aHttpResponse.setHeader (CHttpHeader.CONTENT_ENCODING, sDeflateEncoding);
           aOS = new ZipOutputStream (aHttpResponse.getOutputStream ());
           // A dummy ZIP entry is required!
           ((ZipOutputStream) aOS).putNextEntry (new ZipEntry ("dummy name"));
@@ -174,7 +174,7 @@ public final class ResponseHelper
   /**
    * Set the content length of an HTTP response. If the passed content length is
    * a valid integer, <code>aHttpResponse.setContentLength</code> is invoked,
-   * else the HTTP header {@link CHTTPHeader#CONTENT_LENGTH} is set manually.
+   * else the HTTP header {@link CHttpHeader#CONTENT_LENGTH} is set manually.
    *
    * @param aHttpResponse
    *        The response to set the content length to
@@ -187,7 +187,7 @@ public final class ResponseHelper
     if (nContentLength < Integer.MAX_VALUE)
       aHttpResponse.setContentLength ((int) nContentLength);
     else
-      aHttpResponse.setHeader (CHTTPHeader.CONTENT_LENGTH, Long.toString (nContentLength));
+      aHttpResponse.setHeader (CHttpHeader.CONTENT_LENGTH, Long.toString (nContentLength));
   }
 
   /**
@@ -200,11 +200,11 @@ public final class ResponseHelper
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static HTTPHeaderMap getResponseHeaderMap (@Nonnull final HttpServletResponse aHttpResponse)
+  public static HttpHeaderMap getResponseHeaderMap (@Nonnull final HttpServletResponse aHttpResponse)
   {
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
-    final HTTPHeaderMap ret = new HTTPHeaderMap ();
+    final HttpHeaderMap ret = new HttpHeaderMap ();
     for (final String sName : aHttpResponse.getHeaderNames ())
       for (final String sValue : aHttpResponse.getHeaders (sName))
         ret.addHeader (sName, sValue);

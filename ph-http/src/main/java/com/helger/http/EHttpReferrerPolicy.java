@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
  *
  * @author Philip Helger
  */
-public enum EHTTPReferrerPolicy
+public enum EHttpReferrerPolicy
 {
   NONE (""),
   NO_REFERRER ("no-referrer"),
@@ -25,7 +25,7 @@ public enum EHTTPReferrerPolicy
 
   private String m_sValue;
 
-  private EHTTPReferrerPolicy (@Nonnull final String sValue)
+  private EHttpReferrerPolicy (@Nonnull final String sValue)
   {
     m_sValue = sValue;
   }

@@ -41,12 +41,12 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 
 public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
 {
   private static final String FORM_CONTENT_TYPE = CMimeType.APPLICATION_X_WWW_FORM_URLENCODED.getAsString ();
-  private static final String METHOD_POST = EHTTPMethod.POST.getName ();
+  private static final String METHOD_POST = EHttpMethod.POST.getName ();
 
   private byte [] m_aContent;
   @CodingStyleguideUnaware

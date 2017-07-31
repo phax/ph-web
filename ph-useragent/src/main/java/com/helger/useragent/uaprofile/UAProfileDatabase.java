@@ -43,7 +43,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
@@ -119,12 +119,12 @@ public final class UAProfileDatabase
                                                                     final String sExtNSValue)
   {
     // Determine the profile diffs to use
-    ICommonsCollection <String> aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.X_WAP_PROFILE_DIFF);
+    ICommonsCollection <String> aProfileDiffs = aHeaderProvider.getHeaders (CHttpHeader.X_WAP_PROFILE_DIFF);
     if (aProfileDiffs.isEmpty ())
     {
-      aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.PROFILE_DIFF);
+      aProfileDiffs = aHeaderProvider.getHeaders (CHttpHeader.PROFILE_DIFF);
       if (aProfileDiffs.isEmpty ())
-        aProfileDiffs = aHeaderProvider.getHeaders (CHTTPHeader.WAP_PROFILE_DIFF);
+        aProfileDiffs = aHeaderProvider.getHeaders (CHttpHeader.WAP_PROFILE_DIFF);
     }
 
     // Parse the diffs
@@ -188,19 +188,19 @@ public final class UAProfileDatabase
 
     // Determine the main profile to use
     String sExtNSValue = null;
-    ICommonsCollection <String> aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.X_WAP_PROFILE);
+    ICommonsCollection <String> aProfiles = aHeaderProvider.getHeaders (CHttpHeader.X_WAP_PROFILE);
     if (aProfiles.isEmpty ())
     {
-      aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.PROFILE);
+      aProfiles = aHeaderProvider.getHeaders (CHttpHeader.PROFILE);
       if (aProfiles.isEmpty ())
       {
-        aProfiles = aHeaderProvider.getHeaders (CHTTPHeader.WAP_PROFILE);
+        aProfiles = aHeaderProvider.getHeaders (CHttpHeader.WAP_PROFILE);
         if (aProfiles.isEmpty ())
         {
           // Check CCPP headers
-          String sExt = aHeaderProvider.getHeader (CHTTPHeader.OPT);
+          String sExt = aHeaderProvider.getHeader (CHttpHeader.OPT);
           if (sExt == null)
-            sExt = aHeaderProvider.getHeader (CHTTPHeader.MAN);
+            sExt = aHeaderProvider.getHeader (CHttpHeader.MAN);
           if (sExt != null)
           {
             sExtNSValue = _getExtendedNamespaceValue (sExt);

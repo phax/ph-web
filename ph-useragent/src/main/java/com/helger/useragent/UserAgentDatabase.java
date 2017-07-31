@@ -31,12 +31,12 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.string.StringHelper;
 
 /**
  * Central cache for known user agents (see HTTP header field
- * {@link CHTTPHeader#USER_AGENT}).
+ * {@link CHttpHeader#USER_AGENT}).
  *
  * @author Philip Helger
  */

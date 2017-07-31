@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.AcceptEncodingHandler;
 import com.helger.servlet.ServletHelper;
@@ -155,17 +155,17 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   @Override
   public void addHeader (final String sHeaderName, final String sHeaderValue)
   {
-    if (CHTTPHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
+    if (CHttpHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
     {
       _setContentLength (Long.parseLong (sHeaderValue));
     }
     else
-      if (CHTTPHeader.CONTENT_TYPE.equalsIgnoreCase (sHeaderName))
+      if (CHttpHeader.CONTENT_TYPE.equalsIgnoreCase (sHeaderName))
       {
         setContentType (sHeaderValue);
       }
       else
-        if (CHTTPHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
+        if (CHttpHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
         {
           if (CompressFilterSettings.isDebugModeEnabled ())
             s_aLogger.info ("Explicitly content encoding in addHeader: " + sHeaderValue);
@@ -181,17 +181,17 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   @Override
   public void setHeader (final String sHeaderName, final String sHeaderValue)
   {
-    if (CHTTPHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
+    if (CHttpHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
     {
       _setContentLength (Long.parseLong (sHeaderValue));
     }
     else
-      if (CHTTPHeader.CONTENT_TYPE.equalsIgnoreCase (sHeaderName))
+      if (CHttpHeader.CONTENT_TYPE.equalsIgnoreCase (sHeaderName))
       {
         setContentType (sHeaderValue);
       }
       else
-        if (CHTTPHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
+        if (CHttpHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
         {
           if (CompressFilterSettings.isDebugModeEnabled ())
             s_aLogger.info ("Explicitly content encoding in setHeader: " + sHeaderValue);
@@ -207,7 +207,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   @Override
   public void setIntHeader (final String sHeaderName, final int nHeaderValue)
   {
-    if (CHTTPHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
+    if (CHttpHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))
     {
       setContentLength (nHeaderValue);
     }

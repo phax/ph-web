@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.lang.EnumHelper;
 
@@ -36,16 +36,16 @@ public enum EXFrameOptionType implements IHasID <String>
    * The page cannot be displayed in a frame, regardless of the site attempting
    * to do so.
    */
-  DENY (CHTTPHeader.VALUE_DENY),
+  DENY (CHttpHeader.VALUE_DENY),
   /**
    * The page can only be displayed in a frame on the same origin as the page
    * itself.
    */
-  SAMEORIGIN (CHTTPHeader.VALUE_SAMEORIGIN),
+  SAMEORIGIN (CHttpHeader.VALUE_SAMEORIGIN),
   /**
    * The page can only be displayed in a frame on the specified origin.
    */
-  ALLOW_FROM (CHTTPHeader.VALUE_ALLOW_FROM);
+  ALLOW_FROM (CHttpHeader.VALUE_ALLOW_FROM);
 
   private final String m_sID;
 

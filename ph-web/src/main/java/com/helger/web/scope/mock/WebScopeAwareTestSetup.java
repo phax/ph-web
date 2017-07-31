@@ -24,7 +24,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.cleanup.CommonsCleanup;
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
 import com.helger.xml.util.XMLCleanup;
@@ -87,7 +87,7 @@ public final class WebScopeAwareTestSetup
   @Nonnull
   public static MockHttpServletRequest createDefaultMockRequest (@Nonnull final MockServletContext aServletContext)
   {
-    return new MockHttpServletRequest (aServletContext, EHTTPMethod.GET);
+    return new MockHttpServletRequest (aServletContext, EHttpMethod.GET);
   }
 
   /**

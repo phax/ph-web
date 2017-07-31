@@ -46,7 +46,7 @@ import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.network.proxy.HttpProxyConfig;
 
 /**
@@ -61,7 +61,7 @@ public final class HttpClientHelper
   {}
 
   @Nonnull
-  public static HttpRequestBase createRequest (@Nonnull final EHTTPMethod eHTTPMethod,
+  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
                                                @Nonnull final ISimpleURL aSimpleURL)
   {
     final String sURL = aSimpleURL.getAsStringWithEncodedParameters ();

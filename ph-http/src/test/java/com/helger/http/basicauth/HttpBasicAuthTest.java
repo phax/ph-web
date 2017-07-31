@@ -23,11 +23,11 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
- * Test class for class {@link HTTPBasicAuth}.
+ * Test class for class {@link HttpBasicAuth}.
  *
  * @author Philip Helger
  */
-public final class HTTPBasicAuthTest
+public final class HttpBasicAuthTest
 {
   @Test
   public void testBasic ()
@@ -35,7 +35,7 @@ public final class HTTPBasicAuthTest
     final BasicAuthClientCredentials aCredentials = new BasicAuthClientCredentials ("Alladin", "open sesame");
     final String sValue = aCredentials.getRequestValue ();
     assertNotNull (sValue);
-    final BasicAuthClientCredentials aDecoded = HTTPBasicAuth.getBasicAuthClientCredentials (sValue);
+    final BasicAuthClientCredentials aDecoded = HttpBasicAuth.getBasicAuthClientCredentials (sValue);
     assertNotNull (aDecoded);
     assertEquals (aCredentials, aDecoded);
   }
@@ -46,14 +46,14 @@ public final class HTTPBasicAuthTest
     BasicAuthClientCredentials aCredentials = new BasicAuthClientCredentials ("Alladin");
     String sValue = aCredentials.getRequestValue ();
     assertNotNull (sValue);
-    BasicAuthClientCredentials aDecoded = HTTPBasicAuth.getBasicAuthClientCredentials (sValue);
+    BasicAuthClientCredentials aDecoded = HttpBasicAuth.getBasicAuthClientCredentials (sValue);
     assertNotNull (aDecoded);
     assertEquals (aCredentials, aDecoded);
 
     aCredentials = new BasicAuthClientCredentials ("Alladin", "");
     sValue = aCredentials.getRequestValue ();
     assertNotNull (sValue);
-    aDecoded = HTTPBasicAuth.getBasicAuthClientCredentials (sValue);
+    aDecoded = HttpBasicAuth.getBasicAuthClientCredentials (sValue);
     assertNotNull (aDecoded);
     assertEquals (aCredentials, aDecoded);
   }
@@ -61,19 +61,19 @@ public final class HTTPBasicAuthTest
   @Test
   public void testGetBasicAuthValues ()
   {
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials ((String) null));
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials (""));
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials ("bla"));
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials ("bla foor"));
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials ("Basic"));
-    assertNull (HTTPBasicAuth.getBasicAuthClientCredentials ("  Basic  "));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials ((String) null));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials (""));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials ("bla"));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials ("bla foor"));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials ("Basic"));
+    assertNull (HttpBasicAuth.getBasicAuthClientCredentials ("  Basic  "));
     // Base64 with blanks is OK!
-    BasicAuthClientCredentials aUP = HTTPBasicAuth.getBasicAuthClientCredentials ("  Basic  QWxsYW  Rp   bjpvcG  VuIH Nlc2F tZQ   =  =   ");
+    BasicAuthClientCredentials aUP = HttpBasicAuth.getBasicAuthClientCredentials ("  Basic  QWxsYW  Rp   bjpvcG  VuIH Nlc2F tZQ   =  =   ");
     assertNotNull (aUP);
     assertEquals ("Alladin", aUP.getUserName ());
     assertEquals ("open sesame", aUP.getPassword ());
 
-    aUP = HTTPBasicAuth.getBasicAuthClientCredentials ("  Basic  QWxsYWRpbjpvcGVuIHNlc2FtZQ==   ");
+    aUP = HttpBasicAuth.getBasicAuthClientCredentials ("  Basic  QWxsYWRpbjpvcGVuIHNlc2FtZQ==   ");
     assertNotNull (aUP);
     assertEquals ("Alladin", aUP.getUserName ());
     assertEquals ("open sesame", aUP.getPassword ());

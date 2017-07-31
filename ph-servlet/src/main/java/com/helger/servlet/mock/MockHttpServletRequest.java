@@ -67,7 +67,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -79,8 +79,8 @@ import com.helger.commons.url.URLHelper;
 import com.helger.commons.url.URLParameter;
 import com.helger.commons.url.URLParameterList;
 import com.helger.http.AcceptCharsetHandler;
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
@@ -94,7 +94,7 @@ import com.helger.servlet.request.RequestHelper;
 public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
   public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
-  public static final String DEFAULT_PROTOCOL = EHTTPVersion.HTTP_11.getName ();
+  public static final String DEFAULT_PROTOCOL = EHttpVersion.HTTP_11.getName ();
   public static final String DEFAULT_SCHEME = SchemeDefaultPortMapper.SCHEME_HTTP;
   public static final String DEFAULT_SERVER_ADDR = "127.0.0.1";
   public static final String DEFAULT_SERVER_NAME = "localhost";
@@ -102,7 +102,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public static final String DEFAULT_REMOTE_ADDR = "127.0.0.1";
   public static final String DEFAULT_REMOTE_HOST = "localhost";
   /** The default HTTP method: GET */
-  public static final EHTTPMethod DEFAULT_METHOD = EHTTPMethod.GET;
+  public static final EHttpMethod DEFAULT_METHOD = EHttpMethod.GET;
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockHttpServletRequest.class);
 
   private boolean m_bInvalidated = false;
@@ -128,7 +128,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sAuthType;
   private Cookie [] m_aCookies;
   private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
-  private EHTTPMethod m_eMethod;
+  private EHttpMethod m_eMethod;
   private String m_sPathInfo;
   private String m_sContextPath = "";
   private String m_sQueryString;
@@ -178,7 +178,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        the request method (may be <code>null</code>)
    * @see MockServletContext
    */
-  public MockHttpServletRequest (@Nullable final ServletContext aServletContext, @Nullable final EHTTPMethod eMethod)
+  public MockHttpServletRequest (@Nullable final ServletContext aServletContext, @Nullable final EHttpMethod eMethod)
   {
     this (aServletContext, eMethod, DEFAULT_INVOKE_HTTP_LISTENER);
   }
@@ -198,7 +198,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see MockServletContext
    */
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext,
-                                 @Nullable final EHTTPMethod eMethod,
+                                 @Nullable final EHttpMethod eMethod,
                                  final boolean bInvokeHttpListeners)
   {
     m_aServletContext = aServletContext;
@@ -206,10 +206,10 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     m_aLocales.add (Locale.ENGLISH);
 
     // Add default HTTP header
-    addHeader (CHTTPHeader.USER_AGENT, getClass ().getName ());
+    addHeader (CHttpHeader.USER_AGENT, getClass ().getName ());
     // Disable GZip and Deflate!
-    addHeader (CHTTPHeader.ACCEPT_ENCODING, "*, gzip;q=0, x-gzip;q=0, deflate;q=0, compress;q=0, x-compress;q=0");
-    addHeader (CHTTPHeader.ACCEPT_CHARSET, AcceptCharsetHandler.ANY_CHARSET);
+    addHeader (CHttpHeader.ACCEPT_ENCODING, "*, gzip;q=0, x-gzip;q=0, deflate;q=0, compress;q=0, x-compress;q=0");
+    addHeader (CHttpHeader.ACCEPT_CHARSET, AcceptCharsetHandler.ANY_CHARSET);
 
     if (aServletContext != null && bInvokeHttpListeners)
     {
@@ -332,8 +332,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public MockHttpServletRequest setContent (@Nullable final byte [] aContent)
   {
     m_aContent = ArrayHelper.getCopy (aContent);
-    removeHeader (CHTTPHeader.CONTENT_LENGTH);
-    addHeader (CHTTPHeader.CONTENT_LENGTH, Integer.toString (m_aContent.length));
+    removeHeader (CHttpHeader.CONTENT_LENGTH);
+    addHeader (CHttpHeader.CONTENT_LENGTH, Integer.toString (m_aContent.length));
     return this;
   }
 
@@ -353,9 +353,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public MockHttpServletRequest setContentType (@Nullable final String sContentType)
   {
     m_sContentType = sContentType;
-    removeHeader (CHTTPHeader.CONTENT_TYPE);
+    removeHeader (CHttpHeader.CONTENT_TYPE);
     if (sContentType != null)
-      addHeader (CHTTPHeader.CONTENT_TYPE, sContentType);
+      addHeader (CHttpHeader.CONTENT_TYPE, sContentType);
     return this;
   }
 
@@ -885,14 +885,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   @Nonnull
-  public final MockHttpServletRequest setMethod (@Nullable final EHTTPMethod eMethod)
+  public final MockHttpServletRequest setMethod (@Nullable final EHttpMethod eMethod)
   {
     m_eMethod = eMethod;
     return this;
   }
 
   @Nullable
-  public EHTTPMethod getMethodEnum ()
+  public EHttpMethod getMethodEnum ()
   {
     return m_eMethod;
   }

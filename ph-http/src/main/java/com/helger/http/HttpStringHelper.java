@@ -16,7 +16,6 @@
  */
 package com.helger.http;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
@@ -31,7 +30,7 @@ import com.helger.commons.string.StringHelper;
  * @author Philip Helger
  */
 @Immutable
-public final class HTTPStringHelper
+public final class HttpStringHelper
 {
   /** Minimum index (inclusive) */
   public static final int MIN_INDEX = 0;
@@ -215,9 +214,9 @@ public final class HTTPStringHelper
   }
 
   @PresentForCodeCoverage
-  private static final HTTPStringHelper s_aInstance = new HTTPStringHelper ();
+  private static final HttpStringHelper s_aInstance = new HttpStringHelper ();
 
-  private HTTPStringHelper ()
+  private HttpStringHelper ()
   {}
 
   public static boolean isChar (final int n)
@@ -500,23 +499,5 @@ public final class HTTPStringHelper
     final int nMapping = MAPPINGS[n];
     return (nMapping & (ALPHA | DIGIT | RESERVED | EXTRA | SAFE | UNSAFE)) == 0 ||
            (nMapping & (ALPHA | DIGIT | EXTRA | SAFE)) != 0;
-  }
-
-  /**
-   * Avoid having header values spanning multiple lines. This has been
-   * deprecated by RFC 7230 and Jetty 9.3 refuses to parse these requests with
-   * HTTP 400 by default.
-   *
-   * @param sValue
-   *        The source header value. May be <code>null</code>.
-   * @return The unified header value without \r, \n and \t. Never
-   *         <code>null</code>.
-   */
-  @Nonnull
-  public static String getUnifiedHTTPHeaderValue (@Nullable final String sValue)
-  {
-    final StringBuilder aSB = new StringBuilder ();
-    StringHelper.replaceMultipleTo (sValue, new char [] { '\r', '\n', '\t' }, ' ', aSB);
-    return aSB.toString ();
   }
 }

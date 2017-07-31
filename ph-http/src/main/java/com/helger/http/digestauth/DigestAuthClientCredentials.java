@@ -31,7 +31,7 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.HTTPStringHelper;
+import com.helger.http.HttpStringHelper;
 
 /**
  * Credentials for HTTP digest authentication
@@ -73,7 +73,7 @@ public class DigestAuthClientCredentials implements Serializable
     ValueEnforcer.notEmpty (sResponse, "Response");
     if (sResponse.length () != EXPECTED_RESPONSE_LENGTH)
       throw new IllegalArgumentException ("The 'response' value must be a 32-byte hex string!");
-    if (!HTTPStringHelper.isLowerHexNotEmpty (sResponse))
+    if (!HttpStringHelper.isLowerHexNotEmpty (sResponse))
       throw new IllegalArgumentException ("The 'response' value must consist of all lowercase hex chars!");
     if (StringHelper.hasText (sMessageQOP) && StringHelper.hasNoText (sClientNonce))
       throw new IllegalArgumentException ("If 'qop' is present 'cnonce' must also be present!");
@@ -85,7 +85,7 @@ public class DigestAuthClientCredentials implements Serializable
       throw new IllegalArgumentException ("If 'qop' is not present 'nc' must also not be present!");
     if (sNonceCount != null && sNonceCount.length () != EXPECTED_NONCE_COUNT_LENGTH)
       throw new IllegalArgumentException ("The 'nonce-count' value must be a 8-byte hex string!");
-    if (sNonceCount != null && !HTTPStringHelper.isHexNotEmpty (sNonceCount))
+    if (sNonceCount != null && !HttpStringHelper.isHexNotEmpty (sNonceCount))
       throw new IllegalArgumentException ("The 'nonce-count' value must consist only of hex chars!");
     m_sUserName = sUserName;
     m_sRealm = sRealm;
@@ -181,27 +181,27 @@ public class DigestAuthClientCredentials implements Serializable
   @Nonempty
   public String getRequestValue ()
   {
-    final StringBuilder aSB = new StringBuilder (HTTPDigestAuth.HEADER_VALUE_PREFIX_DIGEST);
+    final StringBuilder aSB = new StringBuilder (HttpDigestAuth.HEADER_VALUE_PREFIX_DIGEST);
     aSB.append (" username=")
-       .append (HTTPStringHelper.getQuotedTextString (m_sUserName))
+       .append (HttpStringHelper.getQuotedTextString (m_sUserName))
        .append (", realm=")
-       .append (HTTPStringHelper.getQuotedTextString (m_sRealm))
+       .append (HttpStringHelper.getQuotedTextString (m_sRealm))
        .append (", nonce=")
-       .append (HTTPStringHelper.getQuotedTextString (m_sServerNonce))
+       .append (HttpStringHelper.getQuotedTextString (m_sServerNonce))
        .append (", uri=")
-       .append (HTTPStringHelper.getQuotedTextString (m_sDigestURI))
+       .append (HttpStringHelper.getQuotedTextString (m_sDigestURI))
        .append (", response=")
-       .append (HTTPStringHelper.getQuotedTextString (m_sResponse));
+       .append (HttpStringHelper.getQuotedTextString (m_sResponse));
     if (m_sAlgorithm != null)
       aSB.append (", algorithm=").append (m_sAlgorithm);
     if (m_sClientNonce != null)
-      aSB.append (", cnonce=").append (HTTPStringHelper.getQuotedTextString (m_sClientNonce));
+      aSB.append (", cnonce=").append (HttpStringHelper.getQuotedTextString (m_sClientNonce));
     if (m_sOpaque != null)
-      aSB.append (", opaque=").append (HTTPStringHelper.getQuotedTextString (m_sOpaque));
+      aSB.append (", opaque=").append (HttpStringHelper.getQuotedTextString (m_sOpaque));
     if (m_sMessageQOP != null)
       aSB.append (", qop=").append (m_sMessageQOP);
     if (m_nNonceCount > 0)
-      aSB.append (", nc=").append (HTTPDigestAuth.getNonceCountString (m_nNonceCount));
+      aSB.append (", nc=").append (HttpDigestAuth.getNonceCountString (m_nNonceCount));
     return aSB.toString ();
   }
 

@@ -29,7 +29,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.digestauth.HTTPDigestAuth;
+import com.helger.http.digestauth.HttpDigestAuth;
 
 /**
  * Handling for HTTP Basic Authentication
@@ -37,17 +37,17 @@ import com.helger.http.digestauth.HTTPDigestAuth;
  * @author Philip Helger
  */
 @Immutable
-public final class HTTPBasicAuth
+public final class HttpBasicAuth
 {
   public static final String HEADER_VALUE_PREFIX_BASIC = "Basic";
   static final char USERNAME_PASSWORD_SEPARATOR = ':';
   static final Charset CHARSET = StandardCharsets.ISO_8859_1;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HTTPDigestAuth.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpDigestAuth.class);
 
   @PresentForCodeCoverage
-  private static final HTTPBasicAuth s_aInstance = new HTTPBasicAuth ();
+  private static final HttpBasicAuth s_aInstance = new HttpBasicAuth ();
 
-  private HTTPBasicAuth ()
+  private HttpBasicAuth ()
   {}
 
   /**

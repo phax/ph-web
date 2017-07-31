@@ -24,27 +24,18 @@ import com.helger.commons.lang.EnumHelper;
 import com.helger.commons.name.IHasName;
 
 /**
- * HTTP 1.1 methods.<br>
- * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+ * HTTP versions
  *
  * @author Philip Helger
  */
-public enum EHTTPMethod implements IHasName
+public enum EHttpVersion implements IHasName
 {
-  OPTIONS ("OPTIONS"),
-  GET ("GET"),
-  HEAD ("HEAD"),
-  POST ("POST"),
-  PUT ("PUT"),
-  DELETE ("DELETE"),
-  TRACE ("TRACE"),
-  CONNECT ("CONNECT"),
-  /* Extension as of RFC 5789 - partial PUT */
-  PATCH ("PATCH");
+  HTTP_10 ("HTTP/1.0"),
+  HTTP_11 ("HTTP/1.1");
 
   private final String m_sName;
 
-  private EHTTPMethod (@Nonnull @Nonempty final String sName)
+  private EHttpVersion (@Nonnull @Nonempty final String sName)
   {
     m_sName = sName;
   }
@@ -56,24 +47,9 @@ public enum EHTTPMethod implements IHasName
     return m_sName;
   }
 
-  public boolean isIdempodent ()
-  {
-    return this == GET || this == HEAD || this == PUT || this == DELETE || this == OPTIONS || this == TRACE;
-  }
-
-  public boolean isContentAllowed ()
-  {
-    return this != HEAD;
-  }
-
-  public boolean isPayloadInBody ()
-  {
-    return this == POST || this == PUT || this == PATCH;
-  }
-
   @Nullable
-  public static EHTTPMethod getFromNameOrNull (@Nullable final String sName)
+  public static EHttpVersion getFromNameOrNull (@Nullable final String sName)
   {
-    return EnumHelper.getFromNameOrNull (EHTTPMethod.class, sName);
+    return EnumHelper.getFromNameOrNull (EHttpVersion.class, sName);
   }
 }

@@ -24,7 +24,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.HTTPStringHelper;
+import com.helger.http.HttpStringHelper;
 
 @NotThreadSafe
 public class BasicAuthServerBuilder implements Serializable
@@ -45,7 +45,7 @@ public class BasicAuthServerBuilder implements Serializable
   @Nonnull
   public BasicAuthServerBuilder setRealm (@Nonnull final String sRealm)
   {
-    ValueEnforcer.isTrue (HTTPStringHelper.isQuotedTextContent (sRealm), () -> "Realm is invalid: " + sRealm);
+    ValueEnforcer.isTrue (HttpStringHelper.isQuotedTextContent (sRealm), () -> "Realm is invalid: " + sRealm);
 
     m_sRealm = sRealm;
     return this;
@@ -62,9 +62,9 @@ public class BasicAuthServerBuilder implements Serializable
   {
     if (!isValid ())
       throw new IllegalStateException ("Built Basic auth is not valid!");
-    final StringBuilder ret = new StringBuilder (HTTPBasicAuth.HEADER_VALUE_PREFIX_BASIC);
+    final StringBuilder ret = new StringBuilder (HttpBasicAuth.HEADER_VALUE_PREFIX_BASIC);
     if (m_sRealm != null)
-      ret.append (" realm=").append (HTTPStringHelper.getQuotedTextString (m_sRealm));
+      ret.append (" realm=").append (HttpStringHelper.getQuotedTextString (m_sRealm));
     return ret.toString ();
   }
 

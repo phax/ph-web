@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.http.csp.v2;
+package com.helger.http.csp;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,7 +26,6 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.text.util.ABNF;
-import com.helger.http.csp.ICSPDirective;
 
 /**
  * A single CSP 2.0 directive. It's a name-value-pair.

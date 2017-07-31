@@ -14,11 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.http.csp.v2;
+package com.helger.http.csp;
 
 import javax.annotation.concurrent.NotThreadSafe;
-
-import com.helger.http.csp.AbstractCSPPolicy;
 
 /**
  * CSP 2.0 policy. It's a list of {@link CSP2Directive}.<br>

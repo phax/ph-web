@@ -35,7 +35,7 @@ import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
@@ -167,7 +167,7 @@ public final class RequestLogger
 
   @Nonnull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HTTPHeaderMap aMap)
+  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HttpHeaderMap aMap)
   {
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     for (final Map.Entry <String, ICommonsList <String>> aEntry : aMap)

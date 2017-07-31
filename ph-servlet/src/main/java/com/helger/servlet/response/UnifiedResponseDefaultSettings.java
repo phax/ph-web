@@ -30,13 +30,13 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHTTPHeader;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.CHttpHeader;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.http.CacheControlBuilder;
-import com.helger.http.EHTTPReferrerPolicy;
+import com.helger.http.EHttpReferrerPolicy;
 
 /**
  * This class encapsulates default settings to be applied to all
@@ -50,7 +50,7 @@ public final class UnifiedResponseDefaultSettings
 {
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final HTTPHeaderMap s_aResponseHeaderMap = new HTTPHeaderMap ();
+  private static final HttpHeaderMap s_aResponseHeaderMap = new HttpHeaderMap ();
   @GuardedBy ("s_aRWLock")
   private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap <> ();
 
@@ -60,7 +60,7 @@ public final class UnifiedResponseDefaultSettings
     setEnableXSSFilter (true);
     setStrictTransportSecurity (CGlobal.SECONDS_PER_HOUR, true);
     setXFrameOptions (EXFrameOptionType.SAMEORIGIN, null);
-    setReferrerPolicy (EHTTPReferrerPolicy.NONE);
+    setReferrerPolicy (EHttpReferrerPolicy.NONE);
   }
 
   private UnifiedResponseDefaultSettings ()
@@ -71,7 +71,7 @@ public final class UnifiedResponseDefaultSettings
    */
   @Nonnull
   @ReturnsMutableCopy
-  public static HTTPHeaderMap getResponseHeaderMap ()
+  public static HttpHeaderMap getResponseHeaderMap ()
   {
     return s_aRWLock.readLocked (s_aResponseHeaderMap::getClone);
   }
@@ -89,9 +89,9 @@ public final class UnifiedResponseDefaultSettings
   public static void setAllowMimeSniffing (final boolean bAllow)
   {
     if (bAllow)
-      removeResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+      removeResponseHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     else
-      setResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+      setResponseHeader (CHttpHeader.X_CONTENT_TYPE_OPTIONS, CHttpHeader.VALUE_NOSNIFF);
   }
 
   /**
@@ -109,9 +109,9 @@ public final class UnifiedResponseDefaultSettings
   public static void setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
-      setResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+      setResponseHeader (CHttpHeader.X_XSS_PROTECTION, "1; mode=block");
     else
-      removeResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
+      removeResponseHeaders (CHttpHeader.X_XSS_PROTECTION);
   }
 
   /**
@@ -131,10 +131,10 @@ public final class UnifiedResponseDefaultSettings
   public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds,
                                                  final boolean bIncludeSubdomains)
   {
-    setResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+    setResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                        new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
                                                               (bIncludeSubdomains ? ";" +
-                                                                                    CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                    CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
                                                                                   : ""));
   }
 
@@ -164,10 +164,10 @@ public final class UnifiedResponseDefaultSettings
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS,
+      setResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
                          eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
-      setResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
+      setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
   }
 
   /**
@@ -177,11 +177,11 @@ public final class UnifiedResponseDefaultSettings
    * @param eReferrerPolicy
    *        Policy to use. May not be <code>null</code>.
    */
-  public static void setReferrerPolicy (@Nonnull final EHTTPReferrerPolicy eReferrerPolicy)
+  public static void setReferrerPolicy (@Nonnull final EHttpReferrerPolicy eReferrerPolicy)
   {
     ValueEnforcer.notNull (eReferrerPolicy, "ReferrerPolicy");
 
-    setResponseHeader (CHTTPHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
+    setResponseHeader (CHttpHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
   }
 
   /**

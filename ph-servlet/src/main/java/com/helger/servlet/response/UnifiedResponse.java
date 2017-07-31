@@ -49,8 +49,8 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.http.CHTTPHeader;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.CHttpHeader;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.stream.StreamHelper;
@@ -65,8 +65,8 @@ import com.helger.commons.url.URLHelper;
 import com.helger.http.AcceptCharsetList;
 import com.helger.http.AcceptMimeTypeList;
 import com.helger.http.CacheControlBuilder;
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.http.QValue;
 import com.helger.http.RFC5987Encoder;
 import com.helger.servlet.ServletSettings;
@@ -105,8 +105,8 @@ public class UnifiedResponse
   private static final AtomicInteger s_aResponseNum = new AtomicInteger (0);
 
   // Input fields set from request
-  private final EHTTPVersion m_eHTTPVersion;
-  private final EHTTPMethod m_eHTTPMethod;
+  private final EHttpVersion m_eHTTPVersion;
+  private final EHttpMethod m_eHTTPMethod;
   private final HttpServletRequest m_aHttpRequest;
   private final AcceptCharsetList m_aAcceptCharsetList;
   private final AcceptMimeTypeList m_aAcceptMimeTypeList;
@@ -133,7 +133,7 @@ public class UnifiedResponse
   private EContentDispositionType m_eContentDispositionType = DEFAULT_CONTENT_DISPOSITION_TYPE;
   private String m_sContentDispositionFilename;
   private CacheControlBuilder m_aCacheControl;
-  private final HTTPHeaderMap m_aResponseHeaderMap = new HTTPHeaderMap ();
+  private final HttpHeaderMap m_aResponseHeaderMap = new HttpHeaderMap ();
   private int m_nStatusCode = CGlobal.ILLEGAL_UINT;
   private String m_sRedirectTargetUrl;
   private ERedirectMode m_eRedirectMode;
@@ -159,7 +159,7 @@ public class UnifiedResponse
   private boolean m_bAlreadyEmittedRequestHeaders = false;
 
   /** This maps keeps all the response headers for later emitting. */
-  private final HTTPHeaderMap m_aRequestHeaderMap;
+  private final HttpHeaderMap m_aRequestHeaderMap;
 
   /**
    * An optional encode to be used to determine if a content-disposition
@@ -184,8 +184,8 @@ public class UnifiedResponse
    * @param aHttpRequest
    *        The main HTTP request
    */
-  public UnifiedResponse (@Nonnull final EHTTPVersion eHTTPVersion,
-                          @Nonnull final EHTTPMethod eHTTPMethod,
+  public UnifiedResponse (@Nonnull final EHttpVersion eHTTPVersion,
+                          @Nonnull final EHttpMethod eHTTPMethod,
                           @Nonnull final HttpServletRequest aHttpRequest)
   {
     m_eHTTPVersion = ValueEnforcer.notNull (eHTTPVersion, "HTTPVersion");
@@ -255,7 +255,7 @@ public class UnifiedResponse
    * @return The HTTP version of the request. Never <code>null</code>.
    */
   @Nonnull
-  public final EHTTPVersion getHTTPVersion ()
+  public final EHttpVersion getHTTPVersion ()
   {
     return m_eHTTPVersion;
   }
@@ -264,7 +264,7 @@ public class UnifiedResponse
    * @return The HTTP method of the request. Never <code>null</code>.
    */
   @Nonnull
-  public final EHTTPMethod getHTTPMethod ()
+  public final EHttpMethod getHTTPMethod ()
   {
     return m_eHTTPMethod;
   }
@@ -464,31 +464,31 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setExpires (@Nonnull final LocalDateTime aDT)
   {
-    m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES, aDT);
+    m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES, aDT);
     return this;
   }
 
   @Nonnull
   public UnifiedResponse removeExpires ()
   {
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.EXPIRES);
+    m_aResponseHeaderMap.removeHeaders (CHttpHeader.EXPIRES);
     return this;
   }
 
   @Nonnull
   public UnifiedResponse setLastModified (@Nonnull final LocalDateTime aDT)
   {
-    if (m_eHTTPMethod != EHTTPMethod.GET && m_eHTTPMethod != EHTTPMethod.HEAD)
+    if (m_eHTTPMethod != EHttpMethod.GET && m_eHTTPMethod != EHttpMethod.HEAD)
       logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
 
-    m_aResponseHeaderMap.setDateHeader (CHTTPHeader.LAST_MODIFIED, aDT);
+    m_aResponseHeaderMap.setDateHeader (CHttpHeader.LAST_MODIFIED, aDT);
     return this;
   }
 
   @Nonnull
   public UnifiedResponse removeLastModified ()
   {
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.LAST_MODIFIED);
+    m_aResponseHeaderMap.removeHeaders (CHttpHeader.LAST_MODIFIED);
     return this;
   }
 
@@ -509,10 +509,10 @@ public class UnifiedResponse
       throw new IllegalArgumentException ("Etag must start with a '\"' character or with 'W/\"': " + sETag);
     if (!sETag.endsWith ("\""))
       throw new IllegalArgumentException ("Etag must end with a '\"' character: " + sETag);
-    if (m_eHTTPMethod != EHTTPMethod.GET && m_eHTTPMethod != EHTTPMethod.HEAD)
+    if (m_eHTTPMethod != EHttpMethod.GET && m_eHTTPMethod != EHttpMethod.HEAD)
       logWarn ("Setting an ETag on a non-GET/HEAD request may have no impact!");
 
-    m_aResponseHeaderMap.setHeader (CHTTPHeader.ETAG, sETag);
+    m_aResponseHeaderMap.setHeader (CHttpHeader.ETAG, sETag);
     return this;
   }
 
@@ -529,7 +529,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setETagIfApplicable (@Nonnull @Nonempty final String sETag)
   {
-    if (m_eHTTPVersion == EHTTPVersion.HTTP_11)
+    if (m_eHTTPVersion == EHttpVersion.HTTP_11)
       setETag (sETag);
     return this;
   }
@@ -542,7 +542,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse removeETag ()
   {
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.ETAG);
+    m_aResponseHeaderMap.removeHeaders (CHttpHeader.ETAG);
     return this;
   }
 
@@ -698,7 +698,7 @@ public class UnifiedResponse
    */
   @Nonnull
   @ReturnsMutableObject ("design")
-  protected HTTPHeaderMap getResponseHeaderMap ()
+  protected HttpHeaderMap getResponseHeaderMap ()
   {
     return m_aResponseHeaderMap;
   }
@@ -716,7 +716,7 @@ public class UnifiedResponse
     removeCacheControl ();
     removeETag ();
     removeLastModified ();
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.PRAGMA);
+    m_aResponseHeaderMap.removeHeaders (CHttpHeader.PRAGMA);
     return this;
   }
 
@@ -736,10 +736,10 @@ public class UnifiedResponse
       case HTTP_10:
       {
         // Set to expire far in the past for HTTP/1.0.
-        m_aResponseHeaderMap.setHeader (CHTTPHeader.EXPIRES, ResponseHelperSettings.EXPIRES_NEVER_STRING);
+        m_aResponseHeaderMap.setHeader (CHttpHeader.EXPIRES, ResponseHelperSettings.EXPIRES_NEVER_STRING);
 
         // Set standard HTTP/1.0 no-cache header.
-        m_aResponseHeaderMap.setHeader (CHTTPHeader.PRAGMA, "no-cache");
+        m_aResponseHeaderMap.setHeader (CHttpHeader.PRAGMA, "no-cache");
         break;
       }
       case HTTP_11:
@@ -781,13 +781,13 @@ public class UnifiedResponse
     // Note: don't remove Last-Modified and ETag!
     removeExpires ();
     removeCacheControl ();
-    m_aResponseHeaderMap.removeHeaders (CHTTPHeader.PRAGMA);
+    m_aResponseHeaderMap.removeHeaders (CHttpHeader.PRAGMA);
 
     switch (m_eHTTPVersion)
     {
       case HTTP_10:
       {
-        m_aResponseHeaderMap.setDateHeader (CHTTPHeader.EXPIRES,
+        m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
                                             PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
         break;
       }
@@ -848,7 +848,7 @@ public class UnifiedResponse
    * Special handling for returning status code 401 UNAUTHORIZED.
    *
    * @param sAuthenticate
-   *        The string to be used for the {@link CHTTPHeader#WWW_AUTHENTICATE}
+   *        The string to be used for the {@link CHttpHeader#WWW_AUTHENTICATE}
    *        response header. May be <code>null</code> or empty.
    * @return this
    */
@@ -857,7 +857,7 @@ public class UnifiedResponse
   {
     _setStatus (HttpServletResponse.SC_UNAUTHORIZED);
     if (StringHelper.hasText (sAuthenticate))
-      m_aResponseHeaderMap.setHeader (CHTTPHeader.WWW_AUTHENTICATE, sAuthenticate);
+      m_aResponseHeaderMap.setHeader (CHttpHeader.WWW_AUTHENTICATE, sAuthenticate);
     return this;
   }
 
@@ -1016,9 +1016,9 @@ public class UnifiedResponse
   public UnifiedResponse setAllowMimeSniffing (final boolean bAllow)
   {
     if (bAllow)
-      removeCustomResponseHeaders (CHTTPHeader.X_CONTENT_TYPE_OPTIONS);
+      removeCustomResponseHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     else
-      setCustomResponseHeader (CHTTPHeader.X_CONTENT_TYPE_OPTIONS, CHTTPHeader.VALUE_NOSNIFF);
+      setCustomResponseHeader (CHttpHeader.X_CONTENT_TYPE_OPTIONS, CHttpHeader.VALUE_NOSNIFF);
     return this;
   }
 
@@ -1040,9 +1040,9 @@ public class UnifiedResponse
   public UnifiedResponse setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
-      setCustomResponseHeader (CHTTPHeader.X_XSS_PROTECTION, "1; mode=block");
+      setCustomResponseHeader (CHttpHeader.X_XSS_PROTECTION, "1; mode=block");
     else
-      removeCustomResponseHeaders (CHTTPHeader.X_XSS_PROTECTION);
+      removeCustomResponseHeaders (CHttpHeader.X_XSS_PROTECTION);
     return this;
   }
 
@@ -1064,10 +1064,10 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
-    setCustomResponseHeader (CHTTPHeader.STRICT_TRANSPORT_SECURITY,
+    setCustomResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                              new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
                                                                     (bIncludeSubdomains ? ";" +
-                                                                                          CHTTPHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                          CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
                                                                                         : ""));
     return this;
   }
@@ -1081,7 +1081,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse removeStrictTransportSecurity ()
   {
-    removeCustomResponseHeaders (CHTTPHeader.STRICT_TRANSPORT_SECURITY);
+    removeCustomResponseHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY);
     return this;
   }
 
@@ -1114,10 +1114,10 @@ public class UnifiedResponse
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS,
+      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
                                eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
-      setCustomResponseHeader (CHTTPHeader.X_FRAME_OPTIONS, eType.getID ());
+      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;
   }
 
@@ -1130,7 +1130,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse removeXFrameOptions ()
   {
-    removeCustomResponseHeaders (CHTTPHeader.X_FRAME_OPTIONS);
+    removeCustomResponseHeaders (CHttpHeader.X_FRAME_OPTIONS);
     return this;
   }
 
@@ -1197,14 +1197,14 @@ public class UnifiedResponse
 
   private void _verifyCachingIntegrity ()
   {
-    final boolean bIsHttp11 = m_eHTTPVersion == EHTTPVersion.HTTP_11;
-    final boolean bExpires = m_aResponseHeaderMap.containsHeaders (CHTTPHeader.EXPIRES);
+    final boolean bIsHttp11 = m_eHTTPVersion == EHttpVersion.HTTP_11;
+    final boolean bExpires = m_aResponseHeaderMap.containsHeaders (CHttpHeader.EXPIRES);
     final boolean bCacheControl = m_aCacheControl != null;
-    final boolean bLastModified = m_aResponseHeaderMap.containsHeaders (CHTTPHeader.LAST_MODIFIED);
-    final boolean bETag = m_aResponseHeaderMap.containsHeaders (CHTTPHeader.ETAG);
+    final boolean bLastModified = m_aResponseHeaderMap.containsHeaders (CHttpHeader.LAST_MODIFIED);
+    final boolean bETag = m_aResponseHeaderMap.containsHeaders (CHttpHeader.ETAG);
 
     if (bExpires && bIsHttp11)
-      logInfo ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getAllHeaderValues (CHTTPHeader.EXPIRES));
+      logInfo ("Expires found in HTTP 1.1 response: " + m_aResponseHeaderMap.getAllHeaderValues (CHttpHeader.EXPIRES));
 
     if (bExpires && bCacheControl)
       logWarn ("Expires and Cache-Control are both present. Cache-Control takes precedence!");
@@ -1441,7 +1441,7 @@ public class UnifiedResponse
               throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
           }
           // Set the location header
-          aHttpResponse.addHeader (CHTTPHeader.LOCATION, sRealTargetURL);
+          aHttpResponse.addHeader (CHttpHeader.LOCATION, sRealTargetURL);
           break;
         default:
           throw new IllegalStateException ("Unimplemented redirect mode " + m_eRedirectMode + "!");
@@ -1469,9 +1469,9 @@ public class UnifiedResponse
           logWarn ("Ignoring provided content because a status code is specified!");
       }
       if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
-          !m_aResponseHeaderMap.containsHeaders (CHTTPHeader.WWW_AUTHENTICATE))
+          !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
         logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
-                 CHTTPHeader.WWW_AUTHENTICATE +
+                 CHttpHeader.WWW_AUTHENTICATE +
                  " HTTP response header is set!");
 
       // Content may be present so, sendError is not an option here!
@@ -1501,7 +1501,7 @@ public class UnifiedResponse
     {
       final String sCacheControlValue = m_aCacheControl.getAsHTTPHeaderValue ();
       if (StringHelper.hasText (sCacheControlValue))
-        aHttpResponse.setHeader (CHTTPHeader.CACHE_CONTROL, sCacheControlValue);
+        aHttpResponse.setHeader (CHttpHeader.CACHE_CONTROL, sCacheControlValue);
       else
         logWarn ("An empty Cache-Control was provided!");
     }
@@ -1535,7 +1535,7 @@ public class UnifiedResponse
           aSB.append ("; filename*=UTF-8''").append (sRFC5987Filename);
       }
 
-      aHttpResponse.setHeader (CHTTPHeader.CONTENT_DISPOSITION, aSB.toString ());
+      aHttpResponse.setHeader (CHttpHeader.CONTENT_DISPOSITION, aSB.toString ());
       if (m_aMimeType == null)
       {
         logWarn ("Content-Disposition is specified but no MimeType is set. Using the default download MimeType.");

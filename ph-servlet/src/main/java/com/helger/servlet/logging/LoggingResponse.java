@@ -21,14 +21,14 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
 
 final class LoggingResponse implements Serializable
 {
   private int m_nStatus;
-  private HTTPHeaderMap m_aHeaders;
+  private HttpHeaderMap m_aHeaders;
   private String m_sBody;
 
   public int getStatus ()
@@ -42,12 +42,12 @@ final class LoggingResponse implements Serializable
   }
 
   @Nullable
-  public HTTPHeaderMap getHeaders ()
+  public HttpHeaderMap getHeaders ()
   {
     return m_aHeaders;
   }
 
-  public void setHeaders (@Nullable final HTTPHeaderMap aHeaders)
+  public void setHeaders (@Nullable final HttpHeaderMap aHeaders)
   {
     m_aHeaders = aHeaders;
   }

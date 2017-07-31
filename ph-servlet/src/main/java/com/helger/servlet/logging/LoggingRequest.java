@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
 
@@ -32,7 +32,7 @@ final class LoggingRequest implements Serializable
   private String m_sMethod;
   private String m_sPath;
   private ICommonsMap <String, String> m_aParams;
-  private HTTPHeaderMap m_aHeaders;
+  private HttpHeaderMap m_aHeaders;
   private String m_sBody;
 
   @Nullable
@@ -80,12 +80,12 @@ final class LoggingRequest implements Serializable
   }
 
   @Nullable
-  public HTTPHeaderMap getHeaders ()
+  public HttpHeaderMap getHeaders ()
   {
     return m_aHeaders;
   }
 
-  public void setHeaders (@Nullable final HTTPHeaderMap aHeaders)
+  public void setHeaders (@Nullable final HttpHeaderMap aHeaders)
   {
     m_aHeaders = aHeaders;
   }

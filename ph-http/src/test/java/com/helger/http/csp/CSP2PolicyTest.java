@@ -14,12 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.http.csp.v2;
+package com.helger.http.csp;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.helger.http.csp.CSP2Directive;
+import com.helger.http.csp.CSP2Policy;
+import com.helger.http.csp.CSP2SourceList;
 import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 
 /**

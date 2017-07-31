@@ -34,7 +34,7 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 
 /**
  * This class encapsulates all the parameters necessary to handle asynchronous
@@ -52,12 +52,12 @@ public class ServletAsyncSpec
   public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false,
                                                                          NO_TIMEOUT,
                                                                          (Iterable <? extends AsyncListener>) null,
-                                                                         (Set <EHTTPMethod>) null);
+                                                                         (Set <EHttpMethod>) null);
 
   private final boolean m_bAsynchronous;
   private final long m_nTimeoutMillis;
   private final ICommonsList <AsyncListener> m_aAsyncListeners;
-  private final EnumSet <EHTTPMethod> m_aAsyncHTTPMethods;
+  private final EnumSet <EHttpMethod> m_aAsyncHTTPMethods;
 
   /**
    * Constructor
@@ -77,7 +77,7 @@ public class ServletAsyncSpec
   protected ServletAsyncSpec (final boolean bAsynchronous,
                               @CheckForSigned final long nTimeoutMillis,
                               @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
-                              @Nullable final Set <EHTTPMethod> aAsyncHTTPMethods)
+                              @Nullable final Set <EHttpMethod> aAsyncHTTPMethods)
   {
     if (bAsynchronous)
     {
@@ -92,7 +92,7 @@ public class ServletAsyncSpec
     m_bAsynchronous = bAsynchronous;
     m_nTimeoutMillis = nTimeoutMillis;
     m_aAsyncListeners = new CommonsArrayList <> (aAsyncListeners);
-    m_aAsyncHTTPMethods = aAsyncHTTPMethods == null ? EnumSet.noneOf (EHTTPMethod.class)
+    m_aAsyncHTTPMethods = aAsyncHTTPMethods == null ? EnumSet.noneOf (EHttpMethod.class)
                                                     : EnumSet.copyOf (aAsyncHTTPMethods);
   }
 
@@ -120,7 +120,7 @@ public class ServletAsyncSpec
    *         synchronous. If it is asynchronous the HTTP method is also a
    *         determinator for whether a request is to be handled asynchronously
    *         or not.
-   * @see #isAsyncHTTPMethod(EHTTPMethod)
+   * @see #isAsyncHTTPMethod(EHttpMethod)
    */
   public boolean isAsynchronous ()
   {
@@ -153,12 +153,12 @@ public class ServletAsyncSpec
    */
   @Nonnull
   @ReturnsMutableCopy
-  public EnumSet <EHTTPMethod> getAllAsyncHTTPMethods ()
+  public EnumSet <EHttpMethod> getAllAsyncHTTPMethods ()
   {
     return EnumSet.copyOf (m_aAsyncHTTPMethods);
   }
 
-  public boolean isAsyncHTTPMethod (@Nonnull final EHTTPMethod eHTTPMethod)
+  public boolean isAsyncHTTPMethod (@Nonnull final EHttpMethod eHTTPMethod)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     return m_aAsyncHTTPMethods.contains (eHTTPMethod);
@@ -210,7 +210,7 @@ public class ServletAsyncSpec
   @Nonnull
   public static ServletAsyncSpec createAsync (@CheckForSigned final long nTimeoutMillis,
                                               @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
-                                              @Nonnull @Nonempty final Set <EHTTPMethod> aAsyncHTTPMethods)
+                                              @Nonnull @Nonempty final Set <EHttpMethod> aAsyncHTTPMethods)
   {
     return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners, aAsyncHTTPMethods);
   }
@@ -220,6 +220,6 @@ public class ServletAsyncSpec
   {
     return createAsync (GlobalDebug.isDebugMode () ? 0 : 30 * CGlobal.MILLISECONDS_PER_SECOND,
                         null,
-                        EnumSet.of (EHTTPMethod.GET, EHTTPMethod.HEAD));
+                        EnumSet.of (EHttpMethod.GET, EHttpMethod.HEAD));
   }
 }

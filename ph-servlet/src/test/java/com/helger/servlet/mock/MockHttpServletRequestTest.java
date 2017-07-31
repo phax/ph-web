@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.http.EHTTPMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.ServletHelper;
 
 /**
@@ -38,7 +38,7 @@ public final class MockHttpServletRequestTest
     final MockServletContext aSC = MockServletContext.create (sContextPath);
     try
     {
-      final MockHttpServletRequest c = new MockHttpServletRequest (aSC, EHTTPMethod.GET);
+      final MockHttpServletRequest c = new MockHttpServletRequest (aSC, EHttpMethod.GET);
 
       c.setAllPaths (sContextPath + "/servlet?x=y");
       assertNull (c.getScheme ());

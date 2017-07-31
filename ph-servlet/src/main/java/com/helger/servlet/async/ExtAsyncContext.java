@@ -22,8 +22,8 @@ import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
 
 /**
@@ -35,8 +35,8 @@ import com.helger.servlet.ServletHelper;
 public class ExtAsyncContext
 {
   private final AsyncContext m_aAsyncContext;
-  private final EHTTPVersion m_eHttpVersion;
-  private final EHTTPMethod m_eHttpMethod;
+  private final EHttpVersion m_eHttpVersion;
+  private final EHttpMethod m_eHttpMethod;
   private final String m_sContextPath;
   private final String m_sPathInfo;
   private final String m_sQueryString;
@@ -45,8 +45,8 @@ public class ExtAsyncContext
   private boolean m_bSetAttrs = false;
 
   public ExtAsyncContext (@Nonnull final AsyncContext aAsyncContext,
-                          @Nonnull final EHTTPVersion eHttpVersion,
-                          @Nonnull final EHTTPMethod eHttpMethod,
+                          @Nonnull final EHttpVersion eHttpVersion,
+                          @Nonnull final EHttpMethod eHttpMethod,
                           @Nullable final String sContextPath,
                           @Nullable final String sPathInfo,
                           @Nullable final String sQueryString,
@@ -70,13 +70,13 @@ public class ExtAsyncContext
   }
 
   @Nonnull
-  public EHTTPVersion getHTTPVersion ()
+  public EHttpVersion getHTTPVersion ()
   {
     return m_eHttpVersion;
   }
 
   @Nonnull
-  public EHTTPMethod getHTTPMethod ()
+  public EHttpMethod getHTTPMethod ()
   {
     return m_eHttpMethod;
   }
@@ -116,8 +116,8 @@ public class ExtAsyncContext
   @Nonnull
   public static ExtAsyncContext create (@Nonnull final HttpServletRequest aHttpRequest,
                                         @Nonnull final HttpServletResponse aHttpResponse,
-                                        @Nonnull final EHTTPVersion eHttpVersion,
-                                        @Nonnull final EHTTPMethod eHttpMethod,
+                                        @Nonnull final EHttpVersion eHttpVersion,
+                                        @Nonnull final EHttpMethod eHttpMethod,
                                         @Nonnull final ServletAsyncSpec aAsyncSpec)
   {
     final AsyncContext aAsyncContext = aHttpRequest.startAsync (aHttpRequest, aHttpResponse);

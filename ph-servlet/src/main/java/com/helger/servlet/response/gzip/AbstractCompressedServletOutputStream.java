@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.http.CHTTPHeader;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
@@ -86,7 +86,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
     if (m_aCompressedOS != null)
     {
       // Remove header again
-      m_aHttpResponse.setHeader (CHTTPHeader.CONTENT_ENCODING, null);
+      m_aHttpResponse.setHeader (CHttpHeader.CONTENT_ENCODING, null);
       m_aCompressedOS = null;
     }
     m_bClosed = false;
@@ -112,11 +112,11 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
       if (m_aHttpResponse.isCommitted ())
         throw new IllegalStateException ("Response already committed");
 
-      m_aHttpResponse.setHeader (CHTTPHeader.CONTENT_ENCODING, m_sContentEncoding);
+      m_aHttpResponse.setHeader (CHttpHeader.CONTENT_ENCODING, m_sContentEncoding);
 
       // Check if header was really set (may e.g. not be the case when something
       // is included like a JSP)
-      if (m_aHttpResponse.containsHeader (CHTTPHeader.CONTENT_ENCODING))
+      if (m_aHttpResponse.containsHeader (CHttpHeader.CONTENT_ENCODING))
       {
         _debugLog (true, sDebugInfo);
 

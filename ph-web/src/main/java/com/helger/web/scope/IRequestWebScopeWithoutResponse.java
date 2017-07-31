@@ -33,8 +33,8 @@ import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.scope.IRequestScope;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
@@ -136,10 +136,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   }
 
   /**
-   * @return The {@link EHTTPVersion} of the request.
+   * @return The {@link EHttpVersion} of the request.
    */
   @Nullable
-  default EHTTPVersion getHttpVersion ()
+  default EHttpVersion getHttpVersion ()
   {
     return RequestHelper.getHttpVersion (getRequest ());
   }
@@ -314,10 +314,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   }
 
   /**
-   * @return The {@link EHTTPMethod} matching the {@link #getMethod()}
+   * @return The {@link EHttpMethod} matching the {@link #getMethod()}
    */
   @Nullable
-  default EHTTPMethod getHttpMethod ()
+  default EHttpMethod getHttpMethod ()
   {
     return RequestHelper.getHttpMethod (getRequest ());
   }

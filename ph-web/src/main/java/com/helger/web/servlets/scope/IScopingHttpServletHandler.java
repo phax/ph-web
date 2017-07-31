@@ -24,8 +24,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.http.EHTTPMethod;
-import com.helger.http.EHTTPVersion;
+import com.helger.http.EHttpMethod;
+import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
@@ -57,7 +57,7 @@ public interface IScopingHttpServletHandler extends Serializable
    */
   void handle (@Nonnull HttpServletRequest aHttpRequest,
                @Nonnull HttpServletResponse aHttpResponse,
-               @Nonnull EHTTPVersion eHttpVersion,
-               @Nonnull EHTTPMethod eHttpMethod,
+               @Nonnull EHttpVersion eHttpVersion,
+               @Nonnull EHttpMethod eHttpMethod,
                @Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

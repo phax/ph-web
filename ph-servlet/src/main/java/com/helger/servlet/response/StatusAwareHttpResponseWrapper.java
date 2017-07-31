@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.http.HTTPHeaderMap;
+import com.helger.commons.http.HttpHeaderMap;
 
 /**
  * A special {@link HttpServletResponseWrapper} that tracks the used status
@@ -37,7 +37,7 @@ import com.helger.commons.http.HTTPHeaderMap;
 @NotThreadSafe
 public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
 {
-  private final HTTPHeaderMap m_aHeaderMap = new HTTPHeaderMap ();
+  private final HttpHeaderMap m_aHeaderMap = new HttpHeaderMap ();
   private int m_nStatusCode = SC_OK;
 
   public StatusAwareHttpResponseWrapper (@Nonnull final HttpServletResponse aHttpResponse)
@@ -156,7 +156,7 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
 
   @Nonnull
   @ReturnsMutableObject ("design")
-  public HTTPHeaderMap getHeaderMap ()
+  public HttpHeaderMap getHeaderMap ()
   {
     return m_aHeaderMap;
   }

@@ -28,11 +28,11 @@ import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.http.HTTPStringHelper;
+import com.helger.http.HttpStringHelper;
 
 /**
  * Helper class to build the value of the
- * {@link com.helger.commons.http.CHTTPHeader#WWW_AUTHENTICATE} value send from
+ * {@link com.helger.commons.http.CHttpHeader#WWW_AUTHENTICATE} value send from
  * the server to client.
  *
  * @author Philip Helger
@@ -66,7 +66,7 @@ public class DigestAuthServerBuilder implements Serializable
   @Nonnull
   public DigestAuthServerBuilder setRealm (@Nonnull final String sRealm)
   {
-    if (!HTTPStringHelper.isQuotedTextContent (sRealm))
+    if (!HttpStringHelper.isQuotedTextContent (sRealm))
       throw new IllegalArgumentException ("realm is invalid: " + sRealm);
 
     m_sRealm = sRealm;
@@ -141,7 +141,7 @@ public class DigestAuthServerBuilder implements Serializable
   @Nonnull
   public DigestAuthServerBuilder setNonce (@Nonnull final String sNonce)
   {
-    if (!HTTPStringHelper.isQuotedTextContent (sNonce))
+    if (!HttpStringHelper.isQuotedTextContent (sNonce))
       throw new IllegalArgumentException ("nonce is invalid: " + sNonce);
 
     m_sNonce = sNonce;
@@ -161,7 +161,7 @@ public class DigestAuthServerBuilder implements Serializable
   @Nonnull
   public DigestAuthServerBuilder setOpaque (@Nonnull final String sOpaque)
   {
-    if (!HTTPStringHelper.isQuotedTextContent (sOpaque))
+    if (!HttpStringHelper.isQuotedTextContent (sOpaque))
       throw new IllegalArgumentException ("opaque is invalid: " + sOpaque);
 
     m_sOpaque = sOpaque;
@@ -216,7 +216,7 @@ public class DigestAuthServerBuilder implements Serializable
   @Nonnull
   public DigestAuthServerBuilder setAlgorithm (@Nonnull final String sAlgorithm)
   {
-    if (!HTTPStringHelper.isToken (sAlgorithm))
+    if (!HttpStringHelper.isToken (sAlgorithm))
       throw new IllegalArgumentException ("The passed algorithm is not a valid token: " + sAlgorithm);
 
     m_sAlgorithm = sAlgorithm;
@@ -240,7 +240,7 @@ public class DigestAuthServerBuilder implements Serializable
   @Nonnull
   public DigestAuthServerBuilder addQOP (@Nonnull final String sQOP)
   {
-    if (!HTTPStringHelper.isToken (sQOP))
+    if (!HttpStringHelper.isToken (sQOP))
       throw new IllegalArgumentException ("The passed qop-option is not a token: " + sQOP);
 
     m_aQOPs.add (sQOP);
@@ -259,24 +259,24 @@ public class DigestAuthServerBuilder implements Serializable
     if (!isValid ())
       throw new IllegalStateException ("Built Digest auth is not valid!");
 
-    final StringBuilder ret = new StringBuilder (HTTPDigestAuth.HEADER_VALUE_PREFIX_DIGEST);
+    final StringBuilder ret = new StringBuilder (HttpDigestAuth.HEADER_VALUE_PREFIX_DIGEST);
     // Realm is required
-    ret.append (" realm=").append (HTTPStringHelper.getQuotedTextString (m_sRealm));
+    ret.append (" realm=").append (HttpStringHelper.getQuotedTextString (m_sRealm));
     if (m_aDomains.isNotEmpty ())
     {
       ret.append (", domain=")
-         .append (HTTPStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
+         .append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
     }
     // Nonce is required
-    ret.append (", nonce=").append (HTTPStringHelper.getQuotedTextString (m_sNonce));
+    ret.append (", nonce=").append (HttpStringHelper.getQuotedTextString (m_sNonce));
     if (m_sOpaque != null)
-      ret.append (", opaque=").append (HTTPStringHelper.getQuotedTextString (m_sOpaque));
+      ret.append (", opaque=").append (HttpStringHelper.getQuotedTextString (m_sOpaque));
     if (m_eStale.isDefined ())
       ret.append (", stale=").append (m_eStale.isTrue () ? "true" : "false");
     if (m_sAlgorithm != null)
       ret.append (", algorithm=").append (m_sAlgorithm);
     if (m_aQOPs.isNotEmpty ())
-      ret.append (", qop=").append (HTTPStringHelper.getQuotedTextString (StringHelper.getImploded (',', m_aQOPs)));
+      ret.append (", qop=").append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (',', m_aQOPs)));
 
     return ret.toString ();
   }

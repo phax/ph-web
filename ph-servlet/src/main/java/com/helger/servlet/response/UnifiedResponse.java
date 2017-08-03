@@ -1156,6 +1156,18 @@ public class UnifiedResponse
   }
 
   /**
+   * Add many custom headers at once.
+   *
+   * @param aOther
+   *        The headers to be added. May be <code>null</code>.
+   */
+  public void addCustomResponseHeaders (@Nullable final HttpHeaderMap aOther)
+  {
+    if (aOther != null)
+      m_aResponseHeaderMap.addAllHeaders (aOther);
+  }
+
+  /**
    * Sets a response header to the response according to the passed name and
    * value. An existing header entry with the same name is overridden.<br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
@@ -1173,6 +1185,20 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sValue, "Value");
 
     m_aResponseHeaderMap.setHeader (sName, sValue);
+  }
+
+  /**
+   * Set many custom headers at once. All existing headers are unconditionally
+   * removed.
+   *
+   * @param aOther
+   *        The headers to be set. May be <code>null</code>.
+   */
+  public void setCustomResponseHeaders (@Nullable final HttpHeaderMap aOther)
+  {
+    m_aResponseHeaderMap.removeAll ();
+    if (aOther != null)
+      m_aResponseHeaderMap.addAllHeaders (aOther);
   }
 
   /**
@@ -1245,28 +1271,28 @@ public class UnifiedResponse
   @Nonempty
   private static String _getAsStringMimeTypes (@Nonnull final ICommonsMap <IMimeType, QValue> aMap)
   {
-    final StringBuilder aSB = new StringBuilder ("{");
+    final StringBuilder aSB = new StringBuilder ().append ('{');
     for (final Map.Entry <IMimeType, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");
       aSB.append (aEntry.getKey ().getAsString ()).append ('=').append (aEntry.getValue ().getQuality ());
     }
-    return aSB.append ("}").toString ();
+    return aSB.append ('}').toString ();
   }
 
   @Nonnull
   @Nonempty
   private static String _getAsStringText (@Nonnull final ICommonsMap <String, QValue> aMap)
   {
-    final StringBuilder aSB = new StringBuilder ("{");
+    final StringBuilder aSB = new StringBuilder ().append ('{');
     for (final Map.Entry <String, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
     {
       if (aSB.length () > 1)
         aSB.append (", ");
       aSB.append (aEntry.getKey ()).append ('=').append (aEntry.getValue ().getQuality ());
     }
-    return aSB.append ("}").toString ();
+    return aSB.append ('}').toString ();
   }
 
   private void _applyLengthChecks (final long nContentLength)

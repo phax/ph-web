@@ -44,7 +44,7 @@ public class SessionApplicationWebScope extends SessionApplicationScope implemen
   public SessionApplicationWebScope (@Nonnull @Nonempty final String sScopeID)
   {
     super (sScopeID);
-    attrs ().beforeSetAttributeCallbacks ().add ( (aName, aNewValueValue) -> {
+    attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
       if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
         s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
       return EContinue.CONTINUE;

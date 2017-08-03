@@ -57,7 +57,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     super (aHttpSession.getId ());
     m_aHttpSession = aHttpSession;
 
-    attrs ().beforeSetAttributeCallbacks ().add ( (aName, aNewValueValue) -> {
+    attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
       if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
         s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
       return EContinue.CONTINUE;

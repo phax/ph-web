@@ -196,7 +196,7 @@ public class UnifiedResponse
     m_aRequestHeaderMap = RequestHelper.getRequestHeaderMap (aHttpRequest);
 
     // Copy all default settings
-    m_aResponseHeaderMap.addAllHeaders (UnifiedResponseDefaultSettings.getResponseHeaderMap ());
+    m_aResponseHeaderMap.setAllHeaders (UnifiedResponseDefaultSettings.getResponseHeaderMap ());
     if (UnifiedResponseDefaultSettings.hasCookies ())
     {
       m_aCookies = _createCookieMap ();
@@ -1164,7 +1164,7 @@ public class UnifiedResponse
   public void addCustomResponseHeaders (@Nullable final HttpHeaderMap aOther)
   {
     if (aOther != null)
-      m_aResponseHeaderMap.addAllHeaders (aOther);
+      m_aResponseHeaderMap.setAllHeaders (aOther);
   }
 
   /**
@@ -1198,7 +1198,7 @@ public class UnifiedResponse
   {
     m_aResponseHeaderMap.removeAll ();
     if (aOther != null)
-      m_aResponseHeaderMap.addAllHeaders (aOther);
+      m_aResponseHeaderMap.setAllHeaders (aOther);
   }
 
   /**

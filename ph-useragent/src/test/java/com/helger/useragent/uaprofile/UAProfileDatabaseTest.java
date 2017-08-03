@@ -58,13 +58,13 @@ public final class UAProfileDatabaseTest
     @ReturnsMutableCopy
     public ICommonsCollection <String> getHeaders (final String sName)
     {
-      return m_aMap.getAllHeaderValuesCaseInsensitive (sName);
+      return m_aMap.getAllHeaderValues (sName);
     }
 
     @Nullable
     public String getHeader (final String sName)
     {
-      return m_aMap.getFirstHeaderValueCaseInsensitive (sName);
+      return m_aMap.getFirstHeaderValue (sName);
     }
   }
 

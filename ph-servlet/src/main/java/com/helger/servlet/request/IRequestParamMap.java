@@ -80,14 +80,14 @@ public interface IRequestParamMap extends IHasSize, Serializable
   default BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : TypeConverter.convertIfNecessary (aItem.getValue (), BigInteger.class);
+    return aItem == null ? null : TypeConverter.convert (aItem.getValue (), BigInteger.class);
   }
 
   @Nullable
   default BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
-    return aItem == null ? null : TypeConverter.convertIfNecessary (aItem.getValue (), BigDecimal.class);
+    return aItem == null ? null : TypeConverter.convert (aItem.getValue (), BigDecimal.class);
   }
 
   @Nullable

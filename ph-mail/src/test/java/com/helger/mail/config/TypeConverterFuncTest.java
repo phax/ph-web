@@ -32,9 +32,9 @@ public final class TypeConverterFuncTest
   public void testEmailAddress ()
   {
     final EmailAddress aEA = new EmailAddress ("spam@helger.com", "Philip");
-    final InternetAddress aIA = TypeConverter.convertIfNecessary (aEA, InternetAddress.class);
+    final InternetAddress aIA = TypeConverter.convert (aEA, InternetAddress.class);
     assertNotNull (aIA);
-    final EmailAddress aEA2 = TypeConverter.convertIfNecessary (aIA, EmailAddress.class);
+    final EmailAddress aEA2 = TypeConverter.convert (aIA, EmailAddress.class);
     assertNotNull (aEA2);
     assertEquals (aEA, aEA2);
   }

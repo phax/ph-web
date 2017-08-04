@@ -91,7 +91,7 @@ public final class MailConverter
     aMIMEMessage.setRecipients (Message.RecipientType.BCC,
                                 InternetAddressHelper.getAsInternetAddressArray (aMailData.getAllBcc (), aCharset));
     if (aMailData.getSentDateTime () != null)
-      aMIMEMessage.setSentDate (TypeConverter.convertIfNecessary (aMailData.getSentDateTime (), Date.class));
+      aMIMEMessage.setSentDate (TypeConverter.convert (aMailData.getSentDateTime (), Date.class));
     if (aMailData.getSubject () != null)
       if (aCharset != null)
         setSubject (aMIMEMessage, aMailData.getSubject (), aCharset);

@@ -117,7 +117,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
     }
     LocalDateTime aErrorDT = PDTWebDateHelper.getLocalDateTimeFromXSD (sErrorDT);
     if (aErrorDT == null)
-      aErrorDT = TypeConverter.convertIfNecessary (sErrorDT, LocalDateTime.class);
+      aErrorDT = TypeConverter.convert (sErrorDT, LocalDateTime.class);
     if (aErrorDT == null)
     {
       s_aLogger.error ("Failed to parse error date '" + sErrorDT + "'");
@@ -131,7 +131,7 @@ public final class FailedMailDataMicroTypeConverter implements IMicroTypeConvert
     {
       aOriginalSentDT = PDTWebDateHelper.getLocalDateTimeFromXSD (sOriginalSentDT);
       if (aOriginalSentDT == null)
-        aOriginalSentDT = TypeConverter.convertIfNecessary (sOriginalSentDT, LocalDateTime.class);
+        aOriginalSentDT = TypeConverter.convert (sOriginalSentDT, LocalDateTime.class);
     }
 
     // SMTP settings

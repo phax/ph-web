@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.attr.IAttributeContainer;
+import com.helger.commons.collection.attr.IStringMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.IEmailAddress;
 
@@ -173,5 +173,5 @@ public interface IEmailData extends Serializable
    */
   @Nonnull
   @ReturnsMutableObject
-  IAttributeContainer <String, String> customAttrs ();
+  IStringMap customAttrs ();
 }

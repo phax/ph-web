@@ -27,7 +27,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.attr.AttributeContainer;
+import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.IEmailAddress;
@@ -55,7 +55,7 @@ public class EmailData implements IMutableEmailData
   private String m_sSubject;
   private String m_sBody;
   private IMutableEmailAttachmentList m_aAttachments;
-  private final AttributeContainer <String, String> m_aCustomAttrs = new AttributeContainer <> ();
+  private final StringMap m_aCustomAttrs = new StringMap ();
 
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
@@ -279,7 +279,7 @@ public class EmailData implements IMutableEmailData
 
   @Nonnull
   @ReturnsMutableObject
-  public AttributeContainer <String, String> customAttrs ()
+  public StringMap customAttrs ()
   {
     return m_aCustomAttrs;
   }

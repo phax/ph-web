@@ -35,6 +35,7 @@ import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.xservlet.handler.IXServletHandler;
 
 /**
  * A special {@link IXServletHandler} that allows to run requests

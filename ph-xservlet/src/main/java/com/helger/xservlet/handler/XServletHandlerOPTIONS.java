@@ -14,17 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.xservlet;
+package com.helger.xservlet.handler;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.mime.EMimeContentType;
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.functional.ISupplier;
+import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
@@ -32,17 +33,27 @@ import com.helger.web.scope.IRequestWebScope;
 
 /**
  * Called by the server (via the <code>service</code> method) to allow a servlet
- * to handle a TRACE request. A TRACE returns the headers sent with the TRACE
- * request to the client, so that they can be used in debugging. There's no need
- * to override this method.
+ * to handle a OPTIONS request. An OPTIONS request returns the allowed HTTP
+ * methods supported by the servlet in the ALLOW HTTP response header.
  *
- * @author Servlet Spec 3.1
- * @since 8.8.0
+ * @author Philip Helger
+ * @since 9.0.0
  */
-public class XServletHandlerTRACE implements IXServletHandler
+public class XServletHandlerOPTIONS implements IXServletHandler
 {
-  private static final String CRLF = "\r\n";
-  private static final String CONTENT_TYPE = EMimeContentType.MESSAGE.buildMimeType ("http").getAsString ();
+  private final ISupplier <String> m_aAllowProvider;
+
+  /**
+   * Constructor
+   *
+   * @param aAllowProvider
+   *        The supplier to use. Must be a supplier, because the underlying
+   *        "Allow" string can change at runtime!
+   */
+  public XServletHandlerOPTIONS (@Nonnull final ISupplier <String> aAllowProvider)
+  {
+    m_aAllowProvider = ValueEnforcer.notNull (aAllowProvider, "AllowProvider");
+  }
 
   public void handle (@Nonnull final HttpServletRequest aHttpRequest,
                       @Nonnull final HttpServletResponse aHttpResponse,
@@ -50,22 +61,8 @@ public class XServletHandlerTRACE implements IXServletHandler
                       @Nonnull final EHttpMethod eHTTPMethod,
                       @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
-    final StringBuilder aSB = new StringBuilder ().append (EHttpMethod.TRACE.getName ())
-                                                  .append (' ')
-                                                  .append (aHttpRequest.getRequestURI ())
-                                                  .append (' ')
-                                                  .append (aHttpRequest.getProtocol ())
-                                                  .append (CRLF);
-    final Enumeration <String> aReqHeaderEnum = aHttpRequest.getHeaderNames ();
-    while (aReqHeaderEnum.hasMoreElements ())
-    {
-      final String sHeaderName = aReqHeaderEnum.nextElement ();
-      aSB.append (sHeaderName).append (": ").append (aHttpRequest.getHeader (sHeaderName)).append (CRLF);
-    }
-
-    aHttpResponse.setContentType (CONTENT_TYPE);
-    aHttpResponse.setContentLength (aSB.length ());
-    aHttpResponse.getOutputStream ().print (aSB.toString ());
+    // Build Allow response header - that's it
+    aHttpResponse.setHeader (CHttpHeader.ALLOW, m_aAllowProvider.get ());
   }
 
   @Override

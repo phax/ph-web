@@ -65,8 +65,15 @@ import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.scope.request.RequestScopeInitializer;
+import com.helger.xservlet.filter.IXServletFilter;
+import com.helger.xservlet.filter.XServletFilterConsistency;
+import com.helger.xservlet.filter.XServletFilterSecurity;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
+import com.helger.xservlet.handler.IXServletHandler;
+import com.helger.xservlet.handler.XServletHandlerOPTIONS;
+import com.helger.xservlet.handler.XServletHandlerRegistry;
+import com.helger.xservlet.handler.XServletHandlerTRACE;
 import com.helger.xservlet.requesttrack.RequestTracker;
 import com.helger.xservlet.servletstatus.ServletStatusManager;
 

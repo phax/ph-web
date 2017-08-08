@@ -1,4 +1,4 @@
-package com.helger.xservlet;
+package com.helger.xservlet.filter;
 
 import java.io.IOException;
 

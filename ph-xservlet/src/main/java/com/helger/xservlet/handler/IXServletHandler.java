@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.xservlet;
+package com.helger.xservlet.handler;
 
 import java.io.IOException;
 import java.io.Serializable;

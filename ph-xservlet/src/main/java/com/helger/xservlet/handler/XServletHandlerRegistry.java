@@ -1,4 +1,4 @@
-package com.helger.xservlet;
+package com.helger.xservlet.handler;
 
 import java.util.EnumSet;
 

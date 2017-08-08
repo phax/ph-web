@@ -36,6 +36,7 @@ import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.xservlet.handler.IXServletHandler;
 
 /**
  * This is an abstract servlet class that combines the following technologies

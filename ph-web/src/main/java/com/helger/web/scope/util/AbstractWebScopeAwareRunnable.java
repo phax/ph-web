@@ -33,9 +33,14 @@ public abstract class AbstractWebScopeAwareRunnable extends AbstractWebScopeAwar
 {
   public AbstractWebScopeAwareRunnable ()
   {
+    this (WebScopeManager.getApplicationScope ().getID ());
+  }
+
+  public AbstractWebScopeAwareRunnable (@Nonnull @Nonempty final String sApplicationID)
+  {
     // Don't use "MockServletContext" to avoid that the global Servlet Context
     // Path is overriden!
-    this (WebScopeManager.getGlobalScope ().getServletContext (), WebScopeManager.getApplicationScope ().getID ());
+    this (WebScopeManager.getGlobalScope ().getServletContext (), sApplicationID);
   }
 
   public AbstractWebScopeAwareRunnable (@Nonnull final ServletContext aSC,

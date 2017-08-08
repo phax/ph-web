@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
-import com.helger.servlet.StaticServerInfo;
 
 /**
  * Test class for class {@link XMLSitemapProvider}.
@@ -35,14 +34,8 @@ import com.helger.servlet.StaticServerInfo;
  */
 public final class XMLSitemapProviderTest
 {
+  private static final String FULL_SERVER_CONTEXT_PATH = "http://localhost:80/any";
   private static final boolean [] BOOLS = new boolean [] { true, false };
-
-  static
-  {
-    // First set the default web server info
-    if (!StaticServerInfo.isSet ())
-      StaticServerInfo.init ("http", "localhost", 80, "/any");
-  }
 
   @Test
   public void testWrite ()
@@ -56,7 +49,8 @@ public final class XMLSitemapProviderTest
       FileOperations.createDirIfNotExisting (aTargetDir);
       try
       {
-        assertTrue (XMLSitemapProvider.createSitemapFiles (aTargetDir, bUseGZip).isSuccess ());
+        assertTrue (XMLSitemapProvider.createSitemapFiles (aTargetDir, bUseGZip, FULL_SERVER_CONTEXT_PATH)
+                                      .isSuccess ());
         assertTrue (FileHelper.existsFile (new File (aTargetDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
 
         // 3 URL sets are present

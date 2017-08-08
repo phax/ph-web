@@ -1,0 +1,4 @@
+com.helger.sitemap.MockXMLSitemapProviderSPI
+com.helger.sitemap.MockXMLSitemapProviderMultiFileSPI
+com.helger.sitemap.MockXMLSitemapProviderEmptySPI
+com.helger.sitemap.MockXMLSitemapProviderNullSPI

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import java.io.File;
 
@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.file.FileHelper;
@@ -63,18 +64,21 @@ public final class XMLSitemapProvider
   }
 
   @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory)
+  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
+                                             @Nonnull @Nonempty final String sFullContextPath)
   {
-    return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP);
+    return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP, sFullContextPath);
   }
 
   @Nonnull
   @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory, final boolean bUseGZip)
+  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
+                                             final boolean bUseGZip,
+                                             @Nonnull @Nonempty final String sFullContextPath)
   {
     ValueEnforcer.notNull (aTargetDirectory, "TargetDirectory");
-    if (!FileHelper.existsDir (aTargetDirectory))
-      throw new IllegalArgumentException ("The passed file is not an existing directory: " + aTargetDirectory);
+    ValueEnforcer.isTrue (FileHelper.existsDir (aTargetDirectory),
+                          () -> "The passed file is not an existing directory: " + aTargetDirectory);
 
     // Any provider present?
     if (s_aProviders.isEmpty ())
@@ -106,6 +110,6 @@ public final class XMLSitemapProvider
     }
 
     // Main write to disk action
-    return aIndex.writeToDisk (aTargetDirectory);
+    return aIndex.writeToDisk (aTargetDirectory, sFullContextPath);
   }
 }

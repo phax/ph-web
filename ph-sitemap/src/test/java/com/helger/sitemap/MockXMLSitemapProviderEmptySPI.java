@@ -14,22 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.url.SimpleURL;
 
 @IsSPIImplementation
-public final class MockXMLSitemapProviderSPI implements IXMLSitemapProviderSPI
+public final class MockXMLSitemapProviderEmptySPI implements IXMLSitemapProviderSPI
 {
   @Nonnull
   public XMLSitemapURLSet createURLSet ()
   {
-    final XMLSitemapURLSet ret = new XMLSitemapURLSet ();
-    for (int i = 0; i < 10; ++i)
-      ret.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?xx=" + i)));
-    return ret;
+    // Empty URL set
+    return new XMLSitemapURLSet ();
   }
 }

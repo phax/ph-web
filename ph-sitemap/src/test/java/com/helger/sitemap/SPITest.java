@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014-2017 Philip Helger (www.helger.com)
+ * Copyright (C) 2016-2017 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
-import javax.annotation.Nonnull;
+import org.junit.Test;
 
-import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.commons.mock.SPITestHelper;
 
-@IsSPIImplementation
-public final class MockXMLSitemapProviderNullSPI implements IXMLSitemapProviderSPI
+/**
+ * Test SPI definitions.
+ *
+ * @author Philip Helger
+ */
+public final class SPITest
 {
-  @Nonnull
-  public XMLSitemapURLSet createURLSet ()
+  @Test
+  public void testBasic () throws Exception
   {
-    return new XMLSitemapURLSet ();
+    SPITestHelper.testIfAllSPIImplementationsAreValid ();
   }
 }

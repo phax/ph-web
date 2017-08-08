@@ -15,7 +15,11 @@ Java library with common web stuff. It contains the following sub-projects:
   * ph-httpclient
     * Contains Apache HTTP client related helpers
   * ph-web
-    * Other high-level abstraction for servlets, file-upload, browser information, sitemap, web scopes etc.
+    * Other high-level abstraction for servlets, file-upload and web scopes
+  * ph-sitemap (since v9.0.0)
+    * Containing Sitemap generation helper
+  * ph-xservlet (since v9.0.0)
+    * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)  
   
 # News and noteworthy
 
@@ -23,6 +27,8 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to javax.mail 1.6.0
     * Updated to ph-commons 9.0.0
     * Added HTTP Referrer-Policy header support
+    * Extracted `ph-sitemap` from `ph-web`
+    * Added new sub-project `ph-xservlet` to contain an extended Servlet framework
   * v8.8.2 - 2017-07-04
     * Made debug flag in certain `ResponseHandler*` implementations customizable
     * `ServletHelper` caught Exception logging can now be enabled and disabled

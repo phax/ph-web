@@ -14,25 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotation.IsSPIInterface;
+import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.commons.url.SimpleURL;
 
-/**
- * SPI interface for components that offer sitemap entries.
- *
- * @author Philip Helger
- */
-@IsSPIInterface
-public interface IXMLSitemapProviderSPI
+@IsSPIImplementation
+public final class MockXMLSitemapProviderSPI implements IXMLSitemapProviderSPI
 {
-  /**
-   * Create a new URL set with all URLs relevant .
-   *
-   * @return A non-<code>null</code> URL set with all elements.
-   */
   @Nonnull
-  XMLSitemapURLSet createURLSet ();
+  public XMLSitemapURLSet createURLSet ()
+  {
+    final XMLSitemapURLSet ret = new XMLSitemapURLSet ();
+    for (int i = 0; i < 10; ++i)
+      ret.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?xx=" + i)));
+    return ret;
+  }
 }

@@ -147,6 +147,11 @@
       </dependency>
       <dependency>
         <groupId>com.helger</groupId>
+        <artifactId>ph-sitemap</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
         <artifactId>ph-web</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -184,6 +189,7 @@
     <module>ph-mail</module>
     <module>ph-smtp</module>
     <module>ph-httpclient</module>
+    <module>ph-sitemap</module>
     <module>ph-web</module>
     <module>ph-xservlet</module>
   </modules>

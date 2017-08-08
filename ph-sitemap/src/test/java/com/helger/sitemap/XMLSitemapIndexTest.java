@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -32,7 +32,6 @@ import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.file.FileOperations;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.url.SimpleURL;
-import com.helger.servlet.StaticServerInfo;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 
@@ -43,12 +42,7 @@ import com.helger.xml.transform.StringStreamSource;
  */
 public final class XMLSitemapIndexTest
 {
-  static
-  {
-    // First set the default web server info
-    if (!StaticServerInfo.isSet ())
-      StaticServerInfo.init ("http", "localhost", 80, "/any");
-  }
+  private static final String FULL_SERVER_CONTEXT_PATH = "http://localhost:80/any";
 
   private static void _testWriteXMLSitemapeIndex (@Nonnull final XMLSitemapIndex x)
   {
@@ -56,7 +50,7 @@ public final class XMLSitemapIndexTest
     FileOperations.createDirIfNotExisting (aBaseDir);
     try
     {
-      x.writeToDisk (aBaseDir);
+      x.writeToDisk (aBaseDir, FULL_SERVER_CONTEXT_PATH);
       assertTrue (FileHelper.existsFile (new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
       final int nMax = x.getURLSetCount ();
       for (int i = 0; i < nMax; ++i)
@@ -74,23 +68,23 @@ public final class XMLSitemapIndexTest
   {
     final XMLSitemapIndex x = new XMLSitemapIndex ();
     assertEquals (0, x.getURLSetCount ());
-    assertNotNull (x.getAsDocument ());
+    assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
 
     final XMLSitemapURLSet s1 = new XMLSitemapURLSet ();
     s1.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com")));
     x.addURLSet (s1);
     assertEquals (1, x.getURLSetCount ());
-    assertNotNull (x.getAsDocument ());
+    assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
 
     final XMLSitemapURLSet s2 = new XMLSitemapURLSet ();
     s2.addURL (new XMLSitemapURL (new SimpleURL ("http://www.google.at")));
     x.addURLSet (s2);
     assertEquals (2, x.getURLSetCount ());
-    assertNotNull (x.getAsDocument ());
+    assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
 
     // Validate index against the schema
     final IErrorList aErrors = XMLSchemaValidationHelper.validate (new ClassPathResource (CXMLSitemap.SCHEMA_SITEINDEX_0_9),
-                                                                   new StringStreamSource (x.getAsXMLString ()));
+                                                                   new StringStreamSource (x.getAsXMLString (FULL_SERVER_CONTEXT_PATH)));
     assertTrue (aErrors.toString (), aErrors.isEmpty ());
 
     _testWriteXMLSitemapeIndex (x);

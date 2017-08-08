@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.sitemap;
+package com.helger.sitemap;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,6 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.state.ESuccess;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.servlet.StaticServerInfo;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
@@ -64,7 +63,7 @@ public final class XMLSitemapIndex implements Serializable
   private static final String ELEMENT_LASTMOD = "lastmod";
   private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapIndex.class);
 
-  private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList<> ();
+  private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList <> ();
   private final boolean m_bUseGZip;
 
   /**
@@ -160,8 +159,16 @@ public final class XMLSitemapIndex implements Serializable
     return getSitemapFilename (nIndex, m_bUseGZip);
   }
 
+  /**
+   * Get the Index as a micro document.
+   *
+   * @param sFullContextPath
+   *        Full context path like <code>scheme://server:port/context</code> or
+   *        <code>scheme://server:port</code> for the ROOT context.
+   * @return The created micro document and never <code>null</code>.
+   */
   @Nonnull
-  public IMicroDocument getAsDocument ()
+  public IMicroDocument getAsDocument (@Nonnull @Nonempty final String sFullContextPath)
   {
     final String sNamespaceURL = CXMLSitemap.XML_NAMESPACE_0_9;
     final IMicroDocument ret = new MicroDocument ();
@@ -174,7 +181,7 @@ public final class XMLSitemapIndex implements Serializable
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
       eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
-              .appendText (StaticServerInfo.getInstance ().getFullContextPath () + "/" + getSitemapFilename (nIndex));
+              .appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
@@ -194,9 +201,9 @@ public final class XMLSitemapIndex implements Serializable
   }
 
   @Nonnull
-  public String getAsXMLString ()
+  public String getAsXMLString (@Nonnull @Nonempty final String sFullContextPath)
   {
-    return MicroWriter.getNodeAsString (getAsDocument (), getXMLWriterSettings ());
+    return MicroWriter.getNodeAsString (getAsDocument (sFullContextPath), getXMLWriterSettings ());
   }
 
   @Nonnull
@@ -216,11 +223,10 @@ public final class XMLSitemapIndex implements Serializable
   }
 
   @Nonnull
-  public ESuccess writeToDisk (@Nonnull final File aBaseDir)
+  public ESuccess writeToDisk (@Nonnull final File aBaseDir, @Nonnull @Nonempty final String sFullContextPath)
   {
     ValueEnforcer.notNull (aBaseDir, "Basedir");
-    if (!FileHelper.existsDir (aBaseDir))
-      throw new IllegalArgumentException ("The passed directory does not exist: " + aBaseDir);
+    ValueEnforcer.isTrue (FileHelper.existsDir (aBaseDir), () -> "The passed directory does not exist: " + aBaseDir);
 
     if (m_aURLSets.isEmpty ())
     {
@@ -228,10 +234,12 @@ public final class XMLSitemapIndex implements Serializable
       return ESuccess.FAILURE;
     }
 
+    final IXMLWriterSettings aXWS = getXMLWriterSettings ();
+
     // Write base file
-    if (MicroWriter.writeToFile (getAsDocument (),
+    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath),
                                  new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
-                                 getXMLWriterSettings ())
+                                 aXWS)
                    .isFailure ())
     {
       s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
@@ -245,7 +253,7 @@ public final class XMLSitemapIndex implements Serializable
       final String sFilename = getSitemapFilename (nIndex);
       final File aFile = new File (aBaseDir, sFilename);
       final OutputStream aOS = _createOutputStream (aFile);
-      if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, getXMLWriterSettings ()).isFailure ())
+      if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, aXWS).isFailure ())
       {
         s_aLogger.error ("Failed to write single sitemap file " + aFile);
         return ESuccess.FAILURE;

@@ -150,6 +150,11 @@
         <artifactId>ph-web</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
+        <artifactId>ph-xservlet</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -180,6 +185,7 @@
     <module>ph-smtp</module>
     <module>ph-httpclient</module>
     <module>ph-web</module>
+    <module>ph-xservlet</module>
   </modules>
 
   <build>

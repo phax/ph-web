@@ -30,7 +30,7 @@ import com.helger.commons.url.ISimpleURL;
  *
  * @author Philip Helger
  */
-public final class ForcedRedirectException extends RuntimeException
+public class ForcedRedirectException extends RuntimeException
 {
   public static final String DEFAULT_MENU_ITEM_ID = "$default$";
 
@@ -47,7 +47,8 @@ public final class ForcedRedirectException extends RuntimeException
    *        The redirect target URL. May not be <code>null</code>.
    * @param aContent
    *        The additional content to be displayed upon the next get. May be
-   *        <code>null</code>.
+   *        <code>null</code>. Usually this is an <code>IHCNode</code> but this
+   *        class is not accessible from here!
    */
   public ForcedRedirectException (@Nonnull @Nonempty final String sSourceMenuItemID,
                                   @Nonnull final ISimpleURL aRedirectTargetURL,
@@ -81,7 +82,8 @@ public final class ForcedRedirectException extends RuntimeException
 
   /**
    * @return The content to be displayed when the GET is executed. May be
-   *         <code>null</code>.
+   *         <code>null</code>. Usually this is an <code>IHCNode</code> but this
+   *         class is not accessible from here!
    */
   @Nullable
   public Serializable getContent ()

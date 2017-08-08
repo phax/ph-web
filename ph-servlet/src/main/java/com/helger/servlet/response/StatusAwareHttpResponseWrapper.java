@@ -155,8 +155,8 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   }
 
   @Nonnull
-  @ReturnsMutableObject ("design")
-  public HttpHeaderMap getHeaderMap ()
+  @ReturnsMutableObject
+  public HttpHeaderMap headerMap ()
   {
     return m_aHeaderMap;
   }

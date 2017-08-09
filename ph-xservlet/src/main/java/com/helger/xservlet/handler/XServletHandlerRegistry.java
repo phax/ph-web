@@ -19,6 +19,7 @@ import com.helger.http.EHttpMethod;
  * {@link IXServletLowLevelHandler}.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 public class XServletHandlerRegistry implements Serializable
 {
@@ -34,17 +35,17 @@ public class XServletHandlerRegistry implements Serializable
    *
    * @param eHTTPMethod
    *        The HTTP method to register for. May not be <code>null</code>.
-   * @param aHandler
+   * @param aLowLevelHandler
    *        The handler to register. May not be <code>null</code>.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletLowLevelHandler aHandler)
+  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletLowLevelHandler aLowLevelHandler)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
-    ValueEnforcer.notNull (aHandler, "Handler");
+    ValueEnforcer.notNull (aLowLevelHandler, "Handler");
 
     if (m_aHandler.containsKey (eHTTPMethod))
       throw new IllegalStateException ("An HTTP handler for HTTP method " + eHTTPMethod + " is already registered!");
-    m_aHandler.put (eHTTPMethod, aHandler);
+    m_aHandler.put (eHTTPMethod, aLowLevelHandler);
   }
 
   @Nonnull

@@ -43,12 +43,11 @@ import com.helger.xservlet.handler.IXServletLowLevelHandler;
  * together:
  * <ul>
  * <li>Asynchronous processing</li>
- * <li>WebScope aware handling</li>
  * <li>UnifiedResponse handling</li>
  * </ul>
  *
  * @author Philip Helger
- * @since 8.0.0
+ * @since 9.0.0
  */
 public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
 {
@@ -193,10 +192,10 @@ public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
     }
 
     public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                        @Nonnull final HttpServletResponse aHttpResponse,
-                        @Nonnull final EHttpVersion eHttpVersion,
-                        @Nonnull final EHttpMethod eHttpMethod,
-                        @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+                           @Nonnull final HttpServletResponse aHttpResponse,
+                           @Nonnull final EHttpVersion eHttpVersion,
+                           @Nonnull final EHttpMethod eHttpMethod,
+                           @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
     {
       final UnifiedResponse aUnifiedResponse = m_aSimpleHandler.createUnifiedResponse (eHttpVersion,
                                                                                        eHttpMethod,
@@ -264,8 +263,8 @@ public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
                                         @Nonnull final ISimpleHandler aSimpleHandler)
   {
     final IXServletLowLevelHandler aRealHandler = new AsyncXServletHandler (aAsyncSpec,
-                                                                    new ToUnifiedResponseHttpServletHandler (aSimpleHandler,
-                                                                                                             sApplicationID));
+                                                                            new ToUnifiedResponseHttpServletHandler (aSimpleHandler,
+                                                                                                                     sApplicationID));
     handlerRegistry ().registerHandler (eMethod, aRealHandler);
   }
 }

@@ -36,7 +36,7 @@ import com.helger.web.scope.IRequestWebScope;
  * such events.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
 public class LoggingLongRunningRequestCallback implements ILongRunningRequestCallback
 {

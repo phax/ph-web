@@ -35,6 +35,7 @@ import com.helger.web.scope.IRequestWebScope;
  * </ul>
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 public class XServletFilterConsistency implements IXServletLowLevelFilter
 {

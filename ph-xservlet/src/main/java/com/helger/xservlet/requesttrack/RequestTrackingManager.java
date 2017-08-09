@@ -42,7 +42,7 @@ import com.helger.web.scope.IRequestWebScope;
  * The request time manager manages all currently running requests.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
 @ThreadSafe
 public final class RequestTrackingManager

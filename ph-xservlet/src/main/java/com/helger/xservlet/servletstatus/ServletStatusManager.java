@@ -42,9 +42,10 @@ import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * A manager for keeping track of the default servlets state.
+ * A manager for keeping track of the default servlets states.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 @ThreadSafe
 public final class ServletStatusManager extends AbstractGlobalSingleton

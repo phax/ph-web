@@ -30,7 +30,7 @@ import com.helger.commons.callback.ICallback;
  * registration.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
 public interface IParallelRunningRequestCallback extends ICallback
 {

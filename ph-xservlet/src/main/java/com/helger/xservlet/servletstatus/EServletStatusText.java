@@ -31,6 +31,7 @@ import com.helger.commons.text.util.TextHelper;
  * Contains texts for {@link EServletStatus}.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 @Translatable
 public enum EServletStatusText implements IHasDisplayText

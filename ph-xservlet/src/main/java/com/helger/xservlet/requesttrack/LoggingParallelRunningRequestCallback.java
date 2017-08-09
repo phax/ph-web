@@ -36,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
  * logging such events.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
 public class LoggingParallelRunningRequestCallback implements IParallelRunningRequestCallback
 {

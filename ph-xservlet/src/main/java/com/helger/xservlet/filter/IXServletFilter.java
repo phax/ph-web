@@ -36,7 +36,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Philip Helger
  * @since 9.0.0
  */
-public interface IXServletLowLevelFilter extends Serializable
+public interface IXServletFilter extends Serializable
 {
   /**
    * Invoked before an XServlet request is handled. Exceptions occurring in this

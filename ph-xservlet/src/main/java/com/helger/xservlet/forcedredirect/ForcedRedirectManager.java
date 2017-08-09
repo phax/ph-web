@@ -35,6 +35,16 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.singleton.AbstractSessionWebSingleton;
 
+/**
+ * Stores per-session the data to be used in a Post-Redirect-Get scenario.<br>
+ * This class usually takes 'IHCNode' but because of the reverse dependencies,
+ * this type cannot be used and is therefore abstracted as 'Serializable' in
+ * this implementation. So all the time you read 'Serializable' consider it to
+ * be 'IHCNode'.
+ *
+ * @author Philip Helger
+ * @since 9.0.0
+ */
 @ThreadSafe
 public final class ForcedRedirectManager extends AbstractSessionWebSingleton
 {

@@ -38,7 +38,7 @@ import com.helger.web.scope.IRequestWebScope;
  * to override this method.
  *
  * @author Servlet Spec 3.1
- * @since 8.8.0
+ * @since 9.0.0
  */
 public class XServletHandlerTRACE implements IXServletLowLevelHandler
 {

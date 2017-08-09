@@ -36,6 +36,12 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.string.ToStringGenerator;
 
+/**
+ * Keep the status of a single servlet.
+ *
+ * @author Philip Helger
+ * @since 9.0.0
+ */
 @NotThreadSafe
 public final class ServletStatus implements Serializable
 {
@@ -105,10 +111,10 @@ public final class ServletStatus implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("className", m_sClassName)
-                                       .append ("currentStatus", m_eCurrentStatus)
-                                       .append ("statusChangeDates", m_aStatusChangeDates)
-                                       .append ("invocationCount", m_aInvocationCount.get ())
+    return new ToStringGenerator (this).append ("ClassName", m_sClassName)
+                                       .append ("CurrentStatus", m_eCurrentStatus)
+                                       .append ("StatusChangeDates", m_aStatusChangeDates)
+                                       .append ("InvocationCount", m_aInvocationCount.get ())
                                        .getToString ();
   }
 }

@@ -29,6 +29,7 @@ import com.helger.web.scope.IRequestWebScope;
  * This class represents a single tracked request.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 @Immutable
 public final class TrackedRequest

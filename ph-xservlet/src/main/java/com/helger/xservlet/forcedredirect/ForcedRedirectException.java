@@ -29,6 +29,7 @@ import com.helger.commons.url.ISimpleURL;
  * This is a hack to allow for easy POST/Redirect/GET pattern implementation.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 public class ForcedRedirectException extends RuntimeException
 {

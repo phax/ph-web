@@ -9,14 +9,14 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
-import com.helger.servlet.response.UnifiedResponse;
-import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.web.scope.IRequestWebScope;
 
 /**
  * Logging implementation of {@link IXServletExceptionHandler}. Registered by
  * default.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 public class XServletLoggingExceptionHandler implements IXServletExceptionHandler
 {
@@ -24,8 +24,7 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
 
   @Nonnull
   public EContinue onException (@Nonnull @Nonempty final String sApplicationID,
-                                @Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                                @Nonnull final UnifiedResponse aUnifiedResponse,
+                                @Nonnull final IRequestWebScope aRequestScope,
                                 @Nonnull final Throwable t)
   {
     final String sMsg = "Internal error on " +

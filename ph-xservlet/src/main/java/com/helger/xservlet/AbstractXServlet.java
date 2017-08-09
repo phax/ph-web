@@ -54,12 +54,11 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletSettings;
 import com.helger.servlet.StaticServerInfo;
 import com.helger.servlet.http.CountingOnlyHttpServletResponse;
 import com.helger.servlet.request.RequestLogger;
-import com.helger.servlet.response.ERedirectMode;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
-import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
@@ -86,6 +85,11 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  * <li>It has counting statistics</li>
  * <li>It has timing statistics</li>
  * <li>It enforces a character set on the response</li>
+ * <li>It checks for known security attacks (like httpoxy)</li>
+ * <li>It has custom handler per HTTP method</li>
+ * <li>It has custom filter</li>
+ * <li>It has custom exception handler</li>
+ * <li>It handles Post-Redirect-Get centrally.</li>
  * </ul>
  *
  * @author Philip Helger
@@ -97,41 +101,40 @@ public abstract class AbstractXServlet extends GenericServlet
   public static final String REQUEST_ATTR_ID = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "request.id";
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsTotal = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                       "$requests.total");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                          "$requests.accepted");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsHandled = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                         "$requests.handled");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsPRG = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                     "$requests.post-redirect-get");
-  private static final IMutableStatisticsHandlerCounter s_aCounterRequestsWithException = StatisticsManager.getCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                               "$requests.withexception");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionAccepted = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                                              "$requests-per-version.accepted");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerVersionHandled = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                                             "$requests-per-version.handled");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodAccepted = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                                             "$requests-per-method.accepted");
-  private static final IMutableStatisticsHandlerKeyedCounter s_aCounterRequestsPerMethodHandled = StatisticsManager.getKeyedCounterHandler (AbstractXServlet.class.getName () +
-                                                                                                                                            "$requests-per-method.handled");
+  private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
+                                                                                                                "$requests.total");
+  private final IMutableStatisticsHandlerCounter m_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (getClass ().getName () +
+                                                                                                                   "$requests.accepted");
+  private final IMutableStatisticsHandlerCounter m_aCounterRequestsHandled = StatisticsManager.getCounterHandler (getClass ().getName () +
+                                                                                                                  "$requests.handled");
+  private final IMutableStatisticsHandlerCounter m_aCounterRequestsPRG = StatisticsManager.getCounterHandler (getClass ().getName () +
+                                                                                                              "$requests.post-redirect-get");
+  private final IMutableStatisticsHandlerCounter m_aCounterRequestsWithException = StatisticsManager.getCounterHandler (getClass ().getName () +
+                                                                                                                        "$requests.withexception");
+  private final IMutableStatisticsHandlerKeyedCounter m_aCounterRequestsPerVersionAccepted = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
+                                                                                                                                       "$requests-per-version.accepted");
+  private final IMutableStatisticsHandlerKeyedCounter m_aCounterRequestsPerVersionHandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
+                                                                                                                                      "$requests-per-version.handled");
+  private final IMutableStatisticsHandlerKeyedCounter m_aCounterRequestsPerMethodAccepted = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
+                                                                                                                                      "$requests-per-method.accepted");
+  private final IMutableStatisticsHandlerKeyedCounter m_aCounterRequestsPerMethodHandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
+                                                                                                                                     "$requests-per-method.handled");
   private final IMutableStatisticsHandlerKeyedCounter m_aCounterHttpMethodUnhandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
                                                                                                                                 "$method.unhandled");
-  private static final IMutableStatisticsHandlerKeyedTimer s_aTimer = StatisticsManager.getKeyedTimerHandler (AbstractXServlet.class);
+  private final IMutableStatisticsHandlerKeyedTimer m_aTimer = StatisticsManager.getKeyedTimerHandler (getClass ().getName ());
 
   /** Thread-safe request counter */
   private static final AtomicLong s_aRequestID = new AtomicLong (0);
   /** Indicator whether it is the first request or not */
   private static final AtomicBoolean s_aFirstRequest = new AtomicBoolean (true);
-
-  private final ServletStatusManager m_aStatusMgr;
-
   /** The main handler map */
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
   private final ICommonsList <IXServletLowLevelFilter> m_aFilterList = new CommonsArrayList <> ();
   private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
 
   // Status variables
+  // Remember to avoid crash on shutdown, when no GlobalScope is present
+  private final ServletStatusManager m_aStatusMgr;
   // Determined in "init" method
   private transient String m_sApplicationID;
 
@@ -147,6 +150,7 @@ public abstract class AbstractXServlet extends GenericServlet
     m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD,
                                         (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope) -> {
                                           final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
+                                          // Change method from HEAD to GET!
                                           _invokeHandler (aHttpRequest,
                                                           aResponseWrapper,
                                                           eHttpVersion,
@@ -161,7 +165,7 @@ public abstract class AbstractXServlet extends GenericServlet
 
     m_aExceptionHandler.add (new XServletLoggingExceptionHandler ());
 
-    // Remember to avoid crash on shutdown, when no GlobalScope is present
+    // Remember once
     m_aStatusMgr = ServletStatusManager.getInstance ();
     m_aStatusMgr.onServletCtor (getClass ());
   }
@@ -234,15 +238,6 @@ public abstract class AbstractXServlet extends GenericServlet
   }
 
   @Nonnull
-  @OverrideOnDemand
-  protected UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
-                                                   @Nonnull final EHttpMethod eHttpMethod,
-                                                   @Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return new UnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
-  }
-
-  @Nonnull
   private EChange _trackBeforeHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
   {
     // Check if an attribute is already present
@@ -277,9 +272,11 @@ public abstract class AbstractXServlet extends GenericServlet
                                @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     // HTTP version and method are valid
-    s_aCounterRequestsAccepted.increment ();
+    m_aCounterRequestsAccepted.increment ();
 
     // Find the handler for the HTTP method
+    // Important: must be done inside this method to handle "HEAD" requests
+    // properly!
     final IXServletLowLevelHandler aServletHandler = m_aHandlerRegistry.getHandler (eHttpMethod);
     if (aServletHandler == null)
     {
@@ -294,9 +291,6 @@ public abstract class AbstractXServlet extends GenericServlet
       return;
     }
 
-    // Build the response
-    final UnifiedResponse aUnifiedResponse = createUnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
-
     // HTTP method is supported by this servlet implementation
     final StopWatch aSW = StopWatch.createdStarted ();
     boolean bTrackedRequest = false;
@@ -309,39 +303,48 @@ public abstract class AbstractXServlet extends GenericServlet
       aServletHandler.onRequest (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
 
       // Handled and no exception
-      s_aCounterRequestsHandled.increment ();
-      s_aCounterRequestsPerVersionHandled.increment (eHttpVersion.getName ());
-      s_aCounterRequestsPerMethodHandled.increment (eHttpMethod.getName ());
+      m_aCounterRequestsHandled.increment ();
+      m_aCounterRequestsPerVersionHandled.increment (eHttpVersion.getName ());
+      m_aCounterRequestsPerMethodHandled.increment (eHttpMethod.getName ());
     }
     catch (final ForcedRedirectException ex)
     {
       // Handle Post-Redirect-Get here
-      s_aCounterRequestsPRG.increment ();
+      m_aCounterRequestsPRG.increment ();
 
       // Remember the content
       ForcedRedirectManager.getInstance ().createForcedRedirect (ex);
+
       // And set the redirect
-      aUnifiedResponse.setRedirect (ex.getRedirectTargetURL (), ERedirectMode.POST_REDIRECT_GET);
-      // Stop exception handling
-      aUnifiedResponse.applyToResponse (aHttpResponse);
+      if (eHttpVersion.is10 ())
+      {
+        // For HTTP 1.0 send 302
+        aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);
+      }
+      else
+      {
+        // For HTTP 1.1 send 303
+        aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
+      }
+
+      // Set the location header
+      String sTargetURL = ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ();
+      if (ServletSettings.isEncodeURLs ())
+        sTargetURL = aHttpResponse.encodeRedirectURL (sTargetURL);
+      aHttpResponse.addHeader (CHttpHeader.LOCATION, sTargetURL);
     }
     catch (final Throwable t)
     {
-      s_aCounterRequestsWithException.increment ();
+      m_aCounterRequestsWithException.increment ();
 
       // Invoke exception handler
-      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (m_sApplicationID,
-                                                                    aRequestScope,
-                                                                    aUnifiedResponse,
-                                                                    t))
-                             .isContinue ())
+      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (m_sApplicationID, aRequestScope, t)).isContinue ())
       {
         // No handler handled it - propagate
         throw t;
       }
 
       // One exception handled did it - no need to propagate
-      aUnifiedResponse.applyToResponse (aHttpResponse);
     }
     finally
     {
@@ -352,7 +355,7 @@ public abstract class AbstractXServlet extends GenericServlet
       }
 
       // Timer per HTTP method
-      s_aTimer.addTime (eHttpMethod.getName (), aSW.stopAndGetMillis ());
+      m_aTimer.addTime (eHttpMethod.getName (), aSW.stopAndGetMillis ());
     }
   }
 
@@ -399,7 +402,7 @@ public abstract class AbstractXServlet extends GenericServlet
     final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
 
     // Increase counter
-    s_aCounterRequestsTotal.increment ();
+    m_aCounterRequestsTotal.increment ();
 
     // Increase per servlet invocation
     m_aStatusMgr.onServletInvocation (getClass ());
@@ -418,7 +421,7 @@ public abstract class AbstractXServlet extends GenericServlet
       aHttpResponse.sendError (HttpServletResponse.SC_HTTP_VERSION_NOT_SUPPORTED);
       return;
     }
-    s_aCounterRequestsPerVersionAccepted.increment (eHttpVersion.getName ());
+    m_aCounterRequestsPerVersionAccepted.increment (eHttpVersion.getName ());
 
     // Ensure a valid HTTP method is provided
     final String sMethod = aHttpRequest.getMethod ();
@@ -430,7 +433,9 @@ public abstract class AbstractXServlet extends GenericServlet
       aHttpResponse.sendError (HttpServletResponse.SC_NOT_IMPLEMENTED);
       return;
     }
-    s_aCounterRequestsPerMethodAccepted.increment (eHttpMethod.getName ());
+    m_aCounterRequestsPerMethodAccepted.increment (eHttpMethod.getName ());
+
+    // here HTTP version and method are valid
 
     // May already be set in test cases!
     if (s_aFirstRequest.getAndSet (false) && !StaticServerInfo.isSet ())

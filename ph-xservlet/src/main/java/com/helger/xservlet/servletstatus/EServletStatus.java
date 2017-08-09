@@ -23,6 +23,12 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.text.display.IHasDisplayText;
 
+/**
+ * Defines the different lifecycle status of a servlet.
+ * 
+ * @author Philip Helger
+ * @since 9.0.0
+ */
 public enum EServletStatus implements IHasDisplayText
 {
   CONSTRUCTED (EServletStatusText.CONSTRUCTED),

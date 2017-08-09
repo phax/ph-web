@@ -44,7 +44,7 @@ import com.helger.web.scope.util.AbstractWebScopeAwareRunnable;
  * monitoring all open requests.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
 @Immutable
 public final class RequestTracker extends AbstractGlobalWebSingleton

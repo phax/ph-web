@@ -28,8 +28,9 @@ import com.helger.web.scope.IRequestWebScope;
  * requests. See {@link RequestTracker} for registration.
  *
  * @author Philip Helger
- * @since 4.0.0
+ * @since 9.0.0
  */
+@FunctionalInterface
 public interface ILongRunningRequestCallback extends ICallback
 {
   /**

@@ -5,13 +5,13 @@ import javax.annotation.Nonnull;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.callback.ICallback;
 import com.helger.commons.state.EContinue;
-import com.helger.servlet.response.UnifiedResponse;
-import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.web.scope.IRequestWebScope;
 
 /**
  * High level exception handler for XServlet.
  *
  * @author Philip Helger
+ * @since 9.0.0
  */
 @FunctionalInterface
 public interface IXServletExceptionHandler extends ICallback
@@ -26,9 +26,8 @@ public interface IXServletExceptionHandler extends ICallback
    *        The application ID of the servlet that triggered the exception.
    *        Neither <code>null</code> nor empty.
    * @param aRequestScope
-   *        Current request scope. Never <code>null</code>.
-   * @param aUnifiedResponse
-   *        Current response. Never <code>null</code>.
+   *        Current request scope incl. http response object. Never
+   *        <code>null</code>.
    * @param t
    *        The thrown exception. Never <code>null</code>.
    * @return {@link EContinue#CONTINUE} if further exception handlers should be
@@ -37,7 +36,6 @@ public interface IXServletExceptionHandler extends ICallback
    */
   @Nonnull
   EContinue onException (@Nonnull @Nonempty String sApplicationID,
-                         @Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                         @Nonnull UnifiedResponse aUnifiedResponse,
+                         @Nonnull IRequestWebScope aRequestScope,
                          @Nonnull Throwable t);
 }

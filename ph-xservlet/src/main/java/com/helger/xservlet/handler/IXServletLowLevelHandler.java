@@ -32,7 +32,7 @@ import com.helger.web.scope.IRequestWebScope;
  * Handler for a single HTTP method in an XServlet.
  *
  * @author Philip Helger
- * @since 8.0.0
+ * @since 9.0.0
  */
 @FunctionalInterface
 public interface IXServletLowLevelHandler extends Serializable

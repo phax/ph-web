@@ -40,7 +40,6 @@ public final class RequestLoggerTest
     {
       final HttpServletRequest aHttpRequest = new MockHttpServletRequest (aSC);
       assertNotNull (RequestLogger.getRequestFieldMap (aHttpRequest));
-      assertNotNull (RequestLogger.getHTTPHeaderMap (aHttpRequest));
     }
     finally
     {

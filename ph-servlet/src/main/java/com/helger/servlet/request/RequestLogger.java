@@ -33,7 +33,6 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.cache.AnnotationUsageCache;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.string.StringHelper;
@@ -49,7 +48,6 @@ import com.helger.servlet.annotation.IsOffline;
 @Immutable
 public final class RequestLogger
 {
-  /** The logger to use. */
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestLogger.class);
 
   private static final AnnotationUsageCache s_aOfflineCache = new AnnotationUsageCache (IsOffline.class);
@@ -130,84 +128,19 @@ public final class RequestLogger
     return ret;
   }
 
-  @Nonnull
-  public static StringBuilder getRequestFields (@Nonnull final HttpServletRequest aHttpRequest)
+  public static void debugAppendRequestFields (@Nonnull final Map <String, String> aRequestFieldMap,
+                                               @Nonnull final StringBuilder aSB)
   {
-    return getRequestFields (getRequestFieldMap (aHttpRequest));
-  }
-
-  @Nonnull
-  public static StringBuilder getRequestFields (@Nonnull final Map <String, String> aRequestFieldMap)
-  {
-    final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Request:\n");
     for (final Map.Entry <String, String> aEntry : aRequestFieldMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = ").append (aEntry.getValue ()).append ('\n');
-    return aSB;
   }
 
-  /**
-   * Debug log the most interesting parts of the HTTP request. It logs
-   * everything but the HTTP headers.
-   *
-   * @param aHttpRequest
-   *        the {@link HttpServletRequest} to debug
-   */
-  public static void logRequestFields (@Nonnull final HttpServletRequest aHttpRequest)
+  public static void debugAppendRequestHeader (@Nonnull final HttpHeaderMap aRequestHeaderMap,
+                                               @Nonnull final StringBuilder aSB)
   {
-    s_aLogger.info (getRequestFields (aHttpRequest).toString ());
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getHTTPHeaderMap (RequestHelper.getRequestHeaderMap (aHttpRequest));
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getHTTPHeaderMap (@Nonnull final HttpHeaderMap aMap)
-  {
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
-    for (final Map.Entry <String, ICommonsList <String>> aEntry : aMap)
-    {
-      final String sName = aEntry.getKey ();
-      final ICommonsList <String> aValue = aEntry.getValue ();
-      if (aValue.size () == 1)
-        ret.put (sName, aValue.getFirst ());
-      else
-        ret.put (sName, aValue.toString ());
-    }
-    return ret;
-  }
-
-  @Nonnull
-  public static StringBuilder getRequestHeader (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getRequestHeader (getHTTPHeaderMap (aHttpRequest));
-  }
-
-  @Nonnull
-  public static StringBuilder getRequestHeader (@Nonnull final Map <String, String> aRequestHeaderMap)
-  {
-    final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Headers:\n");
-    for (final Map.Entry <String, String> aEntry : aRequestHeaderMap.entrySet ())
-      aSB.append ("  ").append (aEntry.getKey ()).append (" = ").append (aEntry.getValue ()).append ('\n');
-    return aSB;
-  }
-
-  /**
-   * Debug log information about the HTTP header send with a
-   * {@link HttpServletRequest}.
-   *
-   * @param aHttpRequest
-   *        the servlet request to debug the HTTP headers from
-   */
-  public static void logRequestHeader (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    s_aLogger.info (getRequestHeader (aHttpRequest).toString ());
+    aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'));
   }
 
   @Nonnull
@@ -220,25 +153,12 @@ public final class RequestLogger
     return ret;
   }
 
-  @Nonnull
-  public static StringBuilder getRequestParameters (@Nonnull final HttpServletRequest aHttpRequest)
+  public static void debugAppendRequestParameters (@Nonnull final Map <String, String> aRequestParameterMap,
+                                                   @Nonnull final StringBuilder aSB)
   {
-    return getRequestParameters (getRequestParameterMap (aHttpRequest));
-  }
-
-  @Nonnull
-  public static StringBuilder getRequestParameters (@Nonnull final Map <String, String> aRequestParameterMap)
-  {
-    final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Request parameters:\n");
     for (final Map.Entry <String, String> aEntry : aRequestParameterMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = '").append (aEntry.getValue ()).append ("'\n");
-    return aSB;
-  }
-
-  public static void logRequestParameters (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    s_aLogger.info (getRequestParameters (aHttpRequest).toString ());
   }
 
   @Nonnull
@@ -259,36 +179,29 @@ public final class RequestLogger
     return aSB.toString ();
   }
 
-  @Nonnull
-  public static StringBuilder getRequestCookies (@Nonnull final HttpServletRequest aHttpRequest)
+  public static void debugAppendRequestCookies (@Nonnull final HttpServletRequest aHttpRequest,
+                                                @Nonnull final StringBuilder aSB)
   {
-    final StringBuilder aSB = new StringBuilder ();
     aSB.append ("Cookies:\n");
     final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
         aSB.append ("  ").append (aCookie.getName ()).append (" = ").append (getCookieValue (aCookie)).append ('\n');
-    return aSB;
-  }
-
-  public static void logRequestCookies (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    s_aLogger.info (getRequestCookies (aHttpRequest).toString ());
   }
 
   @Nonnull
-  public static StringBuilder getRequestComplete (@Nonnull final HttpServletRequest aHttpRequest)
+  public static StringBuilder getRequestDebugString (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final StringBuilder aSB = new StringBuilder ();
-    aSB.append (getRequestFields (aHttpRequest));
-    aSB.append (getRequestHeader (aHttpRequest));
-    aSB.append (getRequestParameters (aHttpRequest));
-    aSB.append (getRequestCookies (aHttpRequest));
+    debugAppendRequestFields (getRequestFieldMap (aHttpRequest), aSB);
+    debugAppendRequestHeader (RequestHelper.getRequestHeaderMap (aHttpRequest), aSB);
+    debugAppendRequestParameters (getRequestParameterMap (aHttpRequest), aSB);
+    debugAppendRequestCookies (aHttpRequest, aSB);
     return aSB;
   }
 
   public static void logRequestComplete (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    s_aLogger.info (getRequestComplete (aHttpRequest).toString ());
+    s_aLogger.info (getRequestDebugString (aHttpRequest).toString ());
   }
 }

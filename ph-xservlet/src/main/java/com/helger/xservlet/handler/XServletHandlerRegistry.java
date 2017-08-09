@@ -1,5 +1,6 @@
 package com.helger.xservlet.handler;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 
 import javax.annotation.Nonnull;
@@ -10,12 +11,19 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpMethod;
 
-public final class XServletHandlerRegistry
+/**
+ * Wrapper around a map from {@link EHttpMethod} to
+ * {@link IXServletLowLevelHandler}.
+ *
+ * @author Philip Helger
+ */
+public class XServletHandlerRegistry implements Serializable
 {
   /** The main handler map */
-  private final ICommonsMap <EHttpMethod, IXServletHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);
+  private final ICommonsMap <EHttpMethod, IXServletLowLevelHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);
 
   public XServletHandlerRegistry ()
   {}
@@ -29,7 +37,7 @@ public final class XServletHandlerRegistry
    * @param aHandler
    *        The handler to register. May not be <code>null</code>.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletHandler aHandler)
+  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletLowLevelHandler aHandler)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     ValueEnforcer.notNull (aHandler, "Handler");
@@ -60,8 +68,14 @@ public final class XServletHandlerRegistry
   }
 
   @Nullable
-  public IXServletHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
+  public IXServletLowLevelHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
   {
     return m_aHandler.get (eHttpMethod);
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("Handler", m_aHandler).getToString ();
   }
 }

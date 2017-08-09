@@ -71,7 +71,6 @@ import com.helger.http.QValue;
 import com.helger.http.RFC5987Encoder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.servlet.request.RequestLogger;
 import com.helger.useragent.browser.BrowserInfo;
 import com.helger.useragent.browser.EBrowserType;
 
@@ -230,11 +229,10 @@ public class UnifiedResponse
     if (!m_bAlreadyEmittedRequestHeaders)
     {
       s_aLogger.warn ("  Request Headers: " +
-                      RequestLogger.getHTTPHeaderMap (m_aRequestHeaderMap).getSortedByKey (Comparator.naturalOrder ()));
+                      m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       if (!m_aResponseHeaderMap.isEmpty ())
         s_aLogger.warn ("  Response Headers: " +
-                        RequestLogger.getHTTPHeaderMap (m_aResponseHeaderMap)
-                                     .getSortedByKey (Comparator.naturalOrder ()));
+                        m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       m_bAlreadyEmittedRequestHeaders = true;
     }
   }
@@ -529,7 +527,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setETagIfApplicable (@Nonnull @Nonempty final String sETag)
   {
-    if (m_eHTTPVersion == EHttpVersion.HTTP_11)
+    if (m_eHTTPVersion.isAtLeast11 ())
       setETag (sETag);
     return this;
   }
@@ -731,36 +729,29 @@ public class UnifiedResponse
     // Remove any eventually set headers
     removeCaching ();
 
-    switch (m_eHTTPVersion)
+    if (m_eHTTPVersion.is10 ())
     {
-      case HTTP_10:
-      {
-        // Set to expire far in the past for HTTP/1.0.
-        m_aResponseHeaderMap.setHeader (CHttpHeader.EXPIRES, ResponseHelperSettings.EXPIRES_NEVER_STRING);
+      // Set to expire far in the past for HTTP/1.0.
+      m_aResponseHeaderMap.setHeader (CHttpHeader.EXPIRES, ResponseHelperSettings.EXPIRES_NEVER_STRING);
 
-        // Set standard HTTP/1.0 no-cache header.
-        m_aResponseHeaderMap.setHeader (CHttpHeader.PRAGMA, "no-cache");
-        break;
-      }
-      case HTTP_11:
-      {
-        final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setNoStore (true)
-                                                                                   .setNoCache (true)
-                                                                                   .setMustRevalidate (true)
-                                                                                   .setProxyRevalidate (true);
+      // Set standard HTTP/1.0 no-cache header.
+      m_aResponseHeaderMap.setHeader (CHttpHeader.PRAGMA, "no-cache");
+    }
+    else
+    {
+      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setNoStore (true)
+                                                                                 .setNoCache (true)
+                                                                                 .setMustRevalidate (true)
+                                                                                 .setProxyRevalidate (true);
 
-        // Set IE extended HTTP/1.1 no-cache headers.
-        // http://aspnetresources.com/blog/cache_control_extensions
-        // Disabled because:
-        // http://blogs.msdn.com/b/ieinternals/archive/2009/07/20/using-post_2d00_check-and-pre_2d00_check-cache-directives.aspx
-        if (false)
-          aCacheControlBuilder.addExtension ("post-check=0").addExtension ("pre-check=0");
+      // Set IE extended HTTP/1.1 no-cache headers.
+      // http://aspnetresources.com/blog/cache_control_extensions
+      // Disabled because:
+      // http://blogs.msdn.com/b/ieinternals/archive/2009/07/20/using-post_2d00_check-and-pre_2d00_check-cache-directives.aspx
+      if (false)
+        aCacheControlBuilder.addExtension ("post-check=0").addExtension ("pre-check=0");
 
-        setCacheControl (aCacheControlBuilder);
-        break;
-      }
-      default:
-        throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
+      setCacheControl (aCacheControlBuilder);
     }
     return this;
   }
@@ -783,23 +774,16 @@ public class UnifiedResponse
     removeCacheControl ();
     m_aResponseHeaderMap.removeHeaders (CHttpHeader.PRAGMA);
 
-    switch (m_eHTTPVersion)
+    if (m_eHTTPVersion.is10 ())
     {
-      case HTTP_10:
-      {
-        m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
-                                            PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
-        break;
-      }
-      case HTTP_11:
-      {
-        final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true)
-                                                                                   .setMaxAgeSeconds (nSeconds);
-        setCacheControl (aCacheControlBuilder);
-        break;
-      }
-      default:
-        throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
+      m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
+                                          PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
+    }
+    else
+    {
+      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true)
+                                                                                 .setMaxAgeSeconds (nSeconds);
+      setCacheControl (aCacheControlBuilder);
     }
     return this;
   }
@@ -1223,7 +1207,7 @@ public class UnifiedResponse
 
   private void _verifyCachingIntegrity ()
   {
-    final boolean bIsHttp11 = m_eHTTPVersion == EHttpVersion.HTTP_11;
+    final boolean bIsHttp11 = m_eHTTPVersion.isAtLeast11 ();
     final boolean bExpires = m_aResponseHeaderMap.containsHeaders (CHttpHeader.EXPIRES);
     final boolean bCacheControl = m_aCacheControl != null;
     final boolean bLastModified = m_aResponseHeaderMap.containsHeaders (CHttpHeader.LAST_MODIFIED);
@@ -1453,18 +1437,15 @@ public class UnifiedResponse
           aHttpResponse.sendRedirect (sRealTargetURL);
           break;
         case POST_REDIRECT_GET:
-          switch (m_eHTTPVersion)
+          if (m_eHTTPVersion.is10 ())
           {
-            case HTTP_10:
-              // For HTTP 1.0 send 302
-              aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);
-              break;
-            case HTTP_11:
-              // For HTTP 1.1 send 303
-              aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
-              break;
-            default:
-              throw new IllegalStateException ("Unsupported HTTP version: " + m_eHTTPVersion);
+            // For HTTP 1.0 send 302
+            aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);
+          }
+          else
+          {
+            // For HTTP 1.1 send 303
+            aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
           }
           // Set the location header
           aHttpResponse.addHeader (CHttpHeader.LOCATION, sRealTargetURL);

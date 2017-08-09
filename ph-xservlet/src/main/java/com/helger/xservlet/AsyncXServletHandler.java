@@ -35,15 +35,15 @@ import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.xservlet.handler.IXServletHandler;
+import com.helger.xservlet.handler.IXServletLowLevelHandler;
 
 /**
- * A special {@link IXServletHandler} that allows to run requests
+ * A special {@link IXServletLowLevelHandler} that allows to run requests
  * asynchronously.
  *
  * @author Philip Helger
  */
-public final class AsyncXServletHandler implements IXServletHandler
+public final class AsyncXServletHandler implements IXServletLowLevelHandler
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncXServletHandler.class);
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
@@ -70,10 +70,10 @@ public final class AsyncXServletHandler implements IXServletHandler
   }
 
   private final ServletAsyncSpec m_aAsyncSpec;
-  private final IXServletHandler m_aNestedHandler;
+  private final IXServletLowLevelHandler m_aNestedHandler;
 
   public AsyncXServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                               @Nonnull final IXServletHandler aNestedHandler)
+                               @Nonnull final IXServletLowLevelHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
@@ -95,7 +95,7 @@ public final class AsyncXServletHandler implements IXServletHandler
     s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aExtAsyncCtx, () -> {
       try
       {
-        m_aNestedHandler.handle (aExtAsyncCtx.getRequest (),
+        m_aNestedHandler.onRequest (aExtAsyncCtx.getRequest (),
                                  aExtAsyncCtx.getResponse (),
                                  aExtAsyncCtx.getHTTPVersion (),
                                  aExtAsyncCtx.getHTTPMethod (),
@@ -136,7 +136,7 @@ public final class AsyncXServletHandler implements IXServletHandler
     return m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod);
   }
 
-  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
+  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
                       @Nonnull final HttpServletResponse aHttpResponse,
                       @Nonnull final EHttpVersion eHttpVersion,
                       @Nonnull final EHttpMethod eHttpMethod,
@@ -150,7 +150,7 @@ public final class AsyncXServletHandler implements IXServletHandler
     else
     {
       // Run synchronously
-      m_aNestedHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
+      m_aNestedHandler.onRequest (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
     }
   }
 

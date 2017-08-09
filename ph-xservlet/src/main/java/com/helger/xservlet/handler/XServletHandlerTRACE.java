@@ -40,18 +40,18 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Servlet Spec 3.1
  * @since 8.8.0
  */
-public class XServletHandlerTRACE implements IXServletHandler
+public class XServletHandlerTRACE implements IXServletLowLevelHandler
 {
   private static final String CONTENT_TYPE = EMimeContentType.MESSAGE.buildMimeType ("http").getAsString ();
 
   public XServletHandlerTRACE ()
   {}
 
-  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
-                      @Nonnull final HttpServletResponse aHttpResponse,
-                      @Nonnull final EHttpVersion eHTTPVersion,
-                      @Nonnull final EHttpMethod eHTTPMethod,
-                      @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                         @Nonnull final HttpServletResponse aHttpResponse,
+                         @Nonnull final EHttpVersion eHTTPVersion,
+                         @Nonnull final EHttpMethod eHTTPMethod,
+                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     final StringBuilder aSB = new StringBuilder ().append (EHttpMethod.TRACE.getName ())
                                                   .append (' ')

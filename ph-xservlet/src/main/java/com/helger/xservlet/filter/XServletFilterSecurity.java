@@ -25,7 +25,7 @@ import com.helger.web.scope.IRequestWebScope;
  *
  * @author Philip Helger
  */
-public class XServletFilterSecurity implements IXServletFilter
+public class XServletFilterSecurity implements IXServletLowLevelFilter
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterSecurity.class);
   public static final XServletFilterSecurity INSTANCE = new XServletFilterSecurity ();

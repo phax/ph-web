@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,10 +36,11 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Philip Helger
  * @since 8.0.0
  */
-public interface IXServletFilter extends Serializable
+public interface IXServletLowLevelFilter extends Serializable
 {
   /**
-   * Invoked before an XServlet request is handled.
+   * Invoked before an XServlet request is handled. Exceptions occurring in this
+   * method will be propagated to the outside, so be careful :)
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -54,9 +56,9 @@ public interface IXServletFilter extends Serializable
    *         {@link EContinue#BREAK} if this request should not be processed, in
    *         which case the HttpServletResponse must contain a valid response!
    * @exception ServletException
-   *            in case of business logic error
+   *            in case of business logic error.
    * @throws IOException
-   *         in case of IO error
+   *         in case of IO error.
    */
   @Nonnull
   default EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
@@ -70,7 +72,8 @@ public interface IXServletFilter extends Serializable
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
-   * if before request was canceled!
+   * if before request was canceled (in a finally)! Exceptions occurring in this
+   * method will be propagated to the outside, so be careful :)
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -82,6 +85,14 @@ public interface IXServletFilter extends Serializable
    *        HTTP method. Never <code>null</code>.
    * @param aRequestScope
    *        Request scope. Never <code>null</code>.
+   * @param bInvokeHandler
+   *        <code>true</code> if the main handler was invoked,
+   *        <code>false</code> if
+   *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod, IRequestWebScope)}
+   *        avoided the execution of the request.
+   * @param aCaughtException
+   *        An optionally caught exception. May be <code>null</code>. The
+   *        exception was already logged, so please don't log it again!
    * @exception ServletException
    *            in case of business logic error
    * @throws IOException
@@ -91,6 +102,8 @@ public interface IXServletFilter extends Serializable
                              @Nonnull final HttpServletResponse aHttpResponse,
                              @Nonnull final EHttpVersion eHttpVersion,
                              @Nonnull final EHttpMethod eHttpMethod,
-                             @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+                             @Nonnull final IRequestWebScope aRequestScope,
+                             final boolean bInvokeHandler,
+                             @Nullable final Throwable aCaughtException) throws ServletException, IOException
   {}
 }

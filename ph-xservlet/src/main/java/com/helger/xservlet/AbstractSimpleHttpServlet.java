@@ -36,7 +36,7 @@ import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
-import com.helger.xservlet.handler.IXServletHandler;
+import com.helger.xservlet.handler.IXServletLowLevelHandler;
 
 /**
  * This is an abstract servlet class that combines the following technologies
@@ -153,7 +153,7 @@ public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
     {}
   }
 
-  private static final class ToUnifiedResponseHttpServletHandler implements IXServletHandler
+  private static final class ToUnifiedResponseHttpServletHandler implements IXServletLowLevelHandler
   {
     private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractSimpleHttpServlet.ToUnifiedResponseHttpServletHandler.class);
 
@@ -192,7 +192,7 @@ public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
       }
     }
 
-    public void handle (@Nonnull final HttpServletRequest aHttpRequest,
+    public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
                         @Nonnull final HttpServletResponse aHttpResponse,
                         @Nonnull final EHttpVersion eHttpVersion,
                         @Nonnull final EHttpMethod eHttpMethod,
@@ -263,7 +263,7 @@ public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
                                         @Nonnull @Nonempty final String sApplicationID,
                                         @Nonnull final ISimpleHandler aSimpleHandler)
   {
-    final IXServletHandler aRealHandler = new AsyncXServletHandler (aAsyncSpec,
+    final IXServletLowLevelHandler aRealHandler = new AsyncXServletHandler (aAsyncSpec,
                                                                     new ToUnifiedResponseHttpServletHandler (aSimpleHandler,
                                                                                                              sApplicationID));
     handlerRegistry ().registerHandler (eMethod, aRealHandler);

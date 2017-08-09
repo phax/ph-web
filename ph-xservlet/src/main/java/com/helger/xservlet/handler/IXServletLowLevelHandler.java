@@ -35,7 +35,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @since 8.0.0
  */
 @FunctionalInterface
-public interface IXServletHandler extends Serializable
+public interface IXServletLowLevelHandler extends Serializable
 {
   /**
    * Handle the servlet action for a certain request and response.
@@ -55,9 +55,9 @@ public interface IXServletHandler extends Serializable
    * @throws IOException
    *         On IO error
    */
-  void handle (@Nonnull HttpServletRequest aHttpRequest,
-               @Nonnull HttpServletResponse aHttpResponse,
-               @Nonnull EHttpVersion eHttpVersion,
-               @Nonnull EHttpMethod eHttpMethod,
-               @Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void onRequest (@Nonnull HttpServletRequest aHttpRequest,
+                  @Nonnull HttpServletResponse aHttpResponse,
+                  @Nonnull EHttpVersion eHttpVersion,
+                  @Nonnull EHttpMethod eHttpMethod,
+                  @Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

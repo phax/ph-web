@@ -36,7 +36,7 @@ import com.helger.web.scope.IRequestWebScope;
  *
  * @author Philip Helger
  */
-public class XServletFilterConsistency implements IXServletFilter
+public class XServletFilterConsistency implements IXServletLowLevelFilter
 {
   public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterConsistency.class);
@@ -219,7 +219,9 @@ public class XServletFilterConsistency implements IXServletFilter
                             @Nonnull final HttpServletResponse aHttpResponse,
                             @Nonnull final EHttpVersion eHttpVersion,
                             @Nonnull final EHttpMethod eHttpMethod,
-                            @Nonnull final IRequestWebScope aRequestScope)
+                            @Nonnull final IRequestWebScope aRequestScope,
+                            final boolean bInvokeHandler,
+                            @Nullable final Throwable aCaughtException)
   {
     ValueEnforcer.isTrue (aHttpResponse instanceof StatusAwareHttpResponseWrapper,
                           "Must be a StatusAwareHttpResponseWrapper");

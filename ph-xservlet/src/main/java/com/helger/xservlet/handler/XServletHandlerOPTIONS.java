@@ -39,7 +39,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Philip Helger
  * @since 9.0.0
  */
-public class XServletHandlerOPTIONS implements IXServletHandler
+public class XServletHandlerOPTIONS implements IXServletLowLevelHandler
 {
   private final ISupplier <String> m_aAllowProvider;
 
@@ -55,11 +55,11 @@ public class XServletHandlerOPTIONS implements IXServletHandler
     m_aAllowProvider = ValueEnforcer.notNull (aAllowProvider, "AllowProvider");
   }
 
-  public void handle (@Nonnull final HttpServletRequest aHttpRequest,
-                      @Nonnull final HttpServletResponse aHttpResponse,
-                      @Nonnull final EHttpVersion eHTTPVersion,
-                      @Nonnull final EHttpMethod eHTTPMethod,
-                      @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                         @Nonnull final HttpServletResponse aHttpResponse,
+                         @Nonnull final EHttpVersion eHTTPVersion,
+                         @Nonnull final EHttpMethod eHTTPMethod,
+                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     // Build Allow response header - that's it
     aHttpResponse.setHeader (CHttpHeader.ALLOW, m_aAllowProvider.get ());

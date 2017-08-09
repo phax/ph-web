@@ -36,15 +36,13 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.callback.CallbackList;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EChange;
-import com.helger.commons.state.EContinue;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedCounter;
 import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedTimer;
@@ -63,14 +61,15 @@ import com.helger.servlet.response.ERedirectMode;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.web.scope.request.RequestScopeInitializer;
-import com.helger.xservlet.filter.IXServletFilter;
+import com.helger.xservlet.exception.IXServletExceptionHandler;
+import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
+import com.helger.xservlet.filter.IXServletLowLevelFilter;
 import com.helger.xservlet.filter.XServletFilterConsistency;
 import com.helger.xservlet.filter.XServletFilterSecurity;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
-import com.helger.xservlet.handler.IXServletHandler;
+import com.helger.xservlet.handler.IXServletLowLevelHandler;
 import com.helger.xservlet.handler.XServletHandlerOPTIONS;
 import com.helger.xservlet.handler.XServletHandlerRegistry;
 import com.helger.xservlet.handler.XServletHandlerTRACE;
@@ -90,7 +89,7 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  * </ul>
  *
  * @author Philip Helger
- * @since 8.0.0
+ * @since 9.0.0
  */
 public abstract class AbstractXServlet extends GenericServlet
 {
@@ -129,7 +128,8 @@ public abstract class AbstractXServlet extends GenericServlet
 
   /** The main handler map */
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
-  private final ICommonsList <IXServletFilter> m_aFilterList = new CommonsArrayList <> ();
+  private final ICommonsList <IXServletLowLevelFilter> m_aFilterList = new CommonsArrayList <> ();
+  private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
 
   // Status variables
   // Determined in "init" method
@@ -147,17 +147,19 @@ public abstract class AbstractXServlet extends GenericServlet
     m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD,
                                         (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope) -> {
                                           final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
-                                          _internalService (aHttpRequest,
-                                                            aResponseWrapper,
-                                                            eHttpVersion,
-                                                            EHttpMethod.GET,
-                                                            aRequestScope);
+                                          _invokeHandler (aHttpRequest,
+                                                          aResponseWrapper,
+                                                          eHttpVersion,
+                                                          EHttpMethod.GET,
+                                                          aRequestScope);
                                           aResponseWrapper.setContentLengthAutomatically ();
                                         });
 
     // Default OPTIONS handler
     m_aHandlerRegistry.registerHandler (EHttpMethod.OPTIONS,
                                         new XServletHandlerOPTIONS (m_aHandlerRegistry::getAllowedHttpMethodsString));
+
+    m_aExceptionHandler.add (new XServletLoggingExceptionHandler ());
 
     // Remember to avoid crash on shutdown, when no GlobalScope is present
     m_aStatusMgr = ServletStatusManager.getInstance ();
@@ -173,9 +175,16 @@ public abstract class AbstractXServlet extends GenericServlet
 
   @Nonnull
   @ReturnsMutableObject
-  protected final ICommonsList <IXServletFilter> filterList ()
+  protected final ICommonsList <IXServletLowLevelFilter> filterList ()
   {
     return m_aFilterList;
+  }
+
+  @Nonnull
+  @ReturnsMutableObject
+  protected final CallbackList <IXServletExceptionHandler> exceptionHandler ()
+  {
+    return m_aExceptionHandler;
   }
 
   /**
@@ -186,6 +195,20 @@ public abstract class AbstractXServlet extends GenericServlet
   protected String getInitApplicationID ()
   {
     return ClassHelper.getClassLocalName (getClass ());
+  }
+
+  @Override
+  public final void log (final String sMsg)
+  {
+    super.log (sMsg);
+    s_aLogger.info (sMsg);
+  }
+
+  @Override
+  public final void log (final String sMsg, final Throwable t)
+  {
+    super.log (sMsg, t);
+    s_aLogger.error (sMsg, t);
   }
 
   /**
@@ -220,7 +243,7 @@ public abstract class AbstractXServlet extends GenericServlet
   }
 
   @Nonnull
-  private static EChange _trackBeforeHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
+  private EChange _trackBeforeHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
   {
     // Check if an attribute is already present
     // An ID may already be present, if the request is internally dispatched
@@ -228,7 +251,9 @@ public abstract class AbstractXServlet extends GenericServlet
     String sID = aRequestScope.attrs ().getAsString (REQUEST_ATTR_ID);
     if (sID != null)
     {
-      s_aLogger.info ("Request already contains an ID (" + sID + ") - so this is an recursive request...");
+      // Mainly debug logging to see, if this can be checked better
+      // Therefore I need to understand better when this happens
+      log ("Request already contains an ID (" + sID + ") - so this is an recursive request...");
       return EChange.UNCHANGED;
     }
 
@@ -239,115 +264,34 @@ public abstract class AbstractXServlet extends GenericServlet
     return EChange.CHANGED;
   }
 
-  private static void _trackAfterHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
+  private void _trackAfterHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
   {
     final String sID = aRequestScope.attrs ().getAsString (REQUEST_ATTR_ID);
     RequestTracker.removeRequest (sID);
   }
 
-  /**
-   * Called when an exception occurred in
-   * {@link #handleRequest(IRequestWebScopeWithoutResponse, UnifiedResponse)}.
-   * This method is only called for non-request-cancel operations.
-   *
-   * @param aRequestScope
-   *        The source request scope. Never <code>null</code>.
-   * @param aUnifiedResponse
-   *        The response to the current request. Never <code>null</code>.
-   * @param t
-   *        The Throwable that occurred. Never <code>null</code>.
-   * @return {@link EContinue#CONTINUE} to propagate the Exception,
-   *         {@link EContinue#BREAK} to swallow it. May not be
-   *         <code>null</code>.
-   */
-  @OverrideOnDemand
-  @Nonnull
-  protected EContinue onException (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                                   @Nonnull final UnifiedResponse aUnifiedResponse,
-                                   @Nonnull final Throwable t)
-  {
-    final String sMsg = "Internal error on HTTP " +
-                        aRequestScope.getMethod () +
-                        " on resource '" +
-                        aRequestScope.getURL () +
-                        "' - Application ID '" +
-                        m_sApplicationID +
-                        "'";
-
-    if (StreamHelper.isKnownEOFException (t))
-    {
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug (sMsg + " - " + ClassHelper.getClassLocalName (t) + " - " + t.getMessage ());
-
-      // Never propagate
-      return EContinue.BREAK;
-    }
-
-    // Log always including full exception
-    s_aLogger.error (sMsg, t);
-
-    // Propagate only in debug mode
-    return EContinue.valueOf (GlobalDebug.isDebugMode ());
-  }
-
-  /**
-   * Called before a valid request is handled. This method is only called if
-   * HTTP version matches, HTTP method is supported and sending a cached HTTP
-   * response is not an option.
-   *
-   * @param aRequestScope
-   *        The request scope that will be used for processing the request.
-   *        Never <code>null</code>.
-   */
-  @OverrideOnDemand
-  protected void onRequestBegin (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
-  {}
-
-  /**
-   * Called after a valid request was processed. This method is only called if
-   * the handleRequest method was invoked. If an exception occurred this method
-   * is called after
-   * {@link #onException(IRequestWebScopeWithoutResponse, UnifiedResponse, Throwable)}
-   *
-   * @param bExceptionOccurred
-   *        if <code>true</code> an exception occurred in request processing.
-   */
-  @OverrideOnDemand
-  protected void onRequestEnd (final boolean bExceptionOccurred)
-  {}
-
-  private void _internalService (@Nonnull final HttpServletRequest aHttpRequest,
-                                 @Nonnull final HttpServletResponse aHttpResponse,
-                                 @Nonnull final EHttpVersion eHttpVersion,
-                                 @Nonnull final EHttpMethod eHttpMethod,
-                                 @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  private void _invokeHandler (@Nonnull final HttpServletRequest aHttpRequest,
+                               @Nonnull final HttpServletResponse aHttpResponse,
+                               @Nonnull final EHttpVersion eHttpVersion,
+                               @Nonnull final EHttpMethod eHttpMethod,
+                               @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     // HTTP version and method are valid
     s_aCounterRequestsAccepted.increment ();
 
     // Find the handler for the HTTP method
-    final IXServletHandler aHandler = m_aHandlerRegistry.getHandler (eHttpMethod);
-    if (aHandler == null)
+    final IXServletLowLevelHandler aServletHandler = m_aHandlerRegistry.getHandler (eHttpMethod);
+    if (aServletHandler == null)
     {
       // HTTP method is not supported by this servlet!
       m_aCounterHttpMethodUnhandled.increment (eHttpMethod.getName ());
 
       aHttpResponse.setHeader (CHttpHeader.ALLOW, m_aHandlerRegistry.getAllowedHttpMethodsString ());
-      if (eHttpVersion == EHttpVersion.HTTP_11)
-        aHttpResponse.sendError (HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-      else
+      if (eHttpVersion.is10 ())
         aHttpResponse.sendError (HttpServletResponse.SC_BAD_REQUEST);
+      else
+        aHttpResponse.sendError (HttpServletResponse.SC_METHOD_NOT_ALLOWED);
       return;
-    }
-
-    // before-callback
-    try
-    {
-      onRequestBegin (aRequestScope);
-    }
-    catch (final Throwable t)
-    {
-      s_aLogger.error ("onRequestBegin failed", t);
     }
 
     // Build the response
@@ -356,17 +300,13 @@ public abstract class AbstractXServlet extends GenericServlet
     // HTTP method is supported by this servlet implementation
     final StopWatch aSW = StopWatch.createdStarted ();
     boolean bTrackedRequest = false;
-    boolean bExceptionOccurred = true;
     try
     {
       bTrackedRequest = _trackBeforeHandleRequest (aRequestScope).isChanged ();
 
       // This may indirectly call "_internalService" again (e.g. for HEAD
       // requests, which calls GET internally)
-      aHandler.handle (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
-
-      // No error occurred
-      bExceptionOccurred = false;
+      aServletHandler.onRequest (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
 
       // Handled and no exception
       s_aCounterRequestsHandled.increment ();
@@ -375,6 +315,7 @@ public abstract class AbstractXServlet extends GenericServlet
     }
     catch (final ForcedRedirectException ex)
     {
+      // Handle Post-Redirect-Get here
       s_aCounterRequestsPRG.increment ();
 
       // Remember the content
@@ -388,18 +329,18 @@ public abstract class AbstractXServlet extends GenericServlet
     {
       s_aCounterRequestsWithException.increment ();
 
-      // Invoke exception handler (includes Post-Redirect-Handling)
-      if (onException (aRequestScope, aUnifiedResponse, t).isContinue ())
+      // Invoke exception handler
+      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (m_sApplicationID,
+                                                                    aRequestScope,
+                                                                    aUnifiedResponse,
+                                                                    t))
+                             .isContinue ())
       {
-        // Propagate exception
-        if (t instanceof IOException)
-          throw (IOException) t;
-        if (t instanceof ServletException)
-          throw (ServletException) t;
-        throw new ServletException (t);
+        // No handler handled it - propagate
+        throw t;
       }
 
-      // E.g. Post-Redirect-Get is handled with this
+      // One exception handled did it - no need to propagate
       aUnifiedResponse.applyToResponse (aHttpResponse);
     }
     finally
@@ -408,16 +349,6 @@ public abstract class AbstractXServlet extends GenericServlet
       {
         // Track after only if tracked on the beginning
         _trackAfterHandleRequest (aRequestScope);
-      }
-
-      // after-callback
-      try
-      {
-        onRequestEnd (bExceptionOccurred);
-      }
-      catch (final Throwable t)
-      {
-        s_aLogger.error ("onRequestEnd failed", t);
       }
 
       // Timer per HTTP method
@@ -437,11 +368,7 @@ public abstract class AbstractXServlet extends GenericServlet
   @OverrideOnDemand
   protected void logInvalidRequestSetup (@Nonnull final String sMsg, @Nonnull final HttpServletRequest aHttpRequest)
   {
-    final StringBuilder aSB = new StringBuilder (sMsg).append (":\n");
-    aSB.append (RequestLogger.getRequestComplete (aHttpRequest));
-    final String sFullMsg = aSB.toString ();
-    s_aLogger.error (sFullMsg);
-    log (sFullMsg);
+    log (sMsg + ":\n" + RequestLogger.getRequestDebugString (aHttpRequest).toString ());
   }
 
   /**
@@ -519,7 +446,7 @@ public abstract class AbstractXServlet extends GenericServlet
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = new StatusAwareHttpResponseWrapper (aHttpResponse);
 
     // Create effective filter list with all internal filters as well
-    final ICommonsList <IXServletFilter> aEffectiveFilterList = new CommonsArrayList <> ();
+    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> ();
     aEffectiveFilterList.add (XServletFilterSecurity.INSTANCE);
     aEffectiveFilterList.add (new XServletFilterConsistency ());
     aEffectiveFilterList.addAll (m_aFilterList);
@@ -528,32 +455,62 @@ public abstract class AbstractXServlet extends GenericServlet
     final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
                                                                                              aHttpRequest,
                                                                                              aHttpResponseWrapper);
+    final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
+
+    boolean bInvokeHandler = true;
+    Throwable aCaughtException = null;
     try
     {
-      final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
-
       // Filter before
-      for (final IXServletFilter aFilter : aEffectiveFilterList)
+      for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
         if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope)
                    .isBreak ())
+        {
+          bInvokeHandler = false;
           return;
+        }
 
-      try
+      if (bInvokeHandler)
       {
-        // Determine handler
-        _internalService (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
+        // Find and invoke handler
+        _invokeHandler (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
       }
-      finally
-      {
-        // Filter after
-        for (final IXServletFilter aFilter : aEffectiveFilterList)
-          aFilter.afterRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
-      }
+    }
+    catch (final Throwable t)
+    {
+      // Remember
+      aCaughtException = t;
+
+      // This log entry is mainly present to have an overview on how often this
+      // really happens
+      log ("Servlet exception propagated to the outside", t);
+
+      // Ensure only exceptions with the correct type are propagated
+      if (t instanceof IOException)
+        throw (IOException) t;
+      if (t instanceof ServletException)
+        throw (ServletException) t;
+      throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
     }
     finally
     {
-      // Destroy request scope
-      aRequestScopeInitializer.destroyScope ();
+      try
+      {
+        // Filter after
+        for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
+          aFilter.afterRequest (aHttpRequest,
+                                aHttpResponseWrapper,
+                                eHttpVersion,
+                                eHttpMethod,
+                                aRequestScope,
+                                bInvokeHandler,
+                                aCaughtException);
+      }
+      finally
+      {
+        // Destroy request scope (if it was created)
+        aRequestScopeInitializer.destroyScope ();
+      }
     }
   }
 
@@ -561,6 +518,8 @@ public abstract class AbstractXServlet extends GenericServlet
   public String toString ()
   {
     return new ToStringGenerator (this).append ("HandlerRegistry", m_aHandlerRegistry)
+                                       .append ("FilterList", m_aFilterList)
+                                       .append ("ExceptionHandler", m_aExceptionHandler)
                                        .append ("ApplicationID", m_sApplicationID)
                                        .getToString ();
   }

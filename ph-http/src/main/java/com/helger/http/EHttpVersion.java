@@ -31,7 +31,8 @@ import com.helger.commons.name.IHasName;
 public enum EHttpVersion implements IHasName
 {
   HTTP_10 ("HTTP/1.0"),
-  HTTP_11 ("HTTP/1.1");
+  HTTP_11 ("HTTP/1.1"),
+  HTTP_20 ("HTTP/2.0");
 
   private final String m_sName;
 
@@ -45,6 +46,16 @@ public enum EHttpVersion implements IHasName
   public String getName ()
   {
     return m_sName;
+  }
+
+  public boolean is10 ()
+  {
+    return this == HTTP_10;
+  }
+
+  public boolean isAtLeast11 ()
+  {
+    return ordinal () >= HTTP_11.ordinal ();
   }
 
   @Nullable

@@ -104,8 +104,8 @@ public class UnifiedResponse
   private static final AtomicInteger s_aResponseNum = new AtomicInteger (0);
 
   // Input fields set from request
-  private final EHttpVersion m_eHTTPVersion;
-  private final EHttpMethod m_eHTTPMethod;
+  private final EHttpVersion m_eHttpVersion;
+  private final EHttpMethod m_eHttpMethod;
   private final HttpServletRequest m_aHttpRequest;
   private final AcceptCharsetList m_aAcceptCharsetList;
   private final AcceptMimeTypeList m_aAcceptMimeTypeList;
@@ -176,19 +176,19 @@ public class UnifiedResponse
   /**
    * Constructor
    *
-   * @param eHTTPVersion
+   * @param eHttpVersion
    *        HTTP version of this request (1.0 or 1.1)
-   * @param eHTTPMethod
+   * @param eHttpMethod
    *        HTTP method of this request (GET, POST, ...)
    * @param aHttpRequest
    *        The main HTTP request
    */
-  public UnifiedResponse (@Nonnull final EHttpVersion eHTTPVersion,
-                          @Nonnull final EHttpMethod eHTTPMethod,
+  public UnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
+                          @Nonnull final EHttpMethod eHttpMethod,
                           @Nonnull final HttpServletRequest aHttpRequest)
   {
-    m_eHTTPVersion = ValueEnforcer.notNull (eHTTPVersion, "HTTPVersion");
-    m_eHTTPMethod = ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
+    m_eHttpVersion = ValueEnforcer.notNull (eHttpVersion, "HTTPVersion");
+    m_eHttpMethod = ValueEnforcer.notNull (eHttpMethod, "HTTPMethod");
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HTTPRequest");
     m_aAcceptCharsetList = RequestHelper.getAcceptCharsets (aHttpRequest);
     m_aAcceptMimeTypeList = RequestHelper.getAcceptMimeTypes (aHttpRequest);
@@ -253,18 +253,18 @@ public class UnifiedResponse
    * @return The HTTP version of the request. Never <code>null</code>.
    */
   @Nonnull
-  public final EHttpVersion getHTTPVersion ()
+  public final EHttpVersion getHttpVersion ()
   {
-    return m_eHTTPVersion;
+    return m_eHttpVersion;
   }
 
   /**
    * @return The HTTP method of the request. Never <code>null</code>.
    */
   @Nonnull
-  public final EHttpMethod getHTTPMethod ()
+  public final EHttpMethod getHttpMethod ()
   {
-    return m_eHTTPMethod;
+    return m_eHttpMethod;
   }
 
   /**
@@ -476,7 +476,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setLastModified (@Nonnull final LocalDateTime aDT)
   {
-    if (m_eHTTPMethod != EHttpMethod.GET && m_eHTTPMethod != EHttpMethod.HEAD)
+    if (m_eHttpMethod != EHttpMethod.GET && m_eHttpMethod != EHttpMethod.HEAD)
       logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
 
     m_aResponseHeaderMap.setDateHeader (CHttpHeader.LAST_MODIFIED, aDT);
@@ -507,7 +507,7 @@ public class UnifiedResponse
       throw new IllegalArgumentException ("Etag must start with a '\"' character or with 'W/\"': " + sETag);
     if (!sETag.endsWith ("\""))
       throw new IllegalArgumentException ("Etag must end with a '\"' character: " + sETag);
-    if (m_eHTTPMethod != EHttpMethod.GET && m_eHTTPMethod != EHttpMethod.HEAD)
+    if (m_eHttpMethod != EHttpMethod.GET && m_eHttpMethod != EHttpMethod.HEAD)
       logWarn ("Setting an ETag on a non-GET/HEAD request may have no impact!");
 
     m_aResponseHeaderMap.setHeader (CHttpHeader.ETAG, sETag);
@@ -527,7 +527,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setETagIfApplicable (@Nonnull @Nonempty final String sETag)
   {
-    if (m_eHTTPVersion.isAtLeast11 ())
+    if (m_eHttpVersion.isAtLeast11 ())
       setETag (sETag);
     return this;
   }
@@ -729,7 +729,7 @@ public class UnifiedResponse
     // Remove any eventually set headers
     removeCaching ();
 
-    if (m_eHTTPVersion.is10 ())
+    if (m_eHttpVersion.is10 ())
     {
       // Set to expire far in the past for HTTP/1.0.
       m_aResponseHeaderMap.setHeader (CHttpHeader.EXPIRES, ResponseHelperSettings.EXPIRES_NEVER_STRING);
@@ -774,7 +774,7 @@ public class UnifiedResponse
     removeCacheControl ();
     m_aResponseHeaderMap.removeHeaders (CHttpHeader.PRAGMA);
 
-    if (m_eHTTPVersion.is10 ())
+    if (m_eHttpVersion.is10 ())
     {
       m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
                                           PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
@@ -1207,7 +1207,7 @@ public class UnifiedResponse
 
   private void _verifyCachingIntegrity ()
   {
-    final boolean bIsHttp11 = m_eHTTPVersion.isAtLeast11 ();
+    final boolean bIsHttp11 = m_eHttpVersion.isAtLeast11 ();
     final boolean bExpires = m_aResponseHeaderMap.containsHeaders (CHttpHeader.EXPIRES);
     final boolean bCacheControl = m_aCacheControl != null;
     final boolean bLastModified = m_aResponseHeaderMap.containsHeaders (CHttpHeader.LAST_MODIFIED);
@@ -1220,7 +1220,7 @@ public class UnifiedResponse
       logWarn ("Expires and Cache-Control are both present. Cache-Control takes precedence!");
 
     if (bETag && !bIsHttp11)
-      logWarn ("Sending an ETag for HTTP version " + m_eHTTPVersion + " has no effect!");
+      logWarn ("Sending an ETag for HTTP version " + m_eHttpVersion + " has no effect!");
 
     if (!bExpires && !bCacheControl)
     {
@@ -1234,7 +1234,7 @@ public class UnifiedResponse
     {
       if (!bIsHttp11)
         logWarn ("Sending a Cache-Control header for HTTP version " +
-                 m_eHTTPVersion +
+                 m_eHttpVersion +
                  " may have no or limited effect!");
 
       if (m_aCacheControl.isPrivate ())
@@ -1314,7 +1314,7 @@ public class UnifiedResponse
       }
 
       // Don't emit empty content or content for HEAD method
-      if (nContentLength > 0 && m_eHTTPMethod.isContentAllowed ())
+      if (nContentLength > 0 && m_eHttpMethod.isContentAllowed ())
       {
         // Create the correct stream
         try (final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse))
@@ -1345,7 +1345,7 @@ public class UnifiedResponse
         else
         {
           // Don't emit content for HEAD method
-          if (m_eHTTPMethod.isContentAllowed ())
+          if (m_eHttpMethod.isContentAllowed ())
           {
             // We do have an input stream
             // -> copy it to the response
@@ -1437,7 +1437,7 @@ public class UnifiedResponse
           aHttpResponse.sendRedirect (sRealTargetURL);
           break;
         case POST_REDIRECT_GET:
-          if (m_eHTTPVersion.is10 ())
+          if (m_eHttpVersion.is10 ())
           {
             // For HTTP 1.0 send 302
             aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);

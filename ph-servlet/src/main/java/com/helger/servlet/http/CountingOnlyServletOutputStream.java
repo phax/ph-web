@@ -32,13 +32,13 @@ import com.helger.servlet.io.AbstractServletOutputStream;
  */
 public class CountingOnlyServletOutputStream extends AbstractServletOutputStream
 {
-  private int m_nContentLength = 0;
+  private long m_nContentLength = 0;
 
   public CountingOnlyServletOutputStream ()
   {}
 
   @Nonnegative
-  public int getContentLength ()
+  public long getContentLength ()
   {
     return m_nContentLength;
   }

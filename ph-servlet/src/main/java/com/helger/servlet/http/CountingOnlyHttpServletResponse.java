@@ -60,7 +60,7 @@ public class CountingOnlyHttpServletResponse extends HttpServletResponseWrapper
     {
       if (m_aWriter != null)
         m_aWriter.flush ();
-      setContentLength (m_aCountOnlyOS.getContentLength ());
+      setContentLengthLong (m_aCountOnlyOS.getContentLength ());
     }
   }
 

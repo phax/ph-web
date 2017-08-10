@@ -18,7 +18,6 @@ package com.helger.xservlet;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -42,7 +41,6 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.state.EChange;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedCounter;
 import com.helger.commons.statistics.StatisticsManager;
@@ -50,7 +48,6 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
-import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.StaticServerInfo;
@@ -66,13 +63,13 @@ import com.helger.xservlet.filter.IXServletLowLevelFilter;
 import com.helger.xservlet.filter.XServletFilterConsistency;
 import com.helger.xservlet.filter.XServletFilterSecurity;
 import com.helger.xservlet.filter.XServletFilterTimer;
+import com.helger.xservlet.filter.XServletFilterTrackRequest;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
 import com.helger.xservlet.handler.IXServletLowLevelHandler;
 import com.helger.xservlet.handler.XServletHandlerOPTIONS;
 import com.helger.xservlet.handler.XServletHandlerRegistry;
 import com.helger.xservlet.handler.XServletHandlerTRACE;
-import com.helger.xservlet.requesttrack.RequestTracker;
 import com.helger.xservlet.servletstatus.ServletStatusManager;
 
 /**
@@ -97,8 +94,6 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  */
 public abstract class AbstractXServlet extends GenericServlet
 {
-  /** The name of the request attribute uniquely identifying the request ID */
-  public static final String REQUEST_ATTR_ID = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "request.id";
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
@@ -122,8 +117,6 @@ public abstract class AbstractXServlet extends GenericServlet
   private final IMutableStatisticsHandlerKeyedCounter m_aCounterHttpMethodUnhandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
                                                                                                                                 "$method.unhandled");
 
-  /** Thread-safe request counter */
-  private static final AtomicLong s_aRequestID = new AtomicLong (0);
   /** Indicator whether it is the first request or not */
   private static final AtomicBoolean s_aFirstRequest = new AtomicBoolean (true);
   /** The main handler map */
@@ -236,34 +229,6 @@ public abstract class AbstractXServlet extends GenericServlet
     super.destroy ();
   }
 
-  @Nonnull
-  private EChange _trackBeforeHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
-  {
-    // Check if an attribute is already present
-    // An ID may already be present, if the request is internally dispatched
-    // (e.g. via the error handler)
-    String sID = aRequestScope.attrs ().getAsString (REQUEST_ATTR_ID);
-    if (sID != null)
-    {
-      // Mainly debug logging to see, if this can be checked better
-      // Therefore I need to understand better when this happens
-      log ("Request already contains an ID (" + sID + ") - so this is an recursive request...");
-      return EChange.UNCHANGED;
-    }
-
-    // Create a unique ID for the request
-    sID = Long.toString (s_aRequestID.incrementAndGet ());
-    aRequestScope.attrs ().putIn (REQUEST_ATTR_ID, sID);
-    RequestTracker.addRequest (sID, aRequestScope);
-    return EChange.CHANGED;
-  }
-
-  private void _trackAfterHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
-  {
-    final String sID = aRequestScope.attrs ().getAsString (REQUEST_ATTR_ID);
-    RequestTracker.removeRequest (sID);
-  }
-
   private void _invokeHandler (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse,
                                @Nonnull final EHttpVersion eHttpVersion,
@@ -293,15 +258,13 @@ public abstract class AbstractXServlet extends GenericServlet
     // HTTP method is supported by this servlet implementation
     final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> ();
     aEffectiveFilters.add (new XServletFilterTimer (this));
+    aEffectiveFilters.add (new XServletFilterTrackRequest ());
 
-    boolean bTrackedRequest = false;
     try
     {
       // High level filters before
       for (final IXServletHighLevelFilter aFilter : aEffectiveFilters)
         aFilter.beforeRequest (aRequestScope);
-
-      bTrackedRequest = _trackBeforeHandleRequest (aRequestScope).isChanged ();
 
       // This may indirectly call "_internalService" again (e.g. for HEAD
       // requests, which calls GET internally)
@@ -353,11 +316,9 @@ public abstract class AbstractXServlet extends GenericServlet
     }
     finally
     {
-      if (bTrackedRequest)
-      {
-        // Track after only if tracked on the beginning
-        _trackAfterHandleRequest (aRequestScope);
-      }
+      // High level filters before
+      for (final IXServletHighLevelFilter aFilter : aEffectiveFilters)
+        aFilter.afterRequest (aRequestScope);
     }
   }
 

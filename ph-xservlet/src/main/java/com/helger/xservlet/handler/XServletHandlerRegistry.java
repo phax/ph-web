@@ -16,7 +16,7 @@ import com.helger.http.EHttpMethod;
 
 /**
  * Wrapper around a map from {@link EHttpMethod} to
- * {@link IXServletLowLevelHandler}.
+ * {@link IXServletHandler}.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -24,7 +24,7 @@ import com.helger.http.EHttpMethod;
 public class XServletHandlerRegistry implements Serializable
 {
   /** The main handler map */
-  private final ICommonsMap <EHttpMethod, IXServletLowLevelHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);
+  private final ICommonsMap <EHttpMethod, IXServletHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);
 
   public XServletHandlerRegistry ()
   {}
@@ -38,7 +38,7 @@ public class XServletHandlerRegistry implements Serializable
    * @param aLowLevelHandler
    *        The handler to register. May not be <code>null</code>.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletLowLevelHandler aLowLevelHandler)
+  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletHandler aLowLevelHandler)
   {
     ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
     ValueEnforcer.notNull (aLowLevelHandler, "Handler");
@@ -69,7 +69,7 @@ public class XServletHandlerRegistry implements Serializable
   }
 
   @Nullable
-  public IXServletLowLevelHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
+  public IXServletHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
   {
     return m_aHandler.get (eHttpMethod);
   }

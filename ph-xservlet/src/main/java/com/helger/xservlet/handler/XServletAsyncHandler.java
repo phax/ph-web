@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.xservlet;
+package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
@@ -35,18 +35,17 @@ import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.xservlet.handler.IXServletLowLevelHandler;
 
 /**
- * A special {@link IXServletLowLevelHandler} that allows to run requests
+ * A special {@link IXServletHandler} that allows to run requests
  * asynchronously.
  *
  * @author Philip Helger
  * @since 9.0.0
  */
-public final class AsyncXServletHandler implements IXServletLowLevelHandler
+public final class XServletAsyncHandler implements IXServletHandler
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncXServletHandler.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletAsyncHandler.class);
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
 
   /**
@@ -71,10 +70,10 @@ public final class AsyncXServletHandler implements IXServletLowLevelHandler
   }
 
   private final ServletAsyncSpec m_aAsyncSpec;
-  private final IXServletLowLevelHandler m_aNestedHandler;
+  private final IXServletHandler m_aNestedHandler;
 
-  public AsyncXServletHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                               @Nonnull final IXServletLowLevelHandler aNestedHandler)
+  public XServletAsyncHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
+                               @Nonnull final IXServletHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");

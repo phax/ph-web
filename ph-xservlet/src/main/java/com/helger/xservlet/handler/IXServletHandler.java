@@ -35,7 +35,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @since 9.0.0
  */
 @FunctionalInterface
-public interface IXServletLowLevelHandler extends Serializable
+public interface IXServletHandler extends Serializable
 {
   /**
    * Handle the servlet action for a certain request and response.

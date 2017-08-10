@@ -66,7 +66,7 @@ import com.helger.xservlet.filter.XServletFilterTimer;
 import com.helger.xservlet.filter.XServletFilterTrackRequest;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
-import com.helger.xservlet.handler.IXServletLowLevelHandler;
+import com.helger.xservlet.handler.IXServletHandler;
 import com.helger.xservlet.handler.XServletHandlerOPTIONS;
 import com.helger.xservlet.handler.XServletHandlerRegistry;
 import com.helger.xservlet.handler.XServletHandlerTRACE;
@@ -241,7 +241,7 @@ public abstract class AbstractXServlet extends GenericServlet
     // Find the handler for the HTTP method
     // Important: must be done inside this method to handle "HEAD" requests
     // properly!
-    final IXServletLowLevelHandler aServletHandler = m_aHandlerRegistry.getHandler (eHttpMethod);
+    final IXServletHandler aServletHandler = m_aHandlerRegistry.getHandler (eHttpMethod);
     if (aServletHandler == null)
     {
       // HTTP method is not supported by this servlet!

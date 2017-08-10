@@ -190,7 +190,7 @@ public class ServletAsyncSpec
    *         {@link #SYNC_SPEC}. Never <code>null</code>.
    */
   @Nonnull
-  public static ServletAsyncSpec createSync ()
+  public static ServletAsyncSpec getSync ()
   {
     return SYNC_SPEC;
   }

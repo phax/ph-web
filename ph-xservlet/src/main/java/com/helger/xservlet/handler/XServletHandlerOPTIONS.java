@@ -39,7 +39,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Philip Helger
  * @since 9.0.0
  */
-public class XServletHandlerOPTIONS implements IXServletLowLevelHandler
+public class XServletHandlerOPTIONS implements IXServletHandler
 {
   private final ISupplier <String> m_aAllowProvider;
 

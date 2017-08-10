@@ -40,7 +40,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Servlet Spec 3.1
  * @since 9.0.0
  */
-public class XServletHandlerTRACE implements IXServletLowLevelHandler
+public class XServletHandlerTRACE implements IXServletHandler
 {
   private static final String CONTENT_TYPE = EMimeContentType.MESSAGE.buildMimeType ("http").getAsString ();
 

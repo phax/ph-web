@@ -45,11 +45,9 @@ import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EChange;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedCounter;
-import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedTimer;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.timing.StopWatch;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.mgr.ScopeManager;
@@ -63,9 +61,11 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
+import com.helger.xservlet.filter.IXServletHighLevelFilter;
 import com.helger.xservlet.filter.IXServletLowLevelFilter;
 import com.helger.xservlet.filter.XServletFilterConsistency;
 import com.helger.xservlet.filter.XServletFilterSecurity;
+import com.helger.xservlet.filter.XServletFilterTimer;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
 import com.helger.xservlet.handler.IXServletLowLevelHandler;
@@ -121,7 +121,6 @@ public abstract class AbstractXServlet extends GenericServlet
                                                                                                                                      "$requests-per-method.handled");
   private final IMutableStatisticsHandlerKeyedCounter m_aCounterHttpMethodUnhandled = StatisticsManager.getKeyedCounterHandler (getClass ().getName () +
                                                                                                                                 "$method.unhandled");
-  private final IMutableStatisticsHandlerKeyedTimer m_aTimer = StatisticsManager.getKeyedTimerHandler (getClass ().getName ());
 
   /** Thread-safe request counter */
   private static final AtomicLong s_aRequestID = new AtomicLong (0);
@@ -292,10 +291,16 @@ public abstract class AbstractXServlet extends GenericServlet
     }
 
     // HTTP method is supported by this servlet implementation
-    final StopWatch aSW = StopWatch.createdStarted ();
+    final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> ();
+    aEffectiveFilters.add (new XServletFilterTimer (this));
+
     boolean bTrackedRequest = false;
     try
     {
+      // High level filters before
+      for (final IXServletHighLevelFilter aFilter : aEffectiveFilters)
+        aFilter.beforeRequest (aRequestScope);
+
       bTrackedRequest = _trackBeforeHandleRequest (aRequestScope).isChanged ();
 
       // This may indirectly call "_internalService" again (e.g. for HEAD
@@ -353,9 +358,6 @@ public abstract class AbstractXServlet extends GenericServlet
         // Track after only if tracked on the beginning
         _trackAfterHandleRequest (aRequestScope);
       }
-
-      // Timer per HTTP method
-      m_aTimer.addTime (eHttpMethod.getName (), aSW.stopAndGetMillis ());
     }
   }
 

@@ -31,7 +31,7 @@ import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
- * Filter for a single XServlet. It has methods for before and after.
+ * Low-level filter for a single XServlet. It has methods for before and after.
  *
  * @author Philip Helger
  * @since 9.0.0

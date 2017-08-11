@@ -17,11 +17,11 @@
 package com.helger.xservlet.handler;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.impl.ICommonsMap;
 
 /**
  * Base interface for regular and simpler handler
@@ -35,12 +35,13 @@ public interface IXServletBasicHandler extends Serializable
    * Called upon Servlet initialization
    *
    * @param sApplicationID
-   *        The application ID determined. Neither <code>null</code> nor empty.
+   *        The determined application ID of this servlet. Neither
+   *        <code>null</code> nor empty.
    * @param aInitParams
    *        The init parameters. Never <code>null</code> but maybe empty.
    */
   default void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                              @Nonnull final Map <String, String> aInitParams)
+                              @Nonnull final ICommonsMap <String, String> aInitParams)
   {}
 
   /**

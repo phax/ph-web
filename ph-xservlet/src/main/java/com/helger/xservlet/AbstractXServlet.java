@@ -386,7 +386,7 @@ public abstract class AbstractXServlet extends GenericServlet
                              @Nonnull final ServletResponse aResponse) throws ServletException, IOException
   {
     ValueEnforcer.isInstanceOf (aRequest, HttpServletRequest.class, "Non-HTTP servlet request");
-    ValueEnforcer.isInstanceOf (aRequest, HttpServletResponse.class, "Non-HTTP servlet response");
+    ValueEnforcer.isInstanceOf (aResponse, HttpServletResponse.class, "Non-HTTP servlet response");
 
     final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
     final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;

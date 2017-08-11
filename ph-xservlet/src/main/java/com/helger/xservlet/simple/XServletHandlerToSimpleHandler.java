@@ -2,7 +2,6 @@ package com.helger.xservlet.simple;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.http.CHttp;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.regex.RegExHelper;
@@ -60,7 +60,7 @@ final class XServletHandlerToSimpleHandler implements IXServletHandler
   }
 
   public final void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                                   @Nonnull final Map <String, String> aInitParams)
+                                   @Nonnull final ICommonsMap <String, String> aInitParams)
   {
     m_sApplicationID = sApplicationID;
     m_aSimpleHandler.onServletInit (sApplicationID, aInitParams);

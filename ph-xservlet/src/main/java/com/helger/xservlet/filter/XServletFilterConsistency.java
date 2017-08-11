@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.EHttpMethod;
@@ -160,8 +159,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   @OverrideOnDemand
   protected void checkStatusCode (@Nonnull final String sRequestURL, final int nStatusCode)
   {
-    // < 300 || >= 400?
-    if (nStatusCode < HttpServletResponse.SC_MULTIPLE_CHOICES || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
+    // < 200 || >= 400?
+    if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
       s_aLogger.warn ("Status code " + nStatusCode + " in response to '" + sRequestURL + "'");
   }
 
@@ -209,7 +208,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    */
   @OverrideOnDemand
   protected void checkHeaders (@Nonnull final String sRequestURL,
-                               @Nonnull final ICommonsMap <String, ICommonsList <String>> aHeaders,
+                               @Nonnull final HttpHeaderMap aHeaders,
                                final int nStatusCode)
   {
     if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
@@ -228,8 +227,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                           "Must be a StatusAwareHttpResponseWrapper");
     final String sRequestURL = RequestHelper.getURL (aHttpRequest);
     final int nStatusCode = ((StatusAwareHttpResponseWrapper) aHttpResponse).getStatusCode ();
-    final ICommonsMap <String, ICommonsList <String>> aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ()
-                                                                                                                 .getAllHeaders ();
+    final HttpHeaderMap aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ();
     final String sCharacterEncoding = aHttpResponse.getCharacterEncoding ();
     final String sContentType = aHttpResponse.getContentType ();
 

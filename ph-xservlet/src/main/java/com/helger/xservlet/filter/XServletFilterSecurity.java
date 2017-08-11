@@ -3,6 +3,7 @@ package com.helger.xservlet.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,4 +64,13 @@ public class XServletFilterSecurity implements IXServletLowLevelFilter
     // Further checks go here
     return EContinue.CONTINUE;
   }
+
+  public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                            @Nonnull final HttpServletResponse aHttpResponse,
+                            @Nonnull final EHttpVersion eHttpVersion,
+                            @Nonnull final EHttpMethod eHttpMethod,
+                            @Nonnull final IRequestWebScope aRequestScope,
+                            final boolean bInvokeHandler,
+                            @Nullable final Throwable aCaughtException)
+  {}
 }

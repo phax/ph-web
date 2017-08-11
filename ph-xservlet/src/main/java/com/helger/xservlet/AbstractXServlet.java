@@ -316,9 +316,16 @@ public abstract class AbstractXServlet extends GenericServlet
     }
     finally
     {
-      // High level filters before
+      // High level filters after
       for (final IXServletHighLevelFilter aFilter : aEffectiveFilters)
-        aFilter.afterRequest (aRequestScope);
+        try
+        {
+          aFilter.afterRequest (aRequestScope);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter, t);
+        }
     }
   }
 

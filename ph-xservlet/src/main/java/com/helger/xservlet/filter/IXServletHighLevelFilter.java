@@ -34,7 +34,7 @@ public interface IXServletHighLevelFilter extends Serializable
 {
   /**
    * Invoked before an XServlet request is handled. Exceptions occurring in this
-   * method will be propagated to the outside, so be careful :)
+   * method will be caught by the exception handler registered in the XServlet.
    *
    * @param aRequestScope
    *        Request scope. Never <code>null</code>.
@@ -43,13 +43,12 @@ public interface IXServletHighLevelFilter extends Serializable
    * @throws IOException
    *         in case of IO error.
    */
-  default void beforeRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
-  {}
+  void beforeRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
    * if before request was canceled (in a finally)! Exceptions occurring in this
-   * method will be propagated to the outside, so be careful :)
+   * method will be logged but ignored otherwise!
    *
    * @param aRequestScope
    *        Request scope. Never <code>null</code>.
@@ -58,6 +57,5 @@ public interface IXServletHighLevelFilter extends Serializable
    * @throws IOException
    *         in case of IO error
    */
-  default void afterRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
-  {}
+  void afterRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

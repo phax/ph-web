@@ -503,10 +503,9 @@ public class UnifiedResponse
   public UnifiedResponse setETag (@Nonnull @Nonempty final String sETag)
   {
     ValueEnforcer.notEmpty (sETag, "ETag");
-    if (!sETag.startsWith ("\"") && !sETag.startsWith ("W/\""))
-      throw new IllegalArgumentException ("Etag must start with a '\"' character or with 'W/\"': " + sETag);
-    if (!sETag.endsWith ("\""))
-      throw new IllegalArgumentException ("Etag must end with a '\"' character: " + sETag);
+    ValueEnforcer.isTrue (sETag.startsWith ("\"") || sETag.startsWith ("W/\""),
+                          () -> "Etag must start with a '\"' character or with 'W/\"': " + sETag);
+    ValueEnforcer.isTrue (sETag.endsWith ("\""), () -> "Etag must end with a '\"' character: " + sETag);
     if (m_eHttpMethod != EHttpMethod.GET && m_eHttpMethod != EHttpMethod.HEAD)
       logWarn ("Setting an ETag on a non-GET/HEAD request may have no impact!");
 

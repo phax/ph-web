@@ -1,6 +1,7 @@
 package com.helger.xservlet.simple;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,7 +18,7 @@ import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 
 /**
  * Special interface for a simple servlet handler.
- * 
+ *
  * @author Philip Helger
  */
 public interface IXServletSimpleHandler extends Serializable
@@ -50,6 +51,42 @@ public interface IXServletSimpleHandler extends Serializable
                                       @Nonnull final UnifiedResponse aUnifiedResponse)
   {
     return EContinue.CONTINUE;
+  }
+
+  /**
+   * Get the last modification date time for the current request. If it was not
+   * modified since the last request time, a 304 (not modified) response code is
+   * returned. This method is always called for GET and HEAD requests. This
+   * method is called after
+   * {@link #initRequestState(IRequestWebScopeWithoutResponse, UnifiedResponse)}
+   * .
+   *
+   * @param aRequestScope
+   *        The request scope that will be used for processing the request.
+   *        Never <code>null</code>.
+   * @return <code>null</code> if no last modification date time can be
+   *         determined
+   */
+  @Nullable
+  default LocalDateTime getLastModificationDateTime (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  {
+    return null;
+  }
+
+  /**
+   * Get the ETag supported for this request. If an ETag matches, a 304 (not
+   * modified) response code is returned. This method is always called for GET
+   * and HEAD requests.
+   *
+   * @param aRequestScope
+   *        The request scope that will be used for processing the request.
+   *        Never <code>null</code>.
+   * @return <code>null</code> if this servlet does not support ETags
+   */
+  @Nullable
+  default String getSupportedETag (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  {
+    return null;
   }
 
   /**

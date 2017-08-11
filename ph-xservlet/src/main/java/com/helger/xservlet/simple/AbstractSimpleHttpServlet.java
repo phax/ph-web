@@ -37,14 +37,24 @@ import com.helger.xservlet.handler.XServletAsyncHandler;
  */
 public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
 {
+  protected final void registerSyncHandler (@Nonnull final EHttpMethod eMethod,
+                                            @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  {
+    registerHandler (eMethod, ServletAsyncSpec.getSync (), aSimpleHandler);
+  }
+
   protected final void registerHandler (@Nonnull final EHttpMethod eMethod,
                                         @Nonnull final ServletAsyncSpec aAsyncSpec,
                                         @Nonnull final IXServletSimpleHandler aSimpleHandler)
   {
-    final String sApplicationID = getInitApplicationID ();
-    final IXServletHandler aRealHandler = new XServletAsyncHandler (aAsyncSpec,
-                                                                    new XServletHandlerToSimpleHandler (aSimpleHandler,
-                                                                                                        sApplicationID));
+    // Always invoke the simple handler
+    IXServletHandler aRealHandler = new XServletHandlerToSimpleHandler (aSimpleHandler);
+
+    // Add the async handler only in front if necessary
+    if (aAsyncSpec.isAsynchronous ())
+      aRealHandler = new XServletAsyncHandler (aAsyncSpec, aRealHandler);
+
+    // Register as a regular handler
     handlerRegistry ().registerHandler (eMethod, aRealHandler);
   }
 }

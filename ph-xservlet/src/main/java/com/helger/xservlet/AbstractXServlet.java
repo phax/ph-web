@@ -17,6 +17,7 @@
 package com.helger.xservlet;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
@@ -37,7 +38,9 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.callback.CallbackList;
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.lang.ClassHelper;
@@ -94,8 +97,8 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  */
 public abstract class AbstractXServlet extends GenericServlet
 {
-
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
+
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                 "$requests.total");
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsAccepted = StatisticsManager.getCounterHandler (getClass ().getName () +
@@ -128,7 +131,7 @@ public abstract class AbstractXServlet extends GenericServlet
   // Remember to avoid crash on shutdown, when no GlobalScope is present
   private final ServletStatusManager m_aStatusMgr;
   // Determined in "init" method
-  private transient String m_sApplicationID;
+  private String m_sApplicationID;
 
   /**
    * Does nothing, because this is an abstract class.
@@ -219,13 +222,30 @@ public abstract class AbstractXServlet extends GenericServlet
     m_sApplicationID = getInitApplicationID ();
     if (StringHelper.hasNoText (m_sApplicationID))
       throw new InitializationException ("Failed retrieve a valid application ID! Please check your overriden getInitApplicationID()");
+
+    // Build init parameter map
+    final ICommonsMap <String, String> aInitParams = new CommonsHashMap <> ();
+    final Enumeration <String> aEnum = aSC.getInitParameterNames ();
+    while (aEnum.hasMoreElements ())
+    {
+      final String sName = aEnum.nextElement ();
+      aInitParams.put (sName, aSC.getInitParameter (sName));
+    }
+    // Invoke each handler for potential initialization
+    m_aHandlerRegistry.forEachHandler (x -> x.onServletInit (m_sApplicationID, aInitParams));
   }
 
   @Override
   @OverridingMethodsMustInvokeSuper
-  public void destroy ()
+  public final void destroy ()
   {
+    // Invoke each handler for potential destruction
+    m_aHandlerRegistry.forEachHandler (x -> x.onServletDestroy ());
+
+    // Unregister
     m_aStatusMgr.onServletDestroy (getClass ());
+
+    // Further cleanup
     super.destroy ();
   }
 
@@ -324,7 +344,7 @@ public abstract class AbstractXServlet extends GenericServlet
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter, t);
+          s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", t);
         }
     }
   }
@@ -473,13 +493,22 @@ public abstract class AbstractXServlet extends GenericServlet
       {
         // Filter after
         for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
-          aFilter.afterRequest (aHttpRequest,
-                                aHttpResponseWrapper,
-                                eHttpVersion,
-                                eHttpMethod,
-                                aRequestScope,
-                                bInvokeHandler,
-                                aCaughtException);
+          try
+          {
+            aFilter.afterRequest (aHttpRequest,
+                                  aHttpResponseWrapper,
+                                  eHttpVersion,
+                                  eHttpMethod,
+                                  aRequestScope,
+                                  bInvokeHandler,
+                                  aCaughtException);
+          }
+          catch (final ServletException | IOException ex)
+          {
+            s_aLogger.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
+            // Re-throw
+            throw ex;
+          }
       }
       finally
       {

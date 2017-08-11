@@ -17,7 +17,6 @@
 package com.helger.xservlet.handler;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -35,7 +34,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @since 9.0.0
  */
 @FunctionalInterface
-public interface IXServletHandler extends Serializable
+public interface IXServletHandler extends IXServletBasicHandler
 {
   /**
    * Handle the servlet action for a certain request and response.

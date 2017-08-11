@@ -2,9 +2,11 @@ package com.helger.xservlet.handler;
 
 import java.io.Serializable;
 import java.util.EnumSet;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -15,12 +17,12 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpMethod;
 
 /**
- * Wrapper around a map from {@link EHttpMethod} to
- * {@link IXServletHandler}.
+ * Wrapper around a map from {@link EHttpMethod} to {@link IXServletHandler}.
  *
  * @author Philip Helger
  * @since 9.0.0
  */
+@NotThreadSafe
 public class XServletHandlerRegistry implements Serializable
 {
   /** The main handler map */
@@ -44,7 +46,13 @@ public class XServletHandlerRegistry implements Serializable
     ValueEnforcer.notNull (aLowLevelHandler, "Handler");
 
     if (m_aHandler.containsKey (eHTTPMethod))
-      throw new IllegalStateException ("An HTTP handler for HTTP method " + eHTTPMethod + " is already registered!");
+    {
+      // Programming error
+      throw new IllegalStateException ("An HTTP handler for HTTP method " +
+                                       eHTTPMethod +
+                                       " is already registered: " +
+                                       m_aHandler.get (eHTTPMethod));
+    }
     m_aHandler.put (eHTTPMethod, aLowLevelHandler);
   }
 
@@ -72,6 +80,11 @@ public class XServletHandlerRegistry implements Serializable
   public IXServletHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
   {
     return m_aHandler.get (eHttpMethod);
+  }
+
+  public void forEachHandler (@Nonnull final Consumer <? super IXServletHandler> aConsumer)
+  {
+    m_aHandler.forEachValue (aConsumer);
   }
 
   @Override

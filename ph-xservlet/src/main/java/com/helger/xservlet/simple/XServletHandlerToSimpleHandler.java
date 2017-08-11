@@ -2,6 +2,7 @@ package com.helger.xservlet.simple;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -50,22 +51,19 @@ final class XServletHandlerToSimpleHandler implements IXServletHandler
                                                                                                                    "$modified.if-unon-match");
 
   private final IXServletSimpleHandler m_aSimpleHandler;
-  private final String m_sApplicationID;
+  private String m_sApplicationID;
 
-  public XServletHandlerToSimpleHandler (@Nonnull final IXServletSimpleHandler aSimpleHandler,
-                                         @Nonnull @Nonempty final String sApplicationID)
+  public XServletHandlerToSimpleHandler (@Nonnull final IXServletSimpleHandler aSimpleHandler)
   {
     ValueEnforcer.notNull (aSimpleHandler, "SimpleHandler");
-    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
     m_aSimpleHandler = aSimpleHandler;
-    m_sApplicationID = sApplicationID;
   }
 
-  @Nonnull
-  @Nonempty
-  protected String getApplicationID ()
+  public final void onServletInit (@Nonnull @Nonempty final String sApplicationID,
+                                   @Nonnull final Map <String, String> aInitParams)
   {
-    return m_sApplicationID;
+    m_sApplicationID = sApplicationID;
+    m_aSimpleHandler.onServletInit (sApplicationID, aInitParams);
   }
 
   private void _onException (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
@@ -246,5 +244,10 @@ final class XServletHandlerToSimpleHandler implements IXServletHandler
       }
     }
     aUnifiedResponse.applyToResponse (aHttpResponse);
+  }
+
+  public final void onServletDestroy ()
+  {
+    m_aSimpleHandler.onServletDestroy ();
   }
 }

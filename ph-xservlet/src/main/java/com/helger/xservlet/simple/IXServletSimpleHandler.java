@@ -1,6 +1,5 @@
 package com.helger.xservlet.simple;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
@@ -15,13 +14,14 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.xservlet.handler.IXServletBasicHandler;
 
 /**
  * Special interface for a simple servlet handler.
  *
  * @author Philip Helger
  */
-public interface IXServletSimpleHandler extends Serializable
+public interface IXServletSimpleHandler extends IXServletBasicHandler
 {
   @Nonnull
   default UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,

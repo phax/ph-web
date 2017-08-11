@@ -211,8 +211,11 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                @Nonnull final HttpHeaderMap aHeaders,
                                final int nStatusCode)
   {
-    if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
-      s_aLogger.warn ("Headers on " + nStatusCode + " response to '" + sRequestURL + "': " + aHeaders);
+    // Happens because of the default headers in the
+    // UnifiedResponseDefaultSettings
+    if (false)
+      if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
+        s_aLogger.warn ("Headers on " + nStatusCode + " response to '" + sRequestURL + "': " + aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,

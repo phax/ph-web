@@ -19,6 +19,7 @@ package com.helger.xservlet.handler;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.servlet.ServletException;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.ICommonsMap;
@@ -39,13 +40,15 @@ public interface IXServletBasicHandler extends Serializable
    *        <code>null</code> nor empty.
    * @param aInitParams
    *        The init parameters. Never <code>null</code> but maybe empty.
+   * @throws ServletException
+   *         if something goes wrong
    */
   default void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                              @Nonnull final ICommonsMap <String, String> aInitParams)
+                              @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {}
 
   /**
-   * Called upon Servlet destruction
+   * Called upon Servlet destruction. May not throw an exception!
    */
   default void onServletDestroy ()
   {}

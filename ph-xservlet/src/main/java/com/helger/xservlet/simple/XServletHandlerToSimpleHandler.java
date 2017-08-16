@@ -60,7 +60,7 @@ final class XServletHandlerToSimpleHandler implements IXServletHandler
   }
 
   public final void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                                   @Nonnull final ICommonsMap <String, String> aInitParams)
+                                   @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     m_sApplicationID = sApplicationID;
     m_aSimpleHandler.onServletInit (sApplicationID, aInitParams);

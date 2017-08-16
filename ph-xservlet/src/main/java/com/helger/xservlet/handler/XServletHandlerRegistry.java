@@ -12,6 +12,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.functional.IThrowingConsumer;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpMethod;
@@ -85,6 +86,12 @@ public class XServletHandlerRegistry implements Serializable
   public void forEachHandler (@Nonnull final Consumer <? super IXServletHandler> aConsumer)
   {
     m_aHandler.forEachValue (aConsumer);
+  }
+
+  public <EXTYPE extends Throwable> void forEachHandlerThrowing (@Nonnull final IThrowingConsumer <? super IXServletHandler, EXTYPE> aConsumer) throws EXTYPE
+  {
+    for (final IXServletHandler aHandler : m_aHandler.values ())
+      aConsumer.accept (aHandler);
   }
 
   @Override

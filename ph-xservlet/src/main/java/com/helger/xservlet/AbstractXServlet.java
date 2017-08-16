@@ -261,7 +261,7 @@ public abstract class AbstractXServlet extends GenericServlet
       aInitParams.put (sName, aSC.getInitParameter (sName));
     }
     // Invoke each handler for potential initialization
-    m_aHandlerRegistry.forEachHandler (x -> x.onServletInit (sApplicationID, aInitParams));
+    m_aHandlerRegistry.forEachHandlerThrowing (x -> x.onServletInit (sApplicationID, aInitParams));
   }
 
   @Override

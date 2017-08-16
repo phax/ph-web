@@ -18,6 +18,7 @@ package com.helger.xservlet.simple;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.functional.ISupplier;
 import com.helger.http.EHttpMethod;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.xservlet.AbstractXServlet;
@@ -37,6 +38,11 @@ import com.helger.xservlet.handler.XServletAsyncHandler;
  */
 public abstract class AbstractSimpleHttpServlet extends AbstractXServlet
 {
+  public AbstractSimpleHttpServlet (@Nonnull final ISupplier <String> aApplicationIDSupplier)
+  {
+    super (aApplicationIDSupplier);
+  }
+
   protected final void registerSyncHandler (@Nonnull final EHttpMethod eMethod,
                                             @Nonnull final IXServletSimpleHandler aSimpleHandler)
   {

@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
+import com.helger.commons.collection.attr.IAttributeContainerAny;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -22,7 +22,7 @@ import com.helger.web.fileupload.IFileItem;
  *
  * @author Philip Helger
  */
-public interface IRequestParamContainer extends IMutableAttributeContainerAny <String>
+public interface IRequestParamContainer extends IAttributeContainerAny <String>
 {
   /**
    * The prefix to appended to the field name of the checkbox to create the

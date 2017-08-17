@@ -30,7 +30,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
-import com.helger.commons.collection.attr.IMutableAttributeContainerAny;
+import com.helger.commons.collection.attr.IAttributeContainerAny;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EChange;
@@ -117,7 +117,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // parameters can only be extracted once!
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
-    final IMutableAttributeContainerAny <String> aAttrs = attrs ();
+    final IAttributeContainerAny <String> aAttrs = attrs ();
     if (aAttrs.getAndSetFlag (REQUEST_ATTR_SCOPE_INITED))
     {
       s_aLogger.warn ("Scope was already inited: " + toString ());

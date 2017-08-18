@@ -174,7 +174,7 @@ public class MainSendHTML
     {
       if (optind < argv.length)
       {
-        // XXX - concatenate all remaining arguments
+        // - concatenate all remaining arguments
         to = argv[optind];
         System.out.println ("To: " + to);
       }
@@ -196,8 +196,8 @@ public class MainSendHTML
       }
 
       final Properties props = IPrivilegedAction.systemGetProperties ().invokeSafe ();
-      // XXX - could use Session.getTransport() and Transport.connect()
-      // XXX - assume we're using SMTP
+      // - could use Session.getTransport() and Transport.connect()
+      // - assume we're using SMTP
       if (mailhost != null)
         props.put ("mail.smtp.host", mailhost);
 

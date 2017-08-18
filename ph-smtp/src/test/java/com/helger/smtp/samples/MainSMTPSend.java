@@ -73,8 +73,8 @@ import com.sun.mail.smtp.SMTPTransport;
 
 /**
  * Demo app that shows how to construct and send an RFC822 (singlepart) message.
- * XXX - allow more than one recipient on the command line This is just a
- * variant of msgsend.java that demonstrates use of some SMTP-specific features.
+ * allow more than one recipient on the command line This is just a variant of
+ * msgsend.java that demonstrates use of some SMTP-specific features.
  *
  * @author Max Spivak
  * @author Bill Shannon
@@ -220,7 +220,7 @@ public class MainSMTPSend
        */
       if (optind < argv.length)
       {
-        // XXX - concatenate all remaining arguments
+        // - concatenate all remaining arguments
         to = argv[optind];
         System.out.println ("To: " + to);
       }

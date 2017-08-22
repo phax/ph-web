@@ -38,10 +38,10 @@ import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.string.StringHelper;
-import com.helger.http.EHttpMethod;
 
 public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
 {

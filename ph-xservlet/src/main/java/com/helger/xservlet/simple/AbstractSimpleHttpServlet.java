@@ -19,7 +19,7 @@ package com.helger.xservlet.simple;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.functional.ISupplier;
-import com.helger.http.EHttpMethod;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.xservlet.AbstractXServlet;
 import com.helger.xservlet.handler.IXServletHandler;

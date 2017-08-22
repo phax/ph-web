@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.http.EHttpMethod;
+import com.helger.commons.http.EHttpMethod;
 
 /**
  * Test class for class {@link HttpDigestAuth}.

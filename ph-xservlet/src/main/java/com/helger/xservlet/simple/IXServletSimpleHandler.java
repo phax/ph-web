@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.debug.GlobalDebug;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
-import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;

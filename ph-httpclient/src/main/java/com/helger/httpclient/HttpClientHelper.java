@@ -44,9 +44,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.http.EHttpMethod;
 import com.helger.network.proxy.HttpProxyConfig;
 
 /**

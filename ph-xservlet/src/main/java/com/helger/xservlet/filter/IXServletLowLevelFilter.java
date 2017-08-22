@@ -25,8 +25,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
-import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 

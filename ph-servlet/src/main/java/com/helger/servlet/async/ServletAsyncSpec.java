@@ -33,8 +33,8 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.EHttpMethod;
 
 /**
  * This class encapsulates all the parameters necessary to handle asynchronous

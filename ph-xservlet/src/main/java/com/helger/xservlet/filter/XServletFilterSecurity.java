@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.http.CHttpHeader;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
-import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.request.RequestLogger;
 import com.helger.web.scope.IRequestWebScope;

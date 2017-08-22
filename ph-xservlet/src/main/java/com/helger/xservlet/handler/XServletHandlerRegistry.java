@@ -13,9 +13,9 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.functional.IThrowingConsumer;
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.http.EHttpMethod;
 
 /**
  * Wrapper around a map from {@link EHttpMethod} to {@link IXServletHandler}.

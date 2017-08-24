@@ -151,7 +151,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (aURL, "URL");
     // Strip the parameter from the path, but keep parameters and anchor intact!
     // Note: using URLData avoid parsing, since the data was already parsed!
-    return new SimpleURL (new URLData (getWithoutSessionID (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ()));
+    return new SimpleURL (new URLData (getWithoutSessionID (aURL.getPath ()), aURL.params (), aURL.getAnchor ()));
   }
 
   /**

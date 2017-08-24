@@ -683,7 +683,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
     ValueEnforcer.notNull (aURL, "URL");
 
     // Encode only the path and copy params and anchor
-    return new SimpleURL (encodeURL (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ());
+    return new SimpleURL (encodeURL (aURL.getPath ()), aURL.params (), aURL.getAnchor ());
   }
 
   /**
@@ -731,7 +731,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
     ValueEnforcer.notNull (aURL, "URL");
 
     // Encode only the path and copy params and anchor
-    return new SimpleURL (encodeRedirectURL (aURL.getPath ()), aURL.getAllParams (), aURL.getAnchor ());
+    return new SimpleURL (encodeRedirectURL (aURL.getPath ()), aURL.params (), aURL.getAnchor ());
   }
 
   /**

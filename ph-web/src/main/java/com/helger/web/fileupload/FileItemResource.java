@@ -41,7 +41,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public final class FileItemResource implements IReadableResource
+public class FileItemResource implements IReadableResource
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (FileItemResource.class);
 

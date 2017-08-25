@@ -32,6 +32,9 @@ import com.helger.commons.functional.IThrowingConsumer;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.servlet.async.ServletAsyncSpec;
+import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
+import com.helger.xservlet.handler.simple.XServletHandlerToSimpleHandler;
 
 /**
  * Wrapper around a map from {@link EHttpMethod} to {@link IXServletHandler}.
@@ -91,6 +94,27 @@ public class XServletHandlerRegistry implements Serializable
   public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletHandler aLowLevelHandler)
   {
     registerHandler (eHTTPMethod, aLowLevelHandler, false);
+  }
+
+  public void registerSyncHandler (@Nonnull final EHttpMethod eMethod,
+                                   @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  {
+    registerHandler (eMethod, ServletAsyncSpec.getSync (), aSimpleHandler);
+  }
+
+  public void registerHandler (@Nonnull final EHttpMethod eMethod,
+                               @Nonnull final ServletAsyncSpec aAsyncSpec,
+                               @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  {
+    // Always invoke the simple handler
+    IXServletHandler aRealHandler = new XServletHandlerToSimpleHandler (aSimpleHandler);
+
+    // Add the async handler only in front if necessary
+    if (aAsyncSpec.isAsynchronous ())
+      aRealHandler = new XServletAsyncHandler (aAsyncSpec, aRealHandler);
+
+    // Register as a regular handler
+    registerHandler (eMethod, aRealHandler);
   }
 
   @Nonnull

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.xservlet.simple;
+package com.helger.xservlet.handler.simple;
 
 import java.time.LocalDateTime;
 

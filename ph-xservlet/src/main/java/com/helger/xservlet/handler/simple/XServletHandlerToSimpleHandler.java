@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.xservlet.simple;
+package com.helger.xservlet.handler.simple;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -45,7 +45,7 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.IXServletHandler;
 
-final class XServletHandlerToSimpleHandler implements IXServletHandler
+public final class XServletHandlerToSimpleHandler implements IXServletHandler
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletHandlerToSimpleHandler.class);
 

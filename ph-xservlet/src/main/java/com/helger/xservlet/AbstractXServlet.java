@@ -63,7 +63,8 @@ import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
 import com.helger.xservlet.filter.IXServletHighLevelFilter;
 import com.helger.xservlet.filter.IXServletLowLevelFilter;
 import com.helger.xservlet.filter.XServletFilterConsistency;
-import com.helger.xservlet.filter.XServletFilterSecurity;
+import com.helger.xservlet.filter.XServletFilterSecurityHttpReferrerPolicy;
+import com.helger.xservlet.filter.XServletFilterSecurityPoxy;
 import com.helger.xservlet.filter.XServletFilterTimer;
 import com.helger.xservlet.filter.XServletFilterTrackRequest;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
@@ -126,6 +127,7 @@ public abstract class AbstractXServlet extends GenericServlet
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
   private final ICommonsList <IXServletLowLevelFilter> m_aFilterList = new CommonsArrayList <> ();
   private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
+  private final XServletSettings m_aSettings = new XServletSettings ();
 
   // Status variables
   // Remember to avoid crash on shutdown, when no GlobalScope is present
@@ -215,6 +217,14 @@ public abstract class AbstractXServlet extends GenericServlet
   protected final CallbackList <IXServletExceptionHandler> exceptionHandler ()
   {
     return m_aExceptionHandler;
+  }
+
+  /**
+   * @return Settings for this servlet. May not be <code>null</code>.
+   */
+  public final XServletSettings settings ()
+  {
+    return m_aSettings;
   }
 
   /**
@@ -473,8 +483,12 @@ public abstract class AbstractXServlet extends GenericServlet
 
     // Create effective filter list with all internal filters as well
     final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> ();
-    aEffectiveFilterList.add (XServletFilterSecurity.INSTANCE);
+    // Add internal filters
+    aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);
     aEffectiveFilterList.add (new XServletFilterConsistency ());
+    if (m_aSettings.hasHttpReferrerPolicy ())
+      aEffectiveFilterList.add (new XServletFilterSecurityHttpReferrerPolicy (m_aSettings.getHttpReferrerPolicy ()));
+    // Add custom filters
     aEffectiveFilterList.addAll (m_aFilterList);
 
     final String sApplicationID = getApplicationID ();

@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.ICommonsMap;
@@ -55,7 +56,7 @@ public class XServletHandlerRegistry implements Serializable
    * Register a handler for the provided HTTP method. If another handler is
    * already registered, the new registration overwrites the old one.
    *
-   * @param eHTTPMethod
+   * @param eMethod
    *        The HTTP method to register for. May not be <code>null</code>.
    * @param aLowLevelHandler
    *        The handler to register. May not be <code>null</code>.
@@ -64,36 +65,36 @@ public class XServletHandlerRegistry implements Serializable
    *        <code>false</code> this method will throw an
    *        {@link IllegalStateException}.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod,
+  public void registerHandler (@Nonnull final EHttpMethod eMethod,
                                @Nonnull final IXServletHandler aLowLevelHandler,
                                final boolean bAllowOverwrite)
   {
-    ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
+    ValueEnforcer.notNull (eMethod, "HTTPMethod");
     ValueEnforcer.notNull (aLowLevelHandler, "Handler");
 
-    if (!bAllowOverwrite && m_aHandler.containsKey (eHTTPMethod))
+    if (!bAllowOverwrite && m_aHandler.containsKey (eMethod))
     {
       // Programming error
       throw new IllegalStateException ("An HTTP handler for HTTP method " +
-                                       eHTTPMethod +
+                                       eMethod +
                                        " is already registered: " +
-                                       m_aHandler.get (eHTTPMethod));
+                                       m_aHandler.get (eMethod));
     }
-    m_aHandler.put (eHTTPMethod, aLowLevelHandler);
+    m_aHandler.put (eMethod, aLowLevelHandler);
   }
 
   /**
    * Register a handler for the provided HTTP method. If another handler is
    * already registered, the new registration overwrites the old one.
    *
-   * @param eHTTPMethod
+   * @param eMethod
    *        The HTTP method to register for. May not be <code>null</code>.
    * @param aLowLevelHandler
    *        The handler to register. May not be <code>null</code>.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final IXServletHandler aLowLevelHandler)
+  public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletHandler aLowLevelHandler)
   {
-    registerHandler (eHTTPMethod, aLowLevelHandler, false);
+    registerHandler (eMethod, aLowLevelHandler, false);
   }
 
   public void registerSyncHandler (@Nonnull final EHttpMethod eMethod,
@@ -115,6 +116,17 @@ public class XServletHandlerRegistry implements Serializable
 
     // Register as a regular handler
     registerHandler (eMethod, aRealHandler);
+  }
+
+  public void copyHandler (@Nonnull final EHttpMethod eFromMethod, @Nonnull @Nonempty final EHttpMethod... aToMethods)
+  {
+    ValueEnforcer.notNull (eFromMethod, "FromMethod");
+    ValueEnforcer.notEmptyNoNullValue (aToMethods, "ToMethods");
+
+    final IXServletHandler aFromHandler = getHandler (eFromMethod);
+    if (aFromHandler != null)
+      for (final EHttpMethod eToMethod : aToMethods)
+        registerHandler (eToMethod, aFromHandler);
   }
 
   @Nonnull

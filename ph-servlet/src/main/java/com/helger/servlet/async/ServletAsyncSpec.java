@@ -16,9 +16,6 @@
  */
 package com.helger.servlet.async;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,12 +25,10 @@ import javax.servlet.AsyncListener;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -51,13 +46,11 @@ public class ServletAsyncSpec
   /** The constant for synchronous invocations */
   public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false,
                                                                          NO_TIMEOUT,
-                                                                         (Iterable <? extends AsyncListener>) null,
-                                                                         (Set <EHttpMethod>) null);
+                                                                         (Iterable <? extends AsyncListener>) null);
 
   private final boolean m_bAsynchronous;
   private final long m_nTimeoutMillis;
   private final ICommonsList <AsyncListener> m_aAsyncListeners;
-  private final EnumSet <EHttpMethod> m_aAsyncHTTPMethods;
 
   /**
    * Constructor
@@ -70,30 +63,19 @@ public class ServletAsyncSpec
    * @param aAsyncListeners
    *        {@link AsyncListener}s to be added to the AsyncContext. Must be
    *        <code>null</code> for synchronous usage.
-   * @param aAsyncHTTPMethods
-   *        The HTTP methods that are available for async usage. May neither be
-   *        <code>null</code> nor empty in async mode.
    */
   protected ServletAsyncSpec (final boolean bAsynchronous,
                               @CheckForSigned final long nTimeoutMillis,
-                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
-                              @Nullable final Set <EHttpMethod> aAsyncHTTPMethods)
+                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners)
   {
-    if (bAsynchronous)
-    {
-      ValueEnforcer.notEmptyNoNullValue (aAsyncHTTPMethods, "AsyncHTTPMethods");
-    }
-    else
+    if (!bAsynchronous)
     {
       ValueEnforcer.isLE0 (nTimeoutMillis, "TimeoutMillis");
       ValueEnforcer.isNull (aAsyncListeners, "AsyncListeners");
-      ValueEnforcer.isNull (aAsyncHTTPMethods, "AsyncHTTPMethods");
     }
     m_bAsynchronous = bAsynchronous;
     m_nTimeoutMillis = nTimeoutMillis;
     m_aAsyncListeners = new CommonsArrayList <> (aAsyncListeners);
-    m_aAsyncHTTPMethods = aAsyncHTTPMethods == null ? EnumSet.noneOf (EHttpMethod.class)
-                                                    : EnumSet.copyOf (aAsyncHTTPMethods);
   }
 
   /**
@@ -117,10 +99,7 @@ public class ServletAsyncSpec
 
   /**
    * @return <code>true</code> for asynchronous, <code>false</code> for
-   *         synchronous. If it is asynchronous the HTTP method is also a
-   *         determinator for whether a request is to be handled asynchronously
-   *         or not.
-   * @see #isAsyncHTTPMethod(EHttpMethod)
+   *         synchronous.
    */
   public boolean isAsynchronous ()
   {
@@ -147,23 +126,6 @@ public class ServletAsyncSpec
     return m_aAsyncListeners.isNotEmpty ();
   }
 
-  /**
-   * @return A set with all async HTTP methods. Only non-empty for asynchronous
-   *         specs. Never <code>null</code>.
-   */
-  @Nonnull
-  @ReturnsMutableCopy
-  public EnumSet <EHttpMethod> getAllAsyncHTTPMethods ()
-  {
-    return EnumSet.copyOf (m_aAsyncHTTPMethods);
-  }
-
-  public boolean isAsyncHTTPMethod (@Nonnull final EHttpMethod eHTTPMethod)
-  {
-    ValueEnforcer.notNull (eHTTPMethod, "HTTPMethod");
-    return m_aAsyncHTTPMethods.contains (eHTTPMethod);
-  }
-
   public void applyToAsyncContext (@Nonnull final AsyncContext aAsyncCtx)
   {
     if (!isAsynchronous ())
@@ -181,7 +143,6 @@ public class ServletAsyncSpec
     return new ToStringGenerator (this).append ("Asynchronous", m_bAsynchronous)
                                        .appendIf ("TimeoutMillis", m_nTimeoutMillis, (final long x) -> x > 0)
                                        .append ("AsyncListeners", m_aAsyncListeners)
-                                       .append ("AsyncHTTPMethods", m_aAsyncHTTPMethods)
                                        .getToString ();
   }
 
@@ -202,24 +163,18 @@ public class ServletAsyncSpec
    *        Timeout in milliseconds. Only value &gt; 0 are considered.
    * @param aAsyncListeners
    *        The async listeners to use. May be <code>null</code>.
-   * @param aAsyncHTTPMethods
-   *        The HTTP methods that are available for async usage. May neither be
-   *        <code>null</code> nor empty.
    * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
    */
   @Nonnull
   public static ServletAsyncSpec createAsync (@CheckForSigned final long nTimeoutMillis,
-                                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners,
-                                              @Nonnull @Nonempty final Set <EHttpMethod> aAsyncHTTPMethods)
+                                              @Nullable final Iterable <? extends AsyncListener> aAsyncListeners)
   {
-    return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners, aAsyncHTTPMethods);
+    return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners);
   }
 
   @Nonnull
   public static ServletAsyncSpec createAsyncDefault ()
   {
-    return createAsync (GlobalDebug.isDebugMode () ? 0 : 30 * CGlobal.MILLISECONDS_PER_SECOND,
-                        null,
-                        EnumSet.of (EHttpMethod.GET, EHttpMethod.HEAD));
+    return createAsync (GlobalDebug.isDebugMode () ? 0 : 30 * CGlobal.MILLISECONDS_PER_SECOND, null);
   }
 }

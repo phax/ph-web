@@ -131,18 +131,13 @@ public final class XServletAsyncHandler implements IXServletHandler
     });
   }
 
-  public boolean isRunAsynchronously (@Nonnull final EHttpMethod eHttpMethod)
-  {
-    return m_aAsyncSpec.isAsynchronous () && m_aAsyncSpec.isAsyncHTTPMethod (eHttpMethod);
-  }
-
   public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
                          @Nonnull final HttpServletResponse aHttpResponse,
                          @Nonnull final EHttpVersion eHttpVersion,
                          @Nonnull final EHttpMethod eHttpMethod,
                          @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
-    if (isRunAsynchronously (eHttpMethod))
+    if (m_aAsyncSpec.isAsynchronous ())
     {
       // Run asynchronously
       _handleAsync (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);

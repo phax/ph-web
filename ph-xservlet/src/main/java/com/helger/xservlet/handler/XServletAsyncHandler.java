@@ -137,7 +137,7 @@ public final class XServletAsyncHandler implements IXServletHandler
                          @Nonnull final EHttpMethod eHttpMethod,
                          @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
-    if (m_aAsyncSpec.isAsynchronous ())
+    if (m_aAsyncSpec.isAsynchronous () && aHttpRequest.isAsyncSupported ())
     {
       // Run asynchronously
       _handleAsync (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);

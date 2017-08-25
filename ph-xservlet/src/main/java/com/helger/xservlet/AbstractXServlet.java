@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -95,6 +96,7 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  * @author Philip Helger
  * @since 9.0.0
  */
+@NotThreadSafe
 public abstract class AbstractXServlet extends GenericServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
@@ -135,7 +137,7 @@ public abstract class AbstractXServlet extends GenericServlet
 
   public AbstractXServlet ()
   {
-    this ( () -> "none");
+    this ( () -> "no-app-id");
   }
 
   /**

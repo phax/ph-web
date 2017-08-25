@@ -97,8 +97,7 @@ public class XServletHandlerRegistry implements Serializable
     registerHandler (eMethod, aLowLevelHandler, false);
   }
 
-  public void registerSyncHandler (@Nonnull final EHttpMethod eMethod,
-                                   @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletSimpleHandler aSimpleHandler)
   {
     registerHandler (eMethod, ServletAsyncSpec.getSync (), aSimpleHandler);
   }

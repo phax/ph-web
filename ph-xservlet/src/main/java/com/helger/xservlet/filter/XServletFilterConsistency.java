@@ -18,7 +18,6 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,62 +53,19 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class XServletFilterConsistency implements IXServletLowLevelFilter
 {
-  public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterConsistency.class);
 
   /** The request fallback charset to be used, if none is present! */
-  private Charset m_aRequestFallbackCharset = StandardCharsets.UTF_8;
+  private final Charset m_aRequestFallbackCharset;
 
   /** The response fallback charset to be used, if none is present! */
-  private Charset m_aResponseFallbackCharset = StandardCharsets.UTF_8;
+  private final Charset m_aResponseFallbackCharset;
 
-  public XServletFilterConsistency ()
-  {}
-
-  /**
-   * @return The fallback charset to be used if an HTTP request has no charset
-   *         defined. Never <code>null</code>.
-   */
-  @Nonnull
-  protected final Charset getRequestFallbackCharset ()
+  public XServletFilterConsistency (@Nonnull final Charset aRequestFallbackCharset,
+                                    @Nonnull final Charset aResponseFallbackCharset)
   {
-    return m_aRequestFallbackCharset;
-  }
-
-  /**
-   * Set the fallback charset for HTTP request if they don't have a charset
-   * defined. By default UTF-8 is used.
-   *
-   * @param aFallbackCharset
-   *        The fallback charset to be used. May not be <code>null</code>.
-   */
-  protected final void setRequestFallbackCharset (@Nonnull final Charset aFallbackCharset)
-  {
-    ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
-    m_aRequestFallbackCharset = aFallbackCharset;
-  }
-
-  /**
-   * @return The fallback charset to be used if an HTTP response has no charset
-   *         defined. Never <code>null</code>.
-   */
-  @Nonnull
-  protected final Charset getResponseFallbackCharset ()
-  {
-    return m_aResponseFallbackCharset;
-  }
-
-  /**
-   * Set the fallback charset for HTTP response if they don't have a charset
-   * defined. By default UTF-8 is used.
-   *
-   * @param aFallbackCharset
-   *        The fallback charset to be used. May not be <code>null</code>.
-   */
-  protected final void setResponseFallbackCharset (@Nonnull final Charset aFallbackCharset)
-  {
-    ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
-    m_aResponseFallbackCharset = aFallbackCharset;
+    m_aRequestFallbackCharset = aRequestFallbackCharset;
+    m_aResponseFallbackCharset = aResponseFallbackCharset;
   }
 
   /**

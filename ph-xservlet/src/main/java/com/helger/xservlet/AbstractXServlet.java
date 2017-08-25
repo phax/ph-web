@@ -482,15 +482,18 @@ public abstract class AbstractXServlet extends GenericServlet
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = new StatusAwareHttpResponseWrapper (aHttpResponse);
 
     // Create effective filter list with all internal filters as well
-    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> ();
-    // Add internal filters
+    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (3 +
+                                                                                                 m_aFilterList.size ());
+    // Add internal filters - always first
     aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);
-    aEffectiveFilterList.add (new XServletFilterConsistency ());
+    aEffectiveFilterList.add (new XServletFilterConsistency (m_aSettings.getRequestFallbackCharset (),
+                                                             m_aSettings.getResponseFallbackCharset ()));
     if (m_aSettings.hasHttpReferrerPolicy ())
       aEffectiveFilterList.add (new XServletFilterSecurityHttpReferrerPolicy (m_aSettings.getHttpReferrerPolicy ()));
     // Add custom filters
     aEffectiveFilterList.addAll (m_aFilterList);
 
+    // Determine the application ID here
     final String sApplicationID = getApplicationID ();
 
     // Create request scope

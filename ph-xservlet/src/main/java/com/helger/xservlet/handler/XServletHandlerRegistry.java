@@ -18,6 +18,7 @@ package com.helger.xservlet.handler;
 
 import java.io.Serializable;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,7 @@ import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.functional.IThrowingConsumer;
 import com.helger.commons.http.EHttpMethod;
+import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.servlet.async.ServletAsyncSpec;
@@ -104,15 +106,62 @@ public class XServletHandlerRegistry implements Serializable
     registerHandler (eMethod, aLowLevelHandler, false);
   }
 
-  public void copyHandler (@Nonnull final EHttpMethod eFromMethod, @Nonnull @Nonempty final EHttpMethod... aToMethods)
+  /**
+   * Copy an existing handler of a certain HTTP method to another HTTP method.
+   * The same instance of the handler is re-used!
+   *
+   * @param eFromMethod
+   *        Source method. May not be <code>null</code>.
+   * @param aToMethods
+   *        Destination methods. May not be <code>null</code> and may not
+   *        contain <code>null</code> values.
+   * @return {@link EChange#UNCHANGED} if no existing handler was found,
+   *         {@link EChange#CHANGED} if at least one handler was copied.
+   * @throws IllegalStateException
+   *         In another handler is already registered for one of the destination
+   *         methods.
+   * @see #copyHandlerToAll(EHttpMethod)
+   */
+  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod,
+                              @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
   {
     ValueEnforcer.notNull (eFromMethod, "FromMethod");
     ValueEnforcer.notEmptyNoNullValue (aToMethods, "ToMethods");
 
     final IXServletHandler aFromHandler = getHandler (eFromMethod);
-    if (aFromHandler != null)
-      for (final EHttpMethod eToMethod : aToMethods)
-        registerHandler (eToMethod, aFromHandler, false);
+    if (aFromHandler == null)
+      return EChange.UNCHANGED;
+
+    for (final EHttpMethod eToMethod : aToMethods)
+      registerHandler (eToMethod, aFromHandler, false);
+    return EChange.CHANGED;
+  }
+
+  /**
+   * Copy the handler of the passed method to all other HTTP methods in the
+   * range of GET, POST, PUT, DELETE and PATCH.
+   *
+   * @param eFromMethod
+   *        From method. May not be <code>null</code>. Should be one of GET,
+   *        POST, PUT, DELETE or PATCH.
+   * @return {@link EChange#UNCHANGED} if no existing handler was found,
+   *         {@link EChange#CHANGED} if at least one handler was copied.
+   * @throws IllegalStateException
+   *         In another handler is already registered for one of the destination
+   *         methods.
+   * @see #copyHandler(EHttpMethod, Set)
+   */
+  @Nonnull
+  public EChange copyHandlerToAll (@Nonnull final EHttpMethod eFromMethod)
+  {
+    // These are the action methods
+    final EnumSet <EHttpMethod> aDest = EnumSet.of (EHttpMethod.GET,
+                                                    EHttpMethod.POST,
+                                                    EHttpMethod.PUT,
+                                                    EHttpMethod.DELETE,
+                                                    EHttpMethod.PATCH);
+    aDest.remove (eFromMethod);
+    return copyHandler (eFromMethod, aDest);
   }
 
   @Nonnull

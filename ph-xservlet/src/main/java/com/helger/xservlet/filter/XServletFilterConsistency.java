@@ -85,7 +85,11 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     if (aHttpRequest.getCharacterEncoding () == null)
     {
       final String sCharsetName = m_aRequestFallbackCharset.name ();
-      s_aLogger.warn ("Forcing request charset to " + sCharsetName);
+
+      // Happens too often - seems to be the case for all requests where no
+      // parameters are present
+      if (s_aLogger.isDebugEnabled ())
+        s_aLogger.debug ("Forcing request charset to " + sCharsetName);
       aHttpRequest.setCharacterEncoding (sCharsetName);
     }
   }

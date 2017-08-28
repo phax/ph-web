@@ -43,6 +43,7 @@ import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.handler.IXServletHandler;
 
 public final class XServletHandlerToSimpleHandler implements IXServletHandler
@@ -236,6 +237,11 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
 
           if (s_aLogger.isDebugEnabled ())
             s_aLogger.debug ("Successfully handled request: " + aRequestScope.getPathWithinServlet ());
+        }
+        catch (final ForcedRedirectException ex)
+        {
+          // Pass through
+          throw ex;
         }
         catch (final Throwable t)
         {

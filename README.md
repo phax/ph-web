@@ -29,6 +29,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Added HTTP Referrer-Policy header support
     * Extracted `ph-sitemap` from `ph-web`
     * Added new sub-project `ph-xservlet` to contain an extended Servlet framework
+    * `HttpClientFactory` supports customizable retry count 
   * v8.8.2 - 2017-07-04
     * Made debug flag in certain `ResponseHandler*` implementations customizable
     * `ServletHelper` caught Exception logging can now be enabled and disabled

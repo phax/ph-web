@@ -16,7 +16,6 @@
  */
 package com.helger.httpclient;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
@@ -36,7 +35,7 @@ import com.helger.commons.io.stream.StreamHelper;
  *
  * @author Philip Helger
  */
-public class HttpClientManager implements Closeable
+public class HttpClientManager implements AutoCloseable
 {
   private CloseableHttpClient m_aHttpClient;
 
@@ -53,7 +52,7 @@ public class HttpClientManager implements Closeable
       throw new IllegalArgumentException ("The provided HttpClient factory created an invalid (null) HttpClient!");
   }
 
-  public void close () throws IOException
+  public void close ()
   {
     StreamHelper.close (m_aHttpClient);
     m_aHttpClient = null;

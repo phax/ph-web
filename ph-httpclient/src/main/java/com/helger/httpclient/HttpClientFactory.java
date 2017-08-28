@@ -20,6 +20,7 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -54,6 +55,7 @@ import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
 
 /**
@@ -76,6 +78,7 @@ public class HttpClientFactory implements IHttpClientProvider
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
+  private int m_nRetries = 0;
 
   /**
    * Default constructor without a special SSL context.
@@ -132,7 +135,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.7.1
    */
   @Nonnull
-  public HttpClientFactory setUseSystemProperties (final boolean bUseSystemProperties)
+  public final HttpClientFactory setUseSystemProperties (final boolean bUseSystemProperties)
   {
     m_bUseSystemProperties = bUseSystemProperties;
     return this;
@@ -158,7 +161,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.0
    */
   @Nonnull
-  public HttpClientFactory setUseDNSClientCache (final boolean bUseDNSClientCache)
+  public final HttpClientFactory setUseDNSClientCache (final boolean bUseDNSClientCache)
   {
     m_bUseDNSClientCache = bUseDNSClientCache;
     return this;
@@ -184,9 +187,84 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.2
    */
   @Nonnull
-  public HttpClientFactory setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
+  public final HttpClientFactory setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
   {
     m_aHostnameVerifier = aHostnameVerifier;
+    return this;
+  }
+
+  /**
+   * Set a proxy host without proxy server credentials.
+   *
+   * @param aProxy
+   *        The proxy host to be used. May be <code>null</code>.
+   * @since 8.8.0
+   * @see #setProxy(HttpHost, Credentials)
+   */
+  public final void setProxy (@Nullable final HttpHost aProxy)
+  {
+    setProxy (aProxy, (Credentials) null);
+  }
+
+  /**
+   * Set proxy host and proxy credentials.
+   *
+   * @param aProxy
+   *        The proxy host to be used. May be <code>null</code>.
+   * @param aProxyCredentials
+   *        The proxy server credentials to be used. May be <code>null</code>.
+   *        They are only used if a proxy host is present! Usually they are of
+   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
+   * @since 8.8.0
+   * @see #setProxy(HttpHost)
+   */
+  public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
+  {
+    m_aProxy = aProxy;
+    m_aProxyCredentials = aProxyCredentials;
+  }
+
+  /**
+   * @return The proxy host to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public HttpHost getProxyHost ()
+  {
+    return m_aProxy;
+  }
+
+  /**
+   * @return The proxy server credentials to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public Credentials getProxyCredentials ()
+  {
+    return m_aProxyCredentials;
+  }
+
+  /**
+   * @return The number of retries. Defaults to 0.
+   * @since 9.0.0
+   */
+  @Nonnegative
+  public int getRetries ()
+  {
+    return m_nRetries;
+  }
+
+  /**
+   * Set the number of internal retries.
+   *
+   * @param nRetries
+   *        Retries to use. Must be &ge; 0.
+   * @return this for chaining
+   * @since 9.0.0
+   */
+  @Nonnull
+  public final HttpClientFactory setRetries (@Nonnegative final int nRetries)
+  {
+    ValueEnforcer.isGE0 (nRetries, "Retries");
+    m_nRetries = nRetries;
     return this;
   }
 
@@ -209,7 +287,7 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
 
-    // Custom hostname verifier prefered
+    // Custom hostname verifier preferred
     HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
     if (aHostnameVerifier == null)
       aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
@@ -324,9 +402,9 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     return RequestConfig.custom ()
                         .setCookieSpec (CookieSpecs.DEFAULT)
-                        .setSocketTimeout (10000)
-                        .setConnectTimeout (5000)
-                        .setConnectionRequestTimeout (5000)
+                        .setSocketTimeout (10_000)
+                        .setConnectTimeout (5_000)
+                        .setConnectionRequestTimeout (5_000)
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (true);
   }
@@ -335,55 +413,6 @@ public class HttpClientFactory implements IHttpClientProvider
   public RequestConfig createRequestConfig ()
   {
     return createRequestConfigBuilder ().build ();
-  }
-
-  /**
-   * Set a proxy host without proxy server credentials.
-   *
-   * @param aProxy
-   *        The proxy host to be used. May be <code>null</code>.
-   * @since 8.8.0
-   * @see #setProxy(HttpHost, Credentials)
-   */
-  public void setProxy (@Nullable final HttpHost aProxy)
-  {
-    setProxy (aProxy, (Credentials) null);
-  }
-
-  /**
-   * Set proxy host and proxy credentials.
-   *
-   * @param aProxy
-   *        The proxy host to be used. May be <code>null</code>.
-   * @param aProxyCredentials
-   *        The proxy server credentials to be used. May be <code>null</code>.
-   *        They are only used if a proxy host is present! Usually they are of
-   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
-   * @since 8.8.0
-   * @see #setProxy(HttpHost)
-   */
-  public void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
-  {
-    m_aProxy = aProxy;
-    m_aProxyCredentials = aProxyCredentials;
-  }
-
-  /**
-   * @return The proxy host to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public HttpHost getProxyHost ()
-  {
-    return m_aProxy;
-  }
-
-  /**
-   * @return The proxy server creentials to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public Credentials getProxyCredentials ()
-  {
-    return m_aProxyCredentials;
   }
 
   @Nonnull
@@ -416,6 +445,11 @@ public class HttpClientFactory implements IHttpClientProvider
     // Enable usage of Java networking system properties
     if (m_bUseSystemProperties)
       aHCB.useSystemProperties ();
+
+    // Set retry handler (if needed)
+    if (m_nRetries > 0)
+      aHCB.setRetryHandler (new HttpClientRetryHandler (m_nRetries));
+
     return aHCB;
   }
 

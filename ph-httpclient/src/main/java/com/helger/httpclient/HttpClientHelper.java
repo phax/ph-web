@@ -19,11 +19,14 @@ package com.helger.httpclient;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -40,11 +43,14 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
+import com.helger.commons.codec.URLCodec;
 import com.helger.commons.http.EHttpMethod;
+import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.network.proxy.HttpProxyConfig;
@@ -159,5 +165,37 @@ public final class HttpClientHelper
       }
     }
     return ret;
+  }
+
+  @Nullable
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap)
+  {
+    if (aMap == null || aMap.isEmpty ())
+      return null;
+
+    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (1024);
+    final URLCodec aURLCodec = new URLCodec ();
+    final Charset aCharset = StandardCharsets.UTF_8;
+    boolean bFirst = true;
+    for (final Map.Entry <String, String> aEntry : aMap.entrySet ())
+    {
+      if (bFirst)
+        bFirst = false;
+      else
+        aBAOS.write ('&');
+
+      // Key must be present
+      final String sKey = aEntry.getKey ();
+      aURLCodec.encode (sKey.getBytes (aCharset), aBAOS);
+
+      // Value is optional
+      final String sValue = aEntry.getValue ();
+      if (StringHelper.hasText (sValue))
+      {
+        aBAOS.write ('=');
+        aURLCodec.encode (sValue.getBytes (aCharset), aBAOS);
+      }
+    }
+    return new InputStreamEntity (aBAOS.getAsInputStream ());
   }
 }

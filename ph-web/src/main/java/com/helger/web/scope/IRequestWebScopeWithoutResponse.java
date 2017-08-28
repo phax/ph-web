@@ -36,6 +36,7 @@ import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.IRequestScope;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
@@ -641,7 +642,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonempty
   default String getURL ()
   {
-    return RequestHelper.getURL (getRequest ());
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-url",
+                                              k -> RequestHelper.getURL (getRequest ()));
   }
 
   /**

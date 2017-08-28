@@ -164,10 +164,11 @@ public final class ResponseHelper
 
   public static boolean isEmptyStatusCode (final int nSC)
   {
-    // 204 || 301 || 302 || 304
+    // 204 || 301 || 302 || 303 || 304
     return nSC == HttpServletResponse.SC_NO_CONTENT ||
            nSC == HttpServletResponse.SC_MOVED_PERMANENTLY ||
            nSC == HttpServletResponse.SC_MOVED_TEMPORARILY ||
+           nSC == HttpServletResponse.SC_SEE_OTHER ||
            nSC == HttpServletResponse.SC_NOT_MODIFIED;
   }
 

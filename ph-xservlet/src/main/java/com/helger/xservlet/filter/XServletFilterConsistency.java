@@ -137,7 +137,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   {
     // < 200 || >= 400?
     if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
-      s_aLogger.warn ("Status code " + nStatusCode + " in response to '" + sRequestURL + "'");
+      s_aLogger.warn ("HTTP status code " + nStatusCode + " in response to '" + sRequestURL + "'");
   }
 
   /**
@@ -154,7 +154,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          final int nStatusCode)
   {
     if (StringHelper.hasNoText (sCharacterEncoding) && !ResponseHelper.isEmptyStatusCode (nStatusCode))
-      s_aLogger.warn ("No character encoding on " + nStatusCode + " response to '" + sRequestURL + "'");
+      s_aLogger.warn ("No character encoding on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
   }
 
   /**
@@ -171,7 +171,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    final int nStatusCode)
   {
     if (StringHelper.hasNoText (sContentType) && !ResponseHelper.isEmptyStatusCode (nStatusCode))
-      s_aLogger.warn ("No content type on " + nStatusCode + " response to '" + sRequestURL + "'");
+      s_aLogger.warn ("No content type on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
   }
 
   /**
@@ -191,7 +191,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     // UnifiedResponseDefaultSettings
     if (false)
       if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
-        s_aLogger.warn ("Headers on " + nStatusCode + " response to '" + sRequestURL + "': " + aHeaders);
+        s_aLogger.warn ("Headers on HTTP " + nStatusCode + " response to '" + sRequestURL + "': " + aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,

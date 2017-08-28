@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.http.EHttpMethod;
@@ -113,10 +114,13 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    * @param aRequestScope
    *        The request scope that will be used for processing the request.
    *        Never <code>null</code>.
+   * @param sApplicationID
+   *        The current application ID. Neither <code>null</code> nor empty.
    */
   @OverrideOnDemand
   @Nonnull
-  default void onRequestBegin (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  default void onRequestBegin (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
+                               @Nonnull @Nonempty final String sApplicationID)
   {}
 
   /**

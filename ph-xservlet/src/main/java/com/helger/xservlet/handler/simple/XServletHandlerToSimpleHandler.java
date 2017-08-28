@@ -221,7 +221,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         // On request begin
         try
         {
-          m_aSimpleHandler.onRequestBegin (aRequestScope);
+          m_aSimpleHandler.onRequestBegin (aRequestScope, m_sApplicationID);
         }
         catch (final Throwable t)
         {

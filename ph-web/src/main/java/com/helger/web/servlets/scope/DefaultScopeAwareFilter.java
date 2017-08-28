@@ -30,6 +30,7 @@ import com.helger.web.scope.IRequestWebScope;
  *
  * @author Philip Helger
  */
+@Deprecated
 public class DefaultScopeAwareFilter extends AbstractScopeAwareFilter
 {
   @Override

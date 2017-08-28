@@ -48,6 +48,7 @@ import com.helger.xml.serialize.write.XMLWriterSettings;
  *
  * @author Philip Helger
  */
+@Deprecated
 public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractScopeAwareHttpServlet.class);

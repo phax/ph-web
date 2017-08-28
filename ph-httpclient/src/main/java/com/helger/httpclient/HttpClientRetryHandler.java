@@ -44,13 +44,28 @@ public class HttpClientRetryHandler implements HttpRequestRetryHandler
 {
   public static enum ERetryMode
   {
-    /** Retry always as long as the max-retries is not exceeded */
+    /**
+     * Retry always as long as the max-retries is not exceeded. This mode is
+     * independent of the thrown exception and can therefore be considered a
+     * quite dumb version. This might nevertheless be an option for testing.
+     */
     RETRY_ALWAYS,
     /**
-     * Retry only if the request is idempotent (if it has no payload) and as
-     * long as the max-retries is not exceeded
+     * Retry always as long as the max-retries is not exceeded. Do not retry if
+     * certain exceptions are thrown that indicate that a retry would make no
+     * sense (like SSL handshake errors or the like).
+     */
+    RETRY_SMART,
+    /**
+     * The same as {@link #RETRY_SMART} but only if the request is idempotent
+     * (if it has no payload).
      */
     RETRY_IDEMPOTENT_ONLY;
+
+    public boolean isCheckException ()
+    {
+      return this == RETRY_SMART || this == RETRY_IDEMPOTENT_ONLY;
+    }
   }
 
   private final int m_nMaxRetries;
@@ -83,30 +98,36 @@ public class HttpClientRetryHandler implements HttpRequestRetryHandler
       // Do not retry if over max retry count
       return false;
     }
-    if (aEx instanceof InterruptedIOException)
+
+    // Check if exceptions make the retry unnecessary
+    if (m_eRetryMode.isCheckException ())
     {
-      // Timeout
-      return false;
-    }
-    if (aEx instanceof UnknownHostException)
-    {
-      // Unknown host
-      return false;
-    }
-    if (aEx instanceof ConnectTimeoutException)
-    {
-      // Connection refused
-      return false;
-    }
-    if (aEx instanceof SSLException)
-    {
-      // SSL handshake exception
-      return false;
+      if (aEx instanceof InterruptedIOException)
+      {
+        // Timeout
+        return false;
+      }
+      if (aEx instanceof UnknownHostException)
+      {
+        // Unknown host
+        return false;
+      }
+      if (aEx instanceof ConnectTimeoutException)
+      {
+        // Connection refused
+        return false;
+      }
+      if (aEx instanceof SSLException)
+      {
+        // SSL handshake exception
+        return false;
+      }
     }
 
     switch (m_eRetryMode)
     {
       case RETRY_ALWAYS:
+      case RETRY_SMART:
         return true;
       case RETRY_IDEMPOTENT_ONLY:
         final HttpClientContext aClientContext = HttpClientContext.adapt (aContext);

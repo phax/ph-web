@@ -177,11 +177,15 @@ public final class ServletContextPathHolder
    */
   public static void clearContextPath ()
   {
-    if (s_sServletContextPath != null || s_sCustomContextPath != null)
+    if (s_sServletContextPath != null)
     {
+      s_aLogger.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
       s_sServletContextPath = null;
+    }
+    if (s_sCustomContextPath != null)
+    {
+      s_aLogger.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
       s_sCustomContextPath = null;
-      s_aLogger.info ("The servlet context paths were cleared!");
     }
   }
 }

@@ -56,7 +56,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.OverrideOnDemand;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
@@ -74,31 +73,24 @@ public class HttpClientFactory implements IHttpClientProvider
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
-  private final SSLContext m_aDefaultSSLContext;
+  private SSLContext m_aDefaultSSLContext;
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
   private int m_nRetries = 0;
 
   /**
-   * Default constructor without a special SSL context.
+   * Default constructor.
    */
   public HttpClientFactory ()
-  {
-    this (null);
-  }
-
-  public HttpClientFactory (@Nullable final SSLContext aDefaultSSLContext)
-  {
-    m_aDefaultSSLContext = aDefaultSSLContext;
-  }
+  {}
 
   /**
    * @return <code>true</code> if system properties for HTTP client should be
    *         used, <code>false</code> if not. Default is <code>false</code>.
    * @since 8.7.1
    */
-  public boolean isUseSystemProperties ()
+  public final boolean isUseSystemProperties ()
   {
     return m_bUseSystemProperties;
   }
@@ -146,7 +138,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *         <code>false</code> if it is disabled.
    * @since 8.8.0
    */
-  public boolean isUseDNSClientCache ()
+  public final boolean isUseDNSClientCache ()
   {
     return m_bUseDNSClientCache;
   }
@@ -168,12 +160,40 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * Create a custom SSLContext to use for the SSL Socket factory.
+   *
+   * @return <code>null</code> if no custom context is present.
+   * @throws GeneralSecurityException
+   *         In case key management problems occur.
+   */
+  @Nullable
+  public final SSLContext getSSLContext () throws GeneralSecurityException
+  {
+    return m_aDefaultSSLContext;
+  }
+
+  /**
+   * Set the SSL Context to be used. By default no SSL context is present.
+   *
+   * @param aSSLContext
+   *        The SSL context to be used. May be <code>null</code>-
+   * @return this for chaining
+   * @since 9.0.0
+   */
+  @Nonnull
+  public final HttpClientFactory setSSLContext (@Nullable final SSLContext aSSLContext)
+  {
+    m_aDefaultSSLContext = aSSLContext;
+    return this;
+  }
+
+  /**
    * @return The current hostname verifier to be used. Default to
    *         <code>null</code>.
    * @since 8.8.2
    */
   @Nullable
-  public HostnameVerifier getHostnameVerifier ()
+  public final HostnameVerifier getHostnameVerifier ()
   {
     return m_aHostnameVerifier;
   }
@@ -191,6 +211,24 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     m_aHostnameVerifier = aHostnameVerifier;
     return this;
+  }
+
+  /**
+   * @return The proxy host to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public final HttpHost getProxyHost ()
+  {
+    return m_aProxy;
+  }
+
+  /**
+   * @return The proxy server credentials to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public final Credentials getProxyCredentials ()
+  {
+    return m_aProxyCredentials;
   }
 
   /**
@@ -225,29 +263,11 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The proxy host to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public HttpHost getProxyHost ()
-  {
-    return m_aProxy;
-  }
-
-  /**
-   * @return The proxy server credentials to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public Credentials getProxyCredentials ()
-  {
-    return m_aProxyCredentials;
-  }
-
-  /**
    * @return The number of retries. Defaults to 0.
    * @since 9.0.0
    */
   @Nonnegative
-  public int getRetries ()
+  public final int getRetries ()
   {
     return m_nRetries;
   }
@@ -268,20 +288,6 @@ public class HttpClientFactory implements IHttpClientProvider
     return this;
   }
 
-  /**
-   * Create a custom SSLContext to use for the SSL Socket factory.
-   *
-   * @return <code>null</code> if no custom context is present.
-   * @throws GeneralSecurityException
-   *         In case key management problems occur.
-   */
-  @Nullable
-  @OverrideOnDemand
-  public SSLContext createSSLContext () throws GeneralSecurityException
-  {
-    return m_aDefaultSSLContext;
-  }
-
   @Nullable
   public LayeredConnectionSocketFactory createSSLFactory ()
   {
@@ -295,7 +301,7 @@ public class HttpClientFactory implements IHttpClientProvider
     // First try with a custom SSL context
     try
     {
-      final SSLContext aSSLContext = createSSLContext ();
+      final SSLContext aSSLContext = getSSLContext ();
       if (aSSLContext != null)
       {
         aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,

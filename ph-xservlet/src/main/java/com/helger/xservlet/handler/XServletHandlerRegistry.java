@@ -83,20 +83,6 @@ public class XServletHandlerRegistry implements Serializable
     m_aHandler.put (eMethod, aLowLevelHandler);
   }
 
-  /**
-   * Register a handler for the provided HTTP method. If another handler is
-   * already registered, the new registration overwrites the old one.
-   *
-   * @param eMethod
-   *        The HTTP method to register for. May not be <code>null</code>.
-   * @param aLowLevelHandler
-   *        The handler to register. May not be <code>null</code>.
-   */
-  public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletHandler aLowLevelHandler)
-  {
-    registerHandler (eMethod, aLowLevelHandler, false);
-  }
-
   public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletSimpleHandler aSimpleHandler)
   {
     registerHandler (eMethod, ServletAsyncSpec.getSync (), aSimpleHandler);
@@ -112,9 +98,10 @@ public class XServletHandlerRegistry implements Serializable
     // Add the async handler only in front if necessary
     if (aAsyncSpec.isAsynchronous ())
       aRealHandler = new XServletAsyncHandler (aAsyncSpec, aRealHandler);
+    final IXServletHandler aLowLevelHandler = aRealHandler;
 
     // Register as a regular handler
-    registerHandler (eMethod, aRealHandler);
+    registerHandler (eMethod, aLowLevelHandler, false);
   }
 
   public void copyHandler (@Nonnull final EHttpMethod eFromMethod, @Nonnull @Nonempty final EHttpMethod... aToMethods)
@@ -125,7 +112,7 @@ public class XServletHandlerRegistry implements Serializable
     final IXServletHandler aFromHandler = getHandler (eFromMethod);
     if (aFromHandler != null)
       for (final EHttpMethod eToMethod : aToMethods)
-        registerHandler (eToMethod, aFromHandler);
+        registerHandler (eToMethod, aFromHandler, false);
   }
 
   @Nonnull

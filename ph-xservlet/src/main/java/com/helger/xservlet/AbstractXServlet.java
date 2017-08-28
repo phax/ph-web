@@ -152,7 +152,7 @@ public abstract class AbstractXServlet extends GenericServlet
   {
     m_aApplicationIDSupplier = ValueEnforcer.notNull (aApplicationIDSupplier, "ApplicationIDSupplier");
     // This handler is always the same, so it is registered here for convenience
-    m_aHandlerRegistry.registerHandler (EHttpMethod.TRACE, new XServletHandlerTRACE ());
+    m_aHandlerRegistry.registerHandler (EHttpMethod.TRACE, new XServletHandlerTRACE (), false);
 
     // Default HEAD handler -> invoke with GET
     m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD,
@@ -165,11 +165,13 @@ public abstract class AbstractXServlet extends GenericServlet
                                                           EHttpMethod.GET,
                                                           aRequestScope);
                                           aResponseWrapper.setContentLengthAutomatically ();
-                                        });
+                                        },
+                                        false);
 
     // Default OPTIONS handler
     m_aHandlerRegistry.registerHandler (EHttpMethod.OPTIONS,
-                                        new XServletHandlerOPTIONS (m_aHandlerRegistry::getAllowedHttpMethodsString));
+                                        new XServletHandlerOPTIONS (m_aHandlerRegistry::getAllowedHttpMethodsString),
+                                        false);
 
     m_aExceptionHandler.add (new XServletLoggingExceptionHandler ());
 

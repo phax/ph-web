@@ -21,6 +21,7 @@ import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 
 import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 import javax.net.ssl.SSLException;
 
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -31,6 +32,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.protocol.HttpContext;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.string.ToStringGenerator;
 
 /**
  * HTTP client retry handler based on
@@ -40,18 +42,38 @@ import com.helger.commons.ValueEnforcer;
  */
 public class HttpClientRetryHandler implements HttpRequestRetryHandler
 {
-  private final int m_nMaxRetries;
+  public static enum ERetryMode
+  {
+    /** Retry always as long as the max-retries is not exceeded */
+    RETRY_ALWAYS,
+    /**
+     * Retry only if the request is idempotent (if it has no payload) and as
+     * long as the max-retries is not exceeded
+     */
+    RETRY_IDEMPOTENT_ONLY;
+  }
 
-  public HttpClientRetryHandler (@Nonnegative final int nMaxRetries)
+  private final int m_nMaxRetries;
+  private final ERetryMode m_eRetryMode;
+
+  public HttpClientRetryHandler (@Nonnegative final int nMaxRetries, @Nonnull final ERetryMode eRetryMode)
   {
     ValueEnforcer.isGE0 (nMaxRetries, "MaxRetries");
+    ValueEnforcer.notNull (eRetryMode, "RetryMode");
     m_nMaxRetries = nMaxRetries;
+    m_eRetryMode = eRetryMode;
   }
 
   @Nonnegative
   public int getMaxRetries ()
   {
     return m_nMaxRetries;
+  }
+
+  @Nonnull
+  public ERetryMode getRetryMode ()
+  {
+    return m_eRetryMode;
   }
 
   public boolean retryRequest (final IOException aEx, final int nExecutionCount, final HttpContext aContext)
@@ -81,14 +103,32 @@ public class HttpClientRetryHandler implements HttpRequestRetryHandler
       // SSL handshake exception
       return false;
     }
-    final HttpClientContext aClientContext = HttpClientContext.adapt (aContext);
-    final HttpRequest aRequest = aClientContext.getRequest ();
-    final boolean bIdempotent = !(aRequest instanceof HttpEntityEnclosingRequest);
-    if (bIdempotent)
+
+    switch (m_eRetryMode)
     {
-      // Retry if the request is considered idempotent
-      return true;
+      case RETRY_ALWAYS:
+        return true;
+      case RETRY_IDEMPOTENT_ONLY:
+        final HttpClientContext aClientContext = HttpClientContext.adapt (aContext);
+        final HttpRequest aRequest = aClientContext.getRequest ();
+        final boolean bIdempotent = !(aRequest instanceof HttpEntityEnclosingRequest);
+        if (bIdempotent)
+        {
+          // Retry if the request is considered idempotent
+          // (if it has no payload)
+          return true;
+        }
+        return false;
+      default:
+        throw new IllegalStateException ("Unsupported retry mode: " + m_eRetryMode);
     }
-    return false;
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("MaxRetries", m_nMaxRetries)
+                                       .append ("RetryMode", m_eRetryMode)
+                                       .getToString ();
   }
 }

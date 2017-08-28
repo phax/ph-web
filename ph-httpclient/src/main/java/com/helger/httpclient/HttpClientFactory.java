@@ -56,6 +56,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
@@ -68,6 +69,8 @@ public class HttpClientFactory implements IHttpClientProvider
 {
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
+  public static final int DEFAULT_RETRIES = 0;
+  public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (HttpClientFactory.class);
 
@@ -77,7 +80,8 @@ public class HttpClientFactory implements IHttpClientProvider
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
-  private int m_nRetries = 0;
+  private int m_nRetries = DEFAULT_RETRIES;
+  private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
 
   /**
    * Default constructor.
@@ -263,7 +267,7 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The number of retries. Defaults to 0.
+   * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
    * @since 9.0.0
    */
   @Nonnegative
@@ -285,6 +289,33 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     ValueEnforcer.isGE0 (nRetries, "Retries");
     m_nRetries = nRetries;
+    return this;
+  }
+
+  /**
+   * @return The retry-mode. Never <code>null</code>. The default is
+   *         {@link #DEFAULT_RETRY_MODE}.
+   * @since 9.0.0
+   */
+  @Nonnull
+  public final ERetryMode getRetryMode ()
+  {
+    return m_eRetryMode;
+  }
+
+  /**
+   * Set the retry mode to use.
+   *
+   * @param eRetryMode
+   *        Retry mode to use. Must not be <code>null</code>.
+   * @return this for chaining
+   * @since 9.0.0
+   */
+  @Nonnull
+  public final HttpClientFactory setRetryMode (@Nonnull final ERetryMode eRetryMode)
+  {
+    ValueEnforcer.notNull (eRetryMode, "RetryMode");
+    m_eRetryMode = eRetryMode;
     return this;
   }
 
@@ -454,7 +485,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
     // Set retry handler (if needed)
     if (m_nRetries > 0)
-      aHCB.setRetryHandler (new HttpClientRetryHandler (m_nRetries));
+      aHCB.setRetryHandler (new HttpClientRetryHandler (m_nRetries, m_eRetryMode));
 
     return aHCB;
   }

@@ -172,6 +172,8 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    */
   public static void removeRequest (@Nonnull @Nonempty final String sRequestID)
   {
-    getInstance ().m_aRequestTrackingMgr.removeRequest (sRequestID, s_aParallelRunningCallbacks);
+    final RequestTracker aTracker = getGlobalSingletonIfInstantiated (RequestTracker.class);
+    if (aTracker != null)
+      aTracker.m_aRequestTrackingMgr.removeRequest (sRequestID, s_aParallelRunningCallbacks);
   }
 }

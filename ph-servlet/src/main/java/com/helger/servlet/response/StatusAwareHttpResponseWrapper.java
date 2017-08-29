@@ -160,4 +160,12 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   {
     return m_aHeaderMap;
   }
+
+  @Nonnull
+  public static StatusAwareHttpResponseWrapper wrap (@Nonnull final HttpServletResponse aHttpResponse)
+  {
+    if (aHttpResponse instanceof StatusAwareHttpResponseWrapper)
+      return (StatusAwareHttpResponseWrapper) aHttpResponse;
+    return new StatusAwareHttpResponseWrapper (aHttpResponse);
+  }
 }

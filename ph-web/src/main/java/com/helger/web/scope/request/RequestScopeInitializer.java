@@ -36,7 +36,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @author Philip Helger
  */
 @Immutable
-public final class RequestScopeInitializer
+public final class RequestScopeInitializer implements AutoCloseable
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScopeInitializer.class);
 
@@ -70,7 +70,7 @@ public final class RequestScopeInitializer
   /**
    * Destroy the current request scope if it was initialized here.
    */
-  public void destroyScope ()
+  public void close ()
   {
     if (m_bCreatedIt)
     {

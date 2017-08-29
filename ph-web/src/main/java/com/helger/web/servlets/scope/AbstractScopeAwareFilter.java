@@ -109,10 +109,9 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
                                   @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
     // Check if a scope needs to be created
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
-                                                                                             aHttpRequest,
-                                                                                             aHttpResponse);
-    try
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
+                                                                                                  aHttpRequest,
+                                                                                                  aHttpResponse))
     {
       // Apply any optional filter
       if (doHttpFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
@@ -120,11 +119,6 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
         // Continue as usual
         aChain.doFilter (aHttpRequest, aHttpResponse);
       }
-    }
-    finally
-    {
-      // And destroy the scope depending on its creation state
-      aRequestScopeInitializer.destroyScope ();
     }
   }
 

@@ -442,10 +442,6 @@ public abstract class AbstractXServlet extends GenericServlet
     // Increase per servlet invocation
     m_aStatusMgr.onServletInvocation (getClass ());
 
-    // Set the last application ID in the session
-    // PhotonSessionState.getInstance ().setLastApplicationID
-    // (m_sApplicationID);
-
     // Ensure a valid HTTP version is provided
     final String sProtocol = aHttpRequest.getProtocol ();
     final EHttpVersion eHttpVersion = EHttpVersion.getFromNameOrNull (sProtocol);
@@ -483,7 +479,7 @@ public abstract class AbstractXServlet extends GenericServlet
     }
 
     // Create a wrapper around the Servlet Response that saves the status code
-    final StatusAwareHttpResponseWrapper aHttpResponseWrapper = new StatusAwareHttpResponseWrapper (aHttpResponse);
+    final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create effective filter list with all internal filters as well
     final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (3 +
@@ -501,49 +497,48 @@ public abstract class AbstractXServlet extends GenericServlet
     final String sApplicationID = getApplicationID ();
 
     // Create request scope
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
-                                                                                             aHttpRequest,
-                                                                                             aHttpResponseWrapper);
-    final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
-
-    boolean bInvokeHandler = true;
-    Throwable aCaughtException = null;
-    try
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
+                                                                                                  aHttpRequest,
+                                                                                                  aHttpResponseWrapper))
     {
-      // Filter before
-      for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
-        if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope)
-                   .isBreak ())
-        {
-          bInvokeHandler = false;
-          return;
-        }
+      final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
 
-      if (bInvokeHandler)
-      {
-        // Find and invoke handler
-        _invokeHandler (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
-      }
-    }
-    catch (final Throwable t)
-    {
-      // Remember
-      aCaughtException = t;
-
-      // This log entry is mainly present to have an overview on how often this
-      // really happens
-      log ("Servlet exception propagated to the outside", t);
-
-      // Ensure only exceptions with the correct type are propagated
-      if (t instanceof IOException)
-        throw (IOException) t;
-      if (t instanceof ServletException)
-        throw (ServletException) t;
-      throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
-    }
-    finally
-    {
+      boolean bInvokeHandler = true;
+      Throwable aCaughtException = null;
       try
+      {
+        // Filter before
+        for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
+          if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope)
+                     .isBreak ())
+          {
+            bInvokeHandler = false;
+            return;
+          }
+
+        if (bInvokeHandler)
+        {
+          // Find and invoke handler
+          _invokeHandler (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
+        }
+      }
+      catch (final Throwable t)
+      {
+        // Remember
+        aCaughtException = t;
+
+        // This log entry is mainly present to have an overview on how often
+        // this really happens
+        log ("Servlet exception propagated to the outside", t);
+
+        // Ensure only exceptions with the correct type are propagated
+        if (t instanceof IOException)
+          throw (IOException) t;
+        if (t instanceof ServletException)
+          throw (ServletException) t;
+        throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
+      }
+      finally
       {
         // Filter after
         for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
@@ -563,11 +558,6 @@ public abstract class AbstractXServlet extends GenericServlet
             // Re-throw
             throw ex;
           }
-      }
-      finally
-      {
-        // Destroy request scope (if it was created)
-        aRequestScopeInitializer.destroyScope ();
       }
     }
   }

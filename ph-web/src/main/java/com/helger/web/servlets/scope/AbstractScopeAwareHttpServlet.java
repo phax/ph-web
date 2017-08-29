@@ -178,14 +178,9 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                            @Nonnull final HttpServletResponse aHttpResponse,
                            @Nonnull final IRunner aRunner) throws ServletException, IOException
   {
-    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
-    try
+    try (final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse))
     {
       aRunner.run (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
-    }
-    finally
-    {
-      aRequestScopeInitializer.destroyScope ();
     }
   }
 

@@ -38,10 +38,10 @@ import com.helger.commons.state.EContinue;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.ToStringGenerator;
+import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
@@ -73,7 +73,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
 
   public AbstractXFilter ()
   {
-    this ( () -> WebScopeManager.APPLICATION_ID_NOT_AVAILABLE);
+    this ( () -> ScopeManager.APPLICATION_ID_NOT_AVAILABLE);
   }
 
   /**

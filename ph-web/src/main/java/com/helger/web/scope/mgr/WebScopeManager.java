@@ -62,8 +62,6 @@ import com.helger.web.scope.session.SessionWebScopeActivator;
 @Immutable
 public final class WebScopeManager
 {
-  public static final String APPLICATION_ID_NOT_AVAILABLE = "no-app-id";
-
   // For backward compatibility passivation is disabled
   public static final boolean DEFAULT_SESSION_PASSIVATION_ALLOWED = false;
   private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +

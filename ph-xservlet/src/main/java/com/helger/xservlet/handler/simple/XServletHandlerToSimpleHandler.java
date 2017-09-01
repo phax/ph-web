@@ -46,6 +46,12 @@ import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.handler.IXServletHandler;
 
+/**
+ * Implementation of {@link IXServletHandler} for
+ * {@link IXServletSimpleHandler}.
+ *
+ * @author Philip Helger
+ */
 public final class XServletHandlerToSimpleHandler implements IXServletHandler
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletHandlerToSimpleHandler.class);
@@ -80,6 +86,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                                    @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     m_sApplicationID = sApplicationID;
+
+    // Pass-through!
     m_aSimpleHandler.onServletInit (sApplicationID, aInitParams);
   }
 
@@ -270,6 +278,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
 
   public final void onServletDestroy ()
   {
+    // Pass-through!
     m_aSimpleHandler.onServletDestroy ();
   }
 }

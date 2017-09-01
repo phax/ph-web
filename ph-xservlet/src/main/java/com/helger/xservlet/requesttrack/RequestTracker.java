@@ -35,8 +35,8 @@ import com.helger.commons.concurrent.ExecutorServiceHelper;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.scope.IScope;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.mgr.WebScoped;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
-import com.helger.web.scope.util.AbstractWebScopeAwareRunnable;
 
 /**
  * This is the entry point for request time monitoring. It keeps a central
@@ -81,20 +81,17 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   private final RequestTrackingManager m_aRequestTrackingMgr = new RequestTrackingManager ();
   private final ScheduledExecutorService m_aExecSvc;
 
-  private final class RequestTrackerMonitor extends AbstractWebScopeAwareRunnable
+  private final class RequestTrackerMonitor implements Runnable
   {
     public RequestTrackerMonitor ()
-    {
-      // Use a fixed app ID to ensure this monitor can be started!
-      super ("request-tracker");
-    }
+    {}
 
-    @Override
-    protected void scopedRun ()
+    public void run ()
     {
-      // Check for long running requests
-      try
+      // Create a dummy scope
+      try (final WebScoped aWebScoped = new WebScoped ())
       {
+        // Check for long running requests
         m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
       }
       catch (final Throwable t)

@@ -58,6 +58,7 @@ import com.helger.servlet.http.CountingOnlyHttpServletResponse;
 import com.helger.servlet.request.RequestLogger;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
@@ -137,7 +138,7 @@ public abstract class AbstractXServlet extends GenericServlet
 
   public AbstractXServlet ()
   {
-    this ( () -> "no-app-id");
+    this ( () -> WebScopeManager.APPLICATION_ID_NOT_AVAILABLE);
   }
 
   /**

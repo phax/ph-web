@@ -29,7 +29,6 @@ import com.helger.scope.GlobalScope;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
-import com.helger.web.scope.mgr.WebScopeFactoryProvider;
 
 /**
  * Implementation of the {@link IGlobalWebScope} interface for web applications.
@@ -87,7 +86,7 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   @Nonnull
   protected IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
-    return WebScopeFactoryProvider.getWebScopeFactory ().createApplicationScope (sApplicationID);
+    return new ApplicationWebScope (sApplicationID);
   }
 
   @Override

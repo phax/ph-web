@@ -18,6 +18,7 @@ package com.helger.web.scope.mgr;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +49,9 @@ import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
+import com.helger.web.scope.impl.GlobalWebScope;
+import com.helger.web.scope.impl.SessionWebScope;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 import com.helger.web.scope.session.SessionWebScopeActivator;
 
 /**
@@ -137,8 +141,14 @@ public final class WebScopeManager
   @Nonnull
   public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext)
   {
-    final IGlobalWebScope aGlobalScope = WebScopeFactoryProvider.getWebScopeFactory ()
-                                                                .createGlobalScope (aServletContext);
+    return onGlobalBegin (aServletContext, GlobalWebScope::new);
+  }
+
+  @Nonnull
+  public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext,
+                                               @Nonnull final Function <? super ServletContext, ? extends IGlobalWebScope> aFactory)
+  {
+    final IGlobalWebScope aGlobalScope = aFactory.apply (aServletContext);
     ScopeManager.setGlobalScope (aGlobalScope);
     return aGlobalScope;
   }
@@ -299,8 +309,14 @@ public final class WebScopeManager
   @Nonnull
   public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
   {
-    final ISessionWebScope aSessionWebScope = WebScopeFactoryProvider.getWebScopeFactory ()
-                                                                     .createSessionScope (aHttpSession);
+    return onSessionBegin (aHttpSession, SessionWebScope::new);
+  }
+
+  @Nonnull
+  public static <T extends ISessionWebScope> T onSessionBegin (@Nonnull final HttpSession aHttpSession,
+                                                               @Nonnull final Function <? super HttpSession, T> aFactory)
+  {
+    final T aSessionWebScope = aFactory.apply (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
     if (isSessionPassivationAllowed ())
     {
@@ -512,18 +528,14 @@ public final class WebScopeManager
                                                  @Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    // By default use the webscope factory
-    return onRequestBegin (sApplicationID,
-                           aHttpRequest,
-                           aHttpResponse,
-                           WebScopeFactoryProvider.getWebScopeFactory ()::createRequestScope);
+    return onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
   }
 
   @Nonnull
   public static IRequestWebScope onRequestBegin (@Nonnull final String sApplicationID,
                                                  @Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                                 @Nonnull final BiFunction <HttpServletRequest, HttpServletResponse, IRequestWebScope> aFactory)
+                                                 @Nonnull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, ? extends IRequestWebScope> aFactory)
   {
     final IRequestWebScope aRequestScope = aFactory.apply (aHttpRequest, aHttpResponse);
     ScopeManager.setAndInitRequestScope (sApplicationID, aRequestScope);

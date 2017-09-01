@@ -33,7 +33,6 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.SessionScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
-import com.helger.web.scope.mgr.WebScopeFactoryProvider;
 
 /**
  * Default implementation of the {@link ISessionWebScope} interface. It is
@@ -105,7 +104,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   @Nonnull
   protected ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
-    return WebScopeFactoryProvider.getWebScopeFactory ().createSessionApplicationScope (sApplicationID);
+    return new SessionApplicationWebScope (sApplicationID);
   }
 
   @Override
@@ -122,29 +121,9 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     return m_aHttpSession;
   }
 
-  public long getCreationTime ()
-  {
-    return m_aHttpSession.getCreationTime ();
-  }
-
-  public long getLastAccessedTime ()
-  {
-    return m_aHttpSession.getLastAccessedTime ();
-  }
-
-  public long getMaxInactiveInterval ()
-  {
-    return m_aHttpSession.getMaxInactiveInterval ();
-  }
-
-  public boolean isNew ()
-  {
-    return m_aHttpSession.isNew ();
-  }
-
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("httpSession", m_aHttpSession).getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("HttpSession", m_aHttpSession).getToString ();
   }
 }

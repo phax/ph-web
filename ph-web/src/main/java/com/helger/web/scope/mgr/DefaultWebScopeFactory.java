@@ -18,23 +18,12 @@ package com.helger.web.scope.mgr;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.web.scope.IApplicationWebScope;
-import com.helger.web.scope.IGlobalWebScope;
-import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.ISessionApplicationWebScope;
-import com.helger.web.scope.ISessionWebScope;
-import com.helger.web.scope.IWebScopeFactory;
 import com.helger.web.scope.impl.ApplicationWebScope;
-import com.helger.web.scope.impl.GlobalWebScope;
 import com.helger.web.scope.impl.SessionApplicationWebScope;
-import com.helger.web.scope.impl.SessionWebScope;
-import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
 /**
  * Web version of the scope factory.
@@ -42,16 +31,10 @@ import com.helger.web.scope.multipart.RequestWebScopeMultipart;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class DefaultWebScopeFactory implements IWebScopeFactory
+public class DefaultWebScopeFactory
 {
   public DefaultWebScopeFactory ()
   {}
-
-  @Nonnull
-  public IGlobalWebScope createGlobalScope (@Nonnull final ServletContext aServletContext)
-  {
-    return new GlobalWebScope (aServletContext);
-  }
 
   @Nonnull
   public IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sScopeID)
@@ -60,21 +43,8 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
   }
 
   @Nonnull
-  public ISessionWebScope createSessionScope (@Nonnull final HttpSession aHttpSession)
-  {
-    return new SessionWebScope (aHttpSession);
-  }
-
-  @Nonnull
   public ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sScopeID)
   {
     return new SessionApplicationWebScope (sScopeID);
-  }
-
-  @Nonnull
-  public IRequestWebScope createRequestScope (@Nonnull final HttpServletRequest aHttpRequest,
-                                              @Nonnull final HttpServletResponse aHttpResponse)
-  {
-    return new RequestWebScopeMultipart (aHttpRequest, aHttpResponse);
   }
 }

@@ -406,8 +406,8 @@ public final class RequestHelper
 
   @Nonnull
   @Nonempty
-  public static StringBuilder getFullServerName (@Nonnull final String sScheme,
-                                                 @Nonnull final String sServerName,
+  public static StringBuilder getFullServerName (@Nullable final String sScheme,
+                                                 @Nullable final String sServerName,
                                                  final int nServerPort)
   {
     ValueEnforcer.notNull (sScheme, "Scheme");

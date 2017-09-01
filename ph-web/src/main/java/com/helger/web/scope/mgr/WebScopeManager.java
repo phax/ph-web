@@ -17,6 +17,7 @@
 package com.helger.web.scope.mgr;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiFunction;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -511,8 +512,20 @@ public final class WebScopeManager
                                                  @Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final IRequestWebScope aRequestScope = WebScopeFactoryProvider.getWebScopeFactory ()
-                                                                  .createRequestScope (aHttpRequest, aHttpResponse);
+    // By default use the webscope factory
+    return onRequestBegin (sApplicationID,
+                           aHttpRequest,
+                           aHttpResponse,
+                           WebScopeFactoryProvider.getWebScopeFactory ()::createRequestScope);
+  }
+
+  @Nonnull
+  public static IRequestWebScope onRequestBegin (@Nonnull final String sApplicationID,
+                                                 @Nonnull final HttpServletRequest aHttpRequest,
+                                                 @Nonnull final HttpServletResponse aHttpResponse,
+                                                 @Nonnull final BiFunction <HttpServletRequest, HttpServletResponse, IRequestWebScope> aFactory)
+  {
+    final IRequestWebScope aRequestScope = aFactory.apply (aHttpRequest, aHttpResponse);
     ScopeManager.setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
   }

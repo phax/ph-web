@@ -31,8 +31,11 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   /** The response fallback charset to be used, if none is present! */
   private Charset m_aResponseFallbackCharset = StandardCharsets.UTF_8;
 
-  // Maximum compatibility
+  /** Maximum compatibility */
   private EHttpReferrerPolicy m_eHttpReferrerPolicy = EHttpReferrerPolicy.NO_REFERRER;
+
+  /** By default Multipart handling is enabled */
+  private boolean m_bIsMultipartEnabled = true;
 
   public XServletSettings ()
   {}
@@ -43,6 +46,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     m_aRequestFallbackCharset = aOther.m_aRequestFallbackCharset;
     m_aResponseFallbackCharset = aOther.m_aResponseFallbackCharset;
     m_eHttpReferrerPolicy = aOther.m_eHttpReferrerPolicy;
+    m_bIsMultipartEnabled = aOther.m_bIsMultipartEnabled;
   }
 
   /**
@@ -61,11 +65,14 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    *
    * @param aFallbackCharset
    *        The fallback charset to be used. May not be <code>null</code>.
+   * @return this for chaining
    */
-  public void setRequestFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  @Nonnull
+  public XServletSettings setRequestFallbackCharset (@Nonnull final Charset aFallbackCharset)
   {
     ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
     m_aRequestFallbackCharset = aFallbackCharset;
+    return this;
   }
 
   /**
@@ -84,11 +91,14 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    *
    * @param aFallbackCharset
    *        The fallback charset to be used. May not be <code>null</code>.
+   * @return this for chaining
    */
-  public void setResponseFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  @Nonnull
+  public XServletSettings setResponseFallbackCharset (@Nonnull final Charset aFallbackCharset)
   {
     ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
     m_aResponseFallbackCharset = aFallbackCharset;
+    return this;
   }
 
   @Nullable
@@ -97,14 +107,28 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     return m_eHttpReferrerPolicy;
   }
 
-  public void setHttpReferrerPolicy (@Nullable final EHttpReferrerPolicy eHttpReferrerPolicy)
+  @Nonnull
+  public XServletSettings setHttpReferrerPolicy (@Nullable final EHttpReferrerPolicy eHttpReferrerPolicy)
   {
     m_eHttpReferrerPolicy = eHttpReferrerPolicy;
+    return this;
   }
 
   public boolean hasHttpReferrerPolicy ()
   {
     return m_eHttpReferrerPolicy != null;
+  }
+
+  @Nonnull
+  public XServletSettings setMultipartEnabled (final boolean bIsMultipartEnabled)
+  {
+    m_bIsMultipartEnabled = bIsMultipartEnabled;
+    return this;
+  }
+
+  public boolean isMultipartEnabled ()
+  {
+    return m_bIsMultipartEnabled;
   }
 
   @Nonnull
@@ -120,6 +144,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     return new ToStringGenerator (null).append ("RequestFallbackCharset", m_aRequestFallbackCharset)
                                        .append ("ResponseFallbackCharset", m_aResponseFallbackCharset)
                                        .append ("HttpReferrerPolicy", m_eHttpReferrerPolicy)
+                                       .append ("IsMultipartEnabled", m_bIsMultipartEnabled)
                                        .getToString ();
   }
 }

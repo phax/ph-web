@@ -499,7 +499,8 @@ public abstract class AbstractXServlet extends GenericServlet
     // Create request scope
     try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
                                                                                                   aHttpRequest,
-                                                                                                  aHttpResponseWrapper))
+                                                                                                  aHttpResponseWrapper,
+                                                                                                  m_aSettings.isMultipartEnabled ()))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
 

@@ -113,8 +113,8 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
                                                                                               .setDaemon (true)
                                                                                               .build ());
 
-    // Start the monitoring thread each second
-    m_aExecSvc.scheduleAtFixedRate (new RequestTrackerMonitor (), 0, 1, TimeUnit.SECONDS);
+    // Start the monitoring thread to check every 2 seconds
+    m_aExecSvc.scheduleAtFixedRate (new RequestTrackerMonitor (), 0, 2, TimeUnit.SECONDS);
     s_aLogger.info ("RequestTrackerMonitor was installed successfully.");
   }
 

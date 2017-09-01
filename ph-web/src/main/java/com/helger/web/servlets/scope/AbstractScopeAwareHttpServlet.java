@@ -137,9 +137,9 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected RequestScopeInitializer beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                                    @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sStatusApplicationID,
-                                                                                             aHttpRequest,
-                                                                                             aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (m_sStatusApplicationID,
+                                                                                                      aHttpRequest,
+                                                                                                      aHttpResponse);
     _ensureResponseCharset (aHttpResponse);
     return aRequestScopeInitializer;
   }

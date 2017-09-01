@@ -28,7 +28,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
 /**
  * Internal class from scope aware filter and servlets.
@@ -81,9 +83,18 @@ public final class RequestScopeInitializer implements AutoCloseable
   }
 
   @Nonnull
+  public static RequestScopeInitializer createMultipart (@Nonnull @Nonempty final String sApplicationID,
+                                                         @Nonnull final HttpServletRequest aHttpRequest,
+                                                         @Nonnull final HttpServletResponse aHttpResponse)
+  {
+    return create (sApplicationID, aHttpRequest, aHttpResponse, true);
+  }
+
+  @Nonnull
   public static RequestScopeInitializer create (@Nonnull @Nonempty final String sApplicationID,
                                                 @Nonnull final HttpServletRequest aHttpRequest,
-                                                @Nonnull final HttpServletResponse aHttpResponse)
+                                                @Nonnull final HttpServletResponse aHttpResponse,
+                                                final boolean bMultipartEnabled)
   {
     ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
 
@@ -119,7 +130,11 @@ public final class RequestScopeInitializer implements AutoCloseable
 
     // No valid scope present
     // -> create a new scope
-    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse);
+    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (sApplicationID,
+                                                                           aHttpRequest,
+                                                                           aHttpResponse,
+                                                                           bMultipartEnabled ? RequestWebScopeMultipart::new
+                                                                                             : RequestWebScope::new);
     return new RequestScopeInitializer (aRequestScope, true);
   }
 }

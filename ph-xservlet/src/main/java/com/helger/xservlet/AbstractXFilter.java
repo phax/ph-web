@@ -172,9 +172,9 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create request scope
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
-                                                                                                  aHttpRequest,
-                                                                                                  aHttpResponseWrapper))
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (sApplicationID,
+                                                                                                           aHttpRequest,
+                                                                                                           aHttpResponseWrapper))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
       try

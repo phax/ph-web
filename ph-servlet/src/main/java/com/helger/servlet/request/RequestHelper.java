@@ -414,7 +414,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (sServerName, "ServerName");
 
     // Reconstruct URL
-    final StringBuilder aSB = new StringBuilder (sScheme).append ("://").append (sServerName);
+    final StringBuilder aSB = new StringBuilder ().append (sScheme).append ("://").append (sServerName);
     if (NetworkPortHelper.isValidPort (nServerPort) && nServerPort != getDefaultServerPort (sScheme))
       aSB.append (':').append (nServerPort);
     return aSB;

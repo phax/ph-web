@@ -18,7 +18,6 @@ package com.helger.web.scope;
 
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +30,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.http.EHttpMethod;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
@@ -40,6 +40,7 @@ import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
+import com.helger.useragent.IUserAgent;
 
 /**
  * Interface for a single web request scope object that does not offer access to
@@ -49,6 +50,21 @@ import com.helger.servlet.request.RequestHelper;
  */
 public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScope
 {
+  /**
+   * @return A cached header map for this request. Never <code>null</code>.
+   *         Alterations to this map are visible everywhere. Clone the object if
+   *         you need to modify it.
+   */
+  @Nonnull
+  @ReturnsMutableObject
+  HttpHeaderMap headers ();
+
+  @Nonnull
+  default IUserAgent getUserAgent ()
+  {
+    return RequestHelper.getUserAgent (getRequest ());
+  }
+
   /**
    * @return The external URL parameters. Never <code>null</code>.
    */
@@ -746,68 +762,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   {
     // Just check whether the session ID is appended to the URL or not
     return "a".equals (encodeURL ("a"));
-  }
-
-  /**
-   * Returns the value of the specified request header as a <code>String</code>.
-   * If the request did not include a header of the specified name, this method
-   * returns <code>null</code>. If there are multiple headers with the same
-   * name, this method returns the first head in the request. The header name is
-   * case insensitive. You can use this method with any request header.
-   *
-   * @param sName
-   *        a <code>String</code> specifying the header name
-   * @return a <code>String</code> containing the value of the requested header,
-   *         or <code>null</code> if the request does not have a header of that
-   *         name
-   */
-  @Nullable
-  default String getRequestHeader (@Nullable final String sName)
-  {
-    return getRequest ().getHeader (sName);
-  }
-
-  /**
-   * Returns all the values of the specified request header as an
-   * <code>Enumeration</code> of <code>String</code> objects.
-   * <p>
-   * Some headers, such as <code>Accept-Language</code> can be sent by clients
-   * as several headers each with a different value rather than sending the
-   * header as a comma separated list.
-   * <p>
-   * If the request did not include any headers of the specified name, this
-   * method returns an empty <code>Enumeration</code>. The header name is case
-   * insensitive. You can use this method with any request header.
-   *
-   * @param sName
-   *        a <code>String</code> specifying the header name
-   * @return an <code>Enumeration</code> containing the values of the requested
-   *         header. If the request does not have any headers of that name
-   *         return an empty enumeration. If the container does not allow access
-   *         to header information, return <code>null</code>
-   */
-  @Nullable
-  default Enumeration <String> getRequestHeaders (@Nullable final String sName)
-  {
-    return getRequest ().getHeaders (sName);
-  }
-
-  /**
-   * Returns an enumeration of all the header names this request contains. If
-   * the request has no headers, this method returns an empty enumeration.
-   * <p>
-   * Some servlet containers do not allow servlets to access headers using this
-   * method, in which case this method returns <code>null</code>
-   *
-   * @return an enumeration of all the header names sent with this request; if
-   *         the request has no headers, an empty enumeration; if the servlet
-   *         container does not allow servlets to use this method,
-   *         <code>null</code>
-   */
-  @Nullable
-  default Enumeration <String> getRequestHeaderNames ()
-  {
-    return getRequest ().getHeaderNames ();
   }
 
   /**

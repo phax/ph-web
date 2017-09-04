@@ -47,9 +47,9 @@ public final class UserAgentDatabase
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
-  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet<> ();
+  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet <> ();
   @GuardedBy ("s_aRWLock")
-  private static Consumer <IUserAgent> s_aNewUserAgentCallback;
+  private static Consumer <? super IUserAgent> s_aNewUserAgentCallback;
 
   @PresentForCodeCoverage
   private static final UserAgentDatabase s_aInstance = new UserAgentDatabase ();
@@ -57,7 +57,15 @@ public final class UserAgentDatabase
   private UserAgentDatabase ()
   {}
 
-  public static void setUserAgentCallback (@Nullable final Consumer <IUserAgent> aCallback)
+  /**
+   * Set an external callback to get notified when a new unique UserAgent was
+   * received.
+   *
+   * @param aCallback
+   *        Callback to set. May be <code>null</code>. The parameters to this
+   *        callback are always non-null.
+   */
+  public static void setUserAgentCallback (@Nullable final Consumer <? super IUserAgent> aCallback)
   {
     s_aRWLock.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
   }
@@ -77,8 +85,10 @@ public final class UserAgentDatabase
       if (s_aLogger.isDebugEnabled ())
         s_aLogger.debug ("Found new UserAgent '" + sUserAgent + "'");
 
-      if (s_aNewUserAgentCallback != null)
-        s_aNewUserAgentCallback.accept (aUserAgent);
+      s_aRWLock.readLocked ( () -> {
+        if (s_aNewUserAgentCallback != null)
+          s_aNewUserAgentCallback.accept (aUserAgent);
+      });
     }
     return aUserAgent;
   }

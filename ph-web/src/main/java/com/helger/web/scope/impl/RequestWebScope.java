@@ -31,6 +31,7 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EChange;
@@ -62,12 +63,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "requestscope.inited";
-  private static final String REQUEST_ATTR_REQUESTPARAMMAP = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
-                                                             "requestscope.requestparammap";
 
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;
+  private HttpHeaderMap m_aHeaders;
   private final ParamContainer m_aParams = new ParamContainer ();
+  private IRequestParamMap m_aRequestParamMap;
 
   @Nonnull
   @Nonempty
@@ -172,6 +173,15 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   @Nonnull
+  public HttpHeaderMap headers ()
+  {
+    HttpHeaderMap ret = m_aHeaders;
+    if (ret == null)
+      ret = m_aHeaders = RequestHelper.getRequestHeaderMap (m_aHttpRequest);
+    return ret;
+  }
+
+  @Nonnull
   @ReturnsMutableObject
   public final IRequestParamContainer params ()
   {
@@ -181,15 +191,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Nonnull
   public IRequestParamMap getRequestParamMap ()
   {
-    // Check if a value is cached in the scope
-    IRequestParamMap aRPM = attrs ().getCastedValue (REQUEST_ATTR_REQUESTPARAMMAP);
-    if (aRPM == null)
-    {
-      // Request the map and put it in scope
-      aRPM = RequestParamMap.create (params ());
-      attrs ().putIn (REQUEST_ATTR_REQUESTPARAMMAP, aRPM);
-    }
-    return aRPM;
+    IRequestParamMap ret = m_aRequestParamMap;
+    if (ret == null)
+      ret = m_aRequestParamMap = RequestParamMap.create (params ());
+    return ret;
   }
 
   /**

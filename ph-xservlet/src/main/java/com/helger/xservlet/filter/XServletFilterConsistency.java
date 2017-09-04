@@ -39,6 +39,7 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.xservlet.AbstractXServlet;
 
 /**
  * Handle special content related stuff that needs to be processed for every
@@ -209,10 +210,13 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     final HttpHeaderMap aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ();
     final String sCharacterEncoding = aHttpResponse.getCharacterEncoding ();
     final String sContentType = aHttpResponse.getContentType ();
+    final boolean bIsHandledAsync = aRequestScope.attrs ().getAsBoolean (AbstractXServlet.REQUEST_ATTR_HANDLED_ASYNC,
+                                                                         false);
 
     checkStatusCode (sRequestURL, nStatusCode);
     checkCharacterEncoding (sRequestURL, sCharacterEncoding, nStatusCode);
-    checkContentType (sRequestURL, sContentType, nStatusCode);
+    if (!bIsHandledAsync)
+      checkContentType (sRequestURL, sContentType, nStatusCode);
     checkHeaders (sRequestURL, aHeaders, nStatusCode);
   }
 }

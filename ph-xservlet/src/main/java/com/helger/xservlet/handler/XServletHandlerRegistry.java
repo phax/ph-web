@@ -100,10 +100,9 @@ public class XServletHandlerRegistry implements Serializable
     // Add the async handler only in front if necessary
     if (aAsyncSpec.isAsynchronous ())
       aRealHandler = new XServletAsyncHandler (aAsyncSpec, aRealHandler);
-    final IXServletHandler aLowLevelHandler = aRealHandler;
 
     // Register as a regular handler
-    registerHandler (eMethod, aLowLevelHandler, false);
+    registerHandler (eMethod, aRealHandler, false);
   }
 
   /**

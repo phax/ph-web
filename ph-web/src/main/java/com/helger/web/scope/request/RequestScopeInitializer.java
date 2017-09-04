@@ -17,7 +17,7 @@
 package com.helger.web.scope.request;
 
 import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,13 +37,13 @@ import com.helger.web.scope.multipart.RequestWebScopeMultipart;
  *
  * @author Philip Helger
  */
-@Immutable
+@NotThreadSafe
 public final class RequestScopeInitializer implements AutoCloseable
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScopeInitializer.class);
 
   private final IRequestWebScope m_aRequestScope;
-  private final boolean m_bCreatedIt;
+  private boolean m_bCreatedIt;
 
   /**
    * Ctor.
@@ -67,6 +67,16 @@ public final class RequestScopeInitializer implements AutoCloseable
   public IRequestWebScope getRequestScope ()
   {
     return m_aRequestScope;
+  }
+
+  public boolean isNew ()
+  {
+    return m_bCreatedIt;
+  }
+
+  public void internalSetDontDestroyRequestScope ()
+  {
+    m_bCreatedIt = false;
   }
 
   /**

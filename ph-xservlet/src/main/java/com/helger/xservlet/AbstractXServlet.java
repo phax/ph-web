@@ -100,6 +100,19 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
 @NotThreadSafe
 public abstract class AbstractXServlet extends GenericServlet
 {
+  /**
+   * Internal request attribute defining whether a request was handled
+   * asynchronously. If this attribute is not present, it means synchronous
+   */
+  public static final String REQUEST_ATTR_HANDLED_ASYNC = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                          "request-is-async";
+  /**
+   * Internal request attribute defining whether a request scope was created or
+   * re-used
+   */
+  public static final String REQUEST_ATTR_SCOPE_CREATED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                          "request-scope-created";
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
 
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
@@ -504,6 +517,7 @@ public abstract class AbstractXServlet extends GenericServlet
                                                                                                   m_aSettings.isMultipartEnabled ()))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
+      aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());
 
       boolean bInvokeHandler = true;
       Throwable aCaughtException = null;
@@ -522,6 +536,12 @@ public abstract class AbstractXServlet extends GenericServlet
         {
           // Find and invoke handler
           _invokeHandler (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
+
+          if (aRequestScope.attrs ().getAsBoolean (REQUEST_ATTR_HANDLED_ASYNC, false))
+          {
+            // The request scope is needed in the async handler!
+            aRequestScopeInitializer.internalSetDontDestroyRequestScope ();
+          }
         }
       }
       catch (final Throwable t)

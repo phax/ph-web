@@ -20,6 +20,9 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Default implementation of {@link IAsyncServletRunner}
  *
@@ -28,6 +31,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AsyncServletRunnerDefault implements IAsyncServletRunner
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncServletRunnerDefault.class);
+
   public AsyncServletRunnerDefault ()
   {}
 
@@ -42,6 +47,8 @@ public class AsyncServletRunnerDefault implements IAsyncServletRunner
       final HttpServletResponse o2 = aOriginalHttpResponse;
       if (o1 != null && o2 != null)
         aRunnable.run ();
+      else
+        s_aLogger.error ("Original request (" + o1 + ") or original response (" + o2 + ") are invalid!");
     };
     // Important to use "start" and to not use a custom ExecutorService, as this
     // "start" method assigns all the necessary variables etc.

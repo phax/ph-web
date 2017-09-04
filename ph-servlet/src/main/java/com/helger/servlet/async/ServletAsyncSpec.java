@@ -172,9 +172,17 @@ public class ServletAsyncSpec
     return new ServletAsyncSpec (true, nTimeoutMillis, aAsyncListeners);
   }
 
+  /**
+   * Create an async spec with 999999 (debug mode) or 30 (production) seconds
+   * timeout and no async listeners.
+   *
+   * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
+   */
   @Nonnull
   public static ServletAsyncSpec createAsyncDefault ()
   {
-    return createAsync (GlobalDebug.isDebugMode () ? 0 : 30 * CGlobal.MILLISECONDS_PER_SECOND, null);
+    return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND
+                                                   : 30 * CGlobal.MILLISECONDS_PER_SECOND,
+                        null);
   }
 }

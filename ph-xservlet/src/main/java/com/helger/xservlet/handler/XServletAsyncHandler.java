@@ -27,6 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.attr.IAttributeContainerAny;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpVersion;
@@ -35,6 +38,8 @@ import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.mgr.WebScoped;
+import com.helger.xservlet.AbstractXServlet;
 
 /**
  * A special {@link IXServletHandler} that allows to run requests
@@ -79,6 +84,17 @@ public final class XServletAsyncHandler implements IXServletHandler
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
+  public void onServletInit (@Nonnull @Nonempty final String sApplicationID,
+                             @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  {
+    m_aNestedHandler.onServletInit (sApplicationID, aInitParams);
+  }
+
+  public void onServletDestroy ()
+  {
+    m_aNestedHandler.onServletDestroy ();
+  }
+
   private void _handleAsync (@Nonnull final HttpServletRequest aHttpRequest,
                              @Nonnull final HttpServletResponse aHttpResponse,
                              @Nonnull final EHttpVersion eHttpVersion,
@@ -91,15 +107,23 @@ public final class XServletAsyncHandler implements IXServletHandler
                                                                  eHttpMethod,
                                                                  m_aAsyncSpec);
 
+    // Remember outside before it is too late :)
+    final IAttributeContainerAny <String> aAttrs = aRequestScope.attrs ().getClone ();
+    final IAttributeContainerAny <String> aParams = aRequestScope.params ().getClone ();
+
     // Put into async processing queue
     s_aAsyncServletRunner.runAsync (aHttpRequest, aHttpResponse, aExtAsyncCtx, () -> {
-      try
+      try (final WebScoped aWebScoped = new WebScoped (aHttpRequest, aHttpResponse))
       {
+        // Restore all attributes (display locale etc.) that are missing
+        aWebScoped.getRequestScope ().attrs ().putAllIn (aAttrs);
+        aWebScoped.getRequestScope ().params ().putAllIn (aParams);
+
         m_aNestedHandler.onRequest (aExtAsyncCtx.getRequest (),
                                     aExtAsyncCtx.getResponse (),
                                     aExtAsyncCtx.getHTTPVersion (),
                                     aExtAsyncCtx.getHTTPMethod (),
-                                    aRequestScope);
+                                    aWebScoped.getRequestScope ());
       }
       catch (final Throwable t)
       {
@@ -140,6 +164,11 @@ public final class XServletAsyncHandler implements IXServletHandler
     if (m_aAsyncSpec.isAsynchronous () && aHttpRequest.isAsyncSupported ())
     {
       // Run asynchronously
+
+      // remember before invoking handler to avoid request scope destruction
+      aRequestScope.attrs ().putIn (AbstractXServlet.REQUEST_ATTR_HANDLED_ASYNC, true);
+
+      // Main async handler
       _handleAsync (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope);
     }
     else

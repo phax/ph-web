@@ -84,6 +84,7 @@ import com.helger.http.EHttpVersion;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
+import com.helger.servlet.spec.IServletRequest300To310Migration;
 
 /**
  * Mock implementation of {@link HttpServletRequest}.
@@ -91,7 +92,7 @@ import com.helger.servlet.request.RequestHelper;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
+public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, IServletRequest300To310Migration
 {
   public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
   public static final String DEFAULT_PROTOCOL = EHttpVersion.HTTP_11.getName ();

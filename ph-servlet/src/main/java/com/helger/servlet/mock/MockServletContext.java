@@ -67,6 +67,7 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.system.SystemProperties;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.spec.IServletContext310To400Migration;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -77,7 +78,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class MockServletContext implements ServletContext
+public class MockServletContext implements IServletContext310To400Migration
 {
   public static final int SERVLET_SPEC_MAJOR_VERSION = 3;
   public static final int SERVLET_SPEC_MINOR_VERSION = 0;

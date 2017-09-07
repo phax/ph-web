@@ -141,6 +141,11 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
       s_aLogger.warn ("HTTP status code " + nStatusCode + " in response to '" + sRequestURL + "'");
   }
 
+  private static boolean _isContentExpected (final int nStatusCode)
+  {
+    return nStatusCode >= 200 && nStatusCode < 300 && !ResponseHelper.isEmptyStatusCode (nStatusCode);
+  }
+
   /**
    * @param sRequestURL
    *        The request URL.
@@ -154,7 +159,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          @Nullable final String sCharacterEncoding,
                                          final int nStatusCode)
   {
-    if (StringHelper.hasNoText (sCharacterEncoding) && !ResponseHelper.isEmptyStatusCode (nStatusCode))
+    if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
       s_aLogger.warn ("No character encoding on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
   }
 
@@ -171,7 +176,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    @Nullable final String sContentType,
                                    final int nStatusCode)
   {
-    if (StringHelper.hasNoText (sContentType) && !ResponseHelper.isEmptyStatusCode (nStatusCode))
+    if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
       s_aLogger.warn ("No content type on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
   }
 

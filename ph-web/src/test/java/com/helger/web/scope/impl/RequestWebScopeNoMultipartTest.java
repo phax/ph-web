@@ -59,7 +59,7 @@ public final class RequestWebScopeNoMultipartTest
     assertNotNull (aRPM);
     assertSame (aRPM, aRequestScope.getRequestParamMap ());
 
-    assertEquals (aRPM.toString (), 4, aRPM.getSize ());
+    assertEquals (aRPM.toString (), 4, aRPM.size ());
     assertTrue (aRPM.containsKey ("a"));
     assertTrue (aRPM.containsKey ("b"));
     assertTrue (aRPM.containsKey ("c"));
@@ -68,7 +68,7 @@ public final class RequestWebScopeNoMultipartTest
 
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aRPM.getMap ("page_name");
-    assertEquals (2, aNames.getSize ());
+    assertEquals (2, aNames.size ());
     final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));

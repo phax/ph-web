@@ -282,7 +282,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   private void _setCommittedIfBufferSizeExceeded ()
   {
     final int nBufSize = getBufferSize ();
-    if (nBufSize > 0 && m_aContent.getSize () > nBufSize)
+    if (nBufSize > 0 && m_aContent.size () > nBufSize)
       setCommitted (true);
   }
 

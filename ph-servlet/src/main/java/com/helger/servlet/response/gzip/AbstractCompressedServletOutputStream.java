@@ -191,7 +191,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
         if (m_aBAOS != null)
         {
           if (m_nContentLength < 0)
-            m_nContentLength = m_aBAOS.getSize ();
+            m_nContentLength = m_aBAOS.size ();
           if (m_nContentLength < m_nMinCompressSize)
             doNotCompress ("close with buffer");
           else
@@ -276,7 +276,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
           if (m_nContentLength >= 0 && m_nContentLength < m_nMinCompressSize)
             doNotCompress ("_prepareToWrite buffered " + m_nContentLength);
           else
-            if (nLength >= (m_aBAOS.getBufferSize () - m_aBAOS.getSize ()))
+            if (nLength >= (m_aBAOS.getBufferSize () - m_aBAOS.size ()))
               doCompress ("_prepareToWrite buffered " + nLength);
             else
             {

@@ -39,22 +39,22 @@ public final class EmailAttachmentListTest
   {
     final EmailAttachmentList aList = new EmailAttachmentList ();
     assertTrue (aList.isEmpty ());
-    assertEquals (0, aList.getSize ());
+    assertEquals (0, aList.size ());
     assertNotNull (aList.getAllAttachmentFilenames ());
     assertNotNull (aList.getAllAttachments ());
     assertNotNull (aList.getAsDataSourceList ());
 
     aList.addAttachment (new EmailAttachment ("test.txt", "Inhalt".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
-    assertEquals (1, aList.getSize ());
+    assertEquals (1, aList.size ());
 
     aList.addAttachment (new EmailAttachment ("test2.txt", "Inhalt2".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
-    assertEquals (2, aList.getSize ());
+    assertEquals (2, aList.size ());
 
     aList.addAttachment (new EmailAttachment ("test2.txt", "Override".getBytes (StandardCharsets.ISO_8859_1)));
     assertFalse (aList.isEmpty ());
-    assertEquals (2, aList.getSize ());
+    assertEquals (2, aList.size ());
 
     XMLTestHelper.testMicroTypeConversion (aList);
   }

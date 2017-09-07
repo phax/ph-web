@@ -60,7 +60,7 @@ public final class RequestParamMapTest
     assertEquals (5, aTestMap.size ());
 
     final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
-    assertEquals (4, aMap.getSize ());
+    assertEquals (4, aMap.size ());
     assertTrue (aMap.containsKey ("a"));
     assertTrue (aMap.containsKey ("b"));
     assertTrue (aMap.containsKey ("c"));
@@ -68,7 +68,7 @@ public final class RequestParamMapTest
 
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
-    assertEquals (2, aNames.getSize ());
+    assertEquals (2, aNames.size ());
     final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));
@@ -224,7 +224,7 @@ public final class RequestParamMapTest
     assertEquals (5, aTestMap.size ());
 
     final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
-    assertEquals (4, aMap.getSize ());
+    assertEquals (4, aMap.size ());
     assertTrue (aMap.containsKey ("a"));
     assertTrue (aMap.containsKey ("b"));
     assertTrue (aMap.containsKey ("c"));
@@ -232,7 +232,7 @@ public final class RequestParamMapTest
 
     // get page_name[de] and page_name[en]
     final IRequestParamMap aNames = aMap.getMap ("page_name");
-    assertEquals (2, aNames.getSize ());
+    assertEquals (2, aNames.size ());
     final ICommonsOrderedMap <String, String> aValueMap = aNames.getAsValueMap ();
     assertEquals (2, aValueMap.size ());
     assertEquals ("deutscher name", aValueMap.get ("de"));

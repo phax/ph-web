@@ -173,7 +173,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
   public int getDataLength ()
   {
     if (m_aMemoryOutputStream != null)
-      return m_aMemoryOutputStream.getSize ();
+      return m_aMemoryOutputStream.size ();
     return 0;
   }
 

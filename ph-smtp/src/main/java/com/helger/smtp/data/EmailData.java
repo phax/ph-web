@@ -264,7 +264,7 @@ public class EmailData implements IMutableEmailData
   @Nonnegative
   public int getAttachmentCount ()
   {
-    return m_aAttachments == null ? 0 : m_aAttachments.getSize ();
+    return m_aAttachments == null ? 0 : m_aAttachments.size ();
   }
 
   @Nonnull

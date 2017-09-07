@@ -71,7 +71,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
   }
 
   @Nonnegative
-  public int getSize ()
+  public int size ()
   {
     return m_aMap.size ();
   }

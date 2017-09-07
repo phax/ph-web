@@ -246,7 +246,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nonnegative
-  public int getSize ()
+  public int size ()
   {
     return m_aMap.size ();
   }

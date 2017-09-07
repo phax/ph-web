@@ -34,7 +34,10 @@ import com.helger.commons.string.StringHelper;
 import com.helger.web.fileupload.IFileItem;
 
 /**
- * A special request parameter container with support for file items etc.
+ * A special request parameter container with support for file items etc. By
+ * default only <code>String</code> and <code>String[]</code> entries are
+ * present. If the request was parsed as a multipart request, it may also
+ * container <code>IFileItem</code> or <code>IFileItem[]</code> entries.
  *
  * @author Philip Helger
  */

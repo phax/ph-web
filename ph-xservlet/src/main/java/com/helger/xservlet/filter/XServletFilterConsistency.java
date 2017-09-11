@@ -16,12 +16,12 @@
  */
 package com.helger.xservlet.filter;
 
-import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
@@ -38,8 +39,6 @@ import com.helger.http.EHttpVersion;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
-import com.helger.web.scope.IRequestWebScope;
-import com.helger.xservlet.AbstractXServlet;
 
 /**
  * Handle special content related stuff that needs to be processed for every
@@ -77,11 +76,9 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *
    * @param aHttpRequest
    *        The current HTTP request. Never <code>null</code>.
-   * @throws IOException
-   *         In invalid charset
    */
   @OverrideOnDemand
-  protected void ensureRequestCharset (@Nonnull final HttpServletRequest aHttpRequest) throws IOException
+  protected void ensureRequestCharset (@Nonnull final HttpServletRequest aHttpRequest)
   {
     if (aHttpRequest.getCharacterEncoding () == null)
     {
@@ -91,7 +88,21 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
       // parameters are present
       if (s_aLogger.isDebugEnabled ())
         s_aLogger.debug ("Forcing request charset to " + sCharsetName);
-      aHttpRequest.setCharacterEncoding (sCharsetName);
+
+      // Fails in Jetty, if the HTTP content was already parsed!
+      try
+      {
+        aHttpRequest.setCharacterEncoding (sCharsetName);
+      }
+      catch (final UnsupportedEncodingException ex)
+      {
+        throw new UncheckedIOException ("Failed to set charset " + sCharsetName, ex);
+      }
+      if (aHttpRequest.getCharacterEncoding () == null)
+        s_aLogger.error ("Request has no character encoding and setting to '" +
+                         sCharsetName +
+                         "' failed: " +
+                         aHttpRequest);
     }
   }
 
@@ -120,7 +131,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final EHttpVersion eHttpVersion,
                                   @Nonnull final EHttpMethod eHttpMethod,
-                                  @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+                                  @Nonnull @Nonempty final String sApplicationID)
   {
     ensureRequestCharset (aHttpRequest);
     ensureResponseCharset (aHttpResponse);
@@ -204,9 +215,9 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                             @Nonnull final HttpServletResponse aHttpResponse,
                             @Nonnull final EHttpVersion eHttpVersion,
                             @Nonnull final EHttpMethod eHttpMethod,
-                            @Nonnull final IRequestWebScope aRequestScope,
                             final boolean bInvokeHandler,
-                            @Nullable final Throwable aCaughtException)
+                            @Nullable final Throwable aCaughtException,
+                            final boolean bIsHandledAsync)
   {
     ValueEnforcer.isTrue (aHttpResponse instanceof StatusAwareHttpResponseWrapper,
                           "Must be a StatusAwareHttpResponseWrapper");
@@ -215,8 +226,6 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     final HttpHeaderMap aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ();
     final String sCharacterEncoding = aHttpResponse.getCharacterEncoding ();
     final String sContentType = aHttpResponse.getContentType ();
-    final boolean bIsHandledAsync = aRequestScope.attrs ().getAsBoolean (AbstractXServlet.REQUEST_ATTR_HANDLED_ASYNC,
-                                                                         false);
 
     checkStatusCode (sRequestURL, nStatusCode);
     checkCharacterEncoding (sRequestURL, sCharacterEncoding, nStatusCode);

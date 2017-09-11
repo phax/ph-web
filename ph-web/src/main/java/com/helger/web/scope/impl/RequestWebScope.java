@@ -130,10 +130,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final boolean bAddedSpecialRequestParams = addSpecialRequestParams ().isChanged ();
 
     // set parameters as attributes (handles GET and POST parameters)
-    final Enumeration <?> aEnum = m_aHttpRequest.getParameterNames ();
+    final Enumeration <String> aEnum = m_aHttpRequest.getParameterNames ();
     while (aEnum.hasMoreElements ())
     {
-      final String sParamName = (String) aEnum.nextElement ();
+      final String sParamName = aEnum.nextElement ();
 
       // Avoid double setting a parameter!
       if (bAddedSpecialRequestParams && aParams.containsKey (sParamName))

@@ -16,20 +16,18 @@
  */
 package com.helger.xservlet.filter;
 
-import java.io.IOException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.EHttpVersion;
-import com.helger.web.scope.IRequestWebScope;
 
 /**
  * HAvoid Httpoxy attack using the 'Proxy' HTTP header
@@ -51,7 +49,7 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final EHttpVersion eHttpVersion,
                                   @Nonnull final EHttpMethod eHttpMethod,
-                                  @Nonnull final IRequestWebScope aRequestScope) throws IOException
+                                  @Nonnull @Nonempty final String sApplicationID)
   {
     return EContinue.CONTINUE;
   }
@@ -60,11 +58,11 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
                             @Nonnull final HttpServletResponse aHttpResponse,
                             @Nonnull final EHttpVersion eHttpVersion,
                             @Nonnull final EHttpMethod eHttpMethod,
-                            @Nonnull final IRequestWebScope aRequestScope,
                             final boolean bInvokeHandler,
-                            @Nullable final Throwable aCaughtException)
+                            @Nullable final Throwable aCaughtException,
+                            final boolean bIsHandledAsync)
   {
     // Ensure the response header is present
-    aRequestScope.getResponse ().addHeader (CHttpHeader.REFERRER_POLICY, m_eHttpReferrerPolicy.getValue ());
+    aHttpResponse.addHeader (CHttpHeader.REFERRER_POLICY, m_eHttpReferrerPolicy.getValue ());
   }
 }

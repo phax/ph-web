@@ -25,10 +25,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpVersion;
-import com.helger.web.scope.IRequestWebScope;
 
 /**
  * Low-level filter for a single XServlet. It has methods for before and after.
@@ -39,8 +39,9 @@ import com.helger.web.scope.IRequestWebScope;
 public interface IXServletLowLevelFilter extends Serializable
 {
   /**
-   * Invoked before an XServlet request is handled. Exceptions occurring in this
-   * method will be propagated to the outside, so be careful :)
+   * Invoked before an XServlet request is handled. This method is created
+   * before the request is created! Exceptions occurring in this method will be
+   * propagated to the outside, so be careful :)
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -50,8 +51,8 @@ public interface IXServletLowLevelFilter extends Serializable
    *        HTTP version. Never <code>null</code>.
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
-   * @param aRequestScope
-   *        Request scope. Never <code>null</code>.
+   * @param sApplicationID
+   *        Application ID. Neither <code>null</code> nor empty.
    * @return {@link EContinue#CONTINUE} to continue processing, or
    *         {@link EContinue#BREAK} if this request should not be processed, in
    *         which case the HttpServletResponse must contain a valid response!
@@ -61,11 +62,11 @@ public interface IXServletLowLevelFilter extends Serializable
    *         in case of IO error.
    */
   @Nonnull
-  EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                           @Nonnull final HttpServletResponse aHttpResponse,
-                           @Nonnull final EHttpVersion eHttpVersion,
-                           @Nonnull final EHttpMethod eHttpMethod,
-                           @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
+  EContinue beforeRequest (@Nonnull HttpServletRequest aHttpRequest,
+                           @Nonnull HttpServletResponse aHttpResponse,
+                           @Nonnull EHttpVersion eHttpVersion,
+                           @Nonnull EHttpMethod eHttpMethod,
+                           @Nonnull @Nonempty String sApplicationID) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
@@ -80,26 +81,26 @@ public interface IXServletLowLevelFilter extends Serializable
    *        HTTP version. Never <code>null</code>.
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
-   * @param aRequestScope
-   *        Request scope. Never <code>null</code>.
    * @param bInvokeHandler
    *        <code>true</code> if the main handler was invoked,
    *        <code>false</code> if
-   *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod, IRequestWebScope)}
+   *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod, String)}
    *        avoided the execution of the request.
    * @param aCaughtException
    *        An optionally caught exception. May be <code>null</code>. The
    *        exception was already logged, so please don't log it again!
+   * @param bIsHandledAsync
+   *        <code>true</code> if the request is handled asynchronously
    * @exception ServletException
    *            in case of business logic error
    * @throws IOException
    *         in case of IO error
    */
-  void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                     @Nonnull final HttpServletResponse aHttpResponse,
-                     @Nonnull final EHttpVersion eHttpVersion,
-                     @Nonnull final EHttpMethod eHttpMethod,
-                     @Nonnull final IRequestWebScope aRequestScope,
-                     final boolean bInvokeHandler,
-                     @Nullable final Throwable aCaughtException) throws ServletException, IOException;
+  void afterRequest (@Nonnull HttpServletRequest aHttpRequest,
+                     @Nonnull HttpServletResponse aHttpResponse,
+                     @Nonnull EHttpVersion eHttpVersion,
+                     @Nonnull EHttpMethod eHttpMethod,
+                     boolean bInvokeHandler,
+                     @Nullable Throwable aCaughtException,
+                     boolean bIsHandledAsync) throws ServletException, IOException;
 }

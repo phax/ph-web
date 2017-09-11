@@ -510,77 +510,79 @@ public abstract class AbstractXServlet extends GenericServlet
     // Determine the application ID here
     final String sApplicationID = getApplicationID ();
 
-    // Create request scope
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
-                                                                                                  aHttpRequest,
-                                                                                                  aHttpResponseWrapper,
-                                                                                                  m_aSettings.isMultipartEnabled ()))
-    {
-      final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
-      aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());
-
-      boolean bInvokeHandler = true;
-      Throwable aCaughtException = null;
-      try
+    // Filter before request scope is created!
+    boolean bInvokeHandler = true;
+    for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
+      if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, sApplicationID)
+                 .isBreak ())
       {
-        // Filter before
-        for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
-          if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope)
-                     .isBreak ())
-          {
-            bInvokeHandler = false;
-            return;
-          }
+        bInvokeHandler = false;
+        return;
+      }
 
-        if (bInvokeHandler)
+    boolean bIsHandledAsync = false;
+    Throwable aCaughtException = null;
+    try
+    {
+      if (bInvokeHandler)
+      {
+        // Create request scope
+        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
+                                                                                                      aHttpRequest,
+                                                                                                      aHttpResponseWrapper,
+                                                                                                      m_aSettings.isMultipartEnabled ()))
         {
+          final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
+          aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());
+
           // Find and invoke handler
           _invokeHandler (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, aRequestScope);
 
-          if (aRequestScope.attrs ().getAsBoolean (REQUEST_ATTR_HANDLED_ASYNC, false))
+          bIsHandledAsync = aRequestScope.attrs ().getAsBoolean (AbstractXServlet.REQUEST_ATTR_HANDLED_ASYNC, false);
+          if (bIsHandledAsync)
           {
             // The request scope is needed in the async handler!
             aRequestScopeInitializer.internalSetDontDestroyRequestScope ();
           }
         }
       }
-      catch (final Throwable t)
-      {
-        // Remember
-        aCaughtException = t;
+    }
+    catch (final Throwable t)
+    {
+      // Remember
+      aCaughtException = t;
 
-        // This log entry is mainly present to have an overview on how often
-        // this really happens
-        log ("Servlet exception propagated to the outside", t);
+      // This log entry is mainly present to have an overview on how often
+      // this really happens
+      log ("Servlet exception propagated to the outside", t);
 
-        // Ensure only exceptions with the correct type are propagated
-        if (t instanceof IOException)
-          throw (IOException) t;
-        if (t instanceof ServletException)
-          throw (ServletException) t;
-        throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
-      }
-      finally
-      {
-        // Filter after
-        for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
-          try
-          {
-            aFilter.afterRequest (aHttpRequest,
-                                  aHttpResponseWrapper,
-                                  eHttpVersion,
-                                  eHttpMethod,
-                                  aRequestScope,
-                                  bInvokeHandler,
-                                  aCaughtException);
-          }
-          catch (final ServletException | IOException ex)
-          {
-            s_aLogger.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
-            // Re-throw
-            throw ex;
-          }
-      }
+      // Ensure only exceptions with the correct type are propagated
+      if (t instanceof IOException)
+        throw (IOException) t;
+      if (t instanceof ServletException)
+        throw (ServletException) t;
+      throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
+    }
+    finally
+    {
+      // Filter after
+      for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
+        try
+        {
+          aFilter.afterRequest (aHttpRequest,
+                                aHttpResponseWrapper,
+                                eHttpVersion,
+                                eHttpMethod,
+                                bInvokeHandler,
+                                aCaughtException,
+                                bIsHandledAsync);
+        }
+        catch (final ServletException | IOException ex)
+        {
+          s_aLogger.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
+          // Re-throw
+          throw ex;
+        }
     }
   }
 

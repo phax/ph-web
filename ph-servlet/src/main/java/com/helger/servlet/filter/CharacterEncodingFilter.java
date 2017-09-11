@@ -165,11 +165,17 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
       if (sOldRequestEncoding == null || m_bForceRequestEncoding)
       {
         aRequest.setCharacterEncoding (m_sEncoding);
-        if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
-        {
-          // Request encoding should always be present (at least from browsers)
-          s_aLogger.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
-        }
+        if (aRequest.getCharacterEncoding () == null)
+          s_aLogger.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
+        else
+          if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
+          {
+            /*
+             * Request encoding should always be present (at least from
+             * browsers)
+             */
+            s_aLogger.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
+          }
       }
     }
 
@@ -189,19 +195,24 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
         if (sOldResponseEncoding == null || m_bForceResponseEncoding)
         {
           aResponse.setCharacterEncoding (m_sEncoding);
-          if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))
-          {
-            // Default response encoding in Jetty 9.x is "iso-8859-1" on German
-            // Windows 7 machine
-            if (s_aLogger.isDebugEnabled ())
-              s_aLogger.debug ("Changed response encoding from '" +
-                               sOldResponseEncoding +
-                               "' to '" +
-                               m_sEncoding +
-                               "' for MIME type '" +
-                               sContentType +
-                               "'");
-          }
+          if (aResponse.getCharacterEncoding () == null)
+            s_aLogger.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
+          else
+            if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))
+            {
+              /*
+               * Default response encoding in Jetty 9.x is "iso-8859-1" on
+               * German Windows 7 machine
+               */
+              if (s_aLogger.isDebugEnabled ())
+                s_aLogger.debug ("Changed response encoding from '" +
+                                 sOldResponseEncoding +
+                                 "' to '" +
+                                 m_sEncoding +
+                                 "' for MIME type '" +
+                                 sContentType +
+                                 "'");
+            }
         }
       }
     }

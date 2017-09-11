@@ -500,8 +500,7 @@ public abstract class AbstractXServlet extends GenericServlet
                                                                                                  m_aFilterList.size ());
     // Add internal filters - always first
     aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);
-    aEffectiveFilterList.add (new XServletFilterConsistency (m_aSettings.getRequestFallbackCharset (),
-                                                             m_aSettings.getResponseFallbackCharset ()));
+    aEffectiveFilterList.add (XServletFilterConsistency.INSTANCE);
     if (m_aSettings.hasHttpReferrerPolicy ())
       aEffectiveFilterList.add (new XServletFilterSecurityHttpReferrerPolicy (m_aSettings.getHttpReferrerPolicy ()));
     // Add custom filters

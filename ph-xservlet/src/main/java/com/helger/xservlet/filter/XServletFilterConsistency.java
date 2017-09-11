@@ -16,10 +16,6 @@
  */
 package com.helger.xservlet.filter;
 
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -54,77 +50,10 @@ import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 public class XServletFilterConsistency implements IXServletLowLevelFilter
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterConsistency.class);
+  public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
 
-  /** The request fallback charset to be used, if none is present! */
-  private final Charset m_aRequestFallbackCharset;
-
-  /** The response fallback charset to be used, if none is present! */
-  private final Charset m_aResponseFallbackCharset;
-
-  public XServletFilterConsistency (@Nonnull final Charset aRequestFallbackCharset,
-                                    @Nonnull final Charset aResponseFallbackCharset)
-  {
-    m_aRequestFallbackCharset = aRequestFallbackCharset;
-    m_aResponseFallbackCharset = aResponseFallbackCharset;
-  }
-
-  /**
-   * This method is required to ensure that the HTTP request is correctly
-   * encoded. Normally this is done via the charset filter, but if a
-   * non-existing URL is accessed then the error redirect happens without the
-   * charset filter ever called.
-   *
-   * @param aHttpRequest
-   *        The current HTTP request. Never <code>null</code>.
-   */
-  @OverrideOnDemand
-  protected void ensureRequestCharset (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    if (aHttpRequest.getCharacterEncoding () == null)
-    {
-      final String sCharsetName = m_aRequestFallbackCharset.name ();
-
-      // Happens too often - seems to be the case for all requests where no
-      // parameters are present
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("Forcing request charset to " + sCharsetName);
-
-      // Fails in Jetty, if the HTTP content was already parsed!
-      try
-      {
-        aHttpRequest.setCharacterEncoding (sCharsetName);
-      }
-      catch (final UnsupportedEncodingException ex)
-      {
-        throw new UncheckedIOException ("Failed to set charset " + sCharsetName, ex);
-      }
-      if (aHttpRequest.getCharacterEncoding () == null)
-        s_aLogger.error ("Request has no character encoding and setting to '" +
-                         sCharsetName +
-                         "' failed: " +
-                         aHttpRequest);
-    }
-  }
-
-  /**
-   * This method is required to ensure that the HTTP response is correctly
-   * encoded. Normally this is done via the charset filter, but if a
-   * non-existing URL is accessed then the error redirect happens without the
-   * charset filter ever called.
-   *
-   * @param aHttpResponse
-   *        The current HTTP response. Never <code>null</code>.
-   */
-  @OverrideOnDemand
-  protected void ensureResponseCharset (@Nonnull final HttpServletResponse aHttpResponse)
-  {
-    if (aHttpResponse.getCharacterEncoding () == null)
-    {
-      final String sCharsetName = m_aResponseFallbackCharset.name ();
-      s_aLogger.warn ("Forcing response charset to " + sCharsetName);
-      aHttpResponse.setCharacterEncoding (sCharsetName);
-    }
-  }
+  protected XServletFilterConsistency ()
+  {}
 
   @Nonnull
   public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
@@ -133,8 +62,6 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                   @Nonnull final EHttpMethod eHttpMethod,
                                   @Nonnull @Nonempty final String sApplicationID)
   {
-    ensureRequestCharset (aHttpRequest);
-    ensureResponseCharset (aHttpResponse);
     return EContinue.CONTINUE;
   }
 

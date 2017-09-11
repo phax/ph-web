@@ -382,8 +382,10 @@ public abstract class AbstractXServlet extends GenericServlet
     {
       m_aCounterRequestsWithException.increment ();
 
-      // Invoke exception handler
+      // Call here manually - because of the HEAD/GET calls
       final String sApplicationID = getApplicationID ();
+
+      // Invoke exception handler
       if (m_aExceptionHandler.forEachBreakable (x -> x.onException (sApplicationID, aRequestScope, t)).isContinue ())
       {
         // No handler handled it - propagate

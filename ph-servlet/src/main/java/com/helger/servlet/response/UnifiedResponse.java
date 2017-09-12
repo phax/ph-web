@@ -393,7 +393,7 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse setEmptyContent ()
   {
-    return setContent (new byte [0]);
+    return setContent (new byte [0], 0, 0);
   }
 
   /**

@@ -30,6 +30,7 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.UnifiedResponse;
+import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.IXServletBasicHandler;
 
@@ -40,10 +41,24 @@ import com.helger.xservlet.handler.IXServletBasicHandler;
  */
 public interface IXServletSimpleHandler extends IXServletBasicHandler
 {
+  /**
+   * Create a unified response object.
+   *
+   * @param eHttpVersion
+   *        HTTP version of the current request.
+   * @param eHttpMethod
+   *        HTTP method of the current request.
+   * @param aHttpRequest
+   *        Current HTTP request
+   * @param aRequestScope
+   *        Current HTTP request scope
+   * @return The new unified response. Never <code>null</code>.
+   */
   @Nonnull
   default UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
                                                  @Nonnull final EHttpMethod eHttpMethod,
-                                                 @Nonnull final HttpServletRequest aHttpRequest)
+                                                 @Nonnull final HttpServletRequest aHttpRequest,
+                                                 @Nonnull final IRequestWebScope aRequestScope)
   {
     return new UnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
   }

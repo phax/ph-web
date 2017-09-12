@@ -203,7 +203,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
   {
     final UnifiedResponse aUnifiedResponse = m_aSimpleHandler.createUnifiedResponse (eHttpVersion,
                                                                                      eHttpMethod,
-                                                                                     aHttpRequest);
+                                                                                     aHttpRequest,
+                                                                                     aRequestScope);
     if (m_aSimpleHandler.initRequestState (aRequestScope, aUnifiedResponse).isBreak ())
     {
       if (s_aLogger.isDebugEnabled ())

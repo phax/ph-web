@@ -677,8 +677,8 @@ public class UnifiedResponse
   }
 
   @Nullable
-  @ReturnsMutableObject ("Design")
-  public CacheControlBuilder getCacheControl ()
+  @ReturnsMutableObject
+  public CacheControlBuilder cacheControl ()
   {
     return m_aCacheControl;
   }
@@ -694,8 +694,8 @@ public class UnifiedResponse
    * @return The non-<code>null</code> header map.
    */
   @Nonnull
-  @ReturnsMutableObject ("design")
-  protected HttpHeaderMap getResponseHeaderMap ()
+  @ReturnsMutableObject
+  protected HttpHeaderMap responseHeaderMap ()
   {
     return m_aResponseHeaderMap;
   }

@@ -37,12 +37,12 @@ public final class UnifiedResponseTest
   public void testSetStrictTransportSecurity ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
+    assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
     final int nMaxAgeSeconds = 60000;
     final boolean bIncludeSubdomains = true;
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
-    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
-    final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
+    assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
+    final ICommonsList <String> aValues = aResponse.responseHeaderMap ()
                                                    .getAllHeaderValues (CHttpHeader.STRICT_TRANSPORT_SECURITY);
     assertEquals (1, aValues.size ());
     assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
@@ -52,12 +52,12 @@ public final class UnifiedResponseTest
   public void testSetAllowMimeSniffing ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
+    assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (true);
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
+    assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (false);
-    assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
-    final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ()
+    assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
+    final ICommonsList <String> aValues = aResponse.responseHeaderMap ()
                                                    .getAllHeaderValues (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     assertEquals (1, aValues.size ());
     assertEquals (CHttpHeader.VALUE_NOSNIFF, aValues.get (0));
@@ -70,25 +70,25 @@ public final class UnifiedResponseTest
     final String sValue = "BAR";
     final String sValue2 = "NARF";
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (sName));
+    assertFalse (aResponse.responseHeaderMap ().containsHeaders (sName));
     {
       aResponse.addCustomResponseHeader (sName, sValue);
-      assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
+      assertTrue (aResponse.responseHeaderMap ().containsHeaders (sName));
+      final ICommonsList <String> aValues = aResponse.responseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (1, aValues.size ());
       assertEquals (sValue, aValues.get (0));
     }
     {
       aResponse.addCustomResponseHeader (sName, sValue2);
-      assertTrue (aResponse.getResponseHeaderMap ().containsHeaders (sName));
-      final ICommonsList <String> aValues = aResponse.getResponseHeaderMap ().getAllHeaderValues (sName);
+      assertTrue (aResponse.responseHeaderMap ().containsHeaders (sName));
+      final ICommonsList <String> aValues = aResponse.responseHeaderMap ().getAllHeaderValues (sName);
       assertEquals (2, aValues.size ());
       assertEquals (sValue, aValues.get (0));
       assertEquals (sValue2, aValues.get (1));
     }
     {
       aResponse.removeCustomResponseHeaders (sName);
-      assertFalse (aResponse.getResponseHeaderMap ().containsHeaders (sName));
+      assertFalse (aResponse.responseHeaderMap ().containsHeaders (sName));
     }
   }
 }

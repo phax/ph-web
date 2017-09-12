@@ -127,7 +127,9 @@ public class UnifiedResponse
   // Main response fields
   private Charset m_aCharset;
   private IMimeType m_aMimeType;
-  private byte [] m_aContent;
+  private byte [] m_aContentArray;
+  private int m_nContentArrayOfs;
+  private int m_nContentArrayLength;
   private IHasInputStream m_aContentISP;
   private EContentDispositionType m_eContentDispositionType = DEFAULT_CONTENT_DISPOSITION_TYPE;
   private String m_sContentDispositionFilename;
@@ -380,7 +382,7 @@ public class UnifiedResponse
    */
   public boolean hasContent ()
   {
-    return m_aContent != null || m_aContentISP != null;
+    return m_aContentArray != null || m_aContentISP != null;
   }
 
   /**
@@ -426,9 +428,35 @@ public class UnifiedResponse
   public UnifiedResponse setContent (@Nonnull final byte [] aContent)
   {
     ValueEnforcer.notNull (aContent, "Content");
+    return setContent (aContent, 0, aContent.length);
+  }
+
+  /**
+   * Set the response content. To return an empty response pass in a new empty
+   * array, but not <code>null</code>.
+   *
+   * @param aContent
+   *        The content to be returned. Is <b>not</b> copied inside! May not be
+   *        <code>null</code> but maybe empty.
+   * @param nOfs
+   *        The content offset to start at. Must be &ge; 0.
+   * @param nLen
+   *        The content length to use. Must be &ge; 0 and &le; than the content
+   *        length!
+   * @return this
+   */
+  @Nonnull
+  @SuppressFBWarnings ("EI_EXPOSE_REP2")
+  public UnifiedResponse setContent (@Nonnull final byte [] aContent,
+                                     @Nonnegative final int nOfs,
+                                     @Nonnegative final int nLen)
+  {
+    ValueEnforcer.isArrayOfsLen (aContent, nOfs, nLen);
     if (hasContent ())
       logInfo ("Overwriting content with byte array!");
-    m_aContent = aContent;
+    m_aContentArray = aContent;
+    m_nContentArrayOfs = nOfs;
+    m_nContentArrayLength = nLen;
     m_aContentISP = null;
     return this;
   }
@@ -446,7 +474,9 @@ public class UnifiedResponse
     ValueEnforcer.notNull (aISP, "InputStreamProvider");
     if (hasContent ())
       logInfo ("Overwriting content with content provider!");
-    m_aContent = null;
+    m_aContentArray = null;
+    m_nContentArrayOfs = -1;
+    m_nContentArrayLength = -1;
     m_aContentISP = aISP;
     return this;
   }
@@ -454,7 +484,9 @@ public class UnifiedResponse
   @Nonnull
   public UnifiedResponse removeContent ()
   {
-    m_aContent = null;
+    m_aContentArray = null;
+    m_nContentArrayOfs = -1;
+    m_nContentArrayLength = -1;
     m_aContentISP = null;
     return this;
   }
@@ -1296,10 +1328,10 @@ public class UnifiedResponse
 
   private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
   {
-    if (m_aContent != null)
+    if (m_aContentArray != null)
     {
       // We're having a fixed byte array of content
-      final int nContentLength = m_aContent.length;
+      final int nContentLength = m_nContentArrayLength;
 
       // Determine the response stream type to use
       final EResponseStreamType eResponseStreamType = ResponseHelper.getBestSuitableOutputStreamType (m_aHttpRequest);
@@ -1319,7 +1351,7 @@ public class UnifiedResponse
         try (final OutputStream aOS = ResponseHelper.getBestSuitableOutputStream (m_aHttpRequest, aHttpResponse))
         {
           // Emit main content to stream
-          aOS.write (m_aContent, 0, nContentLength);
+          aOS.write (m_aContentArray, m_nContentArrayOfs, nContentLength);
           aOS.flush ();
         }
 
@@ -1481,7 +1513,7 @@ public class UnifiedResponse
                  " HTTP response header is set!");
 
       // Content may be present so, sendError is not an option here!
-      if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContent == null)
+      if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContentArray == null)
       {
         // It's an error
         // Note: After using this method, the response should be considered

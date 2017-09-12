@@ -119,7 +119,8 @@ public final class RequestScopeInitializer implements AutoCloseable
       {
         // Check the application IDs
         final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
-        if (!sApplicationID.equals (sExistingApplicationID))
+        if (!sApplicationID.equals (sExistingApplicationID) &&
+            !sApplicationID.equals (ScopeManager.APPLICATION_ID_NOT_AVAILABLE))
         {
           // Application ID mismatch!
           s_aLogger.warn ("The existing request scope has the application ID '" +

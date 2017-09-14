@@ -29,8 +29,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.state.ICloseable;
 import com.helger.commons.system.SystemHelper;
-import com.helger.web.ICloseable;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

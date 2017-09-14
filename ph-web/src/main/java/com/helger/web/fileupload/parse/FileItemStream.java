@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.io.file.FilenameHelper;
-import com.helger.web.ICloseable;
+import com.helger.commons.state.ICloseable;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;

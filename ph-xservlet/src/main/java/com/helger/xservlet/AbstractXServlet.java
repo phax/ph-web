@@ -139,7 +139,8 @@ public abstract class AbstractXServlet extends GenericServlet
 
   /** The main handler map */
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
-  private final ICommonsList <IXServletLowLevelFilter> m_aFilterList = new CommonsArrayList <> ();
+  private final ICommonsList <IXServletLowLevelFilter> m_aFilterLowLevelList = new CommonsArrayList <> ();
+  private final ICommonsList <IXServletHighLevelFilter> m_aFilterHighLevelList = new CommonsArrayList <> ();
   private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
   private final XServletSettings m_aSettings = new XServletSettings ();
 
@@ -198,9 +199,20 @@ public abstract class AbstractXServlet extends GenericServlet
    */
   @Nonnull
   @ReturnsMutableObject
-  protected final ICommonsList <IXServletLowLevelFilter> filterList ()
+  protected final ICommonsList <IXServletLowLevelFilter> filterLowLevelList ()
   {
-    return m_aFilterList;
+    return m_aFilterLowLevelList;
+  }
+
+  /**
+   * @return The internal filter list where custom filters can be added. Never
+   *         <code>null</code>.
+   */
+  @Nonnull
+  @ReturnsMutableObject
+  protected final ICommonsList <IXServletHighLevelFilter> filterHighLevelList ()
+  {
+    return m_aFilterHighLevelList;
   }
 
   /**
@@ -307,9 +319,11 @@ public abstract class AbstractXServlet extends GenericServlet
     }
 
     // HTTP method is supported by this servlet implementation
-    final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> ();
+    final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> (2 +
+                                                                                               m_aFilterHighLevelList.size ());
     aEffectiveFilters.add (new XServletFilterTimer (this));
     aEffectiveFilters.add (new XServletFilterTrackRequest ());
+    aEffectiveFilters.addAll (m_aFilterHighLevelList);
 
     try
     {
@@ -470,14 +484,14 @@ public abstract class AbstractXServlet extends GenericServlet
 
     // Create effective filter list with all internal filters as well
     final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (3 +
-                                                                                                 m_aFilterList.size ());
+                                                                                                 m_aFilterLowLevelList.size ());
     // Add internal filters - always first
     aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);
     aEffectiveFilterList.add (XServletFilterConsistency.INSTANCE);
     if (m_aSettings.hasHttpReferrerPolicy ())
       aEffectiveFilterList.add (new XServletFilterSecurityHttpReferrerPolicy (m_aSettings.getHttpReferrerPolicy ()));
     // Add custom filters
-    aEffectiveFilterList.addAll (m_aFilterList);
+    aEffectiveFilterList.addAll (m_aFilterLowLevelList);
 
     // Filter before request scope is created!
     boolean bInvokeHandler = true;
@@ -557,7 +571,7 @@ public abstract class AbstractXServlet extends GenericServlet
   public String toString ()
   {
     return new ToStringGenerator (this).append ("HandlerRegistry", m_aHandlerRegistry)
-                                       .append ("FilterList", m_aFilterList)
+                                       .append ("FilterList", m_aFilterLowLevelList)
                                        .append ("ExceptionHandler", m_aExceptionHandler)
                                        .append ("Settings", m_aSettings)
                                        .getToString ();

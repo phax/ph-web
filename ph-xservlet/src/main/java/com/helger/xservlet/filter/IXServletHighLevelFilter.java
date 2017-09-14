@@ -43,7 +43,7 @@ public interface IXServletHighLevelFilter extends Serializable
    * @throws IOException
    *         in case of IO error.
    */
-  void beforeRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void beforeRequest (@Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
@@ -57,5 +57,5 @@ public interface IXServletHighLevelFilter extends Serializable
    * @throws IOException
    *         in case of IO error
    */
-  void afterRequest (@Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void afterRequest (@Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

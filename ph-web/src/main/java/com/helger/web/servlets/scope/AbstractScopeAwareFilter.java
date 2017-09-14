@@ -19,19 +19,12 @@ package com.helger.web.servlets.scope;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.exception.InitializationException;
-import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
@@ -48,37 +41,8 @@ import com.helger.web.scope.request.RequestScopeInitializer;
  */
 public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
 {
-  // Set in "init" method
-  private transient String m_sStatusApplicationID;
-
   protected AbstractScopeAwareFilter ()
   {}
-
-  /**
-   * Determine the application ID to be used, based on the passed filter
-   * configuration. This method is only invoked once on startup.
-   *
-   * @return The application ID for this filter. May neither be
-   *         <code>null</code> nor empty.
-   */
-  @OverrideOnDemand
-  @Nonnull
-  @Nonempty
-  protected String getApplicationID ()
-  {
-    return ClassHelper.getClassLocalName (getClass ());
-  }
-
-  @Override
-  @OverrideOnDemand
-  @OverridingMethodsMustInvokeSuper
-  public void init () throws ServletException
-  {
-    super.init ();
-    m_sStatusApplicationID = getApplicationID ();
-    if (StringHelper.hasNoText (m_sStatusApplicationID))
-      throw new InitializationException ("Failed retrieve a valid application ID!");
-  }
 
   /**
    * Implement this main filtering method in subclasses.
@@ -109,8 +73,7 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
                                   @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
     // Check if a scope needs to be created
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (m_sStatusApplicationID,
-                                                                                                           aHttpRequest,
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
                                                                                                            aHttpResponse))
     {
       // Apply any optional filter
@@ -120,13 +83,5 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
         aChain.doFilter (aHttpRequest, aHttpResponse);
       }
     }
-  }
-
-  @Override
-  public String toString ()
-  {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ApplicationID", m_sStatusApplicationID)
-                            .getToString ();
   }
 }

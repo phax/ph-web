@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.http.CHttp;
@@ -74,7 +73,6 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                                                                                                                    "$modified.if-unon-match");
 
   private final IXServletSimpleHandler m_aSimpleHandler;
-  private String m_sApplicationID;
 
   public XServletHandlerToSimpleHandler (@Nonnull final IXServletSimpleHandler aSimpleHandler)
   {
@@ -82,20 +80,17 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     m_aSimpleHandler = aSimpleHandler;
   }
 
-  public final void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                                   @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  public final void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
-    m_sApplicationID = sApplicationID;
-
     // Pass-through!
-    m_aSimpleHandler.onServletInit (sApplicationID, aInitParams);
+    m_aSimpleHandler.onServletInit (aInitParams);
   }
 
   private void _onException (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
                              @Nonnull final UnifiedResponse aUnifiedResponse,
                              @Nonnull final Throwable t) throws IOException, ServletException
   {
-    s_aLogger.error ("An exception was caught in servlet processing for application '" + m_sApplicationID + "'", t);
+    s_aLogger.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
 
     // Invoke exception handler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())
@@ -231,7 +226,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         // On request begin
         try
         {
-          m_aSimpleHandler.onRequestBegin (aRequestScope, m_sApplicationID);
+          m_aSimpleHandler.onRequestBegin (aRequestScope);
         }
         catch (final Throwable t)
         {

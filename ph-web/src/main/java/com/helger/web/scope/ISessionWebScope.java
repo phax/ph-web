@@ -17,10 +17,8 @@
 package com.helger.web.scope;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.scope.ISessionScope;
 
 /**
@@ -39,11 +37,4 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    */
   @Nonnull
   HttpSession getSession ();
-
-  /**
-   * {@inheritDoc}
-   */
-  @Nullable
-  ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty String sApplicationID,
-                                                          boolean bCreateIfNotExisting);
 }

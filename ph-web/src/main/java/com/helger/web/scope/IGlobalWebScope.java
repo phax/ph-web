@@ -17,7 +17,6 @@
 package com.helger.web.scope;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import com.helger.scope.IGlobalScope;
@@ -29,12 +28,6 @@ import com.helger.scope.IGlobalScope;
  */
 public interface IGlobalWebScope extends IGlobalScope, IWebScope
 {
-  /*
-   * Change return type
-   */
-  @Nullable
-  IApplicationWebScope getApplicationScope (String sAppID, boolean bCreateIfNotExisting);
-
   /**
    * @return The underlying servlet context. Never <code>null</code>.
    */

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +34,6 @@ import org.junit.Test;
 import com.helger.scope.IScopeRenewalAware;
 import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.servlet.mock.MockHttpServletRequest;
-import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
@@ -78,27 +76,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     aWS.attrs ().putIn ("a21", "session21");
     assertEquals (3, aWS.attrs ().size ());
 
-    // Contains renewal and non-renewal aware attrs
-    ISessionApplicationWebScope aAWS1 = aWS.getSessionApplicationScope ("app1", true);
-    aAWS1.attrs ().putIn ("a3", new MockScopeRenewalAware ("session3"));
-    aAWS1.attrs ().putIn ("a4", new MockScopeRenewalAware ("session4"));
-    aAWS1.attrs ().putIn ("a41", "session41");
-    assertEquals (3, aAWS1.attrs ().size ());
-
-    // Contains only renewal aware attrs
-    ISessionApplicationWebScope aAWS2 = aWS.getSessionApplicationScope ("app2", true);
-    aAWS2.attrs ().putIn ("a5", new MockScopeRenewalAware ("session5"));
-    aAWS2.attrs ().putIn ("a6", new MockScopeRenewalAware ("session6"));
-    assertEquals (2, aAWS2.attrs ().size ());
-
-    // Contains only non-renewal aware attrs
-    ISessionApplicationWebScope aAWS3 = aWS.getSessionApplicationScope ("app3", true);
-    aAWS3.attrs ().putIn ("a7", "session7");
-    aAWS3.attrs ().putIn ("a8", "session8");
-    assertEquals (2, aAWS3.attrs ().size ());
-
-    assertEquals (3, aWS.getAllSessionApplicationScopes ().size ());
-
     // Main renew session (no session invalidation)
     final String sOldSessionID = aWS.getID ();
     assertTrue (WebScopeSessionHelper.renewCurrentSessionScope (false).isChanged ());
@@ -117,23 +94,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     assertNotNull (aWS);
     assertFalse (aWS.getID ().equals (sOldSessionID));
     assertEquals (2, aWS.attrs ().size ());
-
-    // Only 2 session application scopes had scope renewal aware attrs
-    assertEquals (2, aWS.getAllSessionApplicationScopes ().size ());
-
-    aAWS1 = aWS.getSessionApplicationScope ("app1", false);
-    assertNotNull (aAWS1);
-    assertEquals (2, aAWS1.attrs ().size ());
-
-    aAWS2 = aWS.getSessionApplicationScope ("app2", false);
-    assertNotNull (aAWS2);
-    assertEquals (2, aAWS2.attrs ().size ());
-    assertNotNull (aAWS2.attrs ().get ("a5"));
-    assertEquals ("session6", ((MockScopeRenewalAware) aAWS2.attrs ().get ("a6")).getString ());
-
-    // Had no scope renewal aware attrs:
-    aAWS3 = aWS.getSessionApplicationScope ("app3", false);
-    assertNull (aAWS3);
   }
 
   @Test
@@ -167,8 +127,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             aSessionScope.attrs ().putIn ("x", new MockScopeRenewalAware ("bla"));
             aSessionScope.attrs ().putIn ("y", "bla");
             assertEquals (2, aSessionScope.attrs ().size ());
-            aSessionScope.getSessionApplicationScope ("app", true).attrs ().putIn ("x", "y");
-            assertEquals (1, aSessionScope.getSessionApplicationScopeCount ());
 
             // Wait until all sessions are created
             aCDLStart.countDown ();
@@ -183,7 +141,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             assertEquals (1, aNewSessionScope.attrs ().size ());
             assertTrue (aNewSessionScope.attrs ().containsKey ("x"));
             assertTrue (aNewSessionScope.attrs ().get ("x") instanceof MockScopeRenewalAware);
-            assertEquals (0, aSessionScope.getSessionApplicationScopeCount ());
 
             aRequest.invalidate ();
           }

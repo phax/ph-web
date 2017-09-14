@@ -20,18 +20,15 @@ import java.io.Serializable;
 import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.SessionScope;
-import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 
 /**
@@ -98,21 +95,6 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
     // Continue with the regular destruction
     return EContinue.CONTINUE;
-  }
-
-  @Override
-  @Nonnull
-  protected ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
-  {
-    return new SessionApplicationWebScope (sApplicationID);
-  }
-
-  @Override
-  @Nullable
-  public ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
-                                                                 final boolean bCreateIfNotExisting)
-  {
-    return (ISessionApplicationWebScope) super.getSessionApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   @Nonnull

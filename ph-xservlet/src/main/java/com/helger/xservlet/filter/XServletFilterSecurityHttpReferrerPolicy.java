@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
@@ -48,8 +47,7 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
   public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod,
-                                  @Nonnull @Nonempty final String sApplicationID)
+                                  @Nonnull final EHttpMethod eHttpMethod)
   {
     return EContinue.CONTINUE;
   }

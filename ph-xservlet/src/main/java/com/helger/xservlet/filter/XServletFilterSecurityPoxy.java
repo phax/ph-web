@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
@@ -51,8 +50,7 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
   public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod,
-                                  @Nonnull @Nonempty final String sApplicationID) throws IOException
+                                  @Nonnull final EHttpMethod eHttpMethod) throws IOException
   {
     final String sPoxy = aHttpRequest.getHeader (CHttpHeader.PROXY);
     if (sPoxy != null)

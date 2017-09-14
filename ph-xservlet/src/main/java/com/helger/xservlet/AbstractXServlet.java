@@ -35,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.callback.CallbackList;
@@ -43,7 +42,6 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.functional.ISupplier;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
@@ -138,7 +136,7 @@ public abstract class AbstractXServlet extends GenericServlet
 
   /** Indicator whether it is the first request or not */
   private static final AtomicBoolean s_aFirstRequest = new AtomicBoolean (true);
-  private final ISupplier <String> m_aApplicationIDSupplier;
+
   /** The main handler map */
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
   private final ICommonsList <IXServletLowLevelFilter> m_aFilterList = new CommonsArrayList <> ();
@@ -149,22 +147,11 @@ public abstract class AbstractXServlet extends GenericServlet
   // Remember to avoid crash on shutdown, when no GlobalScope is present
   private final ServletStatusManager m_aStatusMgr;
 
-  public AbstractXServlet ()
-  {
-    this ( () -> ScopeManager.APPLICATION_ID_NOT_AVAILABLE);
-  }
-
   /**
    * Constructor.
-   *
-   * @param aApplicationIDSupplier
-   *        Application ID supplier to be used. May not be <code>null</code>.
-   *        The supplier must always create non-<code>null</code> non-empty
-   *        application IDs!
    */
-  public AbstractXServlet (@Nonnull @Nonempty final ISupplier <String> aApplicationIDSupplier)
+  public AbstractXServlet ()
   {
-    m_aApplicationIDSupplier = ValueEnforcer.notNull (aApplicationIDSupplier, "ApplicationIDSupplier");
     // This handler is always the same, so it is registered here for convenience
     m_aHandlerRegistry.registerHandler (EHttpMethod.TRACE, new XServletHandlerTRACE (), false);
 
@@ -192,17 +179,6 @@ public abstract class AbstractXServlet extends GenericServlet
     // Remember once
     m_aStatusMgr = ServletStatusManager.getInstance ();
     m_aStatusMgr.onServletCtor (getClass ());
-  }
-
-  /**
-   * @return The application ID provided by the supplier provided in the
-   *         constructor. May never be <code>null</code> nor empty.
-   */
-  @Nonnull
-  @Nonempty
-  protected final String getApplicationID ()
-  {
-    return m_aApplicationIDSupplier.get ();
   }
 
   /**
@@ -278,8 +254,6 @@ public abstract class AbstractXServlet extends GenericServlet
     super.init (aSC);
     m_aStatusMgr.onServletInit (getClass ());
 
-    final String sApplicationID = getApplicationID ();
-
     // Build init parameter map
     final ICommonsMap <String, String> aInitParams = new CommonsHashMap <> ();
     final Enumeration <String> aEnum = aSC.getInitParameterNames ();
@@ -289,7 +263,7 @@ public abstract class AbstractXServlet extends GenericServlet
       aInitParams.put (sName, aSC.getInitParameter (sName));
     }
     // Invoke each handler for potential initialization
-    m_aHandlerRegistry.forEachHandlerThrowing (x -> x.onServletInit (sApplicationID, aInitParams));
+    m_aHandlerRegistry.forEachHandlerThrowing (x -> x.onServletInit (aInitParams));
   }
 
   @Override
@@ -382,11 +356,8 @@ public abstract class AbstractXServlet extends GenericServlet
     {
       m_aCounterRequestsWithException.increment ();
 
-      // Call here manually - because of the HEAD/GET calls
-      final String sApplicationID = getApplicationID ();
-
       // Invoke exception handler
-      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (sApplicationID, aRequestScope, t)).isContinue ())
+      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, t)).isContinue ())
       {
         // No handler handled it - propagate
         throw t;
@@ -508,14 +479,10 @@ public abstract class AbstractXServlet extends GenericServlet
     // Add custom filters
     aEffectiveFilterList.addAll (m_aFilterList);
 
-    // Determine the application ID here
-    final String sApplicationID = getApplicationID ();
-
     // Filter before request scope is created!
     boolean bInvokeHandler = true;
     for (final IXServletLowLevelFilter aFilter : aEffectiveFilterList)
-      if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod, sApplicationID)
-                 .isBreak ())
+      if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod).isBreak ())
       {
         bInvokeHandler = false;
         return;
@@ -528,8 +495,7 @@ public abstract class AbstractXServlet extends GenericServlet
       if (bInvokeHandler)
       {
         // Create request scope
-        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (sApplicationID,
-                                                                                                      aHttpRequest,
+        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
                                                                                                       aHttpResponseWrapper,
                                                                                                       m_aSettings.isMultipartEnabled ()))
         {
@@ -590,10 +556,10 @@ public abstract class AbstractXServlet extends GenericServlet
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ApplicationIDSupplier", m_aApplicationIDSupplier)
-                                       .append ("HandlerRegistry", m_aHandlerRegistry)
+    return new ToStringGenerator (this).append ("HandlerRegistry", m_aHandlerRegistry)
                                        .append ("FilterList", m_aFilterList)
                                        .append ("ExceptionHandler", m_aExceptionHandler)
+                                       .append ("Settings", m_aSettings)
                                        .getToString ();
   }
 }

@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.http.EHttpMethod;
@@ -84,10 +83,9 @@ public final class XServletAsyncHandler implements IXServletHandler
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
-  public void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                             @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  public void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
-    m_aNestedHandler.onServletInit (sApplicationID, aInitParams);
+    m_aNestedHandler.onServletInit (aInitParams);
   }
 
   public void onServletDestroy ()

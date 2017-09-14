@@ -25,7 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpVersion;
@@ -51,8 +50,6 @@ public interface IXServletLowLevelFilter extends Serializable
    *        HTTP version. Never <code>null</code>.
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
-   * @param sApplicationID
-   *        Application ID. Neither <code>null</code> nor empty.
    * @return {@link EContinue#CONTINUE} to continue processing, or
    *         {@link EContinue#BREAK} if this request should not be processed, in
    *         which case the HttpServletResponse must contain a valid response!
@@ -65,8 +62,7 @@ public interface IXServletLowLevelFilter extends Serializable
   EContinue beforeRequest (@Nonnull HttpServletRequest aHttpRequest,
                            @Nonnull HttpServletResponse aHttpResponse,
                            @Nonnull EHttpVersion eHttpVersion,
-                           @Nonnull EHttpMethod eHttpMethod,
-                           @Nonnull @Nonempty String sApplicationID) throws ServletException, IOException;
+                           @Nonnull EHttpMethod eHttpMethod) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
@@ -84,7 +80,7 @@ public interface IXServletLowLevelFilter extends Serializable
    * @param bInvokeHandler
    *        <code>true</code> if the main handler was invoked,
    *        <code>false</code> if
-   *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod, String)}
+   *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod)}
    *        avoided the execution of the request.
    * @param aCaughtException
    *        An optionally caught exception. May be <code>null</code>. The

@@ -25,8 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -93,21 +91,17 @@ public final class RequestScopeInitializer implements AutoCloseable
   }
 
   @Nonnull
-  public static RequestScopeInitializer createMultipart (@Nonnull @Nonempty final String sApplicationID,
-                                                         @Nonnull final HttpServletRequest aHttpRequest,
+  public static RequestScopeInitializer createMultipart (@Nonnull final HttpServletRequest aHttpRequest,
                                                          @Nonnull final HttpServletResponse aHttpResponse)
   {
-    return create (sApplicationID, aHttpRequest, aHttpResponse, true);
+    return create (aHttpRequest, aHttpResponse, true);
   }
 
   @Nonnull
-  public static RequestScopeInitializer create (@Nonnull @Nonempty final String sApplicationID,
-                                                @Nonnull final HttpServletRequest aHttpRequest,
+  public static RequestScopeInitializer create (@Nonnull final HttpServletRequest aHttpRequest,
                                                 @Nonnull final HttpServletResponse aHttpResponse,
                                                 final boolean bMultipartEnabled)
   {
-    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
-
     // Check if a request scope is already present
     final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScopeOrNull ();
     if (aExistingRequestScope != null)
@@ -117,20 +111,6 @@ public final class RequestScopeInitializer implements AutoCloseable
       // Check if scope is in destruction or destroyed!
       if (aExistingRequestScope.isValid ())
       {
-        // Check the application IDs
-        final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
-        if (!sApplicationID.equals (sExistingApplicationID) &&
-            !sApplicationID.equals (ScopeManager.APPLICATION_ID_NOT_AVAILABLE))
-        {
-          // Application ID mismatch!
-          s_aLogger.warn ("The existing request scope has the application ID '" +
-                          sExistingApplicationID +
-                          "' but now the application ID '" +
-                          sApplicationID +
-                          "' should be used. The old application ID '" +
-                          sExistingApplicationID +
-                          "' is continued to be used!!!");
-        }
         return new RequestScopeInitializer (aExistingRequestScope, false);
       }
 
@@ -141,8 +121,7 @@ public final class RequestScopeInitializer implements AutoCloseable
 
     // No valid scope present
     // -> create a new scope
-    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (sApplicationID,
-                                                                           aHttpRequest,
+    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (aHttpRequest,
                                                                            aHttpResponse,
                                                                            bMultipartEnabled ? RequestWebScopeMultipart::new
                                                                                              : RequestWebScope::new);

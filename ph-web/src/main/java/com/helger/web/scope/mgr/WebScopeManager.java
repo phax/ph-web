@@ -33,21 +33,17 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.scope.IApplicationScope;
 import com.helger.scope.IGlobalScope;
 import com.helger.scope.IRequestScope;
 import com.helger.scope.ISessionScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.scope.mgr.ScopeSessionManager;
-import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.scope.ISessionApplicationWebScope;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.impl.GlobalWebScope;
 import com.helger.web.scope.impl.SessionWebScope;
@@ -203,95 +199,6 @@ public final class WebScopeManager
   public static void onGlobalEnd ()
   {
     ScopeManager.onGlobalEnd ();
-  }
-
-  // --- application scope ---
-
-  /**
-   * Get or create the current application scope using the application ID
-   * present in the request scope.
-   *
-   * @return Never <code>null</code>.
-   */
-  @Nonnull
-  public static IApplicationWebScope getApplicationScope ()
-  {
-    final IApplicationWebScope aAppScope = getApplicationScope (true);
-    if (aAppScope == null)
-      throw new IllegalStateException ("No application web scope object has been set!");
-    return aAppScope;
-  }
-
-  /**
-   * Get or create the current application scope using the application ID
-   * present in the request scope.
-   *
-   * @param bCreateIfNotExisting
-   *        if <code>false</code> an no application scope is present, none will
-   *        be created
-   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
-   *         no such scope is present
-   */
-  @Nullable
-  public static IApplicationWebScope getApplicationScope (final boolean bCreateIfNotExisting)
-  {
-    final IApplicationScope aAppScope = ScopeManager.getApplicationScope (bCreateIfNotExisting);
-    try
-    {
-      return (IApplicationWebScope) aAppScope;
-    }
-    catch (final ClassCastException ex)
-    {
-      s_aLogger.warn ("Application scope object is not an application web scope: " + aAppScope, ex);
-      return null;
-    }
-  }
-
-  /**
-   * Get or create an application scope.
-   *
-   * @param sApplicationID
-   *        The ID of the application scope be retrieved or created. May neither
-   *        be <code>null</code> nor empty.
-   * @return Never <code>null</code>.
-   */
-  @Nonnull
-  public static IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID)
-  {
-    final IApplicationWebScope aAppScope = getApplicationScope (sApplicationID, true);
-    if (aAppScope == null)
-      throw new IllegalStateException ("No application web scope object for application ID '" +
-                                       sApplicationID +
-                                       "' is present!");
-    return aAppScope;
-  }
-
-  /**
-   * Get or create an application scope.
-   *
-   * @param sApplicationID
-   *        The ID of the application scope be retrieved or created. May neither
-   *        be <code>null</code> nor empty.
-   * @param bCreateIfNotExisting
-   *        if <code>false</code> an no application scope is present, none will
-   *        be created
-   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
-   *         no such scope is present
-   */
-  @Nullable
-  public static IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
-                                                          final boolean bCreateIfNotExisting)
-  {
-    final IApplicationScope aAppScope = ScopeManager.getApplicationScope (sApplicationID, bCreateIfNotExisting);
-    try
-    {
-      return (IApplicationWebScope) aAppScope;
-    }
-    catch (final ClassCastException ex)
-    {
-      s_aLogger.warn ("Application scope object is not an application web scope: " + aAppScope, ex);
-      return null;
-    }
   }
 
   // --- session scope ---
@@ -492,53 +399,22 @@ public final class WebScopeManager
     }
   }
 
-  // --- session application scope ---
-
-  @Nonnull
-  public static ISessionApplicationWebScope getSessionApplicationScope ()
-  {
-    return getSessionApplicationScope (ScopeManager.DEFAULT_CREATE_SCOPE);
-  }
-
-  @Nullable
-  public static ISessionApplicationWebScope getSessionApplicationScope (final boolean bCreateIfNotExisting)
-  {
-    return getSessionApplicationScope (ScopeManager.getRequestApplicationID (), bCreateIfNotExisting);
-  }
-
-  @Nonnull
-  public static ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
-  {
-    return getSessionApplicationScope (sApplicationID, ScopeManager.DEFAULT_CREATE_SCOPE);
-  }
-
-  @Nullable
-  public static ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
-                                                                        final boolean bCreateIfNotExisting)
-  {
-    final ISessionWebScope aSessionScope = getSessionScope (bCreateIfNotExisting);
-    return aSessionScope == null ? null
-                                 : aSessionScope.getSessionApplicationScope (sApplicationID, bCreateIfNotExisting);
-  }
-
   // --- request scopes ---
 
   @Nonnull
-  public static IRequestWebScope onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
-                                                 @Nonnull final HttpServletRequest aHttpRequest,
+  public static IRequestWebScope onRequestBegin (@Nonnull final HttpServletRequest aHttpRequest,
                                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    return onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
+    return onRequestBegin (aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
   }
 
   @Nonnull
-  public static <T extends IRequestWebScope> T onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
-                                                               @Nonnull final HttpServletRequest aHttpRequest,
+  public static <T extends IRequestWebScope> T onRequestBegin (@Nonnull final HttpServletRequest aHttpRequest,
                                                                @Nonnull final HttpServletResponse aHttpResponse,
                                                                @Nonnull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, T> aFactory)
   {
     final T aRequestScope = aFactory.apply (aHttpRequest, aHttpResponse);
-    ScopeManager.internalSetAndInitRequestScope (sApplicationID, aRequestScope);
+    ScopeManager.internalSetAndInitRequestScope (aRequestScope);
     return aRequestScope;
   }
 

@@ -20,15 +20,13 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
  * Auto closable wrapper around
- * {@link WebScopeManager#onRequestBegin(String, HttpServletRequest, HttpServletResponse)}
+ * {@link WebScopeManager#onRequestBegin( HttpServletRequest, HttpServletResponse)}
  * and {@link WebScopeManager#onRequestEnd()}
  *
  * @author Philip Helger
@@ -40,30 +38,17 @@ public class WebScoped implements AutoCloseable
 
   public WebScoped ()
   {
-    this (ScopeManager.APPLICATION_ID_NOT_AVAILABLE);
+    this (new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ().getServletContext (), false));
   }
 
-  public WebScoped (@Nonnull @Nonempty final String sApplicationID)
+  public WebScoped (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    this (sApplicationID,
-          new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ().getServletContext (), false));
-  }
-
-  public WebScoped (@Nonnull @Nonempty final String sApplicationID, @Nonnull final HttpServletRequest aHttpRequest)
-  {
-    this (sApplicationID, aHttpRequest, new MockHttpServletResponse ());
+    this (aHttpRequest, new MockHttpServletResponse ());
   }
 
   public WebScoped (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
   {
-    this (ScopeManager.APPLICATION_ID_NOT_AVAILABLE, aHttpRequest, aHttpResponse);
-  }
-
-  public WebScoped (@Nonnull @Nonempty final String sApplicationID,
-                    @Nonnull final HttpServletRequest aHttpRequest,
-                    @Nonnull final HttpServletResponse aHttpResponse)
-  {
-    m_aRequestScope = WebScopeManager.onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse);
+    m_aRequestScope = WebScopeManager.onRequestBegin (aHttpRequest, aHttpResponse);
   }
 
   @Nonnull

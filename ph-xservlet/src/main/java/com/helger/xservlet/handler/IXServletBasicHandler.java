@@ -21,7 +21,6 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.ICommonsMap;
 
 /**
@@ -34,17 +33,13 @@ public interface IXServletBasicHandler extends Serializable
 {
   /**
    * Called upon Servlet initialization
-   *
-   * @param sApplicationID
-   *        The determined application ID of this servlet. Neither
-   *        <code>null</code> nor empty.
    * @param aInitParams
    *        The init parameters. Never <code>null</code> but maybe empty.
+   *
    * @throws ServletException
    *         if something goes wrong
    */
-  default void onServletInit (@Nonnull @Nonempty final String sApplicationID,
-                              @Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  default void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {}
 
   /**

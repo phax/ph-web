@@ -28,17 +28,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.callback.CallbackList;
-import com.helger.commons.functional.ISupplier;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
@@ -67,39 +63,15 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsWithException = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                         "$requests.withexception");
 
-  private final ISupplier <String> m_aApplicationIDSupplier;
   /** The main handler map */
   private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
 
-  public AbstractXFilter ()
-  {
-    this ( () -> ScopeManager.APPLICATION_ID_NOT_AVAILABLE);
-  }
-
   /**
    * Constructor.
-   *
-   * @param aApplicationIDSupplier
-   *        Application ID supplier to be used. May not be <code>null</code>.
-   *        The supplier must always create non-<code>null</code> non-empty
-   *        application IDs!
    */
-  public AbstractXFilter (@Nonnull @Nonempty final ISupplier <String> aApplicationIDSupplier)
+  public AbstractXFilter ()
   {
-    m_aApplicationIDSupplier = ValueEnforcer.notNull (aApplicationIDSupplier, "ApplicationIDSupplier");
-
     m_aExceptionHandler.add (new XServletLoggingExceptionHandler ());
-  }
-
-  /**
-   * @return The application ID provided by the supplier provided in the
-   *         constructor. May never be <code>null</code> nor empty.
-   */
-  @Nonnull
-  @Nonempty
-  protected final String getApplicationID ()
-  {
-    return m_aApplicationIDSupplier.get ();
   }
 
   /**
@@ -166,15 +138,11 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     // Increase counter
     m_aCounterRequestsTotal.increment ();
 
-    // Determine the application ID here
-    final String sApplicationID = getApplicationID ();
-
     // Create a wrapper around the Servlet Response that saves the status code
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create request scope
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (sApplicationID,
-                                                                                                           aHttpRequest,
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
                                                                                                            aHttpResponseWrapper))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
@@ -196,7 +164,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
       {
         m_aCounterRequestsWithException.increment ();
 
-        if (m_aExceptionHandler.forEachBreakable (x -> x.onException (sApplicationID, aRequestScope, t)).isContinue ())
+        if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, t)).isContinue ())
         {
           // This log entry is mainly present to have an overview on how often
           // this really happens
@@ -216,8 +184,6 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ApplicationIDSupplier", m_aApplicationIDSupplier)
-                                       .append ("ExceptionHandler", m_aExceptionHandler)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("ExceptionHandler", m_aExceptionHandler).getToString ();
   }
 }

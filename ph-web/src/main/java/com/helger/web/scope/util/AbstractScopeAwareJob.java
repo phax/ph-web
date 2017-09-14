@@ -47,17 +47,6 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   {}
 
   /**
-   * @param aJobDataMap
-   *        The current job data map. Never <code>null</code>.
-   * @param aContext
-   *        The current job execution context. Never <code>null</code>.
-   * @return The application scope ID to be used. May not be <code>null</code>.
-   */
-  @Nonnull
-  protected abstract String getApplicationScopeID (@Nonnull JobDataMap aJobDataMap,
-                                                   @Nonnull IJobExecutionContext aContext);
-
-  /**
    * @return The dummy HTTP request to be used for executing this job. By
    *         default an {@link OfflineHttpServletRequest} is created.
    */
@@ -107,10 +96,9 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   protected void beforeExecute (@Nonnull final JobDataMap aJobDataMap, @Nonnull final IJobExecutionContext aContext)
   {
     // Scopes (ensure to create a new scope each time!)
-    final String sApplicationScopeID = getApplicationScopeID (aJobDataMap, aContext);
     final MockHttpServletRequest aHttpRequest = createMockHttpServletRequest ();
     final MockHttpServletResponse aHttpResponse = createMockHttpServletResponse ();
-    WebScopeManager.onRequestBegin (sApplicationScopeID, aHttpRequest, aHttpResponse);
+    WebScopeManager.onRequestBegin (aHttpRequest, aHttpResponse);
 
     // Invoke callback
     beforeExecuteInScope (aJobDataMap, aContext);

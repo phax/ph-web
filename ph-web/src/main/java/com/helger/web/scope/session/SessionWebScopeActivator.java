@@ -34,9 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
-import com.helger.scope.ISessionApplicationScope;
 import com.helger.scope.ScopeHelper;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -56,7 +54,6 @@ public final class SessionWebScopeActivator implements
 
   private ISessionWebScope m_aSessionWebScope;
   private ICommonsMap <String, Object> m_aAttrs;
-  private ICommonsMap <String, ISessionApplicationScope> m_aSessionApplicationScopes;
 
   @Deprecated
   @DevelopersNote ("For reading only")
@@ -91,39 +88,6 @@ public final class SessionWebScopeActivator implements
       out.writeObject (aRelevantObjects);
     }
 
-    // Write all session application scopes
-    {
-      final ICommonsMap <String, ISessionApplicationScope> aSAScopes = m_aSessionWebScope.getAllSessionApplicationScopes ();
-      out.writeInt (aSAScopes.size ());
-      for (final Map.Entry <String, ISessionApplicationScope> aEntry : aSAScopes.entrySet ())
-      {
-        // Write scope ID
-        StreamHelper.writeSafeUTF (out, aEntry.getKey ());
-
-        final ISessionApplicationScope aScope = aEntry.getValue ();
-        // Remember all attributes
-        final ICommonsMap <String, Object> aOrigAttrs = aScope.attrs ().getClone ();
-        // Remove all attributes
-        aScope.attrs ().removeAll ();
-
-        // Write the scope without attributes
-        out.writeObject (aScope);
-
-        // restore the original attributes after serialization
-        aScope.attrs ().putAllIn (aOrigAttrs);
-
-        // Determine all relevant attributes to passivate
-        final ICommonsMap <String, Object> aRelevantObjects = new CommonsHashMap <> ();
-        for (final Map.Entry <String, Object> aEntry2 : aOrigAttrs.entrySet ())
-        {
-          final Object aValue = aEntry2.getValue ();
-          if (!(aValue instanceof ISessionWebScopeDontPassivate))
-            aRelevantObjects.put (aEntry2.getKey (), aValue);
-        }
-        out.writeObject (aRelevantObjects);
-      }
-    }
-
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Wrote info on session web scope '" +
                       m_aSessionWebScope.getID () +
@@ -141,25 +105,10 @@ public final class SessionWebScopeActivator implements
     // Read session attributes
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
-    // Read session application scopes
-    final int nSAScopes = in.readInt ();
-    final ICommonsMap <String, ISessionApplicationScope> aSAS = new CommonsHashMap <> (nSAScopes);
-    for (int i = 0; i < nSAScopes; ++i)
-    {
-      final String sScopeID = StreamHelper.readSafeUTF (in);
-      final ISessionApplicationScope aScope = (ISessionApplicationScope) in.readObject ();
-      final ICommonsMap <String, Object> aScopeAttrs = (ICommonsMap <String, Object>) in.readObject ();
-      aScope.attrs ().putAllIn (aScopeAttrs);
-      aSAS.put (sScopeID, aScope);
-    }
-    m_aSessionApplicationScopes = aSAS;
-
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Read info on session scope: " +
                       m_aAttrs.size () +
-                      " attrs and " +
-                      m_aSessionApplicationScopes.size () +
-                      " SAScopes of class " +
+                      " attrs of class " +
                       ClassHelper.getClassLocalName (this),
                       ScopeHelper.getDebugStackTrace ());
   }
@@ -174,11 +123,6 @@ public final class SessionWebScopeActivator implements
       for (final Object aValue : m_aSessionWebScope.attrs ().values ())
         if (aValue instanceof ISessionWebScopePassivationHandler)
           ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
-
-      for (final ISessionApplicationScope aScope : m_aSessionWebScope.getAllSessionApplicationScopes ().values ())
-        for (final Object aValue : aScope.attrs ().values ())
-          if (aValue instanceof ISessionWebScopePassivationHandler)
-            ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
 
       if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
         s_aLogger.info ("Successfully passivated session web scope '" +
@@ -205,13 +149,6 @@ public final class SessionWebScopeActivator implements
       m_aAttrs.clear ();
     }
 
-    if (m_aSessionApplicationScopes != null)
-    {
-      for (final Map.Entry <String, ISessionApplicationScope> aEntry : m_aSessionApplicationScopes.entrySet ())
-        aSessionWebScope.restoreSessionApplicationScope (aEntry.getKey (), aEntry.getValue ());
-      m_aSessionApplicationScopes.clear ();
-    }
-
     // Remember for later passivation
     m_aSessionWebScope = aSessionWebScope;
 
@@ -220,11 +157,6 @@ public final class SessionWebScopeActivator implements
       for (final Object aValue : aSessionWebScope.attrs ().values ())
         if (aValue instanceof ISessionWebScopeActivationHandler)
           ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
-
-      for (final ISessionApplicationScope aScope : aSessionWebScope.getAllSessionApplicationScopes ().values ())
-        for (final Object aValue : aScope.attrs ().values ())
-          if (aValue instanceof ISessionWebScopeActivationHandler)
-            ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
     }
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))

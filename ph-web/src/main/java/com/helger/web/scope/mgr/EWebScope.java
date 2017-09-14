@@ -31,12 +31,8 @@ public enum EWebScope
 {
   /** The global scope. */
   GLOBAL,
-  /** The application scope. */
-  APPLICATION,
   /** The session scope */
   SESSION,
-  /** The session application scope */
-  SESSION_APPLICATION,
   /** The request scope. */
   REQUEST;
 
@@ -88,12 +84,8 @@ public enum EWebScope
     {
       case GLOBAL:
         return bCreateIfNotExisting ? WebScopeManager.getGlobalScope () : WebScopeManager.getGlobalScopeOrNull ();
-      case APPLICATION:
-        return WebScopeManager.getApplicationScope (bCreateIfNotExisting);
       case SESSION:
         return WebScopeManager.getSessionScope (bCreateIfNotExisting);
-      case SESSION_APPLICATION:
-        return WebScopeManager.getSessionApplicationScope (bCreateIfNotExisting);
       case REQUEST:
         return bCreateIfNotExisting ? WebScopeManager.getRequestScope () : WebScopeManager.getRequestScopeOrNull ();
       default:

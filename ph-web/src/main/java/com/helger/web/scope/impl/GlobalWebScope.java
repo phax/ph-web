@@ -17,7 +17,6 @@
 package com.helger.web.scope.impl;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
@@ -27,7 +26,6 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.GlobalScope;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.web.scope.IApplicationWebScope;
 import com.helger.web.scope.IGlobalWebScope;
 
 /**
@@ -80,21 +78,6 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   {
     super.postDestroy ();
     ServletContextPathHolder.clearContextPath ();
-  }
-
-  @Override
-  @Nonnull
-  protected IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sApplicationID)
-  {
-    return new ApplicationWebScope (sApplicationID);
-  }
-
-  @Override
-  @Nullable
-  public IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
-                                                   final boolean bCreateIfNotExisting)
-  {
-    return (IApplicationWebScope) super.getApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   @Nonnull

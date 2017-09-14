@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
@@ -59,8 +58,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                   @Nonnull final HttpServletResponse aHttpResponse,
                                   @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod,
-                                  @Nonnull @Nonempty final String sApplicationID)
+                                  @Nonnull final EHttpMethod eHttpMethod)
   {
     return EContinue.CONTINUE;
   }

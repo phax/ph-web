@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EContinue;
@@ -39,9 +38,7 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
   private static final Logger s_aLogger = LoggerFactory.getLogger (XServletLoggingExceptionHandler.class);
 
   @Nonnull
-  public EContinue onException (@Nonnull @Nonempty final String sApplicationID,
-                                @Nonnull final IRequestWebScope aRequestScope,
-                                @Nonnull final Throwable t)
+  public EContinue onException (@Nonnull final IRequestWebScope aRequestScope, @Nonnull final Throwable t)
   {
     final String sMsg = "Internal error on " +
                         aRequestScope.getHttpVersion ().getName () +
@@ -49,8 +46,6 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
                         aRequestScope.getMethod () +
                         " on resource '" +
                         aRequestScope.getURL () +
-                        "' - Application ID '" +
-                        sApplicationID +
                         "'";
 
     if (StreamHelper.isKnownEOFException (t))

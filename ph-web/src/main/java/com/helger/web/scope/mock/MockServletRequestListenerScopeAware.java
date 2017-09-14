@@ -21,9 +21,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.scope.mock.ScopeAwareTestSetup;
 import com.helger.servlet.mock.MockServletRequestListener;
 import com.helger.web.scope.mgr.WebScopeManager;
 
@@ -35,35 +32,14 @@ import com.helger.web.scope.mgr.WebScopeManager;
 @ThreadSafe
 public class MockServletRequestListenerScopeAware extends MockServletRequestListener
 {
-  /** The application ID to use. */
-  public static final String MOCK_APPLICATION_ID = ScopeAwareTestSetup.MOCK_APPLICATION_SCOPE_ID;
-
-  private final String m_sApplicationID;
-
   public MockServletRequestListenerScopeAware ()
-  {
-    this (MOCK_APPLICATION_ID);
-  }
-
-  public MockServletRequestListenerScopeAware (@Nonnull @Nonempty final String sApplicationID)
-  {
-    m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
-  }
-
-  @Nonnull
-  @Nonempty
-  public String getApplicationID ()
-  {
-    return m_sApplicationID;
-  }
+  {}
 
   @Override
   public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
   {
     super.requestInitialized (aEvent);
-    WebScopeManager.onRequestBegin (m_sApplicationID,
-                                    (HttpServletRequest) aEvent.getServletRequest (),
-                                    getCurrentMockResponse ());
+    WebScopeManager.onRequestBegin ((HttpServletRequest) aEvent.getServletRequest (), getCurrentMockResponse ());
   }
 
   @Override

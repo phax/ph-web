@@ -332,6 +332,30 @@ public final class WebScopeManager
   {
     // Try to to resolve the current request scope
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
+    return internalGetSessionScope (aRequestScope, bCreateIfNotExisting, bItsOkayToCreateANewSession);
+  }
+
+  /**
+   * Get the session scope of the provided request scope.
+   *
+   * @param aRequestScope
+   *        The request scope it is about. May be <code>null</code>.
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> a new session scope (and a new HTTP session if
+   *        required) is created if none is existing so far.
+   * @param bItsOkayToCreateANewSession
+   *        if <code>true</code> no warning is emitted, if a new session scope
+   *        must be created. This is e.g. used when renewing a session.
+   * @return <code>null</code> if no session scope is present, and none should
+   *         be created.
+   */
+  @Nullable
+  @DevelopersNote ("This is only for project-internal use!")
+  public static ISessionWebScope internalGetSessionScope (@Nullable final IRequestWebScope aRequestScope,
+                                                          final boolean bCreateIfNotExisting,
+                                                          final boolean bItsOkayToCreateANewSession)
+  {
+    // Try to to resolve the current request scope
     if (aRequestScope != null)
     {
       // Check if we have an HTTP session object

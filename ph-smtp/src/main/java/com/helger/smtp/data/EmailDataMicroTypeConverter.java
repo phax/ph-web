@@ -93,7 +93,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
                                                                       sNamespaceURI,
                                                                       ELEMENT_ATTACHMENTS));
 
-    for (final Map.Entry <String, String> aEntry : aEmailData.customAttrs ()
+    for (final Map.Entry <String, String> aEntry : aEmailData.attrs ()
                                                              .getSortedByKey (Comparator.naturalOrder ())
                                                              .entrySet ())
     {
@@ -180,7 +180,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     }
 
     for (final IMicroElement eCustom : eEmailData.getAllChildElements (ELEMENT_CUSTOM))
-      aEmailData.customAttrs ().putIn (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
+      aEmailData.attrs ().putIn (eCustom.getAttributeValue (ATTR_ID), eCustom.getTextContent ());
 
     return aEmailData;
   }

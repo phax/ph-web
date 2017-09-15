@@ -74,7 +74,10 @@ public final class WebScopeSessionHelper
     // Get the old session scope
     final ISessionWebScope aOldSessionScope = WebScopeManager.getSessionScope (false);
     if (aOldSessionScope == null)
+    {
+      // No session present, so no need to create a new one
       return EChange.UNCHANGED;
+    }
 
     // OK, we have a session scope to renew
 

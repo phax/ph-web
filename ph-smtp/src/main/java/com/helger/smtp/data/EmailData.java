@@ -279,7 +279,7 @@ public class EmailData implements IMutableEmailData
 
   @Nonnull
   @ReturnsMutableObject
-  public StringMap customAttrs ()
+  public StringMap attrs ()
   {
     return m_aCustomAttrs;
   }

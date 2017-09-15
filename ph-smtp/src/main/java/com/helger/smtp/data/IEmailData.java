@@ -173,5 +173,5 @@ public interface IEmailData extends Serializable
    */
   @Nonnull
   @ReturnsMutableObject
-  IStringMap customAttrs ();
+  IStringMap attrs ();
 }

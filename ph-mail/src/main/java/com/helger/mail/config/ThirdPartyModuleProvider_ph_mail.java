@@ -37,8 +37,8 @@ public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModule
   public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("JavaMail",
                                                                            "Oracle",
                                                                            ELicense.BSD,
-                                                                           new Version (1, 5, 6),
-                                                                           "http://javamail.java.net/");
+                                                                           new Version (1, 6, 0),
+                                                                           "https://javaee.github.io/javamail/");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

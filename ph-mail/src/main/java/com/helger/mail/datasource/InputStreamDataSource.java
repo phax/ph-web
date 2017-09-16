@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import javax.activation.DataSource;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UnsupportedOperation;
@@ -34,10 +35,12 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
+@NotThreadSafe
 public class InputStreamDataSource implements IExtendedDataSource
 {
-  private int m_nISAcquired = 0;
   private final InputStream m_aIS;
+  private int m_nISAcquired = 0;
+  private boolean m_bRepeatable = false;
   private final String m_sName;
   private final String m_sContentType;
 
@@ -62,10 +65,23 @@ public class InputStreamDataSource implements IExtendedDataSource
     m_sContentType = sContentType != null ? sContentType : DEFAULT_CONTENT_TYPE.getAsString ();
   }
 
+  public boolean isRepeatable ()
+  {
+    return m_bRepeatable;
+  }
+
+  @Nonnull
+  public InputStreamDataSource setRepeatable (final boolean bRepeatable)
+  {
+    m_bRepeatable = bRepeatable;
+    return this;
+  }
+
   @Nonnull
   public InputStream getInputStream ()
   {
-    if (m_nISAcquired++ > 0)
+    m_nISAcquired++;
+    if (!m_bRepeatable && m_nISAcquired > 1)
       throw new IllegalStateException ("The input stream was already acquired " + (m_nISAcquired - 1) + " times!");
     return m_aIS;
   }
@@ -92,6 +108,8 @@ public class InputStreamDataSource implements IExtendedDataSource
   public String toString ()
   {
     return new ToStringGenerator (this).append ("IS", m_aIS)
+                                       .append ("Repeatable", m_bRepeatable)
+                                       .append ("ISAcquired", m_nISAcquired)
                                        .append ("Name", m_sName)
                                        .append ("ContentType", m_sContentType)
                                        .getToString ();

@@ -34,7 +34,10 @@ import com.helger.commons.concurrent.BasicThreadFactory;
 import com.helger.commons.concurrent.ExecutorServiceHelper;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.scope.IScope;
+import com.helger.servlet.mock.OfflineHttpServletRequest;
+import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
@@ -88,16 +91,19 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
 
     public void run ()
     {
-      // Create a dummy scope
-      try (final WebScoped aWebScoped = new WebScoped ())
-      {
-        // Check for long running requests
-        m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
-      }
-      catch (final Throwable t)
-      {
-        s_aLogger.error ("Error checking for long running requests", t);
-      }
+      // Global scope may not be present here (on shutdown)
+      final IGlobalWebScope aGlobalScope = WebScopeManager.getGlobalScopeOrNull ();
+      if (aGlobalScope != null)
+        try (final WebScoped aWebScoped = new WebScoped (new OfflineHttpServletRequest (aGlobalScope.getServletContext (),
+                                                                                        false)))
+        {
+          // Check for long running requests
+          m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Error checking for long running requests", t);
+        }
     }
   }
 
@@ -120,6 +126,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   {
     // Destroy RequestTrackerMonitor thread(s)
     ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (m_aExecSvc);
+    s_aLogger.info ("RequestTrackerMonitor was uninstalled successfully.");
   }
 
   @Nonnull

@@ -16,6 +16,7 @@
  */
 package com.helger.smtp.data;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
@@ -46,6 +47,17 @@ public interface IEmailAttachment extends IHasInputStream, Serializable
    */
   @Nonnull
   IHasInputStream getInputStreamProvider ();
+
+  @Nonnull
+  default InputStream getInputStream ()
+  {
+    return getInputStreamProvider ().getInputStream ();
+  }
+
+  default boolean isReadMultiple ()
+  {
+    return getInputStreamProvider ().isReadMultiple ();
+  }
 
   /**
    * @return The charset of the email attachment. May be <code>null</code> if

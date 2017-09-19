@@ -38,6 +38,7 @@ import com.helger.commons.string.ToStringGenerator;
 public class InputStreamProviderDataSource implements IExtendedDataSource
 {
   private final IHasInputStream m_aISP;
+  private int m_nISAcquired = 0;
   private final String m_sName;
   private final String m_sContentType;
 
@@ -65,6 +66,9 @@ public class InputStreamProviderDataSource implements IExtendedDataSource
   @Nullable
   public InputStream getInputStream ()
   {
+    m_nISAcquired++;
+    if (!m_aISP.isReadMultiple () && m_nISAcquired > 1)
+      throw new IllegalStateException ("The input stream was already acquired " + (m_nISAcquired - 1) + " times!");
     return m_aISP.getInputStream ();
   }
 
@@ -90,6 +94,7 @@ public class InputStreamProviderDataSource implements IExtendedDataSource
   public String toString ()
   {
     return new ToStringGenerator (this).append ("ISP", m_aISP)
+                                       .append ("ISAcquired", m_nISAcquired)
                                        .append ("Name", m_sName)
                                        .append ("ContentType", m_sContentType)
                                        .getToString ();

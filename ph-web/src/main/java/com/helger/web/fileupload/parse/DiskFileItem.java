@@ -192,8 +192,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *        Whether or not this item is a plain form field, as opposed to a file
    *        upload.
    * @param sFilename
-   *        The original filename in the user's filesystem, or <code>null</code>
-   *        if not specified.
+   *        The original filename in the user's file system, or
+   *        <code>null</code> if not specified.
    * @param nSizeThreshold
    *        The threshold, in bytes, below which items will be retained in
    *        memory and above which they will be stored as a file.
@@ -335,6 +335,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     }
 
     return FileHelper.getInputStream (m_aDFOS.getFile ());
+  }
+
+  public boolean isReadMultiple ()
+  {
+    return true;
   }
 
   @Nullable

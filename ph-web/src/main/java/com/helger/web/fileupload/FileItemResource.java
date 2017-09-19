@@ -72,6 +72,11 @@ public class FileItemResource implements IReadableResource
     return m_aFileItem.getInputStream ();
   }
 
+  public boolean isReadMultiple ()
+  {
+    return m_aFileItem.isReadMultiple ();
+  }
+
   public boolean exists ()
   {
     return true;

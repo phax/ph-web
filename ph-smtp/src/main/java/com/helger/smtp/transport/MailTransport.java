@@ -263,7 +263,8 @@ public final class MailTransport
           }
           catch (final SendFailedException ex)
           {
-            s_aLogger.error ("Error send mail - SendFailedException", ex);
+            if (EmailGlobalSettings.isDebugSMTP ())
+              s_aLogger.error ("Error send mail - SendFailedException", ex);
 
             /*
              * Extract all addresses: the valid addresses to which the message
@@ -354,7 +355,8 @@ public final class MailTransport
           }
           catch (final MessagingException ex)
           {
-            s_aLogger.error ("Error send mail - MessagingException", ex);
+            if (EmailGlobalSettings.isDebugSMTP ())
+              s_aLogger.error ("Error send mail - MessagingException", ex);
 
             final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet <> ();
             final Consumer <IEmailAddress> aConsumer = a -> aInvalid.add (new MailSendDetails (false,

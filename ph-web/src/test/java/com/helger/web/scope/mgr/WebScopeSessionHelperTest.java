@@ -30,6 +30,8 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.scope.IScopeRenewalAware;
 import com.helger.scope.mgr.ScopeSessionManager;
@@ -59,6 +61,8 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
       return m_sStr;
     }
   }
+
+  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeSessionHelperTest.class);
 
   @Test
   public void testRenewSessionScopeEmpty ()
@@ -173,6 +177,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     for (int i = 0; i < nMax; ++i)
       aThreads[i].join ();
 
-    m_aLogger.info ("Test Done");
+    s_aLogger.info ("Test Done");
   }
 }

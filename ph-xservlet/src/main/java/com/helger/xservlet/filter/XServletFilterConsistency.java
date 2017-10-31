@@ -99,14 +99,23 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        The response character encoding.
    * @param nStatusCode
    *        The response status code.
+   * @param eHttpMethod
+   *        Used HTTP Method
    */
   @OverrideOnDemand
   protected void checkCharacterEncoding (@Nonnull final String sRequestURL,
                                          @Nullable final String sCharacterEncoding,
-                                         final int nStatusCode)
+                                         final int nStatusCode,
+                                         @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
-      s_aLogger.warn ("No character encoding on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
+      s_aLogger.warn ("No character encoding on HTTP " +
+                      nStatusCode +
+                      " response to " +
+                      eHttpMethod.getName () +
+                      " '" +
+                      sRequestURL +
+                      "'");
   }
 
   /**
@@ -116,14 +125,23 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        The response content type.
    * @param nStatusCode
    *        The response status code.
+   * @param eHttpMethod
+   *        Used HTTP Method
    */
   @OverrideOnDemand
   protected void checkContentType (@Nonnull final String sRequestURL,
                                    @Nullable final String sContentType,
-                                   final int nStatusCode)
+                                   final int nStatusCode,
+                                   @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
-      s_aLogger.warn ("No content type on HTTP " + nStatusCode + " response to '" + sRequestURL + "'");
+      s_aLogger.warn ("No content type on HTTP " +
+                      nStatusCode +
+                      " response to " +
+                      eHttpMethod.getName () +
+                      " '" +
+                      sRequestURL +
+                      "'");
   }
 
   /**
@@ -133,17 +151,27 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        All response HTTP headers.
    * @param nStatusCode
    *        The response status code.
+   * @param eHttpMethod
+   *        Used HTTP Method
    */
   @OverrideOnDemand
   protected void checkHeaders (@Nonnull final String sRequestURL,
                                @Nonnull final HttpHeaderMap aHeaders,
-                               final int nStatusCode)
+                               final int nStatusCode,
+                               @Nonnull final EHttpMethod eHttpMethod)
   {
     // Happens because of the default headers in the
     // UnifiedResponseDefaultSettings
     if (false)
       if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
-        s_aLogger.warn ("Headers on HTTP " + nStatusCode + " response to '" + sRequestURL + "': " + aHeaders);
+        s_aLogger.warn ("Headers on HTTP " +
+                        nStatusCode +
+                        " response to " +
+                        eHttpMethod.getName () +
+                        " '" +
+                        sRequestURL +
+                        "': " +
+                        aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
@@ -163,9 +191,9 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     final String sContentType = aHttpResponse.getContentType ();
 
     checkStatusCode (sRequestURL, nStatusCode, eHttpMethod);
-    checkCharacterEncoding (sRequestURL, sCharacterEncoding, nStatusCode);
+    checkCharacterEncoding (sRequestURL, sCharacterEncoding, nStatusCode, eHttpMethod);
     if (!bIsHandledAsync)
-      checkContentType (sRequestURL, sContentType, nStatusCode);
-    checkHeaders (sRequestURL, aHeaders, nStatusCode);
+      checkContentType (sRequestURL, sContentType, nStatusCode, eHttpMethod);
+    checkHeaders (sRequestURL, aHeaders, nStatusCode, eHttpMethod);
   }
 }

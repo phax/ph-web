@@ -113,9 +113,22 @@ public class HttpClientManager implements AutoCloseable
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    final CloseableHttpResponse ret = m_aHttpClient.execute (aRequest, aHttpContext);
-    HttpDebugger.afterRequest (aRequest, ret);
-    return ret;
+    CloseableHttpResponse ret = null;
+    Throwable aCaughtException = null;
+    try
+    {
+      ret = m_aHttpClient.execute (aRequest, aHttpContext);
+      return ret;
+    }
+    catch (final IOException ex)
+    {
+      aCaughtException = ex;
+      throw ex;
+    }
+    finally
+    {
+      HttpDebugger.afterRequest (aRequest, ret, aCaughtException);
+    }
   }
 
   /**
@@ -168,8 +181,21 @@ public class HttpClientManager implements AutoCloseable
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    final T ret = m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
-    HttpDebugger.afterRequest (aRequest, ret);
-    return ret;
+    T ret = null;
+    Throwable aCaughtException = null;
+    try
+    {
+      ret = m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
+      return ret;
+    }
+    catch (final IOException ex)
+    {
+      aCaughtException = ex;
+      throw ex;
+    }
+    finally
+    {
+      HttpDebugger.afterRequest (aRequest, ret, aCaughtException);
+    }
   }
 }

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public final class HttpDebugger
 
   /**
    * Call before an invocation
-   * 
+   *
    * @param aRequest
    *        The request to be executed. May not be <code>null</code>.
    * @param aHttpContext
@@ -80,12 +81,24 @@ public final class HttpDebugger
    *        <code>null</code>.
    * @param aResponse
    *        The response object retrieved. May be anything including
-   *        <code>null</code>.
+   *        <code>null</code> (e.g. in case of exception).
+   * @param aCaughtException
+   *        The caught exception. May be <code>null</code>.
    * @since 8.8.2
    */
-  public static <T> void afterRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final T aResponse)
+  public static <T> void afterRequest (@Nonnull final HttpUriRequest aRequest,
+                                       @Nullable final T aResponse,
+                                       @Nullable final Throwable aCaughtException)
   {
     if (isEnabled ())
-      s_aLogger.info ("After HTTP call: " + aRequest.getMethod () + ". Response: " + aResponse);
+    {
+      final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
+                                                                                           : null;
+      s_aLogger.info ("After HTTP call: " +
+                      aRequest.getMethod () +
+                      (aResponse != null ? ". Response: " + aResponse : "") +
+                      (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
+                      aHex != null ? null : aCaughtException);
+    }
   }
 }

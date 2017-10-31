@@ -68,13 +68,23 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        The request URL.
    * @param nStatusCode
    *        The response status code.
+   * @param eHttpMethod
+   *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkStatusCode (@Nonnull final String sRequestURL, final int nStatusCode)
+  protected void checkStatusCode (@Nonnull final String sRequestURL,
+                                  final int nStatusCode,
+                                  @Nonnull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
     if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
-      s_aLogger.warn ("HTTP status code " + nStatusCode + " in response to '" + sRequestURL + "'");
+      s_aLogger.warn ("HTTP status code " +
+                      nStatusCode +
+                      " in response to " +
+                      eHttpMethod.getName () +
+                      " '" +
+                      sRequestURL +
+                      "'");
   }
 
   private static boolean _isContentExpected (final int nStatusCode)
@@ -152,7 +162,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     final String sCharacterEncoding = aHttpResponse.getCharacterEncoding ();
     final String sContentType = aHttpResponse.getContentType ();
 
-    checkStatusCode (sRequestURL, nStatusCode);
+    checkStatusCode (sRequestURL, nStatusCode, eHttpMethod);
     checkCharacterEncoding (sRequestURL, sCharacterEncoding, nStatusCode);
     if (!bIsHandledAsync)
       checkContentType (sRequestURL, sContentType, nStatusCode);

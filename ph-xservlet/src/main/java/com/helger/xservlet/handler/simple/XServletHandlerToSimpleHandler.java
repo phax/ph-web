@@ -80,7 +80,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     m_aSimpleHandler = aSimpleHandler;
   }
 
-  public final void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  public void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     // Pass-through!
     m_aSimpleHandler.onServletInit (aInitParams);
@@ -272,7 +272,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     aUnifiedResponse.applyToResponse (aHttpResponse);
   }
 
-  public final void onServletDestroy ()
+  public void onServletDestroy ()
   {
     // Pass-through!
     m_aSimpleHandler.onServletDestroy ();

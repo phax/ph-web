@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.scope.impl;
+package com.helger.web.scope.multipart;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,6 +29,7 @@ import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.request.IRequestParamMap;
+import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.mock.WebScopeTestRule;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
@@ -37,7 +38,7 @@ import com.helger.web.scope.multipart.RequestWebScopeMultipart;
  *
  * @author Philip Helger
  */
-public final class RequestWebScopeNoMultipartTest
+public final class RequestWebScopeMultipartTest
 {
   @Rule
   public final WebScopeTestRule m_aRule = new WebScopeTestRule ();

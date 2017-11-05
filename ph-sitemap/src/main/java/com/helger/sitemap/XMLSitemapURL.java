@@ -43,7 +43,7 @@ import com.helger.xml.serialize.write.XMLMaskHelper;
  * @author Philip Helger
  */
 @Immutable
-public final class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
+public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
 {
   /** Maximum length of a single URL */
   public static final int LOCATION_MAX_LENGTH = 2048;

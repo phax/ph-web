@@ -42,7 +42,7 @@ import com.helger.xml.microdom.serialize.MicroWriter;
  * @author Philip Helger
  */
 @NotThreadSafe
-public final class XMLSitemapURLSet implements IHasLastModificationDateTime, Serializable
+public class XMLSitemapURLSet implements IHasLastModificationDateTime, Serializable
 {
   public static final int MAX_URLS_PER_FILE = 50000;
   public static final int MAX_FILE_SIZE = 10 * CGlobal.BYTES_PER_MEGABYTE;

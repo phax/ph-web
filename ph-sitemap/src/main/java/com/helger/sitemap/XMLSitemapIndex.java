@@ -54,7 +54,7 @@ import com.helger.xml.serialize.write.IXMLWriterSettings;
  * @author Philip Helger
  */
 @NotThreadSafe
-public final class XMLSitemapIndex implements Serializable
+public class XMLSitemapIndex implements Serializable
 {
   public static final boolean DEFAULT_USE_GZIP = true;
   private static final String ELEMENT_SITEMAPINDEX = "sitemapindex";
@@ -86,7 +86,7 @@ public final class XMLSitemapIndex implements Serializable
     m_bUseGZip = bUseGZip;
   }
 
-  public boolean isUseGZip ()
+  public final boolean isUseGZip ()
   {
     return m_bUseGZip;
   }
@@ -137,6 +137,17 @@ public final class XMLSitemapIndex implements Serializable
       m_aURLSets.add (aURLSet);
   }
 
+  /**
+   * Get the name of the sitemap file at the specified index
+   *
+   * @param nIndex
+   *        The index to be used. Should be ge; 0.
+   * @param bUseGZip
+   *        <code>true</code> if a ".gz" suffix should be appended,
+   *        <code>false</code> if not.
+   * @return The name of the sitemap file. Neither <code>null</code> nor empty.
+   * @see #getSitemapFilename(int)
+   */
   @Nonnull
   @Nonempty
   public static String getSitemapFilename (@Nonnegative final int nIndex, final boolean bUseGZip)
@@ -185,15 +196,17 @@ public final class XMLSitemapIndex implements Serializable
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
+      {
         eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
                 .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
+      }
       ++nIndex;
     }
     return ret;
   }
 
   @Nonnull
-  protected IXMLWriterSettings getXMLWriterSettings ()
+  public IXMLWriterSettings getXMLWriterSettings ()
   {
     // Important: No indent and align, because otherwise the calculated output
     // length would not be suitable

@@ -17,6 +17,7 @@
 package com.helger.sitemap;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -61,6 +62,24 @@ public final class XMLSitemapProvider
   public static int getProviderCount ()
   {
     return s_aProviders.size ();
+  }
+
+  /**
+   * Create URL sets from every provider and invoke the provided consumer with
+   * it.
+   *
+   * @param aConsumer
+   *        The consumer to be invoked. Must be able to handle <code>null</code>
+   *        and empty values. May itself not be <code>null</code>.
+   */
+  public static void forEachURLSet (@Nonnull final Consumer <? super XMLSitemapURLSet> aConsumer)
+  {
+    ValueEnforcer.notNull (aConsumer, "Consumer");
+    for (final IXMLSitemapProviderSPI aSPI : s_aProviders)
+    {
+      final XMLSitemapURLSet aURLSet = aSPI.createURLSet ();
+      aConsumer.accept (aURLSet);
+    }
   }
 
   @Nonnull

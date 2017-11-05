@@ -124,7 +124,8 @@ public final class RequestHelper
    * away!
    *
    * @param sValue
-   *        The value to strip the session ID from
+   *        The value to strip the session ID from. May not be
+   *        <code>null</code>.
    * @return The value without a session ID or the original string.
    */
   @Nonnull
@@ -152,6 +153,49 @@ public final class RequestHelper
     // Strip the parameter from the path, but keep parameters and anchor intact!
     // Note: using URLData avoid parsing, since the data was already parsed!
     return new SimpleURL (new URLData (getWithoutSessionID (aURL.getPath ()), aURL.params (), aURL.getAnchor ()));
+  }
+
+  /**
+   * Get the session ID of the passed string (like in
+   * "test.html;JSESSIONID=1234").<br>
+   * Attention: this methods does not consider eventually present request
+   * parameters. If parameters are present, they must be stripped away
+   * explicitly!
+   *
+   * @param sValue
+   *        The value to get the session ID from. May not be <code>null</code>.
+   * @return The session ID of the value or <code>null</code> if no session ID
+   *         is present.
+   */
+  @Nullable
+  public static String getSessionID (@Nonnull final String sValue)
+  {
+    ValueEnforcer.notNull (sValue, "Value");
+
+    // Get the session ID parameter
+    final int nIndex = sValue.indexOf (';');
+    return nIndex == -1 ? null : sValue.substring (nIndex + 1);
+  }
+
+  /**
+   * Get the session ID of the passed string (like in
+   * "test.html;JSESSIONID=1234").<br>
+   * Attention: this methods does not consider eventually present request
+   * parameters. If parameters are present, they must be stripped away
+   * explicitly!
+   *
+   * @param aURL
+   *        The URL to get the session ID from. May not be <code>null</code>.
+   * @return The session ID of the value or <code>null</code> if no session ID
+   *         is present.
+   */
+  @Nullable
+  public static String getSessionID (@Nonnull final ISimpleURL aURL)
+  {
+    ValueEnforcer.notNull (aURL, "URL");
+
+    // Ignore everything except the path
+    return getSessionID (aURL.getPath ());
   }
 
   /**

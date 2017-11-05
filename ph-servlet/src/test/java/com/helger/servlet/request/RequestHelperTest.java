@@ -17,6 +17,7 @@
 package com.helger.servlet.request;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -68,5 +69,16 @@ public final class RequestHelperTest
     final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
     assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top",
                   aStrippedURL.getAsStringWithEncodedParameters ());
+  }
+
+  @Test
+  public void testGetSessionID ()
+  {
+    assertNull (RequestHelper.getSessionID ("test.html"));
+    assertEquals ("abc", RequestHelper.getSessionID ("test.html;abc"));
+    assertEquals ("abc?x=y", RequestHelper.getSessionID ("test.html;abc?x=y"));
+    final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
+    assertEquals ("jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top", RequestHelper.getSessionID (sURL));
+    assertEquals ("jsessionid=1n3dlmrbng6ieckg4lahc7kpf", RequestHelper.getSessionID (new SimpleURL (sURL)));
   }
 }

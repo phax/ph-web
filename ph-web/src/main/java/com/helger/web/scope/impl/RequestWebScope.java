@@ -54,7 +54,13 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class RequestWebScope extends AbstractScope implements IRequestWebScope
 {
-  private static final class ParamContainer extends AttributeContainerAny <String> implements IRequestParamContainer
+  /**
+   * Special implementation if {@link IRequestParamContainer} based on
+   * {@link AttributeContainerAny}.
+   *
+   * @author Philip Helger
+   */
+  public static class ParamContainer extends AttributeContainerAny <String> implements IRequestParamContainer
   {}
 
   // Because of transient field
@@ -112,6 +118,34 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   protected void postAttributeInit ()
   {}
 
+  /**
+   * Override this method to pre-process all parameter values
+   * 
+   * @param sInput
+   *        Input string. May not be <code>null</code>.
+   * @return Pre-processed string. May not be <code>null</code>.
+   */
+  @OverrideOnDemand
+  @Nonnull
+  protected String getPreprocessedParamValue (@Nonnull final String sInput)
+  {
+    return sInput;
+  }
+
+  /**
+   * Override this method to pre-process all parameter values
+   * 
+   * @param sInput
+   *        Input string. May not be <code>null</code>.
+   * @return Pre-processed string. May not be <code>null</code>.
+   */
+  @OverrideOnDemand
+  @Nonnull
+  protected String [] getPreprocessedParamValue (@Nonnull final String [] aInput)
+  {
+    return aInput;
+  }
+
   public final void initScope ()
   {
     // Avoid double initialization of a scope, because for file uploads, the
@@ -144,12 +178,14 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       if (aParamValues.length == 1)
       {
         // Convert from String[] to String
-        aParams.putIn (sParamName, aParamValues[0]);
+        final String sPreProcessedValue = getPreprocessedParamValue (aParamValues[0]);
+        aParams.putIn (sParamName, sPreProcessedValue);
       }
       else
       {
         // Use String[] as is
-        aParams.putIn (sParamName, aParamValues);
+        final String [] aPreProcessedValues = getPreprocessedParamValue (aParamValues);
+        aParams.putIn (sParamName, aPreProcessedValues);
       }
     }
 

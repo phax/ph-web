@@ -20,11 +20,15 @@ import java.security.Security;
 
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.system.SystemProperties;
 
 @Immutable
 public final class DNSHelper
 {
+  @PresentForCodeCoverage
+  private static final DNSHelper s_aInstance = new DNSHelper ();
+
   private DNSHelper ()
   {}
 

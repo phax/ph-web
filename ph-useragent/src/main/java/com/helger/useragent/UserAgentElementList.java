@@ -16,6 +16,7 @@
  */
 package com.helger.useragent;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,13 +37,13 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class UserAgentElementList
+public class UserAgentElementList implements Serializable
 {
-  private final ICommonsList <Object> m_aList;
+  private final ICommonsList <Serializable> m_aList;
 
   public UserAgentElementList ()
   {
-    m_aList = new CommonsArrayList<> ();
+    m_aList = new CommonsArrayList <> ();
   }
 
   public UserAgentElementList (@Nonnull final UserAgentElementList aOther)
@@ -62,7 +63,7 @@ public class UserAgentElementList
     m_aList.add (sValue);
   }
 
-  public void add (@Nonnull final List <String> aItems)
+  public void add (@Nonnull final ICommonsList <String> aItems)
   {
     ValueEnforcer.notNull (aItems, "Items");
     m_aList.add (aItems);
@@ -70,7 +71,7 @@ public class UserAgentElementList
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <Object> getAllElements ()
+  public ICommonsList <Serializable> getAllElements ()
   {
     return m_aList.getClone ();
   }

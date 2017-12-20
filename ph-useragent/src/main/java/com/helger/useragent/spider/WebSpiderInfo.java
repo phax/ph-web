@@ -33,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public final class WebSpiderInfo implements IHasID <String>, Serializable
+public class WebSpiderInfo implements IHasID <String>, Serializable
 {
   private final String m_sID;
   private String m_sName;

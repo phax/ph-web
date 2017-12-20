@@ -41,7 +41,7 @@ import com.helger.web.multipart.MultipartStream.MultipartItemInputStream;
  * Default implementation of {@link IFileItemStream}.
  */
 @NotThreadSafe
-final class FileItemStream implements IFileItemStream, Closeable
+public class FileItemStream implements IFileItemStream, Closeable
 {
   /**
    * The file items content type.

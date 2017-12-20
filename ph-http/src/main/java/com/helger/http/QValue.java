@@ -60,7 +60,21 @@ public class QValue implements Comparable <QValue>, Serializable
     else
       if (dQuality > MAX_QUALITY)
         s_aLogger.warn ("QValue is too large: " + dQuality);
-    m_dQuality = dQuality < MIN_QUALITY ? MIN_QUALITY : dQuality > MAX_QUALITY ? MAX_QUALITY : dQuality;
+    m_dQuality = getValueInRange (dQuality);
+  }
+
+  /**
+   * Get the passed value in the range {@link #MIN_QUALITY} and
+   * {@link #MAX_QUALITY}.
+   * 
+   * @param dQuality
+   *        Source value
+   * @return Aligned value &ge; {@link #MIN_QUALITY} and &le;
+   *         {@link #MAX_QUALITY}.
+   */
+  public static double getValueInRange (final double dQuality)
+  {
+    return dQuality < MIN_QUALITY ? MIN_QUALITY : dQuality > MAX_QUALITY ? MAX_QUALITY : dQuality;
   }
 
   @Nonnegative

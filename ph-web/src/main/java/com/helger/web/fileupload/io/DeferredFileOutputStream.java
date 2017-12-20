@@ -48,7 +48,7 @@ import com.helger.commons.io.stream.StreamHelper;
  * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z
  *          niallp $
  */
-public final class DeferredFileOutputStream extends AbstractThresholdingOutputStream
+public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
 {
   /**
    * The output stream to which data will be written prior to the threshold

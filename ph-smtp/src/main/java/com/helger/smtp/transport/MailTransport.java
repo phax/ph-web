@@ -53,7 +53,6 @@ import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.network.WebExceptionHelper;
 import com.helger.smtp.EmailGlobalSettings;
@@ -120,7 +119,7 @@ public final class MailTransport
       ret.put (ESMTPTransportProperty.SSL_ENABLE.getPropertyName (bSMTPS), Boolean.TRUE.toString ());
 
     // Check if authentication is required
-    if (StringHelper.hasText (aSettings.getUserName ()))
+    if (aSettings.hasUserName ())
       ret.put (ESMTPTransportProperty.AUTH.getPropertyName (bSMTPS), Boolean.TRUE.toString ());
 
     // Enable STARTTLS?

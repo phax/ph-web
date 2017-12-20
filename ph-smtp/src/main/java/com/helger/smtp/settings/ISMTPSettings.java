@@ -23,6 +23,8 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.string.StringHelper;
+
 /**
  * Interface representing the basic SMTP settings required to login to a user.
  *
@@ -41,17 +43,32 @@ public interface ISMTPSettings extends Serializable
    */
   int getPort ();
 
+  default boolean hasPort ()
+  {
+    return getPort () > 0;
+  }
+
   /**
    * @return The server user name. May be <code>null</code>.
    */
   @Nullable
   String getUserName ();
 
+  default boolean hasUserName ()
+  {
+    return StringHelper.hasText (getUserName ());
+  }
+
   /**
    * @return The server user's password. May be <code>null</code>.
    */
   @Nullable
   String getPassword ();
+
+  default boolean hasPassword ()
+  {
+    return StringHelper.hasText (getPassword ());
+  }
 
   /**
    * @return The mail encoding to be used. May be <code>null</code>.
@@ -64,6 +81,11 @@ public interface ISMTPSettings extends Serializable
   {
     final Charset aCharset = getCharsetObj ();
     return aCharset == null ? null : aCharset.name ();
+  }
+
+  default boolean hasCharset ()
+  {
+    return getCharsetObj () != null;
   }
 
   /**

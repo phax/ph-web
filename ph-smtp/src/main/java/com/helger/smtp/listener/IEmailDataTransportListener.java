@@ -18,6 +18,7 @@ package com.helger.smtp.listener;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.callback.ICallback;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 
@@ -28,7 +29,7 @@ import com.helger.smtp.settings.ISMTPSettings;
  *
  * @author Philip Helger
  */
-public interface IEmailDataTransportListener
+public interface IEmailDataTransportListener extends ICallback
 {
   /**
    * Invoked when a Message is successfully delivered.

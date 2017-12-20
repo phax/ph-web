@@ -45,6 +45,12 @@ public final class ProgressListenerProvider
   {}
 
   @Nullable
+  public static IProgressListenerProviderSPI getProgressListenerProvider ()
+  {
+    return s_aProgressListenerProvider;
+  }
+
+  @Nullable
   public static IProgressListener getProgressListener ()
   {
     return s_aProgressListenerProvider == null ? null : s_aProgressListenerProvider.getProgressListener ();

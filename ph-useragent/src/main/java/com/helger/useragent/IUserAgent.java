@@ -16,6 +16,8 @@
  */
 package com.helger.useragent;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,7 +31,7 @@ import com.helger.useragent.browser.BrowserInfoSpider;
  *
  * @author Philip Helger
  */
-public interface IUserAgent
+public interface IUserAgent extends Serializable
 {
   /**
    * @return The original user agent string as sent by the browser.

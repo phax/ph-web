@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.mail.event.ConnectionEvent;
 import javax.mail.event.ConnectionListener;
 
+import com.helger.commons.callback.ICallback;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -27,7 +28,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public class DoNothingConnectionListener implements ConnectionListener
+public class DoNothingConnectionListener implements ConnectionListener, ICallback
 {
   public void opened (@Nonnull final ConnectionEvent aEvent)
   {}

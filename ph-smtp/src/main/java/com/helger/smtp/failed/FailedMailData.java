@@ -29,7 +29,6 @@ import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.type.ITypedObject;
 import com.helger.commons.type.ObjectType;
@@ -38,7 +37,7 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
 
 @Immutable
-public final class FailedMailData implements ITypedObject <String>, Serializable
+public class FailedMailData implements ITypedObject <String>, Serializable
 {
   public static final ObjectType TYPE_FAILEDMAIL = new ObjectType ("failedmail");
 
@@ -207,11 +206,13 @@ public final class FailedMailData implements ITypedObject <String>, Serializable
   @Nonnull
   public String getSMTPServerDisplayText ()
   {
-    String ret = m_aSettings.getHostName () + ":" + m_aSettings.getPort ();
-    if (StringHelper.hasText (m_aSettings.getUserName ()))
+    String ret = m_aSettings.getHostName ();
+    if (m_aSettings.hasPort ())
+      ret += ":" + m_aSettings.getPort ();
+    if (m_aSettings.hasUserName ())
     {
       ret += "[" + m_aSettings.getUserName ();
-      if (StringHelper.hasText (m_aSettings.getPassword ()))
+      if (m_aSettings.hasPassword ())
         ret += "/****";
       ret += ']';
     }

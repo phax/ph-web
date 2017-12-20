@@ -26,6 +26,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
@@ -40,6 +41,9 @@ import com.helger.commons.email.IEmailAddress;
 @Immutable
 public final class InternetAddressHelper
 {
+  @PresentForCodeCoverage
+  private static final InternetAddressHelper s_aInstance = new InternetAddressHelper ();
+
   private InternetAddressHelper ()
   {}
 

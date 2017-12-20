@@ -43,7 +43,7 @@ import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
-public final class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <FailedMailData>
+public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <FailedMailData>
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (FailedMailDataMicroTypeConverter.class);
   private static final String ATTR_ID = "id";

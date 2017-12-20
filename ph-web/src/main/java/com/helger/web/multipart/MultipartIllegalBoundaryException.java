@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Thrown upon attempt of setting an invalid boundary token.
  */
-public final class MultipartIllegalBoundaryException extends IOException
+public class MultipartIllegalBoundaryException extends IOException
 {
   /**
    * Constructs an <code>IllegalBoundaryException</code> with the specified

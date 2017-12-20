@@ -37,7 +37,7 @@ import com.helger.web.scope.IGlobalWebScope;
  * @author Philip Helger
  */
 @ThreadSafe
-public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
+public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
   // Because of transient field
   private static final long serialVersionUID = 15665138713664L;

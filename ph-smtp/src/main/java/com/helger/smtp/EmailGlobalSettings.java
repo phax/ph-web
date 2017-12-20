@@ -82,9 +82,9 @@ public final class EmailGlobalSettings
 
   // Transport settings
   @GuardedBy ("s_aRWLock")
-  private static ICommonsList <ConnectionListener> s_aConnectionListeners = new CommonsArrayList<> ();
+  private static ICommonsList <ConnectionListener> s_aConnectionListeners = new CommonsArrayList <> ();
   @GuardedBy ("s_aRWLock")
-  private static ICommonsList <IEmailDataTransportListener> s_aEmailDataTransportListeners = new CommonsArrayList<> ();
+  private static ICommonsList <IEmailDataTransportListener> s_aEmailDataTransportListeners = new CommonsArrayList <> ();
 
   private EmailGlobalSettings ()
   {}
@@ -106,12 +106,12 @@ public final class EmailGlobalSettings
   {
     ValueEnforcer.isGT0 (nMaxMailQueueLen, "MaxMailQueueLen");
     ValueEnforcer.isGT0 (nMaxMailSendCount, "MaxMailSendCount");
-    if (nMaxMailSendCount > nMaxMailQueueLen)
-      throw new IllegalArgumentException ("MaxMailQueueLen (" +
-                                          nMaxMailQueueLen +
-                                          ") must be >= than MaxMailSendCount (" +
-                                          nMaxMailSendCount +
-                                          ")");
+    ValueEnforcer.isTrue (nMaxMailQueueLen >= nMaxMailSendCount,
+                          () -> "MaxMailQueueLen (" +
+                                nMaxMailQueueLen +
+                                ") must be >= than MaxMailSendCount (" +
+                                nMaxMailSendCount +
+                                ")");
 
     return s_aRWLock.writeLocked ( () -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)

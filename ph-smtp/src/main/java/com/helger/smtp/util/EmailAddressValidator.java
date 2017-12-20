@@ -28,6 +28,7 @@ import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Type;
 
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.email.EmailAddressHelper;
 
 /**
@@ -40,6 +41,9 @@ public final class EmailAddressValidator
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAddressValidator.class);
   private static final AtomicBoolean s_aPerformMXRecordCheck = new AtomicBoolean (false);
+
+  @PresentForCodeCoverage
+  private static final EmailAddressValidator s_aInstance = new EmailAddressValidator ();
 
   private EmailAddressValidator ()
   {}

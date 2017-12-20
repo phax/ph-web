@@ -79,7 +79,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime, Serializa
     }
   }
 
-  void removeLastURL ()
+  protected void removeLastURL ()
   {
     final XMLSitemapURL aLastURL = m_aURLs.removeLast ();
     m_nOutputLength -= aLastURL.getOutputLength ();

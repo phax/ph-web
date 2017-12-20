@@ -31,7 +31,7 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailSendDetails;
 
 @Immutable
-public final class EmailDataTransportEvent
+public class EmailDataTransportEvent
 {
   private final ISMTPSettings m_aSMTPSettings;
   private final IEmailData m_aEmailData;
@@ -57,9 +57,9 @@ public final class EmailDataTransportEvent
     m_aSMTPSettings = aSMTPSettings;
     m_aEmailData = aEmailData;
     m_aMimeMessage = aMimeMessage;
-    m_aValidSent = new CommonsArrayList<> (aValidSent);
-    m_aValidUnsent = new CommonsArrayList<> (aValidUnsent);
-    m_aInvalid = new CommonsArrayList<> (aInvalid);
+    m_aValidSent = new CommonsArrayList <> (aValidSent);
+    m_aValidUnsent = new CommonsArrayList <> (aValidUnsent);
+    m_aInvalid = new CommonsArrayList <> (aInvalid);
   }
 
   /**

@@ -18,6 +18,7 @@ package com.helger.web.multipart;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import javax.annotation.CheckForSigned;
@@ -96,7 +97,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Sean C. Sullivan
  * @version $Id: MultipartStream.java 735374 2009-01-18 02:18:45Z jochen $
  */
-public final class MultipartStream
+public class MultipartStream implements Serializable
 {
   /**
    * The Carriage Return ASCII character value.

@@ -25,7 +25,7 @@ package com.helger.web.fileupload.exception;
  * library, it might create a file named "foo.exe", as the NUL character is the
  * string terminator in C.
  */
-public final class InvalidFileNameException extends RuntimeException
+public class InvalidFileNameException extends RuntimeException
 {
   private final String m_sName;
 

@@ -50,7 +50,7 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
   {
     final IMicroElement eSMTPSettings = new MicroElement (sNamespaceURI, sTagName);
     eSMTPSettings.setAttribute (ATTR_HOST, aSMTPSettings.getHostName ());
-    eSMTPSettings.setAttribute (ATTR_PORT, Integer.toString (aSMTPSettings.getPort ()));
+    eSMTPSettings.setAttribute (ATTR_PORT, aSMTPSettings.getPort ());
     eSMTPSettings.setAttribute (ATTR_USER, aSMTPSettings.getUserName ());
     eSMTPSettings.setAttribute (ATTR_PASSWORD, aSMTPSettings.getPassword ());
     eSMTPSettings.setAttribute (ATTR_CHARSET, aSMTPSettings.getCharsetName ());

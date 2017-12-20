@@ -19,6 +19,7 @@ package com.helger.web.fileupload.io;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
@@ -28,6 +29,9 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
 @Immutable
 public final class FileUploadHelper
 {
+  @PresentForCodeCoverage
+  private static final FileUploadHelper s_aInstance = new FileUploadHelper ();
+
   private FileUploadHelper ()
   {}
 

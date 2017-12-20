@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.callback.ICallback;
 import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.level.IErrorLevel;
 import com.helger.commons.log.LogHelper;
@@ -34,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public class LoggingConnectionListener implements ConnectionListener
+public class LoggingConnectionListener implements ConnectionListener, ICallback
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingConnectionListener.class);
 

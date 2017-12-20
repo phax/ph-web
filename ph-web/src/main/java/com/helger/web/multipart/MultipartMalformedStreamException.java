@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Thrown to indicate that the input stream fails to follow the required syntax.
  */
-public final class MultipartMalformedStreamException extends IOException
+public class MultipartMalformedStreamException extends IOException
 {
   /**
    * Constructs a <code>MalformedStreamException</code> with no detail message.

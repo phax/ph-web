@@ -16,6 +16,8 @@
  */
 package com.helger.web.multipart;
 
+import java.io.Serializable;
+
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
@@ -29,7 +31,7 @@ import com.helger.web.progress.IProgressListener;
 /**
  * Internal class, which is used to invoke the {@link IProgressListener}.
  */
-public final class MultipartProgressNotifier
+public class MultipartProgressNotifier implements Serializable
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (MultipartProgressNotifier.class);
   /**

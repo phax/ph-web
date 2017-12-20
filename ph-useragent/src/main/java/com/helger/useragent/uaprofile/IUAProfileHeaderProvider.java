@@ -16,12 +16,14 @@
  */
 package com.helger.useragent.uaprofile;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.collection.impl.ICommonsCollection;
 
-public interface IUAProfileHeaderProvider
+public interface IUAProfileHeaderProvider extends Serializable
 {
   @Nonnull
   ICommonsCollection <String> getAllHeaderNames ();

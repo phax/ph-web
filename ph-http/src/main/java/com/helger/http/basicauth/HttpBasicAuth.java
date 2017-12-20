@@ -40,8 +40,9 @@ import com.helger.http.digestauth.HttpDigestAuth;
 public final class HttpBasicAuth
 {
   public static final String HEADER_VALUE_PREFIX_BASIC = "Basic";
-  static final char USERNAME_PASSWORD_SEPARATOR = ':';
-  static final Charset CHARSET = StandardCharsets.ISO_8859_1;
+  public static final char USERNAME_PASSWORD_SEPARATOR = ':';
+  public static final Charset CHARSET = StandardCharsets.ISO_8859_1;
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (HttpDigestAuth.class);
 
   @PresentForCodeCoverage

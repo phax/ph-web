@@ -147,6 +147,8 @@ public class HttpClientManager implements AutoCloseable
    *         In case of error
    * @throws IllegalStateException
    *         If this manager was already closed!
+   * @param <T>
+   *        return type
    */
   @Nullable
   public <T> T execute (@Nonnull final HttpUriRequest aRequest,
@@ -173,6 +175,8 @@ public class HttpClientManager implements AutoCloseable
    *         In case of error
    * @throws IllegalStateException
    *         If this manager was already closed!
+   * @param <T>
+   *        return type
    */
   @Nullable
   public <T> T execute (@Nonnull final HttpUriRequest aRequest,

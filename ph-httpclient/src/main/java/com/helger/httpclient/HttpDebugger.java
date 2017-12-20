@@ -86,9 +86,9 @@ public final class HttpDebugger
    *        The caught exception. May be <code>null</code>.
    * @since 8.8.2
    */
-  public static <T> void afterRequest (@Nonnull final HttpUriRequest aRequest,
-                                       @Nullable final T aResponse,
-                                       @Nullable final Throwable aCaughtException)
+  public static void afterRequest (@Nonnull final HttpUriRequest aRequest,
+                                   @Nullable final Object aResponse,
+                                   @Nullable final Throwable aCaughtException)
   {
     if (isEnabled ())
     {

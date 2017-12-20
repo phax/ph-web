@@ -120,7 +120,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
   /**
    * Override this method to pre-process all parameter values
-   * 
+   *
    * @param sInput
    *        Input string. May not be <code>null</code>.
    * @return Pre-processed string. May not be <code>null</code>.
@@ -134,9 +134,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
   /**
    * Override this method to pre-process all parameter values
-   * 
-   * @param sInput
-   *        Input string. May not be <code>null</code>.
+   *
+   * @param aInput
+   *        Input string array. May not be <code>null</code>.
    * @return Pre-processed string. May not be <code>null</code>.
    */
   @OverrideOnDemand

@@ -181,13 +181,13 @@ public class MultipartStream implements Serializable
 
   /**
    * The index of first valid character in the buffer. <br>
-   * 0 <= head < bufSize
+   * 0 &le; head &lt; bufSize
    */
   private int m_nHead;
 
   /**
    * The index of last valid character in the buffer + 1. <br>
-   * 0 <= tail <= bufSize
+   * 0 &le; tail &le; bufSize
    */
   private int m_nTail;
 

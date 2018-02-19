@@ -23,6 +23,9 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.0.1 - work in progress
+  * Updated to javax.mail 1.6.1
+  * Removed exclusion of javax.activation
 * v9.0.0 - 2017-12-20
   * Updated to javax.mail 1.6.0
   * Updated to ph-commons 9.0.0
@@ -81,5 +84,5 @@ Add the following to your pom.xml to use this artifact:
 
 ---
 
-My personal [Coding Styleguide](https://github.com/phax/meta/blob/master/CodeingStyleguide.md) |
+My personal [Coding Styleguide](https://github.com/phax/meta/blob/master/CodingStyleguide.md) |
 On Twitter: <a href="https://twitter.com/philiphelger">@philiphelger</a>

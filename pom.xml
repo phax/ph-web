@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>1.10.2</version>
+    <version>1.10.3</version>
   </parent>
   <artifactId>ph-web-parent-pom</artifactId>
   <version>9.0.1-SNAPSHOT</version>
@@ -66,7 +66,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>9.0.1</version>
+        <version>9.0.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -197,9 +197,9 @@
             <signaturesArtifact>
               <groupId>com.helger</groupId>
               <artifactId>ph-forbidden-apis</artifactId>
-              <version>1.0.0</version>
+              <version>1.1.0</version>
               <type>jar</type>
-              <path>forbidden-apis.txt</path>
+              <path>forbidden-apis-java8.txt</path>
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>

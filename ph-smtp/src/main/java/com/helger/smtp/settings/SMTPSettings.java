@@ -28,6 +28,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ICloneable;
 import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.state.EChange;
@@ -58,10 +59,10 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 
   private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
   {
-    aOOS.writeUTF (m_sHostName);
+    StreamHelper.writeSafeUTF (aOOS, m_sHostName);
     aOOS.writeInt (m_nPort);
-    aOOS.writeUTF (m_sUserName);
-    aOOS.writeUTF (m_sPassword);
+    StreamHelper.writeSafeUTF (aOOS, m_sUserName);
+    StreamHelper.writeSafeUTF (aOOS, m_sPassword);
     SerializationConverter.writeConvertedObject (m_aCharset, aOOS);
     aOOS.writeBoolean (m_bSSLEnabled);
     aOOS.writeBoolean (m_bSTARTTLSEnabled);
@@ -72,10 +73,10 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 
   private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException
   {
-    m_sHostName = aOIS.readUTF ();
+    m_sHostName = StreamHelper.readSafeUTF (aOIS);
     m_nPort = aOIS.readInt ();
-    m_sUserName = aOIS.readUTF ();
-    m_sPassword = aOIS.readUTF ();
+    m_sUserName = StreamHelper.readSafeUTF (aOIS);
+    m_sPassword = StreamHelper.readSafeUTF (aOIS);
     m_aCharset = SerializationConverter.readConvertedObject (aOIS, Charset.class);
     m_bSSLEnabled = aOIS.readBoolean ();
     m_bSTARTTLSEnabled = aOIS.readBoolean ();

@@ -120,13 +120,16 @@ public class NonCachingDnsResolver implements DnsResolver
             aAddrs.add (aInetAddress);
           }
           else
-            s_aLogger.info ("Unknown record type found: " + ClassHelper.getClassLocalName (aRecord));
+            s_aLogger.info ("Unknown record type found for host '" +
+                            sHost +
+                            "': " +
+                            ClassHelper.getClassLocalName (aRecord));
       }
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);
     }
 
     if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Return: " + Arrays.toString (ret));
+      s_aLogger.debug ("Return for '" + sHost + "': " + Arrays.toString (ret));
     return ret;
   }
 }

@@ -23,7 +23,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.0.1 - work in progress
+* v9.0.1 - 2018-04-18
   * Updated to javax.mail 1.6.1
   * Removed exclusion of javax.activation
   * `AbstractXServlet` is now derived from `HttpServlet` and no longer from `GenericServlet`
@@ -80,7 +80,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.0</version>
+  <version>9.0.1</version>
 </dependency>
 ```
 

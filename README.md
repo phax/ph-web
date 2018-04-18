@@ -26,6 +26,7 @@ Java library with common web stuff. It contains the following sub-projects:
 * v9.0.1 - work in progress
   * Updated to javax.mail 1.6.1
   * Removed exclusion of javax.activation
+  * `AbstractXServlet` is now derived from `HttpServlet` and no longer from `GenericServlet`
 * v9.0.0 - 2017-12-20
   * Updated to javax.mail 1.6.0
   * Updated to ph-commons 9.0.0

@@ -23,18 +23,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.callback.CallbackList;
@@ -91,12 +90,14 @@ import com.helger.xservlet.servletstatus.ServletStatusManager;
  * <li>It has custom exception handler</li>
  * <li>It handles Post-Redirect-Get centrally.</li>
  * </ul>
+ * Note: it must be derived from {@link HttpServlet} to be usable with
+ * annotation based configuration in Jetty (was GenericServlet previously)
  *
  * @author Philip Helger
  * @since 9.0.0
  */
 @NotThreadSafe
-public abstract class AbstractXServlet extends GenericServlet
+public abstract class AbstractXServlet extends HttpServlet
 {
   /**
    * Internal request attribute defining whether a request was handled
@@ -414,10 +415,10 @@ public abstract class AbstractXServlet extends GenericServlet
    * Dispatches client requests to the protected <code>service</code> method.
    * There's no need to override this method.
    *
-   * @param aRequest
+   * @param aHttpRequest
    *        the {@link HttpServletRequest} object that contains the request the
    *        client made of the servlet
-   * @param aResponse
+   * @param aHttpResponse
    *        the {@link HttpServletResponse} object that contains the response
    *        the servlet returns to the client
    * @exception IOException
@@ -428,15 +429,9 @@ public abstract class AbstractXServlet extends GenericServlet
    * @see javax.servlet.Servlet#service
    */
   @Override
-  public final void service (@Nonnull final ServletRequest aRequest,
-                             @Nonnull final ServletResponse aResponse) throws ServletException, IOException
+  protected final void service (@Nonnull final HttpServletRequest aHttpRequest,
+                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    ValueEnforcer.isInstanceOf (aRequest, HttpServletRequest.class, "Non-HTTP servlet request");
-    ValueEnforcer.isInstanceOf (aResponse, HttpServletResponse.class, "Non-HTTP servlet response");
-
-    final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-    final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
-
     // Increase counter
     m_aCounterRequestsTotal.increment ();
 
@@ -565,6 +560,14 @@ public abstract class AbstractXServlet extends GenericServlet
           throw ex;
         }
     }
+  }
+
+  // Avoid overloading in sub classes
+  @Override
+  public final void service (@Nonnull final ServletRequest req,
+                             @Nonnull final ServletResponse res) throws ServletException, IOException
+  {
+    super.service (req, res);
   }
 
   @Override

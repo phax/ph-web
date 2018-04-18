@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -56,6 +57,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.random.RandomHelper;
+import com.helger.commons.ws.HostnameVerifierVerifyAll;
+import com.helger.commons.ws.TrustManagerTrustAll;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
@@ -76,7 +80,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
-  private SSLContext m_aDefaultSSLContext;
+  private SSLContext m_aSSLContext;
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
@@ -167,28 +171,45 @@ public class HttpClientFactory implements IHttpClientProvider
    * Create a custom SSLContext to use for the SSL Socket factory.
    *
    * @return <code>null</code> if no custom context is present.
-   * @throws GeneralSecurityException
-   *         In case key management problems occur.
    */
   @Nullable
-  public final SSLContext getSSLContext () throws GeneralSecurityException
+  public final SSLContext getSSLContext ()
   {
-    return m_aDefaultSSLContext;
+    return m_aSSLContext;
   }
 
   /**
    * Set the SSL Context to be used. By default no SSL context is present.
    *
    * @param aSSLContext
-   *        The SSL context to be used. May be <code>null</code>-
+   *        The SSL context to be used. May be <code>null</code>.
    * @return this for chaining
    * @since 9.0.0
    */
   @Nonnull
   public final HttpClientFactory setSSLContext (@Nullable final SSLContext aSSLContext)
   {
-    m_aDefaultSSLContext = aSSLContext;
+    m_aSSLContext = aSSLContext;
     return this;
+  }
+
+  /**
+   * Attention: INSECURE METHOD!<br>
+   * Set the a special SSL Context that does not expect any specific server
+   * certificate. To be totally loose, you should also set a hostname verifier
+   * that accepts all hostnames.
+   *
+   * @return this for chaining
+   * @throws GeneralSecurityException
+   *         In case TLS initialization fails
+   * @since 9.0.1
+   */
+  @Nonnull
+  public final HttpClientFactory setSSLContextTrustAll () throws GeneralSecurityException
+  {
+    final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
+    aSSLContext.init (null, new TrustManager [] { new TrustManagerTrustAll (false) }, RandomHelper.getSecureRandom ());
+    return setSSLContext (aSSLContext);
   }
 
   /**
@@ -215,6 +236,19 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     m_aHostnameVerifier = aHostnameVerifier;
     return this;
+  }
+
+  /**
+   * Attention: INSECURE METHOD!<br>
+   * Set a hostname verifier that trusts all hostnames.
+   *
+   * @return this for chaining
+   * @since 9.0.1
+   */
+  @Nonnull
+  public final HttpClientFactory setHostnameVerifierVerifyAll ()
+  {
+    return setHostnameVerifier (new HostnameVerifierVerifyAll (false));
   }
 
   /**
@@ -332,16 +366,15 @@ public class HttpClientFactory implements IHttpClientProvider
     // First try with a custom SSL context
     try
     {
-      final SSLContext aSSLContext = getSSLContext ();
-      if (aSSLContext != null)
+      if (m_aSSLContext != null)
       {
-        aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
+        aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
                                                       new String [] { "TLSv1.2", "TLSv1.1", "TLSv1" },
                                                       null,
                                                       aHostnameVerifier);
       }
     }
-    catch (final GeneralSecurityException | SSLInitializationException ex)
+    catch (final SSLInitializationException ex)
     {
       // Fall through
       s_aLogger.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",

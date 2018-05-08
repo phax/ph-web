@@ -82,7 +82,7 @@
             <Export-Package>com.helger.network.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
             <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
-            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.network.config.ThirdPartyModuleProvider_ph_network</Provide-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI</Provide-Capability>
           </instructions>
         </configuration>
       </plugin>

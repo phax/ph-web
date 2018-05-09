@@ -1,28 +1,30 @@
 # ph-web
 Java library with common web stuff. It contains the following sub-projects:
-  * ph-network
-   * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
-  * ph-http
+* ph-network
+    * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
+* ph-http
     * Contains special HTTP related helpers 
-  * ph-useragent
+* ph-useragent
     * Contains User-Agent/Browser related helpers 
-  * ph-servlet
+* ph-servlet
     * Contains special javax.servlet related helpers 
-  * ph-mail
+* ph-mail
     * Contains javax.mail related helpers
-  * ph-smtp
+* ph-smtp
     * Contains helper classes for asynchronous mail (re-)sending
-  * ph-httpclient
+* ph-httpclient
     * Contains Apache HTTP client related helpers
-  * ph-web
+* ph-web
     * Other high-level abstraction for servlets, file-upload and web scopes
-  * ph-sitemap (since v9.0.0)
+* ph-sitemap (since v9.0.0)
     * Containing Sitemap generation helper
-  * ph-xservlet (since v9.0.0)
+* ph-xservlet (since v9.0.0)
     * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)  
   
 # News and noteworthy
 
+* v9.0.2 - work in progress
+  * Fixed OSGI ServiceProvider configuration
 * v9.0.1 - 2018-04-18
   * Updated to javax.mail 1.6.1
   * Removed exclusion of javax.activation

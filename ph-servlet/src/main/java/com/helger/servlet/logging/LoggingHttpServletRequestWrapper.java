@@ -124,7 +124,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   private Charset _getCharset ()
   {
     final String sRequestEncoding = m_aDelegate.getCharacterEncoding ();
-    return CharsetHelper.getCharsetFromNameOrNull (sRequestEncoding, StandardCharsets.UTF_8);
+    return CharsetHelper.getCharsetFromNameOrDefault (sRequestEncoding, StandardCharsets.UTF_8);
   }
 
   public String getContent ()

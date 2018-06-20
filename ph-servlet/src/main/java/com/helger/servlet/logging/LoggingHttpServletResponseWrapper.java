@@ -59,7 +59,7 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   private Charset _getCharset ()
   {
     final String sResponseEncoding = m_aDelegate.getCharacterEncoding ();
-    final Charset aCharset = CharsetHelper.getCharsetFromNameOrNull (sResponseEncoding, StandardCharsets.UTF_8);
+    final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sResponseEncoding, StandardCharsets.UTF_8);
     return aCharset;
   }
 

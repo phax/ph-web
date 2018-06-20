@@ -452,7 +452,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String getString ()
   {
     final String sCharset = getCharSet ();
-    final Charset aCharset = CharsetHelper.getCharsetFromNameOrNull (sCharset, DEFAULT_CHARSET_OBJ);
+    final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sCharset, DEFAULT_CHARSET_OBJ);
     return getString (aCharset);
   }
 

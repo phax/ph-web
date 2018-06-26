@@ -25,14 +25,17 @@ import com.helger.commons.text.display.IHasDisplayText;
 
 /**
  * Defines the different lifecycle status of a servlet.
- * 
+ *
  * @author Philip Helger
  * @since 9.0.0
  */
 public enum EServletStatus implements IHasDisplayText
 {
+  // Constructor called
   CONSTRUCTED (EServletStatusText.CONSTRUCTED),
+  // Init called
   INITED (EServletStatusText.INITED),
+  // Destroy called
   DESTROYED (EServletStatusText.DESTROYED);
 
   private final IHasDisplayText m_aText;
@@ -48,15 +51,25 @@ public enum EServletStatus implements IHasDisplayText
     return m_aText.getDisplayText (aContentLocale);
   }
 
-  @Nullable
-  public static EServletStatus getSuccessorOf (@Nullable final EServletStatus eStatus)
+  public static boolean isValidSuccessorOf (@Nullable final EServletStatus eOldStatus,
+                                            @Nonnull final EServletStatus eNewStatus)
   {
-    if (eStatus == null)
-      return CONSTRUCTED;
-    if (eStatus == CONSTRUCTED)
-      return INITED;
-    if (eStatus == INITED)
-      return DESTROYED;
-    return null;
+    if (eOldStatus == null)
+    {
+      // CONSTRUCTED is the first state
+      return eNewStatus == CONSTRUCTED;
+    }
+    if (eOldStatus == CONSTRUCTED)
+    {
+      // Can only be followed by INITED
+      return eNewStatus == INITED;
+    }
+    if (eOldStatus == INITED)
+    {
+      // Destroyed upon shutdown or
+      // Constructed if initialization fails
+      return eNewStatus == DESTROYED || eNewStatus == EServletStatus.CONSTRUCTED;
+    }
+    return false;
   }
 }

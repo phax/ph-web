@@ -266,17 +266,24 @@ public abstract class AbstractXServlet extends HttpServlet
   {
     super.init (aSC);
     m_aStatusMgr.onServletInit (getClass ());
-
-    // Build init parameter map
-    final ICommonsMap <String, String> aInitParams = new CommonsHashMap <> ();
-    final Enumeration <String> aEnum = aSC.getInitParameterNames ();
-    while (aEnum.hasMoreElements ())
+    try
     {
-      final String sName = aEnum.nextElement ();
-      aInitParams.put (sName, aSC.getInitParameter (sName));
+      // Build init parameter map
+      final ICommonsMap <String, String> aInitParams = new CommonsHashMap <> ();
+      final Enumeration <String> aEnum = aSC.getInitParameterNames ();
+      while (aEnum.hasMoreElements ())
+      {
+        final String sName = aEnum.nextElement ();
+        aInitParams.put (sName, aSC.getInitParameter (sName));
+      }
+      // Invoke each handler for potential initialization
+      m_aHandlerRegistry.forEachHandlerThrowing (x -> x.onServletInit (aInitParams));
     }
-    // Invoke each handler for potential initialization
-    m_aHandlerRegistry.forEachHandlerThrowing (x -> x.onServletInit (aInitParams));
+    catch (final ServletException ex)
+    {
+      m_aStatusMgr.onServletInitFailed (ex, getClass ());
+      throw ex;
+    }
   }
 
   @Override

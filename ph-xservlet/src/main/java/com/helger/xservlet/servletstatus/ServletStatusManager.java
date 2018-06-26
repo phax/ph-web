@@ -109,11 +109,34 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     _updateStatus (aServletClass, EServletStatus.CONSTRUCTED);
   }
 
+  /**
+   * Invoked at the beginning of the servlet initialization.
+   *
+   * @param aServletClass
+   *        Relevant servlet class. May not be <code>null</code>.
+   */
   public void onServletInit (@Nonnull final Class <? extends GenericServlet> aServletClass)
   {
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("onServletInit: " + aServletClass);
     _updateStatus (aServletClass, EServletStatus.INITED);
   }
 
+  public void onServletInitFailed (@Nonnull final Exception aInitException,
+                                   @Nonnull final Class <? extends GenericServlet> aServletClass)
+  {
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("onServletInitFailed: " + aServletClass, aInitException);
+    // Reset status to previous state!
+    _updateStatus (aServletClass, EServletStatus.CONSTRUCTED);
+  }
+
+  /**
+   * Invoked at the beginning of a servlet invocation
+   *
+   * @param aServletClass
+   *        Servlet class invoked. May not be <code>null</code>.
+   */
   public void onServletInvocation (@Nonnull final Class <? extends GenericServlet> aServletClass)
   {
     m_aRWLock.writeLocked ( () -> _getOrCreateServletStatus (aServletClass).internalIncrementInvocationCount ());

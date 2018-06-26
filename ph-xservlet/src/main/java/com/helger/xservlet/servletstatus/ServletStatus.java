@@ -73,13 +73,19 @@ public final class ServletStatus implements Serializable
   protected void internalSetCurrentStatus (@Nonnull final EServletStatus eNewStatus)
   {
     ValueEnforcer.notNull (eNewStatus, "NewStatus");
-    if (EServletStatus.getSuccessorOf (m_eCurrentStatus) != eNewStatus)
+    if (!EServletStatus.isValidSuccessorOf (m_eCurrentStatus, eNewStatus))
+    {
+      // This should never happen
+      // If it happens, it is an indicator that the Servlet startup failed.
+      // In that case please check the logfiles (e.g.
+      // "localhost.yyyy-mm-dd.log")
       s_aLogger.error ("The new status " +
                        eNewStatus +
                        " is not a valid successor of the old status " +
                        m_eCurrentStatus +
                        " for " +
                        m_sClassName);
+    }
     m_eCurrentStatus = ValueEnforcer.notNull (eNewStatus, "NewStatus");
     m_aStatusChangeDates.put (eNewStatus, PDTFactory.getCurrentLocalDateTime ());
   }

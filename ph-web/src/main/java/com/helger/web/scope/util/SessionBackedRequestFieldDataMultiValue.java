@@ -34,6 +34,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * the hard coded default value is used.
  *
  * @author Philip Helger
+ * @since 9.0.2
  */
 public class SessionBackedRequestFieldDataMultiValue extends RequestFieldDataMultiValue
 {

@@ -38,6 +38,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  * @see RequestFieldData For single value class
+ * @since 9.0.2
  */
 @Immutable
 public class RequestFieldDataMultiValue extends AbstractRequestFieldData

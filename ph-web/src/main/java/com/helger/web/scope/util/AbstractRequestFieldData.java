@@ -32,6 +32,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * Abstract base class for request field data classes.
  *
  * @author Philip Helger
+ * @since 9.0.2
  */
 @Immutable
 public abstract class AbstractRequestFieldData implements Serializable

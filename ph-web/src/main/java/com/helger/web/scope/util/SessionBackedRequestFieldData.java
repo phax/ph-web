@@ -45,12 +45,17 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     _init ();
   }
 
+  @Deprecated
   public SessionBackedRequestFieldData (@Nonnull final String sFieldName, final int nDefaultValue)
   {
     super (sFieldName, nDefaultValue);
     _init ();
   }
 
+  /**
+   * @return The name of the session scope variable that contains the stored
+   *         value.
+   */
   @Nonnull
   @Nonempty
   public String getSessionFieldName ()
@@ -60,17 +65,21 @@ public class SessionBackedRequestFieldData extends RequestFieldData
 
   private void _init ()
   {
-    // get the request method
+    // get the request value (without the default values)
     final String sRequestValue = super.getRequestValueWithoutDefault ();
     // Allow empty values!
     if (sRequestValue != null)
+    {
+      // Remember in session - so a session can be created here
       WebScopeManager.getSessionScope (true).attrs ().putIn (getSessionFieldName (), sRequestValue);
+    }
   }
 
   @Override
   public String getDefaultValue ()
   {
     final String sSuperDefaultValue = super.getDefaultValue ();
+    // Get session scope only if it already exists - don't create one here!
     final IScope aSessionScope = WebScopeManager.getSessionScope (false);
     return aSessionScope == null ? sSuperDefaultValue
                                  : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);

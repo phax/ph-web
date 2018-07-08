@@ -67,7 +67,7 @@ public class RequestFieldData implements Serializable
    */
   public RequestFieldData (@Nonnull @Nonempty final String sFieldName)
   {
-    this (sFieldName, "");
+    this (sFieldName, (String) null);
   }
 
   /**
@@ -95,6 +95,7 @@ public class RequestFieldData implements Serializable
    *        The object who's ID is to be used. May be <code>null</code> in which
    *        case no default value is used
    */
+  @Deprecated
   public RequestFieldData (@Nonnull @Nonempty final String sFieldName,
                            @Nullable final IHasID <String> aDefaultValueProvider)
   {
@@ -109,6 +110,7 @@ public class RequestFieldData implements Serializable
    * @param nDefaultValue
    *        The default value to be used. Is converted to a String
    */
+  @Deprecated
   public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final int nDefaultValue)
   {
     this (sFieldName, Integer.toString (nDefaultValue));
@@ -122,6 +124,7 @@ public class RequestFieldData implements Serializable
    * @param nDefaultValue
    *        The default value to be used. Is converted to a String
    */
+  @Deprecated
   public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final long nDefaultValue)
   {
     this (sFieldName, Long.toString (nDefaultValue));

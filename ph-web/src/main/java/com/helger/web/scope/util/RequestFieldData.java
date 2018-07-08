@@ -16,7 +16,6 @@
  */
 package com.helger.web.scope.util;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -28,23 +27,22 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.web.scope.IRequestParamContainer;
-import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
  * Represents a wrapper around a single request value. It allows gathering the
  * current value, optionally using a default value.
  *
  * @author Philip Helger
+ * @see RequestFieldDataMultiValue for multi value data
  */
 @Immutable
-public class RequestFieldData implements Serializable
+public class RequestFieldData extends AbstractRequestFieldData
 {
-  private final String m_sFieldName;
   private final String m_sDefaultValue;
 
   /**
@@ -56,7 +54,7 @@ public class RequestFieldData implements Serializable
    */
   public RequestFieldData (@Nonnull final RequestFieldData aRF)
   {
-    this (aRF.m_sFieldName, aRF.m_sDefaultValue);
+    this (aRF.getFieldName (), aRF.m_sDefaultValue);
   }
 
   /**
@@ -81,7 +79,7 @@ public class RequestFieldData implements Serializable
    */
   public RequestFieldData (@Nonnull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
   {
-    m_sFieldName = ValueEnforcer.notEmpty (sFieldName, "FieldName");
+    super (sFieldName);
     m_sDefaultValue = sDefaultValue == null ? "" : sDefaultValue;
   }
 
@@ -131,16 +129,6 @@ public class RequestFieldData implements Serializable
   }
 
   /**
-   * @return The field name of this request field
-   */
-  @Nonnull
-  @Nonempty
-  public final String getFieldName ()
-  {
-    return m_sFieldName;
-  }
-
-  /**
    * @return The default value to be used if no request parameter is present. Is
    *         never <code>null</code> but an empty string if no default value is
    *         available.
@@ -153,17 +141,6 @@ public class RequestFieldData implements Serializable
   }
 
   /**
-   * This is a utility method to always retrieve the correct scope.
-   *
-   * @return The current request scope to use.
-   */
-  @Nonnull
-  protected static final IRequestParamContainer getParams ()
-  {
-    return WebScopeManager.getRequestScope ().params ();
-  }
-
-  /**
    * Helper method to get the request value without falling back to the provided
    * default value.
    *
@@ -172,7 +149,7 @@ public class RequestFieldData implements Serializable
   @Nullable
   protected final String getRequestValueWithoutDefault ()
   {
-    return getParams ().getAsString (m_sFieldName, null);
+    return getParams ().getAsString (getFieldName (), null);
   }
 
   /**
@@ -184,7 +161,7 @@ public class RequestFieldData implements Serializable
   @Nonnull
   public final String getRequestValue ()
   {
-    return getParams ().getAsString (m_sFieldName, getDefaultValue ());
+    return getParams ().getAsString (getFieldName (), getDefaultValue ());
   }
 
   /**
@@ -198,13 +175,14 @@ public class RequestFieldData implements Serializable
    *         default value was provided
    */
   @Nullable
+  @Deprecated
   public final ICommonsList <String> getRequestValueAsList ()
   {
     ICommonsList <String> aDefault = null;
     final String sDefaultValue = getDefaultValue ();
     if (StringHelper.hasText (sDefaultValue))
       aDefault = new CommonsArrayList <> (sDefaultValue);
-    return getParams ().getAsStringList (m_sFieldName, aDefault);
+    return getParams ().getAsStringList (getFieldName (), aDefault);
   }
 
   /**
@@ -232,11 +210,12 @@ public class RequestFieldData implements Serializable
    * @return <code>true</code> if the passed value equals the actual request
    *         value
    */
+  @Deprecated
   public final boolean hasRequestValue (@Nonnull final List <String> aExpectedValues)
   {
     ValueEnforcer.notNull (aExpectedValues, "ExpectedValues");
 
-    return aExpectedValues.equals (getRequestValueAsList ());
+    return EqualsHelper.equalsCollection (aExpectedValues, getRequestValueAsList ());
   }
 
   @Override
@@ -244,23 +223,21 @@ public class RequestFieldData implements Serializable
   {
     if (o == this)
       return true;
-    if (o == null || !getClass ().equals (o.getClass ()))
+    if (!super.equals (o))
       return false;
     final RequestFieldData rhs = (RequestFieldData) o;
-    return m_sFieldName.equals (rhs.m_sFieldName) && m_sDefaultValue.equals (rhs.m_sDefaultValue);
+    return m_sDefaultValue.equals (rhs.m_sDefaultValue);
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_sFieldName).append (m_sDefaultValue).getHashCode ();
+    return HashCodeGenerator.getDerived (super.hashCode ()).append (m_sDefaultValue).getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("FieldName", m_sFieldName)
-                                       .append ("DefaultValue", m_sDefaultValue)
-                                       .getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("DefaultValue", m_sDefaultValue).getToString ();
   }
 }

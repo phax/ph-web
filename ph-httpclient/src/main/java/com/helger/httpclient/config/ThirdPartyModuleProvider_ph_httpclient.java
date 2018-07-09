@@ -37,7 +37,7 @@ public final class ThirdPartyModuleProvider_ph_httpclient implements IThirdParty
   public static final IThirdPartyModule HTTP_CORE = new ThirdPartyModule ("Apache HttpCore",
                                                                           "Apache",
                                                                           ELicense.APACHE2,
-                                                                          new Version (4, 4, 9),
+                                                                          new Version (4, 4, 10),
                                                                           "http://hc.apache.org/");
   public static final IThirdPartyModule HTTP_COMPONENTS = new ThirdPartyModule ("Apache HttpComponents",
                                                                                 "Apache",

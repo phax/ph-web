@@ -29,6 +29,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Requires ph-commons 9.1.2
     * Fixed XServlet status reset in case Servlet init failed
     * Added classes around `RequestFieldDataMultiValue`
+    * Updated to Apache HttpCore 4.4.10
 * v9.0.1 - 2018-04-18
     * Updated to javax.mail 1.6.1
     * Removed exclusion of javax.activation

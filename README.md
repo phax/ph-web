@@ -27,7 +27,7 @@ Java library with common web stuff. It contains the following sub-projects:
 * v9.0.2 - work in progress
     * Fixed OSGI ServiceProvider configuration
     * Requires ph-commons 9.1.2
-    * Fixed XServlet status reset in case Servlet init failed
+    * Fixed `XServlet` status reset in case Servlet init failed
     * Added classes around `RequestFieldDataMultiValue`
     * Updated to Apache HttpCore 4.4.10
 * v9.0.1 - 2018-04-18

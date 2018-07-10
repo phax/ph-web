@@ -60,7 +60,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   }
 
   @Nonnull
-  public LoggingLongRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
+  public final LoggingLongRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (aErrorLevel, "ErrorLevel");
     return this;
@@ -70,6 +70,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
                                     @Nonnull final IRequestWebScope aRequestScope,
                                     @Nonnegative final long nRunningMilliseconds)
   {
+    // TODO ph-commons 9.1.3 use version with Supplier
     LogHelper.log (s_aLogger,
                    m_aErrorLevel,
                    "Long running request. ID=" +
@@ -83,6 +84,6 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("errorLevel", m_aErrorLevel).getToString ();
+    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel).getToString ();
   }
 }

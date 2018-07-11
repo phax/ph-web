@@ -69,13 +69,15 @@ public final class HttpBasicAuth
     final String [] aElements = RegExHelper.getSplitToArray (sRealHeader, "\\s+", 2);
     if (aElements.length != 2)
     {
-      s_aLogger.error ("String is not Basic Auth: " + sRealHeader);
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("String is not Basic Auth: " + sRealHeader);
       return null;
     }
 
     if (!aElements[0].equals (HEADER_VALUE_PREFIX_BASIC))
     {
-      s_aLogger.error ("String does not start with 'Basic': " + sRealHeader);
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("String does not start with 'Basic': " + sRealHeader);
       return null;
     }
 
@@ -84,7 +86,8 @@ public final class HttpBasicAuth
     final String sUsernamePassword = Base64.safeDecodeAsString (sEncodedCredentials, CHARSET);
     if (sUsernamePassword == null)
     {
-      s_aLogger.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
       return null;
     }
 

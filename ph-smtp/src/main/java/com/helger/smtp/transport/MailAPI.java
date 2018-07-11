@@ -420,6 +420,7 @@ public final class MailAPI
     catch (final InterruptedException ex)
     {
       s_aLogger.error ("Error stopping mail queue", ex);
+      Thread.currentThread ().interrupt ();
     }
     return EChange.CHANGED;
   }

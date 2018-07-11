@@ -751,6 +751,7 @@ public class MultipartStream implements Serializable
       }
       else
       {
+        // Read completely
         while (true)
         {
           int nAvail = available ();
@@ -781,16 +782,16 @@ public class MultipartStream implements Serializable
       if (m_bClosed)
         throw new MultipartItemSkippedException ();
 
-      int av = available ();
-      if (av == 0)
+      int nAvailable = available ();
+      if (nAvailable == 0)
       {
-        av = _makeAvailable ();
-        if (av == 0)
+        nAvailable = _makeAvailable ();
+        if (nAvailable == 0)
           return 0;
       }
-      final long res = Math.min (av, nBytes);
-      m_nHead += res;
-      return res;
+      final long nSkipped = Math.min (nAvailable, nBytes);
+      m_nHead += nSkipped;
+      return nSkipped;
     }
 
     /**

@@ -48,6 +48,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.codec.URLCodec;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
@@ -170,32 +171,41 @@ public final class HttpClientHelper
   @Nullable
   public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap)
   {
+    return createParameterEntity (aMap, StandardCharsets.UTF_8);
+  }
+
+  @Nullable
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
+                                                  @Nonnull final Charset aCharset)
+  {
+    ValueEnforcer.notNull (aCharset, "Charset");
     if (aMap == null || aMap.isEmpty ())
       return null;
 
-    final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (1024);
-    final URLCodec aURLCodec = new URLCodec ();
-    final Charset aCharset = StandardCharsets.UTF_8;
-    boolean bFirst = true;
-    for (final Map.Entry <String, String> aEntry : aMap.entrySet ())
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (1024))
     {
-      if (bFirst)
-        bFirst = false;
-      else
-        aBAOS.write ('&');
-
-      // Key must be present
-      final String sKey = aEntry.getKey ();
-      aURLCodec.encode (sKey.getBytes (aCharset), aBAOS);
-
-      // Value is optional
-      final String sValue = aEntry.getValue ();
-      if (StringHelper.hasText (sValue))
+      final URLCodec aURLCodec = new URLCodec ();
+      boolean bFirst = true;
+      for (final Map.Entry <String, String> aEntry : aMap.entrySet ())
       {
-        aBAOS.write ('=');
-        aURLCodec.encode (sValue.getBytes (aCharset), aBAOS);
+        if (bFirst)
+          bFirst = false;
+        else
+          aBAOS.write ('&');
+
+        // Key must be present
+        final String sKey = aEntry.getKey ();
+        aURLCodec.encode (sKey.getBytes (aCharset), aBAOS);
+
+        // Value is optional
+        final String sValue = aEntry.getValue ();
+        if (StringHelper.hasText (sValue))
+        {
+          aBAOS.write ('=');
+          aURLCodec.encode (sValue.getBytes (aCharset), aBAOS);
+        }
       }
+      return new InputStreamEntity (aBAOS.getAsInputStream ());
     }
-    return new InputStreamEntity (aBAOS.getAsInputStream ());
   }
 }

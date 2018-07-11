@@ -23,6 +23,7 @@ import java.io.InputStream;
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.WillCloseWhenClosed;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.io.file.FilenameHelper;
@@ -62,6 +63,7 @@ public class FileItemStream implements IFileItemStream, Closeable
   /**
    * The file items input stream.
    */
+  @WillCloseWhenClosed
   private final InputStream m_aIS;
   /**
    * The headers, if any.
@@ -84,9 +86,9 @@ public class FileItemStream implements IFileItemStream, Closeable
    * @throws IOException
    *         Creating the file item failed.
    */
-  FileItemStream (final String sName,
+  FileItemStream (@Nullable final String sName,
                   final String sFieldName,
-                  final String sContentType,
+                  @Nullable final String sContentType,
                   final boolean bFormField,
                   @CheckForSigned final long nContentLength,
                   @Nonnull final MultipartStream aMulti,
@@ -96,16 +98,13 @@ public class FileItemStream implements IFileItemStream, Closeable
     m_sFieldName = sFieldName;
     m_sContentType = sContentType;
     m_bFormField = bFormField;
-    final MultipartItemInputStream aItemIS = aMulti.createInputStream ();
-    InputStream aIS = aItemIS;
     if (nFileSizeMax > 0)
     {
       if (nContentLength >= 0 && nContentLength > nFileSizeMax)
       {
         final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
                                                                                       m_sFieldName +
-                                                                                      " exceeds its maximum permitted " +
-                                                                                      " size of " +
+                                                                                      " exceeds its maximum permitted size of " +
                                                                                       nFileSizeMax +
                                                                                       " bytes.",
                                                                                       nContentLength,
@@ -115,7 +114,8 @@ public class FileItemStream implements IFileItemStream, Closeable
         throw new FileUploadIOException (ex);
       }
 
-      aIS = new AbstractLimitedInputStream (aIS, nFileSizeMax)
+      final MultipartItemInputStream aItemIS = aMulti.createInputStream ();
+      m_aIS = new AbstractLimitedInputStream (aItemIS, nFileSizeMax)
       {
         @Override
         protected void onLimitExceeded (final long nSizeMax, final long nCount) throws IOException
@@ -123,8 +123,7 @@ public class FileItemStream implements IFileItemStream, Closeable
           aItemIS.close (true);
           final FileSizeLimitExceededException ex = new FileSizeLimitExceededException ("The field " +
                                                                                         m_sFieldName +
-                                                                                        " exceeds its maximum permitted " +
-                                                                                        " size of " +
+                                                                                        " exceeds its maximum permitted size of " +
                                                                                         nSizeMax +
                                                                                         " bytes.",
                                                                                         nCount,
@@ -136,7 +135,23 @@ public class FileItemStream implements IFileItemStream, Closeable
         }
       };
     }
-    m_aIS = aIS;
+    else
+    {
+      // No max size
+      final MultipartItemInputStream aItemIS = aMulti.createInputStream ();
+      m_aIS = aItemIS;
+    }
+  }
+
+  /**
+   * Closes the file item.
+   *
+   * @throws IOException
+   *         An I/O error occurred.
+   */
+  public void close () throws IOException
+  {
+    m_aIS.close ();
   }
 
   /**
@@ -144,6 +159,7 @@ public class FileItemStream implements IFileItemStream, Closeable
    *
    * @return Content type, if known, or null.
    */
+  @Nullable
   public String getContentType ()
   {
     return m_sContentType;
@@ -200,17 +216,6 @@ public class FileItemStream implements IFileItemStream, Closeable
     if (m_aIS instanceof ICloseable && ((ICloseable) m_aIS).isClosed ())
       throw new MultipartItemSkippedException ();
     return m_aIS;
-  }
-
-  /**
-   * Closes the file item.
-   *
-   * @throws IOException
-   *         An I/O error occurred.
-   */
-  public void close () throws IOException
-  {
-    m_aIS.close ();
   }
 
   @Nullable

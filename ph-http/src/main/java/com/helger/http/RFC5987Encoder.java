@@ -16,6 +16,9 @@
  */
 package com.helger.http;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -25,6 +28,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.codec.IEncoder;
+import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.string.StringHelper;
 
 /**
@@ -111,7 +115,7 @@ public class RFC5987Encoder implements IEncoder <String, String>
                                                  'z',
                                                  '|',
                                                  '~' };
-  private final Charset m_aCharset;
+  private transient Charset m_aCharset;
 
   public RFC5987Encoder ()
   {
@@ -121,6 +125,18 @@ public class RFC5987Encoder implements IEncoder <String, String>
   public RFC5987Encoder (@Nonnull final Charset aCharset)
   {
     m_aCharset = ValueEnforcer.notNull (aCharset, "Charset");
+  }
+
+  private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
+  {
+    aOOS.defaultWriteObject ();
+    SerializationConverter.writeConvertedObject (m_aCharset, aOOS);
+  }
+
+  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
+  {
+    aOIS.defaultReadObject ();
+    m_aCharset = SerializationConverter.readConvertedObject (aOIS, Charset.class);
   }
 
   @Nonnull

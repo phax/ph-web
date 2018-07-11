@@ -78,7 +78,8 @@ public final class AcceptEncodingHandler
         final String sEncoding = aParts[0];
         if (StringHelper.hasNoText (sEncoding))
         {
-          s_aLogger.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
           continue;
         }
 

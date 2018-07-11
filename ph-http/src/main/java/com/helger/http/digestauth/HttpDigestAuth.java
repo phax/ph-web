@@ -85,7 +85,8 @@ public final class HttpDigestAuth
 
     if (!sRealHeader.startsWith (HEADER_VALUE_PREFIX_DIGEST))
     {
-      s_aLogger.error ("String does not start with 'Digest'");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("String does not start with '" + HEADER_VALUE_PREFIX_DIGEST + "'");
       return null;
     }
 
@@ -94,7 +95,8 @@ public final class HttpDigestAuth
 
     if (nIndex >= aChars.length || !HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
     {
-      s_aLogger.error ("No whitespace after 'Digest'");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("No whitespace after '" + HEADER_VALUE_PREFIX_DIGEST + "'");
       return null;
     }
     nIndex++;
@@ -112,7 +114,8 @@ public final class HttpDigestAuth
         nIndex++;
       if (nStartIndex == nIndex)
       {
-        s_aLogger.error ("No token and no whitespace found for auth-param name: '" + aChars[nIndex] + "'");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("No token and no whitespace found for auth-param name: '" + aChars[nIndex] + "'");
         return null;
       }
       final String sToken = sRealHeader.substring (nStartIndex, nIndex);
@@ -123,7 +126,8 @@ public final class HttpDigestAuth
 
       if (nIndex >= aChars.length || aChars[nIndex] != '=')
       {
-        s_aLogger.error ("No separator char '=' found after '" + sToken + "'");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("No separator char '=' found after '" + sToken + "'");
         return null;
       }
       nIndex++;
@@ -134,7 +138,8 @@ public final class HttpDigestAuth
 
       if (nIndex >= aChars.length)
       {
-        s_aLogger.error ("Found nothing after '=' of '" + sToken + "'");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Found nothing after '=' of '" + sToken + "'");
         return null;
       }
 
@@ -148,16 +153,18 @@ public final class HttpDigestAuth
           nIndex++;
         if (nIndex >= aChars.length)
         {
-          s_aLogger.error ("Unexpected EOF in quoted text for '" + sToken + "'");
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Unexpected EOF in quoted text for '" + sToken + "'");
           return null;
         }
         if (aChars[nIndex] != HttpStringHelper.QUOTEDTEXT_END)
         {
-          s_aLogger.error ("Quoted string of token '" +
-                           sToken +
-                           "' is not terminated correctly: '" +
-                           aChars[nIndex] +
-                           "'");
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Quoted string of token '" +
+                             sToken +
+                             "' is not terminated correctly: '" +
+                             aChars[nIndex] +
+                             "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);
@@ -173,11 +180,12 @@ public final class HttpDigestAuth
           nIndex++;
         if (nStartIndex == nIndex)
         {
-          s_aLogger.error ("No token and no whitespace found for auth-param value of '" +
-                           sToken +
-                           "': '" +
-                           aChars[nIndex] +
-                           "'");
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("No token and no whitespace found for auth-param value of '" +
+                             sToken +
+                             "': '" +
+                             aChars[nIndex] +
+                             "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);
@@ -200,14 +208,16 @@ public final class HttpDigestAuth
       // If there is a comma, another parameter is expected
       if (aChars[nIndex] != ',')
       {
-        s_aLogger.error ("Illegal character after auth-param '" + sToken + "': '" + aChars[nIndex] + "'");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Illegal character after auth-param '" + sToken + "': '" + aChars[nIndex] + "'");
         return null;
       }
       ++nIndex;
 
       if (nIndex >= aChars.length)
       {
-        s_aLogger.error ("Found nothing after continuation of auth-param '" + sToken + "'");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Found nothing after continuation of auth-param '" + sToken + "'");
         return null;
       }
     }
@@ -266,8 +276,9 @@ public final class HttpDigestAuth
     final String sOpaque = aParams.remove ("opaque");
     final String sMessageQOP = aParams.remove ("qop");
     final String sNonceCount = aParams.remove ("nc");
-    if (!aParams.isEmpty ())
-      s_aLogger.warn ("Digest Auth contains unhandled parameters: " + aParams.toString ());
+    if (aParams.isNotEmpty ())
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Digest Auth contains unhandled parameters: " + aParams.toString ());
 
     return new DigestAuthClientCredentials (sUserName,
                                             sRealm,

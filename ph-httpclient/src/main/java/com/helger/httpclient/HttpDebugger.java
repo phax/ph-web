@@ -66,11 +66,12 @@ public final class HttpDebugger
   public static void beforeRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
-      s_aLogger.info ("Before HTTP call: " +
-                      aRequest.getMethod () +
-                      " " +
-                      aRequest.getURI () +
-                      (aHttpContext != null ? " (with special HTTP context)" : ""));
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Before HTTP call: " +
+                        aRequest.getMethod () +
+                        " " +
+                        aRequest.getURI () +
+                        (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 
   /**
@@ -91,14 +92,15 @@ public final class HttpDebugger
                                    @Nullable final Throwable aCaughtException)
   {
     if (isEnabled ())
-    {
-      final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
-                                                                                           : null;
-      s_aLogger.info ("After HTTP call: " +
-                      aRequest.getMethod () +
-                      (aResponse != null ? ". Response: " + aResponse : "") +
-                      (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
-                      aHex != null ? null : aCaughtException);
-    }
+      if (s_aLogger.isInfoEnabled ())
+      {
+        final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
+                                                                                             : null;
+        s_aLogger.info ("After HTTP call: " +
+                        aRequest.getMethod () +
+                        (aResponse != null ? ". Response: " + aResponse : "") +
+                        (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
+                        aHex != null ? null : aCaughtException);
+      }
   }
 }

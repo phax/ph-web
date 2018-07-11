@@ -42,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class HttpClientRetryHandler implements HttpRequestRetryHandler
 {
-  public static enum ERetryMode
+  public enum ERetryMode
   {
     /**
      * Retry always as long as the max-retries is not exceeded. This mode is
@@ -80,13 +80,13 @@ public class HttpClientRetryHandler implements HttpRequestRetryHandler
   }
 
   @Nonnegative
-  public int getMaxRetries ()
+  public final int getMaxRetries ()
   {
     return m_nMaxRetries;
   }
 
   @Nonnull
-  public ERetryMode getRetryMode ()
+  public final ERetryMode getRetryMode ()
   {
     return m_eRetryMode;
   }

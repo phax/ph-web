@@ -511,9 +511,10 @@ public abstract class AbstractXServlet extends HttpServlet
       if (bInvokeHandler)
       {
         // Create request scope
-        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
-                                                                                                      aHttpResponseWrapper,
-                                                                                                      m_aSettings.isMultipartEnabled ()))
+        try (
+            final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                     aHttpResponseWrapper,
+                                                                                                     m_aSettings.isMultipartEnabled ()))
         {
           final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
           aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());
@@ -563,8 +564,8 @@ public abstract class AbstractXServlet extends HttpServlet
         catch (final ServletException | IOException ex)
         {
           s_aLogger.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
-          // Re-throw
-          throw ex;
+          // Don't re-throw in finally
+          // throw ex;
         }
     }
   }

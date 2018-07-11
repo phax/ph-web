@@ -79,7 +79,8 @@ public final class AcceptMimeTypeHandler
         {
           if (aMimeType.hasAnyParameters ())
           {
-            s_aLogger.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
+            if (s_aLogger.isWarnEnabled ())
+              s_aLogger.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
             aMimeType = aMimeType.getCopyWithoutParameters ();
           }
           ret.addMimeType (aMimeType, dQuality);
@@ -92,7 +93,10 @@ public final class AcceptMimeTypeHandler
             // Certain invalid MIME types occur often so they are manually
             // ignored
             if (!"xml/xml".equals (sMimeType))
-              s_aLogger.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
+            {
+              if (s_aLogger.isWarnEnabled ())
+                s_aLogger.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
+            }
           }
       }
     }
@@ -111,7 +115,8 @@ public final class AcceptMimeTypeHandler
       if ("*".equals (sMimeType))
         return new MimeType (EMimeContentType._STAR, "*");
     }
-    s_aLogger.warn ("Unparsable MIME type '" + sMimeType + "'");
+    if (s_aLogger.isWarnEnabled ())
+      s_aLogger.warn ("Unparsable MIME type '" + sMimeType + "'");
     return null;
   }
 }

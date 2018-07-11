@@ -56,17 +56,23 @@ public class QValue implements Comparable <QValue>, Serializable
   public QValue (@Nonnegative final double dQuality)
   {
     if (dQuality < MIN_QUALITY)
-      s_aLogger.warn ("QValue is too small: " + dQuality);
+    {
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("QValue is too small: " + dQuality);
+    }
     else
       if (dQuality > MAX_QUALITY)
-        s_aLogger.warn ("QValue is too large: " + dQuality);
+      {
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("QValue is too large: " + dQuality);
+      }
     m_dQuality = getValueInRange (dQuality);
   }
 
   /**
    * Get the passed value in the range {@link #MIN_QUALITY} and
    * {@link #MAX_QUALITY}.
-   * 
+   *
    * @param dQuality
    *        Source value
    * @return Aligned value &ge; {@link #MIN_QUALITY} and &le;
@@ -74,7 +80,11 @@ public class QValue implements Comparable <QValue>, Serializable
    */
   public static double getValueInRange (final double dQuality)
   {
-    return dQuality < MIN_QUALITY ? MIN_QUALITY : dQuality > MAX_QUALITY ? MAX_QUALITY : dQuality;
+    if (dQuality < MIN_QUALITY)
+      return MIN_QUALITY;
+    if (dQuality > MAX_QUALITY)
+      return MAX_QUALITY;
+    return dQuality;
   }
 
   @Nonnegative

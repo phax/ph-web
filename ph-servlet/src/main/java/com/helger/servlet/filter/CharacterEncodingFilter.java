@@ -103,7 +103,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
 
   public final boolean isForceResponseEncoding ()
   {
-    return m_bForceRequestEncoding;
+    return m_bForceResponseEncoding;
   }
 
   public final void setForceResponseEncoding (final boolean bForce)

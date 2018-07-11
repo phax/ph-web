@@ -192,7 +192,7 @@ public class MockServletContext implements IServletContext310To400Migration
       if (StringHelper.startsWith (sContextPath, '/'))
         m_sContextPath = sContextPath;
       else
-        m_sContextPath = "/" + sContextPath;
+        m_sContextPath = '/' + sContextPath;
     ServletContextPathHolder.setServletContextPath (m_sContextPath);
   }
 

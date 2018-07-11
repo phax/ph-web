@@ -76,7 +76,7 @@ public interface IFileItemStream extends IFileItemHeadersSupport
    *         of a security attack. If you intend to use the file name anyways,
    *         catch the exception and use InvalidFileNameException#getName().
    */
-  String getName () throws InvalidFileNameException;
+  String getName ();
 
   /**
    * Returns the original filename in the client's filesystem, as provided by

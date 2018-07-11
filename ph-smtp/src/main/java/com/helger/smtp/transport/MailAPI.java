@@ -349,7 +349,7 @@ public final class MailAPI
   @Nonnegative
   public static int getTotalQueueLength ()
   {
-    return s_aRWLock.readLocked ( () -> _getTotalQueueLength ());
+    return s_aRWLock.readLocked (MailAPI::_getTotalQueueLength);
   }
 
   /**

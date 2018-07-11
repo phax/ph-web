@@ -72,7 +72,7 @@ final class LoggingResponse implements Serializable
     if (m_aHeaders != null)
     {
       final IJsonObject aHeaders = new JsonObject ();
-      m_aHeaders.forEachSingleHeader ( (k, v) -> aHeaders.add (k, v));
+      m_aHeaders.forEachSingleHeader (aHeaders::add);
       ret.add ("headers", aHeaders);
     }
     if (m_sBody != null)

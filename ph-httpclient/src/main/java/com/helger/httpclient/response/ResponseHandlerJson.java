@@ -70,7 +70,7 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
   }
 
   @Nullable
-  public IJson handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
+  public IJson handleResponse (final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
@@ -84,7 +84,8 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
       // Read all in String
       final String sJson = StringHelper.trim (EntityUtils.toString (aEntity, aCharset));
 
-      s_aLogger.info ("Got JSON: <" + sJson + ">");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Got JSON: <" + sJson + ">");
 
       final IJson ret = JsonReader.readFromString (sJson);
       if (ret == null)

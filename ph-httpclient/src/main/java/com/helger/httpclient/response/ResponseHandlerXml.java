@@ -70,7 +70,7 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
   }
 
   @Nullable
-  public Document handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
+  public Document handleResponse (final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
@@ -84,7 +84,8 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);
 
-      s_aLogger.info ("Got XML: <" + sXML + ">");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Got XML: <" + sXML + ">");
 
       Document ret = null;
       try
@@ -92,7 +93,9 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
         ret = DOMReader.readXMLDOM (sXML);
       }
       catch (final SAXException ex)
-      {}
+      {
+        // Ignore
+      }
       if (ret == null)
         throw new IllegalArgumentException ("Failed to parse as XML: " + sXML);
       return ret;

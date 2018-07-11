@@ -142,8 +142,9 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create request scope
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
-                                                                                                           aHttpResponseWrapper))
+    try (
+        final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
+                                                                                                          aHttpResponseWrapper))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
       try
@@ -160,22 +161,22 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
           m_aCounterRequestsBeforeBreak.increment ();
         }
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         m_aCounterRequestsWithException.increment ();
 
-        if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, t)).isContinue ())
+        if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, ex)).isContinue ())
         {
           // This log entry is mainly present to have an overview on how often
           // this really happens
-          s_aLogger.error ("Filter exception propagated to the outside", t);
+          s_aLogger.error ("Filter exception propagated to the outside", ex);
 
           // Ensure only exceptions with the correct type are propagated
-          if (t instanceof IOException)
-            throw (IOException) t;
-          if (t instanceof ServletException)
-            throw (ServletException) t;
-          throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
+          if (ex instanceof IOException)
+            throw (IOException) ex;
+          if (ex instanceof ServletException)
+            throw (ServletException) ex;
+          throw new ServletException ("Wrapped " + ex.getClass ().getName (), ex);
         }
       }
     }

@@ -1135,14 +1135,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   // Servlet 3.0 API
 
   @UnsupportedOperation
-  public AsyncContext startAsync () throws IllegalStateException
+  public AsyncContext startAsync ()
   {
     throw new UnsupportedOperationException ();
   }
 
   @UnsupportedOperation
-  public AsyncContext startAsync (final ServletRequest servletRequest,
-                                  final ServletResponse servletResponse) throws IllegalStateException
+  public AsyncContext startAsync (final ServletRequest servletRequest, final ServletResponse servletResponse)
   {
     throw new UnsupportedOperationException ();
   }

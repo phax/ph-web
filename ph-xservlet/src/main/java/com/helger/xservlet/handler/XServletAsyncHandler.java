@@ -83,11 +83,13 @@ public final class XServletAsyncHandler implements IXServletHandler
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
+  @Override
   public void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     m_aNestedHandler.onServletInit (aInitParams);
   }
 
+  @Override
   public void onServletDestroy ()
   {
     m_aNestedHandler.onServletDestroy ();

@@ -69,7 +69,7 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
   }
 
   @Nullable
-  public IMicroDocument handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
+  public IMicroDocument handleResponse (final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
@@ -83,7 +83,8 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);
 
-      s_aLogger.info ("Got XML: <" + sXML + ">");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Got XML: <" + sXML + ">");
 
       final IMicroDocument ret = MicroReader.readMicroXML (sXML);
       if (ret == null)

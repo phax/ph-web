@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
@@ -69,7 +68,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
   }
 
   @Nullable
-  public String handleResponse (final HttpResponse aHttpResponse) throws ClientProtocolException, IOException
+  public String handleResponse (final HttpResponse aHttpResponse) throws IOException
   {
     // Convert to entity
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);

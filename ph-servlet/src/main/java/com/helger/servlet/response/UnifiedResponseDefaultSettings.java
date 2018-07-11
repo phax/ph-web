@@ -248,7 +248,7 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllResponseHeaders ()
   {
-    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.removeAll ());
+    return s_aRWLock.writeLocked (s_aResponseHeaderMap::removeAll);
   }
 
   /**
@@ -256,7 +256,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static boolean hasCookies ()
   {
-    return s_aRWLock.readLocked ( () -> s_aCookies.isNotEmpty ());
+    return s_aRWLock.readLocked (s_aCookies::isNotEmpty);
   }
 
   /**
@@ -267,7 +267,7 @@ public final class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return s_aRWLock.readLocked ( () -> s_aCookies.getClone ());
+    return s_aRWLock.readLocked (s_aCookies::getClone);
   }
 
   /**
@@ -309,6 +309,6 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllCookies ()
   {
-    return s_aRWLock.writeLocked ( () -> s_aCookies.removeAll ());
+    return s_aRWLock.writeLocked (s_aCookies::removeAll);
   }
 }

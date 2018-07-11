@@ -451,7 +451,7 @@ public class MultipartStream implements Serializable
    * @throws IOException
    *         if an i/o error occurs.
    */
-  public int readBodyData () throws MultipartMalformedStreamException, IOException
+  public int readBodyData () throws IOException
   {
     final InputStream aIS = createInputStream ();
     final byte [] aBuffer = new byte [8192];
@@ -491,7 +491,7 @@ public class MultipartStream implements Serializable
    * @throws IOException
    *         if an i/o error occurs.
    */
-  public int discardBodyData () throws MultipartMalformedStreamException, IOException
+  public int discardBodyData () throws IOException
   {
     return readBodyData ();
   }

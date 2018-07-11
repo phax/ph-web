@@ -95,8 +95,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 
   /**
@@ -155,7 +156,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final IAttributeContainerAny <String> aAttrs = attrs ();
     if (aAttrs.getAndSetFlag (REQUEST_ATTR_SCOPE_INITED))
     {
-      s_aLogger.warn ("Scope was already inited: " + toString ());
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Scope was already inited: " + toString ());
       return;
     }
 
@@ -193,19 +195,24 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Initialized request web scope '" +
-                      getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Initialized request web scope '" +
+                        getID () +
+                        "' of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 
   @Override
   protected void postDestroy ()
   {
     if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Destroyed request web scope '" +
+                        getID () +
+                        "' of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 
   @Nonnull

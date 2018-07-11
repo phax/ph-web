@@ -58,7 +58,6 @@ import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.exception.FileUploadException;
-import com.helger.web.fileupload.exception.InvalidFileNameException;
 import com.helger.web.fileupload.io.DeferredFileOutputStream;
 import com.helger.web.fileupload.io.FileUploadHelper;
 
@@ -371,7 +370,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   }
 
   @Nullable
-  public String getName () throws InvalidFileNameException
+  public String getName ()
   {
     return FileUploadHelper.checkFileName (m_sFilename);
   }

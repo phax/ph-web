@@ -165,10 +165,12 @@ public final class MailConverter
     {
       fillMimeMessageUnsafe (aMimeMessage, aMailData, aCharset);
     }
+    catch (final RuntimeException ex)
+    {
+      throw ex;
+    }
     catch (final Exception ex)
     {
-      if (ex instanceof RuntimeException)
-        throw (RuntimeException) ex;
       throw new IllegalArgumentException (ex);
     }
   }

@@ -51,18 +51,20 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
     if (s_sServletContextPath == null)
     {
-      s_aLogger.info ("Setting servlet context path to '" + sServletContextPath + "'!");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Setting servlet context path to '" + sServletContextPath + "'!");
       s_sServletContextPath = sServletContextPath;
     }
     else
       if (!s_sServletContextPath.equals (sServletContextPath))
       {
-        s_aLogger.error ("Overwriting servlet context path '" +
-                         s_sServletContextPath +
-                         "' with '" +
-                         sServletContextPath +
-                         "'",
-                         new IllegalStateException ("Just for tracking how this happens"));
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Overwriting servlet context path '" +
+                           s_sServletContextPath +
+                           "' with '" +
+                           sServletContextPath +
+                           "'",
+                           new IllegalStateException ("Just for tracking how this happens"));
         s_sServletContextPath = sServletContextPath;
       }
   }
@@ -106,18 +108,20 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
     if (s_sCustomContextPath == null)
     {
-      s_aLogger.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
       s_sCustomContextPath = sCustomContextPath;
     }
     else
       if (!s_sCustomContextPath.equals (sCustomContextPath))
       {
-        s_aLogger.error ("Overwriting custom servlet context path '" +
-                         s_sCustomContextPath +
-                         "' with '" +
-                         sCustomContextPath +
-                         "'",
-                         new IllegalStateException ("Just for tracking how this happens"));
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Overwriting custom servlet context path '" +
+                           s_sCustomContextPath +
+                           "' with '" +
+                           sCustomContextPath +
+                           "'",
+                           new IllegalStateException ("Just for tracking how this happens"));
         s_sCustomContextPath = sCustomContextPath;
       }
   }
@@ -179,12 +183,14 @@ public final class ServletContextPathHolder
   {
     if (s_sServletContextPath != null)
     {
-      s_aLogger.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
       s_sServletContextPath = null;
     }
     if (s_sCustomContextPath != null)
     {
-      s_aLogger.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
       s_sCustomContextPath = null;
     }
   }

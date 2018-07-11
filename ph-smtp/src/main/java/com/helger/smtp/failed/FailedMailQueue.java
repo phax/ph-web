@@ -53,7 +53,7 @@ public class FailedMailQueue implements Serializable
 
   protected final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
-  private final ICommonsOrderedMap <String, FailedMailData> m_aMap = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, FailedMailData> m_aMap = new CommonsLinkedHashMap <> ();
 
   public FailedMailQueue ()
   {}
@@ -108,7 +108,7 @@ public class FailedMailQueue implements Serializable
   @Nonnegative
   public int size ()
   {
-    return m_aRWLock.readLocked ( () -> internalSize ());
+    return m_aRWLock.readLocked (this::internalSize);
   }
 
   @Nullable
@@ -134,7 +134,7 @@ public class FailedMailQueue implements Serializable
   @Nonnegative
   public int getFailedMailCount ()
   {
-    return m_aRWLock.readLocked ( () -> internalGetFailedMailCount ());
+    return m_aRWLock.readLocked (this::internalGetFailedMailCount);
   }
 
   @Nonnull
@@ -149,7 +149,7 @@ public class FailedMailQueue implements Serializable
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> getAllFailedMails ()
   {
-    return m_aRWLock.readLocked ( () -> internalGetAllFailedMails ());
+    return m_aRWLock.readLocked (this::internalGetAllFailedMails);
   }
 
   @Nonnull
@@ -157,7 +157,7 @@ public class FailedMailQueue implements Serializable
   @MustBeLocked (ELockType.WRITE)
   protected ICommonsList <FailedMailData> internalRemoveAll ()
   {
-    final ICommonsList <FailedMailData> aTempList = new CommonsArrayList<> (m_aMap.size ());
+    final ICommonsList <FailedMailData> aTempList = new CommonsArrayList <> (m_aMap.size ());
     if (!m_aMap.isEmpty ())
     {
       aTempList.addAll (m_aMap.values ());
@@ -175,7 +175,7 @@ public class FailedMailQueue implements Serializable
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> removeAll ()
   {
-    return m_aRWLock.writeLocked ( () -> internalRemoveAll ());
+    return m_aRWLock.writeLocked (this::internalRemoveAll);
   }
 
   @Override

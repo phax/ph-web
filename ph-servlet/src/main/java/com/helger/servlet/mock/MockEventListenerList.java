@@ -51,7 +51,7 @@ public class MockEventListenerList
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
-  private final ICommonsList <EventListener> m_aListener = new CommonsArrayList<> ();
+  private final ICommonsList <EventListener> m_aListener = new CommonsArrayList <> ();
 
   public MockEventListenerList ()
   {}
@@ -134,7 +134,7 @@ public class MockEventListenerList
   @ReturnsMutableCopy
   public ICommonsList <EventListener> getAllListeners ()
   {
-    return m_aRWLock.readLocked ( () -> m_aListener.getClone ());
+    return m_aRWLock.readLocked (m_aListener::getClone);
   }
 
   @Nonnull

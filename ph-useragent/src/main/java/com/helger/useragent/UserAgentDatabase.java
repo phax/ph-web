@@ -97,6 +97,6 @@ public final class UserAgentDatabase
   @ReturnsMutableCopy
   public static ICommonsSet <String> getAllUniqueUserAgents ()
   {
-    return s_aRWLock.readLocked ( () -> s_aUniqueUserAgents.getClone ());
+    return s_aRWLock.readLocked (s_aUniqueUserAgents::getClone);
   }
 }

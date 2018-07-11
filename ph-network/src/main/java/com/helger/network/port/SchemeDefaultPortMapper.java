@@ -98,6 +98,6 @@ public final class SchemeDefaultPortMapper
   @ReturnsMutableCopy
   public static ICommonsMap <String, Integer> getAll ()
   {
-    return s_aRWLock.readLocked ( () -> s_aMap.getClone ());
+    return s_aRWLock.readLocked (s_aMap::getClone);
   }
 }

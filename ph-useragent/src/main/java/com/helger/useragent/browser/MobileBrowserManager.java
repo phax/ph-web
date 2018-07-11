@@ -68,6 +68,6 @@ public final class MobileBrowserManager
       return null;
 
     final String sUnifiedUA = _unify (sFullUserAgent);
-    return s_aSet.findFirst (sUAPart -> sUnifiedUA.contains (sUAPart));
+    return s_aSet.findFirst (sUnifiedUA::contains);
   }
 }

@@ -63,12 +63,10 @@ public final class ResponseHelper
    * @param aHttpRequest
    *        request
    * @return The best matching output stream type. Never <code>null</code>.
-   * @throws IOException
-   *         In case of IO error
    * @see ResponseHelperSettings
    */
   @Nonnull
-  public static EResponseStreamType getBestSuitableOutputStreamType (@Nonnull final HttpServletRequest aHttpRequest) throws IOException
+  public static EResponseStreamType getBestSuitableOutputStreamType (@Nonnull final HttpServletRequest aHttpRequest)
   {
     if (ResponseHelperSettings.isResponseCompressionEnabled ())
     {

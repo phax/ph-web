@@ -374,15 +374,15 @@ public abstract class AbstractXServlet extends HttpServlet
         sTargetURL = aHttpResponse.encodeRedirectURL (sTargetURL);
       aHttpResponse.addHeader (CHttpHeader.LOCATION, sTargetURL);
     }
-    catch (final Throwable t)
+    catch (final Exception ex)
     {
       m_aCounterRequestsWithException.increment ();
 
       // Invoke exception handler
-      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, t)).isContinue ())
+      if (m_aExceptionHandler.forEachBreakable (x -> x.onException (aRequestScope, ex)).isContinue ())
       {
         // No handler handled it - propagate
-        throw t;
+        throw ex;
       }
 
       // One exception handled did it - no need to propagate
@@ -395,9 +395,10 @@ public abstract class AbstractXServlet extends HttpServlet
         {
           aFilter.afterRequest (aRequestScope);
         }
-        catch (final Throwable t)
+        catch (final Exception ex)
         {
-          s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", t);
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
         }
     }
   }
@@ -505,7 +506,7 @@ public abstract class AbstractXServlet extends HttpServlet
       }
 
     boolean bIsHandledAsync = false;
-    Throwable aCaughtException = null;
+    Exception aCaughtException = null;
     try
     {
       if (bInvokeHandler)
@@ -531,21 +532,21 @@ public abstract class AbstractXServlet extends HttpServlet
         }
       }
     }
-    catch (final Throwable t)
+    catch (final Exception ex)
     {
       // Remember
-      aCaughtException = t;
+      aCaughtException = ex;
 
       // This log entry is mainly present to have an overview on how often
       // this really happens
-      log ("Servlet exception propagated to the outside", t);
+      log ("Servlet exception propagated to the outside", ex);
 
       // Ensure only exceptions with the correct type are propagated
-      if (t instanceof IOException)
-        throw (IOException) t;
-      if (t instanceof ServletException)
-        throw (ServletException) t;
-      throw new ServletException ("Wrapped " + t.getClass ().getName (), t);
+      if (ex instanceof IOException)
+        throw (IOException) ex;
+      if (ex instanceof ServletException)
+        throw (ServletException) ex;
+      throw new ServletException ("Wrapped " + ex.getClass ().getName (), ex);
     }
     finally
     {

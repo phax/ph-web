@@ -93,11 +93,4 @@ public abstract class AbstractStreamingDataHandler extends DataHandler implement
    */
   @Nonnull
   public abstract InputStream readOnce () throws IOException;
-
-  /**
-   * Releases any resources associated with this DataHandler (such as an
-   * attachment in a web service read from a temporary file will be deleted).
-   * After calling this method, it is illegal to call any other methods.
-   */
-  public abstract void close () throws IOException;
 }

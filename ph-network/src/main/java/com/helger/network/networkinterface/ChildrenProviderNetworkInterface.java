@@ -39,6 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
 @Immutable
 public class ChildrenProviderNetworkInterface implements IChildrenProvider <NetworkInterface>
 {
+  @Override
   public boolean hasChildren (@Nonnull final NetworkInterface aCurrent)
   {
     return aCurrent.getSubInterfaces ().hasMoreElements ();

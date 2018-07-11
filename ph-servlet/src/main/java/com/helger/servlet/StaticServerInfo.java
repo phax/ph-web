@@ -144,7 +144,8 @@ public class StaticServerInfo implements Serializable
       throw new IllegalStateException ("Static server info already present!");
 
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
-    s_aLogger.info ("Static server information set: " + aDefault.toString ());
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info ("Static server information set: " + aDefault.toString ());
     s_aDefault = aDefault;
     return aDefault;
   }

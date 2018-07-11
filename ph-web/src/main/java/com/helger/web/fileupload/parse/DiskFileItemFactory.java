@@ -152,7 +152,7 @@ public class DiskFileItemFactory implements IFileItemFactory
   @ReturnsMutableCopy
   public ICommonsList <File> getAllTemporaryFiles ()
   {
-    return m_aRWLock.readLocked ( () -> m_aTempFiles.getClone ());
+    return m_aRWLock.readLocked (m_aTempFiles::getClone);
   }
 
   public void deleteAllTemporaryFiles ()
@@ -168,7 +168,8 @@ public class DiskFileItemFactory implements IFileItemFactory
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
       {
-        s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
         _addTempFile (aTempFile);
       }
     }

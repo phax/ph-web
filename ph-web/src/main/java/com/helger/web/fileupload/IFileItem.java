@@ -93,7 +93,7 @@ public interface IFileItem extends Serializable, DataSource, IHasInputStream
    *         catch the exception and use InvalidFileNameException#getName().
    */
   @Nullable
-  String getName () throws InvalidFileNameException;
+  String getName ();
 
   /**
    * Returns the original filename in the client's filesystem, as provided by

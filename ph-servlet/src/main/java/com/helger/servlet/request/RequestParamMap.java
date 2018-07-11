@@ -29,7 +29,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
@@ -117,12 +116,7 @@ public class RequestParamMap implements IRequestParamMap
         final String sPrefix = sName.substring (0, nIndex);
 
         // Ensure that the respective map is present
-        RequestParamMapItem aChildItem = aMap.get (sPrefix);
-        if (aChildItem == null)
-        {
-          aChildItem = new RequestParamMapItem ();
-          aMap.put (sPrefix, aChildItem);
-        }
+        final RequestParamMapItem aChildItem = aMap.computeIfAbsent (sPrefix, k -> new RequestParamMapItem ());
 
         // Recursively scan child items (starting at the first character after
         // the '[')
@@ -274,15 +268,18 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nonnull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap) throws ClassCastException
+  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap)
   {
     ValueEnforcer.notNull (aMap, "Map");
-    return CollectionHelper.newOrderedMapMapped (aMap, Function.identity (), x -> x.getValue ());
+    // TODO ph-commons 9.1.3 Use new ctor
+    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> (aMap.size ());
+    ret.putAllMapped (aMap, Function.identity (), RequestParamMapItem::getValue);
+    return ret;
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsOrderedMap <String, String> getAsValueMap () throws ClassCastException
+  public ICommonsOrderedMap <String, String> getAsValueMap ()
   {
     return getAsValueMap (m_aMap);
   }

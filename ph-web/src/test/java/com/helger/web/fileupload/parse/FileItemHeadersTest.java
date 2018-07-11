@@ -18,6 +18,7 @@ package com.helger.web.fileupload.parse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -76,30 +77,34 @@ public final class FileItemHeadersTest
       assertNull (aMutableFileItemHeaders.getHeader ("DummyHeader"));
     }
 
-    Iterator <String> headerValueEnumeration;
+    Iterator <String> aHeaderValueIterator;
 
-    headerValueEnumeration = aMutableFileItemHeaders.getHeaders ("Content-Type");
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals (headerValueEnumeration.next (), "text/plain");
-    assertFalse (headerValueEnumeration.hasNext ());
+    aHeaderValueIterator = aMutableFileItemHeaders.getHeaders ("Content-Type");
+    assertNotNull (aHeaderValueIterator);
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("text/plain", aHeaderValueIterator.next ());
+    assertFalse (aHeaderValueIterator.hasNext ());
 
-    headerValueEnumeration = aMutableFileItemHeaders.getHeaders ("content-type");
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals (headerValueEnumeration.next (), "text/plain");
-    assertFalse (headerValueEnumeration.hasNext ());
+    aHeaderValueIterator = aMutableFileItemHeaders.getHeaders ("content-type");
+    assertNotNull (aHeaderValueIterator);
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("text/plain", aHeaderValueIterator.next ());
+    assertFalse (aHeaderValueIterator.hasNext ());
 
-    headerValueEnumeration = aMutableFileItemHeaders.getHeaders ("TestHeader");
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals ("headerValue1", headerValueEnumeration.next ());
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals ("headerValue2", headerValueEnumeration.next ());
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals ("headerValue3", headerValueEnumeration.next ());
-    assertTrue (headerValueEnumeration.hasNext ());
-    assertEquals ("headerValue4", headerValueEnumeration.next ());
-    assertFalse (headerValueEnumeration.hasNext ());
+    aHeaderValueIterator = aMutableFileItemHeaders.getHeaders ("TestHeader");
+    assertNotNull (aHeaderValueIterator);
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("headerValue1", aHeaderValueIterator.next ());
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("headerValue2", aHeaderValueIterator.next ());
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("headerValue3", aHeaderValueIterator.next ());
+    assertTrue (aHeaderValueIterator.hasNext ());
+    assertEquals ("headerValue4", aHeaderValueIterator.next ());
+    assertFalse (aHeaderValueIterator.hasNext ());
 
-    headerValueEnumeration = aMutableFileItemHeaders.getHeaders ("DummyHeader");
-    assertFalse (headerValueEnumeration.hasNext ());
+    aHeaderValueIterator = aMutableFileItemHeaders.getHeaders ("DummyHeader");
+    assertNotNull (aHeaderValueIterator);
+    assertFalse (aHeaderValueIterator.hasNext ());
   }
 }

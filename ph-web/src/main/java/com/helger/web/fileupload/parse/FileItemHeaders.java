@@ -52,12 +52,12 @@ public class FileItemHeaders implements IFileItemHeaders
    * Map of <code>String</code> keys to a <code>List</code> of
    * <code>String</code> instances.
    */
-  private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap<> ();
+  private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap <> ();
 
   /**
    * List to preserve order of headers as added.
    */
-  private final ICommonsOrderedSet <String> m_aHeaderNameList = new CommonsLinkedHashSet<> ();
+  private final ICommonsOrderedSet <String> m_aHeaderNameList = new CommonsLinkedHashSet <> ();
 
   @Nullable
   public String getHeader (@Nonnull final String sName)
@@ -102,14 +102,14 @@ public class FileItemHeaders implements IFileItemHeaders
   @Nonnull
   public Iterator <String> getHeaderNames ()
   {
-    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.iterator ());
+    return m_aRWLock.readLocked (m_aHeaderNameList::iterator);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
-    return m_aRWLock.readLocked ( () -> m_aHeaderNameList.getCopyAsList ());
+    return m_aRWLock.readLocked (m_aHeaderNameList::getCopyAsList);
   }
 
   /**
@@ -130,7 +130,7 @@ public class FileItemHeaders implements IFileItemHeaders
       ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {
-        aHeaderValueList = new CommonsArrayList<> ();
+        aHeaderValueList = new CommonsArrayList <> ();
         m_aHeaderNameToValueListMap.put (sNameLower, aHeaderValueList);
         m_aHeaderNameList.add (sNameLower);
       }

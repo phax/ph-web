@@ -48,7 +48,7 @@ public final class FileUploadHelper
    *         The file name was found to be invalid.
    */
   @Nullable
-  public static String checkFileName (@Nullable final String sFilename) throws InvalidFileNameException
+  public static String checkFileName (@Nullable final String sFilename)
   {
     if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {

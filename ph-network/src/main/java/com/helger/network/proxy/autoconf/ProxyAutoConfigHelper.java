@@ -66,7 +66,8 @@ public final class ProxyAutoConfigHelper
       s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
-        s_aLogger.info ("Initial PAC script compilaiton took " + nMS + " ms");
+        if (s_aLogger.isInfoEnabled ())
+          s_aLogger.info ("Initial PAC script compilaiton took " + nMS + " ms");
     }
     catch (final ScriptException ex)
     {
@@ -171,7 +172,8 @@ public final class ProxyAutoConfigHelper
               }
 
           if (bError)
-            s_aLogger.warn ("Found unknown proxy directive '" + sDirective + "'");
+            if (s_aLogger.isWarnEnabled ())
+              s_aLogger.warn ("Found unknown proxy directive '" + sDirective + "'");
         }
       }
     }

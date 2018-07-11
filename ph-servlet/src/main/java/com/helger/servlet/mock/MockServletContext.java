@@ -638,6 +638,7 @@ public class MockServletContext implements IServletContext310To400Migration
     throw new UnsupportedOperationException ();
   }
 
+  @Override
   public String getVirtualServerName ()
   {
     return "Mock Server";

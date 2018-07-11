@@ -223,31 +223,36 @@ public class UnifiedResponse
 
   protected void logInfo (@Nonnull final String sMsg)
   {
-    s_aLogger.info (getLogPrefix () + sMsg);
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info (getLogPrefix () + sMsg);
   }
 
   protected final void showRequestInfo ()
   {
     if (!m_bAlreadyEmittedRequestHeaders)
     {
-      s_aLogger.warn ("  Request Headers: " +
-                      m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
-      if (!m_aResponseHeaderMap.isEmpty ())
-        s_aLogger.warn ("  Response Headers: " +
-                        m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("  Request Headers: " +
+                        m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+      if (m_aResponseHeaderMap.isNotEmpty ())
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("  Response Headers: " +
+                          m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       m_bAlreadyEmittedRequestHeaders = true;
     }
   }
 
   protected void logWarn (@Nonnull final String sMsg)
   {
-    s_aLogger.warn (getLogPrefix () + sMsg);
+    if (s_aLogger.isWarnEnabled ())
+      s_aLogger.warn (getLogPrefix () + sMsg);
     showRequestInfo ();
   }
 
   protected void logError (@Nonnull final String sMsg)
   {
-    s_aLogger.error (getLogPrefix () + sMsg);
+    if (s_aLogger.isErrorEnabled ())
+      s_aLogger.error (getLogPrefix () + sMsg);
     showRequestInfo ();
   }
 
@@ -1370,7 +1375,8 @@ public class UnifiedResponse
         final InputStream aContentIS = m_aContentISP.getInputStream ();
         if (aContentIS == null)
         {
-          s_aLogger.error ("Failed to open input stream from " + m_aContentISP);
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Failed to open input stream from " + m_aContentISP);
 
           // Handle it gracefully with a 404 and not with a 500
           aHttpResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);

@@ -17,6 +17,7 @@
 package com.helger.servlet.mock;
 
 import java.util.EventListener;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -127,7 +128,7 @@ public class MockEventListenerList
   @Nonnull
   public EChange removeAllListeners ()
   {
-    return m_aRWLock.writeLocked ( () -> m_aListener.removeAll ());
+    return m_aRWLock.writeLocked ((Supplier <EChange>) m_aListener::removeAll);
   }
 
   @Nonnull

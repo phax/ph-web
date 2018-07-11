@@ -29,6 +29,7 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpVersion;
+import com.helger.servlet.ServletHelper;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
@@ -55,7 +56,7 @@ public class XServletHandlerTRACE implements IXServletHandler
   {
     final StringBuilder aSB = new StringBuilder ().append (EHttpMethod.TRACE.getName ())
                                                   .append (' ')
-                                                  .append (aHttpRequest.getRequestURI ())
+                                                  .append (ServletHelper.getRequestRequestURI (aHttpRequest))
                                                   .append (' ')
                                                   .append (aHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);

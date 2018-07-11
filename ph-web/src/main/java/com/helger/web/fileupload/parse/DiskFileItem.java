@@ -380,7 +380,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
     if (!EqualsHelper.equals (sSecureName, m_sFilename))
-      s_aLogger.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
     return sSecureName;
   }
 
@@ -519,7 +520,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     {
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
-        s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
     }
   }
 

@@ -74,7 +74,8 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   private static void _debugLog (final boolean bCompress, final String sMsg)
   {
     if (CompressFilterSettings.isDebugModeEnabled ())
-      s_aLogger.info ((bCompress ? "Compressing: " : "Not compressing: ") + sMsg);
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ((bCompress ? "Compressing: " : "Not compressing: ") + sMsg);
   }
 
   public final void resetBuffer ()
@@ -96,7 +97,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   public final void setContentLength (final long nLength)
   {
     if (CompressFilterSettings.isDebugModeEnabled ())
-      s_aLogger.info ("Setting content length to " + nLength + "; doNotCompress=" + m_bDoNotCompress);
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Setting content length to " + nLength + "; doNotCompress=" + m_bDoNotCompress);
+
     m_nContentLength = nLength;
     if (m_bDoNotCompress && nLength >= 0)
       ResponseHelper.setContentLength (m_aHttpResponse, m_nContentLength);
@@ -183,7 +186,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
       if (aIncluded != null)
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
-          s_aLogger.info ("No close because we're including " + aIncluded);
+          if (s_aLogger.isInfoEnabled ())
+            s_aLogger.info ("No close because we're including " + aIncluded);
+
         flush ();
       }
       else
@@ -202,7 +207,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
             doNotCompress ("close without buffer");
 
         if (CompressFilterSettings.isDebugModeEnabled ())
-          s_aLogger.info ("Closing stream. compressed=" + (m_aCompressedOS != null));
+          if (s_aLogger.isInfoEnabled ())
+            s_aLogger.info ("Closing stream. compressed=" + (m_aCompressedOS != null));
+
         if (m_aCompressedOS != null)
           m_aCompressedOS.close ();
         else
@@ -233,6 +240,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
           s_aLogger.info ("Closing compressed stream in finish!");
+
         m_bClosed = true;
         m_aCompressedOS.close ();
       }
@@ -263,6 +271,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
           {
             if (CompressFilterSettings.isDebugModeEnabled ())
               s_aLogger.info ("Starting new output buffering!");
+
             m_aBAOS = new NonBlockingByteArrayOutputStream (DEFAULT_BUFSIZE);
             m_aOS = m_aBAOS;
           }

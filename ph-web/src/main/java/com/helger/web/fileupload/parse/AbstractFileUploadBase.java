@@ -331,10 +331,11 @@ public abstract class AbstractFileUploadBase
           {
             aFileItem.delete ();
           }
-          catch (final Throwable t)
+          catch (final Exception ex)
           {
             // ignore it
-            s_aLogger.error ("Failed to delete fileItem " + aFileItem, t);
+            if (s_aLogger.isErrorEnabled ())
+              s_aLogger.error ("Failed to delete fileItem " + aFileItem, ex);
           }
         }
       }
@@ -550,7 +551,8 @@ public abstract class AbstractFileUploadBase
     if (nColonOffset == -1)
     {
       // This header line is malformed, skip it.
-      s_aLogger.warn ("Found malformed HTTP header line '" + sHeader + "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Found malformed HTTP header line '" + sHeader + "'");
       return;
     }
     final String sHeaderName = sHeader.substring (0, nColonOffset).trim ();

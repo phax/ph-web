@@ -530,9 +530,10 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * This method is useful for creating redirect messages and for reporting
    * errors.
    *
-   * @return a <code>StringBuffer</code> object containing the reconstructed URL
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
    */
-  default StringBuffer getRequestURL ()
+  default StringBuilder getRequestURL ()
   {
     return RequestHelper.getRequestURL (getRequest ());
   }

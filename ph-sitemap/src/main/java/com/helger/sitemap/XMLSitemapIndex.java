@@ -255,7 +255,8 @@ public class XMLSitemapIndex implements Serializable
                                  aXWS)
                    .isFailure ())
     {
-      s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
       return ESuccess.FAILURE;
     }
 
@@ -268,7 +269,8 @@ public class XMLSitemapIndex implements Serializable
       final OutputStream aOS = _createOutputStream (aFile);
       if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, aXWS).isFailure ())
       {
-        s_aLogger.error ("Failed to write single sitemap file " + aFile);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to write single sitemap file " + aFile);
         return ESuccess.FAILURE;
       }
       nIndex++;

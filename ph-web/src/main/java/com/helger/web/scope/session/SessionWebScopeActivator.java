@@ -89,11 +89,12 @@ public final class SessionWebScopeActivator implements
     }
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Wrote info on session web scope '" +
-                      m_aSessionWebScope.getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Wrote info on session web scope '" +
+                        m_aSessionWebScope.getID () +
+                        "' of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 
   @SuppressWarnings ("unchecked")
@@ -106,11 +107,12 @@ public final class SessionWebScopeActivator implements
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Read info on session scope: " +
-                      m_aAttrs.size () +
-                      " attrs of class " +
-                      ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Read info on session scope: " +
+                        m_aAttrs.size () +
+                        " attrs of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
@@ -125,11 +127,12 @@ public final class SessionWebScopeActivator implements
           ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
 
       if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
-        s_aLogger.info ("Successfully passivated session web scope '" +
-                        m_aSessionWebScope.getID () +
-                        "' of class " +
-                        ClassHelper.getClassLocalName (this),
-                        ScopeHelper.getDebugStackTrace ());
+        if (s_aLogger.isInfoEnabled ())
+          s_aLogger.info ("Successfully passivated session web scope '" +
+                          m_aSessionWebScope.getID () +
+                          "' of class " +
+                          ClassHelper.getClassLocalName (this),
+                          ScopeHelper.getDebugStackTrace ());
     }
   }
 
@@ -160,10 +163,11 @@ public final class SessionWebScopeActivator implements
     }
 
     if (ScopeHelper.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Successfully activated session web scope '" +
-                      aSessionWebScope.getID () +
-                      "' of class " +
-                      ClassHelper.getClassLocalName (this),
-                      ScopeHelper.getDebugStackTrace ());
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Successfully activated session web scope '" +
+                        aSessionWebScope.getID () +
+                        "' of class " +
+                        ClassHelper.getClassLocalName (this),
+                        ScopeHelper.getDebugStackTrace ());
   }
 }

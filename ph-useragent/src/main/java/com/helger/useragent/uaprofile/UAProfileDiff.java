@@ -73,16 +73,18 @@ public class UAProfileDiff implements Serializable
                                                                EMessageDigestAlgorithm.MD5)
                                                       .getAllDigestBytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
-        s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +
-                        Base64.encodeBytes (aCalcedDigest) +
-                        "' but have '" +
-                        Base64.encodeBytes (m_aMD5Digest) +
-                        "'");
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +
+                          Base64.encodeBytes (aCalcedDigest) +
+                          "' but have '" +
+                          Base64.encodeBytes (m_aMD5Digest) +
+                          "'");
     }
 
     m_aDocument = MicroReader.readMicroXML (sData);
     if (m_aDocument == null)
-      s_aLogger.warn ("Failed to parse profile diff data as XML '" + sData + "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Failed to parse profile diff data as XML '" + sData + "'");
   }
 
   @Nonnull

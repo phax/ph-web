@@ -282,7 +282,8 @@ public final class RequestHelper
     if (StringHelper.hasNoText (sRequestURI))
     {
       // I just want to to know whether we get null or ""
-      s_aLogger.info ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
       return "/";
     }
 
@@ -345,11 +346,12 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The HTTP request to get the request URL from. May not be
    *        <code>null</code>.
-   * @return a <code>StringBuffer</code> object containing the reconstructed URL
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
    */
   @Nonnull
   @Nonempty
-  public static StringBuffer getRequestURL (@Nonnull final HttpServletRequest aHttpRequest)
+  public static StringBuilder getRequestURL (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -361,7 +363,7 @@ public final class RequestHelper
     final String sRequestURI = getRequestURI (aHttpRequest);
     ret.append (sRequestURI);
 
-    return new StringBuffer (ret);
+    return ret;
   }
 
   /**
@@ -608,12 +610,13 @@ public final class RequestHelper
     // type check
     if (!aDstClass.isAssignableFrom (aValue.getClass ()))
     {
-      s_aLogger.error ("Request attribute " +
-                       sAttrName +
-                       " is not of type " +
-                       aDstClass.getName () +
-                       " but of type " +
-                       aValue.getClass ().getName ());
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("Request attribute " +
+                         sAttrName +
+                         " is not of type " +
+                         aDstClass.getName () +
+                         " but of type " +
+                         aValue.getClass ().getName ());
       return null;
     }
 

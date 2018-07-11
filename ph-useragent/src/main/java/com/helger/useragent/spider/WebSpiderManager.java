@@ -78,7 +78,9 @@ public final class WebSpiderManager
       final String sType = MicroHelper.getChildTextContent (eSpider, "type");
       final EWebSpiderType eType = EWebSpiderType.getFromIDOrNull (sType);
       if (sType != null && eType == null)
-        s_aLogger.warn ("Unknown web spider type '" + sType + "'");
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Unknown web spider type '" + sType + "'");
+
       aSpider.setType (eType);
       aSpider.setInfo (MicroHelper.getChildTextContent (eSpider, "info"));
       m_aMap.put (_getUnifiedID (aSpider.getID ()), aSpider);

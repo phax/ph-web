@@ -121,7 +121,8 @@ public final class MailAPI
         aMailQueue.setFailedMailQueue (aFailedMailQueue);
     });
 
-    s_aLogger.info ("Set FailedMailQueue to " + aFailedMailQueue);
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info ("Set FailedMailQueue to " + aFailedMailQueue);
   }
 
   @Nonnull
@@ -244,13 +245,15 @@ public final class MailAPI
 
       if (aEmailData.getFrom () == null)
       {
-        s_aLogger.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
 
       if (aEmailData.getToCount () == 0)
       {
-        s_aLogger.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
 
@@ -261,14 +264,15 @@ public final class MailAPI
             hasNonVendorEmailAddress (aEmailData.getAllCc ()) ||
             hasNonVendorEmailAddress (aEmailData.getAllBcc ()))
         {
-          s_aLogger.error ("Debug mode: ignoring mail TO '" +
-                           aEmailData.getAllTo () +
-                           "'" +
-                           (aEmailData.getCcCount () > 0 ? " and CC '" + aEmailData.getAllCc () + "'" : "") +
-                           (aEmailData.getBccCount () > 0 ? " and BCC '" + aEmailData.getAllBcc () + "'" : "") +
-                           " because at least one address is not targeted to the vendor domain '" +
-                           VendorInfo.getVendorEmailSuffix () +
-                           "'");
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Debug mode: ignoring mail TO '" +
+                             aEmailData.getAllTo () +
+                             "'" +
+                             (aEmailData.getCcCount () > 0 ? " and CC '" + aEmailData.getAllCc () + "'" : "") +
+                             (aEmailData.getBccCount () > 0 ? " and BCC '" + aEmailData.getAllBcc () + "'" : "") +
+                             " because at least one address is not targeted to the vendor domain '" +
+                             VendorInfo.getVendorEmailSuffix () +
+                             "'");
           bCanQueue = false;
         }
       }
@@ -287,20 +291,24 @@ public final class MailAPI
         // Check if a subject is present
         if (StringHelper.hasNoText (aEmailData.getSubject ()))
         {
-          s_aLogger.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
           aEmailData.setSubject (DEFAULT_SUBJECT);
         }
 
         // Check if a body is present
         if (StringHelper.hasNoText (aEmailData.getBody ()))
-          s_aLogger.warn ("Mail data has no body: " + aEmailData);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("Mail data has no body: " + aEmailData);
 
         if (bSendVendorOnlyMails)
         {
           // Add special debug prefix
           if (!StringHelper.startsWith (aEmailData.getSubject (), DEBUG_SUBJECT_PREFIX))
             aEmailData.setSubject (DEBUG_SUBJECT_PREFIX + aEmailData.getSubject ());
-          s_aLogger.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
+
+          if (s_aLogger.isInfoEnabled ())
+            s_aLogger.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
         }
 
         // Uses UTC timezone!
@@ -395,14 +403,15 @@ public final class MailAPI
       // Subtract 1 for the STOP_MESSAGE
       final int nQueueLength = _getTotalQueueLength () - 1;
       if (nQueues > 0 || nQueueLength > 0)
-        s_aLogger.info ("Stopping central mail queues: " +
-                        nQueues +
-                        " queue" +
-                        (nQueues == 1 ? "" : "s") +
-                        " with " +
-                        nQueueLength +
-                        " mail" +
-                        (nQueueLength == 1 ? "" : "s"));
+        if (s_aLogger.isInfoEnabled ())
+          s_aLogger.info ("Stopping central mail queues: " +
+                          nQueues +
+                          " queue" +
+                          (nQueues == 1 ? "" : "s") +
+                          " with " +
+                          nQueueLength +
+                          " mail" +
+                          (nQueueLength == 1 ? "" : "s"));
     }
     finally
     {

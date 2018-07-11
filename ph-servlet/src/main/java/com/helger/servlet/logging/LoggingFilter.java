@@ -171,9 +171,13 @@ public class LoggingFilter extends AbstractHttpServletFilter
       final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest);
       final LoggingHttpServletResponseWrapper aResponseWrapper = new LoggingHttpServletResponseWrapper (aHttpResponse);
 
-      m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
+      if (m_aLogger.isInfoEnabled ())
+        m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
+
       aFilterChain.doFilter (aRequestWrapper, aResponseWrapper);
-      m_aLogger.info (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
+
+      if (m_aLogger.isInfoEnabled ())
+        m_aLogger.info (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
 
       aResponseWrapper.writeContentTo (aHttpResponse.getOutputStream ());
     }

@@ -91,7 +91,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                              @Nonnull final UnifiedResponse aUnifiedResponse,
                              @Nonnull final Throwable t) throws IOException, ServletException
   {
-    s_aLogger.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
+    if (s_aLogger.isErrorEnabled ())
+      s_aLogger.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
 
     // Invoke exception handler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())
@@ -167,7 +168,10 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         // Request header may contain several ETag values
         final ICommonsList <String> aAllETags = RegExHelper.getSplitToList (sRequestETags, ",\\s+");
         if (aAllETags.isEmpty ())
-          s_aLogger.warn ("Empty ETag list found (" + sRequestETags + ")");
+        {
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("Empty ETag list found (" + sRequestETags + ")");
+        }
         else
         {
           // Scan all found ETags for match
@@ -248,12 +252,12 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           // Pass through
           throw ex;
         }
-        catch (final Throwable t)
+        catch (final Exception ex)
         {
           // Invoke exception handler
           // This internally re-throws the exception if needed
-          aCaughtException = t;
-          _onException (aRequestScope, aUnifiedResponse, t);
+          aCaughtException = ex;
+          _onException (aRequestScope, aUnifiedResponse, ex);
         }
         finally
         {
@@ -262,9 +266,9 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           {
             m_aSimpleHandler.onRequestEnd (aCaughtException);
           }
-          catch (final Throwable t)
+          catch (final Exception ex)
           {
-            s_aLogger.error ("onRequestEnd failed", t);
+            s_aLogger.error ("onRequestEnd failed", ex);
             // Don't throw anything here
           }
         }

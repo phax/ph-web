@@ -120,7 +120,8 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       aErrorDT = TypeConverter.convert (sErrorDT, LocalDateTime.class);
     if (aErrorDT == null)
     {
-      s_aLogger.error ("Failed to parse error date '" + sErrorDT + "'");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("Failed to parse error date '" + sErrorDT + "'");
       return null;
     }
 

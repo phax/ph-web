@@ -95,7 +95,8 @@ public final class WebScopeManager
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
     s_aSessionPassivationAllowed.set (bSessionPassivationAllowed);
-    s_aLogger.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
 
     // For passivation to work, the session scopes may not be invalidated at the
     // end of the global scope!
@@ -172,7 +173,8 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
       return null;
     }
   }
@@ -265,10 +267,11 @@ public final class WebScopeManager
       {
         // This can e.g. happen in tests, when there are no registered
         // listeners for session events!
-        s_aLogger.warn ("Creating a new session web scope for ID '" +
-                        sSessionID +
-                        "' but there should already be one!" +
-                        " Check your HttpSessionListener implementation.");
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Creating a new session web scope for ID '" +
+                          sSessionID +
+                          "' but there should already be one!" +
+                          " Check your HttpSessionListener implementation.");
       }
 
       // Create a new session scope
@@ -408,7 +411,8 @@ public final class WebScopeManager
         try
         {
           aHttpSession.invalidate ();
-          s_aLogger.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
         }
         catch (final IllegalStateException ex)
         {
@@ -452,7 +456,8 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
       return null;
     }
   }

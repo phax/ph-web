@@ -89,7 +89,8 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   private void _setContentLength (final long nLength)
   {
     if (CompressFilterSettings.isDebugModeEnabled ())
-      s_aLogger.info ("Explicitly setting content length " + nLength + "; m_bNoCompression=" + m_bNoCompression);
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Explicitly setting content length " + nLength + "; m_bNoCompression=" + m_bNoCompression);
 
     m_nContentLength = nLength;
     if (m_aCompressedOS != null)
@@ -117,7 +118,8 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
            sRealContentType.contains (AcceptEncodingHandler.GZIP_ENCODING)))
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
-          s_aLogger.info ("Explicitly disabling compression because of external content type " + sContentType);
+          if (s_aLogger.isInfoEnabled ())
+            s_aLogger.info ("Explicitly disabling compression because of external content type " + sContentType);
 
         // Deflate or Gzip was manually set
         setNoCompression ();
@@ -168,7 +170,8 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
         if (CHttpHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
         {
           if (CompressFilterSettings.isDebugModeEnabled ())
-            s_aLogger.info ("Explicitly content encoding in addHeader: " + sHeaderValue);
+            if (s_aLogger.isInfoEnabled ())
+              s_aLogger.info ("Explicitly content encoding in addHeader: " + sHeaderValue);
 
           super.addHeader (sHeaderName, sHeaderValue);
           if (!isCommitted ())
@@ -194,7 +197,8 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
         if (CHttpHeader.CONTENT_ENCODING.equalsIgnoreCase (sHeaderName))
         {
           if (CompressFilterSettings.isDebugModeEnabled ())
-            s_aLogger.info ("Explicitly content encoding in setHeader: " + sHeaderValue);
+            if (s_aLogger.isInfoEnabled ())
+              s_aLogger.info ("Explicitly content encoding in setHeader: " + sHeaderValue);
 
           super.setHeader (sHeaderName, sHeaderValue);
           if (!isCommitted ())
@@ -307,14 +311,15 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   private AbstractCompressedServletOutputStream _createCompressedOutputStream () throws IOException
   {
     if (CompressFilterSettings.isDebugModeEnabled ())
-      s_aLogger.info ("createCompressedOutputStream(" +
-                      m_sContentEncoding +
-                      ", " +
-                      m_nContentLength +
-                      ", " +
-                      m_nMinCompressSize +
-                      ") on " +
-                      ServletHelper.getRequestRequestURI (m_aHttpRequest));
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("createCompressedOutputStream(" +
+                        m_sContentEncoding +
+                        ", " +
+                        m_nContentLength +
+                        ", " +
+                        m_nMinCompressSize +
+                        ") on " +
+                        ServletHelper.getRequestRequestURI (m_aHttpRequest));
 
     return createCompressedOutputStream (m_aHttpRequest,
                                          (HttpServletResponse) getResponse (),

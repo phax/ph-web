@@ -64,9 +64,10 @@ public class UAProfile implements Serializable
     if (nUrls == 0 && nDiffs == 0)
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
     if (nUrls > 1)
-      s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
-    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap<> (aProfileDiffData);
+    m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
   }
 
   /**
@@ -91,7 +92,7 @@ public class UAProfile implements Serializable
   public ICommonsSortedMap <Integer, UAProfileDiff> getProfileDiffData ()
   {
     // May be null
-    return new CommonsTreeMap<> (m_aProfileDiffData);
+    return new CommonsTreeMap <> (m_aProfileDiffData);
   }
 
   public boolean isSet ()

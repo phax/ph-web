@@ -37,6 +37,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.UsedViaReflection;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.state.EChange;
 import com.helger.scope.singleton.AbstractGlobalSingleton;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
@@ -68,10 +69,13 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
 
   /**
    * Reset all contained information!
+   *
+   * @return {@link EChange}
    */
-  public void reset ()
+  @Nonnull
+  public EChange reset ()
   {
-    m_aRWLock.writeLocked ( () -> m_aMap.clear ());
+    return m_aRWLock.writeLocked (m_aMap::removeAll);
   }
 
   @Nonnull
@@ -161,7 +165,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
   @ReturnsMutableCopy
   public ICommonsMap <String, ServletStatus> getAllStatus ()
   {
-    return m_aRWLock.readLocked ( () -> m_aMap.getClone ());
+    return m_aRWLock.readLocked (m_aMap::getClone);
   }
 
   /**

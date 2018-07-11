@@ -291,7 +291,7 @@ public abstract class AbstractXServlet extends HttpServlet
   public final void destroy ()
   {
     // Invoke each handler for potential destruction
-    m_aHandlerRegistry.forEachHandler (x -> x.onServletDestroy ());
+    m_aHandlerRegistry.forEachHandler (IXServletHandler::onServletDestroy);
 
     // Unregister
     m_aStatusMgr.onServletDestroy (getClass ());

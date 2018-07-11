@@ -58,7 +58,7 @@ public final class MobileBrowserManager
     final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
-    s_aSet.addAllMapped (aList, sItem -> _unify (sItem));
+    s_aSet.addAllMapped (aList, MobileBrowserManager::_unify);
   }
 
   @Nullable

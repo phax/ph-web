@@ -126,13 +126,14 @@ public final class MailTransport
     if (aSettings.isSTARTTLSEnabled ())
       ret.put (ESMTPTransportProperty.STARTTLS_ENABLE.getPropertyName (bSMTPS), Boolean.TRUE.toString ());
 
-    if (bSMTPS && false)
-    {
-      ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_CLASS.getPropertyName (bSMTPS),
-               com.sun.mail.util.MailSSLSocketFactory.class.getName ());
-      ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS),
-               Integer.toString (aSettings.getPort ()));
-    }
+    if (false)
+      if (bSMTPS)
+      {
+        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_CLASS.getPropertyName (bSMTPS),
+                 com.sun.mail.util.MailSSLSocketFactory.class.getName ());
+        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS),
+                 Integer.toString (aSettings.getPort ()));
+      }
 
     // Set connection timeout
     final long nConnectionTimeoutMilliSecs = aSettings.getConnectionTimeoutMilliSecs ();
@@ -246,15 +247,16 @@ public final class MailTransport
             }
             aMimeMessage.setHeader ("X-Mailer", X_MAILER);
 
-            s_aLogger.info ("Delivering mail from " +
-                            Arrays.toString (aMimeMessage.getFrom ()) +
-                            " to " +
-                            Arrays.toString (aMimeMessage.getAllRecipients ()) +
-                            " with subject '" +
-                            aMimeMessage.getSubject () +
-                            "' and message ID '" +
-                            aMimeMessage.getMessageID () +
-                            "'");
+            if (s_aLogger.isInfoEnabled ())
+              s_aLogger.info ("Delivering mail from " +
+                              Arrays.toString (aMimeMessage.getFrom ()) +
+                              " to " +
+                              Arrays.toString (aMimeMessage.getAllRecipients ()) +
+                              " with subject '" +
+                              aMimeMessage.getSubject () +
+                              "' and message ID '" +
+                              aMimeMessage.getMessageID () +
+                              "'");
 
             // Main transmit - always throws an exception
             aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
@@ -399,10 +401,10 @@ public final class MailTransport
         else
           aExceptionToBeRemembered = new MailSendException ("Mail server connection failed", ex);
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // E.g. IllegalState from SMTPTransport ("Not connected")
-        aExceptionToBeRemembered = new MailSendException ("Internal error sending mail", t);
+        aExceptionToBeRemembered = new MailSendException ("Internal error sending mail", ex);
       }
       finally
       {

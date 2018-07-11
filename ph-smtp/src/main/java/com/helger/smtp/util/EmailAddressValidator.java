@@ -57,7 +57,9 @@ public final class EmailAddressValidator
   public static void setPerformMXRecordCheck (final boolean bPerformMXRecordCheck)
   {
     s_aPerformMXRecordCheck.set (bPerformMXRecordCheck);
-    s_aLogger.info ("Email address record check is " + (bPerformMXRecordCheck ? "enabled" : "disabled"));
+
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info ("Email address record check is " + (bPerformMXRecordCheck ? "enabled" : "disabled"));
   }
 
   /**
@@ -87,12 +89,13 @@ public final class EmailAddressValidator
     {
       // Do not log this message, as this method is potentially called very
       // often!
-      s_aLogger.warn ("Failed to check for MX record on host '" +
-                      sHostName +
-                      "': " +
-                      ex.getClass ().getName () +
-                      " - " +
-                      ex.getMessage ());
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Failed to check for MX record on host '" +
+                        sHostName +
+                        "': " +
+                        ex.getClass ().getName () +
+                        " - " +
+                        ex.getMessage ());
       return false;
     }
   }

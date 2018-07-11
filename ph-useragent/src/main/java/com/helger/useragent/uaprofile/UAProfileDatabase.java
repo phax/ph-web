@@ -137,14 +137,16 @@ public final class UAProfileDatabase
       final int nSemicolonIndex = sProfileDiff.indexOf (';');
       if (nSemicolonIndex == -1)
       {
-        s_aLogger.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
         continue;
       }
       final String sProfileDiffIndex = sProfileDiff.substring (0, nSemicolonIndex);
       final int nIndex = StringParser.parseInt (sProfileDiffIndex, CGlobal.ILLEGAL_UINT);
       if (nIndex == CGlobal.ILLEGAL_UINT)
       {
-        s_aLogger.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
         continue;
       }
 
@@ -174,7 +176,10 @@ public final class UAProfileDatabase
             aProfileDiffData.put (Integer.valueOf (nIndex), sProfileDiff);
           }
           else
-            s_aLogger.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
+          {
+            if (s_aLogger.isWarnEnabled ())
+              s_aLogger.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
+          }
         }
       }
     }
@@ -208,10 +213,14 @@ public final class UAProfileDatabase
             {
               aProfiles = aHeaderProvider.getHeaders (sExtNSValue + "-Profile");
               if (aProfiles.isEmpty ())
-                s_aLogger.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
+                if (s_aLogger.isWarnEnabled ())
+                  s_aLogger.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
             }
             else
-              s_aLogger.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
+            {
+              if (s_aLogger.isWarnEnabled ())
+                s_aLogger.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
+            }
           }
         }
       }
@@ -252,20 +261,33 @@ public final class UAProfileDatabase
                     if (aDigest.length == EXPECTED_MD5_DIGEST_LENGTH)
                       aProfileDiffDigests.put (Integer.valueOf (nDiffIndex), aDigest);
                     else
-                      s_aLogger.warn ("Decoded Base64 profile diff digest has an illegal length of " + aDigest.length);
+                    {
+                      if (s_aLogger.isWarnEnabled ())
+                        s_aLogger.warn ("Decoded Base64 profile diff digest has an illegal length of " +
+                                        aDigest.length);
+                    }
                   }
                   else
-                    s_aLogger.warn ("Failed to decode Base64 profile diff digest '" +
-                                    sDiffDigest +
-                                    "' from token '" +
-                                    sToken +
-                                    "'");
+                  {
+                    if (s_aLogger.isWarnEnabled ())
+                      s_aLogger.warn ("Failed to decode Base64 profile diff digest '" +
+                                      sDiffDigest +
+                                      "' from token '" +
+                                      sToken +
+                                      "'");
+                  }
                 }
                 else
-                  s_aLogger.warn ("Found no diff digest in token '" + sToken + "'");
+                {
+                  if (s_aLogger.isWarnEnabled ())
+                    s_aLogger.warn ("Found no diff digest in token '" + sToken + "'");
+                }
               }
               else
-                s_aLogger.warn ("Failed to parse profile diff index from '" + sToken + "'");
+              {
+                if (s_aLogger.isWarnEnabled ())
+                  s_aLogger.warn ("Failed to parse profile diff index from '" + sToken + "'");
+              }
             }
             else
             {
@@ -273,7 +295,10 @@ public final class UAProfileDatabase
               if (URLHelper.getAsURL (sToken) != null)
                 aProfileData.add (sToken);
               else
-                s_aLogger.error ("Failed to convert profile token '" + sToken + "' to a URL!");
+              {
+                if (s_aLogger.isErrorEnabled ())
+                  s_aLogger.error ("Failed to convert profile token '" + sToken + "' to a URL!");
+              }
             }
           }
         }
@@ -301,13 +326,17 @@ public final class UAProfileDatabase
         aProfileDiffs.put (aIndex, new UAProfileDiff (aEntry.getValue (), aDigest));
       }
       else
-        s_aLogger.warn ("Found profile diff data but no digest for index " + aIndex);
+      {
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Found profile diff data but no digest for index " + aIndex);
+      }
     }
 
     // Consistency check
     for (final Integer aIndex : aProfileDiffDigests.keySet ())
       if (!aProfileDiffData.containsKey (aIndex))
-        s_aLogger.warn ("Found profile diff digest but no data for index " + aIndex);
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Found profile diff digest but no data for index " + aIndex);
 
     if (aProfileData.isEmpty () && aProfileDiffs.isEmpty ())
     {

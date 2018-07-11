@@ -94,15 +94,16 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
       // Global scope may not be present here (on shutdown)
       final IGlobalWebScope aGlobalScope = WebScopeManager.getGlobalScopeOrNull ();
       if (aGlobalScope != null)
-        try (final WebScoped aWebScoped = new WebScoped (new OfflineHttpServletRequest (aGlobalScope.getServletContext (),
-                                                                                        false)))
+        try (
+            final WebScoped aWebScoped = new WebScoped (new OfflineHttpServletRequest (aGlobalScope.getServletContext (),
+                                                                                       false)))
         {
           // Check for long running requests
           m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
         }
-        catch (final Throwable t)
+        catch (final Exception ex)
         {
-          s_aLogger.error ("Error checking for long running requests", t);
+          s_aLogger.error ("Error checking for long running requests", ex);
         }
     }
   }

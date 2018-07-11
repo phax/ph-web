@@ -101,11 +101,12 @@ public final class ServletHelper
     {
       aRequest.setAttribute (sAttrName, aAttrValue);
     }
-    catch (final Throwable t)
+    catch (final Exception ex)
     {
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
       if (isLogExceptions ())
-        s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", t);
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", ex);
     }
   }
 
@@ -138,11 +139,12 @@ public final class ServletHelper
         else
           ret = aRequest.getContextPath ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", ex);
       }
 
     if (ret == null)
@@ -178,11 +180,12 @@ public final class ServletHelper
       {
         // Offline request - fall through
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", ex);
       }
     return ret == null ? "" : ret;
   }
@@ -213,11 +216,12 @@ public final class ServletHelper
         else
           ret = aRequest.getQueryString ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", ex);
       }
     return ret;
   }
@@ -241,11 +245,12 @@ public final class ServletHelper
         else
           ret = aRequest.getRequestURI ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", ex);
       }
     return ret;
   }
@@ -267,11 +272,12 @@ public final class ServletHelper
       {
         ret = aRequest.getRequestURL ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", ex);
       }
     return ret != null ? ret : new StringBuffer ();
   }
@@ -300,11 +306,12 @@ public final class ServletHelper
       {
         // Offline request - fall through
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", ex);
       }
     return ret;
   }
@@ -333,11 +340,12 @@ public final class ServletHelper
       {
         ret = aRequest.getCookies ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
         // fall through
         if (isLogExceptions ())
-          s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", t);
+          if (s_aLogger.isWarnEnabled ())
+            s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
       }
     return ret;
   }

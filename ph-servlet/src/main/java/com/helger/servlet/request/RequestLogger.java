@@ -176,6 +176,8 @@ public final class RequestLogger
     aSB.append (" [version=").append (aCookie.getVersion ()).append (']');
     if (StringHelper.hasText (aCookie.getComment ()))
       aSB.append (" [comment=").append (aCookie.getComment ()).append (']');
+    if (aCookie.isHttpOnly ())
+      aSB.append (" [http-only]");
     return aSB.toString ();
   }
 
@@ -202,6 +204,7 @@ public final class RequestLogger
 
   public static void logRequestComplete (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    s_aLogger.info (getRequestDebugString (aHttpRequest).toString ());
+    if (s_aLogger.isInfoEnabled ())
+      s_aLogger.info (getRequestDebugString (aHttpRequest).toString ());
   }
 }

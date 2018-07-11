@@ -78,13 +78,14 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   {
     // < 200 || >= 400?
     if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
-      s_aLogger.warn ("HTTP status code " +
-                      nStatusCode +
-                      " in response to " +
-                      eHttpMethod.getName () +
-                      " '" +
-                      sRequestURL +
-                      "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("HTTP status code " +
+                        nStatusCode +
+                        " in response to " +
+                        eHttpMethod.getName () +
+                        " '" +
+                        sRequestURL +
+                        "'");
   }
 
   private static boolean _isContentExpected (final int nStatusCode)
@@ -109,13 +110,14 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
-      s_aLogger.warn ("No character encoding on HTTP " +
-                      nStatusCode +
-                      " response to " +
-                      eHttpMethod.getName () +
-                      " '" +
-                      sRequestURL +
-                      "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("No character encoding on HTTP " +
+                        nStatusCode +
+                        " response to " +
+                        eHttpMethod.getName () +
+                        " '" +
+                        sRequestURL +
+                        "'");
   }
 
   /**
@@ -135,13 +137,14 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
-      s_aLogger.warn ("No content type on HTTP " +
-                      nStatusCode +
-                      " response to " +
-                      eHttpMethod.getName () +
-                      " '" +
-                      sRequestURL +
-                      "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("No content type on HTTP " +
+                        nStatusCode +
+                        " response to " +
+                        eHttpMethod.getName () +
+                        " '" +
+                        sRequestURL +
+                        "'");
   }
 
   /**
@@ -164,14 +167,15 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     // UnifiedResponseDefaultSettings
     if (false)
       if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
-        s_aLogger.warn ("Headers on HTTP " +
-                        nStatusCode +
-                        " response to " +
-                        eHttpMethod.getName () +
-                        " '" +
-                        sRequestURL +
-                        "': " +
-                        aHeaders);
+        if (s_aLogger.isWarnEnabled ())
+          s_aLogger.warn ("Headers on HTTP " +
+                          nStatusCode +
+                          " response to " +
+                          eHttpMethod.getName () +
+                          " '" +
+                          sRequestURL +
+                          "': " +
+                          aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,

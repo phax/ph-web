@@ -166,7 +166,10 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
       {
         aRequest.setCharacterEncoding (m_sEncoding);
         if (aRequest.getCharacterEncoding () == null)
-          s_aLogger.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
+        {
+          if (s_aLogger.isErrorEnabled ())
+            s_aLogger.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
+        }
         else
           if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
           {
@@ -174,7 +177,8 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
              * Request encoding should always be present (at least from
              * browsers)
              */
-            s_aLogger.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
+            if (s_aLogger.isInfoEnabled ())
+              s_aLogger.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
           }
       }
     }
@@ -196,7 +200,10 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
         {
           aResponse.setCharacterEncoding (m_sEncoding);
           if (aResponse.getCharacterEncoding () == null)
-            s_aLogger.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
+          {
+            if (s_aLogger.isErrorEnabled ())
+              s_aLogger.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
+          }
           else
             if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))
             {

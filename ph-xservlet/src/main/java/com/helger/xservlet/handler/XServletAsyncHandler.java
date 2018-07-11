@@ -125,20 +125,22 @@ public final class XServletAsyncHandler implements IXServletHandler
                                     aExtAsyncCtx.getHTTPMethod (),
                                     aWebScoped.getRequestScope ());
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
-        s_aLogger.error ("Error processing async request " + aExtAsyncCtx.getRequest (), t);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Error processing async request " + aExtAsyncCtx.getRequest (), ex);
+
         try
         {
           final String sErrorMsg = "Internal error processing your request. Please try again later. Technical details: " +
-                                   t.getClass ().getName () +
+                                   ex.getClass ().getName () +
                                    ":" +
-                                   t.getMessage ();
+                                   ex.getMessage ();
           aExtAsyncCtx.getResponse ().getWriter ().write (sErrorMsg);
         }
-        catch (final Throwable t2)
+        catch (final Exception ex2)
         {
-          s_aLogger.error ("Error writing first exception to response", t2);
+          s_aLogger.error ("Error writing first exception to response", ex2);
         }
       }
       finally
@@ -147,9 +149,9 @@ public final class XServletAsyncHandler implements IXServletHandler
         {
           aExtAsyncCtx.complete ();
         }
-        catch (final Throwable t)
+        catch (final Exception ex)
         {
-          s_aLogger.error ("Error completing async context", t);
+          s_aLogger.error ("Error completing async context", ex);
         }
       }
     });

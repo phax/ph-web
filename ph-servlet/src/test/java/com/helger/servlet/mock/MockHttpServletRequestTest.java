@@ -58,7 +58,7 @@ public final class MockHttpServletRequestTest
       assertEquals ("/servlet", ServletHelper.getRequestServletPath (c));
       assertEquals ("/path/in/servlet", ServletHelper.getRequestPathInfo (c));
       assertEquals (sContextPath + "/servlet/path/in/servlet", ServletHelper.getRequestRequestURI (c));
-      assertNull (c.getQueryString ());
+      assertNull (ServletHelper.getRequestQueryString (c));
     }
     finally
     {

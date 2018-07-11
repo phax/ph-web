@@ -165,7 +165,8 @@ public class MockServletContext implements IServletContext310To400Migration
       {
         if (isReThrowListenerException ())
           throw ex;
-        s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
       }
   }
 
@@ -295,9 +296,9 @@ public class MockServletContext implements IServletContext310To400Migration
     return new EmptyEnumeration <> ();
   }
 
-  public void log (@Nullable final String message)
+  public void log (@Nullable final String sMessage)
   {
-    s_aLogger.info (message);
+    s_aLogger.info (sMessage);
   }
 
   @Deprecated
@@ -440,7 +441,8 @@ public class MockServletContext implements IServletContext310To400Migration
     final Servlet aServlet = m_aServletPool.getServletOfPath (sServletPath);
     if (aServlet == null)
     {
-      s_aLogger.error ("Found no servlet matching '" + sServletPath + "'");
+      if (s_aLogger.isErrorEnabled ())
+        s_aLogger.error ("Found no servlet matching '" + sServletPath + "'");
       return null;
     }
 
@@ -450,9 +452,9 @@ public class MockServletContext implements IServletContext310To400Migration
     {
       aServlet.service (aHttpRequest, ret);
     }
-    catch (final Throwable t)
+    catch (final Exception ex)
     {
-      throw new IllegalStateException ("Failed to invoke servlet " + aServlet + " for request " + aHttpRequest, t);
+      throw new IllegalStateException ("Failed to invoke servlet " + aServlet + " for request " + aHttpRequest, ex);
     }
     return ret;
   }
@@ -477,7 +479,8 @@ public class MockServletContext implements IServletContext310To400Migration
       {
         if (isReThrowListenerException ())
           throw ex;
-        s_aLogger.error ("Failed to call contextDestroyed on " + aListener, ex);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to call contextDestroyed on " + aListener, ex);
       }
 
     m_aAttributes.clear ();

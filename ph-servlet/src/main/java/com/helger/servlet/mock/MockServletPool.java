@@ -116,7 +116,7 @@ public class MockServletPool
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletPool.class);
 
   private final MockServletContext m_aSC;
-  private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList<> ();
+  private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList <> ();
   private boolean m_bInvalidated = false;
 
   public MockServletPool (@Nonnull final MockServletContext aSC)
@@ -217,14 +217,15 @@ public class MockServletPool
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
-    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList<> ();
+    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
     if (StringHelper.hasText (sPath))
       m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
     final int nMatchingItems = aMatchingItems.size ();
     if (nMatchingItems == 0)
       return null;
     if (nMatchingItems > 1)
-      s_aLogger.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
     return aMatchingItems.getFirst ().getServlet ();
   }
 
@@ -244,9 +245,10 @@ public class MockServletPool
       {
         aServletItem.getServlet ().destroy ();
       }
-      catch (final Throwable t)
+      catch (final Exception ex)
       {
-        s_aLogger.error ("Failed to destroy servlet " + aServletItem, t);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to destroy servlet " + aServletItem, ex);
       }
 
     m_aServlets.clear ();

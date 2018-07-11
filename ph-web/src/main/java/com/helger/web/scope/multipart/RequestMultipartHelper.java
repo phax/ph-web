@@ -64,9 +64,12 @@ public final class RequestMultipartHelper
   {
     IFileItemFactoryProviderSPI aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
     if (aFIFP != null)
-      s_aLogger.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
+    {
+      if (s_aLogger.isInfoEnabled ())
+        s_aLogger.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
+    }
     else
-      aFIFP = () -> GlobalDiskFileItemFactory.getInstance ();
+      aFIFP = GlobalDiskFileItemFactory::getInstance;
     s_aFIFP = aFIFP;
   }
 
@@ -119,7 +122,9 @@ public final class RequestMultipartHelper
       }
       catch (final UnsupportedEncodingException ex)
       {
-        s_aLogger.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'", ex);
+        if (s_aLogger.isErrorEnabled ())
+          s_aLogger.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'",
+                           ex);
       }
 
       // Group all items with the same name together

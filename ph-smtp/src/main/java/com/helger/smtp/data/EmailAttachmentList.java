@@ -81,13 +81,14 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
     return m_aMap.isEmpty ();
   }
 
-  public void addAttachment (@Nonnull final IEmailAttachment aAttachment)
+  public final void addAttachment (@Nonnull final IEmailAttachment aAttachment)
   {
     ValueEnforcer.notNull (aAttachment, "Attachment");
 
     final String sKey = aAttachment.getFilename ();
     if (m_aMap.containsKey (sKey))
-      s_aLogger.warn ("Overwriting email attachment with filename '" + sKey + "'");
+      if (s_aLogger.isWarnEnabled ())
+        s_aLogger.warn ("Overwriting email attachment with filename '" + sKey + "'");
     m_aMap.put (sKey, aAttachment);
   }
 

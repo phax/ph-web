@@ -20,12 +20,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.DataSource;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -36,49 +38,80 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class InputStreamDataSource implements IExtendedDataSource
+public class InputStreamDataSource implements IExtendedDataSource, IHasInputStream
 {
+  public static final boolean DEFAULT_READ_MULTIPLE = false;
+
   private final InputStream m_aIS;
   private int m_nISAcquired = 0;
   private final String m_sName;
   private final String m_sContentType;
-  private boolean m_bAllowMultipeGetInputStream=false;
+  private final boolean m_bReadMultiple;
 
   public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName)
   {
-    this (aIS, sName, (String) null);
+    this (aIS, sName, (String) null, DEFAULT_READ_MULTIPLE);
+  }
+
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                final boolean bReadMultiple)
+  {
+    this (aIS, sName, (String) null, bReadMultiple);
+  }
+
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                @Nullable final IMimeType aContentType,
+                                final boolean bReadMultiple)
+  {
+    this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), bReadMultiple);
   }
 
   public InputStreamDataSource (@Nonnull final InputStream aIS,
                                 @Nonnull final String sName,
                                 @Nullable final IMimeType aContentType)
   {
-    this (aIS, sName, aContentType == null ? null : aContentType.getAsString ());
-  }
-
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
-                                @Nullable final String sContentType,
-                                final boolean aAllowMultipleGetInputStream)
-  {
-    this (aIS, sName, sContentType);
-    this.m_bAllowMultipeGetInputStream = aAllowMultipleGetInputStream;
+    this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), DEFAULT_READ_MULTIPLE);
   }
 
   public InputStreamDataSource (@Nonnull final InputStream aIS,
                                 @Nonnull final String sName,
                                 @Nullable final String sContentType)
   {
+    this (aIS, sName, sContentType, DEFAULT_READ_MULTIPLE);
+  }
+
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                @Nullable final String sContentType,
+                                final boolean bReadMultiple)
+  {
     m_aIS = ValueEnforcer.notNull (aIS, "InputStream");
     m_sName = ValueEnforcer.notNull (sName, "Name");
     m_sContentType = sContentType != null ? sContentType : DEFAULT_CONTENT_TYPE.getAsString ();
+    m_bReadMultiple = bReadMultiple;
+  }
+
+  public final boolean isReadMultiple ()
+  {
+    return m_bReadMultiple;
+  }
+
+  /**
+   * @return How often the input stream was already acquired. Always &ge; 0.
+   */
+  @Nonnegative
+  public final int getISAcquisitionCount ()
+  {
+    return m_nISAcquired;
   }
 
   @Nonnull
   public InputStream getInputStream ()
   {
     m_nISAcquired++;
-    if ((!m_bAllowMultipeGetInputStream) && m_nISAcquired > 1)
+    if (!m_bReadMultiple && m_nISAcquired > 1)
       throw new IllegalStateException ("The input stream was already acquired " + (m_nISAcquired - 1) + " times!");
     return m_aIS;
   }
@@ -108,6 +141,7 @@ public class InputStreamDataSource implements IExtendedDataSource
                                        .append ("ISAcquired", m_nISAcquired)
                                        .append ("Name", m_sName)
                                        .append ("ContentType", m_sContentType)
+                                       .append ("ReadMultiple", m_bReadMultiple)
                                        .getToString ();
   }
 }

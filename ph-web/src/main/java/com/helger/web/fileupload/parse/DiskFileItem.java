@@ -451,8 +451,22 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nonnull
   public String getString ()
   {
+    return getStringWithFallback (DEFAULT_CHARSET_OBJ);
+  }
+
+  /**
+   * Get the string with the charset defined in the content type.
+   * 
+   * @param aFallbackCharset
+   *        The fallback charset to be used if the content type does not include
+   *        a charset. May not be <code>null</code>.
+   * @return The string representation of the item.
+   */
+  @Nonnull
+  public String getStringWithFallback (@Nonnull final Charset aFallbackCharset)
+  {
     final String sCharset = getCharSet ();
-    final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sCharset, DEFAULT_CHARSET_OBJ);
+    final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sCharset, aFallbackCharset);
     return getString (aCharset);
   }
 

@@ -54,14 +54,14 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    * The output stream to which data will be written prior to the threshold
    * being reached.
    */
-  private NonBlockingByteArrayOutputStream m_aMemoryOutputStream;
+  private NonBlockingByteArrayOutputStream m_aMemoryOS;
 
   /**
    * The output stream to which data will be written at any given time. This
    * will always be one of <code>memoryOutputStream</code> or
    * <code>diskOutputStream</code>.
    */
-  private OutputStream m_aCurrentOutputStream;
+  private OutputStream m_aCurrentOS;
 
   /**
    * The file to which output will be directed if the threshold is exceeded.
@@ -87,8 +87,8 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
     super (nThreshold);
     m_aOutputFile = ValueEnforcer.notNull (aOutputFile, "OutputFile");
 
-    m_aMemoryOutputStream = new NonBlockingByteArrayOutputStream ();
-    m_aCurrentOutputStream = m_aMemoryOutputStream;
+    m_aMemoryOS = new NonBlockingByteArrayOutputStream ();
+    m_aCurrentOS = m_aMemoryOS;
   }
 
   /**
@@ -102,7 +102,7 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   @Override
   protected OutputStream getStream () throws IOException
   {
-    return m_aCurrentOutputStream;
+    return m_aCurrentOS;
   }
 
   /**
@@ -121,15 +121,24 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
     try
     {
       aFOS = new FileOutputStream (m_aOutputFile);
-      m_aMemoryOutputStream.writeTo (aFOS);
-      m_aCurrentOutputStream = aFOS;
-      m_aMemoryOutputStream = null;
+      m_aMemoryOS.writeTo (aFOS);
+      m_aCurrentOS = aFOS;
+
+      // Explicitly close the stream (even though this is a no-op)
+      StreamHelper.close (m_aMemoryOS);
+      m_aMemoryOS = null;
     }
     catch (final IOException ex)
     {
       StreamHelper.close (aFOS);
       throw ex;
     }
+  }
+
+  @Nullable
+  public final NonBlockingByteArrayOutputStream getMemoryOS ()
+  {
+    return m_aMemoryOS;
   }
 
   /**
@@ -141,7 +150,7 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    */
   public boolean isInMemory ()
   {
-    return m_aMemoryOutputStream != null;
+    return m_aMemoryOS != null;
   }
 
   /**
@@ -151,13 +160,14 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    *
    * @return The data for this output stream, or <code>null</code> if no such
    *         data is available.
+   * @see #isInMemory()
    */
   @Nullable
   @ReturnsMutableCopy
   public byte [] getData ()
   {
-    if (m_aMemoryOutputStream != null)
-      return m_aMemoryOutputStream.toByteArray ();
+    if (m_aMemoryOS != null)
+      return m_aMemoryOS.toByteArray ();
     return null;
   }
 
@@ -168,12 +178,13 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    *
    * @return The length of the data for this output stream, or <code>0</code> if
    *         no such data is available.
+   * @see #isInMemory()
    */
   @Nonnegative
   public int getDataLength ()
   {
-    if (m_aMemoryOutputStream != null)
-      return m_aMemoryOutputStream.size ();
+    if (m_aMemoryOS != null)
+      return m_aMemoryOS.size ();
     return 0;
   }
 
@@ -225,11 +236,11 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
     // but we should force the habit of closing whether we are working with
     // a file or memory.
     if (!m_bClosed)
-      throw new IOException ("Stream not closed");
+      throw new IOException ("This stream is not closed");
 
     if (isInMemory ())
     {
-      m_aMemoryOutputStream.writeTo (aOS);
+      m_aMemoryOS.writeTo (aOS);
     }
     else
     {

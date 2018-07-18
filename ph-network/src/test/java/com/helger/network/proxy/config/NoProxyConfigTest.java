@@ -14,32 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.proxy;
+package com.helger.network.proxy.config;
 
-import java.io.Serializable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.net.Proxy;
 
-import javax.annotation.Nullable;
+import org.junit.Test;
 
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
+import com.helger.network.proxy.config.NoProxyConfig;
 
 /**
- * Base interface for the proxy configuration.
+ * Test class for class {@link NoProxyConfig}.
  *
  * @author Philip Helger
  */
-@MustImplementEqualsAndHashcode
-public interface IProxyConfig extends Serializable
+public final class NoProxyConfigTest
 {
-  /**
-   * Activate this proxy configuration.
-   */
-  void activateGlobally ();
-
-  /**
-   * @return This proxy configuration as standard {@link java.net.Proxy} object.
-   *         May be <code>null</code> if no adequate object can be created.
-   */
-  @Nullable
-  Proxy getAsProxy ();
+  @Test
+  public void testAll ()
+  {
+    final NoProxyConfig aPC = new NoProxyConfig ();
+    aPC.activateGlobally ();
+    assertNotNull (aPC.getAsProxy ());
+    assertEquals (Proxy.Type.DIRECT, aPC.getAsProxy ().type ());
+    assertNotNull (aPC.toString ());
+  }
 }

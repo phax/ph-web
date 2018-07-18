@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.proxy;
+package com.helger.network.proxy.config;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.string.StringParser;
 
 /**
  * A special authenticator for HTTP/HTTPS/FTPS proxy connections.
@@ -45,6 +45,7 @@ public class HttpProxyAuthenticator extends Authenticator
   }
 
   @Override
+  @Nullable
   public PasswordAuthentication getPasswordAuthentication ()
   {
     if (getRequestorType () == RequestorType.PROXY)
@@ -54,11 +55,11 @@ public class HttpProxyAuthenticator extends Authenticator
       if (getRequestingHost ().equalsIgnoreCase (sProxyHost))
       {
         // Get current proxy port
-        final String sProxyPort = m_eProxyType.getProxyPort ();
-        if (StringParser.parseInt (sProxyPort, -1) == getRequestingPort ())
+        final int nProxyPort = m_eProxyType.getProxyPort ();
+        if (nProxyPort == getRequestingPort ())
         {
           // Seems to be OK.
-          final String sProxyUser = m_eProxyType.getProxyUser ();
+          final String sProxyUser = m_eProxyType.getProxyUserName ();
           final String sProxyPassword = m_eProxyType.getProxyPassword ();
           return new PasswordAuthentication (sProxyUser,
                                              sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());

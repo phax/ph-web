@@ -36,11 +36,11 @@ import com.helger.commons.string.StringParser;
 import com.helger.commons.timing.StopWatch;
 import com.helger.commons.url.URLProtocolRegistry;
 import com.helger.network.dns.DNSResolver;
-import com.helger.network.proxy.EHttpProxyType;
-import com.helger.network.proxy.HttpProxyConfig;
-import com.helger.network.proxy.IProxyConfig;
-import com.helger.network.proxy.NoProxyConfig;
-import com.helger.network.proxy.SocksProxyConfig;
+import com.helger.network.proxy.config.EHttpProxyType;
+import com.helger.network.proxy.config.HttpProxyConfig;
+import com.helger.network.proxy.config.IProxyConfig;
+import com.helger.network.proxy.config.NoProxyConfig;
+import com.helger.network.proxy.config.SocksProxyConfig;
 
 public final class ProxyAutoConfigHelper
 {

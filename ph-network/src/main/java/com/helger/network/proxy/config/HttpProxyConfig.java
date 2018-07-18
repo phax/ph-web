@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.proxy;
+package com.helger.network.proxy.config;
 
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -138,7 +138,7 @@ public class HttpProxyConfig implements IProxyConfig
   public Authenticator getAsAuthenticator ()
   {
     // If no user name is set, no Authenticator needs to be created
-    if (StringHelper.hasNoText (m_eProxyType.getProxyUser ()))
+    if (StringHelper.hasNoText (m_eProxyType.getProxyUserName ()))
       return null;
 
     return new HttpProxyAuthenticator (m_eProxyType);
@@ -152,7 +152,7 @@ public class HttpProxyConfig implements IProxyConfig
 
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyHost (), m_sHost);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPort (), Integer.toString (m_nPort));
-    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyUser (), m_sUserName);
+    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyUserName (), m_sUserName);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPassword (), m_sPassword);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (),
                                        StringHelper.getImploded ('|', m_aNonProxyHosts));
@@ -164,7 +164,7 @@ public class HttpProxyConfig implements IProxyConfig
     {
       SystemProperties.removePropertyValue (eProxyType.getPropertyNameProxyHost ());
       SystemProperties.removePropertyValue (eProxyType.getPropertyNameProxyPort ());
-      SystemProperties.removePropertyValue (eProxyType.getPropertyNameProxyUser ());
+      SystemProperties.removePropertyValue (eProxyType.getPropertyNameProxyUserName ());
       SystemProperties.removePropertyValue (eProxyType.getPropertyNameProxyPassword ());
       SystemProperties.removePropertyValue (eProxyType.getPropertyNameNoProxyHosts ());
     }

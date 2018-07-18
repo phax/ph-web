@@ -54,7 +54,7 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.network.proxy.HttpProxyConfig;
+import com.helger.network.proxy.config.HttpProxyConfig;
 
 /**
  * Some utility methods for creating and handling Apache httpclient objects.

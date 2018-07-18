@@ -31,10 +31,10 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.network.proxy.EHttpProxyType;
-import com.helger.network.proxy.HttpProxyConfig;
-import com.helger.network.proxy.IProxyConfig;
-import com.helger.network.proxy.NoProxyConfig;
+import com.helger.network.proxy.config.EHttpProxyType;
+import com.helger.network.proxy.config.HttpProxyConfig;
+import com.helger.network.proxy.config.IProxyConfig;
+import com.helger.network.proxy.config.NoProxyConfig;
 
 /**
  * Unit test class for class {@link ProxyAutoConfigHelper}.

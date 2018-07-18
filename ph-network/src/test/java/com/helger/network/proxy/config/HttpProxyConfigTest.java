@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.proxy;
+package com.helger.network.proxy.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,6 +27,8 @@ import java.net.Proxy;
 import org.junit.Test;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.network.proxy.config.EHttpProxyType;
+import com.helger.network.proxy.config.HttpProxyConfig;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

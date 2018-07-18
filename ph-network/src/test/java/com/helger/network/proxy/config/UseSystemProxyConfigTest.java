@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.proxy;
+package com.helger.network.proxy.config;
 
 import org.junit.Test;
+
+import com.helger.network.proxy.config.UseSystemProxyConfig;
 
 /**
  * Test class for class {@link UseSystemProxyConfig}.

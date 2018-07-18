@@ -14,20 +14,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.helger.commons.state.EHandled;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
 
-public class DefaultProxySelector extends ProxySelector
+public class ProxySelectorProxySettingsManager extends ProxySelector
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (DefaultProxySelector.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ProxySelectorProxySettingsManager.class);
 
   private final ProxySelector m_aDefault;
 
-  public DefaultProxySelector (@Nullable final ProxySelector aDefault)
+  /**
+   * Constructor
+   *
+   * @param aDefault
+   *        Fallback {@link ProxySelector} to be used, if no matches are found
+   *        in {@link ProxySettingsManager}. May be <code>null</code>.
+   */
+  public ProxySelectorProxySettingsManager (@Nullable final ProxySelector aDefault)
   {
     m_aDefault = aDefault;
   }
@@ -38,19 +46,19 @@ public class DefaultProxySelector extends ProxySelector
    * @return May be <code>null</code> in which case no proxy will be used.
    */
   @Nullable
+  @OverrideOnDemand
   protected List <Proxy> selectProxies (@Nonnull final URI aURI)
   {
-    final String sProtocol = aURI.getScheme ();
-    final String sHostName = aURI.getHost ();
-    final int nPort = aURI.getPort ();
-    final ICommonsList <IProxySettings> aProxySettings = ProxySettingsManager.findAllProxySettings (sProtocol,
-                                                                                                    sHostName,
-                                                                                                    nPort);
+    // 1. search from ProxySettingsManager
+    final ICommonsOrderedSet <IProxySettings> aProxySettings = ProxySettingsManager.findAllProxySettings (aURI);
+    if (aProxySettings.isNotEmpty ())
+      return new CommonsArrayList <> (aProxySettings, IProxySettings::getAsProxy);
 
-    // None found so far
+    // 2. fallback to previous selector
     if (m_aDefault != null)
       return m_aDefault.select (aURI);
 
+    // None at all
     return null;
   }
 
@@ -65,14 +73,18 @@ public class DefaultProxySelector extends ProxySelector
       LOGGER.debug ("Selecting proxies for '" + aURI + "'");
 
     List <Proxy> ret = selectProxies (aURI);
+
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("  For '" + aURI + "' the following proxies were selected: " + ret);
+
     if (ret == null || ret.isEmpty ())
     {
       // Fall back to "no proxy"
       ret = new CommonsArrayList <> (Proxy.NO_PROXY);
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("  Using no proxy for '" + aURI + "'");
     }
 
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("For '" + aURI + "' the following proxies were selected: " + ret);
     return ret;
   }
 
@@ -89,11 +101,13 @@ public class DefaultProxySelector extends ProxySelector
    * @return {@link EHandled}
    */
   @Nonnull
+  @OverrideOnDemand
   protected EHandled handleConnectFailed (@Nonnull final URI aURI,
                                           @Nonnull final SocketAddress aAddr,
                                           @Nonnull final IOException ex)
   {
-    return EHandled.UNHANDLED;
+    // Logging is done inside
+    return ProxySettingsManager.onConnectionFailed (aURI, aAddr, ex);
   }
 
   @Override
@@ -116,15 +130,15 @@ public class DefaultProxySelector extends ProxySelector
 
   public static boolean isInstalled ()
   {
-    return IPrivilegedAction.proxySelectorGetDefault ().invokeSafe () instanceof DefaultProxySelector;
+    return IPrivilegedAction.proxySelectorGetDefault ().invokeSafe () instanceof ProxySelectorProxySettingsManager;
   }
 
   public static void install ()
   {
     final ProxySelector aDefault = IPrivilegedAction.proxySelectorGetDefault ().invokeSafe ();
-    if (!(aDefault instanceof DefaultProxySelector))
+    if (!(aDefault instanceof ProxySelectorProxySettingsManager))
     {
-      IPrivilegedAction.proxySelectorSetDefault (new DefaultProxySelector (aDefault)).invokeSafe ();
+      IPrivilegedAction.proxySelectorSetDefault (new ProxySelectorProxySettingsManager (aDefault)).invokeSafe ();
     }
   }
 }

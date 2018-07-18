@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -41,15 +40,16 @@ public interface IProxySettings extends Serializable
   Proxy.Type getProxyType ();
 
   /**
-   * @return The proxy host name of IP address. May be <code>null</code>.
+   * @return The proxy host name of IP address. May be <code>null</code> if
+   *         proxy type is DIRECT.
    */
   @Nullable
   String getProxyHost ();
 
   /**
-   * @return The proxy port for this HTTP proxy type. Should be &gt; 0.
+   * @return The proxy port for this HTTP proxy type. Should be &gt; 0. May be
+   *         &le; 0 if the proxy type is DIRECT.
    */
-  @Nonnegative
   int getProxyPort ();
 
   /**
@@ -92,7 +92,7 @@ public interface IProxySettings extends Serializable
    * @param bResolveHostname
    *        <code>true</code> to resolve host names (needed in production) or
    *        <code>false</code> to not resolve them (mainly for testing
-   *        purposes).
+   *        purposes). This flag has no impact if the proxy type is DIRECT.
    * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy
    *         host and port.
    * @see #getProxyHost()

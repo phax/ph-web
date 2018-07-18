@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
+import com.helger.commons.url.URLHelper;
 import com.helger.network.proxy.config.EHttpProxyType;
 import com.helger.network.proxy.config.HttpProxyConfig;
 import com.helger.network.proxy.config.IProxyConfig;
@@ -62,8 +63,7 @@ public final class ProxyAutoConfigHelperTest
       final IReadableResource aRes = new ClassPathResource ("proxyautoconf/pacfiles/" + sFile);
       assertTrue (aRes.exists ());
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (aRes);
-      final ICommonsList <IProxyConfig> aPC = aPACHelper.getProxyListForURL ("http://www.orf.at/index.html",
-                                                                             "www.orf.at");
+      final ICommonsList <IProxyConfig> aPC = aPACHelper.getProxyListForURL (URLHelper.getAsURI ("http://www.orf.at/index.html"));
       assertNotNull (sFile + " failed", aPC);
       assertFalse (sFile + " failed", aPC.isEmpty ());
     }

@@ -16,6 +16,8 @@
  */
 package com.helger.network.proxy.autoconf;
 
+import java.net.URI;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
@@ -113,7 +115,14 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public ICommonsList <IProxyConfig> getProxyListForURL (final String sURL, final String sHost) throws ScriptException
+  public ICommonsList <IProxyConfig> getProxyListForURL (@Nonnull final URI aURI) throws ScriptException
+  {
+    return getProxyListForURL (aURI.toString (), aURI.getHost ());
+  }
+
+  @Nonnull
+  public ICommonsList <IProxyConfig> getProxyListForURL (@Nonnull final String sURL,
+                                                         @Nonnull final String sHost) throws ScriptException
   {
     final ICommonsList <IProxyConfig> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);

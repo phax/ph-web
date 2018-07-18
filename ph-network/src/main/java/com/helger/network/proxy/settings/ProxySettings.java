@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -123,5 +124,12 @@ public final class ProxySettings implements IProxySettings
                                        .append ("ProxyUserName", m_sProxyUserName)
                                        .appendPassword ("ProxyPassword")
                                        .getToString ();
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ProxySettings createNoProxySettings ()
+  {
+    return new ProxySettings (Proxy.Type.DIRECT, null, -1, null, null);
   }
 }

@@ -42,6 +42,7 @@ public class InputStreamDataSource implements IExtendedDataSource
   private int m_nISAcquired = 0;
   private final String m_sName;
   private final String m_sContentType;
+  private boolean m_bAllowMultipeGetInputStream=false;
 
   public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName)
   {
@@ -57,6 +58,15 @@ public class InputStreamDataSource implements IExtendedDataSource
 
   public InputStreamDataSource (@Nonnull final InputStream aIS,
                                 @Nonnull final String sName,
+                                @Nullable final String sContentType,
+                                final boolean aAllowMultipleGetInputStream)
+  {
+    this (aIS, sName, sContentType);
+    this.m_bAllowMultipeGetInputStream = aAllowMultipleGetInputStream;
+  }
+
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
                                 @Nullable final String sContentType)
   {
     m_aIS = ValueEnforcer.notNull (aIS, "InputStream");
@@ -68,7 +78,7 @@ public class InputStreamDataSource implements IExtendedDataSource
   public InputStream getInputStream ()
   {
     m_nISAcquired++;
-    if (m_nISAcquired > 1)
+    if ((!m_bAllowMultipeGetInputStream) && m_nISAcquired > 1)
       throw new IllegalStateException ("The input stream was already acquired " + (m_nISAcquired - 1) + " times!");
     return m_aIS;
   }

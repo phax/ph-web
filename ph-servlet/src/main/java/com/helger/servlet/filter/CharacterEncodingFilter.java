@@ -63,7 +63,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   public static final boolean DEFAULT_FORCE_ENCODING = false;
   // Cannot reference ScopeManager here!
   private static final String REQUEST_ATTR = "$ph-" + CharacterEncodingFilter.class.getName ();
-  private static final Logger s_aLogger = LoggerFactory.getLogger (CharacterEncodingFilter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (CharacterEncodingFilter.class);
 
   private String m_sEncoding = DEFAULT_ENCODING;
   private boolean m_bForceRequestEncoding = DEFAULT_FORCE_ENCODING;
@@ -167,8 +167,8 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
         aRequest.setCharacterEncoding (m_sEncoding);
         if (aRequest.getCharacterEncoding () == null)
         {
-          if (s_aLogger.isErrorEnabled ())
-            s_aLogger.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
+          if (LOGGER.isErrorEnabled ())
+            LOGGER.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
         }
         else
           if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
@@ -177,8 +177,8 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
              * Request encoding should always be present (at least from
              * browsers)
              */
-            if (s_aLogger.isInfoEnabled ())
-              s_aLogger.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
+            if (LOGGER.isInfoEnabled ())
+              LOGGER.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
           }
       }
     }
@@ -201,8 +201,8 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
           aResponse.setCharacterEncoding (m_sEncoding);
           if (aResponse.getCharacterEncoding () == null)
           {
-            if (s_aLogger.isErrorEnabled ())
-              s_aLogger.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
+            if (LOGGER.isErrorEnabled ())
+              LOGGER.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
           }
           else
             if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))
@@ -211,8 +211,8 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
                * Default response encoding in Jetty 9.x is "iso-8859-1" on
                * German Windows 7 machine
                */
-              if (s_aLogger.isDebugEnabled ())
-                s_aLogger.debug ("Changed response encoding from '" +
+              if (LOGGER.isDebugEnabled ())
+                LOGGER.debug ("Changed response encoding from '" +
                                  sOldResponseEncoding +
                                  "' to '" +
                                  m_sEncoding +

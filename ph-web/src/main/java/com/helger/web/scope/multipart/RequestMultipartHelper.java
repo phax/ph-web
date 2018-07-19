@@ -57,7 +57,7 @@ public final class RequestMultipartHelper
    */
   public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestMultipartHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestMultipartHelper.class);
   private static final IFileItemFactoryProviderSPI s_aFIFP;
 
   static
@@ -65,8 +65,8 @@ public final class RequestMultipartHelper
     IFileItemFactoryProviderSPI aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
     if (aFIFP != null)
     {
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
     }
     else
       aFIFP = GlobalDiskFileItemFactory::getInstance;
@@ -122,8 +122,8 @@ public final class RequestMultipartHelper
       }
       catch (final UnsupportedEncodingException ex)
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'",
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'",
                            ex);
       }
 
@@ -170,11 +170,11 @@ public final class RequestMultipartHelper
     catch (final FileUploadException ex)
     {
       if (!StreamHelper.isKnownEOFException (ex.getCause ()))
-        s_aLogger.error ("Error parsing multipart request content", ex);
+        LOGGER.error ("Error parsing multipart request content", ex);
     }
     catch (final RuntimeException ex)
     {
-      s_aLogger.error ("Error parsing multipart request content", ex);
+      LOGGER.error ("Error parsing multipart request content", ex);
     }
     return EChange.valueOf (bAddedFileUploadItems);
   }

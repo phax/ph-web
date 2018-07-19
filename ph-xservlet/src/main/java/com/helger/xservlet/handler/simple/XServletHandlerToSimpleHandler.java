@@ -53,7 +53,7 @@ import com.helger.xservlet.handler.IXServletHandler;
  */
 public final class XServletHandlerToSimpleHandler implements IXServletHandler
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletHandlerToSimpleHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletHandlerToSimpleHandler.class);
 
   private final IMutableStatisticsHandlerCounter m_aStatsHasLastModification = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                     "$has-lastmodification");
@@ -91,8 +91,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                              @Nonnull final UnifiedResponse aUnifiedResponse,
                              @Nonnull final Throwable t) throws IOException, ServletException
   {
-    if (s_aLogger.isErrorEnabled ())
-      s_aLogger.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
+    if (LOGGER.isErrorEnabled ())
+      LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
 
     // Invoke exception handler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())
@@ -123,8 +123,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         final LocalDateTime aRequestIfModifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfModifiedSince);
         if (aLastModification.compareTo (aRequestIfModifiedSince) <= 0)
         {
-          if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("Requested resource was not modified: " + aRequestScope.getPathWithinServlet ());
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Requested resource was not modified: " + aRequestScope.getPathWithinServlet ());
 
           // Was not modified since the passed time
           m_aStatsNotModifiedIfModifiedSince.increment ();
@@ -140,8 +140,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         final LocalDateTime aRequestIfUnmodifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfUnmodifiedSince);
         if (aLastModification.compareTo (aRequestIfUnmodifiedSince) >= 0)
         {
-          if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("Requested resource was not modified: " + aRequestScope.getPathWithinServlet ());
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Requested resource was not modified: " + aRequestScope.getPathWithinServlet ());
 
           // Was not modified since the passed time
           m_aStatsNotModifiedIfUnmodifiedSince.increment ();
@@ -169,8 +169,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         final ICommonsList <String> aAllETags = RegExHelper.getSplitToList (sRequestETags, ",\\s+");
         if (aAllETags.isEmpty ())
         {
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("Empty ETag list found (" + sRequestETags + ")");
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Empty ETag list found (" + sRequestETags + ")");
         }
         else
         {
@@ -178,8 +178,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           for (final String sCurrentETag : aAllETags)
             if (sSupportedETag.equals (sCurrentETag))
             {
-              if (s_aLogger.isDebugEnabled ())
-                s_aLogger.debug ("Requested resource has the same E-Tag: " + aRequestScope.getPathWithinServlet ());
+              if (LOGGER.isDebugEnabled ())
+                LOGGER.debug ("Requested resource has the same E-Tag: " + aRequestScope.getPathWithinServlet ());
 
               // We have a matching ETag
               m_aStatsNotModifiedIfNonMatch.increment ();
@@ -207,8 +207,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                                                                                      aRequestScope);
     if (m_aSimpleHandler.initRequestState (aRequestScope, aUnifiedResponse).isBreak ())
     {
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("Cancelled request after initRequestState with response " + aUnifiedResponse);
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Cancelled request after initRequestState with response " + aUnifiedResponse);
 
       // May e.g. be an 404 error for some not-found resource
     }
@@ -244,8 +244,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           // main servlet handling
           m_aSimpleHandler.handleRequest (aRequestScope, aUnifiedResponse);
 
-          if (s_aLogger.isDebugEnabled ())
-            s_aLogger.debug ("Successfully handled request: " + aRequestScope.getPathWithinServlet ());
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Successfully handled request: " + aRequestScope.getPathWithinServlet ());
         }
         catch (final ForcedRedirectException ex)
         {
@@ -268,7 +268,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           }
           catch (final Exception ex)
           {
-            s_aLogger.error ("onRequestEnd failed", ex);
+            LOGGER.error ("onRequestEnd failed", ex);
             // Don't throw anything here
           }
         }

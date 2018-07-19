@@ -48,7 +48,7 @@ import com.helger.commons.string.ToStringGenerator;
 @ThreadSafe
 public class MockEventListenerList
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockEventListenerList.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockEventListenerList.class);
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
@@ -102,7 +102,7 @@ public class MockEventListenerList
         !(aListener instanceof HttpSessionListener) &&
         !(aListener instanceof ServletRequestListener))
     {
-      s_aLogger.warn ("Passed mock listener is none of ServletContextListener, HttpSessionListener or ServletRequestListener and therefore has no effect. The listener class is: " +
+      LOGGER.warn ("Passed mock listener is none of ServletContextListener, HttpSessionListener or ServletRequestListener and therefore has no effect. The listener class is: " +
                       aListener.getClass ());
     }
 

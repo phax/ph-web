@@ -44,7 +44,7 @@ public class QValue implements Comparable <QValue>, Serializable
   /** 50% quantile quality value */
   public static final double HALF_QUALITY = 0.5;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (QValue.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (QValue.class);
 
   /** Minimum quality */
   public static final QValue MIN_QVALUE = new QValue (MIN_QUALITY);
@@ -57,14 +57,14 @@ public class QValue implements Comparable <QValue>, Serializable
   {
     if (dQuality < MIN_QUALITY)
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("QValue is too small: " + dQuality);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("QValue is too small: " + dQuality);
     }
     else
       if (dQuality > MAX_QUALITY)
       {
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("QValue is too large: " + dQuality);
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("QValue is too large: " + dQuality);
       }
     m_dQuality = getValueInRange (dQuality);
   }

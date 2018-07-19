@@ -44,7 +44,7 @@ import com.helger.network.proxy.settings.ProxySettings;
  */
 public final class ProxyAutoConfigHelperTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelperTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelperTest.class);
   private static final String [] PAC_FILES = new String [] { "brz-proxy.pac",
                                                              "wikipedia-pac.js",
                                                              "returnproxy-complex.js",
@@ -59,14 +59,14 @@ public final class ProxyAutoConfigHelperTest
   {
     for (final String sFile : PAC_FILES)
     {
-      s_aLogger.info ("Reading " + sFile);
+      LOGGER.info ("Reading " + sFile);
       final IReadableResource aRes = new ClassPathResource ("proxyautoconf/pacfiles/" + sFile);
       assertTrue (aRes.exists ());
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (aRes);
       final ICommonsList <IProxySettings> aPC = aPACHelper.getProxyListForURL (URLHelper.getAsURI ("http://www.orf.at/index.html"));
       assertNotNull (sFile + " failed", aPC);
       assertFalse (sFile + " failed", aPC.isEmpty ());
-      s_aLogger.info ("  Found the following " + aPC.size () + " entries: " + aPC);
+      LOGGER.info ("  Found the following " + aPC.size () + " entries: " + aPC);
     }
   }
 

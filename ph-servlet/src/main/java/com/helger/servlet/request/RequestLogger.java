@@ -48,7 +48,7 @@ import com.helger.servlet.annotation.IsOffline;
 @Immutable
 public final class RequestLogger
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestLogger.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestLogger.class);
 
   private static final AnnotationUsageCache s_aOfflineCache = new AnnotationUsageCache (IsOffline.class);
 
@@ -204,7 +204,7 @@ public final class RequestLogger
 
   public static void logRequestComplete (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info (getRequestDebugString (aHttpRequest).toString ());
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info (getRequestDebugString (aHttpRequest).toString ());
   }
 }

@@ -112,7 +112,7 @@ public abstract class AbstractXServlet extends HttpServlet
   public static final String REQUEST_ATTR_SCOPE_CREATED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "request-scope-created";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXServlet.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractXServlet.class);
 
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                 "$requests.total");
@@ -248,14 +248,14 @@ public abstract class AbstractXServlet extends HttpServlet
   public final void log (final String sMsg)
   {
     super.log (sMsg);
-    s_aLogger.info (sMsg);
+    LOGGER.info (sMsg);
   }
 
   @Override
   public final void log (final String sMsg, final Throwable t)
   {
     super.log (sMsg, t);
-    s_aLogger.error (sMsg, t);
+    LOGGER.error (sMsg, t);
   }
 
   /**
@@ -397,8 +397,8 @@ public abstract class AbstractXServlet extends HttpServlet
         }
         catch (final Exception ex)
         {
-          if (s_aLogger.isErrorEnabled ())
-            s_aLogger.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
+          if (LOGGER.isErrorEnabled ())
+            LOGGER.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
         }
     }
   }
@@ -564,7 +564,7 @@ public abstract class AbstractXServlet extends HttpServlet
         }
         catch (final ServletException | IOException ex)
         {
-          s_aLogger.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
+          LOGGER.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
           // Don't re-throw in finally
           // throw ex;
         }

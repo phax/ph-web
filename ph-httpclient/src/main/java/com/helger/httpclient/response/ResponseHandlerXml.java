@@ -45,7 +45,7 @@ import com.helger.xml.serialize.read.DOMReader;
  */
 public class ResponseHandlerXml implements ResponseHandler <Document>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerXml.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerXml.class);
 
   private final boolean m_bDebugMode;
 
@@ -84,8 +84,8 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);
 
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Got XML: <" + sXML + ">");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Got XML: <" + sXML + ">");
 
       Document ret = null;
       try

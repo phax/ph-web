@@ -37,7 +37,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 @Immutable
 public final class DNSResolver
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (DNSResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolver.class);
 
   @PresentForCodeCoverage
   private static final DNSResolver s_aInstance = new DNSResolver ();
@@ -91,7 +91,7 @@ public final class DNSResolver
     }
     catch (final UnknownHostException e)
     {
-      s_aLogger.error ("DNS name not resolvable " + sHostName, e);
+      LOGGER.error ("DNS name not resolvable " + sHostName, e);
     }
     return aSB.toString ();
   }

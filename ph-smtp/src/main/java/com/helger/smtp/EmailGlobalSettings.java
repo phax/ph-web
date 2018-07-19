@@ -59,7 +59,7 @@ public final class EmailGlobalSettings
   public static final long DEFAULT_CONNECT_TIMEOUT_MILLISECS = 5 * CGlobal.MILLISECONDS_PER_SECOND;
   public static final long DEFAULT_TIMEOUT_MILLISECS = 10 * CGlobal.MILLISECONDS_PER_SECOND;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EmailGlobalSettings.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EmailGlobalSettings.class);
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
 
   // Mail queue settings
@@ -209,7 +209,7 @@ public final class EmailGlobalSettings
       if (s_nConnectionTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
-        s_aLogger.warn ("You are setting an indefinite connection timeout for the mail transport api: " + nMilliSecs);
+        LOGGER.warn ("You are setting an indefinite connection timeout for the mail transport api: " + nMilliSecs);
       s_nConnectionTimeoutMilliSecs = nMilliSecs;
       return EChange.CHANGED;
     });
@@ -242,7 +242,7 @@ public final class EmailGlobalSettings
       if (s_nTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
-        s_aLogger.warn ("You are setting an indefinite socket timeout for the mail transport api: " + nMilliSecs);
+        LOGGER.warn ("You are setting an indefinite socket timeout for the mail transport api: " + nMilliSecs);
       s_nTimeoutMilliSecs = nMilliSecs;
       return EChange.CHANGED;
     });

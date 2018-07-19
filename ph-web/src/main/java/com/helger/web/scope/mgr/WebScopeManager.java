@@ -62,7 +62,7 @@ public final class WebScopeManager
   public static final boolean DEFAULT_SESSION_PASSIVATION_ALLOWED = false;
   private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                                      "sessionwebscope.activator";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeManager.class);
   private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
@@ -95,8 +95,8 @@ public final class WebScopeManager
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
     s_aSessionPassivationAllowed.set (bSessionPassivationAllowed);
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
 
     // For passivation to work, the session scopes may not be invalidated at the
     // end of the global scope!
@@ -173,8 +173,8 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
       return null;
     }
   }
@@ -267,8 +267,8 @@ public final class WebScopeManager
       {
         // This can e.g. happen in tests, when there are no registered
         // listeners for session events!
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Creating a new session web scope for ID '" +
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Creating a new session web scope for ID '" +
                           sSessionID +
                           "' but there should already be one!" +
                           " Check your HttpSessionListener implementation.");
@@ -411,8 +411,8 @@ public final class WebScopeManager
         try
         {
           aHttpSession.invalidate ();
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
         }
         catch (final IllegalStateException ex)
         {
@@ -456,8 +456,8 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
       return null;
     }
   }

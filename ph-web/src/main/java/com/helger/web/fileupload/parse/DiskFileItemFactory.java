@@ -64,7 +64,7 @@ import com.helger.web.fileupload.IFileItemFactory;
 @ThreadSafe
 public class DiskFileItemFactory implements IFileItemFactory
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItemFactory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (DiskFileItemFactory.class);
 
   protected final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
@@ -168,8 +168,8 @@ public class DiskFileItemFactory implements IFileItemFactory
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
         _addTempFile (aTempFile);
       }
     }

@@ -43,7 +43,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 public class FileItemResource implements IReadableResource
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (FileItemResource.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (FileItemResource.class);
 
   private final IFileItem m_aFileItem;
   // Status vars
@@ -85,16 +85,16 @@ public class FileItemResource implements IReadableResource
   @Nullable
   public URL getAsURL ()
   {
-    if (s_aLogger.isWarnEnabled ())
-      s_aLogger.warn ("Cannot convert an IFileItem to a URL: " + toString ());
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn ("Cannot convert an IFileItem to a URL: " + toString ());
     return null;
   }
 
   @Nullable
   public File getAsFile ()
   {
-    if (s_aLogger.isWarnEnabled ())
-      s_aLogger.warn ("Cannot convert an IFileItem to a File: " + toString ());
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn ("Cannot convert an IFileItem to a File: " + toString ());
     return null;
   }
 

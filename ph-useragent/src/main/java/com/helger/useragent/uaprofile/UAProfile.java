@@ -44,7 +44,7 @@ import com.helger.commons.string.ToStringGenerator;
 @Immutable
 public class UAProfile implements Serializable
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UAProfile.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UAProfile.class);
   public static final UAProfile EMPTY = new UAProfile ();
 
   private final String m_sProfileUrl;
@@ -64,8 +64,8 @@ public class UAProfile implements Serializable
     if (nUrls == 0 && nDiffs == 0)
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
     if (nUrls > 1)
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Found more than one profile URL: " + aProfileUrls);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
     m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
   }

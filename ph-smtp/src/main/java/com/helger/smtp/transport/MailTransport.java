@@ -79,7 +79,7 @@ public final class MailTransport
                                                                                                                     "$success");
   private static final IMutableStatisticsHandlerCounter s_aStatsCountFailed = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
                                                                                                                    "$failed");
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MailTransport.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MailTransport.class);
   private static final String HEADER_MESSAGE_ID = "Message-ID";
 
   private final ISMTPSettings m_aSMTPSettings;
@@ -168,8 +168,8 @@ public final class MailTransport
     m_bSMTPS = isUseSMTPS (aSettings);
     m_aMailProperties = createSessionProperties (aSettings);
 
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Mail properties: " + m_aMailProperties);
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Mail properties: " + m_aMailProperties);
 
     // Create session based on properties
     final Properties aProps = new Properties ();
@@ -247,8 +247,8 @@ public final class MailTransport
             }
             aMimeMessage.setHeader ("X-Mailer", X_MAILER);
 
-            if (s_aLogger.isInfoEnabled ())
-              s_aLogger.info ("Delivering mail from " +
+            if (LOGGER.isInfoEnabled ())
+              LOGGER.info ("Delivering mail from " +
                               Arrays.toString (aMimeMessage.getFrom ()) +
                               " to " +
                               Arrays.toString (aMimeMessage.getAllRecipients ()) +
@@ -265,7 +265,7 @@ public final class MailTransport
           catch (final SendFailedException ex)
           {
             if (EmailGlobalSettings.isDebugSMTP ())
-              s_aLogger.error ("Error send mail - SendFailedException", ex);
+              LOGGER.error ("Error send mail - SendFailedException", ex);
 
             /*
              * Extract all addresses: the valid addresses to which the message
@@ -357,7 +357,7 @@ public final class MailTransport
           catch (final MessagingException ex)
           {
             if (EmailGlobalSettings.isDebugSMTP ())
-              s_aLogger.error ("Error send mail - MessagingException", ex);
+              LOGGER.error ("Error send mail - MessagingException", ex);
 
             final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet <> ();
             final Consumer <IEmailAddress> aConsumer = a -> aInvalid.add (new MailSendDetails (false,

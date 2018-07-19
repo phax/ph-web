@@ -104,7 +104,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   public static final String DEFAULT_REMOTE_HOST = "localhost";
   /** The default HTTP method: GET */
   public static final EHttpMethod DEFAULT_METHOD = EHttpMethod.GET;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockHttpServletRequest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockHttpServletRequest.class);
 
   private boolean m_bInvalidated = false;
   private boolean m_bActive = true;
@@ -927,8 +927,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   public MockHttpServletRequest setContextPath (@Nullable final String sContextPath)
   {
     if (StringHelper.hasText (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Illegal context path specified: '" + sContextPath + "'");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Illegal context path specified: '" + sContextPath + "'");
     m_sContextPath = sContextPath;
     return this;
   }
@@ -1020,8 +1020,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   public MockHttpServletRequest setServletPath (@Nullable final String sServletPath)
   {
     if (StringHelper.hasText (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
     m_sServletPath = sServletPath;
     return this;
   }

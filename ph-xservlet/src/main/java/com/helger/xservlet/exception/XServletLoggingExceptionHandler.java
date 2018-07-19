@@ -35,7 +35,7 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class XServletLoggingExceptionHandler implements IXServletExceptionHandler
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletLoggingExceptionHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletLoggingExceptionHandler.class);
 
   @Nonnull
   public EContinue onException (@Nonnull final IRequestWebScope aRequestScope, @Nonnull final Throwable t)
@@ -51,15 +51,15 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
     if (StreamHelper.isKnownEOFException (t))
     {
       // Debug only
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug (sMsg + " - " + ClassHelper.getClassLocalName (t) + " - " + t.getMessage ());
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug (sMsg + " - " + ClassHelper.getClassLocalName (t) + " - " + t.getMessage ());
 
       // Known - nothing more to do
       return EContinue.BREAK;
     }
 
     // Log always including full exception
-    s_aLogger.error (sMsg, t);
+    LOGGER.error (sMsg, t);
 
     // Invoke next handler
     return EContinue.CONTINUE;

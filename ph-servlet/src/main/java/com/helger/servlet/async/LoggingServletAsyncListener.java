@@ -35,33 +35,33 @@ import org.slf4j.LoggerFactory;
 @Immutable
 public class LoggingServletAsyncListener extends AbstractServletAsyncListener
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingServletAsyncListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingServletAsyncListener.class);
 
   @Override
   public void onStartAsync (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("onStartAsync " + aAsyncEvent);
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("onStartAsync " + aAsyncEvent);
   }
 
   @Override
   public void onComplete (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("onComplete " + aAsyncEvent);
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("onComplete " + aAsyncEvent);
   }
 
   @Override
   public void onError (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (s_aLogger.isErrorEnabled ())
-      s_aLogger.error ("onError " + aAsyncEvent);
+    if (LOGGER.isErrorEnabled ())
+      LOGGER.error ("onError " + aAsyncEvent);
   }
 
   @Override
   public void onTimeout (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (s_aLogger.isWarnEnabled ())
-      s_aLogger.warn ("onTimeout " + aAsyncEvent);
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn ("onTimeout " + aAsyncEvent);
   }
 }

@@ -52,7 +52,7 @@ import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
 @NotThreadSafe
 public abstract class AbstractXFilter extends AbstractHttpServletFilter
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractXFilter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractXFilter.class);
 
   private final IMutableStatisticsHandlerCounter m_aCounterRequestsTotal = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                 "$requests.total");
@@ -169,7 +169,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
         {
           // This log entry is mainly present to have an overview on how often
           // this really happens
-          s_aLogger.error ("Filter exception propagated to the outside", ex);
+          LOGGER.error ("Filter exception propagated to the outside", ex);
 
           // Ensure only exceptions with the correct type are propagated
           if (ex instanceof IOException)

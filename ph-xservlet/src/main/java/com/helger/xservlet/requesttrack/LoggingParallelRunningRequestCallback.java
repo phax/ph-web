@@ -40,7 +40,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class LoggingParallelRunningRequestCallback implements IParallelRunningRequestCallback
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingParallelRunningRequestCallback.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingParallelRunningRequestCallback.class);
 
   private IErrorLevel m_aErrorLevel;
 
@@ -70,12 +70,12 @@ public class LoggingParallelRunningRequestCallback implements IParallelRunningRe
   public void onParallelRunningRequests (@Nonnegative final int nParallelRequests,
                                          @Nonnull @Nonempty final List <TrackedRequest> aRequests)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Currently " + nParallelRequests + " parallel requests are active!");
+    LogHelper.log (LOGGER, m_aErrorLevel, "Currently " + nParallelRequests + " parallel requests are active!");
   }
 
   public void onParallelRunningRequestsBelowLimit ()
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Parallel requests are back to normal!");
+    LogHelper.log (LOGGER, m_aErrorLevel, "Parallel requests are back to normal!");
   }
 
   @Override

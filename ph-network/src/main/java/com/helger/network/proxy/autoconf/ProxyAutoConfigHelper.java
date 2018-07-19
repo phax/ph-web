@@ -44,7 +44,7 @@ import com.helger.network.proxy.settings.ProxySettings;
 
 public final class ProxyAutoConfigHelper
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
 
   // create a Nashorn script engine
   private static final ScriptEngine s_aScriptEngine = ScriptHelper.createNashornEngine ();
@@ -66,8 +66,8 @@ public final class ProxyAutoConfigHelper
       s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
-        if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
     }
     catch (final ScriptException ex)
     {
@@ -176,8 +176,8 @@ public final class ProxyAutoConfigHelper
               }
 
           if (bError)
-            if (s_aLogger.isWarnEnabled ())
-              s_aLogger.warn ("Found unknown proxy directive '" + sDirective + "'");
+            if (LOGGER.isWarnEnabled ())
+              LOGGER.warn ("Found unknown proxy directive '" + sDirective + "'");
         }
       }
     }

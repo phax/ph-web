@@ -66,7 +66,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   // Because of transient field
   private static final long serialVersionUID = 78563987233147L;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "requestscope.inited";
 
@@ -94,9 +94,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // done initialization
-    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Created request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                         ScopeHelper.getDebugStackTrace ());
   }
 
@@ -156,8 +156,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final IAttributeContainerAny <String> aAttrs = attrs ();
     if (aAttrs.getAndSetFlag (REQUEST_ATTR_SCOPE_INITED))
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Scope was already inited: " + toString ());
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Scope was already inited: " + toString ());
       return;
     }
 
@@ -194,9 +194,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     postAttributeInit ();
 
     // done initialization
-    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Initialized request web scope '" +
+    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Initialized request web scope '" +
                         getID () +
                         "' of class " +
                         ClassHelper.getClassLocalName (this),
@@ -206,9 +206,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Override
   protected void postDestroy ()
   {
-    if (ScopeHelper.debugRequestScopeLifeCycle (s_aLogger))
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Destroyed request web scope '" +
+    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Destroyed request web scope '" +
                         getID () +
                         "' of class " +
                         ClassHelper.getClassLocalName (this),

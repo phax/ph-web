@@ -41,7 +41,7 @@ import com.helger.commons.state.EChange;
 @Immutable
 public final class SessionHelper
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SessionHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (SessionHelper.class);
 
   @PresentForCodeCoverage
   private static final SessionHelper s_aInstance = new SessionHelper ();
@@ -64,8 +64,8 @@ public final class SessionHelper
     {
       try
       {
-        if (s_aLogger.isDebugEnabled ())
-          s_aLogger.debug ("Invalidating session " + aSession.getId ());
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Invalidating session " + aSession.getId ());
         aSession.invalidate ();
         return EChange.CHANGED;
       }
@@ -119,8 +119,8 @@ public final class SessionHelper
     {
       try
       {
-        if (s_aLogger.isDebugEnabled ())
-          s_aLogger.debug ("Invalidating session " + aSession.getId () + " for renewal");
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Invalidating session " + aSession.getId () + " for renewal");
         aSession.invalidate ();
       }
       catch (final IllegalStateException ex)

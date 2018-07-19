@@ -53,7 +53,7 @@ public class NonCachingDnsResolver implements DnsResolver
    */
   public static final NonCachingDnsResolver INSTANCE = new NonCachingDnsResolver ();
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (NonCachingDnsResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (NonCachingDnsResolver.class);
 
   public NonCachingDnsResolver ()
   {}
@@ -78,8 +78,8 @@ public class NonCachingDnsResolver implements DnsResolver
   @Nonnull
   public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("DNS resolving host '" + sHost + "'");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("DNS resolving host '" + sHost + "'");
 
     Record [] aRecords = null;
     try
@@ -89,8 +89,8 @@ public class NonCachingDnsResolver implements DnsResolver
     }
     catch (final TextParseException ex)
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Failed to parse host '" + sHost + "'", ex);
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Failed to parse host '" + sHost + "'", ex);
     }
 
     InetAddress [] ret;
@@ -122,8 +122,8 @@ public class NonCachingDnsResolver implements DnsResolver
           }
           else
           {
-            if (s_aLogger.isErrorEnabled ())
-              s_aLogger.info ("Unknown record type found for host '" +
+            if (LOGGER.isErrorEnabled ())
+              LOGGER.info ("Unknown record type found for host '" +
                               sHost +
                               "': " +
                               ClassHelper.getClassLocalName (aRecord));
@@ -132,8 +132,8 @@ public class NonCachingDnsResolver implements DnsResolver
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);
     }
 
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Return for '" + sHost + "': " + Arrays.toString (ret));
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Return for '" + sHost + "': " + Arrays.toString (ret));
     return ret;
   }
 }

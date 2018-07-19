@@ -44,7 +44,7 @@ import com.helger.xml.microdom.serialize.MicroReader;
  */
 public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerMicroDom.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerMicroDom.class);
 
   private final boolean m_bDebugMode;
 
@@ -83,8 +83,8 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
       // Read all in String
       final String sXML = EntityUtils.toString (aEntity, aCharset);
 
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Got XML: <" + sXML + ">");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Got XML: <" + sXML + ">");
 
       final IMicroDocument ret = MicroReader.readMicroXML (sXML);
       if (ret == null)

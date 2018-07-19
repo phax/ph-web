@@ -29,7 +29,7 @@ import com.helger.commons.version.Version;
 
 public final class UserAgentDecryptorTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDecryptorTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UserAgentDecryptorTest.class);
   private final String [] POSSIBLE = new String [] { "'Mozilla/4.7 [en] (WinNT; U)'",
                                                      "Mozilla/4.7 [en] (WinNT; U)",
                                                      "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT)",
@@ -78,7 +78,7 @@ public final class UserAgentDecryptorTest
       assertNotNull (s, UserAgentDecryptor.decryptUserAgentString (s));
       ++nCount;
     }
-    s_aLogger.info ("Tested " + nCount + " user agents");
+    LOGGER.info ("Tested " + nCount + " user agents");
   }
 
   @Test

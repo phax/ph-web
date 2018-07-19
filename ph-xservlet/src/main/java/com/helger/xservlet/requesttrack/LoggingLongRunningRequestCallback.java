@@ -39,7 +39,7 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class LoggingLongRunningRequestCallback implements ILongRunningRequestCallback
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingLongRunningRequestCallback.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingLongRunningRequestCallback.class);
 
   private IErrorLevel m_aErrorLevel;
 
@@ -71,7 +71,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
                                     @Nonnegative final long nRunningMilliseconds)
   {
     // TODO ph-commons 9.1.3 use version with Supplier
-    LogHelper.log (s_aLogger,
+    LogHelper.log (LOGGER,
                    m_aErrorLevel,
                    "Long running request. ID=" +
                                   sUniqueRequestID +

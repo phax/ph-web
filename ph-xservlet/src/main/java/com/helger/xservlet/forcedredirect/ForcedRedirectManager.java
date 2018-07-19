@@ -50,7 +50,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
 {
   public static final String REQUEST_PARAMETER_PRG_ACTIVE = "phprga";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ForcedRedirectManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ForcedRedirectManager.class);
 
   @GuardedBy ("m_aRWLock")
   private final ICommonsMap <String, Serializable> m_aMap = new CommonsHashMap <> ();
@@ -85,7 +85,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
     m_aRWLock.writeLocked ( () -> m_aMap.put (ex.getSourceMenuItemID (), ex.getContent ()));
 
     if (GlobalDebug.isDebugMode ())
-      s_aLogger.info ("Creating forced redirect from '" +
+      LOGGER.info ("Creating forced redirect from '" +
                       ex.getSourceMenuItemID () +
                       "' to URL " +
                       ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ());
@@ -133,8 +133,8 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
     // Get in write lock
     final Serializable ret = m_aRWLock.writeLocked ( () -> m_aMap.remove (sMenuItemID));
     if (ret != null)
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("Removed content of last forced redirect from '" + sMenuItemID + "'");
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Removed content of last forced redirect from '" + sMenuItemID + "'");
     return ret;
   }
 

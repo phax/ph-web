@@ -40,7 +40,7 @@ import com.helger.servlet.request.RequestLogger;
  */
 public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterSecurityPoxy.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterSecurityPoxy.class);
   public static final XServletFilterSecurityPoxy INSTANCE = new XServletFilterSecurityPoxy ();
 
   protected XServletFilterSecurityPoxy ()
@@ -56,8 +56,8 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
     if (sPoxy != null)
     {
       // potentially malicious request - log and block
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("httpoxy request successfully blocked: " + aHttpRequest);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("httpoxy request successfully blocked: " + aHttpRequest);
       RequestLogger.logRequestComplete (aHttpRequest);
       aHttpResponse.sendError (HttpServletResponse.SC_BAD_REQUEST);
       return EContinue.BREAK;

@@ -39,7 +39,7 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
   /** The name of the request attribute uniquely identifying the request ID */
   public static final String REQUEST_ATTR_ID = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "request.id";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterTrackRequest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterTrackRequest.class);
 
   /** Thread-safe request counter */
   private static final AtomicLong s_aRequestID = new AtomicLong (0);
@@ -59,8 +59,8 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
     {
       // Mainly debug logging to see, if this can be checked better
       // Therefore I need to understand better when this happens
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Request already contains an ID (" + sID + ") - so this is an recursive request...");
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Request already contains an ID (" + sID + ") - so this is an recursive request...");
       return false;
     }
 

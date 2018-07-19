@@ -62,7 +62,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     }
   }
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeSessionHelperTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeSessionHelperTest.class);
 
   @Test
   public void testRenewSessionScopeEmpty ()
@@ -177,6 +177,6 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     for (int i = 0; i < nMax; ++i)
       aThreads[i].join ();
 
-    s_aLogger.info ("Test Done");
+    LOGGER.info ("Test Done");
   }
 }

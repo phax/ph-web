@@ -35,7 +35,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
  */
 public final class ServletContextPathHolder
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServletContextPathHolder.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServletContextPathHolder.class);
 
   private static String s_sServletContextPath;
   private static String s_sCustomContextPath;
@@ -51,15 +51,15 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
     if (s_sServletContextPath == null)
     {
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Setting servlet context path to '" + sServletContextPath + "'!");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Setting servlet context path to '" + sServletContextPath + "'!");
       s_sServletContextPath = sServletContextPath;
     }
     else
       if (!s_sServletContextPath.equals (sServletContextPath))
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Overwriting servlet context path '" +
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Overwriting servlet context path '" +
                            s_sServletContextPath +
                            "' with '" +
                            sServletContextPath +
@@ -108,15 +108,15 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
     if (s_sCustomContextPath == null)
     {
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
       s_sCustomContextPath = sCustomContextPath;
     }
     else
       if (!s_sCustomContextPath.equals (sCustomContextPath))
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Overwriting custom servlet context path '" +
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Overwriting custom servlet context path '" +
                            s_sCustomContextPath +
                            "' with '" +
                            sCustomContextPath +
@@ -183,14 +183,14 @@ public final class ServletContextPathHolder
   {
     if (s_sServletContextPath != null)
     {
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
       s_sServletContextPath = null;
     }
     if (s_sCustomContextPath != null)
     {
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
       s_sCustomContextPath = null;
     }
   }

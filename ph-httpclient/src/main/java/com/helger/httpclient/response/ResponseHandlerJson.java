@@ -45,7 +45,7 @@ import com.helger.json.serialize.JsonReader;
  */
 public class ResponseHandlerJson implements ResponseHandler <IJson>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHandlerJson.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerJson.class);
 
   private final boolean m_bDebugMode;
 
@@ -84,8 +84,8 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
       // Read all in String
       final String sJson = StringHelper.trim (EntityUtils.toString (aEntity, aCharset));
 
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Got JSON: <" + sJson + ">");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Got JSON: <" + sJson + ">");
 
       final IJson ret = JsonReader.readFromString (sJson);
       if (ret == null)

@@ -51,7 +51,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
 @ThreadSafe
 public final class ServletStatusManager extends AbstractGlobalSingleton
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServletStatusManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServletStatusManager.class);
 
   @GuardedBy ("m_aRWLock")
   private final ICommonsMap <String, ServletStatus> m_aMap = new CommonsHashMap <> ();
@@ -104,8 +104,8 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
 
     m_aRWLock.writeLocked ( () -> _getOrCreateServletStatus (aServletClass).internalSetCurrentStatus (eNewStatus));
 
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Servlet status of " + aServletClass + " changed to " + eNewStatus);
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Servlet status of " + aServletClass + " changed to " + eNewStatus);
   }
 
   public void onServletCtor (@Nonnull final Class <? extends GenericServlet> aServletClass)
@@ -121,16 +121,16 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    */
   public void onServletInit (@Nonnull final Class <? extends GenericServlet> aServletClass)
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("onServletInit: " + aServletClass);
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("onServletInit: " + aServletClass);
     _updateStatus (aServletClass, EServletStatus.INITED);
   }
 
   public void onServletInitFailed (@Nonnull final Exception aInitException,
                                    @Nonnull final Class <? extends GenericServlet> aServletClass)
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("onServletInitFailed: " + aServletClass, aInitException);
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("onServletInitFailed: " + aServletClass, aInitException);
     // Reset status to previous state!
     _updateStatus (aServletClass, EServletStatus.CONSTRUCTED);
   }

@@ -30,7 +30,7 @@ import com.helger.commons.lang.ServiceLoaderHelper;
  */
 public final class ProgressListenerProvider
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ProgressListenerProvider.class);
 
   private static final IProgressListenerProviderSPI s_aProgressListenerProvider;
 
@@ -38,7 +38,7 @@ public final class ProgressListenerProvider
   {
     s_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
     if (s_aProgressListenerProvider != null)
-      s_aLogger.info ("Using progress listener provider " + s_aProgressListenerProvider);
+      LOGGER.info ("Using progress listener provider " + s_aProgressListenerProvider);
   }
 
   private ProgressListenerProvider ()

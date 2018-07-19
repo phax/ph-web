@@ -43,7 +43,7 @@ public final class AcceptMimeTypeHandler
   /** Any MIME type */
   public static final IMimeType ANY_MIMETYPE = new MimeType (EMimeContentType._STAR, "*");
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AcceptMimeTypeHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AcceptMimeTypeHandler.class);
 
   @PresentForCodeCoverage
   private static final AcceptMimeTypeHandler s_aInstance = new AcceptMimeTypeHandler ();
@@ -79,8 +79,8 @@ public final class AcceptMimeTypeHandler
         {
           if (aMimeType.hasAnyParameters ())
           {
-            if (s_aLogger.isWarnEnabled ())
-              s_aLogger.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
+            if (LOGGER.isWarnEnabled ())
+              LOGGER.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
             aMimeType = aMimeType.getCopyWithoutParameters ();
           }
           ret.addMimeType (aMimeType, dQuality);
@@ -94,8 +94,8 @@ public final class AcceptMimeTypeHandler
             // ignored
             if (!"xml/xml".equals (sMimeType))
             {
-              if (s_aLogger.isWarnEnabled ())
-                s_aLogger.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
+              if (LOGGER.isWarnEnabled ())
+                LOGGER.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
             }
           }
       }
@@ -115,8 +115,8 @@ public final class AcceptMimeTypeHandler
       if ("*".equals (sMimeType))
         return new MimeType (EMimeContentType._STAR, "*");
     }
-    if (s_aLogger.isWarnEnabled ())
-      s_aLogger.warn ("Unparsable MIME type '" + sMimeType + "'");
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn ("Unparsable MIME type '" + sMimeType + "'");
     return null;
   }
 }

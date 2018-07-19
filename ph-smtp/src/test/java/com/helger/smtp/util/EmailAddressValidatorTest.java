@@ -28,7 +28,7 @@ import com.helger.commons.random.RandomHelper;
 
 public final class EmailAddressValidatorTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAddressValidatorTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidatorTest.class);
   private static final String [] VALID = new String [] { "ph@helger.com" };
   private static final String [] INVALID = new String [] { "ph@helger", "karin@gmx-net" };
 
@@ -52,7 +52,7 @@ public final class EmailAddressValidatorTest
       final int nIndex = RandomHelper.getRandom ().nextInt (VALID.length);
       final String sValid = VALID[nIndex];
       if (!EmailAddressValidator.isValidWithMXCheck (sValid))
-        s_aLogger.info ("No MX record for: " + sValid);
+        LOGGER.info ("No MX record for: " + sValid);
     }
   }
 }

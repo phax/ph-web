@@ -55,7 +55,7 @@ public final class ResponseHelperSettings
   public static final boolean DEFAULT_RESPONSE_GZIP_ENABLED = true;
   public static final boolean DEFAULT_RESPONSE_DERFLATE_ENABLED = true;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ResponseHelperSettings.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHelperSettings.class);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   private static int s_nExpirationSeconds = DEFAULT_EXPIRATION_SECONDS;
@@ -83,7 +83,7 @@ public final class ResponseHelperSettings
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
-      s_aLogger.info ("ResponseHelper responseCompressionEnabled=" + bResponseCompressionEnabled);
+      LOGGER.info ("ResponseHelper responseCompressionEnabled=" + bResponseCompressionEnabled);
       return EChange.CHANGED;
     });
   }
@@ -112,7 +112,7 @@ public final class ResponseHelperSettings
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
-      s_aLogger.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
+      LOGGER.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
       return EChange.CHANGED;
     });
   }
@@ -141,7 +141,7 @@ public final class ResponseHelperSettings
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
-      s_aLogger.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
+      LOGGER.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
       return EChange.CHANGED;
     });
   }
@@ -177,19 +177,19 @@ public final class ResponseHelperSettings
       {
         s_bResponseCompressionEnabled = bResponseCompressionEnabled;
         eChange = EChange.CHANGED;
-        s_aLogger.info ("ResponseHelper responseCompressEnabled=" + bResponseCompressionEnabled);
+        LOGGER.info ("ResponseHelper responseCompressEnabled=" + bResponseCompressionEnabled);
       }
       if (s_bResponseGzipEnabled != bResponseGzipEnabled)
       {
         s_bResponseGzipEnabled = bResponseGzipEnabled;
         eChange = EChange.CHANGED;
-        s_aLogger.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
+        LOGGER.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
       }
       if (s_bResponseDeflateEnabled != bResponseDeflateEnabled)
       {
         s_bResponseDeflateEnabled = bResponseDeflateEnabled;
         eChange = EChange.CHANGED;
-        s_aLogger.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
+        LOGGER.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
       }
       return eChange;
     });
@@ -210,7 +210,7 @@ public final class ResponseHelperSettings
       if (s_nExpirationSeconds == nExpirationSeconds)
         return EChange.UNCHANGED;
       s_nExpirationSeconds = nExpirationSeconds;
-      s_aLogger.info ("ResponseHelper expirationSeconds=" + nExpirationSeconds);
+      LOGGER.info ("ResponseHelper expirationSeconds=" + nExpirationSeconds);
       return EChange.CHANGED;
     });
   }

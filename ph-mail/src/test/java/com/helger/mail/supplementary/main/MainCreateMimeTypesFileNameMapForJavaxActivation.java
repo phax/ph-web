@@ -38,7 +38,7 @@ import com.helger.xml.util.mime.MimeTypeInfoManager;
 
 public final class MainCreateMimeTypesFileNameMapForJavaxActivation
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MainCreateMimeTypesFileNameMapForJavaxActivation.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MainCreateMimeTypesFileNameMapForJavaxActivation.class);
 
   /**
    * Create the mime.types file that is read by javax.activation. See class
@@ -86,7 +86,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       // done
       w.flush ();
       w.close ();
-      s_aLogger.info ("Done creating " + sDestPath);
+      LOGGER.info ("Done creating " + sDestPath);
     }
     finally
     {

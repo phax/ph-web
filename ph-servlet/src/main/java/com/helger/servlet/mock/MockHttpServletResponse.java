@@ -63,7 +63,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   public static final int DEFAULT_SERVER_PORT = SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP);
   public static final Charset DEFAULT_CHARSET_OBJ = StandardCharsets.UTF_8;
   private static final int DEFAULT_BUFFER_SIZE = 4096;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockHttpServletResponse.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockHttpServletResponse.class);
 
   private boolean m_bOutputStreamAccessAllowed = true;
   private boolean m_bWriterAccessAllowed = true;
@@ -242,7 +242,7 @@ public class MockHttpServletResponse implements HttpServletResponse
       }
       catch (final MimeTypeParserException ex)
       {
-        s_aLogger.warn ("Passed content type '" + sContentType + "' cannot be parsed as a MIME type");
+        LOGGER.warn ("Passed content type '" + sContentType + "' cannot be parsed as a MIME type");
       }
     }
   }

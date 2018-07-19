@@ -52,7 +52,7 @@ import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 @Immutable
 public final class RequestTracker extends AbstractGlobalWebSingleton
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestTracker.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestTracker.class);
 
   private static final CallbackList <ILongRunningRequestCallback> s_aLongRunningCallbacks = new CallbackList <> ();
   private static final CallbackList <IParallelRunningRequestCallback> s_aParallelRunningCallbacks = new CallbackList <> ();
@@ -103,7 +103,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
         }
         catch (final Exception ex)
         {
-          s_aLogger.error ("Error checking for long running requests", ex);
+          LOGGER.error ("Error checking for long running requests", ex);
         }
     }
   }
@@ -119,7 +119,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
 
     // Start the monitoring thread to check every 2 seconds
     m_aExecSvc.scheduleAtFixedRate (new RequestTrackerMonitor (), 0, 2, TimeUnit.SECONDS);
-    s_aLogger.info ("RequestTrackerMonitor was installed successfully.");
+    LOGGER.info ("RequestTrackerMonitor was installed successfully.");
   }
 
   @Override
@@ -127,7 +127,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   {
     // Destroy RequestTrackerMonitor thread(s)
     ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (m_aExecSvc);
-    s_aLogger.info ("RequestTrackerMonitor was uninstalled successfully.");
+    LOGGER.info ("RequestTrackerMonitor was uninstalled successfully.");
   }
 
   @Nonnull

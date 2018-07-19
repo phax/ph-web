@@ -52,7 +52,7 @@ public final class RequestTrackingManager
   public static final boolean DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED = true;
   public static final int DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER = 60;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestTrackingManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestTrackingManager.class);
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
@@ -143,8 +143,8 @@ public final class RequestTrackingManager
       if (aOldTR != null && aOldTR.getRequestScope () != aRequestScope)
       {
         // Should never happen
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Request ID '" +
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Request ID '" +
                            sRequestID +
                            "' is already registered! Old TR: " +
                            aOldTR +
@@ -183,8 +183,8 @@ public final class RequestTrackingManager
       if (m_aOpenRequests.remove (sRequestID) == null)
       {
         // Should never happen
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to remove internal request with ID '" + sRequestID + "'");
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to remove internal request with ID '" + sRequestID + "'");
       }
       if (m_bParallelRunningRequestCheckEnabled &&
           m_bParallelRunningRequestsAboveLimit &&
@@ -209,8 +209,8 @@ public final class RequestTrackingManager
 
   public void checkForLongRunningRequests (@Nonnull final ICallbackList <ILongRunningRequestCallback> aCallbacks)
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("Checking for long running requests");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Checking for long running requests");
 
     if (aCallbacks.isNotEmpty ())
     {

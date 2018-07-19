@@ -48,7 +48,7 @@ import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
  */
 public class XServletFilterConsistency implements IXServletLowLevelFilter
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletFilterConsistency.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterConsistency.class);
   public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
 
   protected XServletFilterConsistency ()
@@ -78,8 +78,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   {
     // < 200 || >= 400?
     if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("HTTP status code " +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("HTTP status code " +
                         nStatusCode +
                         " in response to " +
                         eHttpMethod.getName () +
@@ -110,8 +110,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("No character encoding on HTTP " +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("No character encoding on HTTP " +
                         nStatusCode +
                         " response to " +
                         eHttpMethod.getName () +
@@ -137,8 +137,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("No content type on HTTP " +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("No content type on HTTP " +
                         nStatusCode +
                         " response to " +
                         eHttpMethod.getName () +
@@ -167,8 +167,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     // UnifiedResponseDefaultSettings
     if (false)
       if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Headers on HTTP " +
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Headers on HTTP " +
                           nStatusCode +
                           " response to " +
                           eHttpMethod.getName () +

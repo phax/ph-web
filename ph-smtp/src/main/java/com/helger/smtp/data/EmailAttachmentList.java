@@ -49,7 +49,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 public class EmailAttachmentList implements IMutableEmailAttachmentList
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAttachmentList.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EmailAttachmentList.class);
 
   private final ICommonsOrderedMap <String, IEmailAttachment> m_aMap = new CommonsLinkedHashMap <> ();
 
@@ -87,8 +87,8 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
 
     final String sKey = aAttachment.getFilename ();
     if (m_aMap.containsKey (sKey))
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Overwriting email attachment with filename '" + sKey + "'");
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Overwriting email attachment with filename '" + sKey + "'");
     m_aMap.put (sKey, aAttachment);
   }
 

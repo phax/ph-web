@@ -61,7 +61,7 @@ public class XMLSitemapIndex implements Serializable
   private static final String ELEMENT_SITEMAP = "sitemap";
   private static final String ELEMENT_LOC = "loc";
   private static final String ELEMENT_LASTMOD = "lastmod";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapIndex.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XMLSitemapIndex.class);
 
   private final ICommonsList <XMLSitemapURLSet> m_aURLSets = new CommonsArrayList <> ();
   private final boolean m_bUseGZip;
@@ -243,7 +243,7 @@ public class XMLSitemapIndex implements Serializable
 
     if (m_aURLSets.isEmpty ())
     {
-      s_aLogger.warn ("No URL sets contained - not doing anything!");
+      LOGGER.warn ("No URL sets contained - not doing anything!");
       return ESuccess.FAILURE;
     }
 
@@ -255,8 +255,8 @@ public class XMLSitemapIndex implements Serializable
                                  aXWS)
                    .isFailure ())
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
       return ESuccess.FAILURE;
     }
 
@@ -269,8 +269,8 @@ public class XMLSitemapIndex implements Serializable
       final OutputStream aOS = _createOutputStream (aFile);
       if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, aXWS).isFailure ())
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to write single sitemap file " + aFile);
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to write single sitemap file " + aFile);
         return ESuccess.FAILURE;
       }
       nIndex++;

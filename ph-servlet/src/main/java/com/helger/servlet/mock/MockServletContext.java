@@ -84,7 +84,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public static final int SERVLET_SPEC_MINOR_VERSION = 0;
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
   public static final String DEFAULT_SERVLET_CONTEXT_PATH = "";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletContext.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockServletContext.class);
   private static final AtomicBoolean s_aReThrowListenerException = new AtomicBoolean (false);
 
   private final IReadableResourceProvider m_aResourceProvider;
@@ -165,8 +165,8 @@ public class MockServletContext implements IServletContext310To400Migration
       {
         if (isReThrowListenerException ())
           throw ex;
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to call contextInitialized on " + aListener, ex);
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to call contextInitialized on " + aListener, ex);
       }
   }
 
@@ -298,18 +298,18 @@ public class MockServletContext implements IServletContext310To400Migration
 
   public void log (@Nullable final String sMessage)
   {
-    s_aLogger.info (sMessage);
+    LOGGER.info (sMessage);
   }
 
   @Deprecated
   public void log (@Nullable final Exception ex, @Nullable final String sMessage)
   {
-    s_aLogger.info (sMessage, ex);
+    LOGGER.info (sMessage, ex);
   }
 
   public void log (@Nullable final String sMessage, @Nullable final Throwable ex)
   {
-    s_aLogger.info (sMessage, ex);
+    LOGGER.info (sMessage, ex);
   }
 
   @Nonnull
@@ -441,8 +441,8 @@ public class MockServletContext implements IServletContext310To400Migration
     final Servlet aServlet = m_aServletPool.getServletOfPath (sServletPath);
     if (aServlet == null)
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Found no servlet matching '" + sServletPath + "'");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Found no servlet matching '" + sServletPath + "'");
       return null;
     }
 
@@ -479,8 +479,8 @@ public class MockServletContext implements IServletContext310To400Migration
       {
         if (isReThrowListenerException ())
           throw ex;
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to call contextDestroyed on " + aListener, ex);
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to call contextDestroyed on " + aListener, ex);
       }
 
     m_aAttributes.clear ();

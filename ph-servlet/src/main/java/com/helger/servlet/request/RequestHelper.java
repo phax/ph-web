@@ -108,7 +108,7 @@ public final class RequestHelper
   public static final String MULTIPART_MIXED = MULTIPART + "mixed";
 
   private static final String SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP = "$requesthelp.requestparammap";
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestHelper.class);
 
   @PresentForCodeCoverage
   private static final RequestHelper s_aInstance = new RequestHelper ();
@@ -282,8 +282,8 @@ public final class RequestHelper
     if (StringHelper.hasNoText (sRequestURI))
     {
       // I just want to to know whether we get null or ""
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
       return "/";
     }
 
@@ -610,8 +610,8 @@ public final class RequestHelper
     // type check
     if (!aDstClass.isAssignableFrom (aValue.getClass ()))
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Request attribute " +
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Request attribute " +
                          sAttrName +
                          " is not of type " +
                          aDstClass.getName () +
@@ -858,7 +858,7 @@ public final class RequestHelper
       aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
       if (aUserAgent == null)
       {
-        s_aLogger.warn ("No user agent was passed in the request!");
+        LOGGER.warn ("No user agent was passed in the request!");
         aUserAgent = new UserAgent ("", new UserAgentElementList ());
       }
       ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);

@@ -39,7 +39,7 @@ import com.helger.commons.debug.GlobalDebug;
 @Immutable
 public final class HttpDebugger
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpDebugger.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpDebugger.class);
   private static final AtomicBoolean s_aEnabled = new AtomicBoolean (GlobalDebug.isDebugMode ());
 
   private HttpDebugger ()
@@ -66,8 +66,8 @@ public final class HttpDebugger
   public static void beforeRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("Before HTTP call: " +
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Before HTTP call: " +
                         aRequest.getMethod () +
                         " " +
                         aRequest.getURI () +
@@ -92,11 +92,11 @@ public final class HttpDebugger
                                    @Nullable final Throwable aCaughtException)
   {
     if (isEnabled ())
-      if (s_aLogger.isInfoEnabled ())
+      if (LOGGER.isInfoEnabled ())
       {
         final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
                                                                                              : null;
-        s_aLogger.info ("After HTTP call: " +
+        LOGGER.info ("After HTTP call: " +
                         aRequest.getMethod () +
                         (aResponse != null ? ". Response: " + aResponse : "") +
                         (aHex != null ? ". Status " + aHex.getStatusCode () : ""),

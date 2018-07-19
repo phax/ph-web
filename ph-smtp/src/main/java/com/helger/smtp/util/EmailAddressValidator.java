@@ -39,7 +39,7 @@ import com.helger.commons.email.EmailAddressHelper;
 @ThreadSafe
 public final class EmailAddressValidator
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EmailAddressValidator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidator.class);
   private static final AtomicBoolean s_aPerformMXRecordCheck = new AtomicBoolean (false);
 
   @PresentForCodeCoverage
@@ -58,8 +58,8 @@ public final class EmailAddressValidator
   {
     s_aPerformMXRecordCheck.set (bPerformMXRecordCheck);
 
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("Email address record check is " + (bPerformMXRecordCheck ? "enabled" : "disabled"));
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Email address record check is " + (bPerformMXRecordCheck ? "enabled" : "disabled"));
   }
 
   /**
@@ -89,8 +89,8 @@ public final class EmailAddressValidator
     {
       // Do not log this message, as this method is potentially called very
       // often!
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Failed to check for MX record on host '" +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Failed to check for MX record on host '" +
                         sHostName +
                         "': " +
                         ex.getClass ().getName () +

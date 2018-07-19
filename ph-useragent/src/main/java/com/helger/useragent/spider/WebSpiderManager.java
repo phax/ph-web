@@ -52,7 +52,7 @@ public final class WebSpiderManager
     static final WebSpiderManager s_aInstance = new WebSpiderManager ();
   }
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebSpiderManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebSpiderManager.class);
   private final ICommonsMap <String, WebSpiderInfo> m_aMap = new CommonsHashMap <> ();
 
   private WebSpiderManager ()
@@ -78,8 +78,8 @@ public final class WebSpiderManager
       final String sType = MicroHelper.getChildTextContent (eSpider, "type");
       final EWebSpiderType eType = EWebSpiderType.getFromIDOrNull (sType);
       if (sType != null && eType == null)
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Unknown web spider type '" + sType + "'");
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Unknown web spider type '" + sType + "'");
 
       aSpider.setType (eType);
       aSpider.setInfo (MicroHelper.getChildTextContent (eSpider, "info"));

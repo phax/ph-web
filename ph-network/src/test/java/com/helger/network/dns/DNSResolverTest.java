@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 public final class DNSResolverTest
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (DNSResolverTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolverTest.class);
 
   @Test
   public void testValid ()
@@ -45,6 +45,6 @@ public final class DNSResolverTest
     }
     assertNotNull (DNSResolver.getMyIpAddress ());
     if (false)
-      s_aLogger.info ("My IP address: " + DNSResolver.getMyIpAddress ());
+      LOGGER.info ("My IP address: " + DNSResolver.getMyIpAddress ());
   }
 }

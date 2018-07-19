@@ -38,7 +38,7 @@ import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 @NotThreadSafe
 public final class RequestScopeInitializer implements AutoCloseable
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScopeInitializer.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (RequestScopeInitializer.class);
 
   private final IRequestWebScope m_aRequestScope;
   private boolean m_bCreatedIt;
@@ -115,8 +115,8 @@ public final class RequestScopeInitializer implements AutoCloseable
       }
 
       // Wow...
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("The existing request scope is no longer valid - creating a new one: " +
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("The existing request scope is no longer valid - creating a new one: " +
                          aExistingRequestScope.toString ());
     }
 

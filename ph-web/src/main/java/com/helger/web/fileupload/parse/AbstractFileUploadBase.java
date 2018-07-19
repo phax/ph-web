@@ -79,7 +79,7 @@ import com.helger.web.progress.IProgressListener;
  */
 public abstract class AbstractFileUploadBase
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractFileUploadBase.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AbstractFileUploadBase.class);
 
   /**
    * The maximum size permitted for the complete request, as opposed to
@@ -334,8 +334,8 @@ public abstract class AbstractFileUploadBase
           catch (final Exception ex)
           {
             // ignore it
-            if (s_aLogger.isErrorEnabled ())
-              s_aLogger.error ("Failed to delete fileItem " + aFileItem, ex);
+            if (LOGGER.isErrorEnabled ())
+              LOGGER.error ("Failed to delete fileItem " + aFileItem, ex);
           }
         }
       }
@@ -551,8 +551,8 @@ public abstract class AbstractFileUploadBase
     if (nColonOffset == -1)
     {
       // This header line is malformed, skip it.
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Found malformed HTTP header line '" + sHeader + "'");
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Found malformed HTTP header line '" + sHeader + "'");
       return;
     }
     final String sHeaderName = sHeader.substring (0, nColonOffset).trim ();

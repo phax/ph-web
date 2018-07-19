@@ -44,7 +44,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @Immutable
 public final class XMLSitemapProvider
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XMLSitemapProvider.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XMLSitemapProvider.class);
   private static final ICommonsList <IXMLSitemapProviderSPI> s_aProviders;
 
   static
@@ -103,8 +103,8 @@ public final class XMLSitemapProvider
     if (s_aProviders.isEmpty ())
       return ESuccess.SUCCESS;
 
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("Writing XML sitemap files for " + s_aProviders.size () + " providers");
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Writing XML sitemap files for " + s_aProviders.size () + " providers");
 
     // Start creating the index
     final XMLSitemapIndex aIndex = new XMLSitemapIndex (bUseGZip);
@@ -113,23 +113,23 @@ public final class XMLSitemapProvider
       final XMLSitemapURLSet aURLSet = aSPI.createURLSet ();
       if (aURLSet == null)
       {
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("SPI implementation " + aSPI + " returned a null sitemap URL set!");
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("SPI implementation " + aSPI + " returned a null sitemap URL set!");
         continue;
       }
       if (aURLSet.getURLCount () > 0)
         aIndex.addURLSet (aURLSet);
       else
       {
-        if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("SPI implementation " + aSPI + " returned an empty URL set!");
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("SPI implementation " + aSPI + " returned an empty URL set!");
       }
     }
 
     // Did we get any URL set back?
     if (aIndex.getURLSetCount () == 0)
     {
-      s_aLogger.error ("No SPI implementation did deliver a valid URL set -> not doing anything!");
+      LOGGER.error ("No SPI implementation did deliver a valid URL set -> not doing anything!");
       return ESuccess.FAILURE;
     }
 

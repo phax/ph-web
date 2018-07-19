@@ -43,7 +43,7 @@ public final class HttpBasicAuth
   public static final char USERNAME_PASSWORD_SEPARATOR = ':';
   public static final Charset CHARSET = StandardCharsets.ISO_8859_1;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpDigestAuth.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpDigestAuth.class);
 
   @PresentForCodeCoverage
   private static final HttpBasicAuth s_aInstance = new HttpBasicAuth ();
@@ -69,15 +69,15 @@ public final class HttpBasicAuth
     final String [] aElements = RegExHelper.getSplitToArray (sRealHeader, "\\s+", 2);
     if (aElements.length != 2)
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("String is not Basic Auth: " + sRealHeader);
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("String is not Basic Auth: " + sRealHeader);
       return null;
     }
 
     if (!aElements[0].equals (HEADER_VALUE_PREFIX_BASIC))
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("String does not start with 'Basic': " + sRealHeader);
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("String does not start with 'Basic': " + sRealHeader);
       return null;
     }
 
@@ -86,8 +86,8 @@ public final class HttpBasicAuth
     final String sUsernamePassword = Base64.safeDecodeAsString (sEncodedCredentials, CHARSET);
     if (sUsernamePassword == null)
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
       return null;
     }
 

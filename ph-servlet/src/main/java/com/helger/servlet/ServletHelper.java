@@ -42,7 +42,7 @@ public final class ServletHelper
 {
   public static final boolean DEFAULT_LOG_EXCEPTIONS = false;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServletHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServletHelper.class);
   private static final AtomicBoolean s_aLogExceptions = new AtomicBoolean (DEFAULT_LOG_EXCEPTIONS);
 
   @PresentForCodeCoverage
@@ -105,8 +105,8 @@ public final class ServletHelper
     {
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
       if (isLogExceptions ())
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", ex);
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", ex);
     }
   }
 
@@ -143,8 +143,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine context path of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine context path of HTTP request", ex);
       }
 
     if (ret == null)
@@ -184,8 +184,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine path info of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine path info of HTTP request", ex);
       }
     return ret == null ? "" : ret;
   }
@@ -220,8 +220,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine query string of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine query string of HTTP request", ex);
       }
     return ret;
   }
@@ -249,8 +249,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine request URI of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine request URI of HTTP request", ex);
       }
     return ret;
   }
@@ -276,8 +276,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine request URL of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine request URL of HTTP request", ex);
       }
     return ret != null ? ret : new StringBuffer ();
   }
@@ -310,8 +310,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", ex);
       }
     return ret;
   }
@@ -344,8 +344,8 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
       }
     return ret;
   }

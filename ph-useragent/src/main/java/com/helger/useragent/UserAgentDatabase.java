@@ -43,7 +43,7 @@ import com.helger.commons.string.StringHelper;
 @ThreadSafe
 public final class UserAgentDatabase
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UserAgentDatabase.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UserAgentDatabase.class);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
@@ -82,8 +82,8 @@ public final class UserAgentDatabase
     final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUserAgents.add (sUserAgent));
     if (bAdded)
     {
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("Found new UserAgent '" + sUserAgent + "'");
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Found new UserAgent '" + sUserAgent + "'");
 
       s_aRWLock.readLocked ( () -> {
         if (s_aNewUserAgentCallback != null)

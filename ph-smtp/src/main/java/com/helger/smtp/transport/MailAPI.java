@@ -71,7 +71,7 @@ public final class MailAPI
   /** By default wait until all queued mails are send */
   public static final boolean DEFAULT_STOP_IMMEDIATLY = false;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MailAPI.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MailAPI.class);
   private static final IMutableStatisticsHandlerCounter s_aQueuedMailHdl = StatisticsManager.getCounterHandler (MailAPI.class.getName () +
                                                                                                                 "$mails.queued");
 
@@ -121,8 +121,8 @@ public final class MailAPI
         aMailQueue.setFailedMailQueue (aFailedMailQueue);
     });
 
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("Set FailedMailQueue to " + aFailedMailQueue);
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Set FailedMailQueue to " + aFailedMailQueue);
   }
 
   @Nonnull
@@ -232,7 +232,7 @@ public final class MailAPI
     {
       if (aEmailData == null)
       {
-        s_aLogger.error ("Mail data is null! Ignoring this item completely.");
+        LOGGER.error ("Mail data is null! Ignoring this item completely.");
         continue;
       }
 
@@ -245,15 +245,15 @@ public final class MailAPI
 
       if (aEmailData.getFrom () == null)
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
 
       if (aEmailData.getToCount () == 0)
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
 
@@ -264,8 +264,8 @@ public final class MailAPI
             hasNonVendorEmailAddress (aEmailData.getAllCc ()) ||
             hasNonVendorEmailAddress (aEmailData.getAllBcc ()))
         {
-          if (s_aLogger.isErrorEnabled ())
-            s_aLogger.error ("Debug mode: ignoring mail TO '" +
+          if (LOGGER.isErrorEnabled ())
+            LOGGER.error ("Debug mode: ignoring mail TO '" +
                              aEmailData.getAllTo () +
                              "'" +
                              (aEmailData.getCcCount () > 0 ? " and CC '" + aEmailData.getAllCc () + "'" : "") +
@@ -280,7 +280,7 @@ public final class MailAPI
       // Check if queue is already stopped
       if (aSMTPQueue.isStopped ())
       {
-        s_aLogger.error ("Queue is already stopped - not queuing!");
+        LOGGER.error ("Queue is already stopped - not queuing!");
         bCanQueue = false;
       }
 
@@ -291,15 +291,15 @@ public final class MailAPI
         // Check if a subject is present
         if (StringHelper.hasNoText (aEmailData.getSubject ()))
         {
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
           aEmailData.setSubject (DEFAULT_SUBJECT);
         }
 
         // Check if a body is present
         if (StringHelper.hasNoText (aEmailData.getBody ()))
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("Mail data has no body: " + aEmailData);
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Mail data has no body: " + aEmailData);
 
         if (bSendVendorOnlyMails)
         {
@@ -307,8 +307,8 @@ public final class MailAPI
           if (!StringHelper.startsWith (aEmailData.getSubject (), DEBUG_SUBJECT_PREFIX))
             aEmailData.setSubject (DEBUG_SUBJECT_PREFIX + aEmailData.getSubject ());
 
-          if (s_aLogger.isInfoEnabled ())
-            s_aLogger.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
+          if (LOGGER.isInfoEnabled ())
+            LOGGER.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
         }
 
         // Uses UTC timezone!
@@ -403,8 +403,8 @@ public final class MailAPI
       // Subtract 1 for the STOP_MESSAGE
       final int nQueueLength = _getTotalQueueLength () - 1;
       if (nQueues > 0 || nQueueLength > 0)
-        if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("Stopping central mail queues: " +
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Stopping central mail queues: " +
                           nQueues +
                           " queue" +
                           (nQueues == 1 ? "" : "s") +
@@ -428,7 +428,7 @@ public final class MailAPI
     }
     catch (final InterruptedException ex)
     {
-      s_aLogger.error ("Error stopping mail queue", ex);
+      LOGGER.error ("Error stopping mail queue", ex);
       Thread.currentThread ().interrupt ();
     }
     return EChange.CHANGED;

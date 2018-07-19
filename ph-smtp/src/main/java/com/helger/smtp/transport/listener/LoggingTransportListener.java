@@ -45,7 +45,7 @@ import com.helger.smtp.transport.MailSendDetails;
  */
 public class LoggingTransportListener implements IEmailDataTransportListener
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingConnectionListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingConnectionListener.class);
 
   private final IErrorLevel m_aErrorLevel;
 
@@ -114,12 +114,12 @@ public class LoggingTransportListener implements IEmailDataTransportListener
 
   public void messageDelivered (@Nonnull final EmailDataTransportEvent aEvent)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Message delivered: " + getLogString (aEvent));
+    LogHelper.log (LOGGER, m_aErrorLevel, "Message delivered: " + getLogString (aEvent));
   }
 
   public void messageNotDelivered (@Nonnull final EmailDataTransportEvent aEvent)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Message not delivered: " + getLogString (aEvent));
+    LogHelper.log (LOGGER, m_aErrorLevel, "Message not delivered: " + getLogString (aEvent));
   }
 
   @Override

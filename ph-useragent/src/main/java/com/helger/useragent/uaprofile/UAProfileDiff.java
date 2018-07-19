@@ -49,7 +49,7 @@ import com.helger.xml.microdom.serialize.MicroReader;
 public class UAProfileDiff implements Serializable
 {
   public static final int EXPECTED_MD5_DIGEST_BYTES = 16;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UAProfileDiff.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UAProfileDiff.class);
 
   private final String m_sData;
   private final byte [] m_aMD5Digest;
@@ -73,8 +73,8 @@ public class UAProfileDiff implements Serializable
                                                                EMessageDigestAlgorithm.MD5)
                                                       .bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("MD5 digest mismatch of profile diff data! Expected '" +
                           Base64.encodeBytes (aCalcedDigest) +
                           "' but have '" +
                           Base64.encodeBytes (m_aMD5Digest) +
@@ -83,8 +83,8 @@ public class UAProfileDiff implements Serializable
 
     m_aDocument = MicroReader.readMicroXML (sData);
     if (m_aDocument == null)
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Failed to parse profile diff data as XML '" + sData + "'");
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Failed to parse profile diff data as XML '" + sData + "'");
   }
 
   @Nonnull

@@ -51,7 +51,7 @@ public final class AcceptEncodingHandler
   /** Standard encoding "x-compress" */
   public static final String X_COMPRESS_ENCODING = "x-compress";
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AcceptEncodingHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AcceptEncodingHandler.class);
 
   @PresentForCodeCoverage
   private static final AcceptEncodingHandler s_aInstance = new AcceptEncodingHandler ();
@@ -78,8 +78,8 @@ public final class AcceptEncodingHandler
         final String sEncoding = aParts[0];
         if (StringHelper.hasNoText (sEncoding))
         {
-          if (s_aLogger.isWarnEnabled ())
-            s_aLogger.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
           continue;
         }
 

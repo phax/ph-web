@@ -42,7 +42,7 @@ import com.helger.web.scope.ISessionWebScope;
 @Immutable
 public final class WebScopeSessionHelper
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeSessionHelper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeSessionHelper.class);
 
   @PresentForCodeCoverage
   private static final WebScopeSessionHelper s_aInstance = new WebScopeSessionHelper ();
@@ -89,7 +89,7 @@ public final class WebScopeSessionHelper
     if (bInvalidateHttpSession)
     {
       // renew the session
-      s_aLogger.info ("Invalidating session " + aOldSessionScope.getID ());
+      LOGGER.info ("Invalidating session " + aOldSessionScope.getID ());
       aOldSessionScope.selfDestruct ();
     }
     else

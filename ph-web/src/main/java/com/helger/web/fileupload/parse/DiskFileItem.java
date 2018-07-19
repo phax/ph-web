@@ -87,7 +87,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   // Because of transient field
   private static final long serialVersionUID = 1379943273879417L;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItem.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (DiskFileItem.class);
 
   /**
    * Default content charset to be used when no explicit charset parameter is
@@ -380,8 +380,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
     if (!EqualsHelper.equals (sSecureName, m_sFilename))
-      if (s_aLogger.isInfoEnabled ())
-        s_aLogger.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
     return sSecureName;
   }
 
@@ -534,8 +534,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     {
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
     }
   }
 

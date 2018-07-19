@@ -48,7 +48,7 @@ import com.helger.smtp.settings.ISMTPSettings;
 final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailData> implements
                              IConcurrentPerformer <List <IMutableEmailData>>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MailQueuePerSMTP.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MailQueuePerSMTP.class);
 
   private final MailTransport m_aTransport;
   private FailedMailQueue m_aFailedMailQueue;
@@ -121,8 +121,8 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
       try
       {
         final int nMessages = aMessages.size ();
-        if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("Sending " + nMessages + " mail message" + (nMessages == 1 ? "" : "s") + "!");
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Sending " + nMessages + " mail message" + (nMessages == 1 ? "" : "s") + "!");
 
         // send messages
         final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = m_aTransport.send (aMessages);
@@ -134,8 +134,8 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
       catch (final Exception ex)
       {
         // No message specific error, but a settings specific error
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Generic error sending mail: " + ex.getMessage (), ex.getCause ());
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Generic error sending mail: " + ex.getMessage (), ex.getCause ());
 
         // mark all mails as failed even though some may have been re-send
         // already
@@ -169,8 +169,8 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
         for (final Object aLeftOver : aLeftOvers)
           m_aFailedMailQueue.add (new FailedMailData (aSMTPSettings, (IMutableEmailData) aLeftOver));
 
-        if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("Put " + aLeftOvers + " unsent mails into the failed mail queue because of immediate stop.");
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Put " + aLeftOvers + " unsent mails into the failed mail queue because of immediate stop.");
       }
     }
 

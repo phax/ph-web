@@ -45,7 +45,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 public final class ServletStatus implements Serializable
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ServletStatus.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ServletStatus.class);
 
   private final String m_sClassName;
   private EServletStatus m_eCurrentStatus;
@@ -79,8 +79,8 @@ public final class ServletStatus implements Serializable
       // If it happens, it is an indicator that the Servlet startup failed.
       // In that case please check the logfiles (e.g.
       // "localhost.yyyy-mm-dd.log")
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("The new status " +
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("The new status " +
                          eNewStatus +
                          " is not a valid successor of the old status " +
                          m_eCurrentStatus +

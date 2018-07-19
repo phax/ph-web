@@ -100,7 +100,7 @@ public class UnifiedResponse
   /** Maximum KB a CSS file might have in IE */
   public static final int MAX_CSS_KB_FOR_IE = 288;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UnifiedResponse.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UnifiedResponse.class);
   private static final AtomicInteger s_aResponseNum = new AtomicInteger (0);
 
   // Input fields set from request
@@ -223,20 +223,20 @@ public class UnifiedResponse
 
   protected void logInfo (@Nonnull final String sMsg)
   {
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info (getLogPrefix () + sMsg);
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info (getLogPrefix () + sMsg);
   }
 
   protected final void showRequestInfo ()
   {
     if (!m_bAlreadyEmittedRequestHeaders)
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("  Request Headers: " +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("  Request Headers: " +
                         m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       if (m_aResponseHeaderMap.isNotEmpty ())
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("  Response Headers: " +
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("  Response Headers: " +
                           m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       m_bAlreadyEmittedRequestHeaders = true;
     }
@@ -244,15 +244,15 @@ public class UnifiedResponse
 
   protected void logWarn (@Nonnull final String sMsg)
   {
-    if (s_aLogger.isWarnEnabled ())
-      s_aLogger.warn (getLogPrefix () + sMsg);
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn (getLogPrefix () + sMsg);
     showRequestInfo ();
   }
 
   protected void logError (@Nonnull final String sMsg)
   {
-    if (s_aLogger.isErrorEnabled ())
-      s_aLogger.error (getLogPrefix () + sMsg);
+    if (LOGGER.isErrorEnabled ())
+      LOGGER.error (getLogPrefix () + sMsg);
     showRequestInfo ();
   }
 
@@ -1375,8 +1375,8 @@ public class UnifiedResponse
         final InputStream aContentIS = m_aContentISP.getInputStream ();
         if (aContentIS == null)
         {
-          if (s_aLogger.isErrorEnabled ())
-            s_aLogger.error ("Failed to open input stream from " + m_aContentISP);
+          if (LOGGER.isErrorEnabled ())
+            LOGGER.error ("Failed to open input stream from " + m_aContentISP);
 
           // Handle it gracefully with a 404 and not with a 500
           aHttpResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);

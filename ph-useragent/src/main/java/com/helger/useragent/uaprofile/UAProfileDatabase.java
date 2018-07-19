@@ -59,7 +59,7 @@ public final class UAProfileDatabase
 {
   public static final int EXPECTED_MD5_DIGEST_LENGTH = 16;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (UAProfileDatabase.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (UAProfileDatabase.class);
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
@@ -137,16 +137,16 @@ public final class UAProfileDatabase
       final int nSemicolonIndex = sProfileDiff.indexOf (';');
       if (nSemicolonIndex == -1)
       {
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
         continue;
       }
       final String sProfileDiffIndex = sProfileDiff.substring (0, nSemicolonIndex);
       final int nIndex = StringParser.parseInt (sProfileDiffIndex, CGlobal.ILLEGAL_UINT);
       if (nIndex == CGlobal.ILLEGAL_UINT)
       {
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
         continue;
       }
 
@@ -177,8 +177,8 @@ public final class UAProfileDatabase
           }
           else
           {
-            if (s_aLogger.isWarnEnabled ())
-              s_aLogger.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
+            if (LOGGER.isWarnEnabled ())
+              LOGGER.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
           }
         }
       }
@@ -213,13 +213,13 @@ public final class UAProfileDatabase
             {
               aProfiles = aHeaderProvider.getHeaders (sExtNSValue + "-Profile");
               if (aProfiles.isEmpty ())
-                if (s_aLogger.isWarnEnabled ())
-                  s_aLogger.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
+                if (LOGGER.isWarnEnabled ())
+                  LOGGER.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
             }
             else
             {
-              if (s_aLogger.isWarnEnabled ())
-                s_aLogger.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
+              if (LOGGER.isWarnEnabled ())
+                LOGGER.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
             }
           }
         }
@@ -262,15 +262,15 @@ public final class UAProfileDatabase
                       aProfileDiffDigests.put (Integer.valueOf (nDiffIndex), aDigest);
                     else
                     {
-                      if (s_aLogger.isWarnEnabled ())
-                        s_aLogger.warn ("Decoded Base64 profile diff digest has an illegal length of " +
+                      if (LOGGER.isWarnEnabled ())
+                        LOGGER.warn ("Decoded Base64 profile diff digest has an illegal length of " +
                                         aDigest.length);
                     }
                   }
                   else
                   {
-                    if (s_aLogger.isWarnEnabled ())
-                      s_aLogger.warn ("Failed to decode Base64 profile diff digest '" +
+                    if (LOGGER.isWarnEnabled ())
+                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" +
                                       sDiffDigest +
                                       "' from token '" +
                                       sToken +
@@ -279,14 +279,14 @@ public final class UAProfileDatabase
                 }
                 else
                 {
-                  if (s_aLogger.isWarnEnabled ())
-                    s_aLogger.warn ("Found no diff digest in token '" + sToken + "'");
+                  if (LOGGER.isWarnEnabled ())
+                    LOGGER.warn ("Found no diff digest in token '" + sToken + "'");
                 }
               }
               else
               {
-                if (s_aLogger.isWarnEnabled ())
-                  s_aLogger.warn ("Failed to parse profile diff index from '" + sToken + "'");
+                if (LOGGER.isWarnEnabled ())
+                  LOGGER.warn ("Failed to parse profile diff index from '" + sToken + "'");
               }
             }
             else
@@ -296,8 +296,8 @@ public final class UAProfileDatabase
                 aProfileData.add (sToken);
               else
               {
-                if (s_aLogger.isErrorEnabled ())
-                  s_aLogger.error ("Failed to convert profile token '" + sToken + "' to a URL!");
+                if (LOGGER.isErrorEnabled ())
+                  LOGGER.error ("Failed to convert profile token '" + sToken + "' to a URL!");
               }
             }
           }
@@ -327,16 +327,16 @@ public final class UAProfileDatabase
       }
       else
       {
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Found profile diff data but no digest for index " + aIndex);
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Found profile diff data but no digest for index " + aIndex);
       }
     }
 
     // Consistency check
     for (final Integer aIndex : aProfileDiffDigests.keySet ())
       if (!aProfileDiffData.containsKey (aIndex))
-        if (s_aLogger.isWarnEnabled ())
-          s_aLogger.warn ("Found profile diff digest but no data for index " + aIndex);
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Found profile diff digest but no data for index " + aIndex);
 
     if (aProfileData.isEmpty () && aProfileDiffs.isEmpty ())
     {
@@ -362,8 +362,8 @@ public final class UAProfileDatabase
       final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUAProfiles.add (aUAProfile));
       if (bAdded)
       {
-        if (s_aLogger.isDebugEnabled ())
-          s_aLogger.debug ("Found UA-Profile info: " + aUAProfile.toString ());
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Found UA-Profile info: " + aUAProfile.toString ());
 
         if (s_aNewUAProfileCallback != null)
           s_aNewUAProfileCallback.accept (aUAProfile);

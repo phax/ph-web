@@ -37,7 +37,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class LoggingConnectionListener implements ConnectionListener, ICallback
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (LoggingConnectionListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingConnectionListener.class);
 
   private final IErrorLevel m_aErrorLevel;
 
@@ -59,17 +59,17 @@ public class LoggingConnectionListener implements ConnectionListener, ICallback
 
   public void opened (@Nonnull final ConnectionEvent aEvent)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Connected to SMTP server");
+    LogHelper.log (LOGGER, m_aErrorLevel, "Connected to SMTP server");
   }
 
   public void disconnected (@Nonnull final ConnectionEvent aEvent)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Disconnected from SMTP server");
+    LogHelper.log (LOGGER, m_aErrorLevel, "Disconnected from SMTP server");
   }
 
   public void closed (@Nonnull final ConnectionEvent aEvent)
   {
-    LogHelper.log (s_aLogger, m_aErrorLevel, "Closed connection to SMTP server");
+    LogHelper.log (LOGGER, m_aErrorLevel, "Closed connection to SMTP server");
   }
 
   @Override

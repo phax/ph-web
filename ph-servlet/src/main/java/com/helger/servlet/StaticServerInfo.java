@@ -40,7 +40,7 @@ import com.helger.servlet.request.RequestHelper;
 @Immutable
 public class StaticServerInfo implements Serializable
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (StaticServerInfo.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (StaticServerInfo.class);
   private static volatile StaticServerInfo s_aDefault;
 
   private final String m_sScheme;
@@ -144,8 +144,8 @@ public class StaticServerInfo implements Serializable
       throw new IllegalStateException ("Static server info already present!");
 
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
-    if (s_aLogger.isInfoEnabled ())
-      s_aLogger.info ("Static server information set: " + aDefault.toString ());
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Static server information set: " + aDefault.toString ());
     s_aDefault = aDefault;
     return aDefault;
   }

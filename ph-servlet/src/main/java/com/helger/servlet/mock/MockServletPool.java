@@ -113,7 +113,7 @@ public class MockServletPool
     }
   }
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletPool.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockServletPool.class);
 
   private final MockServletContext m_aSC;
   private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList <> ();
@@ -224,8 +224,8 @@ public class MockServletPool
     if (nMatchingItems == 0)
       return null;
     if (nMatchingItems > 1)
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
     return aMatchingItems.getFirst ().getServlet ();
   }
 
@@ -247,8 +247,8 @@ public class MockServletPool
       }
       catch (final Exception ex)
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Failed to destroy servlet " + aServletItem, ex);
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to destroy servlet " + aServletItem, ex);
       }
 
     m_aServlets.clear ();

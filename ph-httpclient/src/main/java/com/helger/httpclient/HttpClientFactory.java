@@ -76,7 +76,7 @@ public class HttpClientFactory implements IHttpClientProvider
   public static final int DEFAULT_RETRIES = 0;
   public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (HttpClientFactory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientFactory.class);
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -377,7 +377,7 @@ public class HttpClientFactory implements IHttpClientProvider
     catch (final SSLInitializationException ex)
     {
       // Fall through
-      s_aLogger.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
+      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
                       ex);
     }
 

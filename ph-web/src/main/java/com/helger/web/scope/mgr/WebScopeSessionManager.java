@@ -39,7 +39,7 @@ import com.helger.web.scope.ISessionWebScope;
 @Immutable
 public final class WebScopeSessionManager
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeSessionManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeSessionManager.class);
 
   @PresentForCodeCoverage
   private static final WebScopeSessionManager s_aInstance = new WebScopeSessionManager ();
@@ -64,8 +64,8 @@ public final class WebScopeSessionManager
       return null;
     if (!(aSessionScope instanceof ISessionWebScope))
     {
-      if (s_aLogger.isWarnEnabled ())
-        s_aLogger.warn ("The passed scope ID '" +
+      if (LOGGER.isWarnEnabled ())
+        LOGGER.warn ("The passed scope ID '" +
                         sScopeID +
                         "' is not a session web scope: " +
                         aSessionScope.toString ());

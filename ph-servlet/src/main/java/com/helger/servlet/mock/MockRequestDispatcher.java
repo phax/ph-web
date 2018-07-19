@@ -36,7 +36,7 @@ import com.helger.commons.ValueEnforcer;
 @NotThreadSafe
 public class MockRequestDispatcher implements RequestDispatcher
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MockRequestDispatcher.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MockRequestDispatcher.class);
 
   private final String m_sURL;
 
@@ -59,8 +59,8 @@ public class MockRequestDispatcher implements RequestDispatcher
       throw new IllegalStateException ("Cannot perform forward - response is already committed");
 
     getMockHttpServletResponse (aResponse).setForwardedUrl (m_sURL);
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("MockRequestDispatcher: forwarding to URL '" + m_sURL + "'");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("MockRequestDispatcher: forwarding to URL '" + m_sURL + "'");
   }
 
   public void include (@Nonnull final ServletRequest aRequest, @Nonnull final ServletResponse aResponse)
@@ -69,8 +69,8 @@ public class MockRequestDispatcher implements RequestDispatcher
     ValueEnforcer.notNull (aResponse, "Response");
 
     getMockHttpServletResponse (aResponse).setIncludedUrl (m_sURL);
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("MockRequestDispatcher: including URL '" + m_sURL + "'");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("MockRequestDispatcher: including URL '" + m_sURL + "'");
   }
 
   /**

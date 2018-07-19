@@ -33,7 +33,7 @@ import com.helger.web.progress.IProgressListener;
  */
 public class MultipartProgressNotifier implements Serializable
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (MultipartProgressNotifier.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (MultipartProgressNotifier.class);
   /**
    * The listener to invoke.
    */
@@ -62,8 +62,8 @@ public class MultipartProgressNotifier implements Serializable
   public MultipartProgressNotifier (@Nullable final IProgressListener aListener,
                                     @CheckForSigned final long nContentLength)
   {
-    if (aListener != null && s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("setting progress listener " + aListener);
+    if (aListener != null && LOGGER.isDebugEnabled ())
+      LOGGER.debug ("setting progress listener " + aListener);
     m_aListener = aListener;
     m_nContentLength = nContentLength;
   }

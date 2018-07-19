@@ -43,7 +43,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   // Because of transient field
   private static final long serialVersionUID = 8912368923565761267L;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScope.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScope.class);
 
   // Do not serialize the session
   private final transient HttpSession m_aHttpSession;
@@ -55,7 +55,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
     attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
       if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
-        s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
+        LOGGER.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
       return EContinue.CONTINUE;
     });
   }
@@ -90,7 +90,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     }
     catch (final RuntimeException ex)
     {
-      s_aLogger.warn ("Session '" + getID () + "' was already invalidated, but was still contained!");
+      LOGGER.warn ("Session '" + getID () + "' was already invalidated, but was still contained!");
     }
 
     // Continue with the regular destruction

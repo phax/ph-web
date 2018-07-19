@@ -45,7 +45,7 @@ import com.helger.xml.microdom.util.MicroHelper;
 
 public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <FailedMailData>
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (FailedMailDataMicroTypeConverter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (FailedMailDataMicroTypeConverter.class);
   private static final String ATTR_ID = "id";
   private static final String ATTR_ERRORDT = "errordt";
   private static final String ATTR_ORIGINALSENT_DT = "originalsentdt";
@@ -104,7 +104,7 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
     final String sID = eFailedMail.getAttributeValue (ATTR_ID);
     if (sID == null)
     {
-      s_aLogger.error ("Failed to read ID");
+      LOGGER.error ("Failed to read ID");
       return null;
     }
 
@@ -112,7 +112,7 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
     final String sErrorDT = eFailedMail.getAttributeValue (ATTR_ERRORDT);
     if (sErrorDT == null)
     {
-      s_aLogger.error ("Failed to read error date/time");
+      LOGGER.error ("Failed to read error date/time");
       return null;
     }
     LocalDateTime aErrorDT = PDTWebDateHelper.getLocalDateTimeFromXSD (sErrorDT);
@@ -120,8 +120,8 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       aErrorDT = TypeConverter.convert (sErrorDT, LocalDateTime.class);
     if (aErrorDT == null)
     {
-      if (s_aLogger.isErrorEnabled ())
-        s_aLogger.error ("Failed to parse error date '" + sErrorDT + "'");
+      if (LOGGER.isErrorEnabled ())
+        LOGGER.error ("Failed to parse error date '" + sErrorDT + "'");
       return null;
     }
 
@@ -139,7 +139,7 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
     final IMicroElement eSMTPSettings = eFailedMail.getFirstChildElement (ELEMENT_SMTP_SETTINGS);
     if (eSMTPSettings == null)
     {
-      s_aLogger.error ("Failed to get child element of SMTP settings!");
+      LOGGER.error ("Failed to get child element of SMTP settings!");
       return null;
     }
     final ISMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (eSMTPSettings, SMTPSettings.class);

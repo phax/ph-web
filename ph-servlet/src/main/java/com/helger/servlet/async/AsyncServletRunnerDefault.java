@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AsyncServletRunnerDefault implements IAsyncServletRunner
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncServletRunnerDefault.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AsyncServletRunnerDefault.class);
 
   public AsyncServletRunnerDefault ()
   {}
@@ -48,8 +48,8 @@ public class AsyncServletRunnerDefault implements IAsyncServletRunner
       if (o1 != null && o2 != null)
         aRunnable.run ();
       else
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Original request (" + o1 + ") or original response (" + o2 + ") are invalid!");
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Original request (" + o1 + ") or original response (" + o2 + ") are invalid!");
     };
     // Important to use "start" and to not use a custom ExecutorService, as this
     // "start" method assigns all the necessary variables etc.

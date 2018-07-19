@@ -49,7 +49,7 @@ import com.helger.xservlet.AbstractXServlet;
  */
 public final class XServletAsyncHandler implements IXServletHandler
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (XServletAsyncHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletAsyncHandler.class);
   private static IAsyncServletRunner s_aAsyncServletRunner = new AsyncServletRunnerDefault ();
 
   /**
@@ -127,8 +127,8 @@ public final class XServletAsyncHandler implements IXServletHandler
       }
       catch (final Exception ex)
       {
-        if (s_aLogger.isErrorEnabled ())
-          s_aLogger.error ("Error processing async request " + aExtAsyncCtx.getRequest (), ex);
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Error processing async request " + aExtAsyncCtx.getRequest (), ex);
 
         try
         {
@@ -140,7 +140,7 @@ public final class XServletAsyncHandler implements IXServletHandler
         }
         catch (final Exception ex2)
         {
-          s_aLogger.error ("Error writing first exception to response", ex2);
+          LOGGER.error ("Error writing first exception to response", ex2);
         }
       }
       finally
@@ -151,7 +151,7 @@ public final class XServletAsyncHandler implements IXServletHandler
         }
         catch (final Exception ex)
         {
-          s_aLogger.error ("Error completing async context", ex);
+          LOGGER.error ("Error completing async context", ex);
         }
       }
     });

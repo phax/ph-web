@@ -70,15 +70,14 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
                                     @Nonnull final IRequestWebScope aRequestScope,
                                     @Nonnegative final long nRunningMilliseconds)
   {
-    // TODO ph-commons 9.1.3 use version with Supplier
     LogHelper.log (LOGGER,
                    m_aErrorLevel,
-                   "Long running request. ID=" +
-                                  sUniqueRequestID +
-                                  "; millisecs=" +
-                                  nRunningMilliseconds +
-                                  "; URL=" +
-                                  aRequestScope.getURL ());
+                   () -> "Long running request. ID=" +
+                         sUniqueRequestID +
+                         "; millisecs=" +
+                         nRunningMilliseconds +
+                         "; URL=" +
+                         aRequestScope.getURL ());
   }
 
   @Override

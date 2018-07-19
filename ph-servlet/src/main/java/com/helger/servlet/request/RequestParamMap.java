@@ -271,10 +271,7 @@ public class RequestParamMap implements IRequestParamMap
   public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap)
   {
     ValueEnforcer.notNull (aMap, "Map");
-    // TODO ph-commons 9.1.3 Use new ctor
-    final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> (aMap.size ());
-    ret.putAllMapped (aMap, Function.identity (), RequestParamMapItem::getValue);
-    return ret;
+    return new CommonsLinkedHashMap <> (aMap, Function.identity (), RequestParamMapItem::getValue);
   }
 
   @Nonnull

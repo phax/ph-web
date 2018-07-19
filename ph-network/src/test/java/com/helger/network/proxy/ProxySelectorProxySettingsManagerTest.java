@@ -28,7 +28,7 @@ public final class ProxySelectorProxySettingsManagerTest
   public void before ()
   {
     ProxySettingsManager.removeAllProviders ();
-    ProxySelectorProxySettingsManager.setAsDefault ();
+    ProxySelectorProxySettingsManager.setAsDefault (true);
   }
 
   @Test

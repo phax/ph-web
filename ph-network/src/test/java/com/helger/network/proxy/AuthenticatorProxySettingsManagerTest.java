@@ -45,6 +45,15 @@ public final class AuthenticatorProxySettingsManagerTest
   }
 
   @Test
+  public void testNoConfigurationSimpleAPI ()
+  {
+    final PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at",
+                                                                                                             80,
+                                                                                                             "http");
+    assertNull (aPA);
+  }
+
+  @Test
   public void testProxyNoUser ()
   {
     ProxySettingsManager.registerProvider ( (sProtocol,
@@ -86,6 +95,52 @@ public final class AuthenticatorProxySettingsManagerTest
     assertNotNull (aPA);
     assertEquals ("user", aPA.getUserName ());
     assertEquals ("pw", new String (aPA.getPassword ()));
+  }
+
+  @Test
+  public void testProxySimpleAPI ()
+  {
+    ProxySettingsManager.registerProvider ( (sProtocol,
+                                             sHostName,
+                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
+                                                                                                   "http://proxysrv",
+                                                                                                   8080,
+                                                                                                   sHostName.contains ("orf.at") ? "user"
+                                                                                                                                 : null,
+                                                                                                   "pw")));
+
+    PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at",
+                                                                                                       80,
+                                                                                                       "http");
+    assertNotNull (aPA);
+    assertEquals ("user", aPA.getUserName ());
+    assertEquals ("pw", new String (aPA.getPassword ()));
+
+    aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("helger.com", 80, "http");
+    assertNull (aPA);
+  }
+
+  @Test
+  public void testProxyMultipleNone ()
+  {
+    ProxySettingsManager.registerProvider ( (sProtocol,
+                                             sHostName,
+                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
+                                                                                                   "http://proxysrv",
+                                                                                                   8080),
+                                                                                new ProxySettings (Proxy.Type.HTTP,
+                                                                                                   "http://proxysrv2",
+                                                                                                   8080)));
+
+    final PasswordAuthentication aPA = Authenticator.requestPasswordAuthentication ("orf.at",
+                                                                                    null,
+                                                                                    80,
+                                                                                    "http",
+                                                                                    "bla",
+                                                                                    null,
+                                                                                    null,
+                                                                                    RequestorType.PROXY);
+    assertNull (aPA);
   }
 
   @Test

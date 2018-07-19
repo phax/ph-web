@@ -25,7 +25,7 @@ import com.helger.network.proxy.settings.ProxySettingsManager;
 /**
  * An implementation of {@link ProxySelector} that uses
  * {@link ProxySettingsManager} to fetch the data. To install this proxy
- * selector globally, use the method {@link #setAsDefault()}.
+ * selector globally, use the method {@link #setAsDefault(boolean)}.
  *
  * @author Philip Helger
  */
@@ -33,18 +33,27 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxySelectorProxySettingsManager.class);
 
-  private final ProxySelector m_aDefault;
+  private final ProxySelector m_aFallback;
 
   /**
    * Constructor
    *
-   * @param aDefault
+   * @param aFallback
    *        Fallback {@link ProxySelector} to be used, if no matches are found
    *        in {@link ProxySettingsManager}. May be <code>null</code>.
    */
-  public ProxySelectorProxySettingsManager (@Nullable final ProxySelector aDefault)
+  public ProxySelectorProxySettingsManager (@Nullable final ProxySelector aFallback)
   {
-    m_aDefault = aDefault;
+    m_aFallback = aFallback;
+  }
+
+  /**
+   * @return The fallback instance as provided in the constructor.
+   */
+  @Nullable
+  public final ProxySelector getFallbackProxySelector ()
+  {
+    return m_aFallback;
   }
 
   /**
@@ -62,8 +71,8 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
       return new CommonsArrayList <> (aProxySettings, IProxySettings::getAsProxy);
 
     // 2. fallback to previous selector
-    if (m_aDefault != null)
-      return m_aDefault.select (aURI);
+    if (m_aFallback != null)
+      return m_aFallback.select (aURI);
 
     // None at all
     return null;
@@ -128,8 +137,8 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     if (handleConnectFailed (aURI, aAddr, ex).isUnhandled ())
     {
       // Pass to default (if present)
-      if (m_aDefault != null)
-        m_aDefault.connectFailed (aURI, aAddr, ex);
+      if (m_aFallback != null)
+        m_aFallback.connectFailed (aURI, aAddr, ex);
     }
   }
 
@@ -138,12 +147,17 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     return IPrivilegedAction.proxySelectorGetDefault ().invokeSafe () instanceof ProxySelectorProxySettingsManager;
   }
 
-  public static void setAsDefault ()
+  public static void setAsDefault (final boolean bUseOldAsFallback)
   {
     final ProxySelector aDefault = IPrivilegedAction.proxySelectorGetDefault ().invokeSafe ();
     if (!(aDefault instanceof ProxySelectorProxySettingsManager))
     {
-      IPrivilegedAction.proxySelectorSetDefault (new ProxySelectorProxySettingsManager (aDefault)).invokeSafe ();
+      IPrivilegedAction.proxySelectorSetDefault (new ProxySelectorProxySettingsManager (bUseOldAsFallback ? aDefault
+                                                                                                          : null))
+                       .invokeSafe ();
+
+      if (LOGGER.isInfoEnabled ())
+        LOGGER.info ("Using ProxySelectorProxySettingsManager as the default ProxySelector");
     }
   }
 }

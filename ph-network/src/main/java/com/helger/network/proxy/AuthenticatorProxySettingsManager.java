@@ -8,6 +8,9 @@ import java.net.URL;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.helger.network.proxy.settings.IProxySettings;
@@ -21,8 +24,9 @@ import com.helger.network.proxy.settings.ProxySettingsManager;
 public class AuthenticatorProxySettingsManager extends Authenticator
 {
   public static final AuthenticatorProxySettingsManager INSTANCE = new AuthenticatorProxySettingsManager ();
+  private static final Logger LOGGER = LoggerFactory.getLogger (AuthenticatorProxySettingsManager.class);
 
-  protected AuthenticatorProxySettingsManager ()
+  public AuthenticatorProxySettingsManager ()
   {}
 
   /**
@@ -32,6 +36,9 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   public static void setAsDefault ()
   {
     IPrivilegedAction.authenticatorSetDefault (INSTANCE).invokeSafe ();
+
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Using AuthenticatorProxySettingsManager as the default Authenticator");
   }
 
   /**
@@ -79,7 +86,7 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   {
     if (getRequestorType () != RequestorType.PROXY)
     {
-      // We only care about proxy requestors
+      // We only care about proxy requests
       return null;
     }
 
@@ -90,5 +97,32 @@ public class AuthenticatorProxySettingsManager extends Authenticator
                                             getRequestingPrompt (),
                                             getRequestingScheme (),
                                             getRequestingURL ());
+  }
+
+  /**
+   * Shortcut method for requesting proxy password authentication. This method
+   * can also be used, if this class is NOT the default Authenticator.
+   *
+   * @param sHostName
+   *        Hostname to query
+   * @param nPort
+   *        Port to query
+   * @param sProtocol
+   *        Protocol to use
+   * @return <code>null</code> if nothing is found.
+   */
+  @Nullable
+  public static PasswordAuthentication requestProxyPasswordAuthentication (@Nullable final String sHostName,
+                                                                           @Nullable final int nPort,
+                                                                           @Nullable final String sProtocol)
+  {
+    return requestPasswordAuthentication (sHostName,
+                                          (InetAddress) null,
+                                          nPort,
+                                          sProtocol,
+                                          (String) null,
+                                          (String) null,
+                                          (URL) null,
+                                          RequestorType.PROXY);
   }
 }

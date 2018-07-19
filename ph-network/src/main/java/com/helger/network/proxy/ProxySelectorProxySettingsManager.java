@@ -22,6 +22,13 @@ import com.helger.commons.state.EHandled;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
 
+/**
+ * An implementation of {@link ProxySelector} that uses
+ * {@link ProxySettingsManager} to fetch the data. To install this proxy
+ * selector globally, use the method {@link #setAsDefault()}.
+ *
+ * @author Philip Helger
+ */
 public class ProxySelectorProxySettingsManager extends ProxySelector
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxySelectorProxySettingsManager.class);
@@ -66,7 +73,6 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
   @Nonnull
   public List <Proxy> select (@Nonnull final URI aURI)
   {
-    // Let's stick to the specs
     ValueEnforcer.notNull (aURI, "URI");
 
     if (LOGGER.isDebugEnabled ())
@@ -127,12 +133,12 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     }
   }
 
-  public static boolean isInstalled ()
+  public static boolean isDefault ()
   {
     return IPrivilegedAction.proxySelectorGetDefault ().invokeSafe () instanceof ProxySelectorProxySettingsManager;
   }
 
-  public static void install ()
+  public static void setAsDefault ()
   {
     final ProxySelector aDefault = IPrivilegedAction.proxySelectorGetDefault ().invokeSafe ();
     if (!(aDefault instanceof ProxySelectorProxySettingsManager))

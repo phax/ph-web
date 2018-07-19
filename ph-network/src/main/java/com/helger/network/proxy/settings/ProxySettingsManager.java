@@ -9,6 +9,7 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,12 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.EHandled;
 
+/**
+ * Static manager class for {@link IProxySettingsProvider}.
+ * 
+ * @author Philip Helger
+ */
+@ThreadSafe
 public final class ProxySettingsManager
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxySettingsManager.class);

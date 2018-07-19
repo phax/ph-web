@@ -2,6 +2,7 @@ package com.helger.network.proxy.settings;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.SocketAddress;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -11,6 +12,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.functional.Predicates;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -27,6 +29,13 @@ public final class ProxySettings implements IProxySettings
   private final int m_nProxyPort;
   private final String m_sProxyUserName;
   private final String m_sProxyPassword;
+
+  public ProxySettings (@Nonnull final Proxy.Type eProxyType,
+                        @Nullable final String sProxyHost,
+                        @Nonnegative final int nProxyPort)
+  {
+    this (eProxyType, sProxyHost, nProxyPort, null, null);
+  }
 
   public ProxySettings (@Nonnull final Proxy.Type eProxyType,
                         @Nullable final String sProxyHost,
@@ -70,6 +79,20 @@ public final class ProxySettings implements IProxySettings
   public String getProxyPassword ()
   {
     return m_sProxyPassword;
+  }
+
+  public boolean hasSocketAddress (@Nullable final SocketAddress aAddr)
+  {
+    switch (m_eProxyType)
+    {
+      case DIRECT:
+        return aAddr == null;
+      case HTTP:
+      case SOCKS:
+        return aAddr instanceof InetSocketAddress && hasInetSocketAddress ((InetSocketAddress) aAddr);
+      default:
+        throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
+    }
   }
 
   @Nonnull
@@ -119,10 +142,10 @@ public final class ProxySettings implements IProxySettings
   public String toString ()
   {
     return new ToStringGenerator (this).append ("ProxyType", m_eProxyType)
-                                       .append ("ProxyHost", m_sProxyHost)
-                                       .append ("ProxyPort", m_nProxyPort)
-                                       .append ("ProxyUserName", m_sProxyUserName)
-                                       .appendPassword ("ProxyPassword")
+                                       .appendIfNotNull ("ProxyHost", m_sProxyHost)
+                                       .appendIf ("ProxyPort", m_nProxyPort, Predicates.intIsGE0 ())
+                                       .appendIfNotNull ("ProxyUserName", m_sProxyUserName)
+                                       .appendPasswordIf ("ProxyPassword", this::hasProxyPassword)
                                        .getToString ();
   }
 

@@ -17,12 +17,15 @@
 package com.helger.network.proxy.settings;
 
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.net.SocketAddress;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.string.StringHelper;
 
 /**
@@ -75,6 +78,33 @@ public interface IProxySettings extends Serializable
   {
     return getProxyPassword () != null;
   }
+
+  /**
+   * Check if hostname and port match the ones from the provided
+   * {@link InetSocketAddress}.
+   * 
+   * @param aAddr
+   *        The address to compare with. May be <code>null</code>.
+   * @return <code>true</code> if the unresolved hostname and the port match.
+   */
+  default boolean hasInetSocketAddress (@Nullable final InetSocketAddress aAddr)
+  {
+    return aAddr != null &&
+           EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) &&
+           getProxyPort () == aAddr.getPort ();
+  }
+
+  /**
+   * Check if these settings have the provided socket address.
+   *
+   * @param aAddr
+   *        The socket address to compare to. May be <code>null</code>.
+   * @return <code>true</code> if the proxy type is DIRECT and the address is
+   *         <code>null</code>, or if the object is of type
+   *         {@link InetSocketAddress} and the values match.
+   * @see #hasInetSocketAddress(InetSocketAddress)
+   */
+  boolean hasSocketAddress (@Nullable SocketAddress aAddr);
 
   /**
    * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy

@@ -16,6 +16,7 @@
  */
 package com.helger.network.proxy.autoconf;
 
+import java.net.Proxy;
 import java.net.URI;
 
 import javax.annotation.Nonnull;
@@ -36,13 +37,10 @@ import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.timing.StopWatch;
-import com.helger.commons.url.URLProtocolRegistry;
 import com.helger.network.dns.DNSResolver;
-import com.helger.network.proxy.config.EHttpProxyType;
-import com.helger.network.proxy.config.HttpProxyConfig;
-import com.helger.network.proxy.config.IProxyConfig;
-import com.helger.network.proxy.config.NoProxyConfig;
 import com.helger.network.proxy.config.SocksProxyConfig;
+import com.helger.network.proxy.settings.IProxySettings;
+import com.helger.network.proxy.settings.ProxySettings;
 
 public final class ProxyAutoConfigHelper
 {
@@ -69,11 +67,11 @@ public final class ProxyAutoConfigHelper
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
         if (s_aLogger.isInfoEnabled ())
-          s_aLogger.info ("Initial PAC script compilaiton took " + nMS + " ms");
+          s_aLogger.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
     }
     catch (final ScriptException ex)
     {
-      throw new InitializationException ("Failed to init ProxyAutoConfig Nashorn script!", ex);
+      throw new InitializationException ("Failed to init ProxyAutoConfig (PAC) Nashorn script!", ex);
     }
   }
 
@@ -97,7 +95,7 @@ public final class ProxyAutoConfigHelper
   @Nullable
   public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
-    // Call "FindProxyForURL" or "FindProxyForURLEx" that must be defined in the
+    // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
     // PAC file!
     final Object aResult = s_aScriptEngine.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
     if (aResult == null)
@@ -115,16 +113,16 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public ICommonsList <IProxyConfig> getProxyListForURL (@Nonnull final URI aURI) throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final URI aURI) throws ScriptException
   {
     return getProxyListForURL (aURI.toString (), aURI.getHost ());
   }
 
   @Nonnull
-  public ICommonsList <IProxyConfig> getProxyListForURL (@Nonnull final String sURL,
-                                                         @Nonnull final String sHost) throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL,
+                                                           @Nonnull final String sHost) throws ScriptException
   {
-    final ICommonsList <IProxyConfig> ret = new CommonsArrayList <> ();
+    final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
     if (sProxyCode != null)
     {
@@ -138,7 +136,7 @@ public final class ProxyAutoConfigHelper
           sDirective = sDirective.trim ();
           if (sDirective.equals ("DIRECT"))
           {
-            ret.add (new NoProxyConfig ());
+            ret.add (ProxySettings.createNoProxySettings ());
             bError = false;
           }
           else
@@ -152,11 +150,8 @@ public final class ProxyAutoConfigHelper
                 {
                   final String sProxyHost = aParts[0];
                   final String sProxyPort = aParts[1];
-                  final EHttpProxyType eProxyType = EHttpProxyType.getFromURLProtocolOrDefault (URLProtocolRegistry.getInstance ()
-                                                                                                                   .getProtocol (sProxyHost),
-                                                                                                EHttpProxyType.HTTP);
-                  final int nProxyPort = StringParser.parseInt (sProxyPort, eProxyType.getDefaultPort ());
-                  ret.add (new HttpProxyConfig (eProxyType, sProxyHost, nProxyPort));
+                  final int nProxyPort = StringParser.parseInt (sProxyPort, -1);
+                  ret.add (new ProxySettings (Proxy.Type.HTTP, sProxyHost, nProxyPort));
                   bError = false;
                 }
               }
@@ -174,7 +169,7 @@ public final class ProxyAutoConfigHelper
                     final String sProxyPort = aParts[1];
                     final int nProxyPort = StringParser.parseInt (sProxyPort,
                                                                   SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
-                    ret.add (new SocksProxyConfig (sProxyHost, nProxyPort));
+                    ret.add (new ProxySettings (Proxy.Type.SOCKS, sProxyHost, nProxyPort));
                     bError = false;
                   }
                 }

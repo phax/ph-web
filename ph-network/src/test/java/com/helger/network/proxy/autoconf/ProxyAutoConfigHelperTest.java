@@ -21,6 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.net.Proxy;
+
 import javax.annotation.Nonnull;
 import javax.script.ScriptException;
 
@@ -32,10 +34,8 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
 import com.helger.commons.url.URLHelper;
-import com.helger.network.proxy.config.EHttpProxyType;
-import com.helger.network.proxy.config.HttpProxyConfig;
-import com.helger.network.proxy.config.IProxyConfig;
-import com.helger.network.proxy.config.NoProxyConfig;
+import com.helger.network.proxy.settings.IProxySettings;
+import com.helger.network.proxy.settings.ProxySettings;
 
 /**
  * Unit test class for class {@link ProxyAutoConfigHelper}.
@@ -63,14 +63,15 @@ public final class ProxyAutoConfigHelperTest
       final IReadableResource aRes = new ClassPathResource ("proxyautoconf/pacfiles/" + sFile);
       assertTrue (aRes.exists ());
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (aRes);
-      final ICommonsList <IProxyConfig> aPC = aPACHelper.getProxyListForURL (URLHelper.getAsURI ("http://www.orf.at/index.html"));
+      final ICommonsList <IProxySettings> aPC = aPACHelper.getProxyListForURL (URLHelper.getAsURI ("http://www.orf.at/index.html"));
       assertNotNull (sFile + " failed", aPC);
       assertFalse (sFile + " failed", aPC.isEmpty ());
+      s_aLogger.info ("  Found the following " + aPC.size () + " entries: " + aPC);
     }
   }
 
   @Nonnull
-  private static IProxyConfig _getResolved (final String sJS) throws ScriptException
+  private static IProxySettings _getResolved (final String sJS) throws ScriptException
   {
     final String sCode = "function FindProxyForURL(url, host) { " + sJS + " }";
     final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sCode);
@@ -80,13 +81,12 @@ public final class ProxyAutoConfigHelperTest
   @Test
   public void testExplicit () throws ScriptException
   {
-    assertEquals (new HttpProxyConfig (EHttpProxyType.HTTP, "1.2.3.4", 8080),
-                  _getResolved ("return 'PROXY 1.2.3.4:8080';"));
-    assertEquals (new NoProxyConfig (),
+    assertEquals (new ProxySettings (Proxy.Type.HTTP, "1.2.3.4", 8080), _getResolved ("return 'PROXY 1.2.3.4:8080';"));
+    assertEquals (ProxySettings.createNoProxySettings (),
                   _getResolved ("return isInNetEx('127.0.0.1', '127.0.0.0/16') ? 'DIRECT' : 'PROXY 1.2.3.4:8080';"));
-    assertEquals (new NoProxyConfig (),
+    assertEquals (ProxySettings.createNoProxySettings (),
                   _getResolved ("return isInNetEx('127.0.0.1', '127.0.0.0/24') ? 'DIRECT' : 'PROXY 1.2.3.4:8080';"));
-    assertEquals (new NoProxyConfig (),
+    assertEquals (ProxySettings.createNoProxySettings (),
                   _getResolved ("return isInNetEx('127.0.1.0', '127.0.0.0/24') ? 'PROXY 1.2.3.4:8080' : 'DIRECT';"));
   }
 }

@@ -90,8 +90,7 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
 
   /**
    * @param aURI
-   *        The URI that the proxy at sa failed to serve. Never
-   *        <code>null</code>.
+   *        The URI that the proxy failed to serve. Never <code>null</code>.
    * @param aAddr
    *        The socket address of the proxy/SOCKS server. Never
    *        <code>null</code>.
@@ -117,8 +116,8 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     ValueEnforcer.notNull (aAddr, "SockerAddr");
     ValueEnforcer.notNull (ex, "Exception");
 
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Connection to '" + aURI + "' using " + aAddr + " failed", ex);
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Connection to '" + aURI + "' using proxy " + aAddr + " failed", ex);
 
     if (handleConnectFailed (aURI, aAddr, ex).isUnhandled ())
     {

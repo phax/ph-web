@@ -113,13 +113,30 @@ public final class ProxySettingsManager
   }
 
   @Nonnull
-  public static EHandled onConnectionFailed (@Nonnull final URI aURI, final SocketAddress aAddr, final IOException ex)
+  public static EHandled onConnectionFailed (@Nonnull final URI aURI,
+                                             @Nonnull final SocketAddress aAddr,
+                                             @Nonnull final IOException ex)
   {
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Connection to '" + aURI + "' using proxy at " + aAddr + " failed", ex);
+    final String sProtocol = aURI.getScheme ();
+    final String sHostName = aURI.getHost ();
+    final int nPort = aURI.getPort ();
 
-    // Shall we add an error counter here?
+    int nInvokedProviders = 0;
 
-    return EHandled.HANDLED;
+    // For all providers
+    for (final IProxySettingsProvider aProvider : getAllProviders ())
+    {
+      final ICommonsList <IProxySettings> aMatches = aProvider.getAllProxySettings (sProtocol, sHostName, nPort);
+      // For all matching proxies
+      for (final IProxySettings aProxySettings : aMatches)
+        if (aProxySettings.hasSocketAddress (aAddr))
+        {
+          // Found a matching proxy
+          aProvider.onConnectionFailed (aProxySettings, aURI, aAddr, ex);
+          nInvokedProviders++;
+        }
+    }
+
+    return EHandled.valueOf (nInvokedProviders > 0);
   }
 }

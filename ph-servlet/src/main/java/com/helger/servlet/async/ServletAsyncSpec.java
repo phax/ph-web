@@ -29,6 +29,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
+import com.helger.commons.functional.Predicates;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -141,7 +142,7 @@ public class ServletAsyncSpec
   public String toString ()
   {
     return new ToStringGenerator (this).append ("Asynchronous", m_bAsynchronous)
-                                       .appendIf ("TimeoutMillis", m_nTimeoutMillis, (final long x) -> x > 0)
+                                       .appendIf ("TimeoutMillis", m_nTimeoutMillis, Predicates.longIsGT0 ())
                                        .append ("AsyncListeners", m_aAsyncListeners)
                                        .getToString ();
   }

@@ -22,7 +22,7 @@ import org.junit.Test;
 public final class ProxySettingsTest
 {
   @Test
-  public void testBasic ()
+  public void testHttp ()
   {
     final ProxySettings a = new ProxySettings (Proxy.Type.HTTP, "a", 17, "b", "c");
     assertSame (Proxy.Type.HTTP, a.getProxyType ());
@@ -39,6 +39,33 @@ public final class ProxySettingsTest
     assertTrue (p.address () instanceof InetSocketAddress);
     assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
     assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
+
+    final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
+    assertNotNull (aPA);
+    assertEquals ("b", aPA.getUserName ());
+    assertArrayEquals ("c".toCharArray (), aPA.getPassword ());
+  }
+
+  @Test
+  public void testSocks ()
+  {
+    final ProxySettings a = new ProxySettings (Proxy.Type.HTTP, "a", 17, "b", "c");
+    assertSame (Proxy.Type.SOCKS, a.getProxyType ());
+    assertEquals ("a", a.getProxyHost ());
+    assertEquals (17, a.getProxyPort ());
+    assertEquals ("b", a.getProxyUserName ());
+    assertTrue (a.hasProxyUserName ());
+    assertEquals ("c", a.getProxyPassword ());
+    assertTrue (a.hasProxyPassword ());
+
+    final Proxy p = a.getAsProxy (false);
+    assertNotNull (p);
+    assertEquals (Proxy.Type.SOCKS, p.type ());
+    assertTrue (p.address () instanceof InetSocketAddress);
+    assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
+    assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
 
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNotNull (aPA);
@@ -64,6 +91,7 @@ public final class ProxySettingsTest
     assertTrue (p.address () instanceof InetSocketAddress);
     assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
     assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
 
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNotNull (aPA);
@@ -89,6 +117,7 @@ public final class ProxySettingsTest
     assertTrue (p.address () instanceof InetSocketAddress);
     assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
     assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
 
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNull (aPA);
@@ -112,6 +141,7 @@ public final class ProxySettingsTest
     assertTrue (p.address () instanceof InetSocketAddress);
     assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
     assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
 
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNull (aPA);
@@ -135,6 +165,7 @@ public final class ProxySettingsTest
     assertTrue (p.address () instanceof InetSocketAddress);
     assertEquals ("a", ((InetSocketAddress) p.address ()).getHostString ());
     assertEquals (17, ((InetSocketAddress) p.address ()).getPort ());
+    assertTrue (a.hasSocketAddress (p.address ()));
 
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNull (aPA);

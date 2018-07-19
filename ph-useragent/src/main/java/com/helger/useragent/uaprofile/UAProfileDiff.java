@@ -71,7 +71,7 @@ public class UAProfileDiff implements Serializable
       // Verify MD5 digest
       final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
                                                                EMessageDigestAlgorithm.MD5)
-                                                      .getAllDigestBytes ();
+                                                      .bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         if (s_aLogger.isWarnEnabled ())
           s_aLogger.warn ("MD5 digest mismatch of profile diff data! Expected '" +

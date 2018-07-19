@@ -26,10 +26,11 @@ Java library with common web stuff. It contains the following sub-projects:
 
 * v9.0.2 - work in progress
     * Fixed OSGI ServiceProvider configuration
-    * Requires ph-commons 9.1.2
+    * Requires ph-commons 9.1.3
     * Fixed `XServlet` status reset in case Servlet init failed
     * Added classes around `RequestFieldDataMultiValue`
     * Updated to Apache HttpCore 4.4.10
+    * Reworked the ph-network/proxy handling (in an incompatible way)
 * v9.0.1 - 2018-04-18
     * Updated to javax.mail 1.6.1
     * Removed exclusion of javax.activation

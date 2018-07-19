@@ -31,6 +31,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Added classes around `RequestFieldDataMultiValue`
     * Updated to Apache HttpCore 4.4.10
     * Reworked the ph-network/proxy handling (in an incompatible way)
+    * Added `IRequestParameter.getAsStringTrimmed`
 * v9.0.1 - 2018-04-18
     * Updated to javax.mail 1.6.1
     * Removed exclusion of javax.activation

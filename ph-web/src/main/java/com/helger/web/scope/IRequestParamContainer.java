@@ -196,4 +196,36 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
     // Neither nor - default!
     return bDefaultValue;
   }
+
+  /**
+   * Same as {@link #getAsString(String)} but with a trimmed return value.
+   *
+   * @param sFieldName
+   *        The field name to query. May be <code>null</code>.
+   * @return <code>null</code> if no such parameter name is present.
+   * @since 9.0.2
+   */
+  @Nullable
+  default String getAsStringTrimmed (@Nullable final String sFieldName)
+  {
+    return StringHelper.trim (getAsString (sFieldName));
+  }
+
+  /**
+   * Same as {@link #getAsString(String, String)} but with a trimmed return
+   * value.
+   *
+   * @param sFieldName
+   *        The field name to query. May be <code>null</code>.
+   * @param sDefault
+   *        The value to be returned if the retrieved value is <code>null</code>
+   *        .
+   * @return <code>null</code> if no such parameter name is present.
+   * @since 9.0.2
+   */
+  @Nullable
+  default String getAsStringTrimmed (@Nullable final String sFieldName, @Nullable final String sDefault)
+  {
+    return StringHelper.trim (getAsString (sFieldName, sDefault));
+  }
 }

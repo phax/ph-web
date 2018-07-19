@@ -147,4 +147,34 @@ public final class ProxySelectorProxySettingsManagerTest
     assertEquals ("http://proxysrv2", ((InetSocketAddress) aProxies.get (1).address ()).getHostString ());
     assertEquals (8080, ((InetSocketAddress) aProxies.get (1).address ()).getPort ());
   }
+
+  @Test
+  public void testMultipleProviders ()
+  {
+    ProxySettingsManager.registerProvider ( (sProtocol,
+                                             sHostName,
+                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
+                                                                                                   "http://proxysrv",
+                                                                                                   8080)));
+    ProxySettingsManager.registerProvider ( (sProtocol,
+                                             sHostName,
+                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
+                                                                                                   "http://proxysrv2",
+                                                                                                   8080)));
+
+    // Will choose the http proxy
+    final List <Proxy> aProxies = ProxySelector.getDefault ()
+                                               .select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
+    assertNotNull (aProxies);
+    assertEquals (2, aProxies.size ());
+    assertNotNull (aProxies.get (0));
+    assertEquals (Proxy.Type.HTTP, aProxies.get (0).type ());
+    assertEquals ("http://proxysrv", ((InetSocketAddress) aProxies.get (0).address ()).getHostString ());
+    assertEquals (8080, ((InetSocketAddress) aProxies.get (0).address ()).getPort ());
+
+    assertNotNull (aProxies.get (1));
+    assertEquals (Proxy.Type.HTTP, aProxies.get (1).type ());
+    assertEquals ("http://proxysrv2", ((InetSocketAddress) aProxies.get (1).address ()).getHostString ());
+    assertEquals (8080, ((InetSocketAddress) aProxies.get (1).address ()).getPort ());
+  }
 }

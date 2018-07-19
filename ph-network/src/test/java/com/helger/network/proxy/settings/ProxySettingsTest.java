@@ -50,7 +50,7 @@ public final class ProxySettingsTest
   @Test
   public void testSocks ()
   {
-    final ProxySettings a = new ProxySettings (Proxy.Type.HTTP, "a", 17, "b", "c");
+    final ProxySettings a = new ProxySettings (Proxy.Type.SOCKS, "a", 17, "b", "c");
     assertSame (Proxy.Type.SOCKS, a.getProxyType ());
     assertEquals ("a", a.getProxyHost ());
     assertEquals (17, a.getProxyPort ());

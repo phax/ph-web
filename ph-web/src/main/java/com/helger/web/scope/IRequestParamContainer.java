@@ -198,7 +198,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * Same as {@link #getAsString(String)} but with a trimmed return value.
+   * Same as <code>getAsString</code> but with a trimmed return value.
    *
    * @param sFieldName
    *        The field name to query. May be <code>null</code>.
@@ -212,8 +212,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * Same as {@link #getAsString(String, String)} but with a trimmed return
-   * value.
+   * Same as <code>getAsString</code> but with a trimmed return value.
    *
    * @param sFieldName
    *        The field name to query. May be <code>null</code>.

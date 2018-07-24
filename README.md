@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.0.2 - work in progress
+* v9.0.2 - 2018-07-24
     * Fixed OSGI ServiceProvider configuration
     * Requires ph-commons 9.1.3
     * Fixed `XServlet` status reset in case Servlet init failed
@@ -89,7 +89,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.1</version>
+  <version>9.0.2</version>
 </dependency>
 ```
 

@@ -88,9 +88,9 @@ public class RequestParamMap implements IRequestParamMap
     }
   }
 
-  private void _recursiveAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
-                                  @Nonnull final String sName,
-                                  @Nullable final Object aValue)
+  private static void _recursiveAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
+                                         @Nonnull final String sName,
+                                         @Nullable final Object aValue)
   {
     final int nIndex = sName.indexOf (s_sOpen);
     if (nIndex == -1)

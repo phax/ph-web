@@ -150,7 +150,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     }
   }
 
-  private String _getContentFromParameterMap (@Nonnull final Map <String, String []> aParameterMap)
+  @Nonnull
+  private static String _getContentFromParameterMap (@Nonnull final Map <String, String []> aParameterMap)
   {
     final StringBuilder aSB = new StringBuilder ();
     for (final Map.Entry <String, String []> aEntry : aParameterMap.entrySet ())

@@ -18,6 +18,8 @@ package com.helger.http;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.annotation.DevelopersNote;
+
 /**
  * HTTP response header "Referrer-Policy" values. See
  * https://scotthelme.co.uk/a-new-security-header-referrer-policy/
@@ -30,14 +32,26 @@ public enum EHttpReferrerPolicy
   NO_REFERRER ("no-referrer"),
   NO_REFERRER_WHEN_DOWNGRADE ("no-referrer-when-downgrade"),
   // Not supported in Chrome 59
-  _SAME_ORIGIN ("same-origin"),
+  SAME_ORIGIN ("same-origin"),
   ORIGIN ("origin"),
   // Not supported in Chrome 59
-  _STRICT_ORIGIN ("strict-origin"),
+  STRICT_ORIGIN ("strict-origin"),
   ORIGIN_WHEN_CROSS_ORIGIN ("origin-when-cross-origin"),
   // Not supported in Chrome 59
-  _STRICT_ORIGIN_WHEN_CROSS_ORIGIN ("strict-origin-when-cross-origin"),
+  STRICT_ORIGIN_WHEN_CROSS_ORIGIN ("strict-origin-when-cross-origin"),
   UNSAFE_URL ("unsafe-url");
+
+  @Deprecated
+  @DevelopersNote ("Old name")
+  public static final EHttpReferrerPolicy _SAME_ORIGIN = SAME_ORIGIN;
+
+  @Deprecated
+  @DevelopersNote ("Old name")
+  public static final EHttpReferrerPolicy _STRICT_ORIGIN = STRICT_ORIGIN;
+
+  @Deprecated
+  @DevelopersNote ("Old name")
+  public static final EHttpReferrerPolicy _STRICT_ORIGIN_WHEN_CROSS_ORIGIN = STRICT_ORIGIN_WHEN_CROSS_ORIGIN;
 
   private String m_sValue;
 

@@ -24,6 +24,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.0.3 - work in progress
+    * Added new class `AbstractXFilterUnifiedResponse`
 * v9.0.2 - 2018-07-24
     * Fixed OSGI ServiceProvider configuration
     * Requires ph-commons 9.1.3

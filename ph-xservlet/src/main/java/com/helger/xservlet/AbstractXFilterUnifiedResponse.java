@@ -56,12 +56,15 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    *         response is rendered to the HTTP servlet response and the filter
    *         chain stops. On {@link EContinue#CONTINUE} the content of the unified
    *         response is discarded and the filter chain continues as normal.
+   * @throws IOException
+   *         In case of an error
    * @throws ServletException
    *         In case of an error
    */
   @Nonnull
   protected abstract EContinue onFilterBefore (@Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                                               @Nonnull UnifiedResponse aUnifiedResponse) throws ServletException;
+                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException,
+                                                                                          ServletException;
 
   @Override
   @Nonnull
@@ -103,5 +106,4 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
     aUnifiedResponse.applyToResponse (aHttpResponse);
     return EContinue.BREAK;
   }
-
 }

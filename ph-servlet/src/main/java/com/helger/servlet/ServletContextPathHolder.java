@@ -18,6 +18,7 @@ package com.helger.servlet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
@@ -33,12 +34,14 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
  *
  * @author Philip Helger
  */
+@NotThreadSafe
 public final class ServletContextPathHolder
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ServletContextPathHolder.class);
 
   private static String s_sServletContextPath;
   private static String s_sCustomContextPath;
+  private static boolean s_bSilentMode = false;
 
   @PresentForCodeCoverage
   private static final ServletContextPathHolder s_aInstance = new ServletContextPathHolder ();
@@ -46,12 +49,24 @@ public final class ServletContextPathHolder
   private ServletContextPathHolder ()
   {}
 
+  public static boolean setSilentMode (final boolean bSilentMode)
+  {
+    final boolean bOld = s_bSilentMode;
+    s_bSilentMode = bSilentMode;
+    return bOld;
+  }
+
+  public static boolean isSilentMode ()
+  {
+    return s_bSilentMode;
+  }
+
   public static void setServletContextPath (@Nonnull final String sServletContextPath)
   {
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
     if (s_sServletContextPath == null)
     {
-      if (LOGGER.isInfoEnabled ())
+      if (LOGGER.isInfoEnabled () && !isSilentMode ())
         LOGGER.info ("Setting servlet context path to '" + sServletContextPath + "'!");
       s_sServletContextPath = sServletContextPath;
     }
@@ -60,11 +75,11 @@ public final class ServletContextPathHolder
       {
         if (LOGGER.isErrorEnabled ())
           LOGGER.error ("Overwriting servlet context path '" +
-                           s_sServletContextPath +
-                           "' with '" +
-                           sServletContextPath +
-                           "'",
-                           new IllegalStateException ("Just for tracking how this happens"));
+                        s_sServletContextPath +
+                        "' with '" +
+                        sServletContextPath +
+                        "'",
+                        new IllegalStateException ("Just for tracking how this happens"));
         s_sServletContextPath = sServletContextPath;
       }
   }
@@ -95,20 +110,19 @@ public final class ServletContextPathHolder
    * Manually change the context path to be used. Normally there is no need to
    * call the method, because the context path is automatically determined from
    * the {@link ServletContext} or from the underlying request. This method is
-   * only needed, if a web application is proxied by e.g. an Apache httpd and
-   * the context path between httpd and Java web application server is
-   * different!
+   * only needed, if a web application is proxied by e.g. an Apache httpd and the
+   * context path between httpd and Java web application server is different!
    *
    * @param sCustomContextPath
-   *        The context path of the web application, or "" for the default
-   *        (root) context. May not be <code>null</code>.
+   *        The context path of the web application, or "" for the default (root)
+   *        context. May not be <code>null</code>.
    */
   public static void setCustomContextPath (@Nonnull final String sCustomContextPath)
   {
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
     if (s_sCustomContextPath == null)
     {
-      if (LOGGER.isInfoEnabled ())
+      if (LOGGER.isInfoEnabled () && !isSilentMode ())
         LOGGER.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
       s_sCustomContextPath = sCustomContextPath;
     }
@@ -117,11 +131,11 @@ public final class ServletContextPathHolder
       {
         if (LOGGER.isErrorEnabled ())
           LOGGER.error ("Overwriting custom servlet context path '" +
-                           s_sCustomContextPath +
-                           "' with '" +
-                           sCustomContextPath +
-                           "'",
-                           new IllegalStateException ("Just for tracking how this happens"));
+                        s_sCustomContextPath +
+                        "' with '" +
+                        sCustomContextPath +
+                        "'",
+                        new IllegalStateException ("Just for tracking how this happens"));
         s_sCustomContextPath = sCustomContextPath;
       }
   }
@@ -150,20 +164,19 @@ public final class ServletContextPathHolder
   /**
    * Returns the context path of the web application.
    * <p>
-   * The context path is the portion of the request URI that is used to select
-   * the context of the request. The context path always comes first in a
-   * request URI. The path starts with a "/" character but does not end with a
-   * "/" character. For servlets in the default (root) context, this method
-   * returns "".
+   * The context path is the portion of the request URI that is used to select the
+   * context of the request. The context path always comes first in a request URI.
+   * The path starts with a "/" character but does not end with a "/" character.
+   * For servlets in the default (root) context, this method returns "".
    * <p>
-   * It is possible that a servlet container may match a context by more than
-   * one context path. In such cases the context path will return the actual
-   * context path used by the request and it may differ from the path returned
-   * by this method. The context path returned by this method should be
-   * considered as the prime or preferred context path of the application.
+   * It is possible that a servlet container may match a context by more than one
+   * context path. In such cases the context path will return the actual context
+   * path used by the request and it may differ from the path returned by this
+   * method. The context path returned by this method should be considered as the
+   * prime or preferred context path of the application.
    *
-   * @return The context path of the web application, or "" for the default
-   *         (root) context
+   * @return The context path of the web application, or "" for the default (root)
+   *         context
    */
   @Nonnull
   public static String getContextPath ()
@@ -183,13 +196,13 @@ public final class ServletContextPathHolder
   {
     if (s_sServletContextPath != null)
     {
-      if (LOGGER.isInfoEnabled ())
+      if (LOGGER.isInfoEnabled () && !isSilentMode ())
         LOGGER.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
       s_sServletContextPath = null;
     }
     if (s_sCustomContextPath != null)
     {
-      if (LOGGER.isInfoEnabled ())
+      if (LOGGER.isInfoEnabled () && !isSilentMode ())
         LOGGER.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
       s_sCustomContextPath = null;
     }

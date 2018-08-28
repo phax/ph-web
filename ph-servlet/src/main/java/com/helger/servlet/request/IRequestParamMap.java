@@ -52,6 +52,13 @@ public interface IRequestParamMap extends IHasSize, Serializable
     return aItem == null ? null : aItem.getValue ();
   }
 
+  @Nullable
+  default String getStringTrimmed (@Nonnull @Nonempty final String... aPath)
+  {
+    final RequestParamMapItem aItem = getObject (aPath);
+    return aItem == null ? null : aItem.getValueTrimmed ();
+  }
+
   default boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
@@ -93,6 +100,9 @@ public interface IRequestParamMap extends IHasSize, Serializable
   @Nullable
   ICommonsOrderedMap <String, String> getValueMap (@Nonnull @Nonempty String... aPath);
 
+  @Nullable
+  ICommonsOrderedMap <String, String> getValueTrimmedMap (@Nonnull @Nonempty String... aPath);
+
   /**
    * Get a nested map for the specified path.
    *
@@ -104,8 +114,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
   IRequestParamMap getMap (@Nonnull @Nonempty String... aPath);
 
   /**
-   * Check if this map, contains the passed key. This will be true both for
-   * nested maps as well as for values.
+   * Check if this map, contains the passed key. This will be true both for nested
+   * maps as well as for values.
    *
    * @param sKey
    *        The key to check.
@@ -115,8 +125,7 @@ public interface IRequestParamMap extends IHasSize, Serializable
   boolean containsKey (@Nullable String sKey);
 
   /**
-   * @return A set of all contained key. Never <code>null</code> but maybe
-   *         empty.
+   * @return A set of all contained key. Never <code>null</code> but maybe empty.
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -124,8 +133,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
 
   /**
    * @return A collection of all values of this map. The type of the value is
-   *         usually either {@link String}, file item (from upload) or
-   *         {@link Map} from String to Object.
+   *         usually either {@link String}, file item (from upload) or {@link Map}
+   *         from String to Object.
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -140,10 +149,18 @@ public interface IRequestParamMap extends IHasSize, Serializable
   ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ();
 
   /**
-   * @return A key/value map, with enforced values. If this map contains a
-   *         nested map, the nested maps are ignored!
+   * @return A key/value map, with enforced values. If this map contains a nested
+   *         map, the nested maps are ignored!
    */
   @Nonnull
   @ReturnsMutableCopy
   ICommonsOrderedMap <String, String> getAsValueMap ();
+
+  /**
+   * @return A key/value map, with enforced and trimmed values. If this map
+   *         contains a nested map, the nested maps are ignored!
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  ICommonsOrderedMap <String, String> getAsValueTrimmedMap ();
 }

@@ -148,8 +148,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * Iterate the root map down to the map specified by the passed path except
-   * for the last element.
+   * Iterate the root map down to the map specified by the passed path except for
+   * the last element.
    *
    * @param aPath
    *        The path to iterate. May neither be <code>null</code> nor empty.
@@ -218,6 +218,15 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
+  public ICommonsOrderedMap <String, String> getValueTrimmedMap (@Nonnull @Nonempty final String... aPath)
+  {
+    final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
+    if (aMap == null)
+      return null;
+    return getAsValueTrimmedMap (aMap);
+  }
+
+  @Nullable
   @ReturnsMutableCopy
   public IRequestParamMap getMap (@Nonnull @Nonempty final String... aPath)
   {
@@ -281,6 +290,21 @@ public class RequestParamMap implements IRequestParamMap
     return getAsValueMap (m_aMap);
   }
 
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ICommonsOrderedMap <String, String> getAsValueTrimmedMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap)
+  {
+    ValueEnforcer.notNull (aMap, "Map");
+    return new CommonsLinkedHashMap <> (aMap, Function.identity (), RequestParamMapItem::getValueTrimmed);
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public ICommonsOrderedMap <String, String> getAsValueTrimmedMap ()
+  {
+    return getAsValueTrimmedMap (m_aMap);
+  }
+
   @Override
   public boolean equals (final Object o)
   {
@@ -324,8 +348,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * This method doesn't make sense but it should stay, so that it's easy to
-   * spot usage of this invalid method.
+   * This method doesn't make sense but it should stay, so that it's easy to spot
+   * usage of this invalid method.
    *
    * @param sBaseName
    *        Base name

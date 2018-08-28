@@ -351,4 +351,26 @@ public final class RequestParamMapTest
     CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (aMap.getMap ("columns", "name"),
                                                                            aMap.getMap ("columns", "name2"));
   }
+
+  @Test
+  public void testGetValueTrimmed ()
+  {
+    // Order is important for this map!
+    final ICommonsOrderedMap <String, Object> aTestMap = new CommonsLinkedHashMap <> ();
+    aTestMap.put ("columns[name][test1]", "bla");
+    aTestMap.put ("columns[name][test2]", " not trimmed ");
+
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertEquals ("bla", aMap.getValueMap ("columns", "name").get ("test1"));
+    assertEquals (" not trimmed ", aMap.getValueMap ("columns", "name").get ("test2"));
+
+    assertEquals ("bla", aMap.getValueTrimmedMap ("columns", "name").get ("test1"));
+    assertEquals ("not trimmed", aMap.getValueTrimmedMap ("columns", "name").get ("test2"));
+
+    assertEquals ("bla", aMap.getString ("columns", "name", "test1"));
+    assertEquals (" not trimmed ", aMap.getString ("columns", "name", "test2"));
+
+    assertEquals ("bla", aMap.getStringTrimmed ("columns", "name", "test1"));
+    assertEquals ("not trimmed", aMap.getStringTrimmed ("columns", "name", "test2"));
+  }
 }

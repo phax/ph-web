@@ -30,6 +30,7 @@ import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -42,7 +43,7 @@ import com.helger.commons.string.ToStringGenerator;
 public final class RequestParamMapItem implements Serializable
 {
   private String m_sValue;
-  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap<> ();
+  private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap <> ();
 
   public RequestParamMapItem ()
   {}
@@ -62,6 +63,12 @@ public final class RequestParamMapItem implements Serializable
   public String getValue ()
   {
     return m_sValue;
+  }
+
+  @Nullable
+  public String getValueTrimmed ()
+  {
+    return StringHelper.trim (m_sValue);
   }
 
   public boolean hasChildren ()

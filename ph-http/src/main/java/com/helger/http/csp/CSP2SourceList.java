@@ -42,6 +42,7 @@ import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 @NotThreadSafe
 public class CSP2SourceList implements Serializable
 {
+  public static final String KEYWORD_NONE = "'none'";
   public static final String KEYWORD_SELF = "'self'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";
   public static final String KEYWORD_UNSAFE_EVAL = "'unsafe-eval'";
@@ -50,7 +51,7 @@ public class CSP2SourceList implements Serializable
   public static final String HASH_PREFIX = "'";
   public static final String HASH_SUFFIX = "'";
 
-  private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet<> ();
+  private final ICommonsOrderedSet <String> m_aList = new CommonsLinkedHashSet <> ();
 
   public CSP2SourceList ()
   {}
@@ -72,8 +73,7 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addScheme (@Nonnull @Nonempty final String sScheme)
   {
     ValueEnforcer.notEmpty (sScheme, "Scheme");
-    ValueEnforcer.isTrue (sScheme.length () > 1 &&
-                          sScheme.endsWith (":"),
+    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"),
                           () -> "Passed scheme '" + sScheme + "' is invalid!");
     m_aList.add (sScheme);
     return this;
@@ -105,6 +105,18 @@ public class CSP2SourceList implements Serializable
   {
     ValueEnforcer.notEmpty (sHost, "Host");
     m_aList.add (sHost);
+    return this;
+  }
+
+  /**
+   * source expression 'none' represents an empty set of URIs
+   *
+   * @return this
+   */
+  @Nonnull
+  public CSP2SourceList addKeywordNone ()
+  {
+    m_aList.add (KEYWORD_NONE);
     return this;
   }
 
@@ -176,15 +188,14 @@ public class CSP2SourceList implements Serializable
 
   /**
    * Add the provided nonce value. The {@value #HASH_PREFIX} and
-   * {@link #HASH_SUFFIX} are added automatically. The byte array is
-   * automatically Bas64 encoded!
+   * {@link #HASH_SUFFIX} are added automatically. The byte array is automatically
+   * Bas64 encoded!
    *
    * @param eMDAlgo
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
-   *        <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
    * @param aHashValue
    *        The plain hash digest value. May not be <code>null</code>.
    * @return this for chaining
@@ -205,8 +216,7 @@ public class CSP2SourceList implements Serializable
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
-   *        <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
    * @param sHashBase64Value
    *        The Base64 encoded hash value
    * @return this for chaining
@@ -238,8 +248,7 @@ public class CSP2SourceList implements Serializable
   }
 
   /**
-   * @return The whole source list as a single string, separated by a blank
-   *         char.
+   * @return The whole source list as a single string, separated by a blank char.
    */
   @Nonnull
   public String getAsString ()

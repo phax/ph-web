@@ -95,15 +95,15 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
 
     // Start unified response handling
     final UnifiedResponse aUnifiedResponse = new UnifiedResponse (eHTTPVersion, eHTTPMethod, aHttpRequest);
-    if (onFilterBefore (aRequestScope, aUnifiedResponse).isContinue ())
+    if (onFilterBefore (aRequestScope, aUnifiedResponse).isBreak ())
     {
-      // Filter passed, without any output -> continue
-      // Discard the content of the unified response
-      return EContinue.CONTINUE;
+      // Filter ended chain -> send response
+      aUnifiedResponse.applyToResponse (aHttpResponse);
+      return EContinue.BREAK;
     }
 
-    // Filter ended chain -> send response
-    aUnifiedResponse.applyToResponse (aHttpResponse);
-    return EContinue.BREAK;
+    // Filter passed, without any output -> continue
+    // Discard the content of the unified response
+    return EContinue.CONTINUE;
   }
 }

@@ -29,6 +29,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * `IRequestParamMap` was extended to easily retrieve trimmed values as well
     * Updated to javax.mail 1.6.2
     * Extended `CSP2SourceList` to support kyword `'none'`
+    * Extended `CSP2Policy` with new default directives
 * v9.0.2 - 2018-07-24
     * Fixed OSGI ServiceProvider configuration
     * Requires ph-commons 9.1.3

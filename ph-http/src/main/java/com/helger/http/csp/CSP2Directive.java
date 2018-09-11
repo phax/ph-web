@@ -82,13 +82,13 @@ public class CSP2Directive implements ICSPDirective
 
   @Nonnull
   @Nonempty
-  public String getName ()
+  public final String getName ()
   {
     return m_sName;
   }
 
   @Nullable
-  public String getValue ()
+  public final String getValue ()
   {
     return m_sValue;
   }
@@ -116,58 +116,136 @@ public class CSP2Directive implements ICSPDirective
     return new ToStringGenerator (this).append ("name", m_sName).appendIfNotNull ("value", m_sValue).getToString ();
   }
 
+  /**
+   * The default-src is the default policy for loading content such as
+   * JavaScript, Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
   public static CSP2Directive createDefaultSrc (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("default-src", aValue);
   }
 
+  /**
+   * Defines valid sources of JavaScript.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
   public static CSP2Directive createScriptSrc (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("script-src", aValue);
   }
 
-  @Nonnull
-  public static CSP2Directive createObjectSrc (@Nullable final CSP2SourceList aValue)
-  {
-    return new CSP2Directive ("object-src", aValue);
-  }
-
+  /**
+   * Defines valid sources of stylesheets.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
   public static CSP2Directive createStyleSrc (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("style-src", aValue);
   }
 
+  /**
+   * Defines valid sources of images.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
   public static CSP2Directive createImgSrc (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("img-src", aValue);
   }
 
+  /**
+   * Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed
+   * the browser emulates a 400 HTTP status code.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
-  public static CSP2Directive createMediaSrc (@Nullable final CSP2SourceList aValue)
+  public static CSP2Directive createConnectSrc (@Nullable final CSP2SourceList aValue)
   {
-    return new CSP2Directive ("media-src", aValue);
+    return new CSP2Directive ("connect-src", aValue);
   }
 
-  @Nonnull
-  public static CSP2Directive createFrameSrc (@Nullable final CSP2SourceList aValue)
-  {
-    return new CSP2Directive ("frame-src", aValue);
-  }
-
+  /**
+   * Defines valid sources of fonts.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
   public static CSP2Directive createFontSrc (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("font-src", aValue);
   }
 
+  /**
+   * Defines valid sources of plugins, eg &lt;object&gt;, &lt;embed&gt; or
+   * &lt;applet&gt;.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
   @Nonnull
-  public static CSP2Directive createConnectSrc (@Nullable final CSP2SourceList aValue)
+  public static CSP2Directive createObjectSrc (@Nullable final CSP2SourceList aValue)
   {
-    return new CSP2Directive ("connect-src", aValue);
+    return new CSP2Directive ("object-src", aValue);
+  }
+
+  /**
+   * Defines valid sources of audio and video, eg HTML5 &lt;audio&gt;,
+   * &lt;video&gt; elements.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
+  @Nonnull
+  public static CSP2Directive createMediaSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("media-src", aValue);
+  }
+
+  /**
+   * Defines valid sources for loading frames. child-src is preferred over this
+   * deprecated directive.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v1
+   */
+  @Deprecated
+  @Nonnull
+  public static CSP2Directive createFrameSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("frame-src", aValue);
   }
 
   /**
@@ -177,6 +255,7 @@ public class CSP2Directive implements ICSPDirective
    * @param sValue
    *        value
    * @return new directive
+   * @since CSP v1
    */
   @Nonnull
   public static CSP2Directive createSandbox (@Nullable final String sValue)
@@ -191,10 +270,73 @@ public class CSP2Directive implements ICSPDirective
    * @param sValue
    *        Report URI
    * @return new directive
+   * @since CSP v1
    */
   @Nonnull
   public static CSP2Directive createReportURI (@Nullable final String sValue)
   {
     return new CSP2Directive ("report-uri", sValue);
+  }
+
+  /**
+   * Defines valid sources for web workers and nested browsing contexts loaded
+   * using elements such as &lt;frame&gt; and &lt;iframe&gt;
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v2
+   */
+  @Nonnull
+  public static CSP2Directive createChildSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("child-src", aValue);
+  }
+
+  /**
+   * Defines valid sources that can be used as a HTML &lt;form&gt; action.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v2
+   */
+  @Nonnull
+  public static CSP2Directive createFormAction (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("form-action", aValue);
+  }
+
+  /**
+   * Defines valid sources for embedding the resource using &lt;frame&gt;
+   * &lt;iframe&gt; &lt;object&gt; &lt;embed&gt; &lt;applet&gt;. Setting this
+   * directive to <code>'none'</code> should be roughly equivalent to
+   * <code>X-Frame-Options: DENY</code>
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v2
+   */
+  @Nonnull
+  public static CSP2Directive createFrameAncestors (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("frame-ancestors", aValue);
+  }
+
+  /**
+   * Defines valid MIME types for plugins invoked via &lt;object&gt; and
+   * &lt;embed&gt;. To load an &lt;applet&gt; you must specify
+   * <code>application/x-java-applet</code>.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v2
+   */
+  @Nonnull
+  public static CSP2Directive createPluginTypes (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("plugin-types", aValue);
   }
 }

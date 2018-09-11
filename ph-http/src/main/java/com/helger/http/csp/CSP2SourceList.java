@@ -120,7 +120,8 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addMimeType (@Nonnull final IMimeType aMimeType)
   {
     ValueEnforcer.notNull (aMimeType, "aMimeType");
-    return addHost (aMimeType.getAsString ());
+    m_aList.add (aMimeType.getAsString ());
+    return this;
   }
 
   /**
@@ -203,15 +204,14 @@ public class CSP2SourceList implements Serializable
 
   /**
    * Add the provided nonce value. The {@value #HASH_PREFIX} and
-   * {@link #HASH_SUFFIX} are added automatically. The byte array is
-   * automatically Bas64 encoded!
+   * {@link #HASH_SUFFIX} are added automatically. The byte array is automatically
+   * Bas64 encoded!
    *
    * @param eMDAlgo
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
-   *        <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
    * @param aHashValue
    *        The plain hash digest value. May not be <code>null</code>.
    * @return this for chaining
@@ -232,8 +232,7 @@ public class CSP2SourceList implements Serializable
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
-   *        <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
    * @param sHashBase64Value
    *        The Base64 encoded hash value
    * @return this for chaining
@@ -265,8 +264,7 @@ public class CSP2SourceList implements Serializable
   }
 
   /**
-   * @return The whole source list as a single string, separated by a blank
-   *         char.
+   * @return The whole source list as a single string, separated by a blank char.
    */
   @Nonnull
   public String getAsString ()
@@ -295,6 +293,6 @@ public class CSP2SourceList implements Serializable
   @Nonnull
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("list", m_aList).getToString ();
+    return new ToStringGenerator (this).append ("List", m_aList).getToString ();
   }
 }

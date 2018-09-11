@@ -41,7 +41,7 @@ import com.helger.commons.string.ToStringGenerator;
 @NotThreadSafe
 public abstract class AbstractCSPPolicy <T extends ICSPDirective> implements Serializable
 {
-  private final ICommonsList <T> m_aList = new CommonsArrayList<> ();
+  private final ICommonsList <T> m_aList = new CommonsArrayList <> ();
 
   public AbstractCSPPolicy ()
   {}
@@ -91,7 +91,7 @@ public abstract class AbstractCSPPolicy <T extends ICSPDirective> implements Ser
   @Nonnull
   public String getAsString ()
   {
-    return StringHelper.getImplodedMappedNonEmpty ("; ", m_aList, ICSPDirective::getAsString);
+    return StringHelper.getImplodedMappedNonEmpty ("; ", m_aList, ICSPDirective::getAsStringIfHasValue);
   }
 
   @Override

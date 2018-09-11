@@ -20,9 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.http.csp.CSP2Directive;
-import com.helger.http.csp.CSP2Policy;
-import com.helger.http.csp.CSP2SourceList;
 import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 
 /**
@@ -56,6 +53,14 @@ public final class CSP2PolicyTest
     assertEquals ("default-src 'self'; script-src https://example.com/js/",
                   new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ().addKeywordSelf ()))
                                    .addDirective (CSP2Directive.createScriptSrc (new CSP2SourceList ().addHost ("https://example.com/js/")))
+                                   .getAsString ());
+    assertEquals ("default-src 'none'",
+                  new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ().addKeywordNone ()))
+                                   .addDirective (CSP2Directive.createScriptSrc (new CSP2SourceList ()))
+                                   .getAsString ());
+    assertEquals ("",
+                  new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ()))
+                                   .addDirective (CSP2Directive.createScriptSrc (new CSP2SourceList ()))
                                    .getAsString ());
   }
 }

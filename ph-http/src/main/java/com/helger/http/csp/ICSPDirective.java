@@ -56,4 +56,13 @@ public interface ICSPDirective extends IHasName, Serializable
   {
     return StringHelper.getConcatenatedOnDemand (getName (), ' ', getValue ());
   }
+
+  @Nullable
+  default String getAsStringIfHasValue ()
+  {
+    final String sValue = getValue ();
+    if (StringHelper.hasText (sValue))
+      return getName () + ' ' + sValue;
+    return null;
+  }
 }

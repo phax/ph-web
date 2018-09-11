@@ -117,8 +117,8 @@ public class CSP2Directive implements ICSPDirective
   }
 
   /**
-   * The default-src is the default policy for loading content such as
-   * JavaScript, Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
+   * The default-src is the default policy for loading content such as JavaScript,
+   * Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -327,7 +327,8 @@ public class CSP2Directive implements ICSPDirective
   /**
    * Defines valid MIME types for plugins invoked via &lt;object&gt; and
    * &lt;embed&gt;. To load an &lt;applet&gt; you must specify
-   * <code>application/x-java-applet</code>.
+   * <code>application/x-java-applet</code>.<br>
+   * Not supported in Firefox up to v61.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.

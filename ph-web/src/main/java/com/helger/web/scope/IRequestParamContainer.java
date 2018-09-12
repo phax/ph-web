@@ -31,6 +31,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.string.StringHelper;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
 
 /**
@@ -44,10 +45,11 @@ import com.helger.web.fileupload.IFileItem;
 public interface IRequestParamContainer extends IAttributeContainerAny <String>
 {
   /**
-   * The prefix to appended to the field name of the checkbox to create the
-   * hidden field.
+   * The prefix to appended to the field name of the checkbox to create the hidden
+   * field.
    */
-  String DEFAULT_HIDDEN_FIELD_PREFIX = "__";
+  @Deprecated
+  String DEFAULT_HIDDEN_FIELD_PREFIX = RequestHelper.DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX;
 
   /**
    * Get the name of the automatic hidden field associated with a check-box.
@@ -59,10 +61,10 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    */
   @Nonnull
   @Nonempty
+  @Deprecated
   static String getHiddenFieldName (@Nonnull @Nonempty final String sFieldName)
   {
-    ValueEnforcer.notEmpty (sFieldName, "FieldName");
-    return DEFAULT_HIDDEN_FIELD_PREFIX + sFieldName;
+    return RequestHelper.getCheckBoxHiddenFieldName (sFieldName);
   }
 
   /**
@@ -107,8 +109,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * @return A non-<code>null</code> but maybe empty list of all
-   *         {@link IFileItem} objects in the request. In comparison to
+   * @return A non-<code>null</code> but maybe empty list of all {@link IFileItem}
+   *         objects in the request. In comparison to
    *         {@link #getAllUploadedFileItems()} this method also returns the
    *         content of {@link IFileItem} arrays.
    */
@@ -130,8 +132,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
 
   /**
    * Get the request attribute denoted by the specified attribute name as an
-   * uploaded file item. In case the specified parameter is present but not a
-   * file item, the method returns <code>null</code>.
+   * uploaded file item. In case the specified parameter is present but not a file
+   * item, the method returns <code>null</code>.
    *
    * @param sAttrName
    *        The attribute name to resolved. May be <code>null</code>.
@@ -167,7 +169,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
       // request" is present?
       // If so it means the checkbox parameter is part of the request, but the
       // checkbox is not checked
-      if (containsKey (getHiddenFieldName (sFieldName)))
+      if (containsKey (RequestHelper.getCheckBoxHiddenFieldName (sFieldName)))
         return false;
     }
 
@@ -189,7 +191,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
 
     // Check if the hidden parameter for "checkbox is contained in the request"
     // is present?
-    aValues = getAsStringSet (getHiddenFieldName (sFieldName));
+    aValues = getAsStringSet (RequestHelper.getCheckBoxHiddenFieldName (sFieldName));
     if (aValues != null && aValues.contains (sFieldValue))
       return false;
 
@@ -217,8 +219,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @param sFieldName
    *        The field name to query. May be <code>null</code>.
    * @param sDefault
-   *        The value to be returned if the retrieved value is <code>null</code>
-   *        .
+   *        The value to be returned if the retrieved value is <code>null</code> .
    * @return <code>null</code> if no such parameter name is present.
    * @since 9.0.2
    */

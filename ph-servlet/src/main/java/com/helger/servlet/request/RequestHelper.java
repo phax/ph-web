@@ -107,6 +107,12 @@ public final class RequestHelper
    */
   public static final String MULTIPART_MIXED = MULTIPART + "mixed";
 
+  /**
+   * The prefix to appended to the field name of the checkbox to create the hidden
+   * field.
+   */
+  public static final String DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX = "__";
+
   private static final String SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP = "$requesthelp.requestparammap";
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestHelper.class);
 
@@ -120,12 +126,10 @@ public final class RequestHelper
    * Get the passed string without an eventually contained session ID like in
    * "test.html;JSESSIONID=1234".<br>
    * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they are most likely be stripped
-   * away!
+   * parameters. If parameters are present, they are most likely be stripped away!
    *
    * @param sValue
-   *        The value to strip the session ID from. May not be
-   *        <code>null</code>.
+   *        The value to strip the session ID from. May not be <code>null</code>.
    * @return The value without a session ID or the original string.
    */
   @Nonnull
@@ -159,13 +163,12 @@ public final class RequestHelper
    * Get the session ID of the passed string (like in
    * "test.html;JSESSIONID=1234").<br>
    * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they must be stripped away
-   * explicitly!
+   * parameters. If parameters are present, they must be stripped away explicitly!
    *
    * @param sValue
    *        The value to get the session ID from. May not be <code>null</code>.
-   * @return The session ID of the value or <code>null</code> if no session ID
-   *         is present.
+   * @return The session ID of the value or <code>null</code> if no session ID is
+   *         present.
    */
   @Nullable
   public static String getSessionID (@Nonnull final String sValue)
@@ -181,13 +184,12 @@ public final class RequestHelper
    * Get the session ID of the passed string (like in
    * "test.html;JSESSIONID=1234").<br>
    * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they must be stripped away
-   * explicitly!
+   * parameters. If parameters are present, they must be stripped away explicitly!
    *
    * @param aURL
    *        The URL to get the session ID from. May not be <code>null</code>.
-   * @return The session ID of the value or <code>null</code> if no session ID
-   *         is present.
+   * @return The session ID of the value or <code>null</code> if no session ID is
+   *         present.
    */
   @Nullable
   public static String getSessionID (@Nonnull final ISimpleURL aURL)
@@ -200,8 +202,8 @@ public final class RequestHelper
 
   /**
    * Get the request URI without an eventually appended session
-   * (";jsessionid=..."). This method considers the GlobalWebScope custom
-   * context path.
+   * (";jsessionid=..."). This method considers the GlobalWebScope custom context
+   * path.
    * <table summary="Examples of Returned Values">
    * <tr align=left>
    * <th>First line of HTTP request</th>
@@ -248,10 +250,10 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request
-   * @return Returns any extra path information associated with the URL the
-   *         client sent when it made this request. The extra path information
-   *         follows the servlet path but precedes the query string and will
-   *         start with a "/" character. The optional session ID is stripped.
+   * @return Returns any extra path information associated with the URL the client
+   *         sent when it made this request. The extra path information follows
+   *         the servlet path but precedes the query string and will start with a
+   *         "/" character. The optional session ID is stripped.
    */
   @Nullable
   public static String getPathInfo (@Nonnull final HttpServletRequest aHttpRequest)
@@ -334,8 +336,8 @@ public final class RequestHelper
    * <p>
    * If this request has been forwarded using
    * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
-   * reconstructed URL must reflect the path used to obtain the
-   * RequestDispatcher, and not the server path specified by the client.
+   * reconstructed URL must reflect the path used to obtain the RequestDispatcher,
+   * and not the server path specified by the client.
    * <p>
    * Because this method returns a <code>StringBuffer</code>, not a string, you
    * can modify the URL easily, for example, to append query parameters.
@@ -346,8 +348,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The HTTP request to get the request URL from. May not be
    *        <code>null</code>.
-   * @return a <code>StringBuilder</code> object containing the reconstructed
-   *         URL
+   * @return a <code>StringBuilder</code> object containing the reconstructed URL
    */
   @Nonnull
   @Nonempty
@@ -612,11 +613,11 @@ public final class RequestHelper
     {
       if (LOGGER.isErrorEnabled ())
         LOGGER.error ("Request attribute " +
-                         sAttrName +
-                         " is not of type " +
-                         aDstClass.getName () +
-                         " but of type " +
-                         aValue.getClass ().getName ());
+                      sAttrName +
+                      " is not of type " +
+                      aDstClass.getName () +
+                      " but of type " +
+                      aValue.getClass ().getName ());
       return null;
     }
 
@@ -628,8 +629,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        he HTTP servlet request to extract the information from. May not be
    *        <code>null</code>.
-   * @return SSL cipher suite or <code>null</code> if no such attribute is
-   *         present
+   * @return SSL cipher suite or <code>null</code> if no such attribute is present
    */
   @Nullable
   public static String getRequestSSLCipherSuite (@Nonnull final HttpServletRequest aHttpRequest)
@@ -784,13 +784,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the Basic authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
+   * Get the Basic authentication credentials from the passed HTTP servlet request
+   * from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Basic Authentication header value.
+   * @return <code>null</code> if the passed request does not contain a valid HTTP
+   *         Basic Authentication header value.
    */
   @Nullable
   public static BasicAuthClientCredentials getBasicAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
@@ -807,8 +807,8 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Digest Authentication header value.
+   * @return <code>null</code> if the passed request does not contain a valid HTTP
+   *         Digest Authentication header value.
    */
   @Nullable
   public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
@@ -906,5 +906,21 @@ public final class RequestHelper
       ServletHelper.setRequestAttribute (aHttpRequest, UAProfile.class.getName (), aUAProfile);
     }
     return aUAProfile;
+  }
+
+  /**
+   * Get the name of the automatic hidden field associated with a check-box.
+   *
+   * @param sFieldName
+   *        The name of the check-box.
+   * @return The name of the hidden field associated with the given check-box
+   *         name.
+   */
+  @Nonnull
+  @Nonempty
+  public static String getCheckBoxHiddenFieldName (@Nonnull @Nonempty final String sFieldName)
+  {
+    ValueEnforcer.notEmpty (sFieldName, "FieldName");
+    return DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX + sFieldName;
   }
 }

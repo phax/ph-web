@@ -30,6 +30,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.IHasSize;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.typeconvert.TypeConverter;
 
 /**
@@ -95,6 +96,38 @@ public interface IRequestParamMap extends IHasSize, Serializable
   {
     final RequestParamMapItem aItem = getObject (aPath);
     return aItem == null ? null : TypeConverter.convert (aItem.getValue (), BigDecimal.class);
+  }
+
+  /**
+   * Get the value of the checkbox of the request parameter with the given name.
+   * Ripped from IRequestParamContainer....
+   *
+   * @param sFieldName
+   *        Request parameter name. May be <code>null</code>.
+   * @param bDefaultValue
+   *        the default value to be returned, if no request attribute is present
+   * @return <code>true</code> if the checkbox is checked, <code>false</code> if
+   *         it is not checked and the default value otherwise.
+   */
+  default boolean isCheckBoxChecked (@Nullable final String sFieldName, final boolean bDefaultValue)
+  {
+    if (StringHelper.hasText (sFieldName))
+    {
+      // Is the checked value present?
+      final String sRequestValue = getString (sFieldName);
+      if (sRequestValue != null)
+        return true;
+
+      // Check if the hidden parameter for "checkbox is contained in the
+      // request" is present?
+      // If so it means the checkbox parameter is part of the request, but the
+      // checkbox is not checked
+      if (containsKey (RequestHelper.getCheckBoxHiddenFieldName (sFieldName)))
+        return false;
+    }
+
+    // Neither nor - default!
+    return bDefaultValue;
   }
 
   @Nullable

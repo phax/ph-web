@@ -30,6 +30,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to javax.mail 1.6.2
     * Extended `CSP2SourceList` to support kyword `'none'`
     * Extended `CSP2Policy` with new default directives
+    * Fixed potential stack overflow in RequestParamMap
 * v9.0.2 - 2018-07-24
     * Fixed OSGI ServiceProvider configuration
     * Requires ph-commons 9.1.3

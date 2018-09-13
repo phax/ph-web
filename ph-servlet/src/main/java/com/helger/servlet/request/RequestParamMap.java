@@ -88,39 +88,46 @@ public class RequestParamMap implements IRequestParamMap
     }
   }
 
-  private static void _recursiveAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
-                                         @Nonnull final String sName,
-                                         @Nullable final Object aValue)
+  private static void _parseAndAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
+                                        @Nonnull final String sName,
+                                        @Nullable final Object aValue)
   {
-    final int nIndex = sName.indexOf (s_sOpen);
-    if (nIndex == -1)
+    Map <String, RequestParamMapItem> aCurMap = aMap;
+    String sCurName = sName;
+    // Calc only once
+    final int nOpenLength = s_sOpen.length ();
+    while (true)
     {
-      // Value level
-      final RequestParamMapItem aItem = RequestParamMapItem.create (aValue);
-      if (aItem != null)
-        aMap.put (sName, aItem);
-    }
-    else
-    {
+      final int nIndex = sCurName.indexOf (s_sOpen);
+      if (nIndex == -1)
+      {
+        // Value level - put he value in the map
+        final RequestParamMapItem aItem = RequestParamMapItem.create (aValue);
+        if (aItem != null)
+          aCurMap.put (sCurName, aItem);
+        break;
+      }
+
       if (nIndex == 0)
       {
-        // Empty level - makes no sense
+        // Empty level - makes no sense - ignore
 
         // Recursively scan child items (starting at the first character after
         // the '[')
-        _recursiveAddItem (aMap, sName.substring (s_sOpen.length ()), aValue);
+        sCurName = sCurName.substring (nOpenLength);
       }
       else
       {
         // Get the name until the first "["
-        final String sPrefix = sName.substring (0, nIndex);
+        final String sPrefix = sCurName.substring (0, nIndex);
 
         // Ensure that the respective map is present
-        final RequestParamMapItem aChildItem = aMap.computeIfAbsent (sPrefix, k -> new RequestParamMapItem ());
+        final RequestParamMapItem aChildItem = aCurMap.computeIfAbsent (sPrefix, k -> new RequestParamMapItem ());
 
         // Recursively scan child items (starting at the first character after
         // the '[')
-        _recursiveAddItem (aChildItem.directGetChildren (), sName.substring (nIndex + s_sOpen.length ()), aValue);
+        aCurMap = aChildItem.directGetChildren ();
+        sCurName = sCurName.substring (nIndex + nOpenLength);
       }
     }
   }
@@ -136,7 +143,7 @@ public class RequestParamMap implements IRequestParamMap
     // invalid level (as e.g. in 'columns[0][]')
     sRealPath = StringHelper.trimEndRepeatedly (sRealPath, s_sOpen);
     // Start parsing
-    _recursiveAddItem (m_aMap, sRealPath, aValue);
+    _parseAndAddItem (m_aMap, sRealPath, aValue);
   }
 
   @Nullable

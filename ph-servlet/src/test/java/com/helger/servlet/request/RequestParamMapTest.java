@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -34,6 +35,7 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.mock.CommonsAssert;
 import com.helger.commons.mock.CommonsTestHelper;
+import com.helger.commons.string.StringHelper;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -372,5 +374,37 @@ public final class RequestParamMapTest
 
     assertEquals ("bla", aMap.getStringTrimmed ("columns", "name", "test1"));
     assertEquals ("not trimmed", aMap.getStringTrimmed ("columns", "name", "test2"));
+  }
+
+  @Test
+  public void testNoStackOverflow1 ()
+  {
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
+    aTestMap.put ("columns" + StringHelper.getRepeated ("[]", 50_000) + "[0]", "bla");
+
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertTrue (aMap.contains ("columns"));
+    assertNotNull (aMap.getMap ("columns"));
+    assertTrue (aMap.getMap ("columns").contains ("0"));
+    assertEquals ("bla", aMap.getMap ("columns").getString ("0"));
+  }
+
+  @Test
+  public void testNoStackOverflow2 ()
+  {
+    final int nRepeats = 50_000;
+    final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
+    aTestMap.put ("columns" + StringHelper.getRepeated ("[a]", nRepeats) + "[0]", "bla");
+
+    final IRequestParamMap aMap = RequestParamMap.create (aTestMap);
+    assertTrue (aMap.contains ("columns"));
+    assertNotNull (aMap.getMap ("columns"));
+    assertTrue (aMap.getMap ("columns").contains ("a"));
+
+    final String [] aPath = new String [1 + nRepeats];
+    Arrays.fill (aPath, "a");
+    aPath[0] = "columns";
+    assertNotNull (aMap.getMap (aPath));
+    assertEquals ("bla", aMap.getMap (aPath).getString ("0"));
   }
 }

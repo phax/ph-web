@@ -47,8 +47,6 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.xml.serialize.write.EXMLSerializeVersion;
-import com.helger.xml.serialize.write.XMLCharHelper;
 
 /**
  * A request web scopes that does not parse multipart requests.
@@ -140,8 +138,15 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
     final StringBuilder aCleanValue = new StringBuilder ();
     int nInvalid = 0;
+
+    // INVALID_VALUE_CHAR_XML10 + 0x7f
     for (final char c : s.toCharArray ())
-      if (XMLCharHelper.isInvalidXMLTextChar (EXMLSerializeVersion.XML_10, c))
+      if ((c >= 0x0 && c <= 0x8) ||
+          (c >= 0xb && c <= 0xc) ||
+          (c >= 0xe && c <= 0x1f) ||
+          (c == 0x7f) ||
+          (c >= 0xd800 && c <= 0xdfff) ||
+          (c >= 0xfffe && c <= 0xffff))
       {
         nInvalid++;
       }

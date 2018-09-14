@@ -127,7 +127,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
   /**
    * Remove all chars from the input that cannot be serialized as HTML.
-   * 
+   *
    * @param s
    *        The source value. May be <code>null</code>.
    * @return <code>null</code> if the source value is <code>null</code>.
@@ -155,6 +155,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       // Return "as-is"
       return s;
     }
+
+    if (LOGGER.isWarnEnabled ())
+      LOGGER.warn ("Removed " + nInvalid + " invalid character(s) from a parameter value!");
+
     return aCleanValue.toString ();
   }
 

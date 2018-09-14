@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.0.3 - work in progress
+* v9.0.3 - 2018-09-14
     * Added new class `AbstractXFilterUnifiedResponse`
     * `IRequestParamMap` was extended to easily retrieve trimmed values as well
     * Updated to javax.mail 1.6.2
@@ -96,7 +96,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.2</version>
+  <version>9.0.3</version>
 </dependency>
 ```
 

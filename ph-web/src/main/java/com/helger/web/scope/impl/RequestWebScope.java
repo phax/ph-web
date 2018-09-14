@@ -19,6 +19,7 @@ package com.helger.web.scope.impl;
 import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,6 +47,8 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.xml.serialize.write.EXMLSerializeVersion;
+import com.helger.xml.serialize.write.XMLCharHelper;
 
 /**
  * A request web scopes that does not parse multipart requests.
@@ -107,9 +110,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * Callback method to add special parameters.
    *
    * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added,
-   *         existing attributes are kept and will not be overwritten with HTTP
-   *         servlet request parameters!
+   *         <code>false</code> if not. If special attributes were added, existing
+   *         attributes are kept and will not be overwritten with HTTP servlet
+   *         request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -121,6 +124,32 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @OverrideOnDemand
   protected void postAttributeInit ()
   {}
+
+  @Nullable
+  public static String getWithoutForbiddenChars (@Nullable final String s)
+  {
+    if (s == null)
+      return null;
+
+    final StringBuilder aCleanValue = new StringBuilder ();
+    int nInvalid = 0;
+    for (final char c : s.toCharArray ())
+      if (XMLCharHelper.isInvalidXMLTextChar (EXMLSerializeVersion.XML_10, c))
+      {
+        nInvalid++;
+      }
+      else
+      {
+        aCleanValue.append (c);
+      }
+
+    if (nInvalid == 0)
+    {
+      // Return "as-is"
+      return s;
+    }
+    return aCleanValue.toString ();
+  }
 
   /**
    * Override this method to pre-process all parameter values
@@ -180,16 +209,25 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
       // Check if it is a single value or not
       final String [] aParamValues = m_aHttpRequest.getParameterValues (sParamName);
-      if (aParamValues.length == 1)
+      final int nParamValues = aParamValues.length;
+      if (nParamValues == 1)
       {
+        // Remove all special bullshit chars
+        final String sCleanedValue = getWithoutForbiddenChars (aParamValues[0]);
+
         // Convert from String[] to String
-        final String sPreProcessedValue = getPreprocessedParamValue (aParamValues[0]);
+        final String sPreProcessedValue = getPreprocessedParamValue (sCleanedValue);
         aParams.putIn (sParamName, sPreProcessedValue);
       }
       else
       {
+        // Remove all special bullshit chars
+        final String [] aCleanedValues = new String [nParamValues];
+        for (int i = 0; i < nParamValues; ++i)
+          aCleanedValues[i] = getWithoutForbiddenChars (aParamValues[i]);
+
         // Use String[] as is
-        final String [] aPreProcessedValues = getPreprocessedParamValue (aParamValues);
+        final String [] aPreProcessedValues = getPreprocessedParamValue (aCleanedValues);
         aParams.putIn (sParamName, aPreProcessedValues);
       }
     }
@@ -241,9 +279,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file
-   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
-   * last dot is after the last slash
+   * This is a heuristic method to determine whether a request is for a file (e.g.
+   * x.jsp) or for a servlet. This method return <code>true</code> if the last dot
+   * is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
@@ -268,13 +306,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context
-   *         of the request. The context path always comes first in a request
-   *         URI. The path starts with a "/" character but does not end with a
-   *         "/" character. For servlets in the default (root) context, this
-   *         method returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context.
-   *         Never with a trailing slash.
+   * @return Returns the portion of the request URI that indicates the context of
+   *         the request. The context path always comes first in a request URI.
+   *         The path starts with a "/" character but does not end with a "/"
+   *         character. For servlets in the default (root) context, this method
+   *         returns "". The container does not decode this string. E.g.
+   *         <code>/context</code> or an empty string for the root context. Never
+   *         with a trailing slash.
    * @see #getFullContextPath()
    */
   @Nonnull

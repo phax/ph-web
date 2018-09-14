@@ -125,6 +125,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   protected void postAttributeInit ()
   {}
 
+  /**
+   * Remove all chars from the input that cannot be serialized as HTML.
+   * 
+   * @param s
+   *        The source value. May be <code>null</code>.
+   * @return <code>null</code> if the source value is <code>null</code>.
+   */
   @Nullable
   public static String getWithoutForbiddenChars (@Nullable final String s)
   {

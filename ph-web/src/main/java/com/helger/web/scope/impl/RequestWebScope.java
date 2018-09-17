@@ -108,9 +108,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * Callback method to add special parameters.
    *
    * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added, existing
-   *         attributes are kept and will not be overwritten with HTTP servlet
-   *         request parameters!
+   *         <code>false</code> if not. If special attributes were added,
+   *         existing attributes are kept and will not be overwritten with HTTP
+   *         servlet request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -129,6 +129,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * @param s
    *        The source value. May be <code>null</code>.
    * @return <code>null</code> if the source value is <code>null</code>.
+   * @since 9.0.4
    */
   @Nullable
   public static String getWithoutForbiddenChars (@Nullable final String s)
@@ -137,7 +138,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       return null;
 
     final StringBuilder aCleanValue = new StringBuilder ();
-    int nInvalid = 0;
+    int nForbidden = 0;
 
     // INVALID_VALUE_CHAR_XML10 + 0x7f
     for (final char c : s.toCharArray ())
@@ -148,21 +149,21 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
           (c >= 0xd800 && c <= 0xdfff) ||
           (c >= 0xfffe && c <= 0xffff))
       {
-        nInvalid++;
+        nForbidden++;
       }
       else
       {
         aCleanValue.append (c);
       }
 
-    if (nInvalid == 0)
+    if (nForbidden == 0)
     {
       // Return "as-is"
       return s;
     }
 
     if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Removed " + nInvalid + " invalid character(s) from a parameter value!");
+      LOGGER.warn ("Removed " + nForbidden + " forbidden character(s) from a parameter value!");
 
     return aCleanValue.toString ();
   }
@@ -181,20 +182,6 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return sInput;
   }
 
-  /**
-   * Override this method to pre-process all parameter values
-   *
-   * @param aInput
-   *        Input string array. May not be <code>null</code>.
-   * @return Pre-processed string. May not be <code>null</code>.
-   */
-  @OverrideOnDemand
-  @Nonnull
-  protected String [] getPreprocessedParamValue (@Nonnull final String [] aInput)
-  {
-    return aInput;
-  }
-
   public final void initScope ()
   {
     // Avoid double initialization of a scope, because for file uploads, the
@@ -209,8 +196,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       return;
     }
 
-    // where some extra items (like file items) handled?
     final IRequestParamContainer aParams = params ();
+
+    // where some extra items (like file items) handled?
     final boolean bAddedSpecialRequestParams = addSpecialRequestParams ().isChanged ();
 
     // set parameters as attributes (handles GET and POST parameters)
@@ -220,6 +208,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       final String sParamName = aEnum.nextElement ();
 
       // Avoid double setting a parameter!
+      // If an existing file item with this name is present, don't parse it as a
+      // String again
       if (bAddedSpecialRequestParams && aParams.containsKey (sParamName))
         continue;
 
@@ -228,22 +218,29 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       final int nParamValues = aParamValues.length;
       if (nParamValues == 1)
       {
+        // Convert from String[] to String
+
         // Remove all special bullshit chars
         final String sCleanedValue = getWithoutForbiddenChars (aParamValues[0]);
 
-        // Convert from String[] to String
+        // Custom preprocessor
         final String sPreProcessedValue = getPreprocessedParamValue (sCleanedValue);
         aParams.putIn (sParamName, sPreProcessedValue);
       }
       else
       {
-        // Remove all special bullshit chars
-        final String [] aCleanedValues = new String [nParamValues];
-        for (int i = 0; i < nParamValues; ++i)
-          aCleanedValues[i] = getWithoutForbiddenChars (aParamValues[i]);
-
         // Use String[] as is
-        final String [] aPreProcessedValues = getPreprocessedParamValue (aCleanedValues);
+        final String [] aPreProcessedValues = new String [nParamValues];
+        for (int i = 0; i < nParamValues; ++i)
+        {
+          // Remove all special bullshit chars
+          final String sCleanedValue = getWithoutForbiddenChars (aParamValues[i]);
+
+          // Custom preprocessor
+          final String sPreProcessedValue = getPreprocessedParamValue (sCleanedValue);
+          aPreProcessedValues[i] = sPreProcessedValue;
+        }
+
         aParams.putIn (sParamName, aPreProcessedValues);
       }
     }
@@ -270,7 +267,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   @Nonnull
-  public HttpHeaderMap headers ()
+  public final HttpHeaderMap headers ()
   {
     HttpHeaderMap ret = m_aHeaders;
     if (ret == null)
@@ -286,7 +283,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   @Nonnull
-  public IRequestParamMap getRequestParamMap ()
+  public final IRequestParamMap getRequestParamMap ()
   {
     IRequestParamMap ret = m_aRequestParamMap;
     if (ret == null)
@@ -295,9 +292,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file (e.g.
-   * x.jsp) or for a servlet. This method return <code>true</code> if the last dot
-   * is after the last slash
+   * This is a heuristic method to determine whether a request is for a file
+   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
+   * last dot is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
@@ -322,13 +319,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context of
-   *         the request. The context path always comes first in a request URI.
-   *         The path starts with a "/" character but does not end with a "/"
-   *         character. For servlets in the default (root) context, this method
-   *         returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context. Never
-   *         with a trailing slash.
+   * @return Returns the portion of the request URI that indicates the context
+   *         of the request. The context path always comes first in a request
+   *         URI. The path starts with a "/" character but does not end with a
+   *         "/" character. For servlets in the default (root) context, this
+   *         method returns "". The container does not decode this string. E.g.
+   *         <code>/context</code> or an empty string for the root context.
+   *         Never with a trailing slash.
    * @see #getFullContextPath()
    */
   @Nonnull
@@ -360,13 +357,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   @Nonnull
-  public HttpServletRequest getRequest ()
+  public final HttpServletRequest getRequest ()
   {
     return m_aHttpRequest;
   }
 
   @Nonnull
-  public HttpServletResponse getResponse ()
+  public final HttpServletResponse getResponse ()
   {
     return m_aHttpResponse;
   }
@@ -409,7 +406,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return ToStringGenerator.getDerived (super.toString ())
                             .append ("HttpRequest", m_aHttpRequest)
                             .append ("HttpResponse", m_aHttpResponse)
+                            .append ("Headers", m_aHeaders)
                             .append ("Params", m_aParams)
+                            .append ("RequestParamMap", m_aRequestParamMap)
                             .getToString ();
   }
 }

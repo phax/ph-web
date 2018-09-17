@@ -81,7 +81,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   }
 
   @Nonnull
-  public ServletContext getServletContext ()
+  public final ServletContext getServletContext ()
   {
     return m_aSC;
   }

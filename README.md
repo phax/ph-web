@@ -24,6 +24,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.0.4 - 2018-09-17
+    * Added forbidden character check in request parameter value handling
 * v9.0.3 - 2018-09-14
     * Added new class `AbstractXFilterUnifiedResponse`
     * `IRequestParamMap` was extended to easily retrieve trimmed values as well
@@ -96,7 +98,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.3</version>
+  <version>9.0.4</version>
 </dependency>
 ```
 

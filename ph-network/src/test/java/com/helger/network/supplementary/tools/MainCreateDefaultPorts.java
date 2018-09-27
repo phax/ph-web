@@ -4,6 +4,9 @@ import java.io.File;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.network.port.ENetworkProtocol;
@@ -20,6 +23,7 @@ import com.helger.xml.microdom.util.MicroHelper;
  */
 public final class MainCreateDefaultPorts
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (MainCreateDefaultPorts.class);
   private static final String CHAR_ESCAPE = "\b\t\n\f\r\"\\";
   private static final String CHAR_MACRO = "btnfr\"\\";
 
@@ -73,6 +77,7 @@ public final class MainCreateDefaultPorts
 
   public static void main (final String [] args) throws Exception
   {
+    final StringBuilder aSB = new StringBuilder ();
     final IMicroDocument aDoc = MicroReader.readMicroXML (new File ("src/test/resources/Service Name and Transport Protocol Port Number Registry.xml"));
     for (final IMicroElement aRecord : aDoc.getDocumentElement ().getAllChildElements ("record"))
     {
@@ -116,21 +121,22 @@ public final class MainCreateDefaultPorts
       for (int nPort = nMin; nPort <= nMax; ++nPort)
       {
         if (nPort < 1024)
-          System.out.println ("public static final INetworkPort " +
-                              eProtocol.name () +
-                              "_" +
-                              nPort +
-                              (StringHelper.hasText (sName) ? "_" + _id (sName) : "") +
-                              " = _registerPort (" +
-                              nPort +
-                              ", ENetworkProtocol." +
-                              eProtocol.name () +
-                              ", " +
-                              _quote (sName) +
-                              ", " +
-                              _quote (sDescription) +
-                              ");");
+          aSB.append ("public static final INetworkPort " +
+                      eProtocol.name () +
+                      "_" +
+                      nPort +
+                      (StringHelper.hasText (sName) ? "_" + _id (sName) : "") +
+                      " = _registerPort (" +
+                      nPort +
+                      ", ENetworkProtocol." +
+                      eProtocol.name () +
+                      ", " +
+                      _quote (sName) +
+                      ", " +
+                      _quote (sDescription) +
+                      ");\n");
       }
     }
+    LOGGER.info (aSB.toString ());
   }
 }

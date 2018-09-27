@@ -42,8 +42,7 @@ public class NetworkPort implements INetworkPort
                       @Nonnull final String sName,
                       @Nonnull final String sDescription)
   {
-    if (!NetworkPortHelper.isValidPort (nPort))
-      throw new IllegalArgumentException ("Port is illegal: " + nPort);
+    ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), () -> "Port is illegal: " + nPort);
     m_nPort = nPort;
     m_eProtocol = ValueEnforcer.notNull (eProtocol, "Protocol");
     m_sName = ValueEnforcer.notNull (sName, "Name");

@@ -37,13 +37,15 @@ public final class MainPortScanner
         {
           LOGGER.info (eType.name () + " Port " + nPort + " is used");
           DefaultNetworkPorts.forEachPort (x -> x.getPort () == nFinalPort && x.getProtocol () == eType,
-                                           x -> System.out.println ("  " +
-                                                                    StringHelper.getConcatenatedOnDemand (x.getName (),
-                                                                                                          ": ",
-                                                                                                          x.getDescription ())));
+                                           x -> LOGGER.info ("  " +
+                                                             StringHelper.getConcatenatedOnDemand (x.getName (),
+                                                                                                   ": ",
+                                                                                                   x.getDescription ())));
         }
       }
     aSW.stop ();
-    LOGGER.info (((nEndPort - nStartPort) * aTypes.size ()) + " ports checked in " + aSW.getMillis () + " ms");
+
+    final int nCount = (nEndPort - nStartPort) * aTypes.size ();
+    LOGGER.info (nCount + " ports checked in " + aSW.getMillis () + " ms");
   }
 }

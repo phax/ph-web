@@ -121,7 +121,7 @@ public final class RequestParamMapItem implements Serializable
   }
 
   @Nullable
-  public static RequestParamMapItem create (@Nonnull final Object o)
+  public static RequestParamMapItem create (@Nullable final Object o)
   {
     if (o instanceof RequestParamMapItem)
     {

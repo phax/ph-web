@@ -155,8 +155,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * Iterate the root map down to the map specified by the passed path except for
-   * the last element.
+   * Iterate the root map down to the map specified by the passed path except
+   * for the last element.
    *
    * @param aPath
    *        The path to iterate. May neither be <code>null</code> nor empty.
@@ -355,8 +355,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * This method doesn't make sense but it should stay, so that it's easy to spot
-   * usage of this invalid method.
+   * This method doesn't make sense but it should stay, so that it's easy to
+   * spot usage of this invalid method.
    *
    * @param sBaseName
    *        Base name

@@ -22,6 +22,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.name.IHasName;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.IHasDescription;
 
 /**
@@ -44,14 +45,25 @@ public interface INetworkPort extends IHasName, IHasDescription, Serializable
   ENetworkProtocol getProtocol ();
 
   /**
-   * @return Port name
+   * @return Port name. May not be <code>null</code> but maybe empty.
    */
   @Nonnull
   String getName ();
 
+  default boolean hasName ()
+  {
+    return StringHelper.hasText (getName ());
+  }
+
   /**
-   * @return Description of this ports usage
+   * @return Description of this ports usage. May not be <code>null</code> but
+   *         maybe empty.
    */
   @Nonnull
   String getDescription ();
+
+  default boolean hasDescription ()
+  {
+    return StringHelper.hasText (getDescription ());
+  }
 }

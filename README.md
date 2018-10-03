@@ -24,6 +24,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.0.5 - work in progress
+    * Changed `IContentTransferEncoding` to deliver a full codec and not just a decoder
 * v9.0.4 - 2018-09-17
     * Added forbidden character check in request parameter value handling
 * v9.0.3 - 2018-09-14

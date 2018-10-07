@@ -378,7 +378,7 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       // Fall through
       LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
-                      ex);
+                   ex);
     }
 
     if (aSSLFactory == null)

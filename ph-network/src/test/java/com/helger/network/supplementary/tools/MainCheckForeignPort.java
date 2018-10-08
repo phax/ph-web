@@ -72,7 +72,9 @@ public final class MainCheckForeignPort
     }
     catch (final IOException ex)
     {
-      if (ex.getMessage ().equals ("Connection refused"))
+      // Can also be:
+      // Connection refused: connect
+      if (ex.getMessage ().startsWith ("Connection refused"))
         return EPortStatus.PORT_IS_CLOSED;
       if (ex instanceof java.net.UnknownHostException)
         return EPortStatus.HOST_NOT_EXISTING;

@@ -399,24 +399,28 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
 
-    // Custom hostname verifier preferred
-    HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
-    if (aHostnameVerifier == null)
-      aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
-
-    // First try with a custom SSL context
     try
     {
+      // First try with a custom SSL context
       if (m_aSSLContext != null)
       {
+        // Choose correct TLS configuration mode
         final ITLSConfigurationMode aTLSConfigMode = m_aTLSConfigurationMode != null ? m_aTLSConfigurationMode
                                                                                      : DEFAULT_TLS_CONFIG_MODE;
+
+        // Custom hostname verifier preferred
+        HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
+        if (aHostnameVerifier == null)
+          aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
 
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
 
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
 
         aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
                                                       aTLSConfigMode.getAllTLSVersionIDsAsArray (),
@@ -493,12 +497,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nonnull
-  public HttpClientConnectionManager createConnectionManager ()
+  public HttpClientConnectionManager createConnectionManager (@Nonnull final LayeredConnectionSocketFactory aSSLFactory)
   {
-    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
-    if (aSSLFactory == null)
-      throw new IllegalStateException ("Failed to create SSL SocketFactory");
-
     final Registry <ConnectionSocketFactory> aConSocketRegistry = RegistryBuilder.<ConnectionSocketFactory> create ()
                                                                                  .register ("http",
                                                                                             PlainConnectionSocketFactory.getSocketFactory ())
@@ -546,7 +546,11 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
-    final HttpClientConnectionManager aConnMgr = createConnectionManager ();
+    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
+    if (aSSLFactory == null)
+      throw new IllegalStateException ("Failed to create SSL SocketFactory");
+
+    final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = getProxyHost ();
     final Credentials aProxyCredentials = getProxyCredentials ();
@@ -569,10 +573,6 @@ public class HttpClientFactory implements IHttpClientProvider
     aHCB.addInterceptorLast (new RequestAddCookies ());
     // Un-gzip or uncompress
     aHCB.addInterceptorLast (new ResponseContentEncoding ());
-
-    // Explicitly set SSL Context to also send the client certificate
-    if (m_aSSLContext != null)
-      aHCB.setSSLContext (m_aSSLContext);
 
     // Enable usage of Java networking system properties
     if (m_bUseSystemProperties)

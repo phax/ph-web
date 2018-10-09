@@ -62,6 +62,9 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.random.RandomHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
+import com.helger.http.tls.ETLSVersion;
+import com.helger.http.tls.ITLSConfigurationMode;
+import com.helger.http.tls.TLSConfigurationMode;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
@@ -83,6 +86,7 @@ public class HttpClientFactory implements IHttpClientProvider
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private SSLContext m_aSSLContext;
+  private ITLSConfigurationMode m_aTLSConfigurationMode;
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
@@ -254,6 +258,33 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * @return The TLS configuration mode to be used. <code>null</code> means to use
+   *         the default settings without specific cipher suites.
+   * @since 9.0.5
+   */
+  @Nullable
+  public final ITLSConfigurationMode getTLSConfigurationMode ()
+  {
+    return m_aTLSConfigurationMode;
+  }
+
+  /**
+   * Set the TLS configuration mode to use.
+   *
+   * @param aTLSConfigurationMode
+   *        The configuration mode to use. <code>null</code> means use system
+   *        default.
+   * @return this for chaining
+   * @since 9.0.5
+   */
+  @Nonnull
+  public final HttpClientFactory setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
+  {
+    m_aTLSConfigurationMode = aTLSConfigurationMode;
+    return this;
+  }
+
+  /**
    * @return The proxy host to be used. May be <code>null</code>.
    */
   @Nullable
@@ -355,6 +386,11 @@ public class HttpClientFactory implements IHttpClientProvider
     return this;
   }
 
+  private static final TLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
+                                                                                                                     ETLSVersion.TLS_11,
+                                                                                                                     ETLSVersion.TLS_10 },
+                                                                                                new String [0]);
+
   @Nullable
   public LayeredConnectionSocketFactory createSSLFactory ()
   {
@@ -370,9 +406,11 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       if (m_aSSLContext != null)
       {
+        final ITLSConfigurationMode aTLSConfigMode = m_aTLSConfigurationMode != null ? m_aTLSConfigurationMode
+                                                                                     : DEFAULT_TLS_CONFIG_MODE;
         aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
-                                                      new String [] { "TLSv1.2", "TLSv1.1", "TLSv1" },
-                                                      null,
+                                                      aTLSConfigMode.getAllTLSVersionIDsAsArray (),
+                                                      aTLSConfigMode.getAllCipherSuitesAsArray (),
                                                       aHostnameVerifier);
       }
     }
@@ -521,6 +559,10 @@ public class HttpClientFactory implements IHttpClientProvider
     aHCB.addInterceptorLast (new RequestAddCookies ());
     // Un-gzip or uncompress
     aHCB.addInterceptorLast (new ResponseContentEncoding ());
+
+    // Explicitly set SSL Context to also send the client certificate
+    if (m_aSSLContext != null)
+      aHCB.setSSLContext (m_aSSLContext);
 
     // Enable usage of Java networking system properties
     if (m_bUseSystemProperties)

@@ -32,6 +32,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
@@ -57,6 +58,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.random.RandomHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -378,7 +380,7 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       // Fall through
       LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
-                      ex);
+                   ex);
     }
 
     if (aSSLFactory == null)
@@ -429,8 +431,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be
-   *         <code>null</code> to use the default.
+   *         {@link PoolingHttpClientConnectionManager}. May be <code>null</code>
+   *         to use the default.
    * @see #isUseDNSClientCache()
    * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
@@ -486,6 +488,14 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nonnull
+  @OverrideOnDemand
+  public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries,
+                                                            @Nonnull final ERetryMode eRetryMode)
+  {
+    return new HttpClientRetryHandler (nMaxRetries, eRetryMode);
+  }
+
+  @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
     final HttpClientConnectionManager aConnMgr = createConnectionManager ();
@@ -518,7 +528,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
     // Set retry handler (if needed)
     if (m_nRetries > 0)
-      aHCB.setRetryHandler (new HttpClientRetryHandler (m_nRetries, m_eRetryMode));
+      aHCB.setRetryHandler (createRequestRetryHandler (m_nRetries, m_eRetryMode));
 
     return aHCB;
   }

@@ -76,6 +76,14 @@ import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 @Immutable
 public class HttpClientFactory implements IHttpClientProvider
 {
+  /**
+   * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
+   * suites
+   */
+  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
+                                                                                                                     ETLSVersion.TLS_11,
+                                                                                                                     ETLSVersion.TLS_10 },
+                                                                                                new String [0]);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
@@ -386,11 +394,6 @@ public class HttpClientFactory implements IHttpClientProvider
     return this;
   }
 
-  private static final TLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
-                                                                                                                     ETLSVersion.TLS_11,
-                                                                                                                     ETLSVersion.TLS_10 },
-                                                                                                new String [0]);
-
   @Nullable
   public LayeredConnectionSocketFactory createSSLFactory ()
   {
@@ -408,6 +411,13 @@ public class HttpClientFactory implements IHttpClientProvider
       {
         final ITLSConfigurationMode aTLSConfigMode = m_aTLSConfigurationMode != null ? m_aTLSConfigurationMode
                                                                                      : DEFAULT_TLS_CONFIG_MODE;
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
+
         aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
                                                       aTLSConfigMode.getAllTLSVersionIDsAsArray (),
                                                       aTLSConfigMode.getAllCipherSuitesAsArray (),

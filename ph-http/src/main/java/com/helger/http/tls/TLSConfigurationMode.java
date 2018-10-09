@@ -16,13 +16,22 @@
  */
 package com.helger.http.tls;
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.annotation.Nonnull;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.exception.InitializationException;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -34,17 +43,60 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class TLSConfigurationMode implements ITLSConfigurationMode
 {
+  private static ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsHashMap <> ();
+
+  static
+  {
+    for (final ETLSVersion eTLSVersion : ETLSVersion.values ())
+    {
+      try
+      {
+        final SSLContext aSSLCtx = SSLContext.getInstance (eTLSVersion.getID ());
+        aSSLCtx.init (null, null, null);
+        TLS_CONTEXT_MAP.put (eTLSVersion, aSSLCtx);
+      }
+      catch (final NoSuchAlgorithmException ex)
+      {
+        // E.g. TLS 1.3 on Java 8
+        // -> ignore
+      }
+      catch (final Exception ex)
+      {
+        throw new InitializationException ("Error creating SSLContext for " + eTLSVersion, ex);
+      }
+    }
+  }
+
+  public static boolean isSupportedCipherSuiteInSSLContext (@Nonnull final ETLSVersion [] aTLSVersions,
+                                                            @Nonnull @Nonempty final String sCipherSuite)
+  {
+    // Check if the cipher suite is available for any TLS version
+    for (final ETLSVersion eTLSVersion : aTLSVersions)
+    {
+      final SSLContext aSSLCtx = TLS_CONTEXT_MAP.get (eTLSVersion);
+      if (aSSLCtx != null)
+      {
+        final SSLParameters aParams = aSSLCtx.getSupportedSSLParameters ();
+        final ICommonsSet <String> aCipherSuites = new CommonsHashSet <> (aParams.getCipherSuites ());
+        if (aCipherSuites.contains (sCipherSuite))
+          return true;
+      }
+    }
+    return false;
+  }
+
   // Order is important
   private final ICommonsList <ETLSVersion> m_aTLSVersions;
   private final ICommonsList <String> m_aCipherSuites;
 
   public TLSConfigurationMode (@Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
-                               @Nonnull @Nonempty final String [] aCipherSuites)
+                               @Nonnull final String [] aCipherSuites)
   {
-    ValueEnforcer.notNull (aTLSVersions, "TLSVersions");
-    ValueEnforcer.notNull (aCipherSuites, "CipherSuites");
+    ValueEnforcer.notEmptyNoNullValue (aTLSVersions, "TLSVersions");
+    ValueEnforcer.notNullNoNullValue (aCipherSuites, "CipherSuites");
     m_aTLSVersions = new CommonsArrayList <> (aTLSVersions);
-    m_aCipherSuites = new CommonsArrayList <> (aCipherSuites);
+    m_aCipherSuites = CommonsArrayList.createFiltered (aCipherSuites,
+                                                       x -> isSupportedCipherSuiteInSSLContext (aTLSVersions, x));
   }
 
   @Nonnull

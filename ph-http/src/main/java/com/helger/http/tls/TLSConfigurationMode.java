@@ -19,6 +19,7 @@ package com.helger.http.tls;
 import java.security.NoSuchAlgorithmException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 
@@ -113,10 +114,12 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
     return m_aTLSVersions.getAllMapped (ETLSVersion::getID);
   }
 
-  @Nonnull
+  @Nullable
   @ReturnsMutableCopy
   public String [] getAllTLSVersionIDsAsArray ()
   {
+    if (m_aTLSVersions.isEmpty ())
+      return null;
     return getAllTLSVersionIDs ().toArray (new String [m_aTLSVersions.size ()]);
   }
 
@@ -127,10 +130,12 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
     return m_aCipherSuites.getClone ();
   }
 
-  @Nonnull
+  @Nullable
   @ReturnsMutableCopy
   public String [] getAllCipherSuitesAsArray ()
   {
+    if (m_aCipherSuites.isEmpty ())
+      return null;
     return m_aCipherSuites.toArray (new String [m_aCipherSuites.size ()]);
   }
 

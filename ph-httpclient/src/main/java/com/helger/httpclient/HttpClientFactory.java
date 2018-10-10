@@ -32,6 +32,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
@@ -60,6 +61,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.random.RandomHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
+import com.helger.http.tls.ETLSVersion;
+import com.helger.http.tls.ITLSConfigurationMode;
+import com.helger.http.tls.TLSConfigurationMode;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
@@ -71,6 +75,14 @@ import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 @Immutable
 public class HttpClientFactory implements IHttpClientProvider
 {
+  /**
+   * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
+   * suites
+   */
+  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
+                                                                                                                     ETLSVersion.TLS_11,
+                                                                                                                     ETLSVersion.TLS_10 },
+                                                                                                new String [0]);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
@@ -81,6 +93,7 @@ public class HttpClientFactory implements IHttpClientProvider
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private SSLContext m_aSSLContext;
+  private ITLSConfigurationMode m_aTLSConfigurationMode;
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
@@ -252,6 +265,33 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * @return The TLS configuration mode to be used. <code>null</code> means to use
+   *         the default settings without specific cipher suites.
+   * @since 9.0.5
+   */
+  @Nullable
+  public final ITLSConfigurationMode getTLSConfigurationMode ()
+  {
+    return m_aTLSConfigurationMode;
+  }
+
+  /**
+   * Set the TLS configuration mode to use.
+   *
+   * @param aTLSConfigurationMode
+   *        The configuration mode to use. <code>null</code> means use system
+   *        default.
+   * @return this for chaining
+   * @since 9.0.5
+   */
+  @Nonnull
+  public final HttpClientFactory setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
+  {
+    m_aTLSConfigurationMode = aTLSConfigurationMode;
+    return this;
+  }
+
+  /**
    * @return The proxy host to be used. May be <code>null</code>.
    */
   @Nullable
@@ -358,19 +398,32 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
 
-    // Custom hostname verifier preferred
-    HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
-    if (aHostnameVerifier == null)
-      aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
-
-    // First try with a custom SSL context
     try
     {
+      // First try with a custom SSL context
       if (m_aSSLContext != null)
       {
+        // Choose correct TLS configuration mode
+        final ITLSConfigurationMode aTLSConfigMode = m_aTLSConfigurationMode != null ? m_aTLSConfigurationMode
+                                                                                     : DEFAULT_TLS_CONFIG_MODE;
+
+        // Custom hostname verifier preferred
+        HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
+        if (aHostnameVerifier == null)
+          aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
+
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
+
         aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
-                                                      new String [] { "TLSv1.2", "TLSv1.1", "TLSv1" },
-                                                      null,
+                                                      aTLSConfigMode.getAllTLSVersionIDsAsArray (),
+                                                      aTLSConfigMode.getAllCipherSuitesAsArray (),
                                                       aHostnameVerifier);
       }
     }
@@ -429,8 +482,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be
-   *         <code>null</code> to use the default.
+   *         {@link PoolingHttpClientConnectionManager}. May be <code>null</code>
+   *         to use the default.
    * @see #isUseDNSClientCache()
    * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
@@ -443,12 +496,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nonnull
-  public HttpClientConnectionManager createConnectionManager ()
+  public HttpClientConnectionManager createConnectionManager (@Nonnull final LayeredConnectionSocketFactory aSSLFactory)
   {
-    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
-    if (aSSLFactory == null)
-      throw new IllegalStateException ("Failed to create SSL SocketFactory");
-
     final Registry <ConnectionSocketFactory> aConSocketRegistry = RegistryBuilder.<ConnectionSocketFactory> create ()
                                                                                  .register ("http",
                                                                                             PlainConnectionSocketFactory.getSocketFactory ())
@@ -485,25 +534,44 @@ public class HttpClientFactory implements IHttpClientProvider
     return createRequestConfigBuilder ().build ();
   }
 
-  @Nonnull
-  public HttpClientBuilder createHttpClientBuilder ()
+  @Nullable
+  public CredentialsProvider createCredentialsProvider ()
   {
-    final HttpClientConnectionManager aConnMgr = createConnectionManager ();
-    final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = getProxyHost ();
     final Credentials aProxyCredentials = getProxyCredentials ();
-
-    final HttpClientBuilder aHCB = HttpClients.custom ()
-                                              .setConnectionManager (aConnMgr)
-                                              .setDefaultRequestConfig (aRequestConfig)
-                                              .setProxy (aProxyHost);
-
     if (aProxyHost != null && aProxyCredentials != null)
     {
       final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
       aCredentialsProvider.setCredentials (new AuthScope (aProxyHost), aProxyCredentials);
-      aHCB.setDefaultCredentialsProvider (aCredentialsProvider);
+      return aCredentialsProvider;
     }
+    return null;
+  }
+
+  @Nullable
+  public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries,
+                                                            @Nonnull final ERetryMode eRetryMode)
+  {
+    return new HttpClientRetryHandler (nMaxRetries, eRetryMode);
+  }
+
+  @Nonnull
+  public HttpClientBuilder createHttpClientBuilder ()
+  {
+    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
+    if (aSSLFactory == null)
+      throw new IllegalStateException ("Failed to create SSL SocketFactory");
+
+    final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
+    final RequestConfig aRequestConfig = createRequestConfig ();
+    final HttpHost aProxyHost = getProxyHost ();
+    final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
+
+    final HttpClientBuilder aHCB = HttpClients.custom ()
+                                              .setConnectionManager (aConnMgr)
+                                              .setDefaultRequestConfig (aRequestConfig)
+                                              .setProxy (aProxyHost)
+                                              .setDefaultCredentialsProvider (aCredentialsProvider);
 
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());
@@ -518,7 +586,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
     // Set retry handler (if needed)
     if (m_nRetries > 0)
-      aHCB.setRetryHandler (new HttpClientRetryHandler (m_nRetries, m_eRetryMode));
+      aHCB.setRetryHandler (createRequestRetryHandler (m_nRetries, m_eRetryMode));
 
     return aHCB;
   }

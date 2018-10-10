@@ -58,7 +58,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.random.RandomHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -535,8 +534,21 @@ public class HttpClientFactory implements IHttpClientProvider
     return createRequestConfigBuilder ().build ();
   }
 
-  @Nonnull
-  @OverrideOnDemand
+  @Nullable
+  public CredentialsProvider createCredentialsProvider ()
+  {
+    final HttpHost aProxyHost = getProxyHost ();
+    final Credentials aProxyCredentials = getProxyCredentials ();
+    if (aProxyHost != null && aProxyCredentials != null)
+    {
+      final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+      aCredentialsProvider.setCredentials (new AuthScope (aProxyHost), aProxyCredentials);
+      return aCredentialsProvider;
+    }
+    return null;
+  }
+
+  @Nullable
   public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries,
                                                             @Nonnull final ERetryMode eRetryMode)
   {
@@ -553,19 +565,13 @@ public class HttpClientFactory implements IHttpClientProvider
     final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = getProxyHost ();
-    final Credentials aProxyCredentials = getProxyCredentials ();
+    final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
 
     final HttpClientBuilder aHCB = HttpClients.custom ()
                                               .setConnectionManager (aConnMgr)
                                               .setDefaultRequestConfig (aRequestConfig)
-                                              .setProxy (aProxyHost);
-
-    if (aProxyHost != null && aProxyCredentials != null)
-    {
-      final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
-      aCredentialsProvider.setCredentials (new AuthScope (aProxyHost), aProxyCredentials);
-      aHCB.setDefaultCredentialsProvider (aCredentialsProvider);
-    }
+                                              .setProxy (aProxyHost)
+                                              .setDefaultCredentialsProvider (aCredentialsProvider);
 
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());

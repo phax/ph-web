@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.0.5 - work in progress
+* v9.0.5 - 2018-10-11
     * Changed `IContentTransferEncoding` to deliver a full codec and not just a decoder
     * Extended `NetworkPortHelper` with a remote port status checker
     * Added new package `com.helger.http.tls` with TLS version and configuration enums
@@ -102,7 +102,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.4</version>
+  <version>9.0.5</version>
 </dependency>
 ```
 

@@ -82,11 +82,11 @@ public final class DNSResolver
     try
     {
       final InetAddress [] list = InetAddress.getAllByName (sHostName);
-      for (final InetAddress inetAddress : list)
+      for (final InetAddress aInetAddress : list)
       {
         if (aSB.length () > 0)
           aSB.append ("; ");
-        aSB.append (inetAddress.getHostAddress ());
+        aSB.append (aInetAddress.getHostAddress ());
       }
     }
     catch (final UnknownHostException e)

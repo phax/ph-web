@@ -79,7 +79,7 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
       m_aOS.m_aBAOS.writeTo (aOS);
   }
 
-  private class LoggingServletOutpuStream extends ServletOutputStream
+  private static class LoggingServletOutpuStream extends ServletOutputStream
   {
     private final NonBlockingByteArrayOutputStream m_aBAOS = new NonBlockingByteArrayOutputStream ();
 

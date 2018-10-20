@@ -35,7 +35,7 @@ import com.helger.xml.microdom.util.XMLListHandler;
 @Immutable
 public final class ApplicationUserAgentManager
 {
-  private static ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
+  private static final ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
 
   static
   {

@@ -56,10 +56,11 @@ public class AndroidFilenameEncoder implements IEncoder <String, String>
     return aSB.toString ();
   }
 
-  @Nonnull
+  @Nullable
   public String getEncoded (@Nullable final String sSrc)
   {
-    ValueEnforcer.notNull (sSrc, "Src");
+    if (sSrc == null)
+      return null;
     return getSafeAndroidFilename (sSrc);
   }
 }

@@ -28,6 +28,8 @@ import com.helger.commons.codec.DecodeException;
 import com.helger.commons.codec.RFC1522BCodec;
 import com.helger.commons.codec.RFC1522QCodec;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * RFC 2047 Helper. MIME (Multipurpose Internet Mail Extensions) Part Three:
  * Message Header Extensions for Non-ASCII Text
@@ -35,6 +37,7 @@ import com.helger.commons.codec.RFC1522QCodec;
  * @author Apache Abdera
  */
 @Immutable
+@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class RFC2047Helper
 {
   public static enum ECodec

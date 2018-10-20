@@ -56,12 +56,15 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.network.proxy.config.HttpProxyConfig;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Some utility methods for creating and handling Apache httpclient objects.
  *
  * @author Philip Helger
  */
 @Immutable
+@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class HttpClientHelper
 {
   private HttpClientHelper ()

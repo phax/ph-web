@@ -166,10 +166,11 @@ public class RFC5987Encoder implements IEncoder <String, String>
     return getRFC5987Encoded (sSrc, StandardCharsets.UTF_8);
   }
 
-  @Nonnull
+  @Nullable
   public String getEncoded (@Nullable final String sSrc)
   {
-    ValueEnforcer.notNull (sSrc, "Src");
+    if (sSrc == null)
+      return null;
     return getRFC5987Encoded (sSrc, m_aCharset);
   }
 }

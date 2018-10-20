@@ -22,7 +22,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.ValueEnforcer;
@@ -54,7 +54,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-@Immutable
+@NotThreadSafe
 public class RequestParamMap implements IRequestParamMap
 {
   public static final String DEFAULT_OPEN = "[";

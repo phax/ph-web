@@ -23,7 +23,7 @@ import java.security.GeneralSecurityException;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -72,7 +72,7 @@ import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
  *
  * @author Philip Helger
  */
-@Immutable
+@NotThreadSafe
 public class HttpClientFactory implements IHttpClientProvider
 {
   /**
@@ -265,8 +265,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to use
-   *         the default settings without specific cipher suites.
+   * @return The TLS configuration mode to be used. <code>null</code> means to
+   *         use the default settings without specific cipher suites.
    * @since 9.0.5
    */
   @Nullable
@@ -482,8 +482,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be <code>null</code>
-   *         to use the default.
+   *         {@link PoolingHttpClientConnectionManager}. May be
+   *         <code>null</code> to use the default.
    * @see #isUseDNSClientCache()
    * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0

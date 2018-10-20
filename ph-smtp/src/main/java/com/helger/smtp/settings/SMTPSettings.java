@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.equals.EqualsHelper;
@@ -43,7 +43,7 @@ import com.helger.smtp.EmailGlobalSettings;
  *
  * @author Philip Helger
  */
-@Immutable
+@NotThreadSafe
 public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 {
   private String m_sHostName;

@@ -36,6 +36,8 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.httpclient.HttpClientHelper;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * A specialized version of {@link HttpResponseException} that has access to all
  * the fields in a structured way.
@@ -50,6 +52,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   private final byte [] m_aResponseBody;
   private final Charset m_aResponseCharset;
 
+  @SuppressFBWarnings ("EI_EXPOSE_REP2")
   public ExtendedHttpResponseException (@Nonnull final StatusLine aStatusLine,
                                         @Nonnull final HttpResponse aHttpResponse,
                                         @Nullable final byte [] aResponseBody,
@@ -88,7 +91,8 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return The response body bytes. May be <code>null</code>.
    */
   @Nullable
-  @ReturnsMutableObject ("design")
+  @ReturnsMutableObject
+  @SuppressFBWarnings ("EI_EXPOSE_REP")
   public byte [] directGetResponseBody ()
   {
     return m_aResponseBody;

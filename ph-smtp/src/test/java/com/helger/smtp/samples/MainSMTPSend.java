@@ -373,7 +373,7 @@ public class MainSMTPSend
       }
 
     }
-    catch (final Exception e)
+    catch (final MessagingException | IOException e)
     {
       /*
        * Handle SMTP-specific exceptions.

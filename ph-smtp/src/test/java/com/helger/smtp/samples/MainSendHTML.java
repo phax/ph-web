@@ -275,7 +275,7 @@ public class MainSendHTML
       }
 
     }
-    catch (final Exception e)
+    catch (final IOException | MessagingException e)
     {
       e.printStackTrace ();
     }

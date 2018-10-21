@@ -85,15 +85,16 @@ public class ExtAsyncContext
   public HttpServletRequest getRequest ()
   {
     final HttpServletRequest ret = (HttpServletRequest) m_aAsyncContext.getRequest ();
-    if (!m_bSetAttrs && false)
-    {
-      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
-      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
-      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
-      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
-      ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
-      m_bSetAttrs = true;
-    }
+    if (!m_bSetAttrs)
+      if (false)
+      {
+        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
+        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
+        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
+        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
+        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
+        m_bSetAttrs = true;
+      }
     return ret;
   }
 

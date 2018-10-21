@@ -40,6 +40,7 @@ import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -383,8 +384,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final ICommonsList <String> aList = getHeaders (sName);
-    return aList == null ? null : aList.getFirst ();
+    final ICommonsOrderedSet <String> aSet = m_aHeaders.get (_unifyHeaderName (sName));
+    return aSet == null ? null : aSet.getFirst ();
   }
 
   /**

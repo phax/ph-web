@@ -49,7 +49,9 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     eAttachment.setAttribute (ATTR_DISPOSITION, aAttachment.getDisposition ().getID ());
     eAttachment.setAttribute (ATTR_CONTENT_TYPE, aAttachment.getContentType ());
     // Base64 encode
-    eAttachment.appendText (Base64.encodeBytes (StreamHelper.getAllBytes (aAttachment.getInputStream ())));
+    final byte [] aBytes = StreamHelper.getAllBytes (aAttachment.getInputStream ());
+    if (aBytes != null)
+      eAttachment.appendText (Base64.encodeBytes (aBytes));
     return eAttachment;
   }
 

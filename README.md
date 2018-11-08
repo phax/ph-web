@@ -24,6 +24,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.0.6 - work in progress
+    * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannnot be read
 * v9.0.5 - 2018-10-11
     * Changed `IContentTransferEncoding` to deliver a full codec and not just a decoder
     * Extended `NetworkPortHelper` with a remote port status checker

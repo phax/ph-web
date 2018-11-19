@@ -16,6 +16,8 @@
  */
 package com.helger.web.scope.request;
 
+import java.util.function.BiFunction;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.web.scope.IRequestWebScope;
-import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
@@ -94,13 +95,13 @@ public final class RequestScopeInitializer implements AutoCloseable
   public static RequestScopeInitializer createMultipart (@Nonnull final HttpServletRequest aHttpRequest,
                                                          @Nonnull final HttpServletResponse aHttpResponse)
   {
-    return create (aHttpRequest, aHttpResponse, true);
+    return create (aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
   }
 
   @Nonnull
   public static RequestScopeInitializer create (@Nonnull final HttpServletRequest aHttpRequest,
                                                 @Nonnull final HttpServletResponse aHttpResponse,
-                                                final boolean bMultipartEnabled)
+                                                @Nonnull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory)
   {
     // Check if a request scope is already present
     final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScopeOrNull ();
@@ -117,15 +118,12 @@ public final class RequestScopeInitializer implements AutoCloseable
       // Wow...
       if (LOGGER.isErrorEnabled ())
         LOGGER.error ("The existing request scope is no longer valid - creating a new one: " +
-                         aExistingRequestScope.toString ());
+                      aExistingRequestScope.toString ());
     }
 
     // No valid scope present
     // -> create a new scope
-    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (aHttpRequest,
-                                                                           aHttpResponse,
-                                                                           bMultipartEnabled ? RequestWebScopeMultipart::new
-                                                                                             : RequestWebScope::new);
+    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (aHttpRequest, aHttpResponse, aFactory);
     return new RequestScopeInitializer (aRequestScope, true);
   }
 }

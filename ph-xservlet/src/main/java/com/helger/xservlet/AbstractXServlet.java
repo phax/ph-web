@@ -19,6 +19,7 @@ package com.helger.xservlet;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiFunction;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -56,6 +57,8 @@ import com.helger.servlet.http.CountingOnlyHttpServletResponse;
 import com.helger.servlet.request.RequestLogger;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.impl.RequestWebScope;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
@@ -404,9 +407,8 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * This method logs errors, in case a HttpServletRequest object is missing
-   * basic information or uses unsupported values for e.g. HTTP version and HTTP
-   * method.
+   * This method logs errors, in case a HttpServletRequest object is missing basic
+   * information or uses unsupported values for e.g. HTTP version and HTTP method.
    *
    * @param sMsg
    *        The concrete message to emit. May not be <code>null</code>.
@@ -427,8 +429,8 @@ public abstract class AbstractXServlet extends HttpServlet
    *        the {@link HttpServletRequest} object that contains the request the
    *        client made of the servlet
    * @param aHttpResponse
-   *        the {@link HttpServletResponse} object that contains the response
-   *        the servlet returns to the client
+   *        the {@link HttpServletResponse} object that contains the response the
+   *        servlet returns to the client
    * @exception IOException
    *            if an input or output error occurs while the servlet is handling
    *            the HTTP request
@@ -512,10 +514,12 @@ public abstract class AbstractXServlet extends HttpServlet
       if (bInvokeHandler)
       {
         // Create request scope
-        try (
-            final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
-                                                                                                     aHttpResponseWrapper,
-                                                                                                     m_aSettings.isMultipartEnabled ()))
+        final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
+        aFactory = m_aSettings.isMultipartEnabled () ? RequestWebScopeMultipart::new : RequestWebScope::new;
+
+        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                      aHttpResponseWrapper,
+                                                                                                      aFactory))
         {
           final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
           aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());

@@ -16,10 +16,14 @@
  */
 package com.helger.web.scope.impl;
 
+import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.Enumeration;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.GuardedBy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,6 +36,7 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
@@ -64,18 +69,75 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   public static class ParamContainer extends AttributeContainerAny <String> implements IRequestParamContainer
   {}
 
+  /**
+   * The param value cleanser interface to be used globally.
+   *
+   * @author Philip Helger
+   * @since 9.0.6
+   */
+  @FunctionalInterface
+  public static interface IParamValueCleanser extends Serializable
+  {
+    /**
+     * Get the cleaned value of a parameter value.
+     *
+     * @param sParamName
+     *        The current parameter name. May not be <code>null</code>.
+     * @param nParamIndex
+     *        The index of the value. If the parameter has multiple values this is
+     *        respective index. If there is only one value, this is always 0 (zero).
+     * @param sParamValue
+     *        The value to be cleaned. May be <code>null</code>.
+     * @return The cleaned value. May also be <code>null</code>.
+     */
+    @Nullable
+    String getCleanedValue (@Nonnull String sParamName, @Nonnegative int nParamIndex, @Nullable String sParamValue);
+  }
+
   // Because of transient field
   private static final long serialVersionUID = 78563987233147L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "requestscope.inited";
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  @GuardedBy ("s_aRWLock")
+  private static IParamValueCleanser s_aParamValueCleanser = (n, i, v) -> getWithoutForbiddenCharsAndNormalized (v);
 
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;
   private HttpHeaderMap m_aHeaders;
   private final ParamContainer m_aParams = new ParamContainer ();
   private IRequestParamMap m_aRequestParamMap;
+
+  /**
+   * @return The current value cleanser function. May be <code>null</code>. By
+   *         default {@link #getWithoutForbiddenCharsAndNormalized(String)} is
+   *         invoked.
+   * @since 9.0.6
+   * @see #setParamValueCleanser(IParamValueCleanser)
+   */
+  @Nullable
+  public static IParamValueCleanser getParamValueCleanser ()
+  {
+    return s_aRWLock.readLocked ( () -> s_aParamValueCleanser);
+  }
+
+  /**
+   * Set the param value cleanser function that is applied on all parameter
+   * values. By default only
+   * {@link #getWithoutForbiddenCharsAndNormalized(String)} is invoked.
+   *
+   * @param aParamValueCleanser
+   *        The function to be applied. May be <code>null</code>. The function
+   *        itself must be able to handle <code>null</code> values.
+   * @since 9.0.6
+   * @see #getParamValueCleanser()
+   */
+  public static void setParamValueCleanser (@Nullable final IParamValueCleanser aParamValueCleanser)
+  {
+    s_aRWLock.writeLocked ( () -> s_aParamValueCleanser = aParamValueCleanser);
+  }
 
   @Nonnull
   @Nonempty
@@ -118,10 +180,6 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     return EChange.UNCHANGED;
   }
-
-  @OverrideOnDemand
-  protected void postAttributeInit ()
-  {}
 
   /**
    * Check if the provided char is forbidden in a request value or not.
@@ -180,17 +238,32 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * Override this method to pre-process all parameter values
+   * First normalize the input according to Unicode rules, so that "O 0xcc 0x88"
+   * (O with COMBINING DIAERESIS) becomes "Ö" (Capital O with umlaut).
    *
-   * @param sInput
-   *        Input string. May not be <code>null</code>.
-   * @return Pre-processed string. May not be <code>null</code>.
+   * @param s
+   *        Source string. May be <code>null</code>.
+   * @return <code>null</code> if the source string is <code>null</code>.
+   * @see Normalizer#normalize(CharSequence, java.text.Normalizer.Form)
+   * @see #getWithoutForbiddenChars(String)
+   * @since 9.0.6
    */
-  @OverrideOnDemand
-  @Nonnull
-  protected String getPreprocessedParamValue (@Nonnull final String sInput)
+  @Nullable
+  public static String getWithoutForbiddenCharsAndNormalized (@Nullable final String s)
   {
-    return sInput;
+    String sValue = s;
+
+    // Removed forbidden chars first
+    if (sValue == null)
+      return null;
+    sValue = getWithoutForbiddenChars (sValue);
+
+    // than normalize
+    if (sValue == null)
+      return null;
+    sValue = Normalizer.normalize (sValue, Normalizer.Form.NFKC);
+
+    return sValue;
   }
 
   public final void initScope ()
@@ -212,6 +285,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // where some extra items (like file items) handled?
     final boolean bAddedSpecialRequestParams = addSpecialRequestParams ().isChanged ();
 
+    // Retrieve once (because locked)
+    final IParamValueCleanser aParamValueCleanser = getParamValueCleanser ();
+
     // set parameters as attributes (handles GET and POST parameters)
     final Enumeration <String> aEnum = m_aHttpRequest.getParameterNames ();
     while (aEnum.hasMoreElements ())
@@ -231,12 +307,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       {
         // Convert from String[] to String
 
-        // Remove all special bullshit chars
-        final String sCleanedValue = getWithoutForbiddenChars (aParamValues[0]);
-
-        // Custom preprocessor
-        final String sPreProcessedValue = getPreprocessedParamValue (sCleanedValue);
-        aParams.putIn (sParamName, sPreProcessedValue);
+        String sValue = aParamValues[0];
+        if (aParamValueCleanser != null)
+        {
+          // Adopt value if needed
+          sValue = aParamValueCleanser.getCleanedValue (sParamName, 0, sValue);
+        }
+        aParams.putIn (sParamName, sValue);
       }
       else
       {
@@ -244,19 +321,18 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
         final String [] aPreProcessedValues = new String [nParamValues];
         for (int i = 0; i < nParamValues; ++i)
         {
-          // Remove all special bullshit chars
-          final String sCleanedValue = getWithoutForbiddenChars (aParamValues[i]);
-
-          // Custom preprocessor
-          final String sPreProcessedValue = getPreprocessedParamValue (sCleanedValue);
-          aPreProcessedValues[i] = sPreProcessedValue;
+          String sValue = aParamValues[i];
+          if (aParamValueCleanser != null)
+          {
+            // Adopt value if needed
+            sValue = aParamValueCleanser.getCleanedValue (sParamName, i, sValue);
+          }
+          aPreProcessedValues[i] = sValue;
         }
 
         aParams.putIn (sParamName, aPreProcessedValues);
       }
     }
-
-    postAttributeInit ();
 
     // done initialization
     if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))

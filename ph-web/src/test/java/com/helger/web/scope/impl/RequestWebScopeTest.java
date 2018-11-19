@@ -17,9 +17,14 @@
 package com.helger.web.scope.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
+
+import com.helger.web.scope.impl.RequestWebScope.IParamValueCleanser;
 
 /**
  * Test class for class {@link RequestWebScope}
@@ -56,5 +61,20 @@ public final class RequestWebScopeTest
                                                             "\u007f" +
                                                             "\ud800\udfff" +
                                                             "\ufffe\uffff"));
+  }
+
+  @Test
+  public void testDefaultParamValueCleanser ()
+  {
+    final IParamValueCleanser aPVC = RequestWebScope.getParamValueCleanser ();
+    assertNotNull (aPVC);
+
+    // O + COMBINING DIAERESIS
+    final byte [] b = new byte [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 'O', (byte) 0xcc, (byte) 0x88 };
+    final String s = new String (b, StandardCharsets.UTF_8);
+    final String sCleaned = aPVC.getCleanedValue ("xx", 0, s);
+    assertNotNull (sCleaned);
+    assertEquals (1, sCleaned.length ());
+    assertEquals ("Ö", sCleaned);
   }
 }

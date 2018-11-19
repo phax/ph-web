@@ -108,9 +108,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * Callback method to add special parameters.
    *
    * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added,
-   *         existing attributes are kept and will not be overwritten with HTTP
-   *         servlet request parameters!
+   *         <code>false</code> if not. If special attributes were added, existing
+   *         attributes are kept and will not be overwritten with HTTP servlet
+   *         request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -124,11 +124,32 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {}
 
   /**
-   * Remove all chars from the input that cannot be serialized as HTML.
+   * Check if the provided char is forbidden in a request value or not.
+   *
+   * @param c
+   *        Char to check
+   * @return <code>true</code> if it is forbidden, <code>false</code> if not.
+   * @see #getWithoutForbiddenChars(String)
+   * @since 9.0.6
+   */
+  public static boolean isForbiddenParamValueChar (final char c)
+  {
+    // INVALID_VALUE_CHAR_XML10 + 0x7f
+    return (c >= 0x0 && c <= 0x8) ||
+           (c >= 0xb && c <= 0xc) ||
+           (c >= 0xe && c <= 0x1f) ||
+           (c == 0x7f) ||
+           (c >= 0xd800 && c <= 0xdfff) ||
+           (c >= 0xfffe && c <= 0xffff);
+  }
+
+  /**
+   * Remove all chars from the input that cannot be serialized as XML.
    *
    * @param s
    *        The source value. May be <code>null</code>.
    * @return <code>null</code> if the source value is <code>null</code>.
+   * @see #isForbiddenParamValueChar(char)
    * @since 9.0.4
    */
   @Nullable
@@ -137,24 +158,14 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     if (s == null)
       return null;
 
-    final StringBuilder aCleanValue = new StringBuilder ();
+    final StringBuilder aCleanValue = new StringBuilder (s.length ());
     int nForbidden = 0;
 
-    // INVALID_VALUE_CHAR_XML10 + 0x7f
     for (final char c : s.toCharArray ())
-      if ((c >= 0x0 && c <= 0x8) ||
-          (c >= 0xb && c <= 0xc) ||
-          (c >= 0xe && c <= 0x1f) ||
-          (c == 0x7f) ||
-          (c >= 0xd800 && c <= 0xdfff) ||
-          (c >= 0xfffe && c <= 0xffff))
-      {
+      if (isForbiddenParamValueChar (c))
         nForbidden++;
-      }
       else
-      {
         aCleanValue.append (c);
-      }
 
     if (nForbidden == 0)
     {
@@ -163,7 +174,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     }
 
     if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Removed " + nForbidden + " forbidden character(s) from a parameter value!");
+      LOGGER.warn ("Removed " + nForbidden + " forbidden character(s) from a request parameter value!");
 
     return aCleanValue.toString ();
   }
@@ -292,9 +303,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file
-   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
-   * last dot is after the last slash
+   * This is a heuristic method to determine whether a request is for a file (e.g.
+   * x.jsp) or for a servlet. This method return <code>true</code> if the last dot
+   * is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
@@ -319,13 +330,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context
-   *         of the request. The context path always comes first in a request
-   *         URI. The path starts with a "/" character but does not end with a
-   *         "/" character. For servlets in the default (root) context, this
-   *         method returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context.
-   *         Never with a trailing slash.
+   * @return Returns the portion of the request URI that indicates the context of
+   *         the request. The context path always comes first in a request URI.
+   *         The path starts with a "/" character but does not end with a "/"
+   *         character. For servlets in the default (root) context, this method
+   *         returns "". The container does not decode this string. E.g.
+   *         <code>/context</code> or an empty string for the root context. Never
+   *         with a trailing slash.
    * @see #getFullContextPath()
    */
   @Nonnull

@@ -23,21 +23,28 @@ EnOEj2FEH70HpbpyFXcRIRmPBuPwAC8whRvu4vCfQuDZYTgLcUcntiuR0Uix3VJyciP3jULDbVK9PNep
 S3OSqRFAo9jARdJCP6xCKxNT7ZYTtveRGQS4UzsFl+aeihE31RavzMuFjaPX9KOPBT0p4sm5OtYKADMZD3G+lzw3P7rUXm7piHX9vDsxME8uMRi8irNCRzhNQnka9QFtKJtIr3OMW8ZddSWP7kDGubnj+UxS9xHy
 zghNyIi+ZLpC01Nl50GErLKVzqauBqDAtBrhQZiM9Oq+HPRqBExu7Y="
     
-jdk:
-  - oraclejdk8
-  - oraclejdk11
-  - openjdk11
-  
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -U -P jdeps
 
-script:
-  - mvn test -B -P coverage sonar:sonar
-  
 cache:
   directories:
     - $HOME/.m2
 
-after_success:
-  - mvn deploy --settings travis-settings.xml -DskipTests=true -B -P travis-deploy
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: test
+      jdk: oraclejdk8
+      script:
+        - mvn test -B -P coverage sonar:sonar
+      after_success:
+        - mvn deploy --settings travis-settings.xml -DskipTests=true -B -P travis-deploy
+        - bash <(curl -s https://codecov.io/bash)
+    - stage: test
+      jdk: oraclejdk11
+      script:
+        - mvn test -B
+    - stage: test
+      jdk: openjdk11
+      script:
+        - mvn test -B
+  

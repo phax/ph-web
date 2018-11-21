@@ -32,7 +32,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.httpclient.HttpClientHelper;
@@ -87,15 +86,7 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Got XML: <" + sXML + ">");
 
-      Document ret = null;
-      try
-      {
-        ret = DOMReader.readXMLDOM (sXML);
-      }
-      catch (final SAXException ex)
-      {
-        // Ignore
-      }
+      final Document ret = DOMReader.readXMLDOM (sXML);
       if (ret == null)
         throw new IllegalArgumentException ("Failed to parse as XML: " + sXML);
       return ret;
@@ -103,13 +94,6 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
 
     // Read via reader to avoid duplication in memory
     final Reader aReader = new InputStreamReader (aEntity.getContent (), aCharset);
-    try
-    {
-      return DOMReader.readXMLDOM (aReader);
-    }
-    catch (final SAXException ex)
-    {
-      throw new IllegalArgumentException ("Failed to parse as XML", ex);
-    }
+    return DOMReader.readXMLDOM (aReader);
   }
 }

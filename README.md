@@ -24,10 +24,11 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.0.6 - work in progress
+* v9.1.0 - work in progress
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized
     * Added possibility to specify a custom "param value cleanser" using `RequestWebScope.setParamValueCleanser`
+    * Requires ph-commons 9.2.0
 * v9.0.5 - 2018-10-11
     * Changed `IContentTransferEncoding` to deliver a full codec and not just a decoder
     * Extended `NetworkPortHelper` with a remote port status checker

@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.0 - work in progress
+* v9.1.0 - 2018-11-12
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized
     * Added possibility to specify a custom "param value cleanser" using `RequestWebScope.setParamValueCleanser`
@@ -107,7 +107,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.0.5</version>
+  <version>9.1.0</version>
 </dependency>
 ```
 

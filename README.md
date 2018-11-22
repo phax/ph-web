@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.0 - 2018-11-12
+* v9.1.0 - 2018-11-22
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized
     * Added possibility to specify a custom "param value cleanser" using `RequestWebScope.setParamValueCleanser`

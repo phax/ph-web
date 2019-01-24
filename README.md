@@ -26,6 +26,7 @@ Java library with common web stuff. It contains the following sub-projects:
 
 * v9.1.1 - work in progress
     * Updated to JSch 0.1.55
+    * Updated to httpcore 4.4.11
 * v9.1.0 - 2018-11-22
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized

@@ -29,7 +29,7 @@ import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.EHttpVersion;
 
 /**
- * HAvoid Httpoxy attack using the 'Proxy' HTTP header
+ * Always set the correct `Referrer-Policy` header.
  *
  * @author Philip Helger
  * @since 9.0.0

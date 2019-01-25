@@ -19,7 +19,6 @@ package com.helger.xservlet.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,13 +65,4 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
     // Continue with request
     return EContinue.CONTINUE;
   }
-
-  public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final EHttpVersion eHttpVersion,
-                            @Nonnull final EHttpMethod eHttpMethod,
-                            final boolean bInvokeHandler,
-                            @Nullable final Throwable aCaughtException,
-                            final boolean bIsHandledAsync)
-  {}
 }

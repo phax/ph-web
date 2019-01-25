@@ -115,10 +115,14 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
+   * HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that
+   * is specified by a web application through the use of a special response
+   * header. Once a supported browser receives this header that browser will
+   * prevent any communications from being sent over HTTP to the specified domain
+   * and will instead send all communications over HTTPS. It also prevents HTTPS
+   * click through prompts on browsers. The specification has been released and
+   * published end of 2012 as RFC 6797 (HTTP Strict Transport Security (HSTS)) by
+   * the IETF.
    *
    * @param nMaxAgeSeconds
    *        number of seconds, after the reception of the STS header field, during
@@ -136,6 +140,16 @@ public final class UnifiedResponseDefaultSettings
                                                               (bIncludeSubdomains ? ";" +
                                                                                     CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
                                                                                   : ""));
+  }
+
+  /**
+   * Remove the `Strict-Transport-Security` headers from the default settings.
+   * 
+   * @since 9.1.1
+   */
+  public static void removeStrictTransportSecurity ()
+  {
+    removeResponseHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY);
   }
 
   /**
@@ -157,17 +171,23 @@ public final class UnifiedResponseDefaultSettings
    *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
    *        for the other cases.
    */
-  public static void setXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public static void setXFrameOptions (@Nullable final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
   {
-    ValueEnforcer.notNull (eType, "Type");
-    if (eType.isURLRequired ())
+    if (eType != null && eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");
 
-    if (eType.isURLRequired ())
-      setResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
-                         eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
+    if (eType == null)
+    {
+      removeResponseHeaders (CHttpHeader.X_FRAME_OPTIONS);
+    }
     else
-      setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
+    {
+      final String sHeaderValue = eType.isURLRequired () ? eType.getID () +
+                                                           " " +
+                                                           aDomain.getAsStringWithEncodedParameters ()
+                                                         : eType.getID ();
+      setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, sHeaderValue);
+    }
   }
 
   /**
@@ -175,13 +195,14 @@ public final class UnifiedResponseDefaultSettings
    * https://scotthelme.co.uk/a-new-security-header-referrer-policy/
    *
    * @param eReferrerPolicy
-   *        Policy to use. May not be <code>null</code>.
+   *        Policy to use. May be <code>null</code>.
    */
-  public static void setReferrerPolicy (@Nonnull final EHttpReferrerPolicy eReferrerPolicy)
+  public static void setReferrerPolicy (@Nullable final EHttpReferrerPolicy eReferrerPolicy)
   {
-    ValueEnforcer.notNull (eReferrerPolicy, "ReferrerPolicy");
-
-    setResponseHeader (CHttpHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
+    if (eReferrerPolicy == null)
+      removeResponseHeaders (CHttpHeader.REFERRER_POLICY);
+    else
+      setResponseHeader (CHttpHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
   }
 
   /**
@@ -199,6 +220,7 @@ public final class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sValue, "Value");
 
     s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.setHeader (sName, sValue));
+
   }
 
   /**

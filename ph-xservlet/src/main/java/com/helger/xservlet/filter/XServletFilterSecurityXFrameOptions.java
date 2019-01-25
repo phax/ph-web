@@ -77,19 +77,8 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
                                   @Nonnull final EHttpVersion eHttpVersion,
                                   @Nonnull final EHttpMethod eHttpMethod)
   {
-    return EContinue.CONTINUE;
-  }
-
-  public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final EHttpVersion eHttpVersion,
-                            @Nonnull final EHttpMethod eHttpMethod,
-                            final boolean bInvokeHandler,
-                            @Nullable final Throwable aCaughtException,
-                            final boolean bIsHandledAsync)
-  {
     // Ensure the response header is present
     aHttpResponse.addHeader (CHttpHeader.X_FRAME_OPTIONS, m_sHeaderValue);
-    aHttpResponse.addHeader (CHttpHeader.FRAME_OPTIONS, m_sHeaderValue);
+    return EContinue.CONTINUE;
   }
 }

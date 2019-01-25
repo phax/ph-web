@@ -489,7 +489,7 @@ public abstract class AbstractXServlet extends HttpServlet
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create effective filter list with all internal filters as well
-    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (3 +
+    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (4 +
                                                                                                  m_aFilterLowLevelList.size ());
     // Add internal filters - always first
     aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);

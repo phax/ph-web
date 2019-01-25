@@ -28,6 +28,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to JSch 0.1.55
     * Updated to httpcore 4.4.11
     * `XServletSettings` got a setting to set the `X-Frame-Options` HTTP header with a default value of `SAMEORIGIN`
+    * `XServletFilterSecurityHttpReferrerPolicy` adds the header before the request instead of afterwards
 * v9.1.0 - 2018-11-22
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized

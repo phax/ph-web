@@ -38,8 +38,8 @@ import com.helger.http.EHttpVersion;
 public interface IXServletLowLevelFilter extends Serializable
 {
   /**
-   * Invoked before an XServlet request is handled. This method is created
-   * before the request is created! Exceptions occurring in this method will be
+   * Invoked before an XServlet request is handled. This method is created before
+   * the request is created! Exceptions occurring in this method will be
    * propagated to the outside, so be careful :)
    *
    * @param aHttpRequest
@@ -67,7 +67,10 @@ public interface IXServletLowLevelFilter extends Serializable
   /**
    * Invoked after an XServlet request was handled. After is always called, even
    * if before request was canceled (in a finally)! Exceptions occurring in this
-   * method will be propagated to the outside, so be careful :)
+   * method will be propagated to the outside, so be careful :)<br>
+   * Note: the response cannot be modified in implementations of this method -
+   * they should be considered read-only. Also HTTP headers can usually NOT be
+   * modified in this method.
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -78,8 +81,8 @@ public interface IXServletLowLevelFilter extends Serializable
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
    * @param bInvokeHandler
-   *        <code>true</code> if the main handler was invoked,
-   *        <code>false</code> if
+   *        <code>true</code> if the main handler was invoked, <code>false</code>
+   *        if
    *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod)}
    *        avoided the execution of the request.
    * @param aCaughtException
@@ -92,11 +95,12 @@ public interface IXServletLowLevelFilter extends Serializable
    * @throws IOException
    *         in case of IO error
    */
-  void afterRequest (@Nonnull HttpServletRequest aHttpRequest,
-                     @Nonnull HttpServletResponse aHttpResponse,
-                     @Nonnull EHttpVersion eHttpVersion,
-                     @Nonnull EHttpMethod eHttpMethod,
-                     boolean bInvokeHandler,
-                     @Nullable Throwable aCaughtException,
-                     boolean bIsHandledAsync) throws ServletException, IOException;
+  default void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                             @Nonnull final HttpServletResponse aHttpResponse,
+                             @Nonnull final EHttpVersion eHttpVersion,
+                             @Nonnull final EHttpMethod eHttpMethod,
+                             final boolean bInvokeHandler,
+                             @Nullable final Throwable aCaughtException,
+                             final boolean bIsHandledAsync) throws ServletException, IOException
+  {}
 }

@@ -126,6 +126,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   /**
    * @return <code>true</code> if X-Frame-Options are defined, <code>false</code>
    *         if not.
+   * @since 9.1.1
    */
   public boolean hasXFrameOptions ()
   {

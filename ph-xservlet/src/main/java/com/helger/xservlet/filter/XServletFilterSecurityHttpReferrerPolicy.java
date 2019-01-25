@@ -17,7 +17,6 @@
 package com.helger.xservlet.filter;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,18 +48,8 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
                                   @Nonnull final EHttpVersion eHttpVersion,
                                   @Nonnull final EHttpMethod eHttpMethod)
   {
-    return EContinue.CONTINUE;
-  }
-
-  public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final EHttpVersion eHttpVersion,
-                            @Nonnull final EHttpMethod eHttpMethod,
-                            final boolean bInvokeHandler,
-                            @Nullable final Throwable aCaughtException,
-                            final boolean bIsHandledAsync)
-  {
     // Ensure the response header is present
     aHttpResponse.addHeader (CHttpHeader.REFERRER_POLICY, m_eHttpReferrerPolicy.getValue ());
+    return EContinue.CONTINUE;
   }
 }

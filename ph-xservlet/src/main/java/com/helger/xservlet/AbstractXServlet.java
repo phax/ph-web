@@ -67,6 +67,7 @@ import com.helger.xservlet.filter.IXServletLowLevelFilter;
 import com.helger.xservlet.filter.XServletFilterConsistency;
 import com.helger.xservlet.filter.XServletFilterSecurityHttpReferrerPolicy;
 import com.helger.xservlet.filter.XServletFilterSecurityPoxy;
+import com.helger.xservlet.filter.XServletFilterSecurityXFrameOptions;
 import com.helger.xservlet.filter.XServletFilterTimer;
 import com.helger.xservlet.filter.XServletFilterTrackRequest;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
@@ -495,6 +496,9 @@ public abstract class AbstractXServlet extends HttpServlet
     aEffectiveFilterList.add (XServletFilterConsistency.INSTANCE);
     if (m_aSettings.hasHttpReferrerPolicy ())
       aEffectiveFilterList.add (new XServletFilterSecurityHttpReferrerPolicy (m_aSettings.getHttpReferrerPolicy ()));
+    if (m_aSettings.hasXFrameOptions ())
+      aEffectiveFilterList.add (new XServletFilterSecurityXFrameOptions (m_aSettings.getXFrameOptionsType (),
+                                                                         m_aSettings.getXFrameOptionsDomain ()));
     // Add custom filters
     aEffectiveFilterList.addAll (m_aFilterLowLevelList);
 

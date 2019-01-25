@@ -48,7 +48,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   private EHttpReferrerPolicy m_eHttpReferrerPolicy = EHttpReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN;
 
   /** Best tradeoff between security and convenience */
-  private EXFrameOptionType m_eXFrameOptionsType = EXFrameOptionType.SAMEORIGIN;
+  private EXFrameOptionType m_eXFrameOptionsType = EXFrameOptionType.DEFAULT;
 
   /** not needed for default value */
   private ISimpleURL m_aXFrameOptionsDomain;

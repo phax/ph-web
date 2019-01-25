@@ -37,11 +37,6 @@ import com.helger.servlet.response.EXFrameOptionType;
  */
 public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFilter
 {
-  public static final XServletFilterSecurityXFrameOptions INSTANCE_DENY = new XServletFilterSecurityXFrameOptions (EXFrameOptionType.DENY,
-                                                                                                                   null);
-  public static final XServletFilterSecurityXFrameOptions INSTANCE_SAMEORIGIN = new XServletFilterSecurityXFrameOptions (EXFrameOptionType.SAMEORIGIN,
-                                                                                                                         null);
-
   private final String m_sHeaderValue;
 
   /**

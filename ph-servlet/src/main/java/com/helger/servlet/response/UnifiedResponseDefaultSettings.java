@@ -59,7 +59,7 @@ public final class UnifiedResponseDefaultSettings
     setAllowMimeSniffing (false);
     setEnableXSSFilter (true);
     setStrictTransportSecurity (CGlobal.SECONDS_PER_HOUR, true);
-    setXFrameOptions (EXFrameOptionType.SAMEORIGIN, null);
+    setXFrameOptions (EXFrameOptionType.DEFAULT, null);
     setReferrerPolicy (EHttpReferrerPolicy.NONE);
   }
 
@@ -97,14 +97,14 @@ public final class UnifiedResponseDefaultSettings
   /**
    * This header enables the Cross-site scripting (XSS) filter built into most
    * recent web browsers. It's usually enabled by default anyway, so the role of
-   * this header is to re-enable the filter for this particular website if it
-   * was disabled by the user. This header is supported in IE 8+, and in Chrome
-   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
-   * unknown if that version honored this header.
+   * this header is to re-enable the filter for this particular website if it was
+   * disabled by the user. This header is supported in IE 8+, and in Chrome (not
+   * sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
+   * if that version honored this header.
    *
    * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable the header, <code>false</code> to disable
+   *        it.
    */
   public static void setEnableXSSFilter (final boolean bEnable)
   {
@@ -121,9 +121,9 @@ public final class UnifiedResponseDefaultSettings
    * removed.
    *
    * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
+   *        number of seconds, after the reception of the STS header field, during
+   *        which the UA regards the host (from whom the message was received) as
+   *        a Known HSTS Host.
    * @param bIncludeSubdomains
    *        if enabled, this signals the UA that the HSTS Policy applies to this
    *        HSTS Host as well as any sub-domains of the host's domain name.
@@ -203,8 +203,8 @@ public final class UnifiedResponseDefaultSettings
 
   /**
    * Adds a response header to the response according to the passed name and
-   * value. If an existing header with the same is present, the value is added
-   * to the list so that the header is emitted more than once.
+   * value. If an existing header with the same is present, the value is added to
+   * the list so that the header is emitted more than once.
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -220,16 +220,14 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.
-   * <br>
+   * Removes the response headers matching the passed name from the response. <br>
    * <b>ATTENTION:</b> You should only use the APIs that
-   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
-   * only in emergency and make sure you validate the header field and allowed
-   * value!
+   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method only
+   * in emergency and make sure you validate the header field and allowed value!
    *
    * @param sName
-   *        Name of the header to be removed. May neither be <code>null</code>
-   *        nor empty.
+   *        Name of the header to be removed. May neither be <code>null</code> nor
+   *        empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
   @Nonnull

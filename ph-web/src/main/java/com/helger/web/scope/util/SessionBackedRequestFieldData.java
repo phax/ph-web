@@ -45,13 +45,6 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     _init ();
   }
 
-  @Deprecated
-  public SessionBackedRequestFieldData (@Nonnull final String sFieldName, final int nDefaultValue)
-  {
-    super (sFieldName, nDefaultValue);
-    _init ();
-  }
-
   /**
    * @return The name of the session scope variable that contains the stored
    *         value.

@@ -16,8 +16,6 @@
  */
 package com.helger.web.scope.util;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -25,12 +23,7 @@ import javax.annotation.concurrent.Immutable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.id.IHasID;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -84,51 +77,6 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * Utility constructor that uses an optional default value provider that has
-   * an ID
-   *
-   * @param sFieldName
-   *        The field name to use. May neither be <code>null</code> nor empty.
-   * @param aDefaultValueProvider
-   *        The object who's ID is to be used. May be <code>null</code> in which
-   *        case no default value is used
-   */
-  @Deprecated
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName,
-                           @Nullable final IHasID <String> aDefaultValueProvider)
-  {
-    this (sFieldName, aDefaultValueProvider == null ? "" : aDefaultValueProvider.getID ());
-  }
-
-  /**
-   * Helper constructor using an int instead of a String.
-   *
-   * @param sFieldName
-   *        The field name to use. May neither be <code>null</code> nor empty.
-   * @param nDefaultValue
-   *        The default value to be used. Is converted to a String
-   */
-  @Deprecated
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final int nDefaultValue)
-  {
-    this (sFieldName, Integer.toString (nDefaultValue));
-  }
-
-  /**
-   * Helper constructor using a long instead of a String.
-   *
-   * @param sFieldName
-   *        The field name to use. May neither be <code>null</code> nor empty.
-   * @param nDefaultValue
-   *        The default value to be used. Is converted to a String
-   */
-  @Deprecated
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final long nDefaultValue)
-  {
-    this (sFieldName, Long.toString (nDefaultValue));
-  }
-
-  /**
    * @return The default value to be used if no request parameter is present. Is
    *         never <code>null</code> but an empty string if no default value is
    *         available.
@@ -165,27 +113,6 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * In case multiple request parameters with the same value are present (e.g.
-   * multi-selects or checkboxes) this method retrieves all request values. If
-   * no such request value is present a list with one entry (the default value)
-   * is returned, in case the default value is non-empty
-   *
-   * @return A list of simple request values with the same key or
-   *         <code>null</code> if no such request parameter is present and no
-   *         default value was provided
-   */
-  @Nullable
-  @Deprecated
-  public final ICommonsList <String> getRequestValueAsList ()
-  {
-    ICommonsList <String> aDefault = null;
-    final String sDefaultValue = getDefaultValue ();
-    if (StringHelper.hasText (sDefaultValue))
-      aDefault = new CommonsArrayList <> (sDefaultValue);
-    return getParams ().getAsStringList (getFieldName (), aDefault);
-  }
-
-  /**
    * Utility method that checks if the passed expected value matches the request
    * parameter (considering the fallback mechanism)
    *
@@ -199,23 +126,6 @@ public class RequestFieldData extends AbstractRequestFieldData
     ValueEnforcer.notNull (sExpectedValue, "ExpectedValue");
 
     return sExpectedValue.equals (getRequestValue ());
-  }
-
-  /**
-   * Utility method that checks if the passed expected value matches the request
-   * parameter (considering the fallback mechanism)
-   *
-   * @param aExpectedValues
-   *        The list of expected values. May not be <code>null</code>.
-   * @return <code>true</code> if the passed value equals the actual request
-   *         value
-   */
-  @Deprecated
-  public final boolean hasRequestValue (@Nonnull final List <String> aExpectedValues)
-  {
-    ValueEnforcer.notNull (aExpectedValues, "ExpectedValues");
-
-    return EqualsHelper.equalsCollection (aExpectedValues, getRequestValueAsList ());
   }
 
   @Override

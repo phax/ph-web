@@ -45,29 +45,6 @@ import com.helger.web.fileupload.IFileItem;
 public interface IRequestParamContainer extends IAttributeContainerAny <String>
 {
   /**
-   * The prefix to appended to the field name of the checkbox to create the hidden
-   * field.
-   */
-  @Deprecated
-  String DEFAULT_HIDDEN_FIELD_PREFIX = RequestHelper.DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX;
-
-  /**
-   * Get the name of the automatic hidden field associated with a check-box.
-   *
-   * @param sFieldName
-   *        The name of the check-box.
-   * @return The name of the hidden field associated with the given check-box
-   *         name.
-   */
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  static String getHiddenFieldName (@Nonnull @Nonempty final String sFieldName)
-  {
-    return RequestHelper.getCheckBoxHiddenFieldName (sFieldName);
-  }
-
-  /**
    * @return A non-<code>null</code> but maybe empty map with all contained
    *         {@link IFileItem} objects from file uploads. The key of the map is
    *         the field name. Important: if the value is an array of

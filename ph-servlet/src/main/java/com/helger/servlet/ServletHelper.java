@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.AsyncContext;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.string.StringHelper;
 
 /**
  * Very basic servlet API helper
@@ -76,8 +78,8 @@ public final class ServletHelper
   }
 
   /**
-   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code>
-   * to work around an error in certain Tomcat versions.
+   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code> to
+   * work around an error in certain Tomcat versions.
    *
    * <pre>
   java.lang.NullPointerException
@@ -348,5 +350,26 @@ public final class ServletHelper
             LOGGER.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
       }
     return ret;
+  }
+
+  /**
+   * Get the servlet context base path (for ".")
+   * 
+   * @param aSC
+   *        Servlet context. May not be <code>null</code>.
+   * @return The non-<code>null</code> base path.
+   */
+  @Nonnull
+  public static String getServletContextBasePath (@Nonnull final ServletContext aSC)
+  {
+    String sPath = aSC.getRealPath (".");
+    if (sPath == null)
+    {
+      // Fallback for Undertow
+      sPath = aSC.getRealPath ("");
+    }
+    if (StringHelper.hasNoText (sPath))
+      throw new IllegalStateException ("Failed to determine real path of ServletContext " + aSC);
+    return sPath;
   }
 }

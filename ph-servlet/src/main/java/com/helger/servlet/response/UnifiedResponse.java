@@ -113,14 +113,14 @@ public class UnifiedResponse
 
   // Settings
   /**
-   * Flag which determines whether content is allow, if a redirect is set. This
-   * is rarely used.
+   * Flag which determines whether content is allow, if a redirect is set. This is
+   * rarely used.
    */
   private boolean m_bAllowContentOnRedirect = DEFAULT_ALLOW_CONTENT_ON_REDIRECT;
 
   /**
-   * Flag which determines whether content is allow, if a status code is set.
-   * This is rarely used.
+   * Flag which determines whether content is allow, if a status code is set. This
+   * is rarely used.
    */
   private boolean m_bAllowContentOnStatusCode = DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE;
 
@@ -163,8 +163,8 @@ public class UnifiedResponse
   private final HttpHeaderMap m_aRequestHeaderMap;
 
   /**
-   * An optional encode to be used to determine if a content-disposition
-   * filename can be ISO-8859-1 encoded.
+   * An optional encode to be used to determine if a content-disposition filename
+   * can be ISO-8859-1 encoded.
    */
   private CharsetEncoder m_aContentDispositionEncoder;
 
@@ -233,11 +233,11 @@ public class UnifiedResponse
     {
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn ("  Request Headers: " +
-                        m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+                     m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       if (m_aResponseHeaderMap.isNotEmpty ())
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("  Response Headers: " +
-                          m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+                       m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       m_bAlreadyEmittedRequestHeaders = true;
     }
   }
@@ -382,8 +382,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if a content was already set, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if a content was already set, <code>false</code> if
+   *         not.
    */
   public final boolean hasContent ()
   {
@@ -531,8 +531,7 @@ public class UnifiedResponse
    * surrounded by double quotes).
    *
    * @param sETag
-   *        The quoted ETag to be set. May neither be <code>null</code> nor
-   *        empty.
+   *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
   @Nonnull
@@ -555,8 +554,7 @@ public class UnifiedResponse
    * double quotes).
    *
    * @param sETag
-   *        The quoted ETag to be set. May neither be <code>null</code> nor
-   *        empty.
+   *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
   @Nonnull
@@ -580,13 +578,12 @@ public class UnifiedResponse
   }
 
   /**
-   * Set the content disposition type (e.g. for PDF/Excel downloads). The
-   * default is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}. This value is only
-   * used if a content disposition filename is defined.
+   * Set the content disposition type (e.g. for PDF/Excel downloads). The default
+   * is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}. This value is only used if a
+   * content disposition filename is defined.
    *
    * @param eContentDispositionType
-   *        The content disposition type to be used. May not be
-   *        <code>null</code>.
+   *        The content disposition type to be used. May not be <code>null</code>.
    * @return this
    * @see #setContentDispositionFilename(String)
    */
@@ -659,8 +656,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return The current content disposition filename. May be <code>null</code>
-   *         if not set.
+   * @return The current content disposition filename. May be <code>null</code> if
+   *         not set.
    */
   @Nullable
   public final String getContentDispositionFilename ()
@@ -669,8 +666,8 @@ public class UnifiedResponse
   }
 
   /**
-   * Remove the current content disposition filename. This method can be called
-   * if a filename is set or not.
+   * Remove the current content disposition filename. This method can be called if
+   * a filename is set or not.
    *
    * @return this
    */
@@ -824,8 +821,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if a status code is defined, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if a status code is defined, <code>false</code> if
+   *         not.
    */
   public final boolean isStatusCodeDefined ()
   {
@@ -1044,14 +1041,14 @@ public class UnifiedResponse
   /**
    * This header enables the Cross-site scripting (XSS) filter built into most
    * recent web browsers. It's usually enabled by default anyway, so the role of
-   * this header is to re-enable the filter for this particular website if it
-   * was disabled by the user. This header is supported in IE 8+, and in Chrome
-   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
-   * unknown if that version honored this header.
+   * this header is to re-enable the filter for this particular website if it was
+   * disabled by the user. This header is supported in IE 8+, and in Chrome (not
+   * sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
+   * if that version honored this header.
    *
    * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable the header, <code>false</code> to disable
+   *        it.
    * @return this
    * @since 6.0.5
    */
@@ -1072,9 +1069,9 @@ public class UnifiedResponse
    * removed.
    *
    * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
+   *        number of seconds, after the reception of the STS header field, during
+   *        which the UA regards the host (from whom the message was received) as
+   *        a Known HSTS Host.
    * @param bIncludeSubdomains
    *        if enabled, this signals the UA that the HSTS Policy applies to this
    *        HSTS Host as well as any sub-domains of the host's domain name.
@@ -1156,11 +1153,11 @@ public class UnifiedResponse
 
   /**
    * Adds a response header to the response according to the passed name and
-   * value. If an existing header with the same is present, the value is added
-   * to the list so that the header is emitted more than once.<br>
+   * value. If an existing header with the same is present, the value is added to
+   * the list so that the header is emitted more than once.<br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * directly offers. Use this method only in emergency and make sure you validate
+   * the header field and allowed value!
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -1192,8 +1189,8 @@ public class UnifiedResponse
    * Sets a response header to the response according to the passed name and
    * value. An existing header entry with the same name is overridden.<br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * directly offers. Use this method only in emergency and make sure you validate
+   * the header field and allowed value!
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -1224,15 +1221,14 @@ public class UnifiedResponse
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.
-   * <br>
+   * Removes the response headers matching the passed name from the response. <br>
    * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * directly offers. Use this method only in emergency and make sure you validate
+   * the header field and allowed value!
    *
    * @param sName
-   *        Name of the header to be removed. May neither be <code>null</code>
-   *        nor empty.
+   *        Name of the header to be removed. May neither be <code>null</code> nor
+   *        empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
   @Nonnull
@@ -1333,7 +1329,8 @@ public class UnifiedResponse
     }
   }
 
-  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
+  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse,
+                              final boolean bStatusCodeWasAlreadySet) throws IOException
   {
     if (m_aContentArray != null)
     {
@@ -1418,12 +1415,13 @@ public class UnifiedResponse
         }
       }
       else
-      {
-        // Set status 204 - no content; this is most likely a programming
-        // error
-        aHttpResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
-        logWarn ("No content present for the response");
-      }
+        if (!bStatusCodeWasAlreadySet)
+        {
+          // Set status 204 - no content; this is most likely a programming
+          // error
+          aHttpResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
+          logWarn ("No content present for the response");
+        }
   }
 
   public final void applyToResponse (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
@@ -1684,7 +1682,7 @@ public class UnifiedResponse
         aHttpResponse.addCookie (aCookie);
 
     // Write the body to the response
-    _applyContent (aHttpResponse);
+    _applyContent (aHttpResponse, bHasStatusCode);
   }
 
   /**

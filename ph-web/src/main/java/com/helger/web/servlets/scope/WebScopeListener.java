@@ -17,6 +17,7 @@
 package com.helger.web.servlets.scope;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
@@ -33,24 +34,28 @@ import com.helger.web.scope.mgr.WebScopeManager;
  */
 public class WebScopeListener implements ServletContextListener, HttpSessionListener
 {
+  @OverridingMethodsMustInvokeSuper
   public void contextInitialized (@Nonnull final ServletContextEvent aEvent)
   {
     // Init the global scope
     WebScopeManager.onGlobalBegin (aEvent.getServletContext ());
   }
 
+  @OverridingMethodsMustInvokeSuper
   public void contextDestroyed (@Nonnull final ServletContextEvent aEvent)
   {
     // End the global scope
     WebScopeManager.onGlobalEnd ();
   }
 
+  @OverridingMethodsMustInvokeSuper
   public void sessionCreated (@Nonnull final HttpSessionEvent aEvent)
   {
     // Create a new session
     WebScopeManager.onSessionBegin (aEvent.getSession ());
   }
 
+  @OverridingMethodsMustInvokeSuper
   public void sessionDestroyed (@Nonnull final HttpSessionEvent aEvent)
   {
     // End an existing session

@@ -371,7 +371,9 @@ public class HttpClientFactory implements IHttpClientProvider
    * and the values are trimmed.
    *
    * @param sDefinition
-   *        The definition string.
+   *        The definition string. May be <code>null</code> or empty or invalid.
+   *        Every non-empty trimmed text between pipes is interpreted as a host
+   *        name.
    * @since 9.1.1
    */
   public void addNonProxyHostsFromPipeString (@Nullable final String sDefinition)

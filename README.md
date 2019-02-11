@@ -31,6 +31,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * `XServletFilterSecurityHttpReferrerPolicy` adds the header before the request instead of afterwards
     * Removed deprecated methods in classes `RequestField` and `SessionBackedRequestField`
     * Updated to Apache httpclient 4.5.7
+    * `HttpClientFactory` can now handle "non proxy hosts" as well
 * v9.1.0 - 2018-11-22
     * Fixed potential NPE in `EmailAttachmentMicroTypeConverter` if the attachment cannot be read
     * By default all request param values are now also Unicode normalized

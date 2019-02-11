@@ -70,6 +70,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.random.RandomHelper;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
@@ -222,7 +223,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * Attention: INSECURE METHOD!<br>
    * Set the a special SSL Context that does not expect any specific server
    * certificate. To be totally loose, you should also set a hostname verifier
-   * that accepts all hostnames.
+   * that accepts all host names.
    *
    * @return this for chaining
    * @throws GeneralSecurityException
@@ -265,7 +266,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * Attention: INSECURE METHOD!<br>
-   * Set a hostname verifier that trusts all hostnames.
+   * Set a hostname verifier that trusts all host names.
    *
    * @return this for chaining
    * @since 9.0.1
@@ -362,6 +363,25 @@ public class HttpClientFactory implements IHttpClientProvider
   public final ICommonsSet <String> nonProxyHosts ()
   {
     return m_aNonProxyHosts;
+  }
+
+  /**
+   * All non-proxy hosts from a piped string as in
+   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a pipe,
+   * and the values are trimmed.
+   *
+   * @param sDefinition
+   *        The definition string.
+   * @since 9.1.1
+   */
+  public void addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
+  {
+    if (StringHelper.hasText (sDefinition))
+      StringHelper.explode ('|', sDefinition, sHost -> {
+        final String sTrimmedHost = sHost.trim ();
+        if (StringHelper.hasText (sTrimmedHost))
+          m_aNonProxyHosts.add (sTrimmedHost);
+      });
   }
 
   /**

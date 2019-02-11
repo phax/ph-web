@@ -28,7 +28,9 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
+import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
@@ -43,6 +45,8 @@ import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.DnsResolver;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.SchemePortResolver;
+import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -52,12 +56,19 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.impl.conn.DefaultRoutePlanner;
+import org.apache.http.impl.conn.DefaultSchemePortResolver;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultDnsResolver;
+import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.impl.CommonsHashSet;
+import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.random.RandomHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -97,6 +108,7 @@ public class HttpClientFactory implements IHttpClientProvider
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxy;
   private Credentials m_aProxyCredentials;
+  private final ICommonsSet <String> m_aNonProxyHosts = new CommonsHashSet <> ();
   private int m_nRetries = DEFAULT_RETRIES;
   private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
 
@@ -265,8 +277,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to
-   *         use the default settings without specific cipher suites.
+   * @return The TLS configuration mode to be used. <code>null</code> means to use
+   *         the default settings without specific cipher suites.
    * @since 9.0.5
    */
   @Nullable
@@ -341,6 +353,18 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * @return The set of all host names and IP addresses for which no proxy should
+   *         be used.
+   * @since 9.1.1
+   */
+  @Nonnull
+  @ReturnsMutableObject
+  public final ICommonsSet <String> nonProxyHosts ()
+  {
+    return m_aNonProxyHosts;
+  }
+
+  /**
    * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
    * @since 9.0.0
    */
@@ -391,6 +415,18 @@ public class HttpClientFactory implements IHttpClientProvider
     ValueEnforcer.notNull (eRetryMode, "RetryMode");
     m_eRetryMode = eRetryMode;
     return this;
+  }
+
+  /**
+   * Create the scheme to port resolver.
+   *
+   * @return Never <code>null</code>.
+   * @since 9.1.1
+   */
+  @Nonnull
+  protected SchemePortResolver createSchemePortResolver ()
+  {
+    return DefaultSchemePortResolver.INSTANCE;
   }
 
   @Nullable
@@ -482,8 +518,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be
-   *         <code>null</code> to use the default.
+   *         {@link PoolingHttpClientConnectionManager}. May be <code>null</code>
+   *         to use the default.
    * @see #isUseDNSClientCache()
    * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
@@ -562,16 +598,51 @@ public class HttpClientFactory implements IHttpClientProvider
     if (aSSLFactory == null)
       throw new IllegalStateException ("Failed to create SSL SocketFactory");
 
+    final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
     final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = getProxyHost ();
     final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
 
+    HttpRoutePlanner aRoutePlanner = null;
+    if (aProxyHost != null)
+    {
+      // If a route planner is used, the HttpClientBuilder MUST NOT use the proxy,
+      // because this would have precedence
+      if (m_aNonProxyHosts.isEmpty ())
+      {
+        // Proxy for all
+        aRoutePlanner = new DefaultProxyRoutePlanner (aProxyHost, aSchemePortResolver);
+      }
+      else
+      {
+        // Proxy for all but non-proxy hosts
+        aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
+        {
+          @Override
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
+                                             @Nonnull final HttpRequest aRequest,
+                                             @Nonnull final HttpContext aContext) throws HttpException
+          {
+            final String sHostname = aTarget.getHostName ();
+            if (m_aNonProxyHosts.contains (sHostname))
+            {
+              // Return direct route
+              LOGGER.info ("Not using proxy host for route to '" + sHostname + "'");
+              return null;
+            }
+            return aProxyHost;
+          }
+        };
+      }
+    }
+
     final HttpClientBuilder aHCB = HttpClients.custom ()
+                                              .setSchemePortResolver (aSchemePortResolver)
                                               .setConnectionManager (aConnMgr)
                                               .setDefaultRequestConfig (aRequestConfig)
-                                              .setProxy (aProxyHost)
-                                              .setDefaultCredentialsProvider (aCredentialsProvider);
+                                              .setDefaultCredentialsProvider (aCredentialsProvider)
+                                              .setRoutePlanner (aRoutePlanner);
 
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());

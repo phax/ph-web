@@ -25,7 +25,8 @@ import com.helger.commons.state.EChange;
 import com.helger.web.scope.impl.RequestWebScope;
 
 /**
- * The default request web scope that also tries to parse multi part requests.
+ * The default request web scope that also tries to parse multi part requests if
+ * the Content-Type matches .
  *
  * @author Philip Helger
  */
@@ -41,6 +42,8 @@ public class RequestWebScopeMultipart extends RequestWebScope
   @OverrideOnDemand
   protected EChange addSpecialRequestParams ()
   {
+    // Parse as multipart if the Content-Type matches, and add each item into
+    // params()
     return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::putIn);
   }
 }

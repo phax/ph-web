@@ -77,6 +77,9 @@ public final class RequestMultipartHelper
   {}
 
   /**
+   * Parse the provided servlet request as multipart, if the Content-Type starts
+   * with <code>multipart/form-data</code>.
+   * 
    * @param aHttpRequest
    *        Source HTTP request from which multipart/form-data (aka file
    *        uploads) should be extracted.
@@ -123,8 +126,7 @@ public final class RequestMultipartHelper
       catch (final UnsupportedEncodingException ex)
       {
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'",
-                           ex);
+          LOGGER.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'", ex);
       }
 
       // Group all items with the same name together

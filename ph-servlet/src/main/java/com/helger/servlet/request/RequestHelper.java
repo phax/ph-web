@@ -708,8 +708,9 @@ public final class RequestHelper
    *
    * @param sContentType
    *        The content type to be checked. May be <code>null</code>.
-   * @return <code>true</code> if the request is multipart/form-data;
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if the passed, lowercased content type starts
+   *         with <code>multipart/form-data</code>; <code>false</code>
+   *         otherwise.
    */
   public static boolean isMultipartFormDataContent (@Nullable final String sContentType)
   {

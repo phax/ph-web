@@ -17,6 +17,7 @@
 package com.helger.xservlet;
 
 import java.io.IOException;
+import java.util.function.BiFunction;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -38,6 +39,8 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 import com.helger.web.scope.IRequestWebScope;
+import com.helger.web.scope.impl.RequestWebScope;
+import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
@@ -66,6 +69,9 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   /** The main handler map */
   private final CallbackList <IXServletExceptionHandler> m_aExceptionHandler = new CallbackList <> ();
 
+  /** By default Multipart handling is enabled */
+  private boolean m_bIsMultipartEnabled = true;
+
   /**
    * Constructor.
    */
@@ -82,6 +88,29 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   protected final CallbackList <IXServletExceptionHandler> exceptionHandler ()
   {
     return m_aExceptionHandler;
+  }
+
+  /**
+   * @return <code>true</code> if multipart handling is enabled (default),
+   *         <code>false</code> if not.
+   * @since 9.1.1
+   */
+  protected final boolean isMultipartEnabled ()
+  {
+    return m_bIsMultipartEnabled;
+  }
+
+  /**
+   * Enable/disable multipart handling in this filter (works only if the request
+   * scope is created here)
+   * 
+   * @param bMultipartEnabled
+   *        <code>true</code> to enable, <code>false</code> to disable
+   * @since 9.1.1
+   */
+  protected final void setMultipartEnabled (final boolean bMultipartEnabled)
+  {
+    m_bIsMultipartEnabled = bMultipartEnabled;
   }
 
   /**
@@ -142,9 +171,13 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create request scope
-    try (
-        final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
-                                                                                                          aHttpResponseWrapper))
+    final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
+    aFactory = m_bIsMultipartEnabled ? RequestWebScopeMultipart::new : RequestWebScope::new;
+
+    // Create request scope
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                  aHttpResponseWrapper,
+                                                                                                  aFactory))
     {
       final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
       try

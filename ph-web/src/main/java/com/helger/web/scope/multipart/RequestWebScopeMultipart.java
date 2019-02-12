@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.state.EChange;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.impl.RequestWebScope;
 
 /**
@@ -32,6 +33,8 @@ import com.helger.web.scope.impl.RequestWebScope;
  */
 public class RequestWebScopeMultipart extends RequestWebScope
 {
+  private boolean m_bParsedMultipart = false;
+
   public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest,
                                    @Nonnull final HttpServletResponse aHttpResponse)
   {
@@ -44,6 +47,26 @@ public class RequestWebScopeMultipart extends RequestWebScope
   {
     // Parse as multipart if the Content-Type matches, and add each item into
     // params()
-    return RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::putIn);
+    final EChange ret = RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::putIn);
+    m_bParsedMultipart = ret.isChanged ();
+    return ret;
+  }
+
+  /**
+   * @return <code>true</code> if this request scope was parsed as multipart,
+   *         <code>false</code> if not.
+   * @since 9.1.1
+   */
+  public final boolean isMultipartRequest ()
+  {
+    return m_bParsedMultipart;
+  }
+
+  @Override
+  public String toString ()
+  {
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("ParsedMultipart", m_bParsedMultipart)
+                            .getToString ();
   }
 }

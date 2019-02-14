@@ -327,14 +327,12 @@ public class HttpClientFactory implements IHttpClientProvider
    *
    * @param aProxy
    *        The proxy host to be used. May be <code>null</code>.
-   * @return this for chaining (since 9.1.1)
    * @since 8.8.0
    * @see #setProxy(HttpHost, Credentials)
    */
-  @Nonnull
-  public final HttpClientFactory setProxy (@Nullable final HttpHost aProxy)
+  public final void setProxy (@Nullable final HttpHost aProxy)
   {
-    return setProxy (aProxy, (Credentials) null);
+    setProxy (aProxy, (Credentials) null);
   }
 
   /**
@@ -346,17 +344,13 @@ public class HttpClientFactory implements IHttpClientProvider
    *        The proxy server credentials to be used. May be <code>null</code>.
    *        They are only used if a proxy host is present! Usually they are of
    *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
-   * @return this for chaining since 9.1.1
    * @since 8.8.0
    * @see #setProxy(HttpHost)
    */
-  @Nonnull
-  public final HttpClientFactory setProxy (@Nullable final HttpHost aProxy,
-                                           @Nullable final Credentials aProxyCredentials)
+  public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
   {
     m_aProxy = aProxy;
     m_aProxyCredentials = aProxyCredentials;
-    return this;
   }
 
   /**

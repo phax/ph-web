@@ -287,9 +287,9 @@ public final class RequestHelper
     final String sRequestURI = getRequestURI (aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
-      // I just want to to know whether we get null or ""
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
+      // Can e.g. happen for "Request(GET //localhost:90/)"
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
       return "/";
     }
 

@@ -32,7 +32,7 @@ import com.helger.commons.string.StringHelper;
  * Generic proxy settings interface.
  *
  * @author Philip Helger
- * @since 9.1.3
+ * @since 9.0.2
  */
 public interface IProxySettings extends Serializable
 {
@@ -82,7 +82,7 @@ public interface IProxySettings extends Serializable
   /**
    * Check if hostname and port match the ones from the provided
    * {@link InetSocketAddress}.
-   * 
+   *
    * @param aAddr
    *        The address to compare with. May be <code>null</code>.
    * @return <code>true</code> if the unresolved hostname and the port match.

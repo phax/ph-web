@@ -17,8 +17,6 @@
 package com.helger.httpclient.response;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nullable;
@@ -94,7 +92,6 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
     }
 
     // Read via reader to avoid duplication in memory
-    final Reader aReader = new InputStreamReader (aEntity.getContent (), aCharset);
-    return JsonReader.readFromReader (aReader);
+    return JsonReader.builder ().setSource (aEntity.getContent (), aCharset).read ();
   }
 }

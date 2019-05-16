@@ -17,6 +17,7 @@
 package com.helger.web.scope.impl;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.SessionScope;
@@ -45,12 +47,15 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScope.class);
 
+  private final LocalDateTime m_aCreationDT;
   // Do not serialize the session
   private final transient HttpSession m_aHttpSession;
 
   public SessionWebScope (@Nonnull final HttpSession aHttpSession)
   {
     super (aHttpSession.getId ());
+
+    m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();
     m_aHttpSession = aHttpSession;
 
     attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
@@ -58,6 +63,12 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
         LOGGER.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
       return EContinue.CONTINUE;
     });
+  }
+
+  @Nonnull
+  public final LocalDateTime getScopeCreationDateTime ()
+  {
+    return m_aCreationDT;
   }
 
   @Override

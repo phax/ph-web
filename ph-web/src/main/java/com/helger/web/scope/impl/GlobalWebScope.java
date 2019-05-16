@@ -16,12 +16,15 @@
  */
 package com.helger.web.scope.impl;
 
+import java.time.LocalDateTime;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.GlobalScope;
@@ -42,6 +45,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   // Because of transient field
   private static final long serialVersionUID = 15665138713664L;
 
+  private final LocalDateTime m_aCreationDT;
   private final transient ServletContext m_aSC;
 
   @Nonnull
@@ -69,8 +73,15 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   {
     super (_createScopeID (aServletContext));
 
+    m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();
     m_aSC = aServletContext;
     ServletContextPathHolder.setServletContextPath (aServletContext.getContextPath ());
+  }
+
+  @Nonnull
+  public final LocalDateTime getScopeCreationDateTime ()
+  {
+    return m_aCreationDT;
   }
 
   @Override

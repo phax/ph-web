@@ -18,6 +18,7 @@ package com.helger.web.scope.impl;
 
 import java.io.Serializable;
 import java.text.Normalizer;
+import java.time.LocalDateTime;
 import java.util.Enumeration;
 
 import javax.annotation.Nonnegative;
@@ -37,6 +38,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
@@ -84,8 +86,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
      * @param sParamName
      *        The current parameter name. May not be <code>null</code>.
      * @param nParamIndex
-     *        The index of the value. If the parameter has multiple values this is
-     *        respective index. If there is only one value, this is always 0 (zero).
+     *        The index of the value. If the parameter has multiple values this
+     *        is respective index. If there is only one value, this is always 0
+     *        (zero).
      * @param sParamValue
      *        The value to be cleaned. May be <code>null</code>.
      * @return The cleaned value. May also be <code>null</code>.
@@ -104,6 +107,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @GuardedBy ("s_aRWLock")
   private static IParamValueCleanser s_aParamValueCleanser = (n, i, v) -> getWithoutForbiddenCharsAndNormalized (v);
 
+  private final LocalDateTime m_aCreationDT;
   protected final transient HttpServletRequest m_aHttpRequest;
   protected final transient HttpServletResponse m_aHttpResponse;
   private HttpHeaderMap m_aHeaders;
@@ -153,6 +157,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     super (_createScopeID (aHttpRequest));
 
+    m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();
     m_aHttpRequest = aHttpRequest;
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
@@ -166,13 +171,19 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
                      ScopeHelper.getDebugStackTrace ());
   }
 
+  @Nonnull
+  public final LocalDateTime getScopeCreationDateTime ()
+  {
+    return m_aCreationDT;
+  }
+
   /**
    * Callback method to add special parameters.
    *
    * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added, existing
-   *         attributes are kept and will not be overwritten with HTTP servlet
-   *         request parameters!
+   *         <code>false</code> if not. If special attributes were added,
+   *         existing attributes are kept and will not be overwritten with HTTP
+   *         servlet request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -379,9 +390,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file (e.g.
-   * x.jsp) or for a servlet. This method return <code>true</code> if the last dot
-   * is after the last slash
+   * This is a heuristic method to determine whether a request is for a file
+   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
+   * last dot is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
@@ -406,13 +417,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context of
-   *         the request. The context path always comes first in a request URI.
-   *         The path starts with a "/" character but does not end with a "/"
-   *         character. For servlets in the default (root) context, this method
-   *         returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context. Never
-   *         with a trailing slash.
+   * @return Returns the portion of the request URI that indicates the context
+   *         of the request. The context path always comes first in a request
+   *         URI. The path starts with a "/" character but does not end with a
+   *         "/" character. For servlets in the default (root) context, this
+   *         method returns "". The container does not decode this string. E.g.
+   *         <code>/context</code> or an empty string for the root context.
+   *         Never with a trailing slash.
    * @see #getFullContextPath()
    */
   @Nonnull

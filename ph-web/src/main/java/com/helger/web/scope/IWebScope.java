@@ -16,6 +16,10 @@
  */
 package com.helger.web.scope;
 
+import java.time.LocalDateTime;
+
+import javax.annotation.Nonnull;
+
 import com.helger.scope.IScope;
 
 /**
@@ -26,5 +30,11 @@ import com.helger.scope.IScope;
  */
 public interface IWebScope extends IScope
 {
-  /* empty */
+  /**
+   * @return The date and time when this web scope was created. Never
+   *         <code>null</code>.
+   * @since 9.1.2
+   */
+  @Nonnull
+  LocalDateTime getScopeCreationDateTime ();
 }

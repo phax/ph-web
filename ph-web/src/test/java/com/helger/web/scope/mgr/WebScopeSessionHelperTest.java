@@ -79,6 +79,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     aWS.attrs ().putIn ("a2", new MockScopeRenewalAware ("session2"));
     aWS.attrs ().putIn ("a21", "session21");
     assertEquals (3, aWS.attrs ().size ());
+    assertNotNull (aWS.getScopeCreationDateTime ());
 
     // Main renew session (no session invalidation)
     final String sOldSessionID = aWS.getID ();

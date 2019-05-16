@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
 
+import com.helger.datetime.domain.IHasCreationDateTime;
 import com.helger.scope.IScope;
 
 /**
@@ -28,7 +29,7 @@ import com.helger.scope.IScope;
  *
  * @author Philip Helger
  */
-public interface IWebScope extends IScope
+public interface IWebScope extends IScope, IHasCreationDateTime
 {
   /**
    * @return The date and time when this web scope was created. Never
@@ -36,5 +37,5 @@ public interface IWebScope extends IScope
    * @since 9.1.2
    */
   @Nonnull
-  LocalDateTime getScopeCreationDateTime ();
+  LocalDateTime getCreationDateTime ();
 }

@@ -172,7 +172,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   @Nonnull
-  public final LocalDateTime getScopeCreationDateTime ()
+  public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
   }

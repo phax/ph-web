@@ -66,7 +66,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   }
 
   @Nonnull
-  public final LocalDateTime getScopeCreationDateTime ()
+  public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
   }

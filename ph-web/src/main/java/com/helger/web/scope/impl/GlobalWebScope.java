@@ -79,7 +79,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   }
 
   @Nonnull
-  public final LocalDateTime getScopeCreationDateTime ()
+  public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
   }

@@ -69,7 +69,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.random.RandomHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -234,7 +233,7 @@ public class HttpClientFactory implements IHttpClientProvider
   public final HttpClientFactory setSSLContextTrustAll () throws GeneralSecurityException
   {
     final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
-    aSSLContext.init (null, new TrustManager [] { new TrustManagerTrustAll (false) }, RandomHelper.getSecureRandom ());
+    aSSLContext.init (null, new TrustManager [] { new TrustManagerTrustAll (false) }, null);
     return setSSLContext (aSSLContext);
   }
 
@@ -278,8 +277,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to use
-   *         the default settings without specific cipher suites.
+   * @return The TLS configuration mode to be used. <code>null</code> means to
+   *         use the default settings without specific cipher suites.
    * @since 9.0.5
    */
   @Nullable
@@ -354,8 +353,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The set of all host names and IP addresses for which no proxy should
-   *         be used.
+   * @return The set of all host names and IP addresses for which no proxy
+   *         should be used.
    * @since 9.1.1
    */
   @Nonnull
@@ -367,8 +366,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * All non-proxy hosts from a piped string as in
-   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a pipe,
-   * and the values are trimmed.
+   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
+   * pipe, and the values are trimmed.
    *
    * @param sDefinition
    *        The definition string. May be <code>null</code> or empty or invalid.
@@ -543,8 +542,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be <code>null</code>
-   *         to use the default.
+   *         {@link PoolingHttpClientConnectionManager}. May be
+   *         <code>null</code> to use the default.
    * @see #isUseDNSClientCache()
    * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
@@ -632,7 +631,8 @@ public class HttpClientFactory implements IHttpClientProvider
     HttpRoutePlanner aRoutePlanner = null;
     if (aProxyHost != null)
     {
-      // If a route planner is used, the HttpClientBuilder MUST NOT use the proxy,
+      // If a route planner is used, the HttpClientBuilder MUST NOT use the
+      // proxy,
       // because this would have precedence
       if (m_aNonProxyHosts.isEmpty ())
       {

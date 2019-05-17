@@ -19,12 +19,13 @@ package com.helger.smtp.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.email.EmailAddressHelper;
-import com.helger.commons.random.RandomHelper;
 
 public final class EmailAddressValidatorTest
 {
@@ -47,9 +48,10 @@ public final class EmailAddressValidatorTest
     // Note: not all email addresses provided are valid so there may not
     // necessarily be MX records! But there should not be more than 5 warnings
     // (in average 2-3)
+    final Random aRandom = new Random ();
     for (int i = 0; i < 20; ++i)
     {
-      final int nIndex = RandomHelper.getRandom ().nextInt (VALID.length);
+      final int nIndex = aRandom.nextInt (VALID.length);
       final String sValid = VALID[nIndex];
       if (!EmailAddressValidator.isValidWithMXCheck (sValid))
         LOGGER.info ("No MX record for: " + sValid);

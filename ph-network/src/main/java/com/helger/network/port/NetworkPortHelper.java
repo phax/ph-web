@@ -78,17 +78,41 @@ public final class NetworkPortHelper
                                                   @Nonnegative final int nPort,
                                                   @Nonnegative final int nTimeoutMillisecs)
   {
+    return checkPortOpen (sHostName, nPort, nTimeoutMillisecs, false);
+  }
+
+  /**
+   * Check the status of a remote port.
+   *
+   * @param sHostName
+   *        Hostname or IP address to check.
+   * @param nPort
+   *        Port number to check.
+   * @param nTimeoutMillisecs
+   *        Connection timeout in milliseconds.
+   * @param bSilentMode
+   *        <code>true</code> for silent mode, <code>false</code> if not
+   * @return Never <code>null</code>.
+   * @since 9.1.2
+   */
+  @Nonnull
+  public static ENetworkPortStatus checkPortOpen (@Nonnull @Nonempty final String sHostName,
+                                                  @Nonnegative final int nPort,
+                                                  @Nonnegative final int nTimeoutMillisecs,
+                                                  final boolean bSilentMode)
+  {
     ValueEnforcer.notEmpty (sHostName, "Hostname");
     ValueEnforcer.isGE0 (nPort, "Port");
     ValueEnforcer.isGE0 (nTimeoutMillisecs, "TimeoutMillisecs");
 
-    LOGGER.info ("Checking TCP port status for " +
-                 sHostName +
-                 ":" +
-                 nPort +
-                 " with timeouf of " +
-                 nTimeoutMillisecs +
-                 " ms");
+    if (!bSilentMode)
+      LOGGER.info ("Checking TCP port status for " +
+                   sHostName +
+                   ":" +
+                   nPort +
+                   " with timeouf of " +
+                   nTimeoutMillisecs +
+                   " ms");
 
     try (final Socket aSocket = new Socket ())
     {
@@ -112,7 +136,8 @@ public final class NetworkPortHelper
         // E.g. for port 0
         return ENetworkPortStatus.GENERIC_IO_ERROR;
       }
-      LOGGER.error ("Other error checking TCP port status", ex);
+      if (!bSilentMode)
+        LOGGER.error ("Other error checking TCP port status", ex);
       return ENetworkPortStatus.GENERIC_IO_ERROR;
     }
   }

@@ -28,6 +28,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to Apache httpclient 4.5.8
     * Updated to ph-commons 9.3.3
     * Added new method `LocalDateTime IWebScope.getScopeCreationDateTime ()`
+    * Added new class `NetworkOnlineStatusDeterminator` in `ph-network`
 * v9.1.1 - 2019-02-17
     * Updated to JSch 0.1.55
     * Updated to Apache httpcore 4.4.11

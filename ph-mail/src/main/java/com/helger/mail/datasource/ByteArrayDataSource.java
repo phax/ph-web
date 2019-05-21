@@ -58,7 +58,7 @@ public class ByteArrayDataSource implements IExtendedDataSource
   }
 
   @Nonnull
-  @ReturnsMutableObject ("speed")
+  @ReturnsMutableObject
   public byte [] directGetBytes ()
   {
     return m_aBytes;

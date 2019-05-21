@@ -237,7 +237,16 @@ public final class RequestHelper
 
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
-    final String sContextPath = ServletContextPathHolder.getContextPath ();
+    String sContextPath;
+    try
+    {
+      sContextPath = ServletContextPathHolder.getContextPath ();
+    }
+    catch (final IllegalStateException ex)
+    {
+      // Happens upon shutdown
+      sContextPath = "";
+    }
     final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
     final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
 

@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
@@ -48,10 +49,14 @@ public final class NetworkOnlineStatusDeterminator
 {
   /** Default cache time is 1 minute */
   public static final Duration DEFAULT_CACHE_DURATION = Duration.ofMinutes (1);
+  /** Default connection timeout of 2 seconds */
+  public static final int DEFAULT_CONNECTION_TIMEOUT_MILLISECONDS = 2_000;
 
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static Duration s_aCacheDuration = DEFAULT_CACHE_DURATION;
+  @GuardedBy ("s_aRWLock")
+  private static int s_nConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MILLISECONDS;
   @GuardedBy ("s_aRWLock")
   private static LocalDateTime s_aLastCheckDT = null;
   @GuardedBy ("s_aRWLock")
@@ -85,6 +90,27 @@ public final class NetworkOnlineStatusDeterminator
   }
 
   /**
+   * @return The connection timeout milliseconds. Always &gt; 0.
+   */
+  @Nonnegative
+  public static int getConnectionTimeoutMilliseconds ()
+  {
+    return s_aRWLock.readLocked ( () -> s_nConnectionTimeout);
+  }
+
+  /**
+   * Set the connection timeout in milliseconds. Value &le; 0 are not allowed.
+   *
+   * @param nConnectionTimeout
+   *        The connection timeout in milliseconds. Must be &gt; 0.
+   */
+  public static void setConnectionTimeoutMilliseconds (final int nConnectionTimeout)
+  {
+    ValueEnforcer.isGT0 (nConnectionTimeout, "ConnectionTimeout");
+    s_aRWLock.writeLocked ( () -> s_nConnectionTimeout = nConnectionTimeout);
+  }
+
+  /**
    * @return The last date time when the offline state was checked. May be
    *         <code>null</code> if the check was not performed yet.
    */
@@ -102,6 +128,18 @@ public final class NetworkOnlineStatusDeterminator
   public static ENetworkOnlineStatus getCachedNetworkStatus ()
   {
     return s_aRWLock.readLocked ( () -> s_eStatus);
+  }
+
+  /**
+   * Reset the cache status and therefore enforce an explicit lookup in the next
+   * call to {@link #getNetworkStatus()}.
+   */
+  public static void resetCachedStatus ()
+  {
+    s_aRWLock.writeLocked ( () -> {
+      s_aLastCheckDT = null;
+      s_eStatus = ENetworkOnlineStatus.UNDEFINED;
+    });
   }
 
   /**
@@ -152,8 +190,8 @@ public final class NetworkOnlineStatusDeterminator
       final AtomicInteger aReachable = new AtomicInteger (0);
       for (final String sHostName : aHostNames)
         aES.submit ( () -> {
-          // Silent mode, timeout 2 seconds
-          if (NetworkPortHelper.checkPortOpen (sHostName, 80, 2000, true).isPortOpen ())
+          // Silent mode, configured timeout
+          if (NetworkPortHelper.checkPortOpen (sHostName, 80, s_nConnectionTimeout, true).isPortOpen ())
             aReachable.incrementAndGet ();
         });
       ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (aES);

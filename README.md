@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.2 - work in progress
+* v9.1.2 - 2019-06-05
     * Updated to Apache httpclient 4.5.8
     * Updated to ph-commons 9.3.3
     * Added new method `LocalDateTime IWebScope.getScopeCreationDateTime ()`
@@ -120,7 +120,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.1</version>
+  <version>9.1.2</version>
 </dependency>
 ```
 

@@ -21,6 +21,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
@@ -52,6 +53,7 @@ public class ByteArrayDataSource implements IExtendedDataSource
                               @Nullable final String sContentType,
                               @Nullable final String sName)
   {
+    ValueEnforcer.notNull (aBytes, "Bytes");
     m_aBytes = aBytes;
     m_sContentType = sContentType == null ? DEFAULT_CONTENT_TYPE.getAsString () : sContentType;
     m_sName = sName;

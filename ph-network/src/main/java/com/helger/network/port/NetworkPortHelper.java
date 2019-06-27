@@ -114,31 +114,43 @@ public final class NetworkPortHelper
                    nTimeoutMillisecs +
                    " ms");
 
+    ENetworkPortStatus ret;
     try (final Socket aSocket = new Socket ())
     {
       aSocket.setReuseAddress (true);
       final SocketAddress aSocketAddr = new InetSocketAddress (sHostName, nPort);
       aSocket.connect (aSocketAddr, nTimeoutMillisecs);
-      return ENetworkPortStatus.PORT_IS_OPEN;
+      ret = ENetworkPortStatus.PORT_IS_OPEN;
     }
     catch (final IOException ex)
     {
       // Can also be:
       // Connection refused: connect
       if (ex.getMessage ().startsWith ("Connection refused"))
-        return ENetworkPortStatus.PORT_IS_CLOSED;
-      if (ex instanceof java.net.UnknownHostException)
-        return ENetworkPortStatus.HOST_NOT_EXISTING;
-      if (ex instanceof java.net.SocketTimeoutException)
-        return ENetworkPortStatus.CONNECTION_TIMEOUT;
-      if (ex instanceof java.net.ConnectException)
-      {
-        // E.g. for port 0
-        return ENetworkPortStatus.GENERIC_IO_ERROR;
-      }
-      if (!bSilentMode)
-        LOGGER.error ("Other error checking TCP port status", ex);
-      return ENetworkPortStatus.GENERIC_IO_ERROR;
+        ret = ENetworkPortStatus.PORT_IS_CLOSED;
+      else
+        if (ex instanceof java.net.UnknownHostException)
+          ret = ENetworkPortStatus.HOST_NOT_EXISTING;
+        else
+          if (ex instanceof java.net.SocketTimeoutException)
+            ret = ENetworkPortStatus.CONNECTION_TIMEOUT;
+          else
+            if (ex instanceof java.net.ConnectException)
+            {
+              // E.g. for port 0
+              ret = ENetworkPortStatus.GENERIC_IO_ERROR;
+            }
+            else
+            {
+              if (!bSilentMode)
+                LOGGER.error ("Other error checking TCP port status", ex);
+              ret = ENetworkPortStatus.GENERIC_IO_ERROR;
+            }
     }
+
+    if (!bSilentMode)
+      LOGGER.info ("  Result of the port check is " + ret);
+
+    return ret;
   }
 }

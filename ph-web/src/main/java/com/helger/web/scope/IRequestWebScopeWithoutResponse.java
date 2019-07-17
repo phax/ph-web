@@ -665,6 +665,22 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   String getFullContextAndServletPath ();
 
   /**
+   * Get the full URI (excl. protocol and host) and parameters of the current
+   * request. <br>
+   * <code>/context/servlet/path/a/b?c=123&amp;d=789</code>
+   *
+   * @return The full URI of the current request.
+   * @since 9.1.3
+   */
+  @Nonnull
+  @Nonempty
+  default String getURI ()
+  {
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-uri",
+                                              k -> RequestHelper.getURI (getRequest ()));
+  }
+
+  /**
    * Get the full URL (incl. protocol) and parameters of the current request.
    * <br>
    * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>

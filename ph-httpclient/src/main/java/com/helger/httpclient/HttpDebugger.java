@@ -28,8 +28,6 @@ import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.debug.GlobalDebug;
-
 /**
  * Some debugging for HTTP requests. Currently used in
  * {@link HttpClientManager}.
@@ -40,7 +38,7 @@ import com.helger.commons.debug.GlobalDebug;
 public final class HttpDebugger
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpDebugger.class);
-  private static final AtomicBoolean s_aEnabled = new AtomicBoolean (GlobalDebug.isDebugMode ());
+  private static final AtomicBoolean s_aEnabled = new AtomicBoolean (false);
 
   private HttpDebugger ()
   {}
@@ -68,10 +66,10 @@ public final class HttpDebugger
     if (isEnabled ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Before HTTP call: " +
-                        aRequest.getMethod () +
-                        " " +
-                        aRequest.getURI () +
-                        (aHttpContext != null ? " (with special HTTP context)" : ""));
+                     aRequest.getMethod () +
+                     " " +
+                     aRequest.getURI () +
+                     (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 
   /**
@@ -97,10 +95,10 @@ public final class HttpDebugger
         final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
                                                                                              : null;
         LOGGER.info ("After HTTP call: " +
-                        aRequest.getMethod () +
-                        (aResponse != null ? ". Response: " + aResponse : "") +
-                        (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
-                        aHex != null ? null : aCaughtException);
+                     aRequest.getMethod () +
+                     (aResponse != null ? ". Response: " + aResponse : "") +
+                     (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
+                     aHex != null ? null : aCaughtException);
       }
   }
 }

@@ -57,13 +57,13 @@ import com.helger.commons.io.file.FilenameHelper;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.mime.IMimeType;
-import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mutable.MutableLong;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.URLHelper;
 import com.helger.http.AcceptCharsetList;
+import com.helger.http.AcceptMimeTypeHandler;
 import com.helger.http.AcceptMimeTypeList;
 import com.helger.http.CacheControlBuilder;
 import com.helger.http.EHttpVersion;
@@ -368,7 +368,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notEmpty (sMimeType, "MimeType");
 
-    final IMimeType aMimeType = MimeTypeParser.parseMimeType (sMimeType);
+    final IMimeType aMimeType = AcceptMimeTypeHandler.safeParseMimeType (sMimeType);
     if (aMimeType != null)
       setMimeType (aMimeType);
     else

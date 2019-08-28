@@ -29,6 +29,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to ph-commons 9.3.6
     * Added new method `IRequestWebScopeWithoutResponse.getURI()`
     * `HttpDebugger` is disabled by default
+    * `AcceptMimeTypeHandler.safeParseMimeType` now automatically tries to decode RFC 2616 encoded values
 * v9.1.2 - 2019-06-05
     * Updated to Apache httpclient 4.5.8
     * Updated to ph-commons 9.3.3

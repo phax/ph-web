@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.codec.DecodeException;
+import com.helger.commons.codec.RFC2616Codec;
 import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeType;
@@ -106,13 +108,27 @@ public final class AcceptMimeTypeHandler
   @Nullable
   public static IMimeType safeParseMimeType (@Nullable final String sMimeType)
   {
+    String sRealMimeType = sMimeType;
+    if (RFC2616Codec.isMaybeEncoded (sRealMimeType))
+    {
+      // Check if it is encoded with double quotes
+      try
+      {
+        sRealMimeType = new RFC2616Codec ().getDecodedAsString (sRealMimeType);
+      }
+      catch (final DecodeException ex)
+      {
+        // Ignore and continue with the original one
+      }
+    }
+
     try
     {
-      return MimeTypeParser.parseMimeType (sMimeType);
+      return MimeTypeParser.parseMimeType (sRealMimeType);
     }
     catch (final MimeTypeParserException ex)
     {
-      if ("*".equals (sMimeType))
+      if ("*".equals (sRealMimeType))
         return new MimeType (EMimeContentType._STAR, "*");
     }
     if (LOGGER.isWarnEnabled ())

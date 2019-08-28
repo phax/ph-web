@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.3 - work on progress
+* v9.1.3 - 2019-08-28
     * Updated to Apache httpclient 4.5.9
     * Updated to ph-commons 9.3.6
     * Added new method `IRequestWebScopeWithoutResponse.getURI()`
@@ -120,13 +120,14 @@ Java library with common web stuff. It contains the following sub-projects:
     * Binds to ph-commons 8.3.x
 
 # Maven usage
+
 Add the following to your pom.xml to use this artifact:
 
 ```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.2</version>
+  <version>9.1.3</version>
 </dependency>
 ```
 

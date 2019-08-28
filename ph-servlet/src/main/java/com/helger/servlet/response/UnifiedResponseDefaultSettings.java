@@ -200,7 +200,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static void setReferrerPolicy (@Nullable final EHttpReferrerPolicy eReferrerPolicy)
   {
-    if (eReferrerPolicy == null)
+    if (eReferrerPolicy == null || eReferrerPolicy == EHttpReferrerPolicy.NONE)
       removeResponseHeaders (CHttpHeader.REFERRER_POLICY);
     else
       setResponseHeader (CHttpHeader.REFERRER_POLICY, eReferrerPolicy.getValue ());
@@ -221,7 +221,6 @@ public final class UnifiedResponseDefaultSettings
     ValueEnforcer.notEmpty (sValue, "Value");
 
     s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.setHeader (sName, sValue));
-
   }
 
   /**

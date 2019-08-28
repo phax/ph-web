@@ -37,7 +37,7 @@ public final class UnifiedResponseTest
   public void testSetStrictTransportSecurity ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
+    assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
     final int nMaxAgeSeconds = 60000;
     final boolean bIncludeSubdomains = true;
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
@@ -52,7 +52,7 @@ public final class UnifiedResponseTest
   public void testSetAllowMimeSniffing ()
   {
     final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
-    assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
+    assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (true);
     assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (false);

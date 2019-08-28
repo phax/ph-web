@@ -109,7 +109,8 @@ public final class MainCreateDefaultPorts
       if (sNumber == null)
         continue;
 
-      int nMin, nMax;
+      int nMin;
+      int nMax;
       if (sNumber.indexOf ('-') > 0)
       {
         final String [] aParts = StringHelper.getExplodedArray ('-', sNumber, 2);

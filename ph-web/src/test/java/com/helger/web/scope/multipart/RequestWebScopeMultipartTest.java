@@ -31,7 +31,6 @@ import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.mock.WebScopeTestRule;
-import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
 /**
  * Test class for class {@link RequestWebScope}.

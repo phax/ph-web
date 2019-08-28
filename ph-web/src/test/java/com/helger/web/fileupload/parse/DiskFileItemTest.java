@@ -28,10 +28,13 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.Nonnull;
+
 import org.junit.Test;
 
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.commons.mock.CommonsAssert;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 
@@ -160,13 +163,13 @@ public final class DiskFileItemTest
   /**
    * Compare FileItem's (except the byte[] content)
    */
-  private void _compareFileItems (final IFileItem origItem, final IFileItem newItem)
+  private void _compareFileItems (@Nonnull final IFileItem aOrigItem, @Nonnull final IFileItem aNewItem)
   {
-    assertTrue ("Compare: is in Memory", origItem.isInMemory () == newItem.isInMemory ());
-    assertTrue ("Compare: is Form Field", origItem.isFormField () == newItem.isFormField ());
-    assertEquals ("Compare: Field Name", origItem.getFieldName (), newItem.getFieldName ());
-    assertEquals ("Compare: Content Type", origItem.getContentType (), newItem.getContentType ());
-    assertEquals ("Compare: File Name", origItem.getName (), newItem.getName ());
+    CommonsAssert.assertEquals ("Compare: is in Memory", aOrigItem.isInMemory (), aNewItem.isInMemory ());
+    CommonsAssert.assertEquals ("Compare: is Form Field", aOrigItem.isFormField (), aNewItem.isFormField ());
+    assertEquals ("Compare: Field Name", aOrigItem.getFieldName (), aNewItem.getFieldName ());
+    assertEquals ("Compare: Content Type", aOrigItem.getContentType (), aNewItem.getContentType ());
+    assertEquals ("Compare: File Name", aOrigItem.getName (), aNewItem.getName ());
   }
 
   /**
@@ -240,7 +243,7 @@ public final class DiskFileItemTest
     // Deserialize the test object
     Object result = null;
     try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (baos.toByteArray ());
-         final ObjectInputStream ois = new ObjectInputStream (bais))
+        final ObjectInputStream ois = new ObjectInputStream (bais))
     {
       result = ois.readObject ();
     }

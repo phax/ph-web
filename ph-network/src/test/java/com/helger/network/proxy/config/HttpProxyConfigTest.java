@@ -27,8 +27,6 @@ import java.net.Proxy;
 import org.junit.Test;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.network.proxy.config.EHttpProxyType;
-import com.helger.network.proxy.config.HttpProxyConfig;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

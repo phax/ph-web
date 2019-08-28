@@ -140,7 +140,7 @@ public final class RequestLogger
                                                @Nonnull final StringBuilder aSB)
   {
     aSB.append ("Headers:\n");
-    aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'));
+    aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'), true);
   }
 
   @Nonnull

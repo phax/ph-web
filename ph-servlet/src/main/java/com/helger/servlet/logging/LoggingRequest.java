@@ -116,7 +116,7 @@ final class LoggingRequest implements Serializable
     if (m_aHeaders != null)
     {
       final IJsonObject aHeaders = new JsonObject ();
-      m_aHeaders.forEachSingleHeader (aHeaders::add);
+      m_aHeaders.forEachSingleHeader (aHeaders::add, true);
       ret.add ("headers", aHeaders);
     }
     if (m_sBody != null)

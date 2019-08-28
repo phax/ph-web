@@ -26,6 +26,7 @@ Java library with common web stuff. It contains the following sub-projects:
 
 * v9.1.3 - work on progress
     * Updated to Apache httpclient 4.5.9
+    * Updated to ph-commons 9.3.6
     * Added new method `IRequestWebScopeWithoutResponse.getURI()`
     * `HttpDebugger` is disabled by default
 * v9.1.2 - 2019-06-05

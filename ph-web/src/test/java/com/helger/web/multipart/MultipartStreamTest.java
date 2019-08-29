@@ -35,7 +35,7 @@ public final class MultipartStreamTest
   private static final String BOUNDARY_TEXT = "myboundary";
 
   @Test
-  public void testThreeParamConstructor () throws Exception
+  public void testThreeParamConstructor ()
   {
     final String sStrData = "foobar";
     final byte [] aContents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
@@ -50,7 +50,7 @@ public final class MultipartStreamTest
   }
 
   @Test
-  public void testTwoParamConstructor () throws Exception
+  public void testTwoParamConstructor ()
   {
     final String sStrData = "foobar";
     final byte [] contents = sStrData.getBytes (StandardCharsets.ISO_8859_1);

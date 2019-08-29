@@ -37,7 +37,7 @@ import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 public final class SessionWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testBasic () throws Exception
+  public void testBasic ()
   {
     assertTrue (AbstractSessionWebSingleton.getAllSessionSingletons ().isEmpty ());
     assertFalse (AbstractSessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingleton.class));
@@ -58,7 +58,7 @@ public final class SessionWebSingletonFuncTest extends AbstractWebScopeAwareTest
   }
 
   @Test
-  public void testSerialize () throws Exception
+  public void testSerialize ()
   {
     assertTrue (AbstractSessionWebSingleton.getAllSessionSingletons ().isEmpty ());
     assertFalse (AbstractSessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));

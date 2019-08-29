@@ -36,7 +36,7 @@ import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 public final class RequestWebSingletonFuncTest extends AbstractWebScopeAwareTestCase
 {
   @Test
-  public void testBasic () throws Exception
+  public void testBasic ()
   {
     assertTrue (AbstractRequestWebSingleton.getAllRequestSingletons ().isEmpty ());
     assertFalse (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingleton.class));
@@ -55,7 +55,7 @@ public final class RequestWebSingletonFuncTest extends AbstractWebScopeAwareTest
   }
 
   @Test
-  public void testCtor () throws Exception
+  public void testCtor ()
   {
     assertTrue (AbstractRequestWebSingleton.getAllRequestSingletons ().isEmpty ());
     assertFalse (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));

@@ -456,7 +456,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Get the string with the charset defined in the content type.
-   * 
+   *
    * @param aFallbackCharset
    *        The fallback charset to be used if the content type does not include
    *        a charset. May not be <code>null</code>.
@@ -640,8 +640,14 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Override
   protected void finalize () throws Throwable
   {
-    FileOperations.deleteFileIfExisting (m_aDFOS.getFile ());
-    super.finalize ();
+    try
+    {
+      FileOperations.deleteFileIfExisting (m_aDFOS.getFile ());
+    }
+    finally
+    {
+      super.finalize ();
+    }
   }
 
   @Override

@@ -26,6 +26,7 @@ Java library with common web stuff. It contains the following sub-projects:
 
 * v9.1.4 - work in progress
     * Updated to Apache httpcore 4.4.12
+    * Updated to Apache httpclient 4.5.10
 * v9.1.3 - 2019-08-28
     * Updated to Apache httpclient 4.5.9
     * Updated to ph-commons 9.3.6

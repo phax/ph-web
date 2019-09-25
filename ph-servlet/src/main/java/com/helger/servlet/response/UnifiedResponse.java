@@ -196,7 +196,7 @@ public class UnifiedResponse
     m_aAcceptMimeTypeList = RequestHelper.getAcceptMimeTypes (aHttpRequest);
     m_aRequestHeaderMap = RequestHelper.getRequestHeaderMap (aHttpRequest);
 
-    // Copy all default settings
+    // Copy all default settings (without unification)
     m_aResponseHeaderMap.setAllHeaders (UnifiedResponseDefaultSettings.getResponseHeaderMap ());
     if (UnifiedResponseDefaultSettings.hasCookies ())
     {
@@ -1441,10 +1441,12 @@ public class UnifiedResponse
       int nIndex = 0;
       for (final String sHeaderValue : aEntry.getValue ())
       {
+        // Ensure single line values
+        final String sUnifiedHeaderValue = HttpHeaderMap.getUnifiedValue (sHeaderValue, false);
         if (nIndex == 0)
-          aHttpResponse.setHeader (sHeaderName, sHeaderValue);
+          aHttpResponse.setHeader (sHeaderName, sUnifiedHeaderValue);
         else
-          aHttpResponse.addHeader (sHeaderName, sHeaderValue);
+          aHttpResponse.addHeader (sHeaderName, sUnifiedHeaderValue);
         ++nIndex;
       }
     }

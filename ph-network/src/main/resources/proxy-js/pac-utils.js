@@ -76,12 +76,12 @@ function isInNetEx6(ipaddr, prefix, prefix_len) {
         return false;
     }
     prefix = convert_addr6(prefix);
-    ip = convert_addr6(ipaddr);
+    var ip = convert_addr6(ipaddr);
     // Prefix match strategy:
     //   Compare only prefix length bits between 'ipaddr' and 'prefix'
     //   Match in the batches of 16-bit fields 
-    prefix_rem = prefix_len % 16;
-    prefix_nfields = (prefix_len - prefix_rem) / 16;
+    var prefix_rem = prefix_len % 16;
+    var prefix_nfields = (prefix_len - prefix_rem) / 16;
 
     for (var i = 0; i < prefix_nfields; i++) {
         if (ip[i] != prefix[i]) {
@@ -91,7 +91,7 @@ function isInNetEx6(ipaddr, prefix, prefix_len) {
     if (prefix_rem > 0) {
         // Compare remaining bits
         prefix_bits = prefix[prefix_nfields] >> (16 - prefix_rem);
-        ip_bits = ip[prefix_nfields] >> (16 - prefix_rem);
+        var ip_bits = ip[prefix_nfields] >> (16 - prefix_rem);
         if (ip_bits != prefix_bits) {
             return false;
         }
@@ -298,7 +298,7 @@ function timeRange() {
             }
             break;
         default:
-          throw 'timeRange: bad number of arguments'
+          throw 'timeRange: bad number of arguments';
         }
     }
 

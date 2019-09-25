@@ -140,6 +140,8 @@ public class UnifiedResponse
   private ERedirectMode m_eRedirectMode;
   private boolean m_bWarnOnDuplicateCookies = DEFAULT_WARN_ON_DUPLICATE_COOKIES;
   private ICommonsOrderedMap <String, Cookie> m_aCookies;
+  private boolean m_bHttpHeaderValuesUnified;
+  private boolean m_bHttpHeaderValuesQuoteIfNecessary;
 
   // Internal status members
   /**
@@ -203,6 +205,8 @@ public class UnifiedResponse
       m_aCookies = _createCookieMap ();
       m_aCookies.putAll (UnifiedResponseDefaultSettings.getAllCookies ());
     }
+    m_bHttpHeaderValuesUnified = UnifiedResponseDefaultSettings.isHttpHeaderValuesUnified ();
+    m_bHttpHeaderValuesQuoteIfNecessary = UnifiedResponseDefaultSettings.isHttpHeaderValuesQuoteIfNecessary ();
   }
 
   @Nonnull
@@ -1023,6 +1027,60 @@ public class UnifiedResponse
   }
 
   /**
+   * @return <code>true</code> if HTTP header values will be unified,
+   *         <code>false</code> if not.
+   * @see UnifiedResponseDefaultSettings#isHttpHeaderValuesUnified()
+   * @since 9.1.4
+   */
+  public final boolean isHttpHeaderValuesUnified ()
+  {
+    return m_bHttpHeaderValuesUnified;
+  }
+
+  /**
+   * Enable or disable the unification of HTTP header values.
+   *
+   * @param bHttpHeaderValuesUnified
+   *        <code>true</code> to enable it, <code>false</code> to disable it.
+   * @return this for chaining
+   * @since 9.1.4
+   */
+  @Nonnull
+  public final UnifiedResponse setHttpHeaderValuesUnified (final boolean bHttpHeaderValuesUnified)
+  {
+    m_bHttpHeaderValuesUnified = bHttpHeaderValuesUnified;
+    return this;
+  }
+
+  /**
+   * @return <code>true</code> if HTTP header values will be unified and quoted
+   *         if necessary, <code>false</code> if not.
+   * @see UnifiedResponseDefaultSettings#isHttpHeaderValuesQuoteIfNecessary()
+   * @since 9.1.4
+   */
+  public final boolean isHttpHeaderValuesQuoteIfNecessary ()
+  {
+    return m_bHttpHeaderValuesQuoteIfNecessary;
+  }
+
+  /**
+   * Enable or disable the automatic quoting of HTTP header values. This only
+   * takes effect, if the unification is enabled.
+   *
+   * @param bHttpHeaderValuesQuoteIfNecessary
+   *        <code>true</code> to enable it, <code>false</code> to disable it.
+   * @return this for chaining
+   * @see #setHttpHeaderValuesUnified(boolean)
+   * @since 9.1.4
+   */
+  @Nonnull
+  public final UnifiedResponse setHttpHeaderValuesQuoteIfNecessary (final boolean bHttpHeaderValuesQuoteIfNecessary)
+  {
+    m_bHttpHeaderValuesQuoteIfNecessary = bHttpHeaderValuesQuoteIfNecessary;
+    return this;
+  }
+
+  /**
    * When specifying <code>false</code>, this method uses a special response
    * header to prevent certain browsers from MIME-sniffing a response away from
    * the declared content-type. When passing <code>true</code>, that header is
@@ -1442,7 +1500,9 @@ public class UnifiedResponse
       for (final String sHeaderValue : aEntry.getValue ())
       {
         // Ensure single line values
-        final String sUnifiedHeaderValue = HttpHeaderMap.getUnifiedValue (sHeaderValue, false);
+        final String sUnifiedHeaderValue = m_bHttpHeaderValuesUnified ? HttpHeaderMap.getUnifiedValue (sHeaderValue,
+                                                                                                       m_bHttpHeaderValuesQuoteIfNecessary)
+                                                                      : sHeaderValue;
         if (nIndex == 0)
           aHttpResponse.setHeader (sHeaderName, sUnifiedHeaderValue);
         else

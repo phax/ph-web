@@ -48,11 +48,20 @@ import com.helger.http.EHttpReferrerPolicy;
 @ThreadSafe
 public final class UnifiedResponseDefaultSettings
 {
+  /** By default HTTP header value unification is enabled */
+  public static final boolean DEFAULT_HTTP_HEADER_VALUES_UNIFIED = true;
+  /** By default HTTP header value unification is disabled */
+  public static final boolean DEFAULT_HTTP_HEADER_VALUES_QUOTE_IF_NECESSARY = false;
+
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("s_aRWLock")
   private static final HttpHeaderMap s_aResponseHeaderMap = new HttpHeaderMap ();
   @GuardedBy ("s_aRWLock")
   private static final ICommonsOrderedMap <String, Cookie> s_aCookies = new CommonsLinkedHashMap <> ();
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bHttpHeaderValuesUnified = DEFAULT_HTTP_HEADER_VALUES_UNIFIED;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bHttpHeaderValuesQuoteIfNecessary = DEFAULT_HTTP_HEADER_VALUES_QUOTE_IF_NECESSARY;
 
   static
   {
@@ -332,5 +341,53 @@ public final class UnifiedResponseDefaultSettings
   public static EChange removeAllCookies ()
   {
     return s_aRWLock.writeLocked (s_aCookies::removeAll);
+  }
+
+  /**
+   * @return <code>true</code> if HTTP header values will be unified,
+   *         <code>false</code> if not.
+   * @see #DEFAULT_HTTP_HEADER_VALUES_UNIFIED
+   * @since 9.1.4
+   */
+  public static boolean isHttpHeaderValuesUnified ()
+  {
+    return s_aRWLock.readLocked ( () -> s_bHttpHeaderValuesUnified);
+  }
+
+  /**
+   * Enable or disable the unification of HTTP header values.
+   *
+   * @param bHttpHeaderValuesUnified
+   *        <code>true</code> to enable it, <code>false</code> to disable it.
+   * @since 9.1.4
+   */
+  public static void setHttpHeaderValuesUnified (final boolean bHttpHeaderValuesUnified)
+  {
+    s_aRWLock.writeLocked ( () -> s_bHttpHeaderValuesUnified = bHttpHeaderValuesUnified);
+  }
+
+  /**
+   * @return <code>true</code> if HTTP header values will be unified and quoted
+   *         if necessary, <code>false</code> if not.
+   * @see #DEFAULT_HTTP_HEADER_VALUES_QUOTE_IF_NECESSARY
+   * @since 9.1.4
+   */
+  public static boolean isHttpHeaderValuesQuoteIfNecessary ()
+  {
+    return s_aRWLock.readLocked ( () -> s_bHttpHeaderValuesQuoteIfNecessary);
+  }
+
+  /**
+   * Enable or disable the automatic quoting of HTTP header values. This only
+   * takes effect, if the unification is enabled.
+   *
+   * @param bHttpHeaderValuesQuoteIfNecessary
+   *        <code>true</code> to enable it, <code>false</code> to disable it.
+   * @see #setHttpHeaderValuesUnified(boolean)
+   * @since 9.1.4
+   */
+  public static void setHttpHeaderValuesQuoteIfNecessary (final boolean bHttpHeaderValuesQuoteIfNecessary)
+  {
+    s_aRWLock.writeLocked ( () -> s_bHttpHeaderValuesQuoteIfNecessary = bHttpHeaderValuesQuoteIfNecessary);
   }
 }

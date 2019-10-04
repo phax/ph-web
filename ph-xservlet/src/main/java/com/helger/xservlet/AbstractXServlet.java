@@ -268,7 +268,10 @@ public abstract class AbstractXServlet extends HttpServlet
   @Override
   public final void init (@Nonnull final ServletConfig aSC) throws ServletException
   {
+    // this indirectly calls "init()"
     super.init (aSC);
+
+    // So this is executed AFTER init()
     m_aStatusMgr.onServletInit (getClass ());
     try
     {
@@ -408,8 +411,9 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * This method logs errors, in case a HttpServletRequest object is missing basic
-   * information or uses unsupported values for e.g. HTTP version and HTTP method.
+   * This method logs errors, in case a HttpServletRequest object is missing
+   * basic information or uses unsupported values for e.g. HTTP version and HTTP
+   * method.
    *
    * @param sMsg
    *        The concrete message to emit. May not be <code>null</code>.
@@ -430,8 +434,8 @@ public abstract class AbstractXServlet extends HttpServlet
    *        the {@link HttpServletRequest} object that contains the request the
    *        client made of the servlet
    * @param aHttpResponse
-   *        the {@link HttpServletResponse} object that contains the response the
-   *        servlet returns to the client
+   *        the {@link HttpServletResponse} object that contains the response
+   *        the servlet returns to the client
    * @exception IOException
    *            if an input or output error occurs while the servlet is handling
    *            the HTTP request
@@ -521,9 +525,10 @@ public abstract class AbstractXServlet extends HttpServlet
         final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
         aFactory = m_aSettings.isMultipartEnabled () ? RequestWebScopeMultipart::new : RequestWebScope::new;
 
-        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
-                                                                                                      aHttpResponseWrapper,
-                                                                                                      aFactory))
+        try (
+            final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                     aHttpResponseWrapper,
+                                                                                                     aFactory))
         {
           final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
           aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());

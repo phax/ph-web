@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.4 - work in progress
+* v9.1.4 - 2019-10-08
     * Updated to Apache httpcore 4.4.12
     * Updated to Apache httpclient 4.5.10
     * Extended `UnifiedRepsonse` and `UnifiedResponseDefaultSettings` API to make HTTP header value unification and quoting customizable.
@@ -133,7 +133,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.3</version>
+  <version>9.1.4</version>
 </dependency>
 ```
 

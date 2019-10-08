@@ -67,6 +67,12 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     return getGlobalSingleton (ServletStatusManager.class);
   }
 
+  @Nullable
+  public static ServletStatusManager getInstanceIfInstantiated ()
+  {
+    return getGlobalSingletonIfInstantiated (ServletStatusManager.class);
+  }
+
   /**
    * Reset all contained information!
    *

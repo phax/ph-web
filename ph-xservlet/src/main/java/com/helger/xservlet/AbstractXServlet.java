@@ -295,7 +295,7 @@ public abstract class AbstractXServlet extends HttpServlet
 
   @Override
   @OverridingMethodsMustInvokeSuper
-  public final void destroy ()
+  public void destroy ()
   {
     // Invoke each handler for potential destruction
     m_aHandlerRegistry.forEachHandler (IXServletHandler::onServletDestroy);

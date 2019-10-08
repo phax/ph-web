@@ -29,6 +29,7 @@ Java library with common web stuff. It contains the following sub-projects:
     * Updated to Apache httpclient 4.5.10
     * Extended `UnifiedRepsonse` and `UnifiedResponseDefaultSettings` API to make HTTP header value unification and quoting customizable.
     * Updated to Jakarta dependencies
+    * `AbstractXServlet.destroy` is no longer final
 * v9.1.3 - 2019-08-28
     * Updated to Apache httpclient 4.5.9
     * Updated to ph-commons 9.3.6

@@ -1534,8 +1534,23 @@ public class UnifiedResponse
 
       // Note: After using this method, the response should be
       // considered to be committed and should not be written to.
-      final String sRealTargetURL = ServletSettings.isEncodeURLs () ? aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl)
-                                                                    : m_sRedirectTargetUrl;
+      String sRealTargetURL;
+      if (ServletSettings.isEncodeURLs ())
+      {
+        try
+        {
+          sRealTargetURL = aHttpResponse.encodeRedirectURL (m_sRedirectTargetUrl);
+        }
+        catch (final IllegalArgumentException ex)
+        {
+          // Happens e.g. if "http://server/../" is requested
+          LOGGER.warn ("Failed to encode redirect target URL '" + m_sRedirectTargetUrl + "': " + ex.getMessage ());
+          sRealTargetURL = m_sRedirectTargetUrl;
+        }
+      }
+      else
+        sRealTargetURL = m_sRedirectTargetUrl;
+
       switch (m_eRedirectMode)
       {
         case DEFAULT:

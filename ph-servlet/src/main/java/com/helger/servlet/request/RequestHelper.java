@@ -874,7 +874,8 @@ public final class RequestHelper
       aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
       if (aUserAgent == null)
       {
-        LOGGER.warn ("No user agent was passed in the request!");
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("No user agent was passed in the request!");
         aUserAgent = new UserAgent ("", new UserAgentElementList ());
       }
       ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);

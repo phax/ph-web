@@ -24,6 +24,8 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.1.5 - work in progress
+    * Optimized logging
 * v9.1.4 - 2019-10-08
     * Updated to Apache httpcore 4.4.12
     * Updated to Apache httpclient 4.5.10

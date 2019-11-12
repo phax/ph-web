@@ -20,12 +20,17 @@ import java.security.Security;
 
 import javax.annotation.concurrent.Immutable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.system.SystemProperties;
 
 @Immutable
 public final class DNSHelper
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (DNSHelper.class);
+
   @PresentForCodeCoverage
   private static final DNSHelper s_aInstance = new DNSHelper ();
 
@@ -44,8 +49,22 @@ public final class DNSHelper
   public static void setDNSCacheTime (final int nSeconds)
   {
     final String sValue = Integer.toString (nSeconds);
-    Security.setProperty ("networkaddress.cache.ttl", sValue);
-    Security.setProperty ("networkaddress.cache.negative.ttl", sValue);
+    try
+    {
+      Security.setProperty ("networkaddress.cache.ttl", sValue);
+    }
+    catch (final SecurityException ex)
+    {
+      LOGGER.warn ("Failed to set Security property 'networkaddress.cache.ttl' to '" + sValue + "'");
+    }
+    try
+    {
+      Security.setProperty ("networkaddress.cache.negative.ttl", sValue);
+    }
+    catch (final SecurityException ex)
+    {
+      LOGGER.warn ("Failed to set Security property 'networkaddress.cache.negative.ttl' to '" + sValue + "'");
+    }
     SystemProperties.setPropertyValue ("disableWSAddressCaching", nSeconds == 0);
   }
 }

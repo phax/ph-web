@@ -2,15 +2,15 @@
 # 
 # Copyright
 # 
-# Copyright (c) Philip Helger 2014 - 2016
+# Copyright (c) Philip Helger 2014 - 2019
 # http://www.helger.com
 # 
 # All Rights Reserved
 # Use, duplication or disclosure restricted by Philip Helger
 # 
-# Vienna, Austria, Europe, World, Milky Way, Universe, 2014 - 2016
+# Vienna, Austria, Europe, World, Milky Way, Universe, 2014 - 2019
 #
-# Created on: 2016-07-26T07:01:34.707Z
+# Created on: 2019-11-21T17:30:44.704Z
 # Created by: com.helger.mail.supplementary.main.MainCreateMimeTypesFileNameMapForJavaxActivation
 #
 type=application/STEP exts=step,stp
@@ -35,8 +35,11 @@ type=application/font-woff exts=woff
 type=application/font-woff2 exts=woff2
 type=application/fractals exts=fif
 type=application/futuresplash exts=swf,spl
+type=application/geo+json exts=geojson
 type=application/gml+xml exts=gml
 type=application/gnunet-directory exts=gnd
+type=application/gpx exts=gpx
+type=application/gpx+xml exts=gpx
 type=application/gzip exts=gz
 type=application/hta exts=hta
 type=application/i-deas exts=unv
@@ -49,7 +52,9 @@ type=application/java-archive exts=jar
 type=application/java-byte-code exts=class
 type=application/java-vm exts=class
 type=application/javascript exts=js,jsm
+type=application/jrd+json exts=jrd
 type=application/json exts=json
+type=application/ld+json exts=jsonld
 type=application/lotus123 exts=123,wk1,wk3,wk4,wks
 type=application/m3u exts=m3u,m3u8,vlc
 type=application/mac-binhex40 exts=hqx
@@ -67,10 +72,12 @@ type=application/mspowerpoint exts=ppz,ppt,pps,pot
 type=application/msword exts=doc,dot
 type=application/msword-template exts=dot
 type=application/mxf exts=mxf
-type=application/octet-stream exts=bin,dms,exe
+type=application/nappdf exts=pdf
+type=application/octet-stream exts=bin,dms,exe,map
 type=application/oda exts=oda
 type=application/ogg exts=ogx
 type=application/olescript exts=axs
+type=application/owl+xml exts=owx
 type=application/oxps exts=oxps,xps
 type=application/pcap exts=pcap,cap,dmp
 type=application/pdf exts=pdf
@@ -81,6 +88,7 @@ type=application/pgp-signature exts=asc,sig,pgp,gpg
 type=application/photoshop exts=psd
 type=application/pics-rules exts=prf
 type=application/pkcs10 exts=p10
+type=application/pkcs12 exts=p12,pfx
 type=application/pkcs7-mime exts=p7c,p7m
 type=application/pkcs7-signature exts=p7s
 type=application/pkcs8 exts=p8
@@ -92,6 +100,7 @@ type=application/postscript exts=ps
 type=application/powerpoint exts=ppz,ppt,pps,pot
 type=application/pro_eng exts=prt
 type=application/ram exts=ram
+type=application/raml+yaml exts=raml
 type=application/rdf+xml exts=rdf,rdfs,owl
 type=application/relax-ng-compact-syntax exts=rnc
 type=application/rss+xml exts=rss
@@ -110,9 +119,16 @@ type=application/vnd.adobe.flash.movie exts=swf,spl
 type=application/vnd.android.package-archive exts=apk
 type=application/vnd.apple.keynote exts=key
 type=application/vnd.apple.mpegurl exts=m3u,m3u8
+type=application/vnd.chess-pgn exts=pgn
+type=application/vnd.coffeescript exts=coffee
+type=application/vnd.comicbook+zip exts=cbz
 type=application/vnd.corel-draw exts=cdr
 type=application/vnd.debian.binary-package exts=deb,udeb
 type=application/vnd.emusic-emusic_package exts=emp
+type=application/vnd.flatpak exts=flatpak,xdgapp
+type=application/vnd.flatpak.repo exts=flatpakrepo
+type=application/vnd.framemaker exts=fm
+type=application/vnd.geo+json exts=geojson
 type=application/vnd.google-earth.kml+xml exts=kml
 type=application/vnd.google-earth.kmz exts=kmz
 type=application/vnd.haansoft-hwp exts=hwp
@@ -145,6 +161,12 @@ type=application/vnd.ms-powerpoint.template.macroEnabled.12 exts=potm
 type=application/vnd.ms-project exts=mpc,mpp
 type=application/vnd.ms-publisher exts=pub
 type=application/vnd.ms-tnef exts=tnef,tnf
+type=application/vnd.ms-visio.drawing.macroEnabled.main+xml exts=vsdm
+type=application/vnd.ms-visio.drawing.main+xml exts=vsdx
+type=application/vnd.ms-visio.stencil.macroEnabled.main+xml exts=vssm
+type=application/vnd.ms-visio.stencil.main+xml exts=vssx
+type=application/vnd.ms-visio.template.macroEnabled.main+xml exts=vstm
+type=application/vnd.ms-visio.template.main+xml exts=vstx
 type=application/vnd.ms-word exts=doc,dot
 type=application/vnd.ms-word.document.macroEnabled.12 exts=docm
 type=application/vnd.ms-word.template.macroEnabled.12 exts=dotm
@@ -184,10 +206,13 @@ type=application/vnd.openxmlformats-officedocument.spreadsheetml.template exts=x
 type=application/vnd.openxmlformats-officedocument.wordprocessingml.document exts=docx
 type=application/vnd.openxmlformats-officedocument.wordprocessingml.template exts=dotx
 type=application/vnd.palm exts=prc,pdb,pqa,oprc
+type=application/vnd.rar exts=rar
 type=application/vnd.rim.cod exts=cod
 type=application/vnd.rn-realmedia exts=rm,rmj,rmm,rms,rmx,rmvb
 type=application/vnd.sdp exts=sdp
 type=application/vnd.smaf exts=mmf,smaf
+type=application/vnd.snap exts=snap
+type=application/vnd.squashfs exts=sqsh
 type=application/vnd.stardivision.calc exts=sdc
 type=application/vnd.stardivision.chart exts=sds
 type=application/vnd.stardivision.draw exts=sda
@@ -211,6 +236,7 @@ type=application/vnd.symbian.install exts=sis
 type=application/vnd.tcpdump.pcap exts=pcap,cap,dmp
 type=application/vnd.visio exts=vsd,vst,vsw,vss
 type=application/vnd.wordperfect exts=wp,wp4,wp5,wp6,wpd,wpp
+type=application/vnd.xdgapp exts=flatpak,xdgapp
 type=application/winhlp exts=hlp
 type=application/wk1 exts=123,wk1,wk3,wk4,wks
 type=application/wmf exts=wmf
@@ -221,6 +247,7 @@ type=application/x-7z-compressed exts=7z
 type=application/x-abiword exts=abw,zabw
 type=application/x-ace exts=ace
 type=application/x-alz exts=alz
+type=application/x-amiga-disk-format exts=adf
 type=application/x-amipro exts=sam
 type=application/x-annodex exts=anx
 type=application/x-aportisdoc exts=pdb,pdc
@@ -230,10 +257,13 @@ type=application/x-applix-word exts=aw
 type=application/x-archive exts=a,ar
 type=application/x-arj exts=arj
 type=application/x-asp exts=asp
+type=application/x-atari-2600-rom exts=a26
+type=application/x-atari-7800-rom exts=a78
 type=application/x-awk exts=awk
 type=application/x-bcpio exts=bcpio
 type=application/x-bittorrent exts=torrent
 type=application/x-blender exts=blender,blend,BLEND
+type=application/x-bsdiff exts=bsdiff
 type=application/x-bzip exts=bz2,bz
 type=application/x-bzip-compressed-tar exts=tbz2,tbz,tb2
 type=application/x-bzip2 exts=bz2,bz
@@ -267,6 +297,7 @@ type=application/x-dia-diagram exts=dia
 type=application/x-dia-shape exts=shape
 type=application/x-director exts=dir,dxr
 type=application/x-docbook+xml exts=dbk,docbook
+type=application/x-doom-wad exts=wad
 type=application/x-dvi exts=dvi
 type=application/x-e-theme exts=etheme
 type=application/x-egon exts=egon
@@ -285,13 +316,17 @@ type=application/x-font-ttf exts=ttf,ttc
 type=application/x-font-ttx exts=ttx
 type=application/x-font-type1 exts=pfa,pfb,gsf
 type=application/x-font-woff exts=woff
+type=application/x-frame exts=fm
 type=application/x-freelance exts=pre
-type=application/x-gameboy-rom exts=gb
+type=application/x-gameboy-color-rom exts=gbc,cgb
+type=application/x-gameboy-rom exts=gb,sgb
 type=application/x-gamecube-iso-image exts=iso
 type=application/x-gamecube-rom exts=iso
-type=application/x-gba-rom exts=gba
+type=application/x-gamegear-rom exts=gg
+type=application/x-gba-rom exts=gba,agb
 type=application/x-gedcom exts=ged,gedcom
-type=application/x-genesis-rom exts=gen
+type=application/x-genesis-32x-rom exts=32x,mdx
+type=application/x-genesis-rom exts=gen,smd
 type=application/x-gettext exts=po
 type=application/x-gettext-translation exts=gmo,mo
 type=application/x-glade exts=glade
@@ -300,6 +335,8 @@ type=application/x-gnucash exts=gnucash,gnc,xac
 type=application/x-gnumeric exts=gnumeric
 type=application/x-gnuplot exts=gp,gplt,gnuplot
 type=application/x-go-sgf exts=sgf
+type=application/x-gpx exts=gpx
+type=application/x-gpx+xml exts=gpx
 type=application/x-graphite exts=gra
 type=application/x-gtar exts=tar,gtar,gem
 type=application/x-gtk-builder exts=ui
@@ -312,6 +349,8 @@ type=application/x-internet-signup exts=isp
 type=application/x-iphone exts=iii
 type=application/x-ipix exts=ipx
 type=application/x-ipscript exts=ips
+type=application/x-ipynb+json exts=ipynb
+type=application/x-iso9660-appimage exts=appimage,AppImage
 type=application/x-iso9660-image exts=iso,iso9660
 type=application/x-it87 exts=it87
 type=application/x-iwork-keynote-sffkey exts=key
@@ -389,7 +428,8 @@ type=application/x-mswrite exts=wri
 type=application/x-msx-rom exts=msx
 type=application/x-n64-rom exts=n64,z64,v64
 type=application/x-navi-animation exts=ani
-type=application/x-nes-rom exts=nes
+type=application/x-neo-geo-pocket-rom exts=ngp
+type=application/x-nes-rom exts=nes,nez,unf,unif
 type=application/x-netcdf exts=cdf,nc
 type=application/x-netshow-channel exts=nsc
 type=application/x-nintendo-ds-rom exts=nds
@@ -433,7 +473,10 @@ type=application/x-rnc exts=rnc
 type=application/x-rpm exts=rpm
 type=application/x-ruby exts=rb
 type=application/x-sami exts=smi,sami
+type=application/x-saturn-rom exts=bin,iso
 type=application/x-sdp exts=sdp
+type=application/x-sega-cd-rom exts=bin,iso
+type=application/x-sg1000-rom exts=sg
 type=application/x-shar exts=shar
 type=application/x-shared-library-la exts=la
 type=application/x-sharedlib exts=so
@@ -476,12 +519,14 @@ type=application/x-wbfs exts=iso
 type=application/x-wia exts=iso
 type=application/x-wii-iso-image exts=iso
 type=application/x-wii-rom exts=iso
+type=application/x-wii-wad exts=wad
 type=application/x-windows-themepack exts=themepack
 type=application/x-wmf exts=wmf
 type=application/x-wordperfect exts=wp,wp4,wp5,wp6,wpd,wpp
 type=application/x-wpg exts=wpg
 type=application/x-wwf exts=wwf
 type=application/x-x509-ca-cert exts=der,crt,cert,pem
+type=application/x-xar exts=xar,pkg
 type=application/x-xbel exts=xbel
 type=application/x-xliff exts=xlf,xliff
 type=application/x-xpinstall exts=xpi
@@ -492,7 +537,7 @@ type=application/x-yaml exts=yaml,yml
 type=application/x-zip exts=zip
 type=application/x-zip-compressed exts=zip
 type=application/x-zoo exts=zoo
-type=application/xhtml+xml exts=xhtml
+type=application/xhtml+xml exts=xhtml,xht
 type=application/xml exts=xml,xbl,xsd,rng
 type=application/xml-dtd exts=dtd
 type=application/xml-external-parsed-entity exts=ent
@@ -509,10 +554,8 @@ type=audio/AMR-WB exts=awb
 type=audio/TSP-audio exts=tsi
 type=audio/aac exts=aac
 type=audio/ac3 exts=ac3
-type=audio/amr exts=3gp,3gpp,3ga
-type=audio/amr-encrypted exts=3gp,3gpp,3ga
-type=audio/amr-wb exts=3gp,3gpp,3ga
-type=audio/amr-wb-encrypted exts=3gp,3gpp,3ga
+type=audio/amr-encrypted exts=amr
+type=audio/amr-wb-encrypted exts=awb
 type=audio/annodex exts=axa
 type=audio/basic exts=au,snd
 type=audio/flac exts=flac
@@ -595,7 +638,7 @@ type=audio/x-xmf exts=xmf
 type=audio/xmf exts=xmf
 type=chemical/x-pdb exts=xyz
 type=flv-application/octet-stream exts=flv
-type=image/bmp exts=bmp
+type=image/bmp exts=bmp,dib
 type=image/cdr exts=cdr
 type=image/cgm exts=cgm
 type=image/emf exts=emf
@@ -623,19 +666,21 @@ type=image/svg+xml-compressed exts=svgz
 type=image/tiff exts=tif,tiff
 type=image/vnd.adobe.photoshop exts=psd
 type=image/vnd.djvu exts=djvu,djv
+type=image/vnd.djvu+multipage exts=djvu,djv
 type=image/vnd.dwg exts=dwg
 type=image/vnd.dxf exts=dxf
 type=image/vnd.microsoft.icon exts=ico
 type=image/vnd.ms-modi exts=mdi
 type=image/vnd.rn-realpix exts=rp
 type=image/vnd.wap.wbmp exts=wbmp
+type=image/vnd.zbrush.pcx exts=pcx
 type=image/webp exts=webp
 type=image/wmf exts=wmf
 type=image/x-3ds exts=3ds
-type=image/x-MS-bmp exts=bmp
+type=image/x-MS-bmp exts=bmp,dib
 type=image/x-adobe-dng exts=dng
 type=image/x-applix-graphics exts=ag
-type=image/x-bmp exts=bmp
+type=image/x-bmp exts=bmp,dib
 type=image/x-canon-cr2 exts=cr2
 type=image/x-canon-crw exts=crw
 type=image/x-cdr exts=cdr
@@ -699,13 +744,14 @@ type=image/x-xpm exts=xpm
 type=image/x-xwindowdump exts=xwd
 type=image/x.djvu exts=djvu,djv
 type=message/rfc822 exts=eml,mht,mhtml,nws
-type=model/iges exts=iges,igs
+type=model/iges exts=igs,iges
 type=model/mesh exts=mesh,msh,silo
 type=model/vrml exts=vrm,vrml,wrl
 type=text/cache-manifest exts=manifest
 type=text/calendar exts=vcs,ics
 type=text/css exts=css,CSSL
 type=text/csv exts=csv
+type=text/csv-schema exts=csvs
 type=text/directory exts=vcard,vcf,vct,gcrd
 type=text/ecmascript exts=es
 type=text/gedcom exts=ged,gedcom
@@ -722,11 +768,13 @@ type=text/rdf exts=rdf,rdfs,owl
 type=text/richtext exts=rtx
 type=text/rss exts=rss
 type=text/rtf exts=rtf
+type=text/rust exts=rs
 type=text/scriptlet exts=sct
 type=text/sgml exts=sgml,sgm
 type=text/spreadsheet exts=sylk,slk
 type=text/tab-separated-values exts=tsv
 type=text/troff exts=tr,roff,t
+type=text/turtle exts=ttl
 type=text/vcard exts=vcard,vcf,vct,gcrd
 type=text/vnd.graphviz exts=gv,dot
 type=text/vnd.rn-realtext exts=rt
@@ -761,6 +809,7 @@ type=text/x-fortran exts=f,f90,f95,for
 type=text/x-genie exts=gs
 type=text/x-gettext-translation exts=po
 type=text/x-gettext-translation-template exts=pot
+type=text/x-gherkin exts=feature
 type=text/x-go exts=go
 type=text/x-google-video-pointer exts=gvp
 type=text/x-haskell exts=hs
@@ -801,8 +850,10 @@ type=text/x-python exts=py,pyx,wsgi
 type=text/x-qml exts=qml,qmltypes,qmlproject
 type=text/x-reject exts=rej
 type=text/x-rpm-spec exts=spec
+type=text/x-sass exts=sass
 type=text/x-scala exts=scala
 type=text/x-scheme exts=scm,ss
+type=text/x-scss exts=scss
 type=text/x-setext exts=etx
 type=text/x-sh exts=sh
 type=text/x-sql exts=sql
@@ -817,6 +868,7 @@ type=text/x-troff exts=tr,roff,t
 type=text/x-troff-me exts=me
 type=text/x-troff-mm exts=mm
 type=text/x-troff-ms exts=ms
+type=text/x-twig exts=twig
 type=text/x-txt2tags exts=t2t
 type=text/x-uil exts=uil
 type=text/x-uri exts=uri

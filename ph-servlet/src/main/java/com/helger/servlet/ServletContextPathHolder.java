@@ -41,7 +41,7 @@ public final class ServletContextPathHolder
 
   private static String s_sServletContextPath;
   private static String s_sCustomContextPath;
-  private static boolean s_bSilentMode = false;
+  private static boolean s_bSilentMode = true;
 
   @PresentForCodeCoverage
   private static final ServletContextPathHolder s_aInstance = new ServletContextPathHolder ();

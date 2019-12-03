@@ -267,11 +267,14 @@ public final class WebScopeManager
       {
         // This can e.g. happen in tests, when there are no registered
         // listeners for session events!
+        // Or after an application server restart, if the cookie from the old
+        // server is present and session passivation is not enabled
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("Creating a new session web scope for ID '" +
-                          sSessionID +
-                          "' but there should already be one!" +
-                          " Check your HttpSessionListener implementation.");
+                       sSessionID +
+                       "' but there should already be one!" +
+                       " Check your HttpSessionListener implementation." +
+                       " Ignore this after a application server restart.");
       }
 
       // Create a new session scope

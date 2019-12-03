@@ -27,7 +27,8 @@ Java library with common web stuff. It contains the following sub-projects:
 * v9.1.5 - work in progress
     * Optimized logging
     * Updated the `META-INF/mime.types` file with the latest MIME types
-    * `ServletContextPathHolder` uses the silent mode by default 
+    * `ServletContextPathHolder` uses the silent mode by default
+    * Added new class `PhMimetypesFileTypeMap` to enforce the loading of "META-INF/mime.types" from this project
 * v9.1.4 - 2019-10-08
     * Updated to Apache httpcore 4.4.12
     * Updated to Apache httpclient 4.5.10

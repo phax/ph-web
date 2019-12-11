@@ -42,7 +42,7 @@ import com.helger.commons.state.EHandled;
 
 /**
  * Static manager class for {@link IProxySettingsProvider}.
- * 
+ *
  * @author Philip Helger
  */
 @ThreadSafe
@@ -131,7 +131,11 @@ public final class ProxySettingsManager
   {
     final ICommonsOrderedSet <IProxySettings> ret = new CommonsLinkedHashSet <> ();
     for (final IProxySettingsProvider aProvider : getAllProviders ())
-      ret.addAll (aProvider.getAllProxySettings (sProtocol, sHostName, nPort));
+    {
+      final ICommonsList <IProxySettings> aAll = aProvider.getAllProxySettings (sProtocol, sHostName, nPort);
+      if (aAll != null)
+        ret.addAll (aAll);
+    }
     return ret;
   }
 
@@ -151,13 +155,14 @@ public final class ProxySettingsManager
     {
       final ICommonsList <IProxySettings> aMatches = aProvider.getAllProxySettings (sProtocol, sHostName, nPort);
       // For all matching proxies
-      for (final IProxySettings aProxySettings : aMatches)
-        if (aProxySettings.hasSocketAddress (aAddr))
-        {
-          // Found a matching proxy
-          aProvider.onConnectionFailed (aProxySettings, aURI, aAddr, ex);
-          nInvokedProviders++;
-        }
+      if (aMatches != null)
+        for (final IProxySettings aProxySettings : aMatches)
+          if (aProxySettings.hasSocketAddress (aAddr))
+          {
+            // Found a matching proxy
+            aProvider.onConnectionFailed (aProxySettings, aURI, aAddr, ex);
+            nInvokedProviders++;
+          }
     }
 
     return EHandled.valueOf (nInvokedProviders > 0);

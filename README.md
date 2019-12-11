@@ -24,7 +24,7 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
-* v9.1.5 - work in progress
+* v9.1.5 - 2019-12-11
     * Optimized logging
     * Updated the `META-INF/mime.types` file with the latest MIME types
     * `ServletContextPathHolder` uses the silent mode by default
@@ -140,7 +140,7 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.4</version>
+  <version>9.1.5</version>
 </dependency>
 ```
 

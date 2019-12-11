@@ -25,7 +25,7 @@
     <version>1.11.0</version>
   </parent>
   <artifactId>ph-web-parent-pom</artifactId>
-  <version>9.1.5-SNAPSHOT</version>
+  <version>9.1.5</version>
   <packaging>pom</packaging>
   <name>ph-web-parent-pom</name>
   <description>Base POM to build the ph-web projects</description>
@@ -44,7 +44,7 @@
     <connection>scm:git:git@github.com:phax/ph-web.git</connection>
     <developerConnection>scm:git:git@github.com:phax/ph-web.git</developerConnection>
     <url>http://github.com/phax/ph-web</url>
-    <tag>HEAD</tag>
+    <tag>ph-web-parent-pom-9.1.5</tag>
   </scm>
 
   <organization>

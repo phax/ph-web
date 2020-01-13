@@ -29,6 +29,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.functional.IConsumer;
 import com.helger.httpclient.HttpClientHelper;
 
 /**
@@ -41,6 +42,7 @@ import com.helger.httpclient.HttpClientHelper;
 public class ResponseHandlerString implements ResponseHandler <String>
 {
   private final ContentType m_aDefault;
+  private IConsumer <Charset> m_aCharsetConsumer;
 
   public ResponseHandlerString ()
   {
@@ -56,15 +58,36 @@ public class ResponseHandlerString implements ResponseHandler <String>
   }
 
   @Nonnull
-  public ContentType getDefaultContentType ()
+  public final ContentType getDefaultContentType ()
   {
     return m_aDefault;
   }
 
   @Nonnull
-  public Charset getDefaultCharset ()
+  public final Charset getDefaultCharset ()
   {
     return m_aDefault.getCharset ();
+  }
+
+  @Nullable
+  public final IConsumer <Charset> getCharsetConsumer ()
+  {
+    return m_aCharsetConsumer;
+  }
+
+  /**
+   * Set the charset consumer that is informed about the default character set
+   * in which the response is interpreted.
+   * 
+   * @param aCharsetConsumer
+   *        The charset consumer. May be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final ResponseHandlerString setCharsetConsumer (@Nullable final IConsumer <Charset> aCharsetConsumer)
+  {
+    m_aCharsetConsumer = aCharsetConsumer;
+    return this;
   }
 
   @Nullable
@@ -79,8 +102,12 @@ public class ResponseHandlerString implements ResponseHandler <String>
     if (aContentType == null)
       aContentType = m_aDefault;
 
-    // Default to ISO-8859-1 internally
+    // Get the charset from the content type or the default charset
     final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aDefault.getCharset ());
+
+    // Get the default charset to be used
+    if (m_aCharsetConsumer != null)
+      m_aCharsetConsumer.accept (aCharset);
 
     return EntityUtils.toString (aEntity, aCharset);
   }

@@ -24,6 +24,10 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # News and noteworthy
 
+* v9.1.6 - work in progress
+    * Updated to Apache httpcore 4.4.13
+    * Enforcing commons-codec 1.14
+    * Changed HttpClient to not use commons-codec but SLF4J 
 * v9.1.5 - 2019-12-11
     * Optimized logging
     * Updated the `META-INF/mime.types` file with the latest MIME types

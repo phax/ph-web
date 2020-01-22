@@ -26,6 +26,7 @@ Java library with common web stuff. It contains the following sub-projects:
 
 * v9.1.6 - work in progress
     * Updated to Apache httpcore 4.4.13
+    * Updated to Apache httpclient 4.5.11
     * Enforcing commons-codec 1.14
     * Changed HttpClient to not use commons-codec but SLF4J instead
 * v9.1.5 - 2019-12-11

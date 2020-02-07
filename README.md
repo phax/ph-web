@@ -22,9 +22,21 @@ Java library with common web stuff. It contains the following sub-projects:
 * ph-xservlet (since v9.0.0)
     * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)  
   
+# Maven usage
+
+Add the following to your pom.xml to use this artifact:
+
+```xml
+<dependency>
+  <groupId>com.helger</groupId>
+  <artifactId>ph-web</artifactId>
+  <version>9.1.6</version>
+</dependency>
+```
+
 # News and noteworthy
 
-* v9.1.6 - work in progress
+* v9.1.6 - 2020-02-07
     * Updated to Apache httpcore 4.4.13
     * Updated to Apache httpclient 4.5.11
     * Enforcing commons-codec 1.14
@@ -137,18 +149,6 @@ Java library with common web stuff. It contains the following sub-projects:
     * Binds to ph-commons 8.4.x
 * v8.5.0 - 2016-07-26
     * Binds to ph-commons 8.3.x
-
-# Maven usage
-
-Add the following to your pom.xml to use this artifact:
-
-```xml
-<dependency>
-  <groupId>com.helger</groupId>
-  <artifactId>ph-web</artifactId>
-  <version>9.1.5</version>
-</dependency>
-```
 
 ---
 

@@ -42,6 +42,7 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.http.CHttp;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
@@ -327,9 +328,9 @@ public abstract class AbstractXServlet extends HttpServlet
 
       aHttpResponse.setHeader (CHttpHeader.ALLOW, m_aHandlerRegistry.getAllowedHttpMethodsString ());
       if (eHttpVersion.is10 ())
-        aHttpResponse.sendError (HttpServletResponse.SC_BAD_REQUEST);
+        aHttpResponse.sendError (CHttp.HTTP_BAD_REQUEST);
       else
-        aHttpResponse.sendError (HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        aHttpResponse.sendError (CHttp.HTTP_METHOD_NOT_ALLOWED);
       return;
     }
 
@@ -367,12 +368,12 @@ public abstract class AbstractXServlet extends HttpServlet
       if (eHttpVersion.is10 ())
       {
         // For HTTP 1.0 send 302
-        aHttpResponse.setStatus (HttpServletResponse.SC_FOUND);
+        aHttpResponse.setStatus (CHttp.HTTP_MOVED_TEMPORARY);
       }
       else
       {
         // For HTTP 1.1 send 303
-        aHttpResponse.setStatus (HttpServletResponse.SC_SEE_OTHER);
+        aHttpResponse.setStatus (CHttp.HTTP_SEE_OTHER);
       }
 
       // Set the location header
@@ -460,7 +461,7 @@ public abstract class AbstractXServlet extends HttpServlet
     {
       // HTTP version disallowed
       logInvalidRequestSetup ("Request has unsupported HTTP version (" + sProtocol + ")!", aHttpRequest);
-      aHttpResponse.sendError (HttpServletResponse.SC_HTTP_VERSION_NOT_SUPPORTED);
+      aHttpResponse.sendError (CHttp.HTTP_VERSION_NOT_SUPPORTED);
       return;
     }
     m_aCounterRequestsPerVersionAccepted.increment (eHttpVersion.getName ());
@@ -472,7 +473,7 @@ public abstract class AbstractXServlet extends HttpServlet
     {
       // HTTP method unknown
       logInvalidRequestSetup ("Request has unsupported HTTP method (" + sMethod + ")!", aHttpRequest);
-      aHttpResponse.sendError (HttpServletResponse.SC_NOT_IMPLEMENTED);
+      aHttpResponse.sendError (CHttp.HTTP_NOT_IMPLEMENTED);
       return;
     }
     m_aCounterRequestsPerMethodAccepted.increment (eHttpMethod.getName ());
@@ -525,10 +526,9 @@ public abstract class AbstractXServlet extends HttpServlet
         final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
         aFactory = m_aSettings.isMultipartEnabled () ? RequestWebScopeMultipart::new : RequestWebScope::new;
 
-        try (
-            final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
-                                                                                                     aHttpResponseWrapper,
-                                                                                                     aFactory))
+        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                      aHttpResponseWrapper,
+                                                                                                      aFactory))
         {
           final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
           aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());

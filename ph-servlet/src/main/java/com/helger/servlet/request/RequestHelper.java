@@ -535,10 +535,33 @@ public final class RequestHelper
   @Nullable
   public static EHttpMethod getHttpMethod (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    return getHttpMethodOrDefault (aHttpRequest, null);
+  }
+
+  /**
+   * Get the HTTP method associated with the given HTTP request
+   *
+   * @param aHttpRequest
+   *        The http request to query. May not be <code>null</code>.
+   * @param eDefault
+   *        The default to be returned, if no HTTP method could be found. May be
+   *        <code>null</code>.
+   * @return <code>null</code> if no supported HTTP method is contained
+   * @since 9.1.6
+   */
+  @Nullable
+  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest,
+                                                    @Nullable final EHttpMethod eDefault)
+  {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sMethod = aHttpRequest.getMethod ();
-    return EHttpMethod.getFromNameOrNull (sMethod);
+    final EHttpMethod ret = EHttpMethod.getFromNameOrNull (sMethod);
+    if (ret != null)
+      return ret;
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Unknown HTTP request method '" + sMethod + "' used in request " + aHttpRequest);
+    return eDefault;
   }
 
   /**

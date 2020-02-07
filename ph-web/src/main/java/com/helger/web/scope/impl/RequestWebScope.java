@@ -37,6 +37,7 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
+import com.helger.commons.collection.iterate.EmptyEnumeration;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.http.HttpHeaderMap;
@@ -300,7 +301,16 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final IParamValueCleanser aParamValueCleanser = getParamValueCleanser ();
 
     // set parameters as attributes (handles GET and POST parameters)
-    final Enumeration <String> aEnum = m_aHttpRequest.getParameterNames ();
+    // This may throw an exception, if the payload is invalid
+    Enumeration <String> aEnum;
+    try
+    {
+      aEnum = m_aHttpRequest.getParameterNames ();
+    }
+    catch (final Exception ex)
+    {
+      aEnum = new EmptyEnumeration <> ();
+    }
     while (aEnum.hasMoreElements ())
     {
       final String sParamName = aEnum.nextElement ();

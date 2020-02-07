@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.http.CHttp;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.state.EContinue;
@@ -77,20 +78,23 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                   @Nonnull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
-    if (nStatusCode < HttpServletResponse.SC_OK || nStatusCode >= HttpServletResponse.SC_BAD_REQUEST)
+    if (nStatusCode < CHttp.HTTP_OK || nStatusCode >= CHttp.HTTP_BAD_REQUEST)
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn ("HTTP status code " +
-                        nStatusCode +
-                        " in response to " +
-                        eHttpMethod.getName () +
-                        " '" +
-                        sRequestURL +
-                        "'");
+                     nStatusCode +
+                     " in response to " +
+                     eHttpMethod.getName () +
+                     " '" +
+                     sRequestURL +
+                     "'");
   }
 
   private static boolean _isContentExpected (final int nStatusCode)
   {
-    return nStatusCode >= 200 && nStatusCode < 300 && !ResponseHelper.isEmptyStatusCode (nStatusCode);
+    // >= 200 && < 300
+    return nStatusCode >= CHttp.HTTP_OK &&
+           nStatusCode < CHttp.HTTP_MULTIPLE_CHOICES &&
+           !ResponseHelper.isEmptyStatusCode (nStatusCode);
   }
 
   /**
@@ -112,12 +116,12 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn ("No character encoding on HTTP " +
-                        nStatusCode +
-                        " response to " +
-                        eHttpMethod.getName () +
-                        " '" +
-                        sRequestURL +
-                        "'");
+                     nStatusCode +
+                     " response to " +
+                     eHttpMethod.getName () +
+                     " '" +
+                     sRequestURL +
+                     "'");
   }
 
   /**
@@ -139,12 +143,12 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn ("No content type on HTTP " +
-                        nStatusCode +
-                        " response to " +
-                        eHttpMethod.getName () +
-                        " '" +
-                        sRequestURL +
-                        "'");
+                     nStatusCode +
+                     " response to " +
+                     eHttpMethod.getName () +
+                     " '" +
+                     sRequestURL +
+                     "'");
   }
 
   /**
@@ -166,16 +170,16 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     // Happens because of the default headers in the
     // UnifiedResponseDefaultSettings
     if (false)
-      if (nStatusCode != HttpServletResponse.SC_OK && aHeaders.isNotEmpty ())
+      if (nStatusCode != CHttp.HTTP_OK && aHeaders.isNotEmpty ())
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("Headers on HTTP " +
-                          nStatusCode +
-                          " response to " +
-                          eHttpMethod.getName () +
-                          " '" +
-                          sRequestURL +
-                          "': " +
-                          aHeaders);
+                       nStatusCode +
+                       " response to " +
+                       eHttpMethod.getName () +
+                       " '" +
+                       sRequestURL +
+                       "': " +
+                       aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,

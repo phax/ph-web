@@ -18,6 +18,7 @@ package com.helger.xservlet.filter;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedTimer;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.timing.StopWatch;
@@ -49,6 +50,8 @@ public final class XServletFilterTimer implements IXServletHighLevelFilter
   public void afterRequest (@Nonnull final IRequestWebScope aRequestScope)
   {
     // Timer per HTTP method
-    m_aTimer.addTime (aRequestScope.getHttpMethod ().getName (), m_aSW.stopAndGetMillis ());
+    final EHttpMethod eMethod = aRequestScope.getHttpMethod ();
+    if (eMethod != null)
+      m_aTimer.addTime (eMethod.getName (), m_aSW.stopAndGetMillis ());
   }
 }

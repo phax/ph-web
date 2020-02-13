@@ -16,6 +16,8 @@
  */
 package com.helger.xservlet.filter;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -49,11 +51,38 @@ import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
  */
 public class XServletFilterConsistency implements IXServletLowLevelFilter
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterConsistency.class);
   public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
+
+  private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterConsistency.class);
+  // TODO use GlobalDebug.DEFAULT_SILENT_MODE in ph-commons 9.3.10
+  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (true);
 
   protected XServletFilterConsistency ()
   {}
+
+  /**
+   * @return <code>true</code> if logging is disabled, <code>false</code> if it
+   *         is enabled.
+   * @since 9.1.7
+   */
+  public static boolean isSilentMode ()
+  {
+    return SILENT_MODE.get ();
+  }
+
+  /**
+   * Enable or disable certain regular log messages.
+   *
+   * @param bSilentMode
+   *        <code>true</code> to disable logging, <code>false</code> to enable
+   *        logging
+   * @return The previous value of the silent mode.
+   * @since 9.1.7
+   */
+  public static boolean setSilentMode (final boolean bSilentMode)
+  {
+    return SILENT_MODE.getAndSet (bSilentMode);
+  }
 
   @Nonnull
   public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
@@ -78,16 +107,16 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                   @Nonnull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
-    // Avoid 429 - HTTP_TOO_MANY_REQUESTS as well
-    if (nStatusCode < CHttp.HTTP_OK || (nStatusCode >= CHttp.HTTP_BAD_REQUEST && nStatusCode != 429))
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("HTTP status code " +
-                     nStatusCode +
-                     " in response to " +
-                     eHttpMethod.getName () +
-                     " '" +
-                     sRequestURL +
-                     "'");
+    if (nStatusCode < CHttp.HTTP_OK || nStatusCode >= CHttp.HTTP_BAD_REQUEST)
+      if (!isSilentMode ())
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("HTTP status code " +
+                       nStatusCode +
+                       " in response to " +
+                       eHttpMethod.getName () +
+                       " '" +
+                       sRequestURL +
+                       "'");
   }
 
   private static boolean _isContentExpected (final int nStatusCode)
@@ -115,14 +144,15 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("No character encoding on HTTP " +
-                     nStatusCode +
-                     " response to " +
-                     eHttpMethod.getName () +
-                     " '" +
-                     sRequestURL +
-                     "'");
+      if (!isSilentMode ())
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("No character encoding on HTTP " +
+                       nStatusCode +
+                       " response to " +
+                       eHttpMethod.getName () +
+                       " '" +
+                       sRequestURL +
+                       "'");
   }
 
   /**
@@ -142,14 +172,15 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    @Nonnull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("No content type on HTTP " +
-                     nStatusCode +
-                     " response to " +
-                     eHttpMethod.getName () +
-                     " '" +
-                     sRequestURL +
-                     "'");
+      if (!isSilentMode ())
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("No content type on HTTP " +
+                       nStatusCode +
+                       " response to " +
+                       eHttpMethod.getName () +
+                       " '" +
+                       sRequestURL +
+                       "'");
   }
 
   /**
@@ -172,15 +203,16 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     // UnifiedResponseDefaultSettings
     if (false)
       if (nStatusCode != CHttp.HTTP_OK && aHeaders.isNotEmpty ())
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Headers on HTTP " +
-                       nStatusCode +
-                       " response to " +
-                       eHttpMethod.getName () +
-                       " '" +
-                       sRequestURL +
-                       "': " +
-                       aHeaders);
+        if (!isSilentMode ())
+          if (LOGGER.isWarnEnabled ())
+            LOGGER.warn ("Headers on HTTP " +
+                         nStatusCode +
+                         " response to " +
+                         eHttpMethod.getName () +
+                         " '" +
+                         sRequestURL +
+                         "': " +
+                         aHeaders);
   }
 
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,

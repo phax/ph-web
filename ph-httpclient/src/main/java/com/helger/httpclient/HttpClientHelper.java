@@ -37,6 +37,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -74,23 +75,32 @@ public final class HttpClientHelper
   public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
                                                @Nonnull final ISimpleURL aSimpleURL)
   {
-    final String sURL = aSimpleURL.getAsStringWithEncodedParameters ();
+    final String sURI = aSimpleURL.getAsStringWithEncodedParameters ();
+    return createRequest (eHTTPMethod, sURI);
+  }
+
+  @Nonnull
+  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final String sURI)
+  {
     switch (eHTTPMethod)
     {
       case DELETE:
-        return new HttpDelete (sURL);
+        return new HttpDelete (sURI);
       case GET:
-        return new HttpGet (sURL);
+        return new HttpGet (sURI);
       case HEAD:
-        return new HttpHead (sURL);
+        return new HttpHead (sURI);
       case OPTIONS:
-        return new HttpOptions (sURL);
+        return new HttpOptions (sURI);
       case TRACE:
-        return new HttpTrace (sURL);
+        return new HttpTrace (sURI);
+      case PATCH:
+        return new HttpPatch (sURI);
       case POST:
-        return new HttpPost (sURL);
+        return new HttpPost (sURI);
       case PUT:
-        return new HttpPut (sURL);
+        return new HttpPut (sURI);
+      case CONNECT:
       default:
         throw new IllegalStateException ("Unsupported HTTP method: " + eHTTPMethod);
     }

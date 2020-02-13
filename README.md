@@ -38,6 +38,7 @@ Add the following to your pom.xml to use this artifact:
 
 * v9.1.7 - work in progress
    * Added explicit `HttpClientFactory.setProxyCredentials` method
+   * `HttpClientHelper.createRequest` now also supports `PATCH`
 * v9.1.6 - 2020-02-07
     * Updated to Apache httpcore 4.4.13
     * Updated to Apache httpclient 4.5.11

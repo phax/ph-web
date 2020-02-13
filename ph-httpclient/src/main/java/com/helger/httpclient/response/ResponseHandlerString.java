@@ -78,7 +78,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
   /**
    * Set the charset consumer that is informed about the default character set
    * in which the response is interpreted.
-   * 
+   *
    * @param aCharsetConsumer
    *        The charset consumer. May be <code>null</code>.
    * @return this for chaining
@@ -91,7 +91,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
   }
 
   @Nullable
-  public String handleResponse (final HttpResponse aHttpResponse) throws IOException
+  public String handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     // Convert to entity
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);

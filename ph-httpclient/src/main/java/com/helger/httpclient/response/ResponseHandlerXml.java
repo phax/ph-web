@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
@@ -33,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
-import com.helger.commons.debug.GlobalDebug;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.serialize.read.DOMReader;
 
@@ -50,7 +50,7 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
 
   public ResponseHandlerXml ()
   {
-    this (GlobalDebug.isDebugMode ());
+    this (false);
   }
 
   public ResponseHandlerXml (final boolean bDebugMode)
@@ -63,13 +63,13 @@ public class ResponseHandlerXml implements ResponseHandler <Document>
    *         not.
    * @since 8.8.2
    */
-  public boolean isDebugMode ()
+  public final boolean isDebugMode ()
   {
     return m_bDebugMode;
   }
 
   @Nullable
-  public Document handleResponse (final HttpResponse aHttpResponse) throws IOException
+  public Document handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

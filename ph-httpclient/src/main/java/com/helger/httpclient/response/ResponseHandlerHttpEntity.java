@@ -26,6 +26,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ResponseHandler;
 
+import com.helger.commons.http.CHttp;
+
 /**
  * Base response handler that checks the status code and handles only status
  * codes &lt; 300.
@@ -46,7 +48,8 @@ public class ResponseHandlerHttpEntity implements ResponseHandler <HttpEntity>
   {
     final StatusLine aStatusLine = aHttpResponse.getStatusLine ();
     final HttpEntity aEntity = aHttpResponse.getEntity ();
-    if (aStatusLine.getStatusCode () >= 300)
+    // >= 300
+    if (aStatusLine.getStatusCode () >= CHttp.HTTP_MULTIPLE_CHOICES)
     {
       // Consume entity and throw
       throw ExtendedHttpResponseException.create (aStatusLine, aHttpResponse, aEntity);

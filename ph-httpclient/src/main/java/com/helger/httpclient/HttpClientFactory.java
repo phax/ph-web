@@ -329,8 +329,24 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.0
    * @see #setProxyCredentials(Credentials)
    * @see #setProxy(HttpHost, Credentials)
+   * @deprecated Use {@link #setProxyHost(HttpHost)} instead. Since 9.1.7
    */
+  @Deprecated
   public final void setProxy (@Nullable final HttpHost aProxy)
+  {
+    setProxyHost (aProxy);
+  }
+
+  /**
+   * Set a proxy host without proxy server credentials.
+   *
+   * @param aProxy
+   *        The proxy host to be used. May be <code>null</code>.
+   * @since 9.1.7
+   * @see #setProxyCredentials(Credentials)
+   * @see #setProxy(HttpHost, Credentials)
+   */
+  public final void setProxyHost (@Nullable final HttpHost aProxy)
   {
     m_aProxy = aProxy;
   }
@@ -343,7 +359,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        They are only used if a proxy host is present! Usually they are of
    *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
    * @since 9.1.7
-   * @see #setProxy(HttpHost)
+   * @see #setProxyHost(HttpHost)
    * @see #setProxy(HttpHost, Credentials)
    */
   public final void setProxyCredentials (@Nullable final Credentials aProxyCredentials)
@@ -361,18 +377,20 @@ public class HttpClientFactory implements IHttpClientProvider
    *        They are only used if a proxy host is present! Usually they are of
    *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
    * @since 8.8.0
-   * @see #setProxy(HttpHost)
+   * @see #setProxyHost(HttpHost)
    * @see #setProxyCredentials(Credentials)
+   * @deprecated Call the stuff separately (since 9.1.7)
    */
+  @Deprecated
   public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
   {
-    setProxy (aProxy);
+    setProxyHost (aProxy);
     setProxyCredentials (aProxyCredentials);
   }
 
   /**
    * @return The set of all host names and IP addresses for which no proxy
-   *         should be used.
+   *         should be used. Never <code>null</code> and mutable.
    * @since 9.1.1
    */
   @Nonnull
@@ -491,13 +509,11 @@ public class HttpClientFactory implements IHttpClientProvider
           aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
 
         if (LOGGER.isDebugEnabled ())
+        {
           LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
-
-        if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
-
-        if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
+        }
 
         aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
                                                       aTLSConfigMode.getAllTLSVersionIDsAsArray (),
@@ -650,8 +666,7 @@ public class HttpClientFactory implements IHttpClientProvider
     if (aProxyHost != null)
     {
       // If a route planner is used, the HttpClientBuilder MUST NOT use the
-      // proxy,
-      // because this would have precedence
+      // proxy, because this would have precedence
       if (m_aNonProxyHosts.isEmpty ())
       {
         // Proxy for all

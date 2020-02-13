@@ -18,6 +18,7 @@ package com.helger.httpclient.response;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
@@ -33,7 +34,7 @@ import org.apache.http.util.EntityUtils;
 public class ResponseHandlerByteArray implements ResponseHandler <byte []>
 {
   @Nullable
-  public byte [] handleResponse (final HttpResponse aHttpResponse) throws IOException
+  public byte [] handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

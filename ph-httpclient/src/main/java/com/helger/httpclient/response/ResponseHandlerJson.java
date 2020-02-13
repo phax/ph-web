@@ -19,6 +19,7 @@ package com.helger.httpclient.response;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
@@ -30,7 +31,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.StringHelper;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.json.IJson;
@@ -49,7 +49,7 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
 
   public ResponseHandlerJson ()
   {
-    this (GlobalDebug.isDebugMode ());
+    this (false);
   }
 
   public ResponseHandlerJson (final boolean bDebugMode)
@@ -62,13 +62,13 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
    *         not.
    * @since 8.8.2
    */
-  public boolean isDebugMode ()
+  public final boolean isDebugMode ()
   {
     return m_bDebugMode;
   }
 
   @Nullable
-  public IJson handleResponse (final HttpResponse aHttpResponse) throws IOException
+  public IJson handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

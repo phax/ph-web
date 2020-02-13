@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.http.HttpEntity;
@@ -32,7 +33,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.debug.GlobalDebug;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
@@ -50,7 +50,7 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
 
   public ResponseHandlerMicroDom ()
   {
-    this (GlobalDebug.isDebugMode ());
+    this (false);
   }
 
   public ResponseHandlerMicroDom (final boolean bDebugMode)
@@ -63,13 +63,13 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
    *         not.
    * @since 8.8.2
    */
-  public boolean isDebugMode ()
+  public final boolean isDebugMode ()
   {
     return m_bDebugMode;
   }
 
   @Nullable
-  public IMicroDocument handleResponse (final HttpResponse aHttpResponse) throws IOException
+  public IMicroDocument handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

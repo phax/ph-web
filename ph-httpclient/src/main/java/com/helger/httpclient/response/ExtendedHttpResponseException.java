@@ -71,7 +71,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return The status line received. Never <code>null</code>.
    */
   @Nonnull
-  public StatusLine getStatusLine ()
+  public final StatusLine getStatusLine ()
   {
     return m_aStatusLine;
   }
@@ -82,7 +82,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    *         response.
    */
   @Nonnull
-  public HttpResponse getHttpResponse ()
+  public final HttpResponse getHttpResponse ()
   {
     return m_aHttpResponse;
   }
@@ -93,7 +93,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   @Nullable
   @ReturnsMutableObject
   @SuppressFBWarnings ("EI_EXPOSE_REP")
-  public byte [] directGetResponseBody ()
+  public final byte [] directGetResponseBody ()
   {
     return m_aResponseBody;
   }
@@ -103,7 +103,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    */
   @Nullable
   @ReturnsMutableCopy
-  public byte [] getResponseBody ()
+  public final byte [] getResponseBody ()
   {
     return ArrayHelper.getCopy (m_aResponseBody);
   }
@@ -112,7 +112,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return <code>true</code> if a response body is present, <code>false</code>
    *         otherwise.
    */
-  public boolean hasResponseBody ()
+  public final boolean hasResponseBody ()
   {
     return ArrayHelper.isNotEmpty (m_aResponseBody);
   }
@@ -121,7 +121,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return The response charset. Never <code>null</code>.
    */
   @Nonnull
-  public Charset getResponseCharset ()
+  public final Charset getResponseCharset ()
   {
     return m_aResponseCharset;
   }
@@ -133,7 +133,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @see #getResponseCharset()
    */
   @Nullable
-  public String getResponseBodyAsString ()
+  public final String getResponseBodyAsString ()
   {
     return getResponseBodyAsString (m_aResponseCharset);
   }
@@ -146,7 +146,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return <code>null</code> if no response body is present.
    */
   @Nullable
-  public String getResponseBodyAsString (@Nonnull final Charset aCharset)
+  public final String getResponseBodyAsString (@Nonnull final Charset aCharset)
   {
     return m_aResponseBody == null ? null : new String (m_aResponseBody, aCharset);
   }

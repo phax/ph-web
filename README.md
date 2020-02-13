@@ -37,9 +37,10 @@ Add the following to your pom.xml to use this artifact:
 # News and noteworthy
 
 * v9.1.7 - work in progress
-   * Added explicit `HttpClientFactory.setProxyCredentials` method
-   * `HttpClientHelper.createRequest` now also supports `PATCH`
-   * `XServletFilterConsistency` has now a silent mode
+    * Added explicit `HttpClientFactory.setProxyCredentials` method
+    * `HttpClientHelper.createRequest` now also supports `PATCH`
+    * `XServletFilterConsistency` has now a silent mode
+    * Disabled the default debug logging in the HTTP `ResponseHandler`    
 * v9.1.6 - 2020-02-07
     * Updated to Apache httpcore 4.4.13
     * Updated to Apache httpclient 4.5.11

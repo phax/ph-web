@@ -29,11 +29,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.helger.commons.annotation.CodingStyleguideUnaware;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsHashMap;
@@ -82,18 +84,20 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Override
-  public String getParameter (final String sName)
+  @Nullable
+  public String getParameter (@Nullable final String sName)
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
       return super.getParameter (sName);
 
-    final String [] values = m_aParameterMap.get (sName);
-    if (values != null && values.length > 0)
-      return values[0];
-    return Arrays.toString (values);
+    final String [] aValues = m_aParameterMap.get (sName);
+    if (aValues != null && aValues.length > 0)
+      return aValues[0];
+    return Arrays.toString (aValues);
   }
 
   @Override
+  @Nonnull
   public Map <String, String []> getParameterMap ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
@@ -103,6 +107,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Override
+  @Nonnull
   public Enumeration <String> getParameterNames ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
@@ -112,12 +117,13 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Override
-  public String [] getParameterValues (final String name)
+  @Nullable
+  public String [] getParameterValues (@Nullable final String sName)
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
-      return super.getParameterValues (name);
+      return super.getParameterValues (sName);
 
-    return m_aParameterMap.get (name);
+    return m_aParameterMap.get (sName);
   }
 
   @Nonnull
@@ -127,11 +133,12 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     return CharsetHelper.getCharsetFromNameOrDefault (sRequestEncoding, StandardCharsets.UTF_8);
   }
 
+  @Nonnull
   public String getContent ()
   {
     try
     {
-      String sNormalizedContent;
+      final String sNormalizedContent;
       if (m_aParameterMap.isEmpty ())
       {
         m_aContent = StreamHelper.getAllBytes (m_aDelegate.getInputStream ());
@@ -165,6 +172,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Nonnull
+  @ReturnsMutableCopy
   public ICommonsMap <String, String> getParameters ()
   {
     final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
@@ -195,9 +203,9 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   {
     private final Iterator <String> m_aIt;
 
-    private ParamNameEnumeration (final Set <String> values)
+    private ParamNameEnumeration (@Nullable final Set <String> aValues)
     {
-      m_aIt = values != null ? values.iterator () : Collections.emptyIterator ();
+      m_aIt = aValues != null ? aValues.iterator () : Collections.emptyIterator ();
     }
 
     @Override

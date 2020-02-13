@@ -28,6 +28,7 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -37,19 +38,21 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   private final LoggingServletOutpuStream m_aOS = new LoggingServletOutpuStream ();
   private final HttpServletResponse m_aDelegate;
 
-  public LoggingHttpServletResponseWrapper (final HttpServletResponse response)
+  public LoggingHttpServletResponseWrapper (@Nonnull final HttpServletResponse aDelegate)
   {
-    super (response);
-    m_aDelegate = response;
+    super (aDelegate);
+    m_aDelegate = aDelegate;
   }
 
   @Override
+  @Nonnull
   public ServletOutputStream getOutputStream () throws IOException
   {
     return m_aOS;
   }
 
   @Override
+  @Nonnull
   public PrintWriter getWriter () throws IOException
   {
     return new PrintWriter (StreamHelper.createWriter (m_aOS.m_aBAOS, _getCharset ()));
@@ -59,21 +62,23 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   private Charset _getCharset ()
   {
     final String sResponseEncoding = m_aDelegate.getCharacterEncoding ();
-    final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sResponseEncoding, StandardCharsets.UTF_8);
-    return aCharset;
+    return CharsetHelper.getCharsetFromNameOrDefault (sResponseEncoding, StandardCharsets.UTF_8);
   }
 
+  @Nonnull
   public String getContentAsString ()
   {
     return m_aOS.m_aBAOS.getAsString (_getCharset ());
   }
 
+  @Nonnull
+  @ReturnsMutableCopy
   public byte [] getContentAsBytes ()
   {
     return m_aOS.m_aBAOS.toByteArray ();
   }
 
-  public void writeContentTo (final OutputStream aOS) throws IOException
+  public void writeContentTo (@Nonnull final OutputStream aOS) throws IOException
   {
     if (!m_aDelegate.isCommitted () && m_aOS.m_aBAOS.isNotEmpty ())
       m_aOS.m_aBAOS.writeTo (aOS);
@@ -106,9 +111,9 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
     }
 
     @Override
-    public void write (final byte [] b, final int off, final int len) throws IOException
+    public void write (final byte [] b, final int nOfs, final int nLen) throws IOException
     {
-      m_aBAOS.write (b, off, len);
+      m_aBAOS.write (b, nOfs, nLen);
     }
   }
 }

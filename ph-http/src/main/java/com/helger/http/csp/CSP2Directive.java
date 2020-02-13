@@ -117,8 +117,8 @@ public class CSP2Directive implements ICSPDirective
   }
 
   /**
-   * The default-src is the default policy for loading content such as JavaScript,
-   * Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
+   * The default-src is the default policy for loading content such as
+   * JavaScript, Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -240,6 +240,7 @@ public class CSP2Directive implements ICSPDirective
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSP2Directive}
    * @since CSP v1
+   * @deprecated Use {@link #createChildSrc(CSP2SourceList)} instead
    */
   @Deprecated
   @Nonnull

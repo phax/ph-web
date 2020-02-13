@@ -122,6 +122,19 @@ public final class NetworkPortHelper
       aSocket.connect (aSocketAddr, nTimeoutMillisecs);
       ret = ENetworkPortStatus.PORT_IS_OPEN;
     }
+    catch (final java.net.UnknownHostException ex)
+    {
+      ret = ENetworkPortStatus.HOST_NOT_EXISTING;
+    }
+    catch (final java.net.SocketTimeoutException ex)
+    {
+      ret = ENetworkPortStatus.CONNECTION_TIMEOUT;
+    }
+    catch (final java.net.ConnectException ex)
+    {
+      // E.g. for port 0
+      ret = ENetworkPortStatus.GENERIC_IO_ERROR;
+    }
     catch (final IOException ex)
     {
       // Can also be:
@@ -129,23 +142,11 @@ public final class NetworkPortHelper
       if (ex.getMessage ().startsWith ("Connection refused"))
         ret = ENetworkPortStatus.PORT_IS_CLOSED;
       else
-        if (ex instanceof java.net.UnknownHostException)
-          ret = ENetworkPortStatus.HOST_NOT_EXISTING;
-        else
-          if (ex instanceof java.net.SocketTimeoutException)
-            ret = ENetworkPortStatus.CONNECTION_TIMEOUT;
-          else
-            if (ex instanceof java.net.ConnectException)
-            {
-              // E.g. for port 0
-              ret = ENetworkPortStatus.GENERIC_IO_ERROR;
-            }
-            else
-            {
-              if (!bSilentMode)
-                LOGGER.error ("Other error checking TCP port status", ex);
-              ret = ENetworkPortStatus.GENERIC_IO_ERROR;
-            }
+      {
+        if (!bSilentMode)
+          LOGGER.error ("Other error checking TCP port status", ex);
+        ret = ENetworkPortStatus.GENERIC_IO_ERROR;
+      }
     }
 
     if (!bSilentMode)

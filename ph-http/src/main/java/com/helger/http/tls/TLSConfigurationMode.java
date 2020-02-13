@@ -44,7 +44,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class TLSConfigurationMode implements ITLSConfigurationMode
 {
-  private static ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsHashMap <> ();
+  private static final ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsHashMap <> ();
 
   static
   {

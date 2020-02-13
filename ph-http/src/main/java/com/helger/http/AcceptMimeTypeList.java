@@ -38,8 +38,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
   public void addMimeType (@Nonnull final IMimeType aMimeType, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notNull (aMimeType, "MimeType");
-    if (aMimeType.hasAnyParameters ())
-      throw new IllegalArgumentException ("MimeTypes used here may not contain any parameter!");
+    ValueEnforcer.isFalse (aMimeType.hasAnyParameters (), "MimeTypes used here may not contain any parameter!");
 
     m_aMap.put (aMimeType, new QValue (dQuality));
   }

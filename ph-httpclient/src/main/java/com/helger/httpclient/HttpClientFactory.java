@@ -327,11 +327,28 @@ public class HttpClientFactory implements IHttpClientProvider
    * @param aProxy
    *        The proxy host to be used. May be <code>null</code>.
    * @since 8.8.0
+   * @see #setProxyCredentials(Credentials)
    * @see #setProxy(HttpHost, Credentials)
    */
   public final void setProxy (@Nullable final HttpHost aProxy)
   {
-    setProxy (aProxy, (Credentials) null);
+    m_aProxy = aProxy;
+  }
+
+  /**
+   * Set proxy credentials.
+   *
+   * @param aProxyCredentials
+   *        The proxy server credentials to be used. May be <code>null</code>.
+   *        They are only used if a proxy host is present! Usually they are of
+   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
+   * @since 9.1.7
+   * @see #setProxy(HttpHost)
+   * @see #setProxy(HttpHost, Credentials)
+   */
+  public final void setProxyCredentials (@Nullable final Credentials aProxyCredentials)
+  {
+    m_aProxyCredentials = aProxyCredentials;
   }
 
   /**
@@ -345,11 +362,12 @@ public class HttpClientFactory implements IHttpClientProvider
    *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
    * @since 8.8.0
    * @see #setProxy(HttpHost)
+   * @see #setProxyCredentials(Credentials)
    */
   public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
   {
-    m_aProxy = aProxy;
-    m_aProxyCredentials = aProxyCredentials;
+    setProxy (aProxy);
+    setProxyCredentials (aProxyCredentials);
   }
 
   /**

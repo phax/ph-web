@@ -36,6 +36,8 @@ Add the following to your pom.xml to use this artifact:
 
 # News and noteworthy
 
+* v9.1.7 - work in progress
+   * Added explicit `HttpClientFactory.setProxyCredentials` method
 * v9.1.6 - 2020-02-07
     * Updated to Apache httpcore 4.4.13
     * Updated to Apache httpclient 4.5.11

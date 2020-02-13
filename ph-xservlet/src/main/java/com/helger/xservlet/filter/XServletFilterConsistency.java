@@ -78,7 +78,8 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                   @Nonnull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
-    if (nStatusCode < CHttp.HTTP_OK || nStatusCode >= CHttp.HTTP_BAD_REQUEST)
+    // Avoid 429 - HTTP_TOO_MANY_REQUESTS as well
+    if (nStatusCode < CHttp.HTTP_OK || (nStatusCode >= CHttp.HTTP_BAD_REQUEST && nStatusCode != 429))
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn ("HTTP status code " +
                      nStatusCode +

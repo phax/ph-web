@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,9 +95,9 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
       // Global scope may not be present here (on shutdown)
       final IGlobalWebScope aGlobalScope = WebScopeManager.getGlobalScopeOrNull ();
       if (aGlobalScope != null)
-        try (
-            final WebScoped aWebScoped = new WebScoped (new OfflineHttpServletRequest (aGlobalScope.getServletContext (),
-                                                                                       false)))
+      {
+        final HttpServletRequest aRequest = new OfflineHttpServletRequest (aGlobalScope.getServletContext (), false);
+        try (final WebScoped aWebScoped = new WebScoped (aRequest))
         {
           // Check for long running requests
           m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
@@ -105,6 +106,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
         {
           LOGGER.error ("Error checking for long running requests", ex);
         }
+      }
     }
   }
 

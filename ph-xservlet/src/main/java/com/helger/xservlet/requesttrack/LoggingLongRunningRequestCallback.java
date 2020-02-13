@@ -54,7 +54,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   }
 
   @Nonnull
-  public IErrorLevel getErrorLevel ()
+  public final IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }

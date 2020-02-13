@@ -30,13 +30,13 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.6</version>
+  <version>9.1.7</version>
 </dependency>
 ```
 
 # News and noteworthy
 
-* v9.1.7 - work in progress
+* v9.1.7 - 2020-02-13
     * Added explicit `HttpClientFactory.setProxyCredentials` method
     * `HttpClientHelper.createRequest` now also supports `PATCH`
     * `XServletFilterConsistency` has now a silent mode

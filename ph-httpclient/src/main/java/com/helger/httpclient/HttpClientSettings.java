@@ -28,11 +28,13 @@ import javax.net.ssl.TrustManager;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.Credentials;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -66,6 +68,8 @@ public class HttpClientSettings implements IHttpClientSettings
   public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
 
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientSettings.class);
+
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
   private SSLContext m_aSSLContext;
@@ -73,7 +77,7 @@ public class HttpClientSettings implements IHttpClientSettings
   private HostnameVerifier m_aHostnameVerifier;
   private HttpHost m_aProxyHost;
   private Credentials m_aProxyCredentials;
-  private final ICommonsSet <String> m_aNonProxyHosts = new CommonsHashSet <> ();
+  private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
   private int m_nRetries = DEFAULT_RETRIES;
   private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
   private int m_nConnectionRequestTimeoutMS = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
@@ -107,6 +111,11 @@ public class HttpClientSettings implements IHttpClientSettings
   public final HttpClientSettings setUseSystemProperties (final boolean bUseSystemProperties)
   {
     m_bUseSystemProperties = bUseSystemProperties;
+    if (bUseSystemProperties && m_aProxyHost != null)
+    {
+      LOGGER.warn ("Since the proxy properties should be used, the explicit Proxy host is removed.");
+      m_aProxyHost = null;
+    }
     return this;
   }
 
@@ -259,6 +268,11 @@ public class HttpClientSettings implements IHttpClientSettings
   public final HttpClientSettings setProxyHost (@Nullable final HttpHost aProxyHost)
   {
     m_aProxyHost = aProxyHost;
+    if (aProxyHost != null && m_bUseSystemProperties)
+    {
+      LOGGER.warn ("Since an explicit Proxy host for is defined, the usage of the system properties is disabled.");
+      m_bUseSystemProperties = false;
+    }
     return this;
   }
 
@@ -294,7 +308,7 @@ public class HttpClientSettings implements IHttpClientSettings
    */
   @Nonnull
   @ReturnsMutableObject
-  public final ICommonsSet <String> nonProxyHosts ()
+  public final ICommonsOrderedSet <String> nonProxyHosts ()
   {
     return m_aNonProxyHosts;
   }

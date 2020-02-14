@@ -11,6 +11,7 @@ import org.apache.http.auth.Credentials;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.string.StringHelper;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
@@ -105,6 +106,10 @@ public interface IHttpClientSettings
   @Nonnegative
   int getRetryCount ();
 
+  /**
+   * @return <code>true</code> if retries are enabled, <code>false</code> if
+   *         not.
+   */
   default boolean hasRetries ()
   {
     return getRetryCount () > 0;
@@ -133,4 +138,20 @@ public interface IHttpClientSettings
    *         "indefinite". Values &lt; 0 means "system default".
    */
   int getSocketTimeoutMS ();
+
+  /**
+   * @return The user agent header to be send. May be <code>null</code>.
+   * @since 9.1.9
+   */
+  @Nullable
+  String getUserAgent ();
+
+  /**
+   * @return <code>true</code> if a user agent is defined, <code>false</code> if
+   *         not.
+   */
+  default boolean hasUserAgent ()
+  {
+    return StringHelper.hasText (getUserAgent ());
+  }
 }

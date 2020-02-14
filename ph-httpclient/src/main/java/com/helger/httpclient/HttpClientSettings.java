@@ -84,6 +84,7 @@ public class HttpClientSettings implements IHttpClientSettings
   private int m_nConnectionRequestTimeoutMS = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
   private int m_nConnectionTimeoutMS = DEFAULT_CONNECTION_TIMEOUT_MS;
   private int m_nSocketTimeoutMS = DEFAULT_SOCKET_TIMEOUT_MS;
+  private String m_sUserAgent;
 
   /**
    * Default constructor.
@@ -446,6 +447,28 @@ public class HttpClientSettings implements IHttpClientSettings
     return this;
   }
 
+  @Nullable
+  public final String getUserAgent ()
+  {
+    return m_sUserAgent;
+  }
+
+  /**
+   * Set the optional user agent to be used. This is "just" a special HTTP
+   * header.
+   *
+   * @param sUserAgent
+   *        The user agent to be used. May be <code>null</code>.
+   * @return this for chaining
+   * @since 9.1.9
+   */
+  @Nonnull
+  public final HttpClientSettings setUserAgent (@Nullable final String sUserAgent)
+  {
+    m_sUserAgent = sUserAgent;
+    return this;
+  }
+
   @Override
   public String toString ()
   {
@@ -462,6 +485,7 @@ public class HttpClientSettings implements IHttpClientSettings
                                        .append ("ConnectionRequestTimeoutMS", m_nConnectionRequestTimeoutMS)
                                        .append ("ConnectionTimeoutMS", m_nConnectionTimeoutMS)
                                        .append ("SocketTimeoutMS", m_nSocketTimeoutMS)
+                                       .append ("UserAgent", m_sUserAgent)
                                        .getToString ();
   }
 }

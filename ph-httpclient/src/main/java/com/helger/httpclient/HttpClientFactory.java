@@ -737,6 +737,10 @@ public class HttpClientFactory implements IHttpClientProvider
     if (m_aSettings.hasRetries ())
       aHCB.setRetryHandler (createRequestRetryHandler (m_aSettings.getRetryCount (), m_aSettings.getRetryMode ()));
 
+    // Set user agent (if any)
+    if (m_aSettings.hasUserAgent ())
+      aHCB.setUserAgent (m_aSettings.getUserAgent ());
+
     return aHCB;
   }
 

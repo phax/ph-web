@@ -30,12 +30,14 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.7</version>
+  <version>9.1.8</version>
 </dependency>
 ```
 
 # News and noteworthy
 
+* v9.1.9 - work in progress
+    * Extended `HttpClientSettings` with a customizable user agent string
 * v9.1.8 - 2020-02-14
     * Extracted `HttpClientSettings` from `HttpClientFactory`
     * Extended customization options of `HttpClientSettings`

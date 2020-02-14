@@ -1,0 +1,367 @@
+/**
+ * Copyright (C) 2016-2020 Philip Helger (www.helger.com)
+ * philip[at]helger[dot]com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.helger.httpclient;
+
+import java.security.GeneralSecurityException;
+
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+
+import org.apache.http.HttpHost;
+import org.apache.http.auth.Credentials;
+
+import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.impl.CommonsHashSet;
+import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.string.StringHelper;
+import com.helger.commons.ws.HostnameVerifierVerifyAll;
+import com.helger.commons.ws.TrustManagerTrustAll;
+import com.helger.http.tls.ETLSVersion;
+import com.helger.http.tls.ITLSConfigurationMode;
+import com.helger.http.tls.TLSConfigurationMode;
+import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
+
+/**
+ * All the easily configurable settings for an {@link HttpClientFactory}
+ *
+ * @author Philip Helger
+ * @since 9.1.8
+ */
+@NotThreadSafe
+public class HttpClientSettings implements IHttpClientSettings
+{
+  /**
+   * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
+   * suites
+   */
+  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
+                                                                                                                     ETLSVersion.TLS_11,
+                                                                                                                     ETLSVersion.TLS_10 },
+                                                                                                new String [0]);
+  public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
+  public static final boolean DEFAULT_USE_DNS_CACHE = true;
+  public static final int DEFAULT_RETRIES = 0;
+  public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
+
+  private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
+  private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
+  private SSLContext m_aSSLContext;
+  private ITLSConfigurationMode m_aTLSConfigurationMode;
+  private HostnameVerifier m_aHostnameVerifier;
+  private HttpHost m_aProxyHost;
+  private Credentials m_aProxyCredentials;
+  private final ICommonsSet <String> m_aNonProxyHosts = new CommonsHashSet <> ();
+  private int m_nRetries = DEFAULT_RETRIES;
+  private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
+
+  /**
+   * Default constructor.
+   */
+  public HttpClientSettings ()
+  {}
+
+  /**
+   * @return <code>true</code> if system properties for HTTP client should be
+   *         used, <code>false</code> if not. Default is <code>false</code>.
+   */
+  public final boolean isUseSystemProperties ()
+  {
+    return m_bUseSystemProperties;
+  }
+
+  /**
+   * Enable the usage of system properties in the HTTP client?
+   *
+   * @param bUseSystemProperties
+   *        <code>true</code> if system properties should be used,
+   *        <code>false</code> if not.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setUseSystemProperties (final boolean bUseSystemProperties)
+  {
+    m_bUseSystemProperties = bUseSystemProperties;
+    return this;
+  }
+
+  /**
+   * @return <code>true</code> if DNS client caching is enabled (default),
+   *         <code>false</code> if it is disabled.
+   */
+  public final boolean isUseDNSClientCache ()
+  {
+    return m_bUseDNSClientCache;
+  }
+
+  /**
+   * Enable or disable DNS client caching. By default caching is enabled.
+   *
+   * @param bUseDNSClientCache
+   *        <code>true</code> to use DNS caching, <code>false</code> to disable
+   *        it.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setUseDNSClientCache (final boolean bUseDNSClientCache)
+  {
+    m_bUseDNSClientCache = bUseDNSClientCache;
+    return this;
+  }
+
+  /**
+   * Create a custom SSLContext to use for the SSL Socket factory.
+   *
+   * @return <code>null</code> if no custom context is present.
+   */
+  @Nullable
+  public final SSLContext getSSLContext ()
+  {
+    return m_aSSLContext;
+  }
+
+  /**
+   * Set the SSL Context to be used. By default no SSL context is present.
+   *
+   * @param aSSLContext
+   *        The SSL context to be used. May be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setSSLContext (@Nullable final SSLContext aSSLContext)
+  {
+    m_aSSLContext = aSSLContext;
+    return this;
+  }
+
+  /**
+   * Attention: INSECURE METHOD!<br>
+   * Set the a special SSL Context that does not expect any specific server
+   * certificate. To be totally loose, you should also set a hostname verifier
+   * that accepts all host names.
+   *
+   * @return this for chaining
+   * @throws GeneralSecurityException
+   *         In case TLS initialization fails
+   */
+  @Nonnull
+  public final HttpClientSettings setSSLContextTrustAll () throws GeneralSecurityException
+  {
+    final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
+    aSSLContext.init (null, new TrustManager [] { new TrustManagerTrustAll (false) }, null);
+    return setSSLContext (aSSLContext);
+  }
+
+  /**
+   * @return The current hostname verifier to be used. Default to
+   *         <code>null</code>.
+   */
+  @Nullable
+  public final HostnameVerifier getHostnameVerifier ()
+  {
+    return m_aHostnameVerifier;
+  }
+
+  /**
+   * Set the hostname verifier to be used.
+   *
+   * @param aHostnameVerifier
+   *        Verifier to be used. May be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
+  {
+    m_aHostnameVerifier = aHostnameVerifier;
+    return this;
+  }
+
+  /**
+   * Attention: INSECURE METHOD!<br>
+   * Set a hostname verifier that trusts all host names.
+   *
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setHostnameVerifierVerifyAll ()
+  {
+    return setHostnameVerifier (new HostnameVerifierVerifyAll (false));
+  }
+
+  /**
+   * @return The TLS configuration mode to be used. <code>null</code> means to
+   *         use the default settings without specific cipher suites.
+   */
+  @Nullable
+  public final ITLSConfigurationMode getTLSConfigurationMode ()
+  {
+    return m_aTLSConfigurationMode;
+  }
+
+  /**
+   * Set the TLS configuration mode to use.
+   *
+   * @param aTLSConfigurationMode
+   *        The configuration mode to use. <code>null</code> means use system
+   *        default.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
+  {
+    m_aTLSConfigurationMode = aTLSConfigurationMode;
+    return this;
+  }
+
+  /**
+   * @return The proxy host to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public final HttpHost getProxyHost ()
+  {
+    return m_aProxyHost;
+  }
+
+  /**
+   * Set a proxy host without proxy server credentials.
+   *
+   * @param aProxyHost
+   *        The proxy host to be used. May be <code>null</code>.
+   * @return this for chaining
+   * @see #setProxyCredentials(Credentials)
+   */
+  @Nonnull
+  public final HttpClientSettings setProxyHost (@Nullable final HttpHost aProxyHost)
+  {
+    m_aProxyHost = aProxyHost;
+    return this;
+  }
+
+  /**
+   * @return The proxy server credentials to be used. May be <code>null</code>.
+   */
+  @Nullable
+  public final Credentials getProxyCredentials ()
+  {
+    return m_aProxyCredentials;
+  }
+
+  /**
+   * Set proxy credentials.
+   *
+   * @param aProxyCredentials
+   *        The proxy server credentials to be used. May be <code>null</code>.
+   *        They are only used if a proxy host is present! Usually they are of
+   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
+   * @return this for chaining
+   * @see #setProxyHost(HttpHost)
+   */
+  @Nonnull
+  public final HttpClientSettings setProxyCredentials (@Nullable final Credentials aProxyCredentials)
+  {
+    m_aProxyCredentials = aProxyCredentials;
+    return this;
+  }
+
+  /**
+   * @return The set of all host names and IP addresses for which no proxy
+   *         should be used. Never <code>null</code> and mutable.
+   */
+  @Nonnull
+  @ReturnsMutableObject
+  public final ICommonsSet <String> nonProxyHosts ()
+  {
+    return m_aNonProxyHosts;
+  }
+
+  /**
+   * All non-proxy hosts from a piped string as in
+   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
+   * pipe, and the values are trimmed.
+   *
+   * @param sDefinition
+   *        The definition string. May be <code>null</code> or empty or invalid.
+   *        Every non-empty trimmed text between pipes is interpreted as a host
+   *        name.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
+  {
+    if (StringHelper.hasText (sDefinition))
+      StringHelper.explode ('|', sDefinition, sHost -> {
+        final String sTrimmedHost = sHost.trim ();
+        if (StringHelper.hasText (sTrimmedHost))
+          m_aNonProxyHosts.add (sTrimmedHost);
+      });
+    return this;
+  }
+
+  /**
+   * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
+   */
+  @Nonnegative
+  public final int getRetryCount ()
+  {
+    return m_nRetries;
+  }
+
+  /**
+   * Set the number of internal retries.
+   *
+   * @param nRetries
+   *        Retries to use. Must be &ge; 0.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setRetryCount (@Nonnegative final int nRetries)
+  {
+    ValueEnforcer.isGE0 (nRetries, "Retries");
+    m_nRetries = nRetries;
+    return this;
+  }
+
+  /**
+   * @return The retry-mode. Never <code>null</code>. The default is
+   *         {@link #DEFAULT_RETRY_MODE}.
+   */
+  @Nonnull
+  public final ERetryMode getRetryMode ()
+  {
+    return m_eRetryMode;
+  }
+
+  /**
+   * Set the retry mode to use.
+   *
+   * @param eRetryMode
+   *        Retry mode to use. Must not be <code>null</code>.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setRetryMode (@Nonnull final ERetryMode eRetryMode)
+  {
+    ValueEnforcer.notNull (eRetryMode, "RetryMode");
+    m_eRetryMode = eRetryMode;
+    return this;
+  }
+}

@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -67,14 +66,8 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.ws.HostnameVerifierVerifyAll;
-import com.helger.commons.ws.TrustManagerTrustAll;
-import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
-import com.helger.http.tls.TLSConfigurationMode;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
@@ -90,42 +83,50 @@ public class HttpClientFactory implements IHttpClientProvider
    * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
    * suites
    */
-  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
-                                                                                                                     ETLSVersion.TLS_11,
-                                                                                                                     ETLSVersion.TLS_10 },
-                                                                                                new String [0]);
-  public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
-  public static final boolean DEFAULT_USE_DNS_CACHE = true;
-  public static final int DEFAULT_RETRIES = 0;
-  public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
+  @Deprecated
+  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
+  @Deprecated
+  public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = HttpClientSettings.DEFAULT_USE_SYSTEM_PROPERTIES;
+  @Deprecated
+  public static final boolean DEFAULT_USE_DNS_CACHE = HttpClientSettings.DEFAULT_USE_DNS_CACHE;
+  @Deprecated
+  public static final int DEFAULT_RETRIES = HttpClientSettings.DEFAULT_RETRIES;
+  @Deprecated
+  public static final ERetryMode DEFAULT_RETRY_MODE = HttpClientSettings.DEFAULT_RETRY_MODE;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientFactory.class);
 
-  private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
-  private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
-  private SSLContext m_aSSLContext;
-  private ITLSConfigurationMode m_aTLSConfigurationMode;
-  private HostnameVerifier m_aHostnameVerifier;
-  private HttpHost m_aProxy;
-  private Credentials m_aProxyCredentials;
-  private final ICommonsSet <String> m_aNonProxyHosts = new CommonsHashSet <> ();
-  private int m_nRetries = DEFAULT_RETRIES;
-  private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
+  private final HttpClientSettings m_aSettings;
 
   /**
    * Default constructor.
    */
   public HttpClientFactory ()
-  {}
+  {
+    this (new HttpClientSettings ());
+  }
+
+  /**
+   * Constructor with explicit settings.
+   *
+   * @param aSettings
+   *        The settings to be used. May not be <code>null</code>.
+   */
+  public HttpClientFactory (@Nonnull final HttpClientSettings aSettings)
+  {
+    ValueEnforcer.notNull (aSettings, "Settings");
+    m_aSettings = aSettings;
+  }
 
   /**
    * @return <code>true</code> if system properties for HTTP client should be
    *         used, <code>false</code> if not. Default is <code>false</code>.
    * @since 8.7.1
    */
+  @Deprecated
   public final boolean isUseSystemProperties ()
   {
-    return m_bUseSystemProperties;
+    return m_aSettings.isUseSystemProperties ();
   }
 
   /**
@@ -160,9 +161,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.7.1
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setUseSystemProperties (final boolean bUseSystemProperties)
   {
-    m_bUseSystemProperties = bUseSystemProperties;
+    m_aSettings.setUseSystemProperties (bUseSystemProperties);
     return this;
   }
 
@@ -171,9 +173,10 @@ public class HttpClientFactory implements IHttpClientProvider
    *         <code>false</code> if it is disabled.
    * @since 8.8.0
    */
+  @Deprecated
   public final boolean isUseDNSClientCache ()
   {
-    return m_bUseDNSClientCache;
+    return m_aSettings.isUseDNSClientCache ();
   }
 
   /**
@@ -186,9 +189,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.0
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setUseDNSClientCache (final boolean bUseDNSClientCache)
   {
-    m_bUseDNSClientCache = bUseDNSClientCache;
+    m_aSettings.setUseDNSClientCache (bUseDNSClientCache);
     return this;
   }
 
@@ -198,9 +202,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return <code>null</code> if no custom context is present.
    */
   @Nullable
+  @Deprecated
   public final SSLContext getSSLContext ()
   {
-    return m_aSSLContext;
+    return m_aSettings.getSSLContext ();
   }
 
   /**
@@ -212,9 +217,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.0
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setSSLContext (@Nullable final SSLContext aSSLContext)
   {
-    m_aSSLContext = aSSLContext;
+    m_aSettings.setSSLContext (aSSLContext);
     return this;
   }
 
@@ -230,11 +236,11 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.1
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setSSLContextTrustAll () throws GeneralSecurityException
   {
-    final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
-    aSSLContext.init (null, new TrustManager [] { new TrustManagerTrustAll (false) }, null);
-    return setSSLContext (aSSLContext);
+    m_aSettings.setSSLContextTrustAll ();
+    return this;
   }
 
   /**
@@ -243,9 +249,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.2
    */
   @Nullable
+  @Deprecated
   public final HostnameVerifier getHostnameVerifier ()
   {
-    return m_aHostnameVerifier;
+    return m_aSettings.getHostnameVerifier ();
   }
 
   /**
@@ -257,9 +264,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.2
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
   {
-    m_aHostnameVerifier = aHostnameVerifier;
+    m_aSettings.setHostnameVerifier (aHostnameVerifier);
     return this;
   }
 
@@ -271,9 +279,11 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.1
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setHostnameVerifierVerifyAll ()
   {
-    return setHostnameVerifier (new HostnameVerifierVerifyAll (false));
+    m_aSettings.setHostnameVerifierVerifyAll ();
+    return this;
   }
 
   /**
@@ -282,9 +292,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.5
    */
   @Nullable
+  @Deprecated
   public final ITLSConfigurationMode getTLSConfigurationMode ()
   {
-    return m_aTLSConfigurationMode;
+    return m_aSettings.getTLSConfigurationMode ();
   }
 
   /**
@@ -297,9 +308,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.5
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
   {
-    m_aTLSConfigurationMode = aTLSConfigurationMode;
+    m_aSettings.setTLSConfigurationMode (aTLSConfigurationMode);
     return this;
   }
 
@@ -307,18 +319,20 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The proxy host to be used. May be <code>null</code>.
    */
   @Nullable
+  @Deprecated
   public final HttpHost getProxyHost ()
   {
-    return m_aProxy;
+    return m_aSettings.getProxyHost ();
   }
 
   /**
    * @return The proxy server credentials to be used. May be <code>null</code>.
    */
   @Nullable
+  @Deprecated
   public final Credentials getProxyCredentials ()
   {
-    return m_aProxyCredentials;
+    return m_aSettings.getProxyCredentials ();
   }
 
   /**
@@ -346,9 +360,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @see #setProxyCredentials(Credentials)
    * @see #setProxy(HttpHost, Credentials)
    */
+  @Deprecated
   public final void setProxyHost (@Nullable final HttpHost aProxy)
   {
-    m_aProxy = aProxy;
+    m_aSettings.setProxyHost (aProxy);
   }
 
   /**
@@ -362,9 +377,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @see #setProxyHost(HttpHost)
    * @see #setProxy(HttpHost, Credentials)
    */
+  @Deprecated
   public final void setProxyCredentials (@Nullable final Credentials aProxyCredentials)
   {
-    m_aProxyCredentials = aProxyCredentials;
+    m_aSettings.setProxyCredentials (aProxyCredentials);
   }
 
   /**
@@ -395,9 +411,10 @@ public class HttpClientFactory implements IHttpClientProvider
    */
   @Nonnull
   @ReturnsMutableObject
+  @Deprecated
   public final ICommonsSet <String> nonProxyHosts ()
   {
-    return m_aNonProxyHosts;
+    return m_aSettings.nonProxyHosts ();
   }
 
   /**
@@ -413,14 +430,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.1.1
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
-    if (StringHelper.hasText (sDefinition))
-      StringHelper.explode ('|', sDefinition, sHost -> {
-        final String sTrimmedHost = sHost.trim ();
-        if (StringHelper.hasText (sTrimmedHost))
-          m_aNonProxyHosts.add (sTrimmedHost);
-      });
+    m_aSettings.addNonProxyHostsFromPipeString (sDefinition);
     return this;
   }
 
@@ -429,9 +442,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.0
    */
   @Nonnegative
+  @Deprecated
   public final int getRetries ()
   {
-    return m_nRetries;
+    return m_aSettings.getRetryCount ();
   }
 
   /**
@@ -443,10 +457,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.0
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setRetries (@Nonnegative final int nRetries)
   {
-    ValueEnforcer.isGE0 (nRetries, "Retries");
-    m_nRetries = nRetries;
+    m_aSettings.setRetryCount (nRetries);
     return this;
   }
 
@@ -456,9 +470,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.0
    */
   @Nonnull
+  @Deprecated
   public final ERetryMode getRetryMode ()
   {
-    return m_eRetryMode;
+    return m_aSettings.getRetryMode ();
   }
 
   /**
@@ -470,10 +485,10 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.0.0
    */
   @Nonnull
+  @Deprecated
   public final HttpClientFactory setRetryMode (@Nonnull final ERetryMode eRetryMode)
   {
-    ValueEnforcer.notNull (eRetryMode, "RetryMode");
-    m_eRetryMode = eRetryMode;
+    m_aSettings.setRetryMode (eRetryMode);
     return this;
   }
 
@@ -497,14 +512,16 @@ public class HttpClientFactory implements IHttpClientProvider
     try
     {
       // First try with a custom SSL context
-      if (m_aSSLContext != null)
+      final SSLContext aSSLContext = m_aSettings.getSSLContext ();
+      if (aSSLContext != null)
       {
         // Choose correct TLS configuration mode
-        final ITLSConfigurationMode aTLSConfigMode = m_aTLSConfigurationMode != null ? m_aTLSConfigurationMode
-                                                                                     : DEFAULT_TLS_CONFIG_MODE;
+        ITLSConfigurationMode aTLSConfigMode = m_aSettings.getTLSConfigurationMode ();
+        if (aTLSConfigMode == null)
+          aTLSConfigMode = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
 
         // Custom hostname verifier preferred
-        HostnameVerifier aHostnameVerifier = m_aHostnameVerifier;
+        HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
         if (aHostnameVerifier == null)
           aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
 
@@ -515,7 +532,7 @@ public class HttpClientFactory implements IHttpClientProvider
           LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
         }
 
-        aSSLFactory = new SSLConnectionSocketFactory (m_aSSLContext,
+        aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
                                                       aTLSConfigMode.getAllTLSVersionIDsAsArray (),
                                                       aTLSConfigMode.getAllCipherSuitesAsArray (),
                                                       aHostnameVerifier);
@@ -586,7 +603,7 @@ public class HttpClientFactory implements IHttpClientProvider
   public DnsResolver createDNSResolver ()
   {
     // If caching is active, use the default System resolver
-    return m_bUseDNSClientCache ? SystemDefaultDnsResolver.INSTANCE : NonCachingDnsResolver.INSTANCE;
+    return m_aSettings.isUseDNSClientCache () ? SystemDefaultDnsResolver.INSTANCE : NonCachingDnsResolver.INSTANCE;
   }
 
   @Nonnull
@@ -631,8 +648,8 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nullable
   public CredentialsProvider createCredentialsProvider ()
   {
-    final HttpHost aProxyHost = getProxyHost ();
-    final Credentials aProxyCredentials = getProxyCredentials ();
+    final HttpHost aProxyHost = m_aSettings.getProxyHost ();
+    final Credentials aProxyCredentials = m_aSettings.getProxyCredentials ();
     if (aProxyHost != null && aProxyCredentials != null)
     {
       final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
@@ -667,7 +684,7 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       // If a route planner is used, the HttpClientBuilder MUST NOT use the
       // proxy, because this would have precedence
-      if (m_aNonProxyHosts.isEmpty ())
+      if (m_aSettings.nonProxyHosts ().isEmpty ())
       {
         // Proxy for all
         aRoutePlanner = new DefaultProxyRoutePlanner (aProxyHost, aSchemePortResolver);
@@ -683,7 +700,7 @@ public class HttpClientFactory implements IHttpClientProvider
                                              @Nonnull final HttpContext aContext) throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
-            if (m_aNonProxyHosts.contains (sHostname))
+            if (m_aSettings.nonProxyHosts ().contains (sHostname))
             {
               // Return direct route
               if (LOGGER.isInfoEnabled ())
@@ -711,12 +728,12 @@ public class HttpClientFactory implements IHttpClientProvider
     aHCB.addInterceptorLast (new ResponseContentEncoding ());
 
     // Enable usage of Java networking system properties
-    if (m_bUseSystemProperties)
+    if (m_aSettings.isUseSystemProperties ())
       aHCB.useSystemProperties ();
 
     // Set retry handler (if needed)
-    if (m_nRetries > 0)
-      aHCB.setRetryHandler (createRequestRetryHandler (m_nRetries, m_eRetryMode));
+    if (m_aSettings.hasRetries ())
+      aHCB.setRetryHandler (createRequestRetryHandler (m_aSettings.getRetryCount (), m_aSettings.getRetryMode ()));
 
     return aHCB;
   }

@@ -62,6 +62,9 @@ public class HttpClientSettings implements IHttpClientSettings
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
   public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
+  public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5_000;
+  public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
+  public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -73,6 +76,9 @@ public class HttpClientSettings implements IHttpClientSettings
   private final ICommonsSet <String> m_aNonProxyHosts = new CommonsHashSet <> ();
   private int m_nRetries = DEFAULT_RETRIES;
   private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
+  private int m_nConnectionRequestTimeoutMS = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
+  private int m_nConnectionTimeoutMS = DEFAULT_CONNECTION_TIMEOUT_MS;
+  private int m_nSocketTimeoutMS = DEFAULT_SOCKET_TIMEOUT_MS;
 
   /**
    * Default constructor.
@@ -362,6 +368,66 @@ public class HttpClientSettings implements IHttpClientSettings
   {
     ValueEnforcer.notNull (eRetryMode, "RetryMode");
     m_eRetryMode = eRetryMode;
+    return this;
+  }
+
+  public final int getConnectionRequestTimeoutMS ()
+  {
+    return m_nConnectionRequestTimeoutMS;
+  }
+
+  /**
+   * Set the connection request timeout in milliseconds to use.
+   *
+   * @param nConnectionRequestTimeoutMS
+   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
+   *        0 mean "system default".
+   * @return this for chaining.
+   */
+  @Nonnull
+  public final HttpClientSettings setConnectionRequestTimeoutMS (final int nConnectionRequestTimeoutMS)
+  {
+    m_nConnectionRequestTimeoutMS = nConnectionRequestTimeoutMS;
+    return this;
+  }
+
+  public final int getConnectionTimeoutMS ()
+  {
+    return m_nConnectionTimeoutMS;
+  }
+
+  /**
+   * Set the connection timeout in milliseconds to use.
+   *
+   * @param nConnectionTimeoutMS
+   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
+   *        0 mean "system default".
+   * @return this for chaining.
+   */
+  @Nonnull
+  public final HttpClientSettings setConnectionTimeoutMS (final int nConnectionTimeoutMS)
+  {
+    m_nConnectionTimeoutMS = nConnectionTimeoutMS;
+    return this;
+  }
+
+  public final int getSocketTimeoutMS ()
+  {
+    return m_nSocketTimeoutMS;
+  }
+
+  /**
+   * Set the read/socket/request timeout in milliseconds to use.
+   *
+   * @param nSocketTimeoutMS
+   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
+   *        0 mean "system default".
+   * @return this for chaining.
+   */
+  @Nonnull
+  public final HttpClientSettings setSocketTimeoutMS (final int nSocketTimeoutMS)
+  {
+    m_nSocketTimeoutMS = nSocketTimeoutMS;
     return this;
   }
 }

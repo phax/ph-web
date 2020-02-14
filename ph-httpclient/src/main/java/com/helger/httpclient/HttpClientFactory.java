@@ -632,9 +632,9 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     return RequestConfig.custom ()
                         .setCookieSpec (CookieSpecs.DEFAULT)
-                        .setSocketTimeout (10_000)
-                        .setConnectTimeout (5_000)
-                        .setConnectionRequestTimeout (5_000)
+                        .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeoutMS ())
+                        .setConnectTimeout (m_aSettings.getConnectionTimeoutMS ())
+                        .setSocketTimeout (m_aSettings.getSocketTimeoutMS ())
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (true);
   }
@@ -692,6 +692,8 @@ public class HttpClientFactory implements IHttpClientProvider
       else
       {
         // Proxy for all but non-proxy hosts
+        // Clone set here to avoid concurrent modification
+        final ICommonsSet <String> aNonProxyHosts = m_aSettings.nonProxyHosts ().getClone ();
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
@@ -700,7 +702,7 @@ public class HttpClientFactory implements IHttpClientProvider
                                              @Nonnull final HttpContext aContext) throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
-            if (m_aSettings.nonProxyHosts ().contains (sHostname))
+            if (aNonProxyHosts.contains (sHostname))
             {
               // Return direct route
               if (LOGGER.isInfoEnabled ())

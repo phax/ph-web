@@ -115,4 +115,22 @@ public interface IHttpClientSettings
    */
   @Nonnull
   ERetryMode getRetryMode ();
+
+  /**
+   * @return The connection request timeout in milliseconds. A value of 0 means
+   *         "indefinite". Values &lt; 0 means "system default".
+   */
+  int getConnectionRequestTimeoutMS ();
+
+  /**
+   * @return The connection timeout in milliseconds. A value of 0 means
+   *         "indefinite". Values &lt; 0 means "system default".
+   */
+  int getConnectionTimeoutMS ();
+
+  /**
+   * @return The read/request/socket timeout in milliseconds. A value of 0 means
+   *         "indefinite". Values &lt; 0 means "system default".
+   */
+  int getSocketTimeoutMS ();
 }

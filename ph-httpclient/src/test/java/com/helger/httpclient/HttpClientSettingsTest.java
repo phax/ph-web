@@ -22,16 +22,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Test class for class {@link HttpClientFactory}.
+ * Test class for class {@link HttpClientSettings}.
  *
  * @author Philip Helger
  */
-public final class HttpClientFactoryTest
+public final class HttpClientSettingsTest
 {
   @Test
   public void testAddNonProxyHostsFromPipeString ()
   {
-    final HttpClientFactory x = new HttpClientFactory ();
+    final HttpClientSettings x = new HttpClientSettings ();
     assertEquals (0, x.nonProxyHosts ().size ());
     x.addNonProxyHostsFromPipeString (null);
     assertEquals (0, x.nonProxyHosts ().size ());

@@ -471,11 +471,12 @@ public final class RequestHelper
                                                  @Nullable final String sServerName,
                                                  final int nServerPort)
   {
-    ValueEnforcer.notNull (sScheme, "Scheme");
-    ValueEnforcer.notNull (sServerName, "ServerName");
-
     // Reconstruct URL
-    final StringBuilder aSB = new StringBuilder ().append (sScheme).append ("://").append (sServerName);
+    final StringBuilder aSB = new StringBuilder ();
+    if (StringHelper.hasText (sScheme))
+      aSB.append (sScheme).append ("://");
+    if (StringHelper.hasText (sServerName))
+      aSB.append (sServerName);
     if (NetworkPortHelper.isValidPort (nServerPort) && nServerPort != getDefaultServerPort (sScheme))
       aSB.append (':').append (nServerPort);
     return aSB;
@@ -483,8 +484,8 @@ public final class RequestHelper
 
   @Nonnull
   @Nonempty
-  public static String getFullServerNameAndPath (@Nonnull final String sScheme,
-                                                 @Nonnull final String sServerName,
+  public static String getFullServerNameAndPath (@Nullable final String sScheme,
+                                                 @Nullable final String sServerName,
                                                  final int nServerPort,
                                                  @Nullable final String sPath,
                                                  @Nullable final String sQueryString)

@@ -36,6 +36,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
@@ -78,7 +79,7 @@ public class HttpClientSettings implements IHttpClientSettings
   private HttpHost m_aProxyHost;
   private Credentials m_aProxyCredentials;
   private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
-  private int m_nRetries = DEFAULT_RETRIES;
+  private int m_nRetryCount = DEFAULT_RETRIES;
   private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
   private int m_nConnectionRequestTimeoutMS = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
   private int m_nConnectionTimeoutMS = DEFAULT_CONNECTION_TIMEOUT_MS;
@@ -342,7 +343,7 @@ public class HttpClientSettings implements IHttpClientSettings
   @Nonnegative
   public final int getRetryCount ()
   {
-    return m_nRetries;
+    return m_nRetryCount;
   }
 
   /**
@@ -356,7 +357,7 @@ public class HttpClientSettings implements IHttpClientSettings
   public final HttpClientSettings setRetryCount (@Nonnegative final int nRetries)
   {
     ValueEnforcer.isGE0 (nRetries, "Retries");
-    m_nRetries = nRetries;
+    m_nRetryCount = nRetries;
     return this;
   }
 
@@ -443,5 +444,24 @@ public class HttpClientSettings implements IHttpClientSettings
   {
     m_nSocketTimeoutMS = nSocketTimeoutMS;
     return this;
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("UseSystemProperties", m_bUseSystemProperties)
+                                       .append ("UseDNSClientCache", m_bUseDNSClientCache)
+                                       .append ("SSLContext", m_aSSLContext)
+                                       .append ("TLSConfigurationMode", m_aTLSConfigurationMode)
+                                       .append ("HostnameVerifier", m_aHostnameVerifier)
+                                       .append ("ProxyHost", m_aProxyHost)
+                                       .append ("ProxyCredentials", m_aProxyCredentials)
+                                       .append ("NonProxyHosts", m_aNonProxyHosts)
+                                       .append ("RetryCount", m_nRetryCount)
+                                       .append ("RetryMode", m_eRetryMode)
+                                       .append ("ConnectionRequestTimeoutMS", m_nConnectionRequestTimeoutMS)
+                                       .append ("ConnectionTimeoutMS", m_nConnectionTimeoutMS)
+                                       .append ("SocketTimeoutMS", m_nSocketTimeoutMS)
+                                       .getToString ();
   }
 }

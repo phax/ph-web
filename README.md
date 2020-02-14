@@ -37,7 +37,7 @@ Add the following to your pom.xml to use this artifact:
 # News and noteworthy
 
 * v9.1.8 - work in progress
-    * Started extracting `HttpClientSettings` from `HttpClientFactory`
+    * Extracted `HttpClientSettings` from `HttpClientFactory`
     * Extended customization options of `HttpClientSettings`
 * v9.1.7 - 2020-02-13
     * Added explicit `HttpClientFactory.setProxyCredentials` method

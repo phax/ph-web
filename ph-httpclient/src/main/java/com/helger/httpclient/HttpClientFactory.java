@@ -676,7 +676,7 @@ public class HttpClientFactory implements IHttpClientProvider
     final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
     final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
     final RequestConfig aRequestConfig = createRequestConfig ();
-    final HttpHost aProxyHost = getProxyHost ();
+    final HttpHost aProxyHost = m_aSettings.getProxyHost ();
     final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
 
     HttpRoutePlanner aRoutePlanner = null;

@@ -93,7 +93,7 @@ public class NonCachingDnsResolver implements DnsResolver
         LOGGER.error ("Failed to parse host '" + sHost + "'", ex);
     }
 
-    InetAddress [] ret;
+    final InetAddress [] ret;
     if (aRecords == null || aRecords.length == 0)
     {
       // E.g. for IP addresses - use system resolution
@@ -124,9 +124,9 @@ public class NonCachingDnsResolver implements DnsResolver
           {
             if (LOGGER.isErrorEnabled ())
               LOGGER.info ("Unknown record type found for host '" +
-                              sHost +
-                              "': " +
-                              ClassHelper.getClassLocalName (aRecord));
+                           sHost +
+                           "': " +
+                           ClassHelper.getClassLocalName (aRecord));
           }
       }
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);

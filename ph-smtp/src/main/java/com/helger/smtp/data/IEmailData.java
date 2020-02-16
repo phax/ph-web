@@ -58,6 +58,7 @@ public interface IEmailData extends Serializable
    * Get the reply-to mail addresses.
    *
    * @return never <code>null</code>
+   * @since 9.1.9
    */
   @Nonnull
   @ReturnsMutableObject
@@ -92,6 +93,7 @@ public interface IEmailData extends Serializable
    * Get a list of all TO-receivers.
    *
    * @return Never <code>null</code>.
+   * @since 9.1.9
    */
   @Nonnull
   @ReturnsMutableObject
@@ -139,6 +141,7 @@ public interface IEmailData extends Serializable
    * Get a list of all CC-receivers.
    *
    * @return Never <code>null</code>.
+   * @since 9.1.9
    */
   @Nonnull
   @ReturnsMutableObject
@@ -186,6 +189,7 @@ public interface IEmailData extends Serializable
    * Get a list of all BCC-receivers.
    *
    * @return Never <code>null</code>.
+   * @since 9.1.9
    */
   @Nonnull
   @ReturnsMutableObject

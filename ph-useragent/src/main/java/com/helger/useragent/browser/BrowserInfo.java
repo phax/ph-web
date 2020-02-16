@@ -16,6 +16,7 @@
  */
 package com.helger.useragent.browser;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -34,7 +35,7 @@ import com.helger.commons.version.Version;
  * @author Philip Helger
  */
 @Immutable
-public class BrowserInfo implements IHasDisplayText
+public class BrowserInfo implements IHasDisplayText, Serializable
 {
   /** Is it not */
   public static final BrowserInfo IS_IT_NOT = new BrowserInfo ();

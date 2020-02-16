@@ -50,7 +50,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   private int m_nPort;
   private String m_sUserName;
   private String m_sPassword;
-  private Charset m_aCharset;
+  private transient Charset m_aCharset;
   private boolean m_bSSLEnabled;
   private boolean m_bSTARTTLSEnabled;
   private long m_nConnectionTimeoutMilliSecs;

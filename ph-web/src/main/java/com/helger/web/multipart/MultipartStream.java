@@ -151,7 +151,7 @@ public class MultipartStream implements Serializable
   /**
    * The input stream from which data is read.
    */
-  private final InputStream m_aIS;
+  private final transient InputStream m_aIS;
 
   /**
    * The length of the boundary token plus the leading <code>CRLF--</code>.

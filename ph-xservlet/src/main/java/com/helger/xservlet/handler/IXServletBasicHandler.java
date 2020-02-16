@@ -16,8 +16,6 @@
  */
 package com.helger.xservlet.handler;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 
@@ -29,13 +27,13 @@ import com.helger.commons.collection.impl.ICommonsMap;
  * @author Philip Helger
  * @since 9.0.0
  */
-public interface IXServletBasicHandler extends Serializable
+public interface IXServletBasicHandler
 {
   /**
    * Called upon Servlet initialization
+   * 
    * @param aInitParams
    *        The init parameters. Never <code>null</code> but maybe empty.
-   *
    * @throws ServletException
    *         if something goes wrong
    */

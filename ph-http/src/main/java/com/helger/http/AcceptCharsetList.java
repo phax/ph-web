@@ -42,7 +42,7 @@ public class AcceptCharsetList extends AbstractQValueList <String>
   public void addCharset (@Nonnull final String sCharset, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sCharset, "Charset");
-    m_aMap.put (_unify (sCharset), new QValue (dQuality));
+    qvalueMap ().put (_unify (sCharset), new QValue (dQuality));
   }
 
   /**
@@ -58,11 +58,11 @@ public class AcceptCharsetList extends AbstractQValueList <String>
     ValueEnforcer.notNull (sCharset, "Charset");
 
     // Find charset direct
-    QValue aQuality = m_aMap.get (_unify (sCharset));
+    QValue aQuality = qvalueMap ().get (_unify (sCharset));
     if (aQuality == null)
     {
       // If not explicitly given, check for "*"
-      aQuality = m_aMap.get (AcceptCharsetHandler.ANY_CHARSET);
+      aQuality = qvalueMap ().get (AcceptCharsetHandler.ANY_CHARSET);
       if (aQuality == null)
       {
         // Neither charset nor "*" is present
@@ -93,7 +93,7 @@ public class AcceptCharsetList extends AbstractQValueList <String>
   {
     ValueEnforcer.notNull (sCharset, "Charset");
 
-    final QValue aQuality = m_aMap.get (_unify (sCharset));
+    final QValue aQuality = qvalueMap ().get (_unify (sCharset));
     return aQuality != null && aQuality.isAboveMinimumQuality ();
   }
 }

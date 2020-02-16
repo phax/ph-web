@@ -45,7 +45,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
   public void addEncoding (@Nonnull final String sEncoding, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sEncoding, "Encoding");
-    m_aMap.put (_unify (sEncoding), new QValue (dQuality));
+    qvalueMap ().put (_unify (sEncoding), new QValue (dQuality));
   }
 
   /**
@@ -61,11 +61,11 @@ public class AcceptEncodingList extends AbstractQValueList <String>
     ValueEnforcer.notNull (sEncoding, "Encoding");
 
     // Direct search encoding
-    QValue aQuality = m_aMap.get (_unify (sEncoding));
+    QValue aQuality = qvalueMap ().get (_unify (sEncoding));
     if (aQuality == null)
     {
       // If not explicitly given, check for "*"
-      aQuality = m_aMap.get (AcceptEncodingHandler.ANY_ENCODING);
+      aQuality = qvalueMap ().get (AcceptEncodingHandler.ANY_ENCODING);
       if (aQuality == null)
       {
         // Neither encoding nor "*" is present
@@ -106,7 +106,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
   {
     ValueEnforcer.notNull (sEncoding, "Encoding");
 
-    final QValue aQuality = m_aMap.get (_unify (sEncoding));
+    final QValue aQuality = qvalueMap ().get (_unify (sEncoding));
     return aQuality != null && aQuality.isAboveMinimumQuality ();
   }
 

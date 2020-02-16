@@ -40,7 +40,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
     ValueEnforcer.notNull (aMimeType, "MimeType");
     ValueEnforcer.isFalse (aMimeType.hasAnyParameters (), "MimeTypes used here may not contain any parameter!");
 
-    m_aMap.put (aMimeType, new QValue (dQuality));
+    qvalueMap ().put (aMimeType, new QValue (dQuality));
   }
 
   /**
@@ -59,15 +59,15 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
     // Extract only the real MIME type, without any parameters!
     final IMimeType aRealMimeType = aMimeType.getCopyWithoutParameters ();
 
-    QValue aQuality = m_aMap.get (aRealMimeType);
+    QValue aQuality = qvalueMap ().get (aRealMimeType);
     if (aQuality == null)
     {
       // Check for "contenttype/*"
-      aQuality = m_aMap.get (aRealMimeType.getContentType ().buildMimeType ("*"));
+      aQuality = qvalueMap ().get (aRealMimeType.getContentType ().buildMimeType ("*"));
       if (aQuality == null)
       {
         // If not explicitly given, check for "*"
-        aQuality = m_aMap.get (AcceptMimeTypeHandler.ANY_MIMETYPE);
+        aQuality = qvalueMap ().get (AcceptMimeTypeHandler.ANY_MIMETYPE);
         if (aQuality == null)
         {
           // Neither charset nor "*" nor "*/*" is present
@@ -159,7 +159,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
   {
     if (aMimeType == null)
       return false;
-    final QValue aQuality = m_aMap.get (aMimeType);
+    final QValue aQuality = qvalueMap ().get (aMimeType);
     return aQuality != null && aQuality.isAboveMinimumQuality ();
   }
 }

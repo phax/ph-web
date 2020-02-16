@@ -42,7 +42,7 @@ public class AcceptLanguageList extends AbstractQValueList <String>
   public void addLanguage (@Nonnull final String sLanguage, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sLanguage, "Language");
-    m_aMap.put (_unify (sLanguage), new QValue (dQuality));
+    qvalueMap ().put (_unify (sLanguage), new QValue (dQuality));
   }
 
   /**
@@ -58,11 +58,11 @@ public class AcceptLanguageList extends AbstractQValueList <String>
     ValueEnforcer.notNull (sLanguage, "Language");
 
     // Find language direct
-    QValue aQuality = m_aMap.get (_unify (sLanguage));
+    QValue aQuality = qvalueMap ().get (_unify (sLanguage));
     if (aQuality == null)
     {
       // If not explicitly given, check for "*"
-      aQuality = m_aMap.get (AcceptLanguageHandler.ANY_LANGUAGE);
+      aQuality = qvalueMap ().get (AcceptLanguageHandler.ANY_LANGUAGE);
       if (aQuality == null)
       {
         // Neither language nor "*" is present
@@ -94,7 +94,7 @@ public class AcceptLanguageList extends AbstractQValueList <String>
   {
     ValueEnforcer.notNull (sLanguage, "Language");
 
-    final QValue aQuality = m_aMap.get (_unify (sLanguage));
+    final QValue aQuality = qvalueMap ().get (_unify (sLanguage));
     return aQuality != null && aQuality.isAboveMinimumQuality ();
   }
 }

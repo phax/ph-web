@@ -32,9 +32,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
+import com.helger.commons.lang.ICloneable;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
@@ -51,7 +53,7 @@ import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
  * @since 9.1.8
  */
 @NotThreadSafe
-public class HttpClientSettings implements IHttpClientSettings
+public class HttpClientSettings implements IHttpClientSettings, ICloneable <HttpClientSettings>
 {
   /**
    * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
@@ -93,6 +95,46 @@ public class HttpClientSettings implements IHttpClientSettings
    */
   public HttpClientSettings ()
   {}
+
+  /**
+   * "Copy" constructor.
+   *
+   * @param aSource
+   *        The source settings to copy from. May not be <code>null</code>.
+   */
+  public HttpClientSettings (@Nonnull final IHttpClientSettings aSource)
+  {
+    setAllFrom (aSource);
+  }
+
+  /**
+   * Apply all settings from the provided HTTP client settings
+   *
+   * @param aSource
+   *        The source settings to copy from. May not be <code>null</code>.
+   * @return this for chaining.
+   */
+  @Nonnull
+  public final HttpClientSettings setAllFrom (@Nonnull final IHttpClientSettings aSource)
+  {
+    ValueEnforcer.notNull (aSource, "Source");
+    setUseSystemProperties (aSource.isUseSystemProperties ());
+    setUseDNSClientCache (aSource.isUseDNSClientCache ());
+    setSSLContext (aSource.getSSLContext ());
+    setTLSConfigurationMode (aSource.getTLSConfigurationMode ());
+    setHostnameVerifier (aSource.getHostnameVerifier ());
+    setProxyHost (aSource.getProxyHost ());
+    setProxyCredentials (aSource.getProxyCredentials ());
+    nonProxyHosts ().setAll (aSource.nonProxyHosts ());
+    setRetryCount (aSource.getRetryCount ());
+    setRetryMode (aSource.getRetryMode ());
+    setConnectionRequestTimeoutMS (aSource.getConnectionRequestTimeoutMS ());
+    setConnectionTimeoutMS (aSource.getConnectionTimeoutMS ());
+    setSocketTimeoutMS (aSource.getSocketTimeoutMS ());
+    setUserAgent (aSource.getUserAgent ());
+    setFollowRedirects (aSource.isFollowRedirects ());
+    return this;
+  }
 
   /**
    * @return <code>true</code> if system properties for HTTP client should be
@@ -489,6 +531,13 @@ public class HttpClientSettings implements IHttpClientSettings
   {
     m_bFollowRedirects = bFollowRedirects;
     return this;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public HttpClientSettings getClone ()
+  {
+    return new HttpClientSettings (this);
   }
 
   @Override

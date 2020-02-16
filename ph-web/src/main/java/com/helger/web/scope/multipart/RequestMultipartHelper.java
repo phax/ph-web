@@ -16,7 +16,6 @@
  */
 package com.helger.web.scope.multipart;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -34,6 +33,7 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.EChange;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.CWeb;
@@ -79,7 +79,7 @@ public final class RequestMultipartHelper
   /**
    * Parse the provided servlet request as multipart, if the Content-Type starts
    * with <code>multipart/form-data</code>.
-   * 
+   *
    * @param aHttpRequest
    *        Source HTTP request from which multipart/form-data (aka file
    *        uploads) should be extracted.
@@ -119,15 +119,7 @@ public final class RequestMultipartHelper
       if (aProgressListener != null)
         aUpload.setProgressListener (aProgressListener);
 
-      try
-      {
-        aHttpRequest.setCharacterEncoding (CWeb.CHARSET_REQUEST_OBJ.name ());
-      }
-      catch (final UnsupportedEncodingException ex)
-      {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to set request character encoding to '" + CWeb.CHARSET_REQUEST_OBJ.name () + "'", ex);
-      }
+      ServletHelper.setRequestCharacterEncoding (aHttpRequest, CWeb.CHARSET_REQUEST_OBJ);
 
       // Group all items with the same name together
       final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <> ();

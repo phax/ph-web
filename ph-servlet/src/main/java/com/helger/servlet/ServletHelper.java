@@ -16,6 +16,8 @@
  */
 package com.helger.servlet;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
@@ -78,8 +80,8 @@ public final class ServletHelper
   }
 
   /**
-   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code> to
-   * work around an error in certain Tomcat versions.
+   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code>
+   * to work around an error in certain Tomcat versions.
    *
    * <pre>
   java.lang.NullPointerException
@@ -353,8 +355,47 @@ public final class ServletHelper
   }
 
   /**
+   * Safely set the request character encoding.
+   *
+   * @param aHttpRequest
+   *        Http request to change. May not be <code>null</code>.
+   * @param aCharset
+   *        Character set to use. May be <code>null</code>.
+   * @since 9.1.9
+   */
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+                                                  @Nullable final Charset aCharset)
+  {
+    setRequestCharacterEncoding (aHttpRequest, aCharset != null ? aCharset.name () : null);
+  }
+
+  /**
+   * Safely set the request character encoding.
+   *
+   * @param aHttpRequest
+   *        Http request to change. May not be <code>null</code>.
+   * @param sCharset
+   *        Character set to use. May be <code>null</code>.
+   * @since 9.1.9
+   */
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+                                                  @Nullable final String sCharset)
+  {
+    if (StringHelper.hasText (sCharset))
+      try
+      {
+        aHttpRequest.setCharacterEncoding (sCharset);
+      }
+      catch (final UnsupportedEncodingException ex)
+      {
+        if (LOGGER.isErrorEnabled ())
+          LOGGER.error ("Failed to set request character encoding to '" + sCharset + "'", ex);
+      }
+  }
+
+  /**
    * Get the servlet context base path (for ".")
-   * 
+   *
    * @param aSC
    *        Servlet context. May not be <code>null</code>.
    * @return The non-<code>null</code> base path.

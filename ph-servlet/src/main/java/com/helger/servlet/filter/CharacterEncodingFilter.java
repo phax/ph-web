@@ -164,7 +164,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
       // We need this for all form data etc.
       if (sOldRequestEncoding == null || m_bForceRequestEncoding)
       {
-        aRequest.setCharacterEncoding (m_sEncoding);
+        ServletHelper.setRequestCharacterEncoding (aRequest, m_sEncoding);
         if (aRequest.getCharacterEncoding () == null)
         {
           if (LOGGER.isErrorEnabled ())
@@ -213,12 +213,12 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
                */
               if (LOGGER.isDebugEnabled ())
                 LOGGER.debug ("Changed response encoding from '" +
-                                 sOldResponseEncoding +
-                                 "' to '" +
-                                 m_sEncoding +
-                                 "' for MIME type '" +
-                                 sContentType +
-                                 "'");
+                              sOldResponseEncoding +
+                              "' to '" +
+                              m_sEncoding +
+                              "' for MIME type '" +
+                              sContentType +
+                              "'");
             }
         }
       }

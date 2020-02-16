@@ -35,7 +35,6 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
@@ -272,12 +271,9 @@ public abstract class AbstractFileUploadBase
                                                                  aFileItemStream.isFormField (),
                                                                  aFileItemStream.getNameUnchecked ());
         aItems.add (aFileItem);
-        InputStream aIS = null;
-        OutputStream aOS = null;
-        try
+        try (final InputStream aIS = aFileItemStream.openStream ();
+             final OutputStream aOS = aFileItem.getOutputStream ())
         {
-          aIS = aFileItemStream.openStream ();
-          aOS = aFileItem.getOutputStream ();
           final byte [] aBuffer = new byte [8192];
           int nBytesRead;
           // potentially blocking read
@@ -297,11 +293,6 @@ public abstract class AbstractFileUploadBase
                                            " request failed. " +
                                            ex.getMessage (),
                                            ex);
-        }
-        finally
-        {
-          StreamHelper.close (aIS);
-          StreamHelper.close (aOS);
         }
         if (aFileItem instanceof IFileItemHeadersSupport)
         {

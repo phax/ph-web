@@ -31,13 +31,13 @@ import com.helger.commons.statistics.StatisticsManager;
 
 public final class DeflateResponse extends AbstractCompressedResponseWrapper
 {
-  private static final class DeflateServletOutputStream extends AbstractCompressedServletOutputStream
+  public static class DeflateServletOutputStream extends AbstractCompressedServletOutputStream
   {
     public DeflateServletOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
                                        @Nonnull final HttpServletResponse aHttpResponse,
                                        @Nonnull final String sContentEncoding,
                                        final long nContentLength,
-                                       @Nonnegative final int nMinCompressSize) throws IOException
+                                       @Nonnegative final long nMinCompressSize) throws IOException
     {
       super (aHttpRequest, aHttpResponse, sContentEncoding, nContentLength, nMinCompressSize);
     }
@@ -62,11 +62,11 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
 
   @Override
   @Nonnull
-  protected AbstractCompressedServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                                                @Nonnull final HttpServletResponse aHttpResponse,
-                                                                                @Nonnull @Nonempty final String sContentEncoding,
-                                                                                final long nContentLength,
-                                                                                @Nonnegative final int nMinCompressSize) throws IOException
+  protected DeflateServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
+                                                                     @Nonnull final HttpServletResponse aHttpResponse,
+                                                                     @Nonnull @Nonempty final String sContentEncoding,
+                                                                     final long nContentLength,
+                                                                     @Nonnegative final long nMinCompressSize) throws IOException
   {
     return new DeflateServletOutputStream (aHttpRequest,
                                            aHttpResponse,

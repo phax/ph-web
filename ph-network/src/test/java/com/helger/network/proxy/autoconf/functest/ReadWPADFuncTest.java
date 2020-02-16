@@ -66,7 +66,7 @@ public final class ReadWPADFuncTest
     if (sAutoProxyConfig != null)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);
-      assertNotNull (aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
+      assertNotNull ( aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
     }
   }
 

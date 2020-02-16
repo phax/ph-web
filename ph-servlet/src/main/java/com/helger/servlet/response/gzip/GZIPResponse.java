@@ -32,13 +32,13 @@ import com.helger.commons.statistics.StatisticsManager;
 
 public final class GZIPResponse extends AbstractCompressedResponseWrapper
 {
-  private static final class GZIPServletOutputStream extends AbstractCompressedServletOutputStream
+  public static class GZIPServletOutputStream extends AbstractCompressedServletOutputStream
   {
     public GZIPServletOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
                                     @Nonnull final HttpServletResponse aHttpResponse,
                                     @Nonnull final String sContentEncoding,
                                     final long nContentLength,
-                                    @Nonnegative final int nMinCompressSize) throws IOException
+                                    @Nonnegative final long nMinCompressSize) throws IOException
     {
       super (aHttpRequest, aHttpResponse, sContentEncoding, nContentLength, nMinCompressSize);
     }
@@ -63,11 +63,11 @@ public final class GZIPResponse extends AbstractCompressedResponseWrapper
 
   @Override
   @Nonnull
-  protected AbstractCompressedServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                                                @Nonnull final HttpServletResponse aHttpResponse,
-                                                                                @Nonnull @Nonempty final String sContentEncoding,
-                                                                                final long nContentLength,
-                                                                                @Nonnegative final int nMinCompressSize) throws IOException
+  protected GZIPServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
+                                                                  @Nonnull final HttpServletResponse aHttpResponse,
+                                                                  @Nonnull @Nonempty final String sContentEncoding,
+                                                                  final long nContentLength,
+                                                                  @Nonnegative final long nMinCompressSize) throws IOException
   {
     return new GZIPServletOutputStream (aHttpRequest,
                                         aHttpResponse,

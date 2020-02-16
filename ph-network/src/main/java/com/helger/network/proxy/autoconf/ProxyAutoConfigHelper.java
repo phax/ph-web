@@ -92,6 +92,7 @@ public final class ProxyAutoConfigHelper
     s_aScriptEngine.eval (m_sPACCode);
   }
 
+  // Cannot be static, because it needs the evaluation in the constructor
   @Nullable
   public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {

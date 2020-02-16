@@ -52,13 +52,13 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpResponseWrapper
 {
   /** The minimum size where compression is applied */
-  public static final int DEFAULT_MIN_COMPRESSED_SIZE = 256;
+  public static final long DEFAULT_MIN_COMPRESSED_SIZE = 256;
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractCompressedResponseWrapper.class);
 
   private final HttpServletRequest m_aHttpRequest;
   private final String m_sContentEncoding;
   private long m_nContentLength = -1;
-  private final int m_nMinCompressSize = DEFAULT_MIN_COMPRESSED_SIZE;
+  private long m_nMinCompressSize = DEFAULT_MIN_COMPRESSED_SIZE;
   private AbstractCompressedServletOutputStream m_aCompressedOS;
   private PrintWriter m_aWriter;
   private boolean m_bNoCompression = false;
@@ -70,6 +70,18 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
     super (aHttpResponse);
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     m_sContentEncoding = ValueEnforcer.notEmpty (sContentEncoding, "ContentEncoding");
+  }
+
+  @Nonnegative
+  public final long getMinCompressSize ()
+  {
+    return m_nMinCompressSize;
+  }
+
+  public final void setMinCompressSize (@Nonnegative final long nMinCompressSize)
+  {
+    ValueEnforcer.isGE0 (nMinCompressSize, "MinCompressSize");
+    m_nMinCompressSize = nMinCompressSize;
   }
 
   public void setNoCompression ()
@@ -305,7 +317,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
                                                                                          @Nonnull final HttpServletResponse aHttpResponse,
                                                                                          @Nonnull @Nonempty String sContentEncoding,
                                                                                          long nContentLength,
-                                                                                         @Nonnegative int nMinCompressSize) throws IOException;
+                                                                                         @Nonnegative long nMinCompressSize) throws IOException;
 
   @Nonnull
   private AbstractCompressedServletOutputStream _createCompressedOutputStream () throws IOException
@@ -313,13 +325,13 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
     if (CompressFilterSettings.isDebugModeEnabled ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("createCompressedOutputStream(" +
-                        m_sContentEncoding +
-                        ", " +
-                        m_nContentLength +
-                        ", " +
-                        m_nMinCompressSize +
-                        ") on " +
-                        ServletHelper.getRequestRequestURI (m_aHttpRequest));
+                     m_sContentEncoding +
+                     ", " +
+                     m_nContentLength +
+                     ", " +
+                     m_nMinCompressSize +
+                     ") on " +
+                     ServletHelper.getRequestRequestURI (m_aHttpRequest));
 
     return createCompressedOutputStream (m_aHttpRequest,
                                          (HttpServletResponse) getResponse (),

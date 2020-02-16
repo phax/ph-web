@@ -60,7 +60,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
                                                 @Nonnull final HttpServletResponse aHttpResponse,
                                                 @Nonnull final String sContentEncoding,
                                                 final long nContentLength,
-                                                @Nonnegative final int nMinCompressSize) throws IOException
+                                                @Nonnegative final long nMinCompressSize) throws IOException
   {
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");

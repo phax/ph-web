@@ -149,9 +149,17 @@ public interface IHttpClientSettings
   /**
    * @return <code>true</code> if a user agent is defined, <code>false</code> if
    *         not.
+   * @since 9.1.9
    */
   default boolean hasUserAgent ()
   {
     return StringHelper.hasText (getUserAgent ());
   }
+
+  /**
+   * @return <code>true</code> if HTTP redirects (status codes 3xx) should be
+   *         followed, <code>false</code> if not.
+   * @since 9.1.9
+   */
+  boolean isFollowRedirects ();
 }

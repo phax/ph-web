@@ -68,6 +68,7 @@ public class HttpClientSettings implements IHttpClientSettings
   public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
+  public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientSettings.class);
 
@@ -85,6 +86,7 @@ public class HttpClientSettings implements IHttpClientSettings
   private int m_nConnectionTimeoutMS = DEFAULT_CONNECTION_TIMEOUT_MS;
   private int m_nSocketTimeoutMS = DEFAULT_SOCKET_TIMEOUT_MS;
   private String m_sUserAgent;
+  private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
 
   /**
    * Default constructor.
@@ -469,6 +471,26 @@ public class HttpClientSettings implements IHttpClientSettings
     return this;
   }
 
+  public final boolean isFollowRedirects ()
+  {
+    return m_bFollowRedirects;
+  }
+
+  /**
+   * Enable or disable if HTTP redirects (HTTP status code 3xx) should be
+   * followed or not.
+   *
+   * @param bFollowRedirects
+   *        <code>true</code> to follow redirects, <code>false</code> if not.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setFollowRedirects (final boolean bFollowRedirects)
+  {
+    m_bFollowRedirects = bFollowRedirects;
+    return this;
+  }
+
   @Override
   public String toString ()
   {
@@ -486,6 +508,7 @@ public class HttpClientSettings implements IHttpClientSettings
                                        .append ("ConnectionTimeoutMS", m_nConnectionTimeoutMS)
                                        .append ("SocketTimeoutMS", m_nSocketTimeoutMS)
                                        .append ("UserAgent", m_sUserAgent)
+                                       .append ("FollowRedirects", m_bFollowRedirects)
                                        .getToString ();
   }
 }

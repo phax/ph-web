@@ -636,7 +636,7 @@ public class HttpClientFactory implements IHttpClientProvider
                         .setConnectTimeout (m_aSettings.getConnectionTimeoutMS ())
                         .setSocketTimeout (m_aSettings.getSocketTimeoutMS ())
                         .setCircularRedirectsAllowed (false)
-                        .setRedirectsEnabled (true);
+                        .setRedirectsEnabled (m_aSettings.isFollowRedirects ());
   }
 
   @Nonnull

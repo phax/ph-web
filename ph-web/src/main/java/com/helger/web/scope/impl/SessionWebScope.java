@@ -115,6 +115,20 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   }
 
   @Override
+  public boolean equals (final Object o)
+  {
+    // New fields but no change in rules
+    return super.equals (o);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    // New fields but no change in rules
+    return super.hashCode ();
+  }
+
+  @Override
   public String toString ()
   {
     return ToStringGenerator.getDerived (super.toString ()).append ("HttpSession", m_aHttpSession).getToString ();

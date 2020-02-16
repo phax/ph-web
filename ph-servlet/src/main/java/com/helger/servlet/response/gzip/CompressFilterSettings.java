@@ -53,9 +53,7 @@ public final class CompressFilterSettings
    */
   public static void markFilterLoaded ()
   {
-    s_aRWLock.writeLocked ( () -> {
-      s_bFilterLoaded = true;
-    });
+    s_aRWLock.writeLocked ( () -> s_bFilterLoaded = true);
     LOGGER.info ("CompressFilter is loaded");
   }
 

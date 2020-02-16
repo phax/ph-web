@@ -315,6 +315,6 @@ public class MockHttpSession implements HttpSession
                                        .append ("attributes", m_aAttributes)
                                        .append ("isInvalidated", m_bInvalidated)
                                        .append ("isNew", m_bIsNew)
-                                       .toString ();
+                                       .getToString ();
   }
 }

@@ -171,7 +171,7 @@ public final class UAProfileDatabase
           if (nIndex != CGlobal.ILLEGAL_UINT)
           {
             // Handle profile diff
-            String sProfileDiff = aHeaderProvider.getHeader (sHeaderName);
+            String sProfileDiff = aHeaderProvider.getHeaderValue (sHeaderName);
             sProfileDiff = _getCleanedUp (sProfileDiff);
             aProfileDiffData.put (Integer.valueOf (nIndex), sProfileDiff);
           }
@@ -203,9 +203,9 @@ public final class UAProfileDatabase
         if (aProfiles.isEmpty ())
         {
           // Check CCPP headers
-          String sExt = aHeaderProvider.getHeader (CHttpHeader.OPT);
+          String sExt = aHeaderProvider.getHeaderValue (CHttpHeader.OPT);
           if (sExt == null)
-            sExt = aHeaderProvider.getHeader (CHttpHeader.MAN);
+            sExt = aHeaderProvider.getHeaderValue (CHttpHeader.MAN);
           if (sExt != null)
           {
             sExtNSValue = _getExtendedNamespaceValue (sExt);

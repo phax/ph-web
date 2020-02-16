@@ -16,7 +16,6 @@
  */
 package com.helger.xservlet.servletstatus;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @since 9.0.0
  */
 @NotThreadSafe
-public final class ServletStatus implements Serializable
+public final class ServletStatus
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ServletStatus.class);
 
@@ -81,11 +80,11 @@ public final class ServletStatus implements Serializable
       // "localhost.yyyy-mm-dd.log")
       if (LOGGER.isErrorEnabled ())
         LOGGER.error ("The new status " +
-                         eNewStatus +
-                         " is not a valid successor of the old status " +
-                         m_eCurrentStatus +
-                         " for " +
-                         m_sClassName);
+                      eNewStatus +
+                      " is not a valid successor of the old status " +
+                      m_eCurrentStatus +
+                      " for " +
+                      m_sClassName);
     }
     m_eCurrentStatus = ValueEnforcer.notNull (eNewStatus, "NewStatus");
     m_aStatusChangeDates.put (eNewStatus, PDTFactory.getCurrentLocalDateTime ());

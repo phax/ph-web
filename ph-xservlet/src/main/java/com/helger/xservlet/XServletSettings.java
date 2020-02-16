@@ -70,7 +70,8 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   }
 
   /**
-   * @return The current http Referrer Policy or <code>null</code> if none is set.
+   * @return The current http Referrer Policy or <code>null</code> if none is
+   *         set.
    */
   @Nullable
   public EHttpReferrerPolicy getHttpReferrerPolicy ()
@@ -79,8 +80,8 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   }
 
   /**
-   * @return <code>true</code> if a referrer policy is set, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if a referrer policy is set, <code>false</code>
+   *         if not.
    */
   public boolean hasHttpReferrerPolicy ()
   {
@@ -124,8 +125,8 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   }
 
   /**
-   * @return <code>true</code> if X-Frame-Options are defined, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if X-Frame-Options are defined,
+   *         <code>false</code> if not.
    * @since 9.1.1
    */
   public boolean hasXFrameOptions ()

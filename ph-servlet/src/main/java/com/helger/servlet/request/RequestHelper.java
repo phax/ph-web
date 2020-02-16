@@ -19,6 +19,7 @@ package com.helger.servlet.request;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -570,6 +571,35 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The source HTTP request. May not be <code>null</code>.
+   * @param aConsumer
+   *        The BiConsumer that takes name and value. May not be
+   *        <code>null</code>.
+   * @since 9.1.9
+   */
+  public static void forEachRequestHeader (@Nonnull final HttpServletRequest aHttpRequest,
+                                           @Nonnull final BiConsumer <String, String> aConsumer)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    ValueEnforcer.notNull (aConsumer, "Consumer");
+
+    final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
+    while (aHeaders.hasMoreElements ())
+    {
+      final String sName = aHeaders.nextElement ();
+      final Enumeration <String> eHeaderValues = aHttpRequest.getHeaders (sName);
+      while (eHeaderValues.hasMoreElements ())
+      {
+        final String sValue = eHeaderValues.nextElement ();
+        aConsumer.accept (sName, sValue);
+      }
+    }
+  }
+
+  /**
+   * Get a complete request header map as a copy.
+   *
+   * @param aHttpRequest
+   *        The source HTTP request. May not be <code>null</code>.
    * @return Never <code>null</code>.
    */
   @Nonnull
@@ -579,17 +609,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final HttpHeaderMap ret = new HttpHeaderMap ();
-    final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
-    while (aHeaders.hasMoreElements ())
-    {
-      final String sName = aHeaders.nextElement ();
-      final Enumeration <String> eHeaderValues = aHttpRequest.getHeaders (sName);
-      while (eHeaderValues.hasMoreElements ())
-      {
-        final String sValue = eHeaderValues.nextElement ();
-        ret.addHeader (sName, sValue);
-      }
-    }
+    forEachRequestHeader (aHttpRequest, ret::addHeader);
     return ret;
   }
 
@@ -939,7 +959,7 @@ public final class RequestHelper
           return CollectionHelper.newList (aHttpRequest.getHeaders (sName));
         }
 
-        public String getHeader (final String sHeader)
+        public String getHeaderValue (final String sHeader)
         {
           return aHttpRequest.getHeader (sHeader);
         }

@@ -42,6 +42,7 @@ Add the following to your pom.xml to use this artifact:
     * Extended `HttpClientSettings` with "follow redirect" setting
     * Made `HttpClientSettings` clonable
     * Simplified public `IEmailData` API for the receivers to use mutable lists
+    * `XServlet` filter and handler are no longer `Serializable`
 * v9.1.8 - 2020-02-14
     * Extracted `HttpClientSettings` from `HttpClientFactory`
     * Extended customization options of `HttpClientSettings`

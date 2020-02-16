@@ -54,8 +54,9 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    *        The response object to be filled. Never <code>null</code>.
    * @return If {@link EContinue#BREAK} is returned, the content of the unified
    *         response is rendered to the HTTP servlet response and the filter
-   *         chain stops. On {@link EContinue#CONTINUE} the content of the unified
-   *         response is discarded and the filter chain continues as normal.
+   *         chain stops. On {@link EContinue#CONTINUE} the content of the
+   *         unified response is discarded and the filter chain continues as
+   *         normal.
    * @throws IOException
    *         In case of an error
    * @throws ServletException

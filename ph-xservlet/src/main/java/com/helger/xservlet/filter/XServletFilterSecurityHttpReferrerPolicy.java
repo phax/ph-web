@@ -28,7 +28,7 @@ import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.EHttpVersion;
 
 /**
- * Always set the correct `Referrer-Policy` header.
+ * Always set the correct "Referrer-Policy" header.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -40,6 +40,16 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
   public XServletFilterSecurityHttpReferrerPolicy (@Nonnull final EHttpReferrerPolicy eHttpReferrerPolicy)
   {
     m_eHttpReferrerPolicy = ValueEnforcer.notNull (eHttpReferrerPolicy, "HttpReferrerPolicy");
+  }
+
+  /**
+   * @return The "Referrer-Policy" as provided in the constructor. Never
+   *         <code>null</code>.
+   */
+  @Nonnull
+  public final EHttpReferrerPolicy getHttpReferrerPolicy ()
+  {
+    return m_eHttpReferrerPolicy;
   }
 
   @Nonnull

@@ -62,7 +62,7 @@ public final class UAProfileDatabaseTest
     }
 
     @Nullable
-    public String getHeader (final String sName)
+    public String getHeaderValue (final String sName)
     {
       return m_aMap.getFirstHeaderValue (sName);
     }

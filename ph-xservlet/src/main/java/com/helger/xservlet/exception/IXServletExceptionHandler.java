@@ -36,17 +36,16 @@ public interface IXServletExceptionHandler extends ICallback
    * exception e.g by creating a "clean" HTML response instead of showing the
    * stack trace. In this case the unified response provided as a parameter must
    * be filled.
+   * 
    * @param aRequestScope
    *        Current request scope incl. http response object. Never
    *        <code>null</code>.
    * @param t
    *        The thrown exception. Never <code>null</code>.
-   *
    * @return {@link EContinue#CONTINUE} if further exception handlers should be
    *         invoked, {@link EContinue#BREAK} if the exception was finally
    *         handled.
    */
   @Nonnull
-  EContinue onException (@Nonnull IRequestWebScope aRequestScope,
-                         @Nonnull Throwable t);
+  EContinue onException (@Nonnull IRequestWebScope aRequestScope, @Nonnull Throwable t);
 }

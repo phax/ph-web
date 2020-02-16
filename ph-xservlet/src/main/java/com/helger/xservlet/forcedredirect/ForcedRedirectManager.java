@@ -86,9 +86,9 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
 
     if (GlobalDebug.isDebugMode ())
       LOGGER.info ("Creating forced redirect from '" +
-                      ex.getSourceMenuItemID () +
-                      "' to URL " +
-                      ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ());
+                   ex.getSourceMenuItemID () +
+                   "' to URL " +
+                   ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ());
   }
 
   @Nullable

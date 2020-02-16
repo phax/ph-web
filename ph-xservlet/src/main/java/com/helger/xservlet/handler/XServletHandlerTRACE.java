@@ -17,7 +17,6 @@
 package com.helger.xservlet.handler;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -30,6 +29,7 @@ import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
+import com.helger.servlet.request.RequestHelper;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
@@ -60,12 +60,11 @@ public class XServletHandlerTRACE implements IXServletHandler
                                                   .append (' ')
                                                   .append (aHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);
-    final Enumeration <String> aReqHeaderEnum = aHttpRequest.getHeaderNames ();
-    while (aReqHeaderEnum.hasMoreElements ())
-    {
-      final String sHeaderName = aReqHeaderEnum.nextElement ();
-      aSB.append (sHeaderName).append (": ").append (aHttpRequest.getHeader (sHeaderName)).append (CHttp.EOL);
-    }
+    RequestHelper.forEachRequestHeader (aHttpRequest,
+                                        (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)
+                                                                          .append (": ")
+                                                                          .append (sHeaderValue)
+                                                                          .append (CHttp.EOL));
 
     aHttpResponse.setContentType (CONTENT_TYPE);
     aHttpResponse.setContentLength (aSB.length ());

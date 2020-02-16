@@ -32,5 +32,5 @@ public interface IUAProfileHeaderProvider extends Serializable
   ICommonsCollection <String> getHeaders (@Nullable String sName);
 
   @Nullable
-  String getHeader (@Nullable String sName);
+  String getHeaderValue (@Nullable String sName);
 }

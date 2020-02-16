@@ -16,7 +16,6 @@
  */
 package com.helger.xservlet.handler;
 
-import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -46,7 +45,7 @@ import com.helger.xservlet.handler.simple.XServletHandlerToSimpleHandler;
  * @since 9.0.0
  */
 @NotThreadSafe
-public class XServletHandlerRegistry implements Serializable
+public class XServletHandlerRegistry
 {
   /** The main handler map */
   private final ICommonsMap <EHttpMethod, IXServletHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);

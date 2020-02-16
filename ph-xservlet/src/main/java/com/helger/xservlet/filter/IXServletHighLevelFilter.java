@@ -17,7 +17,6 @@
 package com.helger.xservlet.filter;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -30,7 +29,7 @@ import com.helger.web.scope.IRequestWebScope;
  * @author Philip Helger
  * @since 9.0.0
  */
-public interface IXServletHighLevelFilter extends Serializable
+public interface IXServletHighLevelFilter
 {
   /**
    * Invoked before an XServlet request is handled. Exceptions occurring in this

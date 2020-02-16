@@ -17,7 +17,6 @@
 package com.helger.xservlet.filter;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,11 +34,11 @@ import com.helger.http.EHttpVersion;
  * @author Philip Helger
  * @since 9.0.0
  */
-public interface IXServletLowLevelFilter extends Serializable
+public interface IXServletLowLevelFilter
 {
   /**
-   * Invoked before an XServlet request is handled. This method is created before
-   * the request is created! Exceptions occurring in this method will be
+   * Invoked before an XServlet request is handled. This method is created
+   * before the request is created! Exceptions occurring in this method will be
    * propagated to the outside, so be careful :)
    *
    * @param aHttpRequest
@@ -81,8 +80,8 @@ public interface IXServletLowLevelFilter extends Serializable
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
    * @param bInvokeHandler
-   *        <code>true</code> if the main handler was invoked, <code>false</code>
-   *        if
+   *        <code>true</code> if the main handler was invoked,
+   *        <code>false</code> if
    *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod)}
    *        avoided the execution of the request.
    * @param aCaughtException

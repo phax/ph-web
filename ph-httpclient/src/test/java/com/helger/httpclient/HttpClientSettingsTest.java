@@ -17,9 +17,13 @@
 package com.helger.httpclient;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import com.helger.http.tls.ETLSConfigurationMode;
 
 /**
  * Test class for class {@link HttpClientSettings}.
@@ -55,5 +59,16 @@ public final class HttpClientSettingsTest
     assertEquals (2, x.nonProxyHosts ().size ());
     assertTrue (x.nonProxyHosts ().contains ("127.0.0.1"));
     assertTrue (x.nonProxyHosts ().contains ("localhost"));
+  }
+
+  @Test
+  public void testClone ()
+  {
+    final HttpClientSettings x = new HttpClientSettings ();
+    assertNotNull (x.getClone ());
+    x.setTLSConfigurationMode (ETLSConfigurationMode.MODERN);
+    assertSame (ETLSConfigurationMode.MODERN, x.getClone ().getTLSConfigurationMode ());
+    x.setUserAgent ("bla");
+    assertEquals ("bla", x.getClone ().getUserAgent ());
   }
 }

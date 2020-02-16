@@ -30,13 +30,13 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.8</version>
+  <version>9.1.9</version>
 </dependency>
 ```
 
 # News and noteworthy
 
-* v9.1.9 - work in progress
+* v9.1.9 - 2020-02-16
     * Extended `HttpClientSettings` with a customizable user agent string
     * Added Apache HttpClient `PrivateKeyStrategy` and `TrustStrategy` implementations
     * Extended `HttpClientSettings` with "follow redirect" setting

@@ -215,6 +215,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                          aHeaders);
   }
 
+  @Override
   public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
                             @Nonnull final HttpServletResponse aHttpResponse,
                             @Nonnull final EHttpVersion eHttpVersion,

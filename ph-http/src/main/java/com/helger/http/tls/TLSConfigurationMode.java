@@ -27,7 +27,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsEnumMap;
 import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsMap;
@@ -44,7 +44,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class TLSConfigurationMode implements ITLSConfigurationMode
 {
-  private static final ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsHashMap <> ();
+  private static final ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsEnumMap <> (ETLSVersion.class);
 
   static
   {

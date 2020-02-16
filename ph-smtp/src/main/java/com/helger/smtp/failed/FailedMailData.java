@@ -131,7 +131,7 @@ public class FailedMailData implements ITypedObject <String>, Serializable
     m_aErrorDT = ValueEnforcer.notNull (aErrorDT, "ErrorDT");
     m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");
     m_aOriginalSentDateTime = aOriginalSentDT != null ? aOriginalSentDT
-                                                      : (aEmailData != null ? aEmailData.getSentDateTime () : null);
+                                                      : aEmailData != null ? aEmailData.getSentDateTime () : null;
     m_aEmailData = aEmailData;
     m_aError = aError;
   }

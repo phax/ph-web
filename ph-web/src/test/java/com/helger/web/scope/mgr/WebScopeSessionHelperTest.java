@@ -19,8 +19,6 @@ package com.helger.web.scope.mgr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
@@ -125,13 +123,17 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
 
             // Create the session
             final HttpSession aHttpSession = aRequest.getSession (true);
-            assertNotNull (aHttpSession);
+            if (aHttpSession == null)
+              throw new IllegalStateException ();
             final ISessionWebScope aSessionScope = WebScopeManager.getSessionScope (true);
-            assertNotNull (aSessionScope);
-            assertSame (aHttpSession, aSessionScope.getSession ());
+            if (aSessionScope == null)
+              throw new IllegalStateException ();
+            if (aHttpSession != aSessionScope.getSession ())
+              throw new IllegalStateException ();
             aSessionScope.attrs ().putIn ("x", new MockScopeRenewalAware ("bla"));
             aSessionScope.attrs ().putIn ("y", "bla");
-            assertEquals (2, aSessionScope.attrs ().size ());
+            if (aSessionScope.attrs ().size () != 2)
+              throw new IllegalStateException ();
 
             // Wait until all sessions are created
             aCDLStart.countDown ();
@@ -141,13 +143,22 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
 
             // Renew the session scope
             final ISessionWebScope aNewSessionScope = WebScopeSessionHelper.renewSessionScope (aHttpSession);
-            assertNotNull (aNewSessionScope);
-            assertNotSame (aNewSessionScope, aSessionScope);
-            assertEquals (1, aNewSessionScope.attrs ().size ());
-            assertTrue (aNewSessionScope.attrs ().containsKey ("x"));
-            assertTrue (aNewSessionScope.attrs ().get ("x") instanceof MockScopeRenewalAware);
+            if (aNewSessionScope == null)
+              throw new IllegalStateException ();
+            if (aNewSessionScope == aSessionScope)
+              throw new IllegalStateException ();
+            if (aNewSessionScope.attrs ().size () != 1)
+              throw new IllegalStateException ();
+            if (!aNewSessionScope.attrs ().containsKey ("x"))
+              throw new IllegalStateException ();
+            if (!(aNewSessionScope.attrs ().get ("x") instanceof MockScopeRenewalAware))
+              throw new IllegalStateException ();
 
             aRequest.invalidate ();
+          }
+          catch (final RuntimeException ex)
+          {
+            throw ex;
           }
           catch (final Exception ex)
           {

@@ -233,9 +233,9 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         {
           m_aSimpleHandler.onRequestBegin (aRequestScope);
         }
-        catch (final Throwable t)
+        catch (final Exception ex)
         {
-          _onException (aRequestScope, aUnifiedResponse, t);
+          _onException (aRequestScope, aUnifiedResponse, ex);
         }
 
         Throwable aCaughtException = null;

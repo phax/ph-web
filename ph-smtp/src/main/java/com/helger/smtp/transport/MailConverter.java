@@ -82,14 +82,13 @@ public final class MailConverter
   {
     if (aMailData.getFrom () != null)
       aMIMEMessage.setFrom (InternetAddressHelper.getAsInternetAddress (aMailData.getFrom (), aCharset));
-    if (aMailData.getAllReplyTo () != null)
-      aMIMEMessage.setReplyTo (InternetAddressHelper.getAsInternetAddressArray (aMailData.getAllReplyTo (), aCharset));
+    aMIMEMessage.setReplyTo (InternetAddressHelper.getAsInternetAddressArray (aMailData.replyTo (), aCharset));
     aMIMEMessage.setRecipients (Message.RecipientType.TO,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.getAllTo (), aCharset));
+                                InternetAddressHelper.getAsInternetAddressArray (aMailData.to (), aCharset));
     aMIMEMessage.setRecipients (Message.RecipientType.CC,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.getAllCc (), aCharset));
+                                InternetAddressHelper.getAsInternetAddressArray (aMailData.cc (), aCharset));
     aMIMEMessage.setRecipients (Message.RecipientType.BCC,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.getAllBcc (), aCharset));
+                                InternetAddressHelper.getAsInternetAddressArray (aMailData.bcc (), aCharset));
     if (aMailData.getSentDateTime () != null)
       aMIMEMessage.setSentDate (TypeConverter.convert (aMailData.getSentDateTime (), Date.class));
     if (aMailData.getSubject () != null)

@@ -24,6 +24,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.IStringMap;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -59,13 +60,33 @@ public interface IEmailData extends Serializable
    * @return never <code>null</code>
    */
   @Nonnull
-  ICommonsList <IEmailAddress> getAllReplyTo ();
+  @ReturnsMutableObject
+  ICommonsList <IEmailAddress> replyTo ();
+
+  /**
+   * Get the reply-to mail addresses.
+   *
+   * @return never <code>null</code>
+   * @deprecated Use {@link #replyTo()}
+   */
+  @Deprecated
+  @Nonnull
+  @ReturnsMutableCopy
+  default ICommonsList <IEmailAddress> getAllReplyTo ()
+  {
+    return replyTo ().getClone ();
+  }
 
   /**
    * @return Number of reply-to addresses. Always &ge; 0.
+   * @deprecated Use {@link #replyTo()}
    */
+  @Deprecated
   @Nonnegative
-  int getReplyToCount ();
+  default int getReplyToCount ()
+  {
+    return replyTo ().size ();
+  }
 
   /**
    * Get a list of all TO-receivers.
@@ -73,21 +94,46 @@ public interface IEmailData extends Serializable
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <IEmailAddress> getAllTo ();
+  @ReturnsMutableObject
+  ICommonsList <IEmailAddress> to ();
+
+  /**
+   * Get a list of all TO-receivers.
+   *
+   * @return Never <code>null</code>.
+   * @deprecated Use {@link #to()}
+   */
+  @Deprecated
+  @Nonnull
+  @ReturnsMutableCopy
+  default ICommonsList <IEmailAddress> getAllTo ()
+  {
+    return to ().getClone ();
+  }
 
   /**
    * Perform something for each TO-receiver
    *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
+   * @deprecated Use {@link #to()}
    */
-  void forEachTo (@Nonnull Consumer <? super IEmailAddress> aConsumer);
+  @Deprecated
+  default void forEachTo (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
+  {
+    to ().forEach (aConsumer);
+  }
 
   /**
    * @return Number of TO-receivers. Always &ge; 0.
+   * @deprecated Use {@link #to()}
    */
+  @Deprecated
   @Nonnegative
-  int getToCount ();
+  default int getToCount ()
+  {
+    return to ().size ();
+  }
 
   /**
    * Get a list of all CC-receivers.
@@ -95,21 +141,46 @@ public interface IEmailData extends Serializable
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <IEmailAddress> getAllCc ();
+  @ReturnsMutableObject
+  ICommonsList <IEmailAddress> cc ();
+
+  /**
+   * Get a list of all CC-receivers.
+   *
+   * @return Never <code>null</code>.
+   * @deprecated Use {@link #cc()}
+   */
+  @Deprecated
+  @Nonnull
+  @ReturnsMutableCopy
+  default ICommonsList <IEmailAddress> getAllCc ()
+  {
+    return cc ().getClone ();
+  }
 
   /**
    * Perform something for each CC-receiver
    *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
+   * @deprecated Use {@link #cc()}
    */
-  void forEachCc (@Nonnull Consumer <? super IEmailAddress> aConsumer);
+  @Deprecated
+  default void forEachCc (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
+  {
+    cc ().forEach (aConsumer);
+  }
 
   /**
    * @return Number of CC-receivers. Always &ge; 0.
+   * @deprecated Use {@link #cc()}
    */
+  @Deprecated
   @Nonnegative
-  int getCcCount ();
+  default int getCcCount ()
+  {
+    return cc ().size ();
+  }
 
   /**
    * Get a list of all BCC-receivers.
@@ -117,21 +188,46 @@ public interface IEmailData extends Serializable
    * @return Never <code>null</code>.
    */
   @Nonnull
-  ICommonsList <IEmailAddress> getAllBcc ();
+  @ReturnsMutableObject
+  ICommonsList <IEmailAddress> bcc ();
+
+  /**
+   * Get a list of all BCC-receivers.
+   *
+   * @return Never <code>null</code>.
+   * @deprecated Use {@link #bcc()}
+   */
+  @Deprecated
+  @Nonnull
+  @ReturnsMutableCopy
+  default ICommonsList <IEmailAddress> getAllBcc ()
+  {
+    return bcc ().getClone ();
+  }
 
   /**
    * Perform something for each BCC-receiver
    *
    * @param aConsumer
    *        The consumer to be invoked. May not be <code>null</code>.
+   * @deprecated Use {@link #bcc()}
    */
-  void forEachBcc (@Nonnull Consumer <? super IEmailAddress> aConsumer);
+  @Deprecated
+  default void forEachBcc (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
+  {
+    bcc ().forEach (aConsumer);
+  }
 
   /**
    * @return Number of BCC-receivers. Always &ge; 0.
+   * @deprecated Use {@link #bcc()}
    */
+  @Deprecated
   @Nonnegative
-  int getBccCount ();
+  default int getBccCount ()
+  {
+    return bcc ().size ();
+  }
 
   /**
    * Get the date and time when the mail claims to be sent.
@@ -167,6 +263,16 @@ public interface IEmailData extends Serializable
    */
   @Nullable
   IEmailAttachmentList getAttachments ();
+
+  /**
+   * @return The number of contained attachments. Always &ge; 0.
+   */
+  @Nonnegative
+  default int getAttachmentCount ()
+  {
+    final IEmailAttachmentList ret = getAttachments ();
+    return ret == null ? 0 : ret.getCount ();
+  }
 
   /**
    * @return Custom attributes. Never <code>null</code>.

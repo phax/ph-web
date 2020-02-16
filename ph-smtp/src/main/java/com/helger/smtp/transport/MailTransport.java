@@ -249,14 +249,14 @@ public final class MailTransport
 
             if (LOGGER.isInfoEnabled ())
               LOGGER.info ("Delivering mail from " +
-                              Arrays.toString (aMimeMessage.getFrom ()) +
-                              " to " +
-                              Arrays.toString (aMimeMessage.getAllRecipients ()) +
-                              " with subject '" +
-                              aMimeMessage.getSubject () +
-                              "' and message ID '" +
-                              aMimeMessage.getMessageID () +
-                              "'");
+                           Arrays.toString (aMimeMessage.getFrom ()) +
+                           " to " +
+                           Arrays.toString (aMimeMessage.getAllRecipients ()) +
+                           " with subject '" +
+                           aMimeMessage.getSubject () +
+                           "' and message ID '" +
+                           aMimeMessage.getMessageID () +
+                           "'");
 
             // Main transmit - always throws an exception
             aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
@@ -365,9 +365,9 @@ public final class MailTransport
                                                                                                "<generic error>",
                                                                                                ex.getMessage (),
                                                                                                ESMTPErrorCode.FALLBACK));
-            aEmailData.forEachTo (aConsumer);
-            aEmailData.forEachCc (aConsumer);
-            aEmailData.forEachBcc (aConsumer);
+            aEmailData.to ().forEach (aConsumer);
+            aEmailData.cc ().forEach (aConsumer);
+            aEmailData.bcc ().forEach (aConsumer);
 
             final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
                                                                                 aEmailData,

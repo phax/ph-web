@@ -65,16 +65,20 @@ public final class FailedMailDataTest
   {
     final EmailData aData = new EmailData (EEmailType.TEXT);
     aData.setFrom (new EmailAddress ("from@example.org"));
-    aData.setReplyTo (new EmailAddress ("replyto1@example.org"),
-                      new EmailAddress ("replyto2@example.org"),
-                      new EmailAddress ("replyto3@example.org"));
-    aData.setTo (new EmailAddress ("to1@example.org"),
-                 new EmailAddress ("to2@example.org"),
-                 new EmailAddress ("to3@example.org"));
-    aData.setCc (new EmailAddress ("cc1@example.org"),
-                 new EmailAddress ("cc2@example.org"),
-                 new EmailAddress ("cc3@example.org"));
-    aData.setBcc (new EmailAddress ("bcc1@example.org"),
+    aData.replyTo ()
+         .addAll (new EmailAddress ("replyto1@example.org"),
+                  new EmailAddress ("replyto2@example.org"),
+                  new EmailAddress ("replyto3@example.org"));
+    aData.to ()
+         .addAll (new EmailAddress ("to1@example.org"),
+                  new EmailAddress ("to2@example.org"),
+                  new EmailAddress ("to3@example.org"));
+    aData.cc ()
+         .addAll (new EmailAddress ("cc1@example.org"),
+                  new EmailAddress ("cc2@example.org"),
+                  new EmailAddress ("cc3@example.org"));
+    aData.bcc ()
+         .addAll (new EmailAddress ("bcc1@example.org"),
                   new EmailAddress ("bcc2@example.org"),
                   new EmailAddress ("bcc3@example.org"));
     aData.setSentDateTime (PDTFactory.getCurrentLocalDateTime ());

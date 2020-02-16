@@ -17,9 +17,7 @@
 package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -54,12 +52,18 @@ public class EmailData implements IMutableEmailData
   private LocalDateTime m_aSentDateTime;
   private String m_sSubject;
   private String m_sBody;
-  private IMutableEmailAttachmentList m_aAttachments;
+  private transient IMutableEmailAttachmentList m_aAttachments;
   private final StringMap m_aCustomAttrs = new StringMap ();
 
   public EmailData (@Nonnull final EEmailType eEmailType)
   {
     setEmailType (eEmailType);
+  }
+
+  @Nonnull
+  public EEmailType getEmailType ()
+  {
+    return m_eEmailType;
   }
 
   @Nonnull
@@ -70,10 +74,10 @@ public class EmailData implements IMutableEmailData
     return this;
   }
 
-  @Nonnull
-  public EEmailType getEmailType ()
+  @Nullable
+  public IEmailAddress getFrom ()
   {
-    return m_eEmailType;
+    return m_aFrom;
   }
 
   @Nonnull
@@ -83,137 +87,32 @@ public class EmailData implements IMutableEmailData
     return this;
   }
 
-  @Nullable
-  public IEmailAddress getFrom ()
-  {
-    return m_aFrom;
-  }
-
   @Nonnull
-  public EmailData removeAllReplyTo ()
+  @ReturnsMutableCopy
+  public final ICommonsList <IEmailAddress> replyTo ()
   {
-    m_aReplyTo.clear ();
-    return this;
-  }
-
-  @Nonnull
-  public EmailData addReplyTo (@Nullable final IEmailAddress aReplyTo)
-  {
-    if (aReplyTo != null)
-      m_aReplyTo.add (aReplyTo);
-    return this;
+    return m_aReplyTo;
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <IEmailAddress> getAllReplyTo ()
+  public final ICommonsList <IEmailAddress> to ()
   {
-    return m_aReplyTo.getClone ();
-  }
-
-  @Nonnegative
-  public int getReplyToCount ()
-  {
-    return m_aReplyTo.size ();
-  }
-
-  @Nonnull
-  public EmailData removeAllTo ()
-  {
-    m_aTo.clear ();
-    return this;
-  }
-
-  @Nonnull
-  public EmailData addTo (@Nullable final IEmailAddress aTo)
-  {
-    if (aTo != null)
-      m_aTo.add (aTo);
-    return this;
+    return m_aTo;
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <IEmailAddress> getAllTo ()
+  public final ICommonsList <IEmailAddress> cc ()
   {
-    return m_aTo.getClone ();
-  }
-
-  public void forEachTo (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
-  {
-    m_aTo.forEach (aConsumer);
-  }
-
-  @Nonnegative
-  public int getToCount ()
-  {
-    return m_aTo.size ();
-  }
-
-  @Nonnull
-  public EmailData removeAllCc ()
-  {
-    m_aCc.clear ();
-    return this;
-  }
-
-  @Nonnull
-  public EmailData addCc (@Nullable final IEmailAddress aCc)
-  {
-    if (aCc != null)
-      m_aCc.add (aCc);
-    return this;
+    return m_aCc;
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <IEmailAddress> getAllCc ()
+  public final ICommonsList <IEmailAddress> bcc ()
   {
-    return m_aCc.getClone ();
-  }
-
-  public void forEachCc (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
-  {
-    m_aCc.forEach (aConsumer);
-  }
-
-  @Nonnegative
-  public int getCcCount ()
-  {
-    return m_aCc.size ();
-  }
-
-  @Nonnull
-  public EmailData removeAllBcc ()
-  {
-    m_aBcc.clear ();
-    return this;
-  }
-
-  @Nonnull
-  public EmailData addBcc (@Nullable final IEmailAddress aBcc)
-  {
-    if (aBcc != null)
-      m_aBcc.add (aBcc);
-    return this;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public ICommonsList <IEmailAddress> getAllBcc ()
-  {
-    return m_aBcc.getClone ();
-  }
-
-  public void forEachBcc (@Nonnull final Consumer <? super IEmailAddress> aConsumer)
-  {
-    m_aBcc.forEach (aConsumer);
-  }
-
-  @Nonnegative
-  public int getBccCount ()
-  {
-    return m_aBcc.size ();
+    return m_aBcc;
   }
 
   @Nonnull
@@ -259,12 +158,6 @@ public class EmailData implements IMutableEmailData
   public IMutableEmailAttachmentList getAttachments ()
   {
     return m_aAttachments;
-  }
-
-  @Nonnegative
-  public int getAttachmentCount ()
-  {
-    return m_aAttachments == null ? 0 : m_aAttachments.size ();
   }
 
   @Nonnull
@@ -324,10 +217,10 @@ public class EmailData implements IMutableEmailData
   public String toString ()
   {
     return new ToStringGenerator (this).append ("from", m_aFrom)
-                                       .appendIfNotNull ("replyTo", m_aReplyTo)
+                                       .append ("replyTo", m_aReplyTo)
                                        .append ("to", m_aTo)
-                                       .appendIfNotNull ("cc", m_aCc)
-                                       .appendIfNotNull ("bcc", m_aBcc)
+                                       .append ("cc", m_aCc)
+                                       .append ("bcc", m_aBcc)
                                        .append ("sendDate", m_aSentDateTime)
                                        .append ("subject", m_sSubject)
                                        .append ("body", m_sBody)
@@ -364,7 +257,8 @@ public class EmailData implements IMutableEmailData
   {
     final EmailData aEmailData = new EmailData (eEmailType);
     aEmailData.setFrom (aSender);
-    aEmailData.setTo (aReceiver);
+    if (aReceiver != null)
+      aEmailData.to ().add (aReceiver);
     aEmailData.setSubject (sSubject);
     aEmailData.setBody (sBody);
     aEmailData.setAttachments (aAttachments);

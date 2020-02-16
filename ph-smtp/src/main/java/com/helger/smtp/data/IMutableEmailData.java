@@ -19,7 +19,6 @@ package com.helger.smtp.data;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.mail.internet.InternetAddress;
@@ -40,12 +39,14 @@ public interface IMutableEmailData extends IEmailData
   IMutableEmailData setEmailType (@Nonnull EEmailType eType);
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setFrom (@Nullable final String sFromAddress)
   {
     return setFrom (sFromAddress == null ? null : new EmailAddress (sFromAddress));
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setFrom (@Nullable final InternetAddress aFrom)
   {
     return setFrom (InternetAddressHelper.getAsEmailAddress (aFrom));
@@ -55,9 +56,15 @@ public interface IMutableEmailData extends IEmailData
   IMutableEmailData setFrom (@Nullable IEmailAddress aFrom);
 
   @Nonnull
-  IMutableEmailData removeAllReplyTo ();
+  @Deprecated
+  default IMutableEmailData removeAllReplyTo ()
+  {
+    to ().clear ();
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setReplyTo (@Nullable final String sReplyToAddress)
   {
     removeAllReplyTo ();
@@ -65,6 +72,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setReplyTo (@Nullable final InternetAddress aReplyTo)
   {
     removeAllReplyTo ();
@@ -72,6 +80,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setReplyTo (@Nullable final IEmailAddress aReplyTo)
   {
     removeAllReplyTo ();
@@ -79,6 +88,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setReplyTo (@Nullable final IEmailAddress... aReplyTos)
   {
     removeAllReplyTo ();
@@ -86,6 +96,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setReplyTo (@Nullable final List <? extends IEmailAddress> aReplyTos)
   {
     removeAllReplyTo ();
@@ -93,21 +104,30 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addReplyTo (@Nullable final String sReplyToAddress)
   {
     return addReplyTo (sReplyToAddress == null ? null : new EmailAddress (sReplyToAddress));
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addReplyTo (@Nullable final InternetAddress aReplyTo)
   {
     return addReplyTo (InternetAddressHelper.getAsEmailAddress (aReplyTo));
   }
 
   @Nonnull
-  IMutableEmailData addReplyTo (@Nullable IEmailAddress aReplyTo);
+  @Deprecated
+  default IMutableEmailData addReplyTo (@Nullable final IEmailAddress aReplyTo)
+  {
+    if (aReplyTo != null)
+      replyTo ().add (aReplyTo);
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addReplyTo (@Nullable final IEmailAddress... aReplyTos)
   {
     if (aReplyTos != null)
@@ -117,6 +137,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addReplyTo (@Nullable final List <? extends IEmailAddress> aReplyTos)
   {
     if (aReplyTos != null)
@@ -126,9 +147,15 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
-  IMutableEmailData removeAllTo ();
+  @Deprecated
+  default IMutableEmailData removeAllTo ()
+  {
+    to ().clear ();
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setTo (@Nullable final String sToAddress)
   {
     removeAllTo ();
@@ -136,6 +163,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setTo (@Nullable final InternetAddress aTo)
   {
     removeAllTo ();
@@ -143,6 +171,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setTo (@Nullable final IEmailAddress aTo)
   {
     removeAllTo ();
@@ -150,6 +179,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setTo (@Nullable final IEmailAddress... aTos)
   {
     removeAllTo ();
@@ -157,6 +187,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setTo (@Nullable final List <? extends IEmailAddress> aTos)
   {
     removeAllTo ();
@@ -164,21 +195,30 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addTo (@Nullable final String sToAddress)
   {
     return addTo (sToAddress == null ? null : new EmailAddress (sToAddress));
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addTo (@Nullable final InternetAddress aTo)
   {
     return addTo (InternetAddressHelper.getAsEmailAddress (aTo));
   }
 
   @Nonnull
-  IMutableEmailData addTo (@Nullable IEmailAddress aTo);
+  @Deprecated
+  default IMutableEmailData addTo (@Nullable final IEmailAddress aTo)
+  {
+    if (aTo != null)
+      to ().add (aTo);
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addTo (@Nullable final IEmailAddress... aTos)
   {
     if (aTos != null)
@@ -188,6 +228,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addTo (@Nullable final List <? extends IEmailAddress> aTos)
   {
     if (aTos != null)
@@ -197,9 +238,15 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
-  IMutableEmailData removeAllCc ();
+  @Deprecated
+  default IMutableEmailData removeAllCc ()
+  {
+    cc ().clear ();
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setCc (@Nullable final String sCc)
   {
     removeAllCc ();
@@ -207,6 +254,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setCc (@Nullable final InternetAddress aCc)
   {
     removeAllCc ();
@@ -214,6 +262,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setCc (@Nullable final IEmailAddress aCc)
   {
     removeAllCc ();
@@ -221,6 +270,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setCc (@Nullable final IEmailAddress... aCcs)
   {
     removeAllCc ();
@@ -228,6 +278,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setCc (@Nullable final List <? extends IEmailAddress> aCcs)
   {
     removeAllCc ();
@@ -235,21 +286,30 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addCc (@Nullable final String sCc)
   {
     return addCc (sCc == null ? null : new EmailAddress (sCc));
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addCc (@Nullable final InternetAddress aCc)
   {
     return addCc (InternetAddressHelper.getAsEmailAddress (aCc));
   }
 
   @Nonnull
-  IMutableEmailData addCc (@Nullable IEmailAddress aCc);
+  @Deprecated
+  default IMutableEmailData addCc (@Nullable final IEmailAddress aCc)
+  {
+    if (aCc != null)
+      cc ().add (aCc);
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addCc (@Nullable final IEmailAddress... aCcs)
   {
     if (aCcs != null)
@@ -259,6 +319,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addCc (@Nullable final List <? extends IEmailAddress> aCcs)
   {
     if (aCcs != null)
@@ -268,9 +329,15 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
-  IMutableEmailData removeAllBcc ();
+  @Deprecated
+  default IMutableEmailData removeAllBcc ()
+  {
+    bcc ().removeAll ();
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setBcc (@Nullable final String sBcc)
   {
     removeAllBcc ();
@@ -278,6 +345,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setBcc (@Nullable final InternetAddress aBcc)
   {
     removeAllBcc ();
@@ -285,6 +353,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setBcc (@Nullable final IEmailAddress aBcc)
   {
     removeAllBcc ();
@@ -292,6 +361,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setBcc (@Nullable final IEmailAddress... aBccs)
   {
     removeAllBcc ();
@@ -299,6 +369,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData setBcc (@Nullable final List <? extends IEmailAddress> aBccs)
   {
     removeAllBcc ();
@@ -306,21 +377,30 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addBcc (@Nullable final String sBcc)
   {
     return addBcc (sBcc == null ? null : new EmailAddress (sBcc));
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addBcc (@Nullable final InternetAddress aBcc)
   {
     return addBcc (InternetAddressHelper.getAsEmailAddress (aBcc));
   }
 
   @Nonnull
-  IMutableEmailData addBcc (@Nullable IEmailAddress aBcc);
+  @Deprecated
+  default IMutableEmailData addBcc (@Nullable final IEmailAddress aBcc)
+  {
+    if (aBcc != null)
+      bcc ().add (aBcc);
+    return this;
+  }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addBcc (@Nullable final IEmailAddress... aBccs)
   {
     if (aBccs != null)
@@ -330,6 +410,7 @@ public interface IMutableEmailData extends IEmailData
   }
 
   @Nonnull
+  @Deprecated
   default IMutableEmailData addBcc (@Nullable final List <? extends IEmailAddress> aBccs)
   {
     if (aBccs != null)
@@ -347,14 +428,9 @@ public interface IMutableEmailData extends IEmailData
   @Nonnull
   IMutableEmailData setBody (@Nullable String sBody);
 
+  // Change return type
   @Nullable
   IMutableEmailAttachmentList getAttachments ();
-
-  /**
-   * @return The number of contained attachments. Always &ge; 0.
-   */
-  @Nonnegative
-  int getAttachmentCount ();
 
   /**
    * Specify a set of attachments to be send together with the mail. Pass

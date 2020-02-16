@@ -35,17 +35,17 @@ public final class EmailDataTest
     aEmailData.setFrom (aMA);
     assertEquals (aMA, aEmailData.getFrom ());
 
-    aEmailData.setReplyTo (aMA);
-    assertEquals (aMA, aEmailData.getAllReplyTo ().get (0));
+    aEmailData.replyTo ().set (aMA);
+    assertEquals (aMA, aEmailData.replyTo ().get (0));
 
-    aEmailData.setTo (aMA);
-    assertEquals (aMA, aEmailData.getAllTo ().get (0));
+    aEmailData.to ().set (aMA);
+    assertEquals (aMA, aEmailData.to ().get (0));
 
-    aEmailData.setCc (aMA);
-    assertEquals (aMA, aEmailData.getAllCc ().get (0));
+    aEmailData.cc ().set (aMA);
+    assertEquals (aMA, aEmailData.cc ().get (0));
 
-    aEmailData.setBcc (aMA);
-    assertEquals (aMA, aEmailData.getAllBcc ().get (0));
+    aEmailData.bcc ().set (aMA);
+    assertEquals (aMA, aEmailData.bcc ().get (0));
 
     CommonsTestHelper.testDefaultSerialization (aEmailData);
     XMLTestHelper.testMicroTypeConversion (aEmailData);

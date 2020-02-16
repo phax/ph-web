@@ -81,9 +81,9 @@ public final class MailAPITest
                                                                                           .getDocumentElement (),
                                                                                SMTPSettings.class);
         final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
-        aMailData.setTo ("ph@helger.com");
-        aMailData.setCc ("hudri@helger.com");
-        aMailData.setFrom ("auto@helger.com");
+        aMailData.to ().add (new EmailAddress ("ph@helger.com"));
+        aMailData.cc ().add (new EmailAddress ("hudri@helger.com"));
+        aMailData.setFrom (new EmailAddress ("auto@helger.com"));
         aMailData.setSubject ("JÜnit test with späcial käräktärs");
         aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-smtp");
         MailAPI.queueMail (aSMTPSettings, aMailData);
@@ -121,12 +121,12 @@ public final class MailAPITest
                                                                                         .getDocumentElement (),
                                                                              SMTPSettings.class);
       final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
-      aMailData.setTo (new EmailAddress ("ph@helger.com"));
+      aMailData.to ().add (new EmailAddress ("ph@helger.com"));
       aMailData.setFrom (new EmailAddress ("auto@helger.com"));
       aMailData.setSubject ("JÜnit test with späcial käräktärs");
       aMailData.setBody ("Hi there\nLine 2\n4 special chars: äöüß\n123456789\nBest regards: ph-smtp");
 
-      final ICommonsList <IMutableEmailData> aMails = new CommonsArrayList<> ();
+      final ICommonsList <IMutableEmailData> aMails = new CommonsArrayList <> ();
       for (int i = 0; i < 10; ++i)
         aMails.add (aMailData);
 

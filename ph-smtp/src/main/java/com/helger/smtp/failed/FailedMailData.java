@@ -230,7 +230,7 @@ public class FailedMailData implements ITypedObject <String>, Serializable
   {
     final StringBuilder ret = new StringBuilder ();
     if (m_aEmailData != null)
-      for (final IEmailAddress aEmailAddress : m_aEmailData.getAllTo ())
+      for (final IEmailAddress aEmailAddress : m_aEmailData.to ())
       {
         if (ret.length () > 0)
           ret.append ("; ");

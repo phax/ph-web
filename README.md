@@ -40,7 +40,8 @@ Add the following to your pom.xml to use this artifact:
     * Extended `HttpClientSettings` with a customizable user agent string
     * Added Apache HttpClient `PrivateKeyStrategy` and `TrustStrategy` implementations
     * Extended `HttpClientSettings` with "follow redirect" setting
-    * Made `HttpClientSettings` cloneable
+    * Made `HttpClientSettings` clonable
+    * Simplified public `IEmailData` API for the receivers to use mutable lists
 * v9.1.8 - 2020-02-14
     * Extracted `HttpClientSettings` from `HttpClientFactory`
     * Extended customization options of `HttpClientSettings`

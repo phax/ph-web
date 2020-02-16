@@ -25,8 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.ContainsSoftMigration;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.datetime.PDTWebDateHelper;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
@@ -71,13 +69,13 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
 
     if (aEmailData.getFrom () != null)
       _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_FROM), aEmailData.getFrom ());
-    for (final IEmailAddress aReplyTo : aEmailData.getAllReplyTo ())
+    for (final IEmailAddress aReplyTo : aEmailData.replyTo ())
       _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_REPLYTO), aReplyTo);
-    for (final IEmailAddress aTo : aEmailData.getAllTo ())
+    for (final IEmailAddress aTo : aEmailData.to ())
       _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_TO), aTo);
-    for (final IEmailAddress aCc : aEmailData.getAllCc ())
+    for (final IEmailAddress aCc : aEmailData.cc ())
       _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_CC), aCc);
-    for (final IEmailAddress aBcc : aEmailData.getAllBcc ())
+    for (final IEmailAddress aBcc : aEmailData.bcc ())
       _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_BCC), aBcc);
 
     if (aEmailData.getSentDateTime () != null)
@@ -124,25 +122,17 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     final IMicroElement eFrom = eEmailData.getFirstChildElement (ELEMENT_FROM);
     aEmailData.setFrom (_readEmailAddress (eFrom));
 
-    final ICommonsList <IEmailAddress> aReplyTos = new CommonsArrayList <> ();
     for (final IMicroElement eReplyTo : eEmailData.getAllChildElements (ELEMENT_REPLYTO))
-      aReplyTos.add (_readEmailAddress (eReplyTo));
-    aEmailData.setReplyTo (aReplyTos);
+      aEmailData.replyTo ().add (_readEmailAddress (eReplyTo));
 
-    final ICommonsList <IEmailAddress> aTos = new CommonsArrayList <> ();
     for (final IMicroElement eTo : eEmailData.getAllChildElements (ELEMENT_TO))
-      aTos.add (_readEmailAddress (eTo));
-    aEmailData.setTo (aTos);
+      aEmailData.to ().add (_readEmailAddress (eTo));
 
-    final ICommonsList <IEmailAddress> aCcs = new CommonsArrayList <> ();
     for (final IMicroElement eCc : eEmailData.getAllChildElements (ELEMENT_CC))
-      aCcs.add (_readEmailAddress (eCc));
-    aEmailData.setCc (aCcs);
+      aEmailData.cc ().add (_readEmailAddress (eCc));
 
-    final ICommonsList <IEmailAddress> aBccs = new CommonsArrayList <> ();
     for (final IMicroElement eBcc : eEmailData.getAllChildElements (ELEMENT_BCC))
-      aBccs.add (_readEmailAddress (eBcc));
-    aEmailData.setBcc (aBccs);
+      aEmailData.bcc ().add (_readEmailAddress (eBcc));
 
     final LocalDateTime aSentDateTime = eEmailData.getAttributeValueWithConversion (ATTR_SENTDATETIME,
                                                                                     LocalDateTime.class);

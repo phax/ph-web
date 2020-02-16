@@ -250,7 +250,7 @@ public final class MailAPI
         bCanQueue = false;
       }
 
-      if (aEmailData.getToCount () == 0)
+      if (aEmailData.to ().isEmpty ())
       {
         if (LOGGER.isErrorEnabled ())
           LOGGER.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
@@ -260,19 +260,19 @@ public final class MailAPI
       if (bSendVendorOnlyMails)
       {
         // In the debug version we can *only* send to vendor addresses!
-        if (hasNonVendorEmailAddress (aEmailData.getAllTo ()) ||
-            hasNonVendorEmailAddress (aEmailData.getAllCc ()) ||
-            hasNonVendorEmailAddress (aEmailData.getAllBcc ()))
+        if (hasNonVendorEmailAddress (aEmailData.to ()) ||
+            hasNonVendorEmailAddress (aEmailData.cc ()) ||
+            hasNonVendorEmailAddress (aEmailData.bcc ()))
         {
           if (LOGGER.isErrorEnabled ())
             LOGGER.error ("Debug mode: ignoring mail TO '" +
-                             aEmailData.getAllTo () +
-                             "'" +
-                             (aEmailData.getCcCount () > 0 ? " and CC '" + aEmailData.getAllCc () + "'" : "") +
-                             (aEmailData.getBccCount () > 0 ? " and BCC '" + aEmailData.getAllBcc () + "'" : "") +
-                             " because at least one address is not targeted to the vendor domain '" +
-                             VendorInfo.getVendorEmailSuffix () +
-                             "'");
+                          aEmailData.to () +
+                          "'" +
+                          (aEmailData.cc ().isNotEmpty () ? " and CC '" + aEmailData.cc () + "'" : "") +
+                          (aEmailData.bcc ().isNotEmpty () ? " and BCC '" + aEmailData.bcc () + "'" : "") +
+                          " because at least one address is not targeted to the vendor domain '" +
+                          VendorInfo.getVendorEmailSuffix () +
+                          "'");
           bCanQueue = false;
         }
       }
@@ -405,13 +405,13 @@ public final class MailAPI
       if (nQueues > 0 || nQueueLength > 0)
         if (LOGGER.isInfoEnabled ())
           LOGGER.info ("Stopping central mail queues: " +
-                          nQueues +
-                          " queue" +
-                          (nQueues == 1 ? "" : "s") +
-                          " with " +
-                          nQueueLength +
-                          " mail" +
-                          (nQueueLength == 1 ? "" : "s"));
+                       nQueues +
+                       " queue" +
+                       (nQueues == 1 ? "" : "s") +
+                       " with " +
+                       nQueueLength +
+                       " mail" +
+                       (nQueueLength == 1 ? "" : "s"));
     }
     finally
     {

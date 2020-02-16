@@ -202,4 +202,10 @@ public class HttpClientManager implements AutoCloseable
       HttpDebugger.afterRequest (aRequest, ret, aCaughtException);
     }
   }
+
+  @Nonnull
+  public static HttpClientManager create (@Nonnull final HttpClientSettings aHttpClientSettings)
+  {
+    return new HttpClientManager (new HttpClientFactory (aHttpClientSettings));
+  }
 }

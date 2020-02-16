@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.codec.Base64Codec;
+import com.helger.commons.codec.IdentityByteArrayCodec;
 import com.helger.commons.codec.QuotedPrintableCodec;
 import com.helger.commons.codec.RFC1522QCodec;
 import com.helger.commons.lang.EnumHelper;

@@ -47,10 +47,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 public class ExtendedHttpResponseException extends HttpResponseException
 {
-  private final StatusLine m_aStatusLine;
-  private final HttpResponse m_aHttpResponse;
+  private final transient StatusLine m_aStatusLine;
+  private final transient HttpResponse m_aHttpResponse;
   private final byte [] m_aResponseBody;
-  private final Charset m_aResponseCharset;
+  private final transient Charset m_aResponseCharset;
 
   @SuppressFBWarnings ("EI_EXPOSE_REP2")
   public ExtendedHttpResponseException (@Nonnull final StatusLine aStatusLine,

@@ -37,8 +37,8 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
   /**
    * For services that don't need backward compatibility, the parameters below
    * provide a higher level of security. This configuration is compatible with
-   * Firefox 27, Chrome 30, IE 11 on Windows 7, Edge, Opera 17, Safari 9, Android
-   * 5.0, and Java 8.
+   * Firefox 27, Chrome 30, IE 11 on Windows 7, Edge, Opera 17, Safari 9,
+   * Android 5.0, and Java 8.
    */
   MODERN ("modern",
           new ETLSVersion [] { ETLSVersion.TLS_12 },
@@ -54,9 +54,9 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
                           "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256" }),
   /**
    * For services that don't need compatibility with legacy clients (mostly
-   * WinXP), but still need to support a wide range of clients, this configuration
-   * is recommended. It is is compatible with Firefox 1, Chrome 1, IE 7, Opera 5
-   * and Safari 1.
+   * WinXP), but still need to support a wide range of clients, this
+   * configuration is recommended. It is is compatible with Firefox 1, Chrome 1,
+   * IE 7, Opera 5 and Safari 1.
    */
   INTERMEDIATE ("intermediate",
                 new ETLSVersion [] { ETLSVersion.TLS_12, ETLSVersion.TLS_11, ETLSVersion.TLS_10 },
@@ -148,6 +148,7 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
 
   @Nonnull
   @ReturnsMutableCopy
+  @Override
   public String [] getAllCipherSuitesAsArray ()
   {
     return m_aMode.getAllCipherSuitesAsArray ();
@@ -162,6 +163,7 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
 
   @Nonnull
   @ReturnsMutableCopy
+  @Override
   public ICommonsList <String> getAllTLSVersionIDs ()
   {
     return m_aMode.getAllTLSVersionIDs ();
@@ -169,6 +171,7 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
 
   @Nonnull
   @ReturnsMutableCopy
+  @Override
   public String [] getAllTLSVersionIDsAsArray ()
   {
     return m_aMode.getAllTLSVersionIDsAsArray ();

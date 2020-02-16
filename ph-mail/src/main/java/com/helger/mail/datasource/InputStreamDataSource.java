@@ -42,7 +42,7 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
 {
   public static final boolean DEFAULT_READ_MULTIPLE = false;
 
-  private final InputStream m_aIS;
+  private final transient InputStream m_aIS;
   private int m_nISAcquired = 0;
   private final String m_sName;
   private final String m_sContentType;

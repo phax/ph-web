@@ -61,9 +61,4 @@ public interface INetworkPort extends IHasName, IHasDescription, Serializable
    */
   @Nonnull
   String getDescription ();
-
-  default boolean hasDescription ()
-  {
-    return StringHelper.hasText (getDescription ());
-  }
 }

@@ -87,6 +87,7 @@ public enum EHttpProxyType implements IProxySettingsPerProtocol
    *         non-proxy hosts
    */
   @Nonnull
+  @Override
   public String getPropertyNameNoProxyHosts ()
   {
     // HTTPS uses the http noProxyHosts property

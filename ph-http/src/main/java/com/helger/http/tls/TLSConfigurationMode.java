@@ -109,6 +109,7 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
 
   @Nonnull
   @ReturnsMutableCopy
+  @Override
   public ICommonsList <String> getAllTLSVersionIDs ()
   {
     return m_aTLSVersions.getAllMapped (ETLSVersion::getID);
@@ -116,6 +117,7 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
 
   @Nullable
   @ReturnsMutableCopy
+  @Override
   public String [] getAllTLSVersionIDsAsArray ()
   {
     if (m_aTLSVersions.isEmpty ())
@@ -132,6 +134,7 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
 
   @Nullable
   @ReturnsMutableCopy
+  @Override
   public String [] getAllCipherSuitesAsArray ()
   {
     if (m_aCipherSuites.isEmpty ())

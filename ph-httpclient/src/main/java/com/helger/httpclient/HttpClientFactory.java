@@ -122,6 +122,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return <code>true</code> if system properties for HTTP client should be
    *         used, <code>false</code> if not. Default is <code>false</code>.
    * @since 8.7.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final boolean isUseSystemProperties ()
@@ -159,6 +160,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        <code>false</code> if not.
    * @return this for chaining
    * @since 8.7.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -172,6 +174,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return <code>true</code> if DNS client caching is enabled (default),
    *         <code>false</code> if it is disabled.
    * @since 8.8.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final boolean isUseDNSClientCache ()
@@ -187,6 +190,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        it.
    * @return this for chaining
    * @since 8.8.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -200,6 +204,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * Create a custom SSLContext to use for the SSL Socket factory.
    *
    * @return <code>null</code> if no custom context is present.
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nullable
   @Deprecated
@@ -215,6 +220,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        The SSL context to be used. May be <code>null</code>.
    * @return this for chaining
    * @since 9.0.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -234,6 +240,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @throws GeneralSecurityException
    *         In case TLS initialization fails
    * @since 9.0.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -247,6 +254,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The current hostname verifier to be used. Default to
    *         <code>null</code>.
    * @since 8.8.2
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nullable
   @Deprecated
@@ -262,6 +270,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        Verifier to be used. May be <code>null</code>.
    * @return this for chaining
    * @since 8.8.2
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -277,6 +286,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *
    * @return this for chaining
    * @since 9.0.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -290,6 +300,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The TLS configuration mode to be used. <code>null</code> means to
    *         use the default settings without specific cipher suites.
    * @since 9.0.5
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nullable
   @Deprecated
@@ -306,6 +317,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        default.
    * @return this for chaining
    * @since 9.0.5
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -317,6 +329,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The proxy host to be used. May be <code>null</code>.
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nullable
   @Deprecated
@@ -327,6 +340,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
   /**
    * @return The proxy server credentials to be used. May be <code>null</code>.
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nullable
   @Deprecated
@@ -343,7 +357,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.0
    * @see #setProxyCredentials(Credentials)
    * @see #setProxy(HttpHost, Credentials)
-   * @deprecated Use {@link #setProxyHost(HttpHost)} instead. Since 9.1.7
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final void setProxy (@Nullable final HttpHost aProxy)
@@ -359,6 +373,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.1.7
    * @see #setProxyCredentials(Credentials)
    * @see #setProxy(HttpHost, Credentials)
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final void setProxyHost (@Nullable final HttpHost aProxy)
@@ -376,6 +391,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 9.1.7
    * @see #setProxyHost(HttpHost)
    * @see #setProxy(HttpHost, Credentials)
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final void setProxyCredentials (@Nullable final Credentials aProxyCredentials)
@@ -395,7 +411,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @since 8.8.0
    * @see #setProxyHost(HttpHost)
    * @see #setProxyCredentials(Credentials)
-   * @deprecated Call the stuff separately (since 9.1.7)
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Deprecated
   public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
@@ -408,6 +424,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The set of all host names and IP addresses for which no proxy
    *         should be used. Never <code>null</code> and mutable.
    * @since 9.1.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @ReturnsMutableObject
@@ -428,6 +445,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        name.
    * @return this for chaining
    * @since 9.1.1
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -440,6 +458,7 @@ public class HttpClientFactory implements IHttpClientProvider
   /**
    * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
    * @since 9.0.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnegative
   @Deprecated
@@ -455,6 +474,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        Retries to use. Must be &ge; 0.
    * @return this for chaining
    * @since 9.0.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -468,6 +488,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The retry-mode. Never <code>null</code>. The default is
    *         {@link #DEFAULT_RETRY_MODE}.
    * @since 9.0.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -483,6 +504,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *        Retry mode to use. Must not be <code>null</code>.
    * @return this for chaining
    * @since 9.0.0
+   * @deprecated Use {@link HttpClientSettings} instead
    */
   @Nonnull
   @Deprecated
@@ -550,13 +572,21 @@ public class HttpClientFactory implements IHttpClientProvider
       // No custom SSL context present - use system defaults
       try
       {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Trying SSLConnectionSocketFactory.getSystemSocketFactory ()");
         aSSLFactory = SSLConnectionSocketFactory.getSystemSocketFactory ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Using SSL socket factory with an SSL context based on system propertiesas described in JSSE Reference Guide.");
       }
       catch (final SSLInitializationException ex)
       {
         try
         {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Trying SSLConnectionSocketFactory.getSocketFactory ()");
           aSSLFactory = SSLConnectionSocketFactory.getSocketFactory ();
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Using SSL socket factory with an SSL context based on the standard JSSEtrust material (cacerts file in the security properties directory).System properties are not taken into consideration.");
         }
         catch (final SSLInitializationException ex2)
         {

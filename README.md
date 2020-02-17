@@ -36,6 +36,8 @@ Add the following to your pom.xml to use this artifact:
 
 # News and noteworthy
 
+* v9.1.10 - work in progress
+    * Updated to dnsjava 3.0.0
 * v9.1.9 - 2020-02-16
     * Extended `HttpClientSettings` with a customizable user agent string
     * Added Apache HttpClient `PrivateKeyStrategy` and `TrustStrategy` implementations

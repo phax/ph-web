@@ -804,13 +804,47 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return The full URI of the current request.
    * @since 9.1.3
+   * @deprecated Since 9.1.10; Use either {@link #getURIDecoded()} or
+   *             {@link #getURIEncoded()}
    */
   @Nonnull
   @Nonempty
+  @Deprecated
   default String getURI ()
   {
-    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-uri",
-                                              k -> RequestHelper.getURI (getRequest ()));
+    return getURIDecoded ();
+  }
+
+  /**
+   * Get the full URI (excl. protocol and host) and parameters of the current
+   * request. <br>
+   * <code>/context/servlet/path/a/b?c=123&amp;d=789</code>
+   *
+   * @return The full URI of the current request.
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default String getURIDecoded ()
+  {
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-uri-decoded",
+                                              k -> RequestHelper.getURIDecoded (getRequest ()));
+  }
+
+  /**
+   * Get the full URI (excl. protocol and host) and parameters of the current
+   * request. <br>
+   * <code>/context/servlet/path/a/b?c=123&amp;d=789</code>
+   *
+   * @return The full URI of the current request.
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default String getURIEncoded ()
+  {
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-uri-encoded",
+                                              k -> RequestHelper.getURIEncoded (getRequest ()));
   }
 
   /**
@@ -819,13 +853,47 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>
    *
    * @return The full URL of the current request.
+   * @deprecated Since 9.1.10; Use {@link #getURLDecoded()} or
+   *             {@link #getURLEncoded()}
    */
+  @Deprecated
   @Nonnull
   @Nonempty
   default String getURL ()
   {
-    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-url",
-                                              k -> RequestHelper.getURL (getRequest ()));
+    return getURLDecoded ();
+  }
+
+  /**
+   * Get the full URL (incl. protocol) and parameters of the current request.
+   * <br>
+   * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>
+   *
+   * @return The full URL of the current request.
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default String getURLDecoded ()
+  {
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-url-decoded",
+                                              k -> RequestHelper.getURLDecoded (getRequest ()));
+  }
+
+  /**
+   * Get the full URL (incl. protocol) and parameters of the current request.
+   * <br>
+   * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>
+   *
+   * @return The full URL of the current request.
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default String getURLEncoded ()
+  {
+    return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-url-encoded",
+                                              k -> RequestHelper.getURLEncoded (getRequest ()));
   }
 
   /**

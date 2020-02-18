@@ -383,9 +383,30 @@ public final class RequestHelper
   @Nonnull
   public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    // false for backwards compatibility
+    return getPathWithinServletContext (aHttpRequest, false);
+  }
+
+  /**
+   * Return the URI of the request within the servlet context.
+   *
+   * @param aHttpRequest
+   *        The HTTP request. May not be <code>null</code>.
+   * @param bUseEncodedPath
+   *        <code>true</code> to use the URL encoded path, <code>false</code> to
+   *        use the decoded path
+   * @return the path within the web application and never <code>null</code>. By
+   *         default "/" is returned is an empty request URI is determined.
+   * @since 9.1.10
+   */
+  @Nonnull
+  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest,
+                                                    final boolean bUseEncodedPath)
+  {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = getRequestURI (aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
+                                               : getRequestURIDecoded (aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -421,9 +442,35 @@ public final class RequestHelper
   @Nonnull
   public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    // false for backwards compatibility
+    return getPathWithinServlet (aHttpRequest, false);
+  }
+
+  /**
+   * Return the path within the servlet mapping for the given request, i.e. the
+   * part of the request's URL beyond the part that called the servlet, or "" if
+   * the whole URL has been used to identify the servlet. <br>
+   * Detects include request URL if called within a RequestDispatcher include.
+   * <br>
+   * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -&gt; "/a". <br>
+   * E.g.: servlet mapping = "/test"; request URI = "/test" -&gt; "". <br>
+   * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -&gt; "".
+   *
+   * @param aHttpRequest
+   *        current HTTP request
+   * @param bUseEncodedPath
+   *        <code>true</code> to use the URL encoded path, <code>false</code> to
+   *        use the decoded path
+   * @return the path within the servlet mapping, or ""
+   * @since 9.1.10
+   */
+  @Nonnull
+  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest,
+                                             final boolean bUseEncodedPath)
+  {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sPathWithinApp = getPathWithinServletContext (aHttpRequest);
+    final String sPathWithinApp = getPathWithinServletContext (aHttpRequest, bUseEncodedPath);
     final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
     if (sPathWithinApp.startsWith (sServletPath))
       return sPathWithinApp.substring (sServletPath.length ());
@@ -549,26 +596,72 @@ public final class RequestHelper
    * @return The full URL.
    * @see #getURI(HttpServletRequest) getURI to retrieve the URL without the
    *      server scheme and name.
+   * @deprecated Since 9.1.10; use either
+   *             {@link #getURLDecoded(HttpServletRequest)} or
+   *             {@link #getURLEncoded(HttpServletRequest)}.
    */
+  @Deprecated
   @Nonnull
   @Nonempty
   public static String getURL (@Nonnull final HttpServletRequest aHttpRequest)
   {
+    return getURLDecoded (aHttpRequest);
+  }
+
+  /**
+   * Get the full URL (incl. protocol) and parameters of the passed request.<br>
+   *
+   * <pre>
+   * http://hostname.com/mywebapp/servlet/dir/a/b.xml=123?d=789
+   * </pre>
+   *
+   * @param aHttpRequest
+   *        The request to use. May not be <code>null</code>.
+   * @return The full URL.
+   * @see #getURIDecoded(HttpServletRequest) getURI to retrieve the URL without
+   *      the server scheme and name.
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  public static String getURLDecoded (@Nonnull final HttpServletRequest aHttpRequest)
+  {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final StringBuilder ret = getFullServerName (aHttpRequest.getScheme (),
-                                                 aHttpRequest.getServerName (),
-                                                 aHttpRequest.getServerPort ());
-
-    // Path
-    final String sRequestURI = getRequestURI (aHttpRequest);
-    ret.append (sRequestURI);
-
+    final StringBuilder ret = getRequestURLDecoded (aHttpRequest);
     // query string
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
     if (StringHelper.hasText (sQueryString))
       ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
+    return ret.toString ();
+  }
 
+  /**
+   * Get the full URL (incl. protocol) and parameters of the passed request.<br>
+   *
+   * <pre>
+   * http://hostname.com/mywebapp/servlet/dir/a/b.xml=123?d=789
+   * </pre>
+   *
+   * @param aHttpRequest
+   *        The request to use. May not be <code>null</code>.
+   * @return The full URL.
+   * @see #getURIEncoded(HttpServletRequest) getURI to retrieve the URL without
+   *      the server scheme and name.
+   * @since 9.1.10
+   */
+
+  @Nonnull
+  @Nonempty
+  public static String getURLEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final StringBuilder ret = getRequestURLEncoded (aHttpRequest);
+    // query string
+    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    if (StringHelper.hasText (sQueryString))
+      ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
   }
 
@@ -584,15 +677,69 @@ public final class RequestHelper
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
    * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
+   * @deprecated Since 9.1.10; Use either
+   *             {@link #getURIDecoded(HttpServletRequest)} or
+   *             {@link #getURIEncoded(HttpServletRequest)}
    */
   @Nonnull
   @Nonempty
+  @Deprecated
   public static String getURI (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    return getURIDecoded (aHttpRequest);
+  }
+
+  /**
+   * Get the full URI (excl. protocol) and parameters of the passed request.<br>
+   * Example:
+   *
+   * <pre>
+   * /mywebapp/servlet/dir/a/b.xml=123?d=789
+   * </pre>
+   *
+   * @param aHttpRequest
+   *        The request to use. May not be <code>null</code>.
+   * @return The full URI.
+   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  public static String getURIDecoded (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sReqUrl = getRequestURI (aHttpRequest);
-    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest); // d=789&x=y
+    final String sReqUrl = getRequestURIDecoded (aHttpRequest);
+    // d=789&x=y
+    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    if (StringHelper.hasText (sQueryString))
+      return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
+    return sReqUrl;
+  }
+
+  /**
+   * Get the full URI (excl. protocol) and parameters of the passed request.<br>
+   * Example:
+   *
+   * <pre>
+   * /mywebapp/servlet/dir/a/b.xml=123?d=789
+   * </pre>
+   *
+   * @param aHttpRequest
+   *        The request to use. May not be <code>null</code>.
+   * @return The full URI.
+   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  public static String getURIEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    final String sReqUrl = getRequestURIEncoded (aHttpRequest);
+    // d=789&x=y
+    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
     if (StringHelper.hasText (sQueryString))
       return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
     return sReqUrl;

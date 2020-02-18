@@ -226,7 +226,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   {
     ValueEnforcer.isTrue (aHttpResponse instanceof StatusAwareHttpResponseWrapper,
                           "Must be a StatusAwareHttpResponseWrapper");
-    final String sRequestURL = RequestHelper.getURL (aHttpRequest);
+    final String sRequestURL = RequestHelper.getURLDecoded (aHttpRequest);
     final int nStatusCode = ((StatusAwareHttpResponseWrapper) aHttpResponse).getStatusCode ();
     final HttpHeaderMap aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ();
     final String sCharacterEncoding = aHttpResponse.getCharacterEncoding ();

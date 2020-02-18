@@ -214,7 +214,7 @@ public class UnifiedResponse
   protected final String getRequestURL ()
   {
     if (m_sRequestURL == null)
-      m_sRequestURL = RequestHelper.getURL (m_aHttpRequest);
+      m_sRequestURL = RequestHelper.getURLDecoded (m_aHttpRequest);
     return m_sRequestURL;
   }
 

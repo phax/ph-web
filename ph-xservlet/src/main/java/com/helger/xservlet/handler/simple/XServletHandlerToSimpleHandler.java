@@ -92,7 +92,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                              @Nonnull final Throwable t) throws IOException, ServletException
   {
     if (LOGGER.isErrorEnabled ())
-      LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURL () + "'", t);
+      LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURLEncoded () + "'",
+                    t);
 
     // Invoke exception handler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())

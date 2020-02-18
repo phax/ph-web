@@ -45,7 +45,7 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
                         " " +
                         aRequestScope.getMethod () +
                         " on resource '" +
-                        aRequestScope.getURL () +
+                        aRequestScope.getURLEncoded () +
                         "'";
 
     if (StreamHelper.isKnownEOFException (t))

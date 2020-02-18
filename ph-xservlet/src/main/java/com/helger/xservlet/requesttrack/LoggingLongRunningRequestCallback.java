@@ -77,7 +77,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
                          "; millisecs=" +
                          nRunningMilliseconds +
                          "; URL=" +
-                         aRequestScope.getURL ());
+                         aRequestScope.getURLEncoded ());
   }
 
   @Override

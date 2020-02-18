@@ -150,7 +150,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return GlobalIDFactory.getNewIntID () + "@" + RequestHelper.getRequestURI (aHttpRequest);
+    return GlobalIDFactory.getNewIntID () + "@" + RequestHelper.getRequestURIDecoded (aHttpRequest);
   }
 
   public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,

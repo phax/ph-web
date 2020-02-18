@@ -508,10 +508,81 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return a <code>String</code> containing the part of the URL from the
    *         protocol name up to the query string
+   * @deprecated Since 9.1.10; Use either {@link #getRequestURIDecoded()} or
+   *             {@link #getRequestURIEncoded()}.
    */
+  @Deprecated
   default String getRequestURI ()
   {
-    return RequestHelper.getRequestURI (getRequest ());
+    return getRequestURIDecoded ();
+  }
+
+  /**
+   * Get the request URI without an eventually appended session
+   * (";jsessionid=...").<br>
+   * This method considers the GlobalWebScope custom context path.<br>
+   * This method returns the percent decoded parameters
+   * <p>
+   * <table summary="Examples of Returned Values">
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * <tr>
+   * <td>POST /some/pa%3Ath.html;JSESSIONID=4711</td>
+   * <td>/some/pa:th.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
+   *
+   * @return The request URI without the optional session ID. Never
+   *         <code>null</code>.
+   * @since 9.1.0
+   */
+  @Nonnull
+  default String getRequestURIDecoded ()
+  {
+    return RequestHelper.getRequestURIDecoded (getRequest ());
+  }
+
+  /**
+   * Get the request URI without an eventually appended session
+   * (";jsessionid=...").<br>
+   * This method considers the GlobalWebScope custom context path.<br>
+   * This method returns the percent encoded parameters "as is"
+   * <p>
+   * <table summary="Examples of Returned Values">
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * <tr>
+   * <td>POST /some/pa%3Ath.html;JSESSIONID=4711</td>
+   * <td>/some/pa%3Ath.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
+   *
+   * @return The request URI without the optional session ID. Never
+   *         <code>null</code>.
+   * @since 9.1.0
+   */
+  @Nonnull
+  default String getRequestURIEncoded ()
+  {
+    return RequestHelper.getRequestURIEncoded (getRequest ());
   }
 
   /**
@@ -533,10 +604,71 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return a <code>StringBuilder</code> object containing the reconstructed
    *         URL
+   * @deprecated Since 9.1.10; Use ither {@link #getRequestURLDecoded()} or
+   *             {@link #getRequestURLEncoded()}
    */
+  @Nonnull
+  @Nonempty
+  @Deprecated
   default StringBuilder getRequestURL ()
   {
-    return RequestHelper.getRequestURL (getRequest ());
+    return getRequestURLDecoded ();
+  }
+
+  /**
+   * Reconstructs the URL the client used to make the request. The returned URL
+   * contains a protocol, server name, port number, and server path, but it does
+   * not include query string parameters.<br>
+   * This method returns the percent decoded parameters
+   * <p>
+   * If this request has been forwarded using
+   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * reconstructed URL must reflect the path used to obtain the
+   * RequestDispatcher, and not the server path specified by the client.
+   * <p>
+   * Because this method returns a <code>StringBuilder</code>, not a string, you
+   * can modify the URL easily, for example, to append query parameters.
+   * <p>
+   * This method is useful for creating redirect messages and for reporting
+   * errors.
+   *
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default StringBuilder getRequestURLDecoded ()
+  {
+    return RequestHelper.getRequestURLDecoded (getRequest ());
+  }
+
+  /**
+   * Reconstructs the URL the client used to make the request. The returned URL
+   * contains a protocol, server name, port number, and server path, but it does
+   * not include query string parameters.<br>
+   * This method returns the percent encoded parameters "as is"
+   * <p>
+   * If this request has been forwarded using
+   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * reconstructed URL must reflect the path used to obtain the
+   * RequestDispatcher, and not the server path specified by the client.
+   * <p>
+   * Because this method returns a <code>StringBuilder</code>, not a string, you
+   * can modify the URL easily, for example, to append query parameters.
+   * <p>
+   * This method is useful for creating redirect messages and for reporting
+   * errors.
+   *
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  default StringBuilder getRequestURLEncoded ()
+  {
+    return RequestHelper.getRequestURLEncoded (getRequest ());
   }
 
   /**

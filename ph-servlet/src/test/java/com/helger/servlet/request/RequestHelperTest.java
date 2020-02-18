@@ -40,11 +40,18 @@ public final class RequestHelperTest
     final MockServletContext aSC = MockServletContext.create ();
     try
     {
-      final MockHttpServletRequest r = new MockHttpServletRequest (aSC,
-                                                                   EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
-      assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));
+      MockHttpServletRequest r = new MockHttpServletRequest (aSC,
+                                                             EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
+      assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
       r.addParameter ("abc", "xyz");
-      assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURI (r));
+      assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
+
+      r = new MockHttpServletRequest (aSC, EHttpMethod.GET).setAllPaths ("/context/servlet/in%3adex.xyz?x=1");
+      assertEquals ("/context/servlet/in:dex.xyz", RequestHelper.getRequestURIDecoded (r));
+      assertEquals ("/context/servlet/in%3adex.xyz", RequestHelper.getRequestURIEncoded (r));
+      r.addParameter ("abc", "xyz");
+      assertEquals ("/context/servlet/in:dex.xyz", RequestHelper.getRequestURIDecoded (r));
+      assertEquals ("/context/servlet/in%3adex.xyz", RequestHelper.getRequestURIEncoded (r));
     }
     finally
     {

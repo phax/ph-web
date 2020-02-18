@@ -229,48 +229,121 @@ public final class RequestHelper
    * </table>
    *
    * @param aHttpRequest
-   *        The HTTP request
-   * @return The request URI without the optional session ID
+   *        The HTTP request. May not be <code>null</code>.
+   * @return The request URI without the optional session ID. Never
+   *         <code>null</code>.
+   * @deprecated Since 9.1.10. Use
+   *             {@link #getRequestURIDecoded(HttpServletRequest)} or
+   *             {@link #getRequestURIEncoded(HttpServletRequest)} instead
    */
-  @Nullable
+  @Nonnull
+  @Deprecated
   public static String getRequestURI (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    return getRequestURIDecoded (aHttpRequest);
+  }
+
+  /**
+   * Get the request URI without an eventually appended session
+   * (";jsessionid=...").<br>
+   * This method considers the GlobalWebScope custom context path.<br>
+   * This method returns the percent decoded parameters
+   * <p>
+   * <table summary="Examples of Returned Values">
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * <tr>
+   * <td>POST /some/pa%3Ath.html;JSESSIONID=4711</td>
+   * <td>/some/pa:th.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
+   *
+   * @param aHttpRequest
+   *        The HTTP request. May not be <code>null</code>.
+   * @return The request URI without the optional session ID. Never
+   *         <code>null</code>.
+   * @since 9.1.0
+   */
+  @Nonnull
+  public static String getRequestURIDecoded (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
-    String sContextPath;
-    try
-    {
-      sContextPath = ServletContextPathHolder.getContextPath ();
-    }
-    catch (final IllegalStateException ex)
-    {
-      // Happens upon shutdown
-      sContextPath = "";
-    }
-    final String sRequestURI;
-    if (false)
-    {
-      // Lacks the information about percent encoding
-      final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
-      final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
+    // Avoid exception on shutdown
+    final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPath (), "");
 
-      sRequestURI = sContextPath + sServletPath + sPathInfo;
-    }
-    else
-    {
-      final String sRequestContextPath = ServletHelper.getRequestContextPath (aHttpRequest, "");
-      // Maintain the encoding
-      String sRealRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
-      // Strip "real" leading context path, so that the one from
-      // ServletContextPathHolder can be used instead
-      if (sRequestContextPath.length () > 0 && sRealRequestURI.startsWith (sRequestContextPath))
-        sRealRequestURI = sRealRequestURI.substring (sRequestContextPath.length ());
+    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+    // Lacks the information about percent encoding
+    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
 
-      sRequestURI = sContextPath + sRealRequestURI;
-    }
-    if (StringHelper.hasNoText (sRequestURI))
+    final String sRequestURI = sContextPath + sServletPath + sPathInfo;
+    if (sRequestURI.length () == 0)
+      return sRequestURI;
+
+    return getWithoutSessionID (sRequestURI);
+  }
+
+  /**
+   * Get the request URI without an eventually appended session
+   * (";jsessionid=...").<br>
+   * This method considers the GlobalWebScope custom context path.<br>
+   * This method returns the percent encoded parameters "as is"
+   * <p>
+   * <table summary="Examples of Returned Values">
+   * <tr align=left>
+   * <th>First line of HTTP request</th>
+   * <th>Returned Value</th>
+   * <tr>
+   * <td>POST /some/pa%3Ath.html;JSESSIONID=4711</td>
+   * <td>/some/pa%3Ath.html</td>
+   * </tr>
+   * <tr>
+   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
+   * <td>/a.html</td>
+   * </tr>
+   * <tr>
+   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
+   * <td>/xyz</td>
+   * </tr>
+   * </table>
+   *
+   * @param aHttpRequest
+   *        The HTTP request. May not be <code>null</code>.
+   * @return The request URI without the optional session ID. Never
+   *         <code>null</code>.
+   * @since 9.1.0
+   */
+  @Nonnull
+  public static String getRequestURIEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+
+    // Use the GlobalWebScope context path to build the result string instead of
+    // "aHttpRequest.getRequestURI"!
+    // Avoid exception on shutdown
+    final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPath (), "");
+
+    final String sRequestContextPath = ServletHelper.getRequestContextPath (aHttpRequest, "");
+    // Maintain the encoding
+    String sRealRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
+    // Strip "real" leading context path, so that the one from
+    // ServletContextPathHolder can be used instead
+    if (sRequestContextPath.length () > 0 && sRealRequestURI.startsWith (sRequestContextPath))
+      sRealRequestURI = sRealRequestURI.substring (sRequestContextPath.length ());
+
+    final String sRequestURI = sContextPath + sRealRequestURI;
+    if (sRequestURI.length () == 0)
       return sRequestURI;
 
     return getWithoutSessionID (sRequestURI);
@@ -382,22 +455,86 @@ public final class RequestHelper
    *        <code>null</code>.
    * @return a <code>StringBuilder</code> object containing the reconstructed
    *         URL
+   * @deprecated Since 9.1.10; Use either
+   *             {@link #getRequestURIDecoded(HttpServletRequest)} or
+   *             {@link #getRequestURLEncoded(HttpServletRequest)}
    */
   @Nonnull
   @Nonempty
+  @Deprecated
   public static StringBuilder getRequestURL (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    return getRequestURLDecoded (aHttpRequest);
+  }
+
+  /**
+   * Reconstructs the URL the client used to make the request. The returned URL
+   * contains a protocol, server name, port number, and server path, but it does
+   * not include query string parameters.<br>
+   * This method returns the percent decoded parameters
+   * <p>
+   * If this request has been forwarded using
+   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * reconstructed URL must reflect the path used to obtain the
+   * RequestDispatcher, and not the server path specified by the client.
+   * <p>
+   * Because this method returns a <code>StringBuilder</code>, not a string, you
+   * can modify the URL easily, for example, to append query parameters.
+   * <p>
+   * This method is useful for creating redirect messages and for reporting
+   * errors.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to get the request URL from. May not be
+   *        <code>null</code>.
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  public static StringBuilder getRequestURLDecoded (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final StringBuilder ret = getFullServerName (aHttpRequest.getScheme (),
-                                                 aHttpRequest.getServerName (),
-                                                 aHttpRequest.getServerPort ());
+    return getFullServerName (aHttpRequest.getScheme (),
+                              aHttpRequest.getServerName (),
+                              aHttpRequest.getServerPort ()).append (getRequestURIDecoded (aHttpRequest));
+  }
 
-    // Path
-    final String sRequestURI = getRequestURI (aHttpRequest);
-    ret.append (sRequestURI);
+  /**
+   * Reconstructs the URL the client used to make the request. The returned URL
+   * contains a protocol, server name, port number, and server path, but it does
+   * not include query string parameters.<br>
+   * This method returns the percent encoded parameters "as is"
+   * <p>
+   * If this request has been forwarded using
+   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * reconstructed URL must reflect the path used to obtain the
+   * RequestDispatcher, and not the server path specified by the client.
+   * <p>
+   * Because this method returns a <code>StringBuilder</code>, not a string, you
+   * can modify the URL easily, for example, to append query parameters.
+   * <p>
+   * This method is useful for creating redirect messages and for reporting
+   * errors.
+   *
+   * @param aHttpRequest
+   *        The HTTP request to get the request URL from. May not be
+   *        <code>null</code>.
+   * @return a <code>StringBuilder</code> object containing the reconstructed
+   *         URL
+   * @since 9.1.10
+   */
+  @Nonnull
+  @Nonempty
+  public static StringBuilder getRequestURLEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return ret;
+    return getFullServerName (aHttpRequest.getScheme (),
+                              aHttpRequest.getServerName (),
+                              aHttpRequest.getServerPort ()).append (getRequestURIEncoded (aHttpRequest));
   }
 
   /**

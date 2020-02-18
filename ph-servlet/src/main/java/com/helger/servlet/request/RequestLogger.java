@@ -77,14 +77,7 @@ public final class RequestLogger
       ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
       ret.put ("ContentType", aHttpRequest.getContentType ());
       ret.put ("ContextPath", ServletHelper.getRequestContextPath (aHttpRequest));
-      try
-      {
-        ret.put ("ContextPath2", ServletContextPathHolder.getContextPath ());
-      }
-      catch (final IllegalStateException ex)
-      {
-        // No global web scope available
-      }
+      ret.put ("ContextPath2", ServletContextPathHolder.getContextPathOrNull ());
       ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
       ret.put ("LocalName", aHttpRequest.getLocalName ());
       ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
@@ -100,23 +93,11 @@ public final class RequestLogger
       ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
       ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
       ret.put ("RequestURI", ServletHelper.getRequestRequestURI (aHttpRequest));
-      try
-      {
-        ret.put ("RequestURI2", RequestHelper.getRequestURI (aHttpRequest));
-      }
-      catch (final IllegalStateException ex)
-      {
-        // No global web scope available
-      }
+      ret.put ("RequestURI2", RequestHelper.getRequestURIDecoded (aHttpRequest));
+      ret.put ("RequestURI3", RequestHelper.getRequestURIEncoded (aHttpRequest));
       ret.put ("RequestURL", ServletHelper.getRequestRequestURL (aHttpRequest).toString ());
-      try
-      {
-        ret.put ("RequestURL2", RequestHelper.getRequestURL (aHttpRequest).toString ());
-      }
-      catch (final IllegalStateException ex)
-      {
-        // No global web scope available
-      }
+      ret.put ("RequestURL2", RequestHelper.getRequestURLDecoded (aHttpRequest).toString ());
+      ret.put ("RequestURL3", RequestHelper.getRequestURLEncoded (aHttpRequest).toString ());
       ret.put ("Scheme", aHttpRequest.getScheme ());
       ret.put ("ServerName", aHttpRequest.getServerName ());
       ret.put ("ServerPort", Integer.toString (aHttpRequest.getServerPort ()));

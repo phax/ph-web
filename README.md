@@ -38,7 +38,10 @@ Add the following to your pom.xml to use this artifact:
 
 * v9.1.10 - work in progress
     * Updated to dnsjava 3.0.0
-    * `RequestHelper.getRequestURI` now correctly returns the percentage encoded URI
+    * `RequestHelper.getRequestURI` was deprecated in favour of `getRequestURIEncoded` and `getRequestURIDecoded`
+    * `RequestHelper.getRequestURL` was deprecated in favour of `getRequestURLEncoded` and `getRequestURLDecoded`
+    * `IRequestWebScopeWithoutResponse.getRequestURI` was deprecated in favour of `getRequestURIEncoded` and `getRequestURIDecoded`
+    * `IRequestWebScopeWithoutResponse.getRequestURL` was deprecated in favour of `getRequestURLEncoded` and `getRequestURLDecoded`
 * v9.1.9 - 2020-02-16
     * Extended `HttpClientSettings` with a customizable user agent string
     * Added Apache HttpClient `PrivateKeyStrategy` and `TrustStrategy` implementations

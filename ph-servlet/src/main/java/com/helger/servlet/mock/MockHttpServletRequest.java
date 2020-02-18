@@ -1263,10 +1263,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
         // Remaining is the path info:
         setPathInfo (sPath);
 
-        // Update request URI
-        setRequestURI (ServletHelper.getRequestContextPath (this) +
-                       ServletHelper.getRequestServletPath (this) +
-                       ServletHelper.getRequestPathInfo (this));
+        // Update request URI (encoded)
+        setRequestURI (aURI.getRawPath ());
 
         // Request parameters
         setQueryString (aURI.getQuery ());

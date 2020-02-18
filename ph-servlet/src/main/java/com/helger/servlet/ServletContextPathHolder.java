@@ -188,6 +188,36 @@ public final class ServletContextPathHolder
    * considered as the prime or preferred context path of the application.
    *
    * @return The context path of the web application, or "" for the default
+   *         (root) context or <code>null</code> if none of them is set.
+   * @see #getCustomContextPath()
+   * @see #getServletContextPath()
+   * @since 9.1.0
+   */
+  @Nullable
+  public static String getContextPathOrNull ()
+  {
+    String ret = s_sCustomContextPath;
+    if (ret == null)
+      ret = s_sServletContextPath;
+    return ret;
+  }
+
+  /**
+   * Returns the context path of the web application.
+   * <p>
+   * The context path is the portion of the request URI that is used to select
+   * the context of the request. The context path always comes first in a
+   * request URI. The path starts with a "/" character but does not end with a
+   * "/" character. For servlets in the default (root) context, this method
+   * returns "".
+   * <p>
+   * It is possible that a servlet container may match a context by more than
+   * one context path. In such cases the context path will return the actual
+   * context path used by the request and it may differ from the path returned
+   * by this method. The context path returned by this method should be
+   * considered as the prime or preferred context path of the application.
+   *
+   * @return The context path of the web application, or "" for the default
    *         (root) context
    * @throws IllegalStateException
    *         if neither a custom context path nor a servlet context path is set
@@ -197,9 +227,7 @@ public final class ServletContextPathHolder
   @Nonnull
   public static String getContextPath ()
   {
-    String ret = s_sCustomContextPath;
-    if (ret == null)
-      ret = s_sServletContextPath;
+    final String ret = getContextPathOrNull ();
     if (ret == null)
       throw new IllegalStateException ("No servlet context path present!");
     return ret;

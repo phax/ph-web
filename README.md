@@ -30,13 +30,13 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.9</version>
+  <version>9.1.10</version>
 </dependency>
 ```
 
 # News and noteworthy
 
-* v9.1.10 - work in progress
+* v9.1.10 - 2020-02-18
     * Updated to dnsjava 3.0.0
     * All `getRequestURI` and `getRequestURL` methods were split in `...Encoded` and `...Decoded` methods for improved handling of URL encoding
 * v9.1.9 - 2020-02-16

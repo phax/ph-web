@@ -485,8 +485,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
 
   /**
    * Returns the part of this request's URL from the protocol name up to the
-   * query string in the first line of the HTTP request. The web container does
-   * not decode this String. For example:
+   * query string in the first line of the HTTP request.<br>
+   * The web container does not decode this String.
    * <table summary="Examples of Returned Values">
    * <tr align=left>
    * <th>First line of HTTP request</th>
@@ -517,7 +517,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   /**
    * Reconstructs the URL the client used to make the request. The returned URL
    * contains a protocol, server name, port number, and server path, but it does
-   * not include query string parameters.
+   * not include query string parameters.<br>
+   * The web container does not decode this String.
    * <p>
    * If this request has been forwarded using
    * {@link javax.servlet.RequestDispatcher#forward}, the server path in the

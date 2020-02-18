@@ -207,8 +207,9 @@ public final class RequestHelper
 
   /**
    * Get the request URI without an eventually appended session
-   * (";jsessionid=..."). This method considers the GlobalWebScope custom
-   * context path.
+   * (";jsessionid=...").<br>
+   * This method considers the GlobalWebScope custom context path.<br>
+   * This method returns the percent encoded parameters "as is"
    * <table summary="Examples of Returned Values">
    * <tr align=left>
    * <th>First line of HTTP request</th>
@@ -248,10 +249,27 @@ public final class RequestHelper
       // Happens upon shutdown
       sContextPath = "";
     }
-    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
-    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
+    final String sRequestURI;
+    if (false)
+    {
+      // Lacks the information about percent encoding
+      final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+      final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
 
-    final String sRequestURI = sContextPath + sServletPath + sPathInfo;
+      sRequestURI = sContextPath + sServletPath + sPathInfo;
+    }
+    else
+    {
+      final String sRequestContextPath = ServletHelper.getRequestContextPath (aHttpRequest, "");
+      // Maintain the encoding
+      String sRealRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
+      // Strip "real" leading context path, so that the one from
+      // ServletContextPathHolder can be used instead
+      if (sRequestContextPath.length () > 0 && sRealRequestURI.startsWith (sRequestContextPath))
+        sRealRequestURI = sRealRequestURI.substring (sRequestContextPath.length ());
+
+      sRequestURI = sContextPath + sRealRequestURI;
+    }
     if (StringHelper.hasNoText (sRequestURI))
       return sRequestURI;
 

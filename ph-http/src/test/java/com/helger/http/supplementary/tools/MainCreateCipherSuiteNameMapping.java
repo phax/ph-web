@@ -59,10 +59,12 @@ public final class MainCreateCipherSuiteNameMapping
       final ICommonsList <IMicroElement> aTDs = aTR.getAllChildElements ("td");
       if (aTDs.size () >= 6)
       {
-        final String sName1 = aTDs.get (1).getTextContentTrimmed ();
-        final String sName2 = aTDs.get (5).getTextContentTrimmed ();
+        final String sName1 = StringHelper.trimEnd (aTDs.get (1).getTextContentTrimmed (), "-OLD");
+        final String sName2 = StringHelper.trimEnd (aTDs.get (5).getTextContentTrimmed (), "_OLD");
         if (StringHelper.hasText (sName1) && StringHelper.hasText (sName2))
+        {
           aRoot.appendElement ("item").setAttribute ("openssl", sName1).setAttribute ("iana", sName2);
+        }
       }
     }
     MicroWriter.writeToFile (aDst, new File ("src/test/resources/ciphersuites/mapping.xml"));

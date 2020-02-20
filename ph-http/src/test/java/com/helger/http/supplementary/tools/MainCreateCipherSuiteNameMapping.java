@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.io.file.SimpleFileIO;
+import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
@@ -45,8 +46,8 @@ public final class MainCreateCipherSuiteNameMapping
     String s = SimpleFileIO.getFileAsString (new File ("src/test/resources/ciphersuites/Mapping OpenSSL cipher suite names to IANA names.html"),
                                              StandardCharsets.UTF_8);
     s += "</html>";
-    s = s.replace ("<br>", "<br/>");
-    s = s.replaceAll ("<meta[^>]+>", "");
+    s = StringHelper.replaceAll (s, "<br>", "<br/>");
+    s = RegExHelper.stringReplacePattern ("<meta[^>]+>", s, "");
     final IMicroElement aHtml = MicroReader.readMicroXML (s).getDocumentElement ();
     final IMicroElement aBody = aHtml.getFirstChildElement ("body");
     final IMicroElement aDiv = aBody.getFirstChildElement ("div");

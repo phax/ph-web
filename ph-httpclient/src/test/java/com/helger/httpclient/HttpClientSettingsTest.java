@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.http.tls.ETLSConfigurationMode;
+import com.helger.http.tls.ETLSConfigurationMode_2020_02;
 
 /**
  * Test class for class {@link HttpClientSettings}.
@@ -66,8 +66,8 @@ public final class HttpClientSettingsTest
   {
     final HttpClientSettings x = new HttpClientSettings ();
     assertNotNull (x.getClone ());
-    x.setTLSConfigurationMode (ETLSConfigurationMode.MODERN);
-    assertSame (ETLSConfigurationMode.MODERN, x.getClone ().getTLSConfigurationMode ());
+    x.setTLSConfigurationMode (ETLSConfigurationMode_2020_02.MODERN);
+    assertSame (ETLSConfigurationMode_2020_02.MODERN, x.getClone ().getTLSConfigurationMode ());
     x.setUserAgent ("bla");
     assertEquals ("bla", x.getClone ().getUserAgent ());
   }

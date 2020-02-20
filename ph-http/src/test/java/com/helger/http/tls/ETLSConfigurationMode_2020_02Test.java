@@ -25,23 +25,31 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.system.EJavaVersion;
 
 /**
- * Test class for class {@link ETLSConfigurationMode}.
+ * Test class for class {@link ETLSConfigurationMode_2020_02}.
  *
  * @author Philip Helger
  */
-public final class ETLSConfigurationModeTest
+public final class ETLSConfigurationMode_2020_02Test
 {
   @Test
   public void testBasic ()
   {
-    for (final ETLSConfigurationMode e : ETLSConfigurationMode.values ())
+    for (final ETLSConfigurationMode_2020_02 e : ETLSConfigurationMode_2020_02.values ())
     {
+      if (e == ETLSConfigurationMode_2020_02.MODERN &&
+          EJavaVersion.getCurrentVersion ().isOlderOrEqualsThan (EJavaVersion.JDK_10))
+      {
+        // The modern suite only supports Java 11 and onwards
+        continue;
+      }
+
       assertNotNull (e.getID ());
       assertTrue (StringHelper.hasText (e.getID ()));
-      assertSame (e, ETLSConfigurationMode.getFromIDOrNull (e.getID ()));
-      assertTrue (e.getAllCipherSuites ().isNotEmpty ());
+      assertSame (e, ETLSConfigurationMode_2020_02.getFromIDOrNull (e.getID ()));
+      assertTrue (e.toString (), e.getAllCipherSuites ().isNotEmpty ());
       assertTrue (e.getAllCipherSuitesAsArray ().length > 0);
       assertEquals (e.getAllCipherSuites ().size (), e.getAllCipherSuitesAsArray ().length);
       assertTrue (e.getAllTLSVersions ().isNotEmpty ());
@@ -50,7 +58,7 @@ public final class ETLSConfigurationModeTest
       assertTrue (e.getAllTLSVersionIDsAsArray ().length > 0);
       assertEquals (e.getAllTLSVersionIDs ().size (), e.getAllTLSVersionIDsAsArray ().length);
     }
-    assertNull (ETLSConfigurationMode.getFromIDOrNull ("bla"));
-    assertNull (ETLSConfigurationMode.getFromIDOrNull (null));
+    assertNull (ETLSConfigurationMode_2020_02.getFromIDOrNull ("bla"));
+    assertNull (ETLSConfigurationMode_2020_02.getFromIDOrNull (null));
   }
 }

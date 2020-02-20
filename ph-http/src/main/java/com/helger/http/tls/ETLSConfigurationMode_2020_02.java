@@ -33,12 +33,8 @@ import com.helger.commons.lang.EnumHelper;
  *
  * @author Philip Helger
  * @since 9.1.11
- * @deprecated Use the specific version like
- *             {@link ETLSConfigurationMode_2020_02} to get deterministic
- *             results
  */
-@Deprecated
-public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationMode
+public enum ETLSConfigurationMode_2020_02 implements IHasID <String>, ITLSConfigurationMode
 {
   /**
    * For services with clients that support TLS 1.3 and don't need backward
@@ -119,9 +115,9 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
   private final String m_sID;
   private final TLSConfigurationMode m_aMode;
 
-  private ETLSConfigurationMode (@Nonnull @Nonempty final String sID,
-                                 @Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
-                                 @Nonnull @Nonempty final String [] aCipherSuites)
+  private ETLSConfigurationMode_2020_02 (@Nonnull @Nonempty final String sID,
+                                         @Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
+                                         @Nonnull @Nonempty final String [] aCipherSuites)
   {
     m_sID = sID;
     m_aMode = new TLSConfigurationMode (aTLSVersions, aCipherSuites);
@@ -173,8 +169,8 @@ public enum ETLSConfigurationMode implements IHasID <String>, ITLSConfigurationM
   }
 
   @Nullable
-  public static ETLSConfigurationMode getFromIDOrNull (@Nullable final String sID)
+  public static ETLSConfigurationMode_2020_02 getFromIDOrNull (@Nullable final String sID)
   {
-    return EnumHelper.getFromIDOrNull (ETLSConfigurationMode.class, sID);
+    return EnumHelper.getFromIDOrNull (ETLSConfigurationMode_2020_02.class, sID);
   }
 }

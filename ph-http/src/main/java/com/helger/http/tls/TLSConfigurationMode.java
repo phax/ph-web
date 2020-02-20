@@ -23,6 +23,9 @@ import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -44,6 +47,8 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class TLSConfigurationMode implements ITLSConfigurationMode
 {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger (TLSConfigurationMode.class);
   private static final ICommonsMap <ETLSVersion, SSLContext> TLS_CONTEXT_MAP = new CommonsEnumMap <> (ETLSVersion.class);
 
   static
@@ -66,6 +71,8 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
         throw new InitializationException ("Error creating SSLContext for " + eTLSVersion, ex);
       }
     }
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Initialized TLS ContextMap with " + TLS_CONTEXT_MAP.keySet () + " keys");
   }
 
   public static boolean isSupportedCipherSuiteInSSLContext (@Nonnull final ETLSVersion [] aTLSVersions,
@@ -80,9 +87,15 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
         final SSLParameters aParams = aSSLCtx.getSupportedSSLParameters ();
         final ICommonsSet <String> aCipherSuites = new CommonsHashSet <> (aParams.getCipherSuites ());
         if (aCipherSuites.contains (sCipherSuite))
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Cipher suite '" + sCipherSuite + "' is supported in TLS version " + eTLSVersion);
           return true;
+        }
       }
     }
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Cipher suite '" + sCipherSuite + "' is not supported by any TLS version");
     return false;
   }
 
@@ -90,12 +103,25 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
   private final ICommonsList <ETLSVersion> m_aTLSVersions;
   private final ICommonsList <String> m_aCipherSuites;
 
+  /**
+   * Constructor. The constructor uses only the cipher suites that are supported
+   * by the underlying operating system and TLS version.
+   * {@link #getAllCipherSuites()} returns the filtered list.
+   *
+   * @param aTLSVersions
+   *        The supported TLS versions. Order is important and maintained. MAy
+   *        neither be <code>null</code> nor empty.
+   * @param aCipherSuites
+   *        The cipher suites to be used. May not be <code>null</code> and may
+   *        not contain <code>null</code> values.
+   */
   public TLSConfigurationMode (@Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
                                @Nonnull final String [] aCipherSuites)
   {
     ValueEnforcer.notEmptyNoNullValue (aTLSVersions, "TLSVersions");
     ValueEnforcer.notNullNoNullValue (aCipherSuites, "CipherSuites");
     m_aTLSVersions = new CommonsArrayList <> (aTLSVersions);
+    // Use only the cipher suites that are supported
     m_aCipherSuites = CommonsArrayList.createFiltered (aCipherSuites,
                                                        x -> isSupportedCipherSuiteInSSLContext (aTLSVersions, x));
   }

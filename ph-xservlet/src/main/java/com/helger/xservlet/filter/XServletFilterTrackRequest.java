@@ -59,8 +59,8 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
     {
       // Mainly debug logging to see, if this can be checked better
       // Therefore I need to understand better when this happens
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Request already contains an ID (" + sID + ") - so this is a recursive request...");
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Request already contains an ID (" + sID + ") - so this is a recursive request...");
       return false;
     }
 

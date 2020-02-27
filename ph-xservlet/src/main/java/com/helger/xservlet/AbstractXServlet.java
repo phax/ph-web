@@ -337,7 +337,9 @@ public abstract class AbstractXServlet extends HttpServlet
     // HTTP method is supported by this servlet implementation
     final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> (2 +
                                                                                                m_aFilterHighLevelList.size ());
+    // Add new instance all the time!
     aEffectiveFilters.add (new XServletFilterTimer (this));
+    // Add new instance all the time!
     aEffectiveFilters.add (new XServletFilterTrackRequest ());
     aEffectiveFilters.addAll (m_aFilterHighLevelList);
 

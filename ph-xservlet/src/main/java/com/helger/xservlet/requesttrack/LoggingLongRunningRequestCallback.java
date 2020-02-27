@@ -39,9 +39,11 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class LoggingLongRunningRequestCallback implements ILongRunningRequestCallback
 {
+  public static final boolean DEFAULT_LOG_REMOTE_ADDR = true;
   private static final Logger LOGGER = LoggerFactory.getLogger (LoggingLongRunningRequestCallback.class);
 
   private IErrorLevel m_aErrorLevel;
+  private boolean m_bLogRemoteAddr = DEFAULT_LOG_REMOTE_ADDR;
 
   public LoggingLongRunningRequestCallback ()
   {
@@ -53,6 +55,10 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
     setErrorLevel (aErrorLevel);
   }
 
+  /**
+   * @return The error level as provided in the constructor. Never
+   *         <code>null</code>.
+   */
   @Nonnull
   public final IErrorLevel getErrorLevel ()
   {
@@ -66,6 +72,18 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
     return this;
   }
 
+  public final boolean isLogRemoteAddr ()
+  {
+    return m_bLogRemoteAddr;
+  }
+
+  @Nonnull
+  public final LoggingLongRunningRequestCallback setLogRemoteAddr (final boolean bLogRemoteAddr)
+  {
+    m_bLogRemoteAddr = bLogRemoteAddr;
+    return this;
+  }
+
   public void onLongRunningRequest (@Nonnull @Nonempty final String sUniqueRequestID,
                                     @Nonnull final IRequestWebScope aRequestScope,
                                     @Nonnegative final long nRunningMilliseconds)
@@ -76,6 +94,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
                          sUniqueRequestID +
                          "; millisecs=" +
                          nRunningMilliseconds +
+                         (m_bLogRemoteAddr ? "; Remote IP=" + aRequestScope.getRemoteAddr () : "") +
                          "; URL=" +
                          aRequestScope.getURLEncoded ());
   }
@@ -83,6 +102,8 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel).getToString ();
+    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel)
+                                       .append ("LogRemoteAddr", m_bLogRemoteAddr)
+                                       .getToString ();
   }
 }

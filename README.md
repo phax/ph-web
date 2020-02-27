@@ -39,6 +39,7 @@ Add the following to your pom.xml to use this artifact:
 * v9.1.11 - work in progress
     * Updated the default TLS configuration modes to reflect the current situation 
     * Changed `ETLSConfigurationMode` to `ETLSConfigurationMode_2020_02` to indicate the date of effectiveness
+    * `LoggingLongRunningRequestCallback` now logs the remote address of the request by default
 * v9.1.10 - 2020-02-18
     * Updated to dnsjava 3.0.0
     * All `getRequestURI` and `getRequestURL` methods were split in `...Encoded` and `...Decoded` methods for improved handling of URL encoding

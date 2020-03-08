@@ -37,6 +37,7 @@ Add the following to your pom.xml to use this artifact:
 # News and noteworthy
 
 * v9.1.11 - work in progress
+    * Updated to Apache httpclient 4.5.12
     * Updated the default TLS configuration modes to reflect the current situation 
     * Changed `ETLSConfigurationMode` to `ETLSConfigurationMode_2020_02` to indicate the date of effectiveness
     * `LoggingLongRunningRequestCallback` now logs the remote address of the request by default

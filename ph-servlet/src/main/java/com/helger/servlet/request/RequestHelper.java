@@ -1212,21 +1212,45 @@ public final class RequestHelper
   @Nonnull
   public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    IUserAgent aUserAgent = (IUserAgent) aHttpRequest.getAttribute (IUserAgent.class.getName ());
-    if (aUserAgent == null)
+    final Object aAttr = aHttpRequest.getAttribute (IUserAgent.class.getName ());
+    try
     {
-      // Extract HTTP header from request
-      final String sUserAgent = getHttpUserAgentStringFromRequest (aHttpRequest);
-      aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
+      IUserAgent aUserAgent = (IUserAgent) aAttr;
       if (aUserAgent == null)
       {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("No user agent was passed in the request!");
-        aUserAgent = new UserAgent ("", new UserAgentElementList ());
+        // Extract HTTP header from request
+        final String sUserAgent = getHttpUserAgentStringFromRequest (aHttpRequest);
+        aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
+        if (aUserAgent == null)
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("No user agent was passed in the request!");
+          aUserAgent = new UserAgent ("", new UserAgentElementList ());
+        }
+        ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);
       }
-      ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);
+      return aUserAgent;
     }
-    return aUserAgent;
+    catch (final ClassCastException ex)
+    {
+      /**
+       * Don't know why this happens:
+       *
+       * <pre>
+       * Thread[144][ajp-nio-127.0.0.1-8009-exec-8][RUNNABLE][5][main]
+      java.lang.ClassCastException: com.helger.useragent.UserAgent cannot be cast to com.helger.useragent.IUserAgent
+      1.: com.helger.servlet.request.RequestHelper.getUserAgent(RequestHelper.java:1215)
+      2.: com.helger.photon.core.interror.InternalErrorHandler.fillInternalErrorMetaData(InternalErrorHandler.java:354)
+      3.: com.helger.photon.core.interror.InternalErrorHandler._notifyVendor(InternalErrorHandler.java:496)
+       * </pre>
+       */
+      LOGGER.error ("ClassCastException whysoever.");
+      if (aAttr != null)
+        LOGGER.error ("  IUserAgent classloader=" + aAttr.getClass ().getClassLoader ().toString ());
+      if (aAttr != null)
+        LOGGER.error ("  UserAgent classloader=" + UserAgent.class.getClassLoader ().toString ());
+      return null;
+    }
   }
 
   /**

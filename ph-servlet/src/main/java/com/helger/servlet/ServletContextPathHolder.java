@@ -16,6 +16,8 @@
  */
 package com.helger.servlet;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -26,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.debug.GlobalDebug;
 
 /**
  * Helper class to hold the current servlet context path. In certain cases it is
@@ -41,7 +44,7 @@ public final class ServletContextPathHolder
 
   private static String s_sServletContextPath;
   private static String s_sCustomContextPath;
-  private static boolean s_bSilentMode = true;
+  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (GlobalDebug.DEFAULT_SILENT_MODE);
 
   @PresentForCodeCoverage
   private static final ServletContextPathHolder s_aInstance = new ServletContextPathHolder ();
@@ -49,16 +52,14 @@ public final class ServletContextPathHolder
   private ServletContextPathHolder ()
   {}
 
-  public static boolean setSilentMode (final boolean bSilentMode)
-  {
-    final boolean bOld = s_bSilentMode;
-    s_bSilentMode = bSilentMode;
-    return bOld;
-  }
-
   public static boolean isSilentMode ()
   {
-    return s_bSilentMode;
+    return SILENT_MODE.get ();
+  }
+
+  public static boolean setSilentMode (final boolean bSilentMode)
+  {
+    return SILENT_MODE.getAndSet (bSilentMode);
   }
 
   public static void setServletContextPath (@Nonnull final String sServletContextPath)
@@ -66,8 +67,9 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
     if (s_sServletContextPath == null)
     {
-      if (LOGGER.isInfoEnabled () && !isSilentMode ())
-        LOGGER.info ("Setting servlet context path to '" + sServletContextPath + "'!");
+      if (!isSilentMode ())
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Setting servlet context path to '" + sServletContextPath + "'!");
       s_sServletContextPath = sServletContextPath;
     }
     else
@@ -123,8 +125,9 @@ public final class ServletContextPathHolder
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
     if (s_sCustomContextPath == null)
     {
-      if (LOGGER.isInfoEnabled () && !isSilentMode ())
-        LOGGER.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
+      if (!isSilentMode ())
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("Setting custom servlet context path to '" + sCustomContextPath + "'!");
       s_sCustomContextPath = sCustomContextPath;
     }
     else
@@ -240,14 +243,16 @@ public final class ServletContextPathHolder
   {
     if (s_sServletContextPath != null)
     {
-      if (LOGGER.isInfoEnabled () && !isSilentMode ())
-        LOGGER.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
+      if (!isSilentMode ())
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("The servlet context path '" + s_sServletContextPath + "' was cleared!");
       s_sServletContextPath = null;
     }
     if (s_sCustomContextPath != null)
     {
-      if (LOGGER.isInfoEnabled () && !isSilentMode ())
-        LOGGER.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
+      if (!isSilentMode ())
+        if (LOGGER.isInfoEnabled ())
+          LOGGER.info ("The custom servlet context path '" + s_sCustomContextPath + "' was cleared!");
       s_sCustomContextPath = null;
     }
   }

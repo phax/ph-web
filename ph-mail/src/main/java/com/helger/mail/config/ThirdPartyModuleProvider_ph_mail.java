@@ -34,10 +34,9 @@ import com.helger.commons.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModuleProviderSPI
 {
-  // TODO ph-commons > 9.3.9 update to EPL20
   public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("Jakarta Mail",
                                                                            "Eclipse Foundation",
-                                                                           ELicense.EPL10,
+                                                                           ELicense.EPL20,
                                                                            new Version (1, 6, 5),
                                                                            "https://eclipse-ee4j.github.io/mail/");
 

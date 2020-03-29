@@ -30,13 +30,13 @@ Add the following to your pom.xml to use this artifact:
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.10</version>
+  <version>9.1.11</version>
 </dependency>
 ```
 
 # News and noteworthy
 
-* v9.1.11 - work in progress
+* v9.1.11 - 2020-03-29
     * Updated to Apache httpclient 4.5.12
     * Updated to Jakarta Mail 1.6.5
     * Updated the default TLS configuration modes to reflect the current situation 

@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.OverrideOnDemand;
+import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.http.CHttp;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
@@ -54,8 +55,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   public static final XServletFilterConsistency INSTANCE = new XServletFilterConsistency ();
 
   private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterConsistency.class);
-  // TODO use GlobalDebug.DEFAULT_SILENT_MODE in ph-commons 9.3.10
-  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (true);
+  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (GlobalDebug.DEFAULT_SILENT_MODE);
 
   protected XServletFilterConsistency ()
   {}

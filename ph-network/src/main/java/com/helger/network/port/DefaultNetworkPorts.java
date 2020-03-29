@@ -4036,6 +4036,6 @@ public final class DefaultNetworkPorts
   public static void forEachPort (@Nonnull final Predicate <? super INetworkPort> aFilter,
                                   @Nonnull final Consumer <? super INetworkPort> aConsumer)
   {
-    s_aPortList.forEach (aConsumer, aFilter);
+    s_aPortList.findAll (aFilter, aConsumer);
   }
 }

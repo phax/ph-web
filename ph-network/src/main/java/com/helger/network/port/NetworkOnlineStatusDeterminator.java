@@ -74,7 +74,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnull
   public static Duration getCacheDuration ()
   {
-    return s_aRWLock.readLocked ( () -> s_aCacheDuration);
+    return s_aRWLock.readLockedGet ( () -> s_aCacheDuration);
   }
 
   /**
@@ -86,7 +86,7 @@ public final class NetworkOnlineStatusDeterminator
   public static void setCacheDuration (@Nonnull final Duration aCacheDuration)
   {
     ValueEnforcer.notNull (aCacheDuration, "CacheDuration");
-    s_aRWLock.writeLocked ( () -> s_aCacheDuration = aCacheDuration);
+    s_aRWLock.writeLockedGet ( () -> s_aCacheDuration = aCacheDuration);
   }
 
   /**
@@ -95,7 +95,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnegative
   public static int getConnectionTimeoutMilliseconds ()
   {
-    return s_aRWLock.readLocked ( () -> s_nConnectionTimeout);
+    return s_aRWLock.readLockedInt ( () -> s_nConnectionTimeout);
   }
 
   /**
@@ -107,7 +107,7 @@ public final class NetworkOnlineStatusDeterminator
   public static void setConnectionTimeoutMilliseconds (final int nConnectionTimeout)
   {
     ValueEnforcer.isGT0 (nConnectionTimeout, "ConnectionTimeout");
-    s_aRWLock.writeLocked ( () -> s_nConnectionTimeout = nConnectionTimeout);
+    s_aRWLock.writeLockedInt ( () -> s_nConnectionTimeout = nConnectionTimeout);
   }
 
   /**
@@ -117,7 +117,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nullable
   public static LocalDateTime getLastCheckDT ()
   {
-    return s_aRWLock.readLocked ( () -> s_aLastCheckDT);
+    return s_aRWLock.readLockedGet ( () -> s_aLastCheckDT);
   }
 
   /**
@@ -127,7 +127,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnull
   public static ENetworkOnlineStatus getCachedNetworkStatus ()
   {
-    return s_aRWLock.readLocked ( () -> s_eStatus);
+    return s_aRWLock.readLockedGet ( () -> s_eStatus);
   }
 
   /**

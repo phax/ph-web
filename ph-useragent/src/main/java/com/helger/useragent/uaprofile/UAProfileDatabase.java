@@ -76,12 +76,12 @@ public final class UAProfileDatabase
   @Nullable
   public static Consumer <UAProfile> getNewUAProfileCallback ()
   {
-    return s_aRWLock.readLocked ( () -> s_aNewUAProfileCallback);
+    return s_aRWLock.readLockedGet ( () -> s_aNewUAProfileCallback);
   }
 
   public static void setNewUAProfileCallback (@Nullable final Consumer <UAProfile> aCallback)
   {
-    s_aRWLock.writeLocked ( () -> s_aNewUAProfileCallback = aCallback);
+    s_aRWLock.writeLockedGet ( () -> s_aNewUAProfileCallback = aCallback);
   }
 
   @Nullable
@@ -263,18 +263,17 @@ public final class UAProfileDatabase
                     else
                     {
                       if (LOGGER.isWarnEnabled ())
-                        LOGGER.warn ("Decoded Base64 profile diff digest has an illegal length of " +
-                                        aDigest.length);
+                        LOGGER.warn ("Decoded Base64 profile diff digest has an illegal length of " + aDigest.length);
                     }
                   }
                   else
                   {
                     if (LOGGER.isWarnEnabled ())
                       LOGGER.warn ("Failed to decode Base64 profile diff digest '" +
-                                      sDiffDigest +
-                                      "' from token '" +
-                                      sToken +
-                                      "'");
+                                   sDiffDigest +
+                                   "' from token '" +
+                                   sToken +
+                                   "'");
                   }
                 }
                 else
@@ -359,7 +358,7 @@ public final class UAProfileDatabase
 
     if (aUAProfile.isSet ())
     {
-      final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUAProfiles.add (aUAProfile));
+      final boolean bAdded = s_aRWLock.writeLockedBoolean ( () -> s_aUniqueUAProfiles.add (aUAProfile));
       if (bAdded)
       {
         if (LOGGER.isDebugEnabled ())
@@ -376,6 +375,6 @@ public final class UAProfileDatabase
   @ReturnsMutableCopy
   public static ICommonsSet <UAProfile> getAllUniqueUAProfiles ()
   {
-    return s_aRWLock.readLocked (s_aUniqueUAProfiles::getClone);
+    return s_aRWLock.readLockedGet (s_aUniqueUAProfiles::getClone);
   }
 }

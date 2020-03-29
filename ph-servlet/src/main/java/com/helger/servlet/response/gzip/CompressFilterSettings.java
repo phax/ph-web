@@ -49,21 +49,30 @@ public final class CompressFilterSettings
   {}
 
   /**
-   * Mark the filter as loaded.
-   */
-  public static void markFilterLoaded ()
-  {
-    s_aRWLock.writeLocked ( () -> s_bFilterLoaded = true);
-    LOGGER.info ("CompressFilter is loaded");
-  }
-
-  /**
    * @return <code>true</code> if the filter is loaded, <code>false</code> if
    *         not
    */
   public static boolean isFilterLoaded ()
   {
-    return s_aRWLock.readLocked ( () -> s_bFilterLoaded);
+    return s_aRWLock.readLockedBoolean ( () -> s_bFilterLoaded);
+  }
+
+  /**
+   * Mark the filter as loaded.
+   */
+  public static void markFilterLoaded ()
+  {
+    s_aRWLock.writeLockedBoolean ( () -> s_bFilterLoaded = true);
+    LOGGER.info ("CompressFilter is loaded");
+  }
+
+  /**
+   * @return <code>true</code> if overall compression is enabled,
+   *         <code>false</code> if not
+   */
+  public static boolean isResponseCompressionEnabled ()
+  {
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
   }
 
   /**
@@ -76,22 +85,24 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
-      LOGGER.info ("CompressFilter responseCompressionEnabled=" + bResponseCompressionEnabled);
       return EChange.CHANGED;
     });
+    if (ret.isChanged ())
+      LOGGER.info ("CompressFilter responseCompressionEnabled=" + bResponseCompressionEnabled);
+    return ret;
   }
 
   /**
-   * @return <code>true</code> if overall compression is enabled,
+   * @return <code>true</code> if GZip compression is enabled,
    *         <code>false</code> if not
    */
-  public static boolean isResponseCompressionEnabled ()
+  public static boolean isResponseGzipEnabled ()
   {
-    return s_aRWLock.readLocked ( () -> s_bResponseCompressionEnabled);
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -105,22 +116,24 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
-      LOGGER.info ("CompressFilter responseGzipEnabled=" + bResponseGzipEnabled);
       return EChange.CHANGED;
     });
+    if (ret.isChanged ())
+      LOGGER.info ("CompressFilter responseGzipEnabled=" + bResponseGzipEnabled);
+    return ret;
   }
 
   /**
-   * @return <code>true</code> if GZip compression is enabled,
+   * @return <code>true</code> if Deflate compression is enabled,
    *         <code>false</code> if not
    */
-  public static boolean isResponseGzipEnabled ()
+  public static boolean isResponseDeflateEnabled ()
   {
-    return s_aRWLock.readLocked ( () -> s_bResponseGzipEnabled);
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -134,22 +147,15 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
-      LOGGER.info ("CompressFilter responseDeflateEnabled=" + bResponseDeflateEnabled);
       return EChange.CHANGED;
     });
-  }
-
-  /**
-   * @return <code>true</code> if Deflate compression is enabled,
-   *         <code>false</code> if not
-   */
-  public static boolean isResponseDeflateEnabled ()
-  {
-    return s_aRWLock.readLocked ( () -> s_bResponseDeflateEnabled);
+    if (ret.isChanged ())
+      LOGGER.info ("CompressFilter responseDeflateEnabled=" + bResponseDeflateEnabled);
+    return ret;
   }
 
   /**
@@ -168,28 +174,17 @@ public final class CompressFilterSettings
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
-      EChange eChange = EChange.UNCHANGED;
-      if (s_bResponseCompressionEnabled != bResponseCompressionEnabled)
-      {
-        s_bResponseCompressionEnabled = bResponseCompressionEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("CompressFilter responseCompressionEnabled=" + bResponseCompressionEnabled);
-      }
-      if (s_bResponseGzipEnabled != bResponseGzipEnabled)
-      {
-        s_bResponseGzipEnabled = bResponseGzipEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("CompressFilter responseGzipEnabled=" + bResponseGzipEnabled);
-      }
-      if (s_bResponseDeflateEnabled != bResponseDeflateEnabled)
-      {
-        s_bResponseDeflateEnabled = bResponseDeflateEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("CompressFilter responseDeflateEnabled=" + bResponseDeflateEnabled);
-      }
-      return eChange;
-    });
+    return setResponseCompressionEnabled (bResponseCompressionEnabled).or (setResponseGzipEnabled (bResponseGzipEnabled))
+                                                                      .or (setResponseDeflateEnabled (bResponseDeflateEnabled));
+  }
+
+  /**
+   * @return <code>true</code> if debugMode is enabled, <code>false</code> if
+   *         not
+   */
+  public static boolean isDebugModeEnabled ()
+  {
+    return s_aRWLock.readLockedBoolean ( () -> s_bDebugModeEnabled);
   }
 
   /**
@@ -202,21 +197,14 @@ public final class CompressFilterSettings
   @Nonnull
   public static EChange setDebugModeEnabled (final boolean bDebugModeEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bDebugModeEnabled == bDebugModeEnabled)
         return EChange.UNCHANGED;
       s_bDebugModeEnabled = bDebugModeEnabled;
-      LOGGER.info ("CompressFilter debugMode=" + bDebugModeEnabled);
       return EChange.CHANGED;
     });
-  }
-
-  /**
-   * @return <code>true</code> if debugMode is enabled, <code>false</code> if
-   *         not
-   */
-  public static boolean isDebugModeEnabled ()
-  {
-    return s_aRWLock.readLocked ( () -> s_bDebugModeEnabled);
+    if (ret.isChanged ())
+      LOGGER.info ("CompressFilter debugMode=" + bDebugModeEnabled);
+    return ret;
   }
 }

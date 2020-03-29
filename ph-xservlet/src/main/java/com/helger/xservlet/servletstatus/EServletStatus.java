@@ -40,7 +40,7 @@ public enum EServletStatus implements IHasDisplayText
 
   private final IHasDisplayText m_aText;
 
-  private EServletStatus (@Nonnull final EServletStatusText aText)
+  EServletStatus (@Nonnull final EServletStatusText aText)
   {
     m_aText = aText;
   }

@@ -125,7 +125,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Nullable
   public static IParamValueCleanser getParamValueCleanser ()
   {
-    return s_aRWLock.readLocked ( () -> s_aParamValueCleanser);
+    return s_aRWLock.readLockedGet ( () -> s_aParamValueCleanser);
   }
 
   /**
@@ -141,7 +141,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    */
   public static void setParamValueCleanser (@Nullable final IParamValueCleanser aParamValueCleanser)
   {
-    s_aRWLock.writeLocked ( () -> s_aParamValueCleanser = aParamValueCleanser);
+    s_aRWLock.writeLockedGet ( () -> s_aParamValueCleanser = aParamValueCleanser);
   }
 
   @Nonnull

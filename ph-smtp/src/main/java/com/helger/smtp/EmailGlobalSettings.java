@@ -90,6 +90,25 @@ public final class EmailGlobalSettings
   {}
 
   /**
+   * @return The maximum number of mails that can be queued. Always &gt; 0.
+   */
+  @Nonnegative
+  public static int getMaxMailQueueLength ()
+  {
+    return s_aRWLock.readLockedInt ( () -> s_nMaxMailQueueLen);
+  }
+
+  /**
+   * @return The maximum number of mails that are send out in one mail session.
+   *         Always &gt; 0 but &le; than {@link #getMaxMailQueueLength()}.
+   */
+  @Nonnegative
+  public static int getMaxMailSendCount ()
+  {
+    return s_aRWLock.readLockedInt ( () -> s_nMaxMailSendCount);
+  }
+
+  /**
    * Set mail queue settings. Changing these settings has no effect on existing
    * mail queues!
    *
@@ -113,7 +132,7 @@ public final class EmailGlobalSettings
                                 nMaxMailSendCount +
                                 ")");
 
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)
         return EChange.UNCHANGED;
       s_nMaxMailQueueLen = nMaxMailQueueLen;
@@ -123,22 +142,11 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return The maximum number of mails that can be queued. Always &gt; 0.
+   * @return <code>true</code> to use SSL by default
    */
-  @Nonnegative
-  public static int getMaxMailQueueLength ()
+  public static boolean isUseSSL ()
   {
-    return s_aRWLock.readLocked ( () -> s_nMaxMailQueueLen);
-  }
-
-  /**
-   * @return The maximum number of mails that are send out in one mail session.
-   *         Always &gt; 0 but &le; than {@link #getMaxMailQueueLength()}.
-   */
-  @Nonnegative
-  public static int getMaxMailSendCount ()
-  {
-    return s_aRWLock.readLocked ( () -> s_nMaxMailSendCount);
+    return s_aRWLock.readLockedBoolean ( () -> s_bUseSSL);
   }
 
   /**
@@ -151,7 +159,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setUseSSL (final boolean bUseSSL)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (s_bUseSSL == bUseSSL)
         return EChange.UNCHANGED;
       s_bUseSSL = bUseSSL;
@@ -160,11 +168,11 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> to use SSL by default
+   * @return <code>true</code> to use STARTTLS by default
    */
-  public static boolean isUseSSL ()
+  public static boolean isUseSTARTTLS ()
   {
-    return s_aRWLock.readLocked ( () -> s_bUseSSL);
+    return s_aRWLock.readLockedBoolean ( () -> s_bUseSTARTTLS);
   }
 
   /**
@@ -177,7 +185,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setUseSTARTTLS (final boolean bUseSTARTTLS)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (s_bUseSTARTTLS == bUseSTARTTLS)
         return EChange.UNCHANGED;
       s_bUseSTARTTLS = bUseSTARTTLS;
@@ -186,11 +194,14 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> to use STARTTLS by default
+   * Get the connection timeout in milliseconds.
+   *
+   * @return If the value is &le; 0 than there should be no connection timeout.
    */
-  public static boolean isUseSTARTTLS ()
+  @CheckForSigned
+  public static long getConnectionTimeoutMilliSecs ()
   {
-    return s_aRWLock.readLocked ( () -> s_bUseSTARTTLS);
+    return s_aRWLock.readLockedLong ( () -> s_nConnectionTimeoutMilliSecs);
   }
 
   /**
@@ -205,7 +216,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setConnectionTimeoutMilliSecs (final long nMilliSecs)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (s_nConnectionTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -216,14 +227,14 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * Get the connection timeout in milliseconds.
+   * Get the socket timeout in milliseconds.
    *
    * @return If the value is &le; 0 than there should be no connection timeout.
    */
   @CheckForSigned
-  public static long getConnectionTimeoutMilliSecs ()
+  public static long getTimeoutMilliSecs ()
   {
-    return s_aRWLock.readLocked ( () -> s_nConnectionTimeoutMilliSecs);
+    return s_aRWLock.readLockedLong ( () -> s_nTimeoutMilliSecs);
   }
 
   /**
@@ -238,7 +249,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setTimeoutMilliSecs (final long nMilliSecs)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (s_nTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -249,14 +260,13 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * Get the socket timeout in milliseconds.
-   *
-   * @return If the value is &le; 0 than there should be no connection timeout.
+   * @return <code>true</code> if SMTP debugging is active, <code>false</code>
+   *         if not.
+   * @since 1.0.1
    */
-  @CheckForSigned
-  public static long getTimeoutMilliSecs ()
+  public static boolean isDebugSMTP ()
   {
-    return s_aRWLock.readLocked ( () -> s_nTimeoutMilliSecs);
+    return s_aRWLock.readLockedBoolean ( () -> s_bDebugSMTP);
   }
 
   /**
@@ -269,22 +279,12 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setDebugSMTP (final boolean bDebugSMTP)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    return s_aRWLock.writeLockedGet ( () -> {
       if (s_bDebugSMTP == bDebugSMTP)
         return EChange.UNCHANGED;
       s_bDebugSMTP = bDebugSMTP;
       return EChange.CHANGED;
     });
-  }
-
-  /**
-   * @return <code>true</code> if SMTP debugging is active, <code>false</code>
-   *         if not.
-   * @since 1.0.1
-   */
-  public static boolean isDebugSMTP ()
-  {
-    return s_aRWLock.readLocked ( () -> s_bDebugSMTP);
   }
 
   /**
@@ -297,7 +297,7 @@ public final class EmailGlobalSettings
   public static void addConnectionListener (@Nonnull final ConnectionListener aConnectionListener)
   {
     ValueEnforcer.notNull (aConnectionListener, "ConnectionListener");
-    s_aRWLock.writeLocked ( () -> s_aConnectionListeners.add (aConnectionListener));
+    s_aRWLock.writeLockedBoolean ( () -> s_aConnectionListeners.add (aConnectionListener));
   }
 
   /**
@@ -314,7 +314,7 @@ public final class EmailGlobalSettings
     if (aConnectionListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
+    return s_aRWLock.writeLockedGet ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
   }
 
   /**
@@ -326,7 +326,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange removeAllConnectionListeners ()
   {
-    return s_aRWLock.writeLocked ( () -> s_aConnectionListeners.removeAll ());
+    return s_aRWLock.writeLockedGet (s_aConnectionListeners::removeAll);
   }
 
   /**
@@ -336,7 +336,7 @@ public final class EmailGlobalSettings
    */
   public static boolean hasConnectionListeners ()
   {
-    return s_aRWLock.readLocked ( () -> s_aConnectionListeners.isNotEmpty ());
+    return s_aRWLock.readLockedBoolean (s_aConnectionListeners::isNotEmpty);
   }
 
   /**
@@ -347,7 +347,7 @@ public final class EmailGlobalSettings
   @ReturnsMutableCopy
   public static ICommonsList <ConnectionListener> getAllConnectionListeners ()
   {
-    return s_aRWLock.readLocked ( () -> s_aConnectionListeners.getClone ());
+    return s_aRWLock.readLockedGet (s_aConnectionListeners::getClone);
   }
 
   /**
@@ -360,7 +360,7 @@ public final class EmailGlobalSettings
   public static void addEmailDataTransportListener (@Nonnull final IEmailDataTransportListener aEmailDataTransportListener)
   {
     ValueEnforcer.notNull (aEmailDataTransportListener, "EmailDataTransportListener");
-    s_aRWLock.writeLocked ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
+    s_aRWLock.writeLockedBoolean ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
   }
 
   /**
@@ -377,7 +377,7 @@ public final class EmailGlobalSettings
     if (aEmailDataTransportListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
+    return s_aRWLock.writeLockedGet ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
   }
 
   /**
@@ -389,7 +389,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange removeAllEmailDataTransportListeners ()
   {
-    return s_aRWLock.writeLocked ( () -> s_aEmailDataTransportListeners.removeAll ());
+    return s_aRWLock.writeLockedGet (s_aEmailDataTransportListeners::removeAll);
   }
 
   /**
@@ -399,7 +399,7 @@ public final class EmailGlobalSettings
    */
   public static boolean hasEmailDataTransportListeners ()
   {
-    return s_aRWLock.readLocked ( () -> s_aEmailDataTransportListeners.isNotEmpty ());
+    return s_aRWLock.readLockedBoolean (s_aEmailDataTransportListeners::isNotEmpty);
   }
 
   /**
@@ -410,7 +410,7 @@ public final class EmailGlobalSettings
   @ReturnsMutableCopy
   public static ICommonsList <IEmailDataTransportListener> getAllEmailDataTransportListeners ()
   {
-    return s_aRWLock.readLocked ( () -> s_aEmailDataTransportListeners.getClone ());
+    return s_aRWLock.readLockedGet (s_aEmailDataTransportListeners::getClone);
   }
 
   /**
@@ -426,8 +426,8 @@ public final class EmailGlobalSettings
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp.protocol").setLevel (bDebug ? Level.FINEST : Level.INFO);
     SystemProperties.setPropertyValue ("mail.socket.debug", bDebug);
-    SystemProperties.setPropertyValue ("java.security.debug", bDebug ? "certpath" : null);
-    SystemProperties.setPropertyValue ("javax.net.debug", bDebug ? "trustmanager" : null);
+    SystemProperties.setPropertyValue (GlobalDebug.SYSTEM_PROPERTY_JAVA_SECURITY_DEBUG, bDebug ? "certpath" : null);
+    SystemProperties.setPropertyValue (GlobalDebug.SYSTEM_PROPERTY_JAVAX_NET_DEBUG, bDebug ? "trustmanager" : null);
   }
 
   /**

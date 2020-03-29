@@ -72,16 +72,22 @@ public final class RequestTrackingManager
   public RequestTrackingManager ()
   {}
 
+  public boolean isLongRunningCheckEnabled ()
+  {
+    return m_aRWLock.readLockedBoolean ( () -> m_bLongRunningCheckEnabled);
+  }
+
   @Nonnull
   public RequestTrackingManager setLongRunningCheckEnabled (final boolean bLongRunningCheckEnabled)
   {
-    m_aRWLock.writeLocked ( () -> m_bLongRunningCheckEnabled = bLongRunningCheckEnabled);
+    m_aRWLock.writeLockedBoolean ( () -> m_bLongRunningCheckEnabled = bLongRunningCheckEnabled);
     return this;
   }
 
-  public boolean isLongRunningCheckEnabled ()
+  @Nonnegative
+  public long getNotificationMilliseconds ()
   {
-    return m_aRWLock.readLocked ( () -> m_bLongRunningCheckEnabled);
+    return m_aRWLock.readLockedLong ( () -> m_nLongRunningMilliSeconds);
   }
 
   @Nonnull
@@ -89,26 +95,26 @@ public final class RequestTrackingManager
   {
     ValueEnforcer.isGT0 (nLongRunningMilliSeconds, "LongRunningMilliSeconds");
 
-    m_aRWLock.writeLocked ( () -> m_nLongRunningMilliSeconds = nLongRunningMilliSeconds);
-    return this;
-  }
-
-  @Nonnegative
-  public long getNotificationMilliseconds ()
-  {
-    return m_aRWLock.readLocked ( () -> m_nLongRunningMilliSeconds);
-  }
-
-  @Nonnull
-  public RequestTrackingManager setParallelRunningRequestCheckEnabled (final boolean bParallelRunningRequestCheckEnabled)
-  {
-    m_aRWLock.writeLocked ( () -> m_bParallelRunningRequestCheckEnabled = bParallelRunningRequestCheckEnabled);
+    m_aRWLock.writeLockedLong ( () -> m_nLongRunningMilliSeconds = nLongRunningMilliSeconds);
     return this;
   }
 
   public boolean isParallelRunningRequestCheckEnabled ()
   {
-    return m_aRWLock.readLocked ( () -> m_bParallelRunningRequestCheckEnabled);
+    return m_aRWLock.readLockedBoolean ( () -> m_bParallelRunningRequestCheckEnabled);
+  }
+
+  @Nonnull
+  public RequestTrackingManager setParallelRunningRequestCheckEnabled (final boolean bParallelRunningRequestCheckEnabled)
+  {
+    m_aRWLock.writeLockedBoolean ( () -> m_bParallelRunningRequestCheckEnabled = bParallelRunningRequestCheckEnabled);
+    return this;
+  }
+
+  @Nonnegative
+  public int getParallelRunningRequestBarrier ()
+  {
+    return m_aRWLock.readLockedInt ( () -> m_nParallelRunningRequestBarrier);
   }
 
   @Nonnull
@@ -116,14 +122,8 @@ public final class RequestTrackingManager
   {
     ValueEnforcer.isGT0 (nParallelRunningRequestBarrier, "ParallelRunningRequestBarrier");
 
-    m_aRWLock.writeLocked ( () -> m_nParallelRunningRequestBarrier = nParallelRunningRequestBarrier);
+    m_aRWLock.writeLockedInt ( () -> m_nParallelRunningRequestBarrier = nParallelRunningRequestBarrier);
     return this;
-  }
-
-  @Nonnegative
-  public int getParallelRunningRequestBarrier ()
-  {
-    return m_aRWLock.readLocked ( () -> m_nParallelRunningRequestBarrier);
   }
 
   public void addRequest (@Nonnull @Nonempty final String sRequestID,

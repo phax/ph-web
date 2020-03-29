@@ -407,7 +407,7 @@ public final class WebScopeManager
       // a previous invocation are invalidated on Tomcat restart
 
       // Ensure that session.invalidate can not be called recursively
-      final boolean bCanInvalidateSession = s_aRWLock.writeLocked ( () -> s_aSessionsInInvalidation.add (sSessionID));
+      final boolean bCanInvalidateSession = s_aRWLock.writeLockedBoolean ( () -> s_aSessionsInInvalidation.add (sSessionID));
 
       if (bCanInvalidateSession)
       {
@@ -424,7 +424,7 @@ public final class WebScopeManager
         finally
         {
           // Remove from "in invalidation" list
-          s_aRWLock.writeLocked ( () -> s_aSessionsInInvalidation.remove (sSessionID));
+          s_aRWLock.writeLockedBoolean ( () -> s_aSessionsInInvalidation.remove (sSessionID));
         }
       }
     }

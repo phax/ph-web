@@ -21,6 +21,7 @@ import java.io.Serializable;
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.Immutable;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.servlet.request.RequestHelper;
 
@@ -41,7 +43,10 @@ import com.helger.servlet.request.RequestHelper;
 public class StaticServerInfo implements Serializable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (StaticServerInfo.class);
-  private static volatile StaticServerInfo s_aDefault;
+
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  @GuardedBy ("s_aRWLock")
+  private static StaticServerInfo s_aDefault;
 
   private final String m_sScheme;
   private final String m_sServerName;
@@ -134,31 +139,31 @@ public class StaticServerInfo implements Serializable
                                        .getToString ();
   }
 
+  public static boolean isSet ()
+  {
+    return s_aRWLock.readLockedBoolean ( () -> s_aDefault != null);
+  }
+
   @Nonnull
   public static StaticServerInfo init (@Nonnull @Nonempty final String sScheme,
                                        @Nonnull @Nonempty final String sServerName,
                                        @Nonnegative final int nServerPort,
                                        @Nonnull final String sContextPath)
   {
-    if (s_aDefault != null)
+    if (isSet ())
       throw new IllegalStateException ("Static server info already present!");
 
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Static server information set: " + aDefault.toString ());
-    s_aDefault = aDefault;
+    s_aRWLock.writeLockedGet ( () -> s_aDefault = aDefault);
     return aDefault;
-  }
-
-  public static boolean isSet ()
-  {
-    return s_aDefault != null;
   }
 
   @Nonnull
   public static StaticServerInfo getInstance ()
   {
-    final StaticServerInfo ret = s_aDefault;
+    final StaticServerInfo ret = s_aRWLock.readLockedGet ( () -> s_aDefault);
     if (ret == null)
       throw new IllegalStateException ("No default web server info present!");
     return ret;

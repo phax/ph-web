@@ -66,7 +66,7 @@ public class FileItemHeaders implements IFileItemHeaders
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLocked ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
     return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
   }
 
@@ -95,21 +95,21 @@ public class FileItemHeaders implements IFileItemHeaders
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLocked ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
     return IteratorHelper.getIterator (aHeaderValueList);
   }
 
   @Nonnull
   public Iterator <String> getHeaderNames ()
   {
-    return m_aRWLock.readLocked (m_aHeaderNameList::iterator);
+    return m_aRWLock.readLockedGet (m_aHeaderNameList::iterator);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
-    return m_aRWLock.readLocked (m_aHeaderNameList::getCopyAsList);
+    return m_aRWLock.readLockedGet (m_aHeaderNameList::getCopyAsList);
   }
 
   /**
@@ -141,6 +141,6 @@ public class FileItemHeaders implements IFileItemHeaders
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("headerNameToValueListMap", m_aHeaderNameToValueListMap).getToString ();
+    return new ToStringGenerator (this).append ("HeaderNameToValueListMap", m_aHeaderNameToValueListMap).getToString ();
   }
 }

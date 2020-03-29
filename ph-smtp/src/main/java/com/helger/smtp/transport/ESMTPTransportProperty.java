@@ -98,9 +98,9 @@ public enum ESMTPTransportProperty
   /**
    * If set, lists the authentication mechanisms to consider, and the order in
    * which to consider them. Only mechanisms supported by the server and
-   * supported by the current implementation will be used. The default is
-   * "LOGIN PLAIN DIGEST-MD5 NTLM", which includes all the authentication
-   * mechanisms supported by the current implementation.
+   * supported by the current implementation will be used. The default is "LOGIN
+   * PLAIN DIGEST-MD5 NTLM", which includes all the authentication mechanisms
+   * supported by the current implementation.
    */
   AUTH_MECHANISMS ("auth.mechanisms", String.class),
 
@@ -337,11 +337,13 @@ public enum ESMTPTransportProperty
    */
   NOOP_STRICT ("noop.strict", boolean.class);
 
+  public static final String PREFIX_MAIL_SMTP = "mail.smtp.";
+  public static final String PREFIX_MAIL_SMTPS = "mail.smtps.";
+
   private final String m_sPropertyName;
   private final Class <?> m_aPropertyValueClass;
 
-  private ESMTPTransportProperty (@Nonnull @Nonempty final String sPropertyName,
-                                  @Nonnull final Class <?> aPropertyValueClass)
+  ESMTPTransportProperty (@Nonnull @Nonempty final String sPropertyName, @Nonnull final Class <?> aPropertyValueClass)
   {
     m_sPropertyName = sPropertyName;
     m_aPropertyValueClass = aPropertyValueClass;
@@ -355,7 +357,7 @@ public enum ESMTPTransportProperty
   @Nonempty
   public String getSMTPPropertyName ()
   {
-    return "mail.smtp." + m_sPropertyName;
+    return PREFIX_MAIL_SMTP + m_sPropertyName;
   }
 
   /**
@@ -366,7 +368,7 @@ public enum ESMTPTransportProperty
   @Nonempty
   public String getSMTPSPropertyName ()
   {
-    return "mail.smtps." + m_sPropertyName;
+    return PREFIX_MAIL_SMTPS + m_sPropertyName;
   }
 
   /**

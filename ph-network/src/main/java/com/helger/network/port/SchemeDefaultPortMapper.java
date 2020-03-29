@@ -16,12 +16,11 @@
  */
 package com.helger.network.port;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -32,6 +31,17 @@ import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.string.StringHelper;
 
+/**
+ * Default port mapper. By default it contains the following mappings:
+ * <ul>
+ * <li>ftp - 21</li>
+ * <li>http - 80</li>
+ * <li>https - 443</li>
+ * </ul>
+ *
+ * @author Philip Helger
+ */
+@ThreadSafe
 public final class SchemeDefaultPortMapper
 {
   /** The scheme for HTTP */
@@ -74,7 +84,7 @@ public final class SchemeDefaultPortMapper
   {
     if (StringHelper.hasText (sSchemeName))
     {
-      final Integer aDefaultPort = s_aRWLock.readLocked ((Supplier <Integer>) () -> s_aMap.get (sSchemeName));
+      final Integer aDefaultPort = s_aRWLock.readLockedGet ( () -> s_aMap.get (sSchemeName));
       if (aDefaultPort != null)
         return aDefaultPort.intValue ();
     }
@@ -98,6 +108,6 @@ public final class SchemeDefaultPortMapper
   @ReturnsMutableCopy
   public static ICommonsMap <String, Integer> getAll ()
   {
-    return s_aRWLock.readLocked (s_aMap::getClone);
+    return s_aRWLock.readLockedGet (s_aMap::getClone);
   }
 }

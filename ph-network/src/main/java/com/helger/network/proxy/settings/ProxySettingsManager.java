@@ -19,7 +19,6 @@ package com.helger.network.proxy.settings;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.util.function.Supplier;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -60,13 +59,13 @@ public final class ProxySettingsManager
   @ReturnsMutableCopy
   public static ICommonsList <IProxySettingsProvider> getAllProviders ()
   {
-    return s_aRWLock.readLocked (s_aList::getClone);
+    return s_aRWLock.readLockedGet (s_aList::getClone);
   }
 
   public static void registerProvider (@Nonnull final IProxySettingsProvider aProvider)
   {
     ValueEnforcer.notNull (aProvider, "Provider");
-    s_aRWLock.writeLocked ( () -> s_aList.add (aProvider));
+    s_aRWLock.writeLockedBoolean ( () -> s_aList.add (aProvider));
 
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Registered proxy settings provider " + aProvider);
@@ -78,7 +77,7 @@ public final class ProxySettingsManager
     if (aProvider == null)
       return EChange.UNCHANGED;
 
-    final EChange eChange = s_aRWLock.writeLocked ( () -> s_aList.removeObject (aProvider));
+    final EChange eChange = s_aRWLock.writeLockedGet ( () -> s_aList.removeObject (aProvider));
     if (eChange.isChanged ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Unregistered proxy settings provider " + aProvider);
@@ -88,7 +87,7 @@ public final class ProxySettingsManager
   @Nonnull
   public static EChange removeAllProviders ()
   {
-    final EChange eChange = s_aRWLock.writeLocked ((Supplier <EChange>) s_aList::removeAll);
+    final EChange eChange = s_aRWLock.writeLockedGet (s_aList::removeAll);
     if (eChange.isChanged ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Removed all proxy settings provider");

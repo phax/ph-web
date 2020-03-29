@@ -70,6 +70,15 @@ public final class ResponseHelperSettings
   {}
 
   /**
+   * @return <code>true</code> if overall compression is enabled,
+   *         <code>false</code> if not
+   */
+  public static boolean isResponseCompressionEnabled ()
+  {
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
+  }
+
+  /**
    * Enable or disable the overall compression.
    *
    * @param bResponseCompressionEnabled
@@ -79,22 +88,24 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
-      LOGGER.info ("ResponseHelper responseCompressionEnabled=" + bResponseCompressionEnabled);
       return EChange.CHANGED;
     });
+    if (ret.isChanged ())
+      LOGGER.info ("ResponseHelper responseCompressionEnabled=" + bResponseCompressionEnabled);
+    return ret;
   }
 
   /**
-   * @return <code>true</code> if overall compression is enabled,
+   * @return <code>true</code> if GZip compression is enabled,
    *         <code>false</code> if not
    */
-  public static boolean isResponseCompressionEnabled ()
+  public static boolean isResponseGzipEnabled ()
   {
-    return s_aRWLock.readLocked ( () -> s_bResponseCompressionEnabled);
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -108,22 +119,24 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
-      LOGGER.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
       return EChange.CHANGED;
     });
+    if (ret.isChanged ())
+      LOGGER.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
+    return ret;
   }
 
   /**
-   * @return <code>true</code> if GZip compression is enabled,
+   * @return <code>true</code> if Deflate compression is enabled,
    *         <code>false</code> if not
    */
-  public static boolean isResponseGzipEnabled ()
+  public static boolean isResponseDeflateEnabled ()
   {
-    return s_aRWLock.readLocked ( () -> s_bResponseGzipEnabled);
+    return s_aRWLock.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -137,22 +150,15 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
-      LOGGER.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
       return EChange.CHANGED;
     });
-  }
-
-  /**
-   * @return <code>true</code> if Deflate compression is enabled,
-   *         <code>false</code> if not
-   */
-  public static boolean isResponseDeflateEnabled ()
-  {
-    return s_aRWLock.readLocked ( () -> s_bResponseDeflateEnabled);
+    if (ret.isChanged ())
+      LOGGER.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
+    return ret;
   }
 
   /**
@@ -171,28 +177,16 @@ public final class ResponseHelperSettings
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
   {
-    return s_aRWLock.writeLocked ( () -> {
-      EChange eChange = EChange.UNCHANGED;
-      if (s_bResponseCompressionEnabled != bResponseCompressionEnabled)
-      {
-        s_bResponseCompressionEnabled = bResponseCompressionEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("ResponseHelper responseCompressEnabled=" + bResponseCompressionEnabled);
-      }
-      if (s_bResponseGzipEnabled != bResponseGzipEnabled)
-      {
-        s_bResponseGzipEnabled = bResponseGzipEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("ResponseHelper responseGzipEnabled=" + bResponseGzipEnabled);
-      }
-      if (s_bResponseDeflateEnabled != bResponseDeflateEnabled)
-      {
-        s_bResponseDeflateEnabled = bResponseDeflateEnabled;
-        eChange = EChange.CHANGED;
-        LOGGER.info ("ResponseHelper responseDeflateEnabled=" + bResponseDeflateEnabled);
-      }
-      return eChange;
-    });
+    return setResponseCompressionEnabled (bResponseCompressionEnabled).or (setResponseGzipEnabled (bResponseGzipEnabled))
+                                                                      .or (setResponseDeflateEnabled (bResponseDeflateEnabled));
+  }
+
+  /**
+   * @return The default expiration seconds for objects to be cached
+   */
+  public static int getExpirationSeconds ()
+  {
+    return s_aRWLock.readLockedInt ( () -> s_nExpirationSeconds);
   }
 
   /**
@@ -206,20 +200,14 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setExpirationSeconds (final int nExpirationSeconds)
   {
-    return s_aRWLock.writeLocked ( () -> {
+    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
       if (s_nExpirationSeconds == nExpirationSeconds)
         return EChange.UNCHANGED;
       s_nExpirationSeconds = nExpirationSeconds;
-      LOGGER.info ("ResponseHelper expirationSeconds=" + nExpirationSeconds);
       return EChange.CHANGED;
     });
-  }
-
-  /**
-   * @return The default expiration seconds for objects to be cached
-   */
-  public static int getExpirationSeconds ()
-  {
-    return s_aRWLock.readLocked ( () -> s_nExpirationSeconds);
+    if (ret.isChanged ())
+      LOGGER.info ("ResponseHelper expirationSeconds=" + nExpirationSeconds);
+    return ret;
   }
 }

@@ -67,7 +67,7 @@ public final class UserAgentDatabase
    */
   public static void setUserAgentCallback (@Nullable final Consumer <? super IUserAgent> aCallback)
   {
-    s_aRWLock.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
+    s_aRWLock.writeLockedGet ( () -> s_aNewUserAgentCallback = aCallback);
   }
 
   @Nullable
@@ -79,7 +79,7 @@ public final class UserAgentDatabase
     // Decrypt outside the lock
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
-    final boolean bAdded = s_aRWLock.writeLocked ( () -> s_aUniqueUserAgents.add (sUserAgent));
+    final boolean bAdded = s_aRWLock.writeLockedBoolean ( () -> s_aUniqueUserAgents.add (sUserAgent));
     if (bAdded)
     {
       if (LOGGER.isDebugEnabled ())
@@ -97,6 +97,6 @@ public final class UserAgentDatabase
   @ReturnsMutableCopy
   public static ICommonsSet <String> getAllUniqueUserAgents ()
   {
-    return s_aRWLock.readLocked (s_aUniqueUserAgents::getClone);
+    return s_aRWLock.readLockedGet (s_aUniqueUserAgents::getClone);
   }
 }

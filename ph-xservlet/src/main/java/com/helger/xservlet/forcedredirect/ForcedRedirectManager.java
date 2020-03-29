@@ -82,7 +82,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   public void createForcedRedirect (@Nonnull final ForcedRedirectException ex)
   {
     ValueEnforcer.notNull (ex, "Exception");
-    m_aRWLock.writeLocked ( () -> m_aMap.put (ex.getSourceMenuItemID (), ex.getContent ()));
+    m_aRWLock.writeLockedGet ( () -> m_aMap.put (ex.getSourceMenuItemID (), ex.getContent ()));
 
     if (GlobalDebug.isDebugMode ())
       LOGGER.info ("Creating forced redirect from '" +
@@ -98,7 +98,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
       return null;
 
     // Get only
-    return m_aRWLock.readLocked ( () -> m_aMap.get (sMenuItemID));
+    return m_aRWLock.readLockedGet ( () -> m_aMap.get (sMenuItemID));
   }
 
   public boolean hasContent (@Nullable final String sMenuItemID)
@@ -107,7 +107,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
       return false;
 
     // Get only
-    return m_aRWLock.readLocked ( () -> m_aMap.get (sMenuItemID) != null);
+    return m_aRWLock.readLockedBoolean ( () -> m_aMap.get (sMenuItemID) != null);
   }
 
   @Nullable
@@ -131,7 +131,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
       return null;
 
     // Get in write lock
-    final Serializable ret = m_aRWLock.writeLocked ( () -> m_aMap.remove (sMenuItemID));
+    final Serializable ret = m_aRWLock.writeLockedGet ( () -> m_aMap.remove (sMenuItemID));
     if (ret != null)
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Removed content of last forced redirect from '" + sMenuItemID + "'");

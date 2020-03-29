@@ -17,7 +17,6 @@
 package com.helger.servlet.mock;
 
 import java.util.EventListener;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -76,7 +75,7 @@ public class MockEventListenerList
     // Get all listeners to assign
     final ICommonsList <EventListener> aOtherListeners = aList.getAllListeners ();
 
-    return m_aRWLock.writeLocked ( () -> {
+    return m_aRWLock.writeLockedGet ( () -> {
       if (m_aListener.isEmpty () && aOtherListeners.isEmpty ())
         return EChange.UNCHANGED;
 
@@ -103,10 +102,10 @@ public class MockEventListenerList
         !(aListener instanceof ServletRequestListener))
     {
       LOGGER.warn ("Passed mock listener is none of ServletContextListener, HttpSessionListener or ServletRequestListener and therefore has no effect. The listener class is: " +
-                      aListener.getClass ());
+                   aListener.getClass ());
     }
 
-    return m_aRWLock.writeLocked ( () -> EChange.valueOf (m_aListener.add (aListener)));
+    return EChange.valueOf (m_aRWLock.writeLockedBoolean ( () -> m_aListener.add (aListener)));
   }
 
   @Nonnull
@@ -115,7 +114,7 @@ public class MockEventListenerList
     if (aListenerClass == null)
       return EChange.UNCHANGED;
 
-    return m_aRWLock.writeLocked ( () -> {
+    return m_aRWLock.writeLockedGet ( () -> {
       EChange ret = EChange.UNCHANGED;
       // Create a copy of the list
       for (final EventListener aListener : m_aListener.getClone ())
@@ -128,40 +127,40 @@ public class MockEventListenerList
   @Nonnull
   public EChange removeAllListeners ()
   {
-    return m_aRWLock.writeLocked ((Supplier <EChange>) m_aListener::removeAll);
+    return m_aRWLock.writeLockedGet (m_aListener::removeAll);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <EventListener> getAllListeners ()
   {
-    return m_aRWLock.readLocked (m_aListener::getClone);
+    return m_aRWLock.readLockedGet (m_aListener::getClone);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <ServletContextListener> getAllServletContextListeners ()
   {
-    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (ServletContextListener.class));
+    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (ServletContextListener.class));
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (HttpSessionListener.class));
+    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (HttpSessionListener.class));
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <ServletRequestListener> getAllServletRequestListeners ()
   {
-    return m_aRWLock.readLocked ( () -> m_aListener.getAllInstanceOf (ServletRequestListener.class));
+    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (ServletRequestListener.class));
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("listeners", m_aListener).getToString ();
+    return new ToStringGenerator (this).append ("Listeners", m_aListener).getToString ();
   }
 }

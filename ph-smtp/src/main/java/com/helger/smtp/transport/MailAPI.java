@@ -100,7 +100,7 @@ public final class MailAPI
   @Nonnull
   public static FailedMailQueue getFailedMailQueue ()
   {
-    return s_aRWLock.readLocked ( () -> s_aFailedMailQueue);
+    return s_aRWLock.readLockedGet ( () -> s_aFailedMailQueue);
   }
 
   /**
@@ -357,7 +357,7 @@ public final class MailAPI
   @Nonnegative
   public static int getTotalQueueLength ()
   {
-    return s_aRWLock.readLocked (MailAPI::_getTotalQueueLength);
+    return s_aRWLock.readLockedInt (MailAPI::_getTotalQueueLength);
   }
 
   /**

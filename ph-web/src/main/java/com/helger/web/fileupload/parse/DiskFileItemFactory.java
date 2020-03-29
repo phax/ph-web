@@ -111,7 +111,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   private void _addTempFile (@Nonnull final File aFile)
   {
-    m_aRWLock.writeLocked ( () -> m_aTempFiles.add (aFile));
+    m_aRWLock.writeLockedBoolean ( () -> m_aTempFiles.add (aFile));
   }
 
   /**
@@ -152,12 +152,12 @@ public class DiskFileItemFactory implements IFileItemFactory
   @ReturnsMutableCopy
   public ICommonsList <File> getAllTemporaryFiles ()
   {
-    return m_aRWLock.readLocked (m_aTempFiles::getClone);
+    return m_aRWLock.readLockedGet (m_aTempFiles::getClone);
   }
 
   public void deleteAllTemporaryFiles ()
   {
-    final ICommonsList <File> aTempFiles = m_aRWLock.writeLocked ( () -> {
+    final ICommonsList <File> aTempFiles = m_aRWLock.writeLockedGet ( () -> {
       final ICommonsList <File> ret = m_aTempFiles.getClone ();
       m_aTempFiles.clear ();
       return ret;

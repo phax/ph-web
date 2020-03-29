@@ -42,7 +42,7 @@ public enum EServletStatusText implements IHasDisplayText
 
   private final IMultilingualText m_aTP;
 
-  private EServletStatusText (final String sDE, final String sEN)
+  EServletStatusText (final String sDE, final String sEN)
   {
     m_aTP = TextHelper.create_DE_EN (sDE, sEN);
   }

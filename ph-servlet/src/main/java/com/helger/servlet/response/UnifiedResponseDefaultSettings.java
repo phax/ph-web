@@ -83,7 +83,7 @@ public final class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static HttpHeaderMap getResponseHeaderMap ()
   {
-    return s_aRWLock.readLocked (s_aResponseHeaderMap::getClone);
+    return s_aRWLock.readLockedGet (s_aResponseHeaderMap::getClone);
   }
 
   /**
@@ -268,7 +268,7 @@ public final class UnifiedResponseDefaultSettings
   {
     ValueEnforcer.notEmpty (sName, "Name");
 
-    return s_aRWLock.writeLocked ( () -> s_aResponseHeaderMap.removeHeaders (sName));
+    return s_aRWLock.writeLockedGet ( () -> s_aResponseHeaderMap.removeHeaders (sName));
   }
 
   /**
@@ -279,7 +279,7 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllResponseHeaders ()
   {
-    return s_aRWLock.writeLocked (s_aResponseHeaderMap::removeAll);
+    return s_aRWLock.writeLockedGet (s_aResponseHeaderMap::removeAll);
   }
 
   /**
@@ -287,7 +287,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static boolean hasCookies ()
   {
-    return s_aRWLock.readLocked (s_aCookies::isNotEmpty);
+    return s_aRWLock.readLockedBoolean (s_aCookies::isNotEmpty);
   }
 
   /**
@@ -298,7 +298,7 @@ public final class UnifiedResponseDefaultSettings
   @ReturnsMutableCopy
   public static ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
-    return s_aRWLock.readLocked (s_aCookies::getClone);
+    return s_aRWLock.readLockedGet (s_aCookies::getClone);
   }
 
   /**
@@ -313,7 +313,7 @@ public final class UnifiedResponseDefaultSettings
 
     final String sKey = aCookie.getName ();
 
-    s_aRWLock.writeLocked ( () -> s_aCookies.put (sKey, aCookie));
+    s_aRWLock.writeLockedGet ( () -> s_aCookies.put (sKey, aCookie));
   }
 
   /**
@@ -329,7 +329,7 @@ public final class UnifiedResponseDefaultSettings
     if (StringHelper.hasNoText (sName))
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLocked ( () -> s_aCookies.removeObject (sName));
+    return s_aRWLock.writeLockedGet ( () -> s_aCookies.removeObject (sName));
   }
 
   /**
@@ -340,7 +340,7 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeAllCookies ()
   {
-    return s_aRWLock.writeLocked (s_aCookies::removeAll);
+    return s_aRWLock.writeLockedGet (s_aCookies::removeAll);
   }
 
   /**
@@ -351,7 +351,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static boolean isHttpHeaderValuesUnified ()
   {
-    return s_aRWLock.readLocked ( () -> s_bHttpHeaderValuesUnified);
+    return s_aRWLock.readLockedBoolean ( () -> s_bHttpHeaderValuesUnified);
   }
 
   /**
@@ -363,7 +363,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static void setHttpHeaderValuesUnified (final boolean bHttpHeaderValuesUnified)
   {
-    s_aRWLock.writeLocked ( () -> s_bHttpHeaderValuesUnified = bHttpHeaderValuesUnified);
+    s_aRWLock.writeLockedBoolean ( () -> s_bHttpHeaderValuesUnified = bHttpHeaderValuesUnified);
   }
 
   /**
@@ -374,7 +374,7 @@ public final class UnifiedResponseDefaultSettings
    */
   public static boolean isHttpHeaderValuesQuoteIfNecessary ()
   {
-    return s_aRWLock.readLocked ( () -> s_bHttpHeaderValuesQuoteIfNecessary);
+    return s_aRWLock.readLockedBoolean ( () -> s_bHttpHeaderValuesQuoteIfNecessary);
   }
 
   /**
@@ -388,6 +388,6 @@ public final class UnifiedResponseDefaultSettings
    */
   public static void setHttpHeaderValuesQuoteIfNecessary (final boolean bHttpHeaderValuesQuoteIfNecessary)
   {
-    s_aRWLock.writeLocked ( () -> s_bHttpHeaderValuesQuoteIfNecessary = bHttpHeaderValuesQuoteIfNecessary);
+    s_aRWLock.writeLockedBoolean ( () -> s_bHttpHeaderValuesQuoteIfNecessary = bHttpHeaderValuesQuoteIfNecessary);
   }
 }

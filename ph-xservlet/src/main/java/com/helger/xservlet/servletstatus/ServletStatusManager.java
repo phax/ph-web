@@ -81,7 +81,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
   @Nonnull
   public EChange reset ()
   {
-    return m_aRWLock.writeLocked (m_aMap::removeAll);
+    return m_aRWLock.writeLockedGet (m_aMap::removeAll);
   }
 
   @Nonnull
@@ -164,14 +164,14 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
       return null;
 
     final String sKey = _getKey (aServletClass);
-    return m_aRWLock.readLocked ( () -> m_aMap.get (sKey));
+    return m_aRWLock.readLockedGet ( () -> m_aMap.get (sKey));
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsMap <String, ServletStatus> getAllStatus ()
   {
-    return m_aRWLock.readLocked (m_aMap::getClone);
+    return m_aRWLock.readLockedGet (m_aMap::getClone);
   }
 
   /**

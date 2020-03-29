@@ -95,7 +95,7 @@ public class FailedMailQueue implements Serializable
     if (StringHelper.hasNoText (sID))
       return null;
 
-    return m_aRWLock.writeLocked ( () -> internalRemove (sID));
+    return m_aRWLock.writeLockedGet ( () -> internalRemove (sID));
   }
 
   @Nonnegative
@@ -108,7 +108,7 @@ public class FailedMailQueue implements Serializable
   @Nonnegative
   public int size ()
   {
-    return m_aRWLock.readLocked (this::internalSize);
+    return m_aRWLock.readLockedInt (this::internalSize);
   }
 
   @Nullable
@@ -121,7 +121,7 @@ public class FailedMailQueue implements Serializable
   @Nullable
   public FailedMailData getFailedMailOfID (@Nullable final String sID)
   {
-    return m_aRWLock.readLocked ( () -> internalGetFailedMailOfID (sID));
+    return m_aRWLock.readLockedGet ( () -> internalGetFailedMailOfID (sID));
   }
 
   @Nonnegative
@@ -134,7 +134,7 @@ public class FailedMailQueue implements Serializable
   @Nonnegative
   public int getFailedMailCount ()
   {
-    return m_aRWLock.readLocked (this::internalGetFailedMailCount);
+    return m_aRWLock.readLockedInt (this::internalGetFailedMailCount);
   }
 
   @Nonnull
@@ -149,7 +149,7 @@ public class FailedMailQueue implements Serializable
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> getAllFailedMails ()
   {
-    return m_aRWLock.readLocked (this::internalGetAllFailedMails);
+    return m_aRWLock.readLockedGet (this::internalGetAllFailedMails);
   }
 
   @Nonnull
@@ -175,12 +175,12 @@ public class FailedMailQueue implements Serializable
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> removeAll ()
   {
-    return m_aRWLock.writeLocked (this::internalRemoveAll);
+    return m_aRWLock.writeLockedGet (this::internalRemoveAll);
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("map", m_aMap).getToString ();
+    return new ToStringGenerator (this).append ("Map", m_aMap).getToString ();
   }
 }

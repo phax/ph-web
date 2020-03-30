@@ -115,9 +115,9 @@ public enum ETLSConfigurationMode_2020_02 implements IHasID <String>, ITLSConfig
   private final String m_sID;
   private final TLSConfigurationMode m_aMode;
 
-  private ETLSConfigurationMode_2020_02 (@Nonnull @Nonempty final String sID,
-                                         @Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
-                                         @Nonnull @Nonempty final String [] aCipherSuites)
+  ETLSConfigurationMode_2020_02 (@Nonnull @Nonempty final String sID,
+                                 @Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
+                                 @Nonnull @Nonempty final String [] aCipherSuites)
   {
     m_sID = sID;
     m_aMode = new TLSConfigurationMode (aTLSVersions, aCipherSuites);

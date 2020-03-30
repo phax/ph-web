@@ -16,6 +16,7 @@
  */
 package com.helger.network.proxy.config;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -76,9 +77,9 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
 
   /**
    * @return The current proxy port for this HTTP proxy type. May be
-   *         <code>null</code>.
+   *         <code>-1</code> for "undefined".
    */
-  @Nullable
+  @CheckForSigned
   default int getProxyPort ()
   {
     return StringParser.parseInt (SystemProperties.getPropertyValueOrNull (getPropertyNameProxyPort ()), -1);

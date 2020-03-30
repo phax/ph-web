@@ -48,7 +48,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public final class RequestParamMapTest
 {
   @Test
-  public void test ()
+  public void testBasic ()
   {
     final ICommonsMap <String, Object> aTestMap = new CommonsHashMap <> ();
     aTestMap.put ("a", "...");

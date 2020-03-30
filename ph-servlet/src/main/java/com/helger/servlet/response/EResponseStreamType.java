@@ -36,7 +36,7 @@ public enum EResponseStreamType implements IHasID <String>
 
   private final String m_sID;
 
-  private EResponseStreamType (@Nonnull @Nonempty final String sID)
+  EResponseStreamType (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

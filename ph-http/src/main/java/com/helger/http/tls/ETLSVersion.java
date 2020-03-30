@@ -40,7 +40,7 @@ public enum ETLSVersion implements IHasID <String>
 
   private final String m_sID;
 
-  private ETLSVersion (@Nonnull @Nonempty final String sID)
+  ETLSVersion (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

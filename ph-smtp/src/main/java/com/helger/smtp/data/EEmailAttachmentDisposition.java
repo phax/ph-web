@@ -36,7 +36,7 @@ public enum EEmailAttachmentDisposition implements IHasID <String>
 
   private final String m_sID;
 
-  private EEmailAttachmentDisposition (@Nonnull @Nonempty final String sID)
+  EEmailAttachmentDisposition (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

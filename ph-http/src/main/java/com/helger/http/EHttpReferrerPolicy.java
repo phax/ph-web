@@ -39,9 +39,9 @@ public enum EHttpReferrerPolicy
   STRICT_ORIGIN_WHEN_CROSS_ORIGIN ("strict-origin-when-cross-origin"),
   UNSAFE_URL ("unsafe-url");
 
-  private String m_sValue;
+  private final String m_sValue;
 
-  private EHttpReferrerPolicy (@Nonnull final String sValue)
+  EHttpReferrerPolicy (@Nonnull final String sValue)
   {
     m_sValue = sValue;
   }

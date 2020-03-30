@@ -35,7 +35,7 @@ public enum EEmailType implements IHasID <String>
 
   private final String m_sID;
 
-  private EEmailType (@Nonnull @Nonempty final String sID)
+  EEmailType (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

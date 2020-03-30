@@ -113,7 +113,7 @@ public enum EContentTransferEncoding implements IContentTransferEncoding
 
   private final String m_sID;
 
-  private EContentTransferEncoding (@Nonnull @Nonempty final String sID)
+  EContentTransferEncoding (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

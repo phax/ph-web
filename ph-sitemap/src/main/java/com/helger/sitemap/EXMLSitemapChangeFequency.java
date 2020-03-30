@@ -40,7 +40,7 @@ public enum EXMLSitemapChangeFequency
 
   private final String m_sText;
 
-  private EXMLSitemapChangeFequency (@Nonnull @Nonempty final String sText)
+  EXMLSitemapChangeFequency (@Nonnull @Nonempty final String sText)
   {
     m_sText = sText;
   }

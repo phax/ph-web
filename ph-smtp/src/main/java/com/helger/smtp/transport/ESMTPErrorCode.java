@@ -35,13 +35,15 @@ import com.helger.commons.text.display.IHasDisplayText;
 public enum ESMTPErrorCode implements IHasDisplayText, IHasIntID
 {
   E211 (211, "System status, or system help reply"),
-  E214 (214, "Help message [Information on how to use the receiver or the meaning of a particular non-standard command; this reply is useful only to the human user]"),
+  E214 (214,
+        "Help message [Information on how to use the receiver or the meaning of a particular non-standard command; this reply is useful only to the human user]"),
   E220 (220, "<domain> Service ready"),
   E221 (221, "<domain> Service closing transmission channel"),
   E250 (250, "Requested mail action okay, completed"),
   E251 (251, "User not local; will forward to <forward-path>"),
   E354 (354, "Start mail input; end with <CRLF>.<CRLF>"),
-  E421 (421, "<domain> Service not available, closing transmission channel [This may be a reply to any command if the service knows it must shut down]"),
+  E421 (421,
+        "<domain> Service not available, closing transmission channel [This may be a reply to any command if the service knows it must shut down]"),
   E450 (450, "Requested mail action not taken: mailbox unavailable [E.g., mailbox busy]"),
   E451 (451, "Requested action aborted: error in processing"),
   E452 (452, "Requested action not taken: insufficient system storage"),
@@ -60,7 +62,7 @@ public enum ESMTPErrorCode implements IHasDisplayText, IHasIntID
   private final int m_nECode;
   private final String m_sErrorMsg;
 
-  private ESMTPErrorCode (@Nonnegative final int nECode, @Nonnull @Nonempty final String sErrorMsg)
+  ESMTPErrorCode (@Nonnegative final int nECode, @Nonnull @Nonempty final String sErrorMsg)
   {
     m_nECode = nECode;
     m_sErrorMsg = sErrorMsg;

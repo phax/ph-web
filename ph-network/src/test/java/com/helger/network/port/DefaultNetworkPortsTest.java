@@ -47,7 +47,7 @@ public final class DefaultNetworkPortsTest
   }
 
   @Test
-  public void test ()
+  public void testBasic ()
   {
     assertEquals (175, DefaultNetworkPorts.UDP_175_vmnet.getPort ());
     assertEquals (ENetworkProtocol.UDP, DefaultNetworkPorts.UDP_175_vmnet.getProtocol ());
@@ -55,7 +55,7 @@ public final class DefaultNetworkPortsTest
 
   @Test
   @Ignore ("Enable when ports are added/changed")
-  public void exportIntoCodelist ()
+  public void testExportIntoCodelist ()
   {
     final IMicroDocument aDoc = new MicroDocument ();
     final IMicroElement ePorts = aDoc.appendElement ("ports");

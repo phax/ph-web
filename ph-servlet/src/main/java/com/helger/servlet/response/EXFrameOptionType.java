@@ -33,8 +33,8 @@ import com.helger.commons.lang.EnumHelper;
 public enum EXFrameOptionType implements IHasID <String>
 {
   /**
-   * The page cannot be displayed in a frame, regardless of the site attempting to
-   * do so.
+   * The page cannot be displayed in a frame, regardless of the site attempting
+   * to do so.
    */
   DENY (CHttpHeader.VALUE_DENY),
   /**
@@ -51,7 +51,7 @@ public enum EXFrameOptionType implements IHasID <String>
 
   private final String m_sID;
 
-  private EXFrameOptionType (@Nonnull @Nonempty final String sID)
+  EXFrameOptionType (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

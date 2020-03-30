@@ -35,7 +35,7 @@ public enum EContentDispositionType implements IHasID <String>
 
   private final String m_sID;
 
-  private EContentDispositionType (@Nonnull @Nonempty final String sID)
+  EContentDispositionType (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

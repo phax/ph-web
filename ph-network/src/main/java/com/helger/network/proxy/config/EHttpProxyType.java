@@ -48,9 +48,9 @@ public enum EHttpProxyType implements IProxySettingsPerProtocol
   private final IURLProtocol m_aURLProtocol;
   private final int m_nDefaultPort;
 
-  private EHttpProxyType (@Nonnull @Nonempty final String sID,
-                          @Nonnull final IURLProtocol aURLProtocol,
-                          @Nonnegative final int nDefaultPort)
+  EHttpProxyType (@Nonnull @Nonempty final String sID,
+                  @Nonnull final IURLProtocol aURLProtocol,
+                  @Nonnegative final int nDefaultPort)
   {
     m_sID = sID;
     m_aURLProtocol = aURLProtocol;

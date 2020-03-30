@@ -78,7 +78,7 @@ public enum ENetworkProtocol implements IHasID <String>
 
   private final String m_sID;
 
-  private ENetworkProtocol (@Nonnull @Nonempty final String sID)
+  ENetworkProtocol (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

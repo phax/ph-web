@@ -36,7 +36,7 @@ public enum EHttpVersion implements IHasName
 
   private final String m_sName;
 
-  private EHttpVersion (@Nonnull @Nonempty final String sName)
+  EHttpVersion (@Nonnull @Nonempty final String sName)
   {
     m_sName = sName;
   }

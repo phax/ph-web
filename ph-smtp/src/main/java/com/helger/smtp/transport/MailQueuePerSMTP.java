@@ -94,13 +94,13 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
    * @return The Failed mail queue to be used for this queue.
    */
   @Nonnull
-  public final FailedMailQueue getFailedMailQueue ()
+  public FailedMailQueue getFailedMailQueue ()
   {
     return m_aFailedMailQueue;
   }
 
   @Nonnull
-  public final MailQueuePerSMTP setFailedMailQueue (@Nonnull final FailedMailQueue aFailedMailQueue)
+  public MailQueuePerSMTP setFailedMailQueue (@Nonnull final FailedMailQueue aFailedMailQueue)
   {
     m_aFailedMailQueue = ValueEnforcer.notNull (aFailedMailQueue, "FailedMailQueue");
     return this;

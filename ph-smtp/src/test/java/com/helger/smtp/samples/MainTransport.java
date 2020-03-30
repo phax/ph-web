@@ -64,6 +64,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 
 /**
@@ -171,23 +172,12 @@ public final class MainTransport implements ConnectionListener, TransportListene
       trans.sendMessage (msg, toAddr);
 
       // give the EventQueue enough time to fire its events
-      try
-      {
-        Thread.sleep (5);
-      }
-      catch (final InterruptedException e)
-      {}
-
+      ThreadHelper.sleep (5);
     }
     catch (final MessagingException mex)
     {
       // give the EventQueue enough time to fire its events
-      try
-      {
-        Thread.sleep (5);
-      }
-      catch (final InterruptedException e)
-      {}
+      ThreadHelper.sleep (5);
 
       System.out.println ("Sending failed with exception:");
       mex.printStackTrace ();

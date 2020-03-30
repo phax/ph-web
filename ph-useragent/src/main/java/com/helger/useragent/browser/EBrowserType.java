@@ -31,7 +31,7 @@ import com.helger.commons.text.display.IHasDisplayText;
  *
  * @author Philip Helger
  */
-public enum EBrowserType implements IHasID <String>,IHasDisplayText
+public enum EBrowserType implements IHasID <String>, IHasDisplayText
 {
   FIREFOX ("firefox", EBrowserText.FIREFOX),
   IE ("ie", EBrowserText.IE),
@@ -50,7 +50,7 @@ public enum EBrowserType implements IHasID <String>,IHasDisplayText
   private final String m_sID;
   private final IHasDisplayText m_aDisplayName;
 
-  private EBrowserType (@Nonnull @Nonempty final String sID, @Nonnull @Nonempty final IHasDisplayText aDisplayName)
+  EBrowserType (@Nonnull @Nonempty final String sID, @Nonnull @Nonempty final IHasDisplayText aDisplayName)
   {
     m_sID = sID;
     m_aDisplayName = aDisplayName;

@@ -59,6 +59,7 @@ import javax.mail.Store;
 import javax.mail.event.MessageCountAdapter;
 import javax.mail.event.MessageCountEvent;
 
+import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.sun.mail.imap.IMAPFolder;
 
@@ -160,7 +161,8 @@ public class MainMonitor
         }
         else
         {
-          Thread.sleep (freq); // sleep for freq milliseconds
+          // sleep for freq milliseconds
+          ThreadHelper.sleep (freq);
 
           // This is to force the IMAP server to send us
           // EXISTS notifications.

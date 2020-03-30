@@ -39,7 +39,7 @@ public enum EWebSpiderType implements IHasID <String>
 
   private final String m_sID;
 
-  private EWebSpiderType (@Nonnull @Nonempty final String sID)
+  EWebSpiderType (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }

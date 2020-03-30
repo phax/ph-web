@@ -46,7 +46,7 @@ public enum EBrowserText implements IHasDisplayText
 
   private final IMultilingualText m_aTP;
 
-  private EBrowserText (final String sDE, final String sEN)
+  EBrowserText (final String sDE, final String sEN)
   {
     m_aTP = TextHelper.create_DE_EN (sDE, sEN);
   }

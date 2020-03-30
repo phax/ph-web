@@ -16,6 +16,7 @@
  */
 package com.helger.web.scope;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -86,8 +87,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * @return A non-<code>null</code> but maybe empty list of all {@link IFileItem}
-   *         objects in the request. In comparison to
+   * @return A non-<code>null</code> but maybe empty list of all
+   *         {@link IFileItem} objects in the request. In comparison to
    *         {@link #getAllUploadedFileItems()} this method also returns the
    *         content of {@link IFileItem} arrays.
    */
@@ -101,16 +102,15 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
         ret.add ((IFileItem) aAttrValue);
       else
         if (aAttrValue instanceof IFileItem [])
-          for (final IFileItem aChild : (IFileItem []) aAttrValue)
-            ret.add (aChild);
+          Collections.addAll (ret, (IFileItem []) aAttrValue);
     }
     return ret;
   }
 
   /**
    * Get the request attribute denoted by the specified attribute name as an
-   * uploaded file item. In case the specified parameter is present but not a file
-   * item, the method returns <code>null</code>.
+   * uploaded file item. In case the specified parameter is present but not a
+   * file item, the method returns <code>null</code>.
    *
    * @param sAttrName
    *        The attribute name to resolved. May be <code>null</code>.
@@ -196,7 +196,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @param sFieldName
    *        The field name to query. May be <code>null</code>.
    * @param sDefault
-   *        The value to be returned if the retrieved value is <code>null</code> .
+   *        The value to be returned if the retrieved value is <code>null</code>
+   *        .
    * @return <code>null</code> if no such parameter name is present.
    * @since 9.0.2
    */

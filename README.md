@@ -36,6 +36,8 @@ Add the following to your pom.xml to use this artifact:
 
 # News and noteworthy
 
+* v9.1.12 - work in progress
+    * Fixed a potential dead lock when shutting down RequestTracker
 * v9.1.11 - 2020-03-29
     * Updated to Apache httpclient 4.5.12
     * Updated to Jakarta Mail 1.6.5

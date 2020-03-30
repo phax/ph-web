@@ -87,16 +87,21 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
 
   private final class RequestTrackerMonitor implements Runnable
   {
+    private final IGlobalWebScope m_aGlobalScope;
+
     public RequestTrackerMonitor ()
-    {}
+    {
+      m_aGlobalScope = WebScopeManager.getGlobalScope ();
+    }
 
     public void run ()
     {
       // Global scope may not be present here (on shutdown)
-      final IGlobalWebScope aGlobalScope = WebScopeManager.getGlobalScopeOrNull ();
-      if (aGlobalScope != null)
+      // And we cannot retrieve it here, because the shutdown is called in a
+      // ScopeManager write lock!
+      if (m_aGlobalScope.isValid ())
       {
-        final HttpServletRequest aRequest = new OfflineHttpServletRequest (aGlobalScope.getServletContext (), false);
+        final HttpServletRequest aRequest = new OfflineHttpServletRequest (m_aGlobalScope.getServletContext (), false);
         try (final WebScoped aWebScoped = new WebScoped (aRequest))
         {
           // Check for long running requests

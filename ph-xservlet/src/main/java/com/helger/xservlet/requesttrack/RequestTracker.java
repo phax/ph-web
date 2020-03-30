@@ -127,6 +127,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   @Override
   protected void onDestroy (@Nonnull final IScope aScopeInDestruction)
   {
+    LOGGER.info ("RequestTrackerMonitor is now shut down");
     // Destroy RequestTrackerMonitor thread(s)
     ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (m_aExecSvc);
     LOGGER.info ("RequestTrackerMonitor was uninstalled successfully.");

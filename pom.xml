@@ -195,6 +195,7 @@
     <module>ph-sitemap</module>
     <module>ph-web</module>
     <module>ph-xservlet</module>
+    <module>ph-jsch</module>
   </modules>
 
   <build>

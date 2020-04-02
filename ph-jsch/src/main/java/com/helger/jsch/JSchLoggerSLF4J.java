@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014-2020 Philip Helger (www.helger.com)
+ * Copyright (C) 2016-2020 Philip Helger (www.helger.com)
  * philip[at]helger[dot]com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,9 @@ public class JSchLoggerSLF4J implements com.jcraft.jsch.Logger
       return m_aLogger.isWarnEnabled ();
     if (nLevel >= INFO)
       return m_aLogger.isInfoEnabled ();
-    return m_aLogger.isDebugEnabled ();
+    if (nLevel >= DEBUG)
+      return m_aLogger.isDebugEnabled ();
+    return m_aLogger.isTraceEnabled ();
   }
 
   public void log (final int nLevel, final String sMessage)
@@ -75,12 +77,15 @@ public class JSchLoggerSLF4J implements com.jcraft.jsch.Logger
         if (nLevel >= INFO)
           m_aLogger.info (sMessage);
         else
-          m_aLogger.debug (sMessage);
+          if (nLevel >= DEBUG)
+            m_aLogger.debug (sMessage);
+          else
+            m_aLogger.trace (sMessage);
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("logger", m_aLogger).getToString ();
+    return new ToStringGenerator (this).append ("Logger", m_aLogger).getToString ();
   }
 }

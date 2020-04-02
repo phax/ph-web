@@ -14,21 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.jsch;
+package com.pastdev.jsch.scp;
 
-import org.junit.Test;
-
-/**
- * Test class for class {@link JSchInit}.
- *
- * @author Philip Helger
- */
-public final class JSchInitTest
+public enum EDestinationOS
 {
-  @Test
-  public void testBasic ()
+  UNIX ('/'),
+  WINDOWS ('\\');
+
+  private char m_cSep;
+
+  private EDestinationOS (final char separator)
   {
-    JSchInit.init ();
-    JSchInit.shutdown ();
+    m_cSep = separator;
+  }
+
+  public String joinPath (final String [] parts)
+  {
+    return joinPath (parts, 0, parts.length);
+  }
+
+  public String joinPath (final String [] parts, final int start, final int count)
+  {
+    final StringBuilder builder = new StringBuilder ();
+    for (int i = start, end = start + count; i < end; i++)
+    {
+      if (i > start)
+        builder.append (m_cSep);
+      builder.append (parts[i]);
+    }
+    return builder.toString ();
   }
 }

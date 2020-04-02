@@ -14,21 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.jsch;
+package com.pastdev.jsch.scp;
 
-import org.junit.Test;
-
-/**
- * Test class for class {@link JSchInit}.
- *
- * @author Philip Helger
- */
-public final class JSchInitTest
+public enum ECopyMode
 {
-  @Test
-  public void testBasic ()
-  {
-    JSchInit.init ();
-    JSchInit.shutdown ();
-  }
+  FILE_ONLY,
+  RECURSIVE
 }

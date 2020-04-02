@@ -14,21 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.jsch;
+package com.pastdev.jsch.sftp;
 
-import org.junit.Test;
+import java.io.IOException;
+
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
 
 /**
- * Test class for class {@link JSchInit}.
- *
- * @author Philip Helger
+ * A simple callback interface for working with <i>managed</i> sftp channels.
  */
-public final class JSchInitTest
+public interface ISftp
 {
-  @Test
-  public void testBasic ()
-  {
-    JSchInit.init ();
-    JSchInit.shutdown ();
-  }
+  void run (ChannelSftp sftp) throws JSchException, IOException;
 }

@@ -20,7 +20,9 @@ Java library with common web stuff. It contains the following sub-projects:
 * ph-sitemap (since v9.0.0)
     * Containing Sitemap generation helper
 * ph-xservlet (since v9.0.0)
-    * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)  
+    * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)
+* ph-jsch (since v9.2.0)
+    * Helper around JSch - for SSH, SCP and SFTP connections  
   
 # Maven usage
 
@@ -36,6 +38,8 @@ Add the following to your pom.xml to use this artifact:
 
 # News and noteworthy
 
+* v9.2.0 - work in progress
+    * Extracted ph-jsch as a separate subproject
 * v9.1.12 - 2020-03-30
     * Fixed a potential dead lock when shutting down RequestTracker
 * v9.1.11 - 2020-03-29

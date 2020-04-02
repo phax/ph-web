@@ -125,7 +125,7 @@ public final class TunnelConnectionTest
           serviceWrittenTo.await ();
           LOGGER.info ("accepted connection, now read data");
           final String data = StreamHelper.getAllBytesAsString (inputStream, StandardCharsets.UTF_8);
-          LOGGER.info ("read {}", data);
+          LOGGER.info ("read " + data);
           serviceBuffer.append (data);
           serviceBufferReady.signalAll ();
         }

@@ -19,7 +19,6 @@ package com.helger.jsch.session;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.commons.string.StringHelper;
 import com.helger.jsch.JSchInit;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.IdentityRepository;
@@ -335,10 +335,10 @@ public class DefaultSessionFactory implements ISessionFactory
     if (!identitiesSet)
     {
       final String privateKeyFilesString = System.getProperty (PROPERTY_JSCH_PRIVATE_KEY_FILES);
-      if (privateKeyFilesString != null && !privateKeyFilesString.isEmpty ())
+      if (StringHelper.hasText (privateKeyFilesString))
       {
-        LOGGER.info ("Using local identities from {}: {}", PROPERTY_JSCH_PRIVATE_KEY_FILES, privateKeyFilesString);
-        setIdentitiesFromPrivateKeys (Arrays.asList (privateKeyFilesString.split (",")));
+        LOGGER.info ("Using local identities from " + PROPERTY_JSCH_PRIVATE_KEY_FILES + ": " + privateKeyFilesString);
+        setIdentitiesFromPrivateKeys (StringHelper.getExploded (',', privateKeyFilesString));
         identitiesSet = true;
       }
     }
@@ -348,13 +348,9 @@ public class DefaultSessionFactory implements ISessionFactory
       for (final File file : new File [] { new File (_dotSshDir (), "id_rsa"),
                                            new File (_dotSshDir (), "id_dsa"),
                                            new File (_dotSshDir (), "id_ecdsa") })
-      {
         if (file.exists ())
-        {
           privateKeyFiles.add (file.getAbsolutePath ());
-        }
-      }
-      LOGGER.info ("Using local identities: {}", privateKeyFiles);
+      LOGGER.info ("Using local identities: " + privateKeyFiles);
       setIdentitiesFromPrivateKeys (privateKeyFiles);
     }
   }

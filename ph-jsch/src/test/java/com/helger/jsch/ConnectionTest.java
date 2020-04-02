@@ -59,7 +59,7 @@ public final class ConnectionTest
     }
     catch (final IOException e)
     {
-      LOGGER.warn ("cant find properties file (tests will be skipped): {}", e.getMessage ());
+      LOGGER.warn ("cant find properties file (tests will be skipped)", e);
       Assume.assumeNoException (e);
     }
 

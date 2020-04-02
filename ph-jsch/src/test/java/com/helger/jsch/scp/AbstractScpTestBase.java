@@ -18,7 +18,6 @@ package com.helger.jsch.scp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -26,6 +25,7 @@ import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.lang.NonBlockingProperties;
 import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
@@ -35,7 +35,7 @@ abstract class AbstractScpTestBase
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractScpTestBase.class);
 
   protected static ISessionFactory sessionFactory;
-  protected static Properties properties;
+  protected static NonBlockingProperties properties;
   protected static String scpPath;
   protected static String filesystemPath;
 
@@ -45,7 +45,7 @@ abstract class AbstractScpTestBase
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new Properties ();
+      properties = new NonBlockingProperties ();
       properties.load (inputStream);
     }
     catch (final IOException e)

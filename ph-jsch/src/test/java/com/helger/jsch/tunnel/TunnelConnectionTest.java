@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -38,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.lang.NonBlockingProperties;
 import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
@@ -46,7 +46,7 @@ public final class TunnelConnectionTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (TunnelConnectionTest.class);
   private static ISessionFactory sessionFactory;
-  private static Properties properties;
+  private static NonBlockingProperties properties;
 
   private final String expected = "This will be amazing if it works";
   // Must be a StringBuffer
@@ -67,7 +67,7 @@ public final class TunnelConnectionTest
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new Properties ();
+      properties = new NonBlockingProperties ();
       properties.load (inputStream);
     }
     catch (final IOException e)

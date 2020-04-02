@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -29,6 +28,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.lang.NonBlockingProperties;
 import com.helger.jsch.command.CommandRunner.ExecuteResult;
 import com.helger.jsch.proxy.SshProxyTest;
 import com.helger.jsch.session.DefaultSessionFactory;
@@ -39,10 +39,10 @@ public final class CommandRunnerTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SshProxyTest.class);
 
-  protected static ISessionFactory sessionFactory;
-  protected static Properties properties;
+  private static ISessionFactory sessionFactory;
+  private static NonBlockingProperties properties;
 
-  private final String expected = "there is absolutely no chance this is gonna work!";
+  private static final String expected = "there is absolutely no chance this is gonna work!";
 
   @BeforeClass
   public static void initializeClass ()
@@ -50,7 +50,7 @@ public final class CommandRunnerTest
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new Properties ();
+      properties = new NonBlockingProperties ();
       properties.load (inputStream);
     }
     catch (final IOException e)

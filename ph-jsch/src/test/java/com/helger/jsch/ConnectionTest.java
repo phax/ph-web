@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -30,6 +29,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.lang.NonBlockingProperties;
 import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
@@ -50,11 +50,11 @@ public final class ConnectionTest
   @BeforeClass
   public static void initializeClass ()
   {
-    Properties properties = null;
+    NonBlockingProperties properties = null;
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new Properties ();
+      properties = new NonBlockingProperties ();
       properties.load (inputStream);
     }
     catch (final IOException e)

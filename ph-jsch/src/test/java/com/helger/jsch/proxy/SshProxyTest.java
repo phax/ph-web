@@ -22,7 +22,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -31,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.lang.NonBlockingProperties;
 import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.Channel;
@@ -43,11 +43,11 @@ public final class SshProxyTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SshProxyTest.class);
 
-  protected static DefaultSessionFactory sessionFactory;
-  protected static Properties properties;
-  protected static String username;
-  protected static String hostname;
-  protected static int port;
+  private static DefaultSessionFactory sessionFactory;
+  private static NonBlockingProperties properties;
+  private static String username;
+  private static String hostname;
+  private static int port;
 
   private final String expected = "there is absolutely no chance this is gonna work!";
 
@@ -57,7 +57,7 @@ public final class SshProxyTest
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new Properties ();
+      properties = new NonBlockingProperties ();
       properties.load (inputStream);
     }
     catch (final IOException e)

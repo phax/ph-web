@@ -18,8 +18,8 @@ package com.helger.jsch.tunnel;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,13 +29,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.string.StringHelper;
 import com.helger.jsch.proxy.SshProxy;
 import com.helger.jsch.session.AbstractSessionFactoryBuilder;
 import com.helger.jsch.session.ISessionFactory;
@@ -187,15 +191,19 @@ public class TunnelConnectionManager implements Closeable
    *
    * @param tunnelsConfig
    *        A file containing tunnel configuration
+   * @param aCharset
+   *        Charset to use. May not be <code>null</code>.
    * @throws IOException
    *         If unable to read from <code>tunnelsConfig</code>
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnectionsFromFile (final File tunnelsConfig) throws IOException, JSchException
+  public void setTunnelConnectionsFromFile (final File tunnelsConfig,
+                                            @Nonnull final Charset aCharset) throws IOException, JSchException
   {
     final List <String> aLines = new ArrayList <> ();
-    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (new FileReader (tunnelsConfig)))
+    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig,
+                                                                                                       aCharset)))
     {
       String sLine;
       while ((sLine = reader.readLine ()) != null)
@@ -258,7 +266,7 @@ public class TunnelConnectionManager implements Closeable
     final Map <String, Set <Tunnel>> tunnelMap = new HashMap <> ();
     for (final String pathAndSpecString : pathAndSpecList)
     {
-      final String [] pathAndSpec = pathAndSpecString.trim ().split ("\\|");
+      final String [] pathAndSpec = StringHelper.getExplodedArray ('|', pathAndSpecString.trim (), 2);
       tunnelMap.computeIfAbsent (pathAndSpec[0], k -> new HashSet <> ()).add (new Tunnel (pathAndSpec[1]));
     }
 
@@ -290,7 +298,7 @@ public class TunnelConnectionManager implements Closeable
     {
       ISessionFactory sessionFactory = null;
       String key = null;
-      for (final String part : path.split ("\\-\\>"))
+      for (final String part : StringHelper.getExploded ("->", path))
       {
         if (key == null)
           key = part;
@@ -310,7 +318,7 @@ public class TunnelConnectionManager implements Closeable
           builder = sessionFactory.newSessionFactoryBuilder ().setProxy (new SshProxy (sessionFactory));
 
         // start with [username@]hostname[:port]
-        final String [] userAtHost = part.split ("\\@");
+        final String [] userAtHost = StringHelper.getExplodedArray ('@', part, 2);
         String hostname = null;
         if (userAtHost.length == 2)
         {
@@ -323,7 +331,7 @@ public class TunnelConnectionManager implements Closeable
         }
 
         // left with hostname[:port]
-        final String [] hostColonPort = hostname.split ("\\:");
+        final String [] hostColonPort = StringHelper.getExplodedArray (':', hostname, 2);
         builder.setHostname (hostColonPort[0]);
         if (hostColonPort.length == 2)
         {

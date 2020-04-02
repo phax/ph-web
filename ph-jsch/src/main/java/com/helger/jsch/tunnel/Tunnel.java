@@ -20,7 +20,9 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -58,14 +60,14 @@ public class Tunnel
    * new Tunnel (&quot;local_foobar:1234:foobar:1234&quot;);
    * </pre>
    *
-   * @param spec
+   * @param sSpec
    *        A tunnel spec string
    * @see #Tunnel(String, int, String, int)
    * @see <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a>
    */
-  public Tunnel (final String spec)
+  public Tunnel (@Nonnull @Nonempty final String sSpec)
   {
-    final String [] parts = spec.split (":");
+    final String [] parts = StringHelper.getExplodedArray (':', sSpec, 4);
     if (parts.length == 4)
     {
       m_sLocalAlias = parts[0];
@@ -81,12 +83,15 @@ public class Tunnel
         m_nDestinationPort = Integer.parseInt (parts[2]);
       }
       else
-      {
-        // dynamically assigned port
-        m_nLocalPort = 0;
-        m_sDestinationHostname = parts[0];
-        m_nDestinationPort = Integer.parseInt (parts[1]);
-      }
+        if (parts.length == 2)
+        {
+          // dynamically assigned port
+          m_nLocalPort = 0;
+          m_sDestinationHostname = parts[0];
+          m_nDestinationPort = Integer.parseInt (parts[1]);
+        }
+        else
+          throw new IllegalStateException ("Failed to parse Tunnel spec '" + sSpec + "'");
   }
 
   /**

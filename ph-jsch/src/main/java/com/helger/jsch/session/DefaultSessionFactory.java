@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -120,7 +121,7 @@ public class DefaultSessionFactory implements ISessionFactory
     }
 
     if (username == null)
-      m_sUsername = System.getProperty ("user.name").toLowerCase ();
+      m_sUsername = System.getProperty ("user.name").toLowerCase (Locale.US);
     else
       m_sUsername = username;
 

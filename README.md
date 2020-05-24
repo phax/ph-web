@@ -39,6 +39,8 @@ Add the following to your pom.xml to use this artifact:
 # News and noteworthy
 
 * v9.2.0 - work in progress
+    * Updated to dnsjava 3.1.0
+    * Updated to ph-commons 9.4.4 
     * Extracted ph-jsch as a separate subproject
 * v9.1.12 - 2020-03-30
     * Fixed a potential dead lock when shutting down RequestTracker

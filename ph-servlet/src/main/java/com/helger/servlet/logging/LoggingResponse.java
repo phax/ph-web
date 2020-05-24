@@ -73,7 +73,7 @@ final class LoggingResponse implements Serializable
     {
       final IJsonObject aHeaders = new JsonObject ();
       m_aHeaders.forEachSingleHeader (aHeaders::add, true);
-      ret.add ("headers", aHeaders);
+      ret.addJson ("headers", aHeaders);
     }
     if (m_sBody != null)
       ret.add ("body", m_sBody);

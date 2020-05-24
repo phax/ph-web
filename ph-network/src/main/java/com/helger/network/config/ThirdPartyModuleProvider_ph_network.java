@@ -37,7 +37,7 @@ public final class ThirdPartyModuleProvider_ph_network implements IThirdPartyMod
   public static final IThirdPartyModule DNSJAVA = new ThirdPartyModule ("dnsjava",
                                                                         "Brian Wellington",
                                                                         ELicense.BSD,
-                                                                        new Version (2, 1, 8),
+                                                                        new Version (3, 1, 0),
                                                                         "http://www.xbill.org/dnsjava/",
                                                                         true);
 

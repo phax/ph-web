@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.web.config;
+package com.helger.jsch.config;
 
 import javax.annotation.Nullable;
 
@@ -32,14 +32,13 @@ import com.helger.commons.version.Version;
  * @author Philip Helger
  */
 @IsSPIImplementation
-public final class ThirdPartyModuleProvider_ph_web implements IThirdPartyModuleProviderSPI
+public final class ThirdPartyModuleProvider_ph_jsch implements IThirdPartyModuleProviderSPI
 {
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
                                                                      "JCraft Inc.",
                                                                      ELicense.BSD,
                                                                      new Version (0, 1, 55),
-                                                                     "http://www.jcraft.com/jsch/",
-                                                                     true);
+                                                                     "http://www.jcraft.com/jsch/");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

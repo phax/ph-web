@@ -26,19 +26,31 @@ Java library with common web stuff. It contains the following sub-projects:
   
 # Maven usage
 
-Add the following to your pom.xml to use this artifact:
+Add the following to your pom.xml to use this artifact, replacing `x.y.z` with the effective version number:
 
 ```xml
 <dependency>
   <groupId>com.helger</groupId>
   <artifactId>ph-web</artifactId>
-  <version>9.1.12</version>
+  <version>x.y.z</version>
+</dependency>
+```
+
+or to use it as a BOM put that in your `<dependencyManagement>` section:
+
+```xml
+<dependency>
+  <groupId>com.helger</groupId>
+  <artifactId>ph-web-parent-pom</artifactId>
+  <version>x.y.z</version>
+  <type>pom</type>
+  <scope>import</scope>
 </dependency>
 ```
 
 # News and noteworthy
 
-* v9.2.0 - work in progress
+* v9.2.0 - 2020-05-25
     * Updated to dnsjava 3.1.0
     * Updated to ph-commons 9.4.4 
     * Extracted ph-jsch as a separate subproject

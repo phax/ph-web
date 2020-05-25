@@ -72,7 +72,7 @@ public class AuthenticatorProxySettingsManager extends Authenticator
    *        Authentication scheme to use. May be <code>null</code>.
    * @param aRequestingURL
    *        The full requesting URL. May be <code>null</code>.
-   * @return
+   * @return <code>null</code> if no match was found
    */
   @Nullable
   protected PasswordAuthentication findProxyPasswordAuthentication (@Nullable final String sRequestingHost,

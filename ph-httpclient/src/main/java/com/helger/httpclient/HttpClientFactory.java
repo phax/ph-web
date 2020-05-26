@@ -18,7 +18,6 @@ package com.helger.httpclient;
 
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -65,7 +64,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
@@ -79,21 +77,6 @@ import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 @NotThreadSafe
 public class HttpClientFactory implements IHttpClientProvider
 {
-  /**
-   * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
-   * suites
-   */
-  @Deprecated
-  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
-  @Deprecated
-  public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = HttpClientSettings.DEFAULT_USE_SYSTEM_PROPERTIES;
-  @Deprecated
-  public static final boolean DEFAULT_USE_DNS_CACHE = HttpClientSettings.DEFAULT_USE_DNS_CACHE;
-  @Deprecated
-  public static final int DEFAULT_RETRIES = HttpClientSettings.DEFAULT_RETRIES;
-  @Deprecated
-  public static final ERetryMode DEFAULT_RETRY_MODE = HttpClientSettings.DEFAULT_RETRY_MODE;
-
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientFactory.class);
 
   private final HttpClientSettings m_aSettings;
@@ -116,402 +99,6 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     ValueEnforcer.notNull (aSettings, "Settings");
     m_aSettings = aSettings;
-  }
-
-  /**
-   * @return <code>true</code> if system properties for HTTP client should be
-   *         used, <code>false</code> if not. Default is <code>false</code>.
-   * @since 8.7.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final boolean isUseSystemProperties ()
-  {
-    return m_aSettings.isUseSystemProperties ();
-  }
-
-  /**
-   * Enable the usage of system properties in the HTTP client?<br>
-   * Supported properties are (source:
-   * http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClientBuilder.html):
-   * <ul>
-   * <li>ssl.TrustManagerFactory.algorithm</li>
-   * <li>javax.net.ssl.trustStoreType</li>
-   * <li>javax.net.ssl.trustStore</li>
-   * <li>javax.net.ssl.trustStoreProvider</li>
-   * <li>javax.net.ssl.trustStorePassword</li>
-   * <li>ssl.KeyManagerFactory.algorithm</li>
-   * <li>javax.net.ssl.keyStoreType</li>
-   * <li>javax.net.ssl.keyStore</li>
-   * <li>javax.net.ssl.keyStoreProvider</li>
-   * <li>javax.net.ssl.keyStorePassword</li>
-   * <li>https.protocols</li>
-   * <li>https.cipherSuites</li>
-   * <li>http.proxyHost</li>
-   * <li>http.proxyPort</li>
-   * <li>http.nonProxyHosts</li>
-   * <li>http.keepAlive</li>
-   * <li>http.maxConnections</li>
-   * <li>http.agent</li>
-   * </ul>
-   *
-   * @param bUseSystemProperties
-   *        <code>true</code> if system properties should be used,
-   *        <code>false</code> if not.
-   * @return this for chaining
-   * @since 8.7.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setUseSystemProperties (final boolean bUseSystemProperties)
-  {
-    m_aSettings.setUseSystemProperties (bUseSystemProperties);
-    return this;
-  }
-
-  /**
-   * @return <code>true</code> if DNS client caching is enabled (default),
-   *         <code>false</code> if it is disabled.
-   * @since 8.8.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final boolean isUseDNSClientCache ()
-  {
-    return m_aSettings.isUseDNSClientCache ();
-  }
-
-  /**
-   * Enable or disable DNS client caching. By default caching is enabled.
-   *
-   * @param bUseDNSClientCache
-   *        <code>true</code> to use DNS caching, <code>false</code> to disable
-   *        it.
-   * @return this for chaining
-   * @since 8.8.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setUseDNSClientCache (final boolean bUseDNSClientCache)
-  {
-    m_aSettings.setUseDNSClientCache (bUseDNSClientCache);
-    return this;
-  }
-
-  /**
-   * Create a custom SSLContext to use for the SSL Socket factory.
-   *
-   * @return <code>null</code> if no custom context is present.
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nullable
-  @Deprecated
-  public final SSLContext getSSLContext ()
-  {
-    return m_aSettings.getSSLContext ();
-  }
-
-  /**
-   * Set the SSL Context to be used. By default no SSL context is present.
-   *
-   * @param aSSLContext
-   *        The SSL context to be used. May be <code>null</code>.
-   * @return this for chaining
-   * @since 9.0.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setSSLContext (@Nullable final SSLContext aSSLContext)
-  {
-    m_aSettings.setSSLContext (aSSLContext);
-    return this;
-  }
-
-  /**
-   * Attention: INSECURE METHOD!<br>
-   * Set the a special SSL Context that does not expect any specific server
-   * certificate. To be totally loose, you should also set a hostname verifier
-   * that accepts all host names.
-   *
-   * @return this for chaining
-   * @throws GeneralSecurityException
-   *         In case TLS initialization fails
-   * @since 9.0.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setSSLContextTrustAll () throws GeneralSecurityException
-  {
-    m_aSettings.setSSLContextTrustAll ();
-    return this;
-  }
-
-  /**
-   * @return The current hostname verifier to be used. Default to
-   *         <code>null</code>.
-   * @since 8.8.2
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nullable
-  @Deprecated
-  public final HostnameVerifier getHostnameVerifier ()
-  {
-    return m_aSettings.getHostnameVerifier ();
-  }
-
-  /**
-   * Set the hostname verifier to be used.
-   *
-   * @param aHostnameVerifier
-   *        Verifier to be used. May be <code>null</code>.
-   * @return this for chaining
-   * @since 8.8.2
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
-  {
-    m_aSettings.setHostnameVerifier (aHostnameVerifier);
-    return this;
-  }
-
-  /**
-   * Attention: INSECURE METHOD!<br>
-   * Set a hostname verifier that trusts all host names.
-   *
-   * @return this for chaining
-   * @since 9.0.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setHostnameVerifierVerifyAll ()
-  {
-    m_aSettings.setHostnameVerifierVerifyAll ();
-    return this;
-  }
-
-  /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to
-   *         use the default settings without specific cipher suites.
-   * @since 9.0.5
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nullable
-  @Deprecated
-  public final ITLSConfigurationMode getTLSConfigurationMode ()
-  {
-    return m_aSettings.getTLSConfigurationMode ();
-  }
-
-  /**
-   * Set the TLS configuration mode to use.
-   *
-   * @param aTLSConfigurationMode
-   *        The configuration mode to use. <code>null</code> means use system
-   *        default.
-   * @return this for chaining
-   * @since 9.0.5
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
-  {
-    m_aSettings.setTLSConfigurationMode (aTLSConfigurationMode);
-    return this;
-  }
-
-  /**
-   * @return The proxy host to be used. May be <code>null</code>.
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nullable
-  @Deprecated
-  public final HttpHost getProxyHost ()
-  {
-    return m_aSettings.getProxyHost ();
-  }
-
-  /**
-   * @return The proxy server credentials to be used. May be <code>null</code>.
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nullable
-  @Deprecated
-  public final Credentials getProxyCredentials ()
-  {
-    return m_aSettings.getProxyCredentials ();
-  }
-
-  /**
-   * Set a proxy host without proxy server credentials.
-   *
-   * @param aProxy
-   *        The proxy host to be used. May be <code>null</code>.
-   * @since 8.8.0
-   * @see #setProxyCredentials(Credentials)
-   * @see #setProxy(HttpHost, Credentials)
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final void setProxy (@Nullable final HttpHost aProxy)
-  {
-    setProxyHost (aProxy);
-  }
-
-  /**
-   * Set a proxy host without proxy server credentials.
-   *
-   * @param aProxy
-   *        The proxy host to be used. May be <code>null</code>.
-   * @since 9.1.7
-   * @see #setProxyCredentials(Credentials)
-   * @see #setProxy(HttpHost, Credentials)
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final void setProxyHost (@Nullable final HttpHost aProxy)
-  {
-    m_aSettings.setProxyHost (aProxy);
-  }
-
-  /**
-   * Set proxy credentials.
-   *
-   * @param aProxyCredentials
-   *        The proxy server credentials to be used. May be <code>null</code>.
-   *        They are only used if a proxy host is present! Usually they are of
-   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
-   * @since 9.1.7
-   * @see #setProxyHost(HttpHost)
-   * @see #setProxy(HttpHost, Credentials)
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final void setProxyCredentials (@Nullable final Credentials aProxyCredentials)
-  {
-    m_aSettings.setProxyCredentials (aProxyCredentials);
-  }
-
-  /**
-   * Set proxy host and proxy credentials.
-   *
-   * @param aProxy
-   *        The proxy host to be used. May be <code>null</code>.
-   * @param aProxyCredentials
-   *        The proxy server credentials to be used. May be <code>null</code>.
-   *        They are only used if a proxy host is present! Usually they are of
-   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
-   * @since 8.8.0
-   * @see #setProxyHost(HttpHost)
-   * @see #setProxyCredentials(Credentials)
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Deprecated
-  public final void setProxy (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
-  {
-    setProxyHost (aProxy);
-    setProxyCredentials (aProxyCredentials);
-  }
-
-  /**
-   * @return The set of all host names and IP addresses for which no proxy
-   *         should be used. Never <code>null</code> and mutable.
-   * @since 9.1.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @ReturnsMutableObject
-  @Deprecated
-  public final ICommonsSet <String> nonProxyHosts ()
-  {
-    return m_aSettings.nonProxyHosts ();
-  }
-
-  /**
-   * All non-proxy hosts from a piped string as in
-   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
-   * pipe, and the values are trimmed.
-   *
-   * @param sDefinition
-   *        The definition string. May be <code>null</code> or empty or invalid.
-   *        Every non-empty trimmed text between pipes is interpreted as a host
-   *        name.
-   * @return this for chaining
-   * @since 9.1.1
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
-  {
-    m_aSettings.addNonProxyHostsFromPipeString (sDefinition);
-    return this;
-  }
-
-  /**
-   * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
-   * @since 9.0.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnegative
-  @Deprecated
-  public final int getRetries ()
-  {
-    return m_aSettings.getRetryCount ();
-  }
-
-  /**
-   * Set the number of internal retries.
-   *
-   * @param nRetries
-   *        Retries to use. Must be &ge; 0.
-   * @return this for chaining
-   * @since 9.0.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setRetries (@Nonnegative final int nRetries)
-  {
-    m_aSettings.setRetryCount (nRetries);
-    return this;
-  }
-
-  /**
-   * @return The retry-mode. Never <code>null</code>. The default is
-   *         {@link #DEFAULT_RETRY_MODE}.
-   * @since 9.0.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final ERetryMode getRetryMode ()
-  {
-    return m_aSettings.getRetryMode ();
-  }
-
-  /**
-   * Set the retry mode to use.
-   *
-   * @param eRetryMode
-   *        Retry mode to use. Must not be <code>null</code>.
-   * @return this for chaining
-   * @since 9.0.0
-   * @deprecated Use {@link HttpClientSettings} instead
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientFactory setRetryMode (@Nonnull final ERetryMode eRetryMode)
-  {
-    m_aSettings.setRetryMode (eRetryMode);
-    return this;
   }
 
   /**
@@ -563,8 +150,7 @@ public class HttpClientFactory implements IHttpClientProvider
     catch (final SSLInitializationException ex)
     {
       // Fall through
-      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
-                   ex);
+      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory", ex);
     }
 
     if (aSSLFactory == null)
@@ -625,8 +211,6 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The DNS resolver to be used for
    *         {@link PoolingHttpClientConnectionManager}. May be
    *         <code>null</code> to use the default.
-   * @see #isUseDNSClientCache()
-   * @see #setUseDNSClientCache(boolean)
    * @since 8.8.0
    */
   @Nullable
@@ -645,8 +229,7 @@ public class HttpClientFactory implements IHttpClientProvider
                                                                                  .register ("https", aSSLFactory)
                                                                                  .build ();
     final DnsResolver aDNSResolver = createDNSResolver ();
-    final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (aConSocketRegistry,
-                                                                                                aDNSResolver);
+    final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (aConSocketRegistry, aDNSResolver);
     aConnMgr.setDefaultMaxPerRoute (100);
     aConnMgr.setMaxTotal (200);
     aConnMgr.setValidateAfterInactivity (1000);
@@ -690,8 +273,7 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries,
-                                                            @Nonnull final ERetryMode eRetryMode)
+  public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries, @Nonnull final ERetryMode eRetryMode)
   {
     return new HttpClientRetryHandler (nMaxRetries, eRetryMode);
   }

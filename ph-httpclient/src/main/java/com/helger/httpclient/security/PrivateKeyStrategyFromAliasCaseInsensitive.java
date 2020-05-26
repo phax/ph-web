@@ -101,11 +101,7 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
       }
     }
     if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Found no certificate alias matching '" +
-                   m_sExpectedAlias +
-                   "' in the provided aliases " +
-                   aAliases.keySet ());
+      LOGGER.warn ("Found no certificate alias matching '" + m_sExpectedAlias + "' in the provided aliases " + aAliases.keySet ());
     return null;
   }
-
 }

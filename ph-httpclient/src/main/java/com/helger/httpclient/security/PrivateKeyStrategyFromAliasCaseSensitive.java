@@ -32,7 +32,7 @@ import com.helger.commons.ValueEnforcer;
 /**
  * A private key strategy that select the key details from the provided alias.
  * The matching of the alias is case sensitive.
- * 
+ *
  * @author Philip Helger
  * @since 9.1.9
  */
@@ -75,11 +75,7 @@ public class PrivateKeyStrategyFromAliasCaseSensitive implements PrivateKeyStrat
       }
     }
     if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Found no certificate alias matching '" +
-                   m_sExpectedAlias +
-                   "' in the provided aliases " +
-                   aAliases.keySet ());
+      LOGGER.warn ("Found no certificate alias matching '" + m_sExpectedAlias + "' in the provided aliases " + aAliases.keySet ());
     return null;
   }
-
 }

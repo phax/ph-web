@@ -209,44 +209,6 @@ public final class RequestHelper
    * Get the request URI without an eventually appended session
    * (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
-   * This method returns the percent encoded parameters "as is"
-   * <table summary="Examples of Returned Values">
-   * <tr align=left>
-   * <th>First line of HTTP request</th>
-   * <th>Returned Value</th>
-   * <tr>
-   * <td>POST /some/path.html;JSESSIONID=4711</td>
-   * <td>/some/path.html</td>
-   * </tr>
-   * <tr>
-   * <td>GET http://foo.bar/a.html;JSESSIONID=4711</td>
-   * <td>/a.html</td>
-   * </tr>
-   * <tr>
-   * <td>HEAD /xyz;JSESSIONID=4711?a=b</td>
-   * <td>/xyz</td>
-   * </tr>
-   * </table>
-   *
-   * @param aHttpRequest
-   *        The HTTP request. May not be <code>null</code>.
-   * @return The request URI without the optional session ID. Never
-   *         <code>null</code>.
-   * @deprecated Since 9.1.10. Use
-   *             {@link #getRequestURIDecoded(HttpServletRequest)} or
-   *             {@link #getRequestURIEncoded(HttpServletRequest)} instead
-   */
-  @Nonnull
-  @Deprecated
-  public static String getRequestURI (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getRequestURIDecoded (aHttpRequest);
-  }
-
-  /**
-   * Get the request URI without an eventually appended session
-   * (";jsessionid=...").<br>
-   * This method considers the GlobalWebScope custom context path.<br>
    * This method returns the percent decoded parameters
    * <table summary="Examples of Returned Values">
    * <tr align=left>
@@ -479,39 +441,6 @@ public final class RequestHelper
   /**
    * Reconstructs the URL the client used to make the request. The returned URL
    * contains a protocol, server name, port number, and server path, but it does
-   * not include query string parameters.
-   * <p>
-   * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
-   * reconstructed URL must reflect the path used to obtain the
-   * RequestDispatcher, and not the server path specified by the client.
-   * <p>
-   * Because this method returns a <code>StringBuilder</code>, not a string, you
-   * can modify the URL easily, for example, to append query parameters.
-   * <p>
-   * This method is useful for creating redirect messages and for reporting
-   * errors.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to get the request URL from. May not be
-   *        <code>null</code>.
-   * @return a <code>StringBuilder</code> object containing the reconstructed
-   *         URL
-   * @deprecated Since 9.1.10; Use either
-   *             {@link #getRequestURIDecoded(HttpServletRequest)} or
-   *             {@link #getRequestURLEncoded(HttpServletRequest)}
-   */
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  public static StringBuilder getRequestURL (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getRequestURLDecoded (aHttpRequest);
-  }
-
-  /**
-   * Reconstructs the URL the client used to make the request. The returned URL
-   * contains a protocol, server name, port number, and server path, but it does
    * not include query string parameters.<br>
    * This method returns the percent decoded parameters
    * <p>
@@ -589,30 +518,6 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URL.
-   * @see #getURI(HttpServletRequest) getURI to retrieve the URL without the
-   *      server scheme and name.
-   * @deprecated Since 9.1.10; use either
-   *             {@link #getURLDecoded(HttpServletRequest)} or
-   *             {@link #getURLEncoded(HttpServletRequest)}.
-   */
-  @Deprecated
-  @Nonnull
-  @Nonempty
-  public static String getURL (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getURLDecoded (aHttpRequest);
-  }
-
-  /**
-   * Get the full URL (incl. protocol) and parameters of the passed request.<br>
-   *
-   * <pre>
-   * http://hostname.com/mywebapp/servlet/dir/a/b.xml=123?d=789
-   * </pre>
-   *
-   * @param aHttpRequest
-   *        The request to use. May not be <code>null</code>.
-   * @return The full URL.
    * @see #getURIDecoded(HttpServletRequest) getURI to retrieve the URL without
    *      the server scheme and name.
    * @since 9.1.10
@@ -658,30 +563,6 @@ public final class RequestHelper
     if (StringHelper.hasText (sQueryString))
       ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
-  }
-
-  /**
-   * Get the full URI (excl. protocol) and parameters of the passed request.<br>
-   * Example:
-   *
-   * <pre>
-   * /mywebapp/servlet/dir/a/b.xml=123?d=789
-   * </pre>
-   *
-   * @param aHttpRequest
-   *        The request to use. May not be <code>null</code>.
-   * @return The full URI.
-   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
-   * @deprecated Since 9.1.10; Use either
-   *             {@link #getURIDecoded(HttpServletRequest)} or
-   *             {@link #getURIEncoded(HttpServletRequest)}
-   */
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  public static String getURI (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    return getURIDecoded (aHttpRequest);
   }
 
   /**

@@ -233,23 +233,6 @@ public class CSP2Directive implements ICSPDirective
   }
 
   /**
-   * Defines valid sources for loading frames. child-src is preferred over this
-   * deprecated directive.
-   *
-   * @param aValue
-   *        Value list to use. May be be <code>null</code>.
-   * @return New {@link CSP2Directive}
-   * @since CSP v1
-   * @deprecated Use {@link #createChildSrc(CSP2SourceList)} instead
-   */
-  @Deprecated
-  @Nonnull
-  public static CSP2Directive createFrameSrc (@Nullable final CSP2SourceList aValue)
-  {
-    return new CSP2Directive ("frame-src", aValue);
-  }
-
-  /**
    * The sandbox directive specifies an HTML sandbox policy that the user agent
    * applies to the protected resource.
    *

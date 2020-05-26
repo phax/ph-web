@@ -21,7 +21,6 @@ import java.io.Serializable;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.codec.IByteArrayCodec;
-import com.helger.commons.codec.IDecoder;
 import com.helger.commons.id.IHasID;
 
 /**
@@ -32,19 +31,6 @@ import com.helger.commons.id.IHasID;
  */
 public interface IContentTransferEncoding extends IHasID <String>, Serializable
 {
-  /**
-   * @return A new decoder for this Content Transfer Encoding. May not be
-   *         <code>null</code>.
-   * @deprecated Use {@link #createCodec()} instead because it can encode and
-   *             decode
-   */
-  @Nonnull
-  @Deprecated
-  default IDecoder <byte [], byte []> createDecoder ()
-  {
-    return createCodec ();
-  }
-
   /**
    * @return A new encoder for this Content Transfer Encoding. May not be
    *         <code>null</code>.

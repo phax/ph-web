@@ -484,40 +484,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   }
 
   /**
-   * Returns the part of this request's URL from the protocol name up to the
-   * query string in the first line of the HTTP request.<br>
-   * The web container does not decode this String.
-   * <table summary="Examples of Returned Values">
-   * <tr align=left>
-   * <th>First line of HTTP request</th>
-   * <th>Returned Value</th>
-   * </tr>
-   * <tr>
-   * <td>POST /some/path.html HTTP/1.1</td>
-   * <td>/some/path.html</td>
-   * </tr>
-   * <tr>
-   * <td>GET http://foo.bar/a.html HTTP/1.0</td>
-   * <td>/a.html</td>
-   * </tr>
-   * <tr>
-   * <td>HEAD /xyz?a=b HTTP/1.1</td>
-   * <td>/xyz</td>
-   * </tr>
-   * </table>
-   *
-   * @return a <code>String</code> containing the part of the URL from the
-   *         protocol name up to the query string
-   * @deprecated Since 9.1.10; Use either {@link #getRequestURIDecoded()} or
-   *             {@link #getRequestURIEncoded()}.
-   */
-  @Deprecated
-  default String getRequestURI ()
-  {
-    return getRequestURIDecoded ();
-  }
-
-  /**
    * Get the request URI without an eventually appended session
    * (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
@@ -581,36 +547,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   default String getRequestURIEncoded ()
   {
     return RequestHelper.getRequestURIEncoded (getRequest ());
-  }
-
-  /**
-   * Reconstructs the URL the client used to make the request. The returned URL
-   * contains a protocol, server name, port number, and server path, but it does
-   * not include query string parameters.<br>
-   * The web container does not decode this String.
-   * <p>
-   * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
-   * reconstructed URL must reflect the path used to obtain the
-   * RequestDispatcher, and not the server path specified by the client.
-   * <p>
-   * Because this method returns a <code>StringBuffer</code>, not a string, you
-   * can modify the URL easily, for example, to append query parameters.
-   * <p>
-   * This method is useful for creating redirect messages and for reporting
-   * errors.
-   *
-   * @return a <code>StringBuilder</code> object containing the reconstructed
-   *         URL
-   * @deprecated Since 9.1.10; Use ither {@link #getRequestURLDecoded()} or
-   *             {@link #getRequestURLEncoded()}
-   */
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  default StringBuilder getRequestURL ()
-  {
-    return getRequestURLDecoded ();
   }
 
   /**
@@ -801,24 +737,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * <code>/context/servlet/path/a/b?c=123&amp;d=789</code>
    *
    * @return The full URI of the current request.
-   * @since 9.1.3
-   * @deprecated Since 9.1.10; Use either {@link #getURIDecoded()} or
-   *             {@link #getURIEncoded()}
-   */
-  @Nonnull
-  @Nonempty
-  @Deprecated
-  default String getURI ()
-  {
-    return getURIDecoded ();
-  }
-
-  /**
-   * Get the full URI (excl. protocol and host) and parameters of the current
-   * request. <br>
-   * <code>/context/servlet/path/a/b?c=123&amp;d=789</code>
-   *
-   * @return The full URI of the current request.
    * @since 9.1.10
    */
   @Nonnull
@@ -843,23 +761,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   {
     return (String) attrs ().computeIfAbsent (ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "req-uri-encoded",
                                               k -> RequestHelper.getURIEncoded (getRequest ()));
-  }
-
-  /**
-   * Get the full URL (incl. protocol) and parameters of the current request.
-   * <br>
-   * <code>http://hostname.com:81/context/servlet/path/a/b?c=123&amp;d=789</code>
-   *
-   * @return The full URL of the current request.
-   * @deprecated Since 9.1.10; Use {@link #getURLDecoded()} or
-   *             {@link #getURLEncoded()}
-   */
-  @Deprecated
-  @Nonnull
-  @Nonempty
-  default String getURL ()
-  {
-    return getURLDecoded ();
   }
 
   /**

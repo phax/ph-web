@@ -32,7 +32,7 @@ Add the following to your pom.xml to use this artifact, replacing `x.y.z` with t
 
 ```xml
 <dependency>
-  <groupId>com.helger</groupId>
+  <groupId>com.helger.web</groupId>
   <artifactId>ph-web</artifactId>
   <version>x.y.z</version>
 </dependency>
@@ -42,7 +42,7 @@ or to use it as a BOM put that in your `<dependencyManagement>` section:
 
 ```xml
 <dependency>
-  <groupId>com.helger</groupId>
+  <groupId>com.helger.web</groupId>
   <artifactId>ph-web-parent-pom</artifactId>
   <version>x.y.z</version>
   <type>pom</type>
@@ -50,8 +50,13 @@ or to use it as a BOM put that in your `<dependencyManagement>` section:
 </dependency>
 ```
 
+Note: prior to v9.3.0 the Maven groupId was `com.helger`.
+
 # News and noteworthy
 
+* v9.3.0 - work in progress
+    * Extracted ph-dns as a separate subproject
+    * Changed Maven groupId to `com.helger.web`
 * v9.2.0 - 2020-05-25
     * Updated to dnsjava 3.1.0
     * Updated to ph-commons 9.4.4 

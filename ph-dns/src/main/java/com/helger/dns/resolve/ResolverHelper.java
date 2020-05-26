@@ -21,6 +21,11 @@ import com.helger.dns.config.DNSConfig;
 @Immutable
 public final class ResolverHelper
 {
+  static
+  {
+    DNSConfig.ensureInited ();
+  }
+
   private ResolverHelper ()
   {}
 

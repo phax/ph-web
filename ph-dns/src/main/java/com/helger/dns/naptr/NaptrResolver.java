@@ -38,6 +38,7 @@ import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
+import com.helger.dns.config.DNSConfig;
 import com.helger.dns.resolve.ResolverHelper;
 
 /**
@@ -50,6 +51,11 @@ import com.helger.dns.resolve.ResolverHelper;
 public final class NaptrResolver
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrResolver.class);
+
+  static
+  {
+    DNSConfig.ensureInited ();
+  }
 
   private NaptrResolver ()
   {}

@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Address;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.dns.config.DNSConfig;
 import com.helger.dns.ip.IPV4Addr;
 
 /**
@@ -45,6 +46,11 @@ public final class DNSResolver
 
   @PresentForCodeCoverage
   private static final DNSResolver s_aInstance = new DNSResolver ();
+
+  static
+  {
+    DNSConfig.ensureInited ();
+  }
 
   private DNSResolver ()
   {}

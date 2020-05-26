@@ -1,4 +1,4 @@
-package com.helger.dns;
+package com.helger.dns.config;
 
 import java.net.InetAddress;
 import java.security.Security;
@@ -16,6 +16,7 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.system.SystemProperties;
+import com.helger.dns.dnsjava.DnsjavaInit;
 import com.helger.dns.ip.IPV4Addr;
 
 /**
@@ -24,7 +25,7 @@ import com.helger.dns.ip.IPV4Addr;
  * @author Philip Helger
  */
 @Immutable
-public final class DNSConfigurator
+public final class DNSConfig
 {
   // Taken from ExtendedResolver.DEFAULT_TIMEOUT
   private static final Duration DEFAULT_RESOLVER_TIMEOUT = Duration.ofSeconds (5);
@@ -43,12 +44,12 @@ public final class DNSConfigurator
     CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (8, 8, 4, 4));
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfigurator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfig.class);
 
   @PresentForCodeCoverage
-  private static final DNSConfigurator s_aInstance = new DNSConfigurator ();
+  private static final DNSConfig s_aInstance = new DNSConfig ();
 
-  private DNSConfigurator ()
+  private DNSConfig ()
   {}
 
   /**
@@ -99,5 +100,15 @@ public final class DNSConfigurator
   public static ICommonsList <InetAddress> getDefaultCustomServers ()
   {
     return CUSTOM_DEFAULT_DNS_SERVERS.getClone ();
+  }
+
+  static
+  {
+    DnsjavaInit.initWithCustomDNSServers (getDefaultCustomServers ());
+  }
+
+  public static void ensureInited ()
+  {
+    /* empty - just to ensure the DnsjavaInit is called */
   }
 }

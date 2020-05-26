@@ -16,7 +16,7 @@ import org.xbill.DNS.SimpleResolver;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.dns.DNSConfigurator;
+import com.helger.dns.config.DNSConfig;
 
 @Immutable
 public final class ResolverHelper
@@ -27,17 +27,17 @@ public final class ResolverHelper
   public static void defaultCustomizeResolver (@Nonnull final Resolver aResolver)
   {
     // Set the default query timeout
-    aResolver.setTimeout (DNSConfigurator.getResolverTimeout ());
+    aResolver.setTimeout (DNSConfig.getResolverTimeout ());
   }
 
   public static void defaultCustomizeExtendedResolver (@Nonnull final ExtendedResolver aResolver)
   {
     defaultCustomizeResolver (aResolver);
     // Set the default retries
-    aResolver.setRetries (DNSConfigurator.getResolverRetries ());
+    aResolver.setRetries (DNSConfig.getResolverRetries ());
   }
 
-  public static void forEachDefaultResolver (@Nonnull final Consumer <? super Resolver> aConsumer)
+  public static void forEachDefaultResolver (@Nonnull final Consumer <? super SimpleResolver> aConsumer)
   {
     ValueEnforcer.notNull (aConsumer, "Consumer");
 
@@ -51,7 +51,7 @@ public final class ResolverHelper
   }
 
   public static void forEachResolver (@Nullable final Iterable <? extends InetAddress> aServerAddrs,
-                                      @Nonnull final Consumer <? super Resolver> aConsumer)
+                                      @Nonnull final Consumer <? super SimpleResolver> aConsumer)
   {
     if (aServerAddrs != null)
       for (final InetAddress aAddr : aServerAddrs)
@@ -64,16 +64,32 @@ public final class ResolverHelper
         }
   }
 
+  private static boolean _isContained (final ICommonsList <Resolver> aResolvers, final SimpleResolver aResolver)
+  {
+    // SimpleResolver doesn't have equals
+    final InetSocketAddress aSearchAddr = aResolver.getAddress ();
+    return aResolvers.containsAny (x -> ((SimpleResolver) x).getAddress ().equals (aSearchAddr));
+  }
+
   @Nonnull
   public static ExtendedResolver createExtendedResolver (@Nullable final Iterable <? extends InetAddress> aCustomServerAddrs)
   {
     final ICommonsList <Resolver> aResolvers = new CommonsArrayList <> ();
     // Add optional custom servers first
-    forEachResolver (aCustomServerAddrs, aResolvers::add);
+    forEachResolver (aCustomServerAddrs, x -> {
+      if (!_isContained (aResolvers, x))
+        aResolvers.add (x);
+    });
     // Add default servers as fallbacks
-    forEachDefaultResolver (aResolvers::add);
+    forEachDefaultResolver (x -> {
+      if (!_isContained (aResolvers, x))
+        aResolvers.add (x);
+    });
     // Add custom default servers last
-    forEachResolver (DNSConfigurator.getDefaultCustomServers (), aResolvers::add);
+    forEachResolver (DNSConfig.getDefaultCustomServers (), x -> {
+      if (!_isContained (aResolvers, x))
+        aResolvers.add (x);
+    });
     // This overrides the timeout of all contained resolvers
     final ExtendedResolver ret = new ExtendedResolver (aResolvers);
     // And now apply the default customization

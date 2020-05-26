@@ -86,6 +86,9 @@ public final class NaptrResolver
     if (StringHelper.hasNoText (sDNSName))
       return null;
 
+    if (LOGGER.isInfoEnabled ())
+      LOGGER.info ("Trying to look up NAPTR on '" + sDNSName + "'");
+
     final int nMaxRetries = 1;
 
     // Use the default (static) cache that is used by default

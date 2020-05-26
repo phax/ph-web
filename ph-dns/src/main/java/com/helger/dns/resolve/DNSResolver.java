@@ -142,8 +142,8 @@ public final class DNSResolver
   public static String dnsResolveEx (final String sHostName)
   {
     final StringBuilder aSB = new StringBuilder ();
-    final InetAddress [] list = resolveAllByName (sHostName);
-    for (final InetAddress aInetAddress : list)
+    final InetAddress [] aAddrs = resolveAllByName (sHostName);
+    for (final InetAddress aInetAddress : aAddrs)
     {
       if (aSB.length () > 0)
         aSB.append ("; ");
@@ -160,6 +160,12 @@ public final class DNSResolver
   @Nonnull
   public static String getMyIpAddress ()
   {
+    return getMyIpAddressOrDefault ("127.0.0.1");
+  }
+
+  @Nullable
+  public static String getMyIpAddressOrDefault (@Nullable final String sDefault)
+  {
     try
     {
       final InetAddress aAddress = InetAddress.getLocalHost ();
@@ -170,6 +176,6 @@ public final class DNSResolver
     {
       // fall through
     }
-    return "127.0.0.1";
+    return sDefault;
   }
 }

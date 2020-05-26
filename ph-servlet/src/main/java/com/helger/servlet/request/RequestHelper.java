@@ -576,7 +576,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
-   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
+   * @see #getURLDecoded(HttpServletRequest) getURL to retrieve the absolute URL
    * @since 9.1.10
    */
   @Nonnull
@@ -604,7 +604,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
-   * @see #getURL(HttpServletRequest) getURL to retrieve the absolute URL
+   * @see #getURLDecoded(HttpServletRequest) getURL to retrieve the absolute URL
    * @since 9.1.10
    */
   @Nonnull

@@ -115,6 +115,11 @@
 
       <dependency>
         <groupId>com.helger</groupId>
+        <artifactId>ph-dns</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.helger</groupId>
         <artifactId>ph-network</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -190,6 +195,7 @@
   </dependencies>
   
   <modules>
+    <module>ph-dns</module>
     <module>ph-network</module>
     <module>ph-http</module>
     <module>ph-useragent</module>

@@ -37,11 +37,16 @@ import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.timing.StopWatch;
-import com.helger.network.dns.DNSResolver;
+import com.helger.dns.client.DNSResolver;
 import com.helger.network.proxy.config.SocksProxyConfig;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
 
+/**
+ * Proxy Auto Configuration helper. Requires ph-dns to work.
+ * 
+ * @author Philip Helger
+ */
 public final class ProxyAutoConfigHelper
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
@@ -54,15 +59,9 @@ public final class ProxyAutoConfigHelper
     try
     {
       final StopWatch aSW = StopWatch.createdStarted ();
-      s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return " +
-                            DNSResolver.class.getName () +
-                            ".dnsResolve(hostName); }");
-      s_aScriptEngine.eval ("var dnsResolveEx = function(hostName){ return " +
-                            DNSResolver.class.getName () +
-                            ".dnsResolveEx(hostName); }");
-      s_aScriptEngine.eval ("var myIpAddress = function(){ return " +
-                            DNSResolver.class.getName () +
-                            ".getMyIpAddress(); }");
+      s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolve(hostName); }");
+      s_aScriptEngine.eval ("var dnsResolveEx = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolveEx(hostName); }");
+      s_aScriptEngine.eval ("var myIpAddress = function(){ return " + DNSResolver.class.getName () + ".getMyIpAddress(); }");
       s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
@@ -120,8 +119,7 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL,
-                                                           @Nonnull final String sHost) throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
     final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
@@ -168,8 +166,7 @@ public final class ProxyAutoConfigHelper
                   {
                     final String sProxyHost = aParts[0];
                     final String sProxyPort = aParts[1];
-                    final int nProxyPort = StringParser.parseInt (sProxyPort,
-                                                                  SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
+                    final int nProxyPort = StringParser.parseInt (sProxyPort, SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
                     ret.add (new ProxySettings (Proxy.Type.SOCKS, sProxyHost, nProxyPort));
                     bError = false;
                   }

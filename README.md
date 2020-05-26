@@ -1,6 +1,8 @@
 # ph-web
 
 Java library with common web stuff. It contains the following sub-projects:
+* ph-dns (since v9.2.1)
+    * DNS client side helper methods based on dnsjava 
 * ph-network
     * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
 * ph-http

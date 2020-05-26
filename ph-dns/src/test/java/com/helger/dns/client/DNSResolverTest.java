@@ -14,12 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.dns;
+package com.helger.dns.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.InetAddress;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,22 +32,30 @@ public final class DNSResolverTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolverTest.class);
 
+  @Nullable
+  private static InetAddress _resolveByName (@Nonnull final String sHostName)
+  {
+    LOGGER.info ("Trying to resolve '" + sHostName + "'");
+    return DNSResolver.resolveByName (sHostName);
+  }
+
   @Test
   public void testValid ()
   {
     // Is null when Internet connection is not present, non-null otherwise
-    DNSResolver.resolveByName ("www.dnsjava.org");
+    _resolveByName ("www.dnsjava.org");
+
     // In Copenhagen I resolved "bogus.host.foobar" to "67.215.65.132" which was
     // opendns.com -> maybe has anything to do with the DNS server I was using
     // there
-    final InetAddress aAddr = DNSResolver.resolveByName ("bogus.host.foobar");
+    final InetAddress aAddr = _resolveByName ("bogus.host.foobar");
     if (aAddr != null)
     {
       // A DNS server resolving anything was used
-      assertEquals (aAddr, DNSResolver.resolveByName ("jh<adsjkhd<a asd kjh "));
+      assertEquals (aAddr, _resolveByName ("jh<adsjkhd<a asd kjh "));
     }
+
     assertNotNull (DNSResolver.getMyIpAddress ());
-    if (false)
-      LOGGER.info ("My IP address: " + DNSResolver.getMyIpAddress ());
+    LOGGER.info ("My IP address: " + DNSResolver.getMyIpAddress ());
   }
 }

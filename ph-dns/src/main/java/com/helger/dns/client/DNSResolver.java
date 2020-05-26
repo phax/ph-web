@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.network.dns;
+package com.helger.dns.client;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -48,14 +48,26 @@ public final class DNSResolver
   @Nullable
   public static InetAddress resolveByName (@Nonnull final String sHostName)
   {
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("resolveByName '" + sHostName + "'");
+
+    InetAddress ret = null;
     try
     {
-      return Address.getByName (sHostName);
+      ret = Address.getByName (sHostName);
     }
     catch (final UnknownHostException ex)
     {
-      return null;
+      // Fall through
     }
+
+    if (LOGGER.isDebugEnabled ())
+      if (ret == null)
+        LOGGER.debug ("resolveByName '" + sHostName + "' failed");
+      else
+        LOGGER.debug ("resolveByName '" + sHostName + "' resolved to " + ret);
+
+    return ret;
   }
 
   /**

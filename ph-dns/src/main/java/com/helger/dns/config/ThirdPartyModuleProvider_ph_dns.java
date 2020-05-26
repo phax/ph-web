@@ -14,14 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.smtp.config;
+package com.helger.dns.config;
 
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.commons.thirdparty.ELicense;
 import com.helger.commons.thirdparty.IThirdPartyModule;
 import com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI;
-import com.helger.network.config.ThirdPartyModuleProvider_ph_network;
+import com.helger.commons.thirdparty.ThirdPartyModule;
+import com.helger.commons.version.Version;
 
 /**
  * Implement this SPI interface if your JAR file contains external third party
@@ -30,9 +32,13 @@ import com.helger.network.config.ThirdPartyModuleProvider_ph_network;
  * @author Philip Helger
  */
 @IsSPIImplementation
-public final class ThirdPartyModuleProvider_ph_smtp implements IThirdPartyModuleProviderSPI
+public final class ThirdPartyModuleProvider_ph_dns implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule DNSJAVA = ThirdPartyModuleProvider_ph_network.DNSJAVA;
+  public static final IThirdPartyModule DNSJAVA = new ThirdPartyModule ("dnsjava",
+                                                                        "Brian Wellington",
+                                                                        ELicense.BSD,
+                                                                        new Version (3, 1, 0),
+                                                                        "https://github.com/dnsjava/dnsjava");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

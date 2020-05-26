@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.dns.client;
+package com.helger.dns.ip;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -59,12 +60,6 @@ public class IPV4Addr implements Serializable
     return ValueEnforcer.isBetweenInclusive (n, "IP part", PART_MIN_VALUE, PART_MAX_VALUE);
   }
 
-  @Nonnegative
-  private static int _validatePart (@Nullable final String s)
-  {
-    return _validatePart (StringParser.parseInt (s, CGlobal.ILLEGAL_UINT));
-  }
-
   public IPV4Addr (@Nonnull final InetAddress aAddress)
   {
     this (aAddress.getAddress ());
@@ -72,8 +67,7 @@ public class IPV4Addr implements Serializable
 
   public IPV4Addr (@Nonnull final byte [] aAddressBytes)
   {
-    this (aAddressBytes[0] &
-          PART_MAX_VALUE,
+    this (aAddressBytes[0] & PART_MAX_VALUE,
           aAddressBytes[1] & PART_MAX_VALUE,
           aAddressBytes[2] & PART_MAX_VALUE,
           aAddressBytes[3] & PART_MAX_VALUE);
@@ -91,10 +85,7 @@ public class IPV4Addr implements Serializable
    * @param n4
    *        fourth number
    */
-  public IPV4Addr (@Nonnegative final int n1,
-                   @Nonnegative final int n2,
-                   @Nonnegative final int n3,
-                   @Nonnegative final int n4)
+  public IPV4Addr (@Nonnegative final int n1, @Nonnegative final int n2, @Nonnegative final int n3, @Nonnegative final int n4)
   {
     m_nIP0 = _validatePart (n1);
     m_nIP1 = _validatePart (n2);
@@ -102,27 +93,37 @@ public class IPV4Addr implements Serializable
     m_nIP3 = _validatePart (n4);
   }
 
-  /**
-   * @param sText
-   *        The text interpretation of an IP address like "10.0.0.1".
-   */
-  private IPV4Addr (@Nonnull final String sText)
-  {
-    ValueEnforcer.notNull (sText, "Text");
-    final String [] aParts = StringHelper.getExplodedArray ('.', sText);
-    if (aParts.length != PARTS)
-      throw new IllegalArgumentException ("Expected exactly " + PARTS + " parts");
-    m_nIP0 = _validatePart (aParts[0]);
-    m_nIP1 = _validatePart (aParts[1]);
-    m_nIP2 = _validatePart (aParts[2]);
-    m_nIP3 = _validatePart (aParts[3]);
-  }
-
   @Nonnull
   @ReturnsMutableCopy
   public int [] getNumberParts ()
   {
     return ArrayHelper.newIntArray (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
+  }
+
+  @Nonnull
+  private static InetAddress _getAsInetAddress (final int n0, final int n1, final int n2, final int n3)
+  {
+    // Values are guaranteed to be 0-255
+    try
+    {
+      return InetAddress.getByAddress (new byte [] { (byte) (n0 & 0xff), (byte) (n1 & 0xff), (byte) (n2 & 0xff), (byte) (n3 & 0xff) });
+    }
+    catch (final UnknownHostException ex)
+    {
+      throw new IllegalStateException ("Ooops", ex);
+    }
+  }
+
+  @Nonnull
+  public static InetAddress getAsInetAddress (final int n0, final int n1, final int n2, final int n3)
+  {
+    return _getAsInetAddress (_validatePart (n0), _validatePart (n1), _validatePart (n2), _validatePart (n3));
+  }
+
+  @Nonnull
+  public InetAddress getAsInetAddress ()
+  {
+    return _getAsInetAddress (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
   }
 
   /**
@@ -168,6 +169,11 @@ public class IPV4Addr implements Serializable
                                        .getToString ();
   }
 
+  private static int _parsePart (@Nullable final String s)
+  {
+    return StringParser.parseInt (s, CGlobal.ILLEGAL_UINT);
+  }
+
   /**
    * Parse the provided IPv4 address from the text string (as e.g.
    * "192.168.0.1").
@@ -181,6 +187,10 @@ public class IPV4Addr implements Serializable
   @Nonnull
   public static IPV4Addr parse (@Nonnull final String sText)
   {
-    return new IPV4Addr (sText);
+    ValueEnforcer.notNull (sText, "Text");
+    final String [] aParts = StringHelper.getExplodedArray ('.', sText);
+    if (aParts.length != PARTS)
+      throw new IllegalArgumentException ("Expected exactly " + PARTS + " parts");
+    return new IPV4Addr (_parsePart (aParts[0]), _parsePart (aParts[1]), _parsePart (aParts[2]), _parsePart (aParts[3]));
   }
 }

@@ -37,7 +37,7 @@ import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.timing.StopWatch;
-import com.helger.dns.client.DNSResolver;
+import com.helger.dns.resolve.DNSResolver;
 import com.helger.network.proxy.config.SocksProxyConfig;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;

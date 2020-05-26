@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.dns.client;
+package com.helger.dns.resolve;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Address;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.dns.ip.IPV4Addr;
 
 /**
  * A simple DNS resolver, using the dnsjava library.
@@ -39,6 +41,8 @@ public final class DNSResolver
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolver.class);
 
+  private static final InetAddress [] IA0 = new InetAddress [0];
+
   @PresentForCodeCoverage
   private static final DNSResolver s_aInstance = new DNSResolver ();
 
@@ -46,28 +50,67 @@ public final class DNSResolver
   {}
 
   @Nullable
-  public static InetAddress resolveByName (@Nonnull final String sHostName)
+  public static InetAddress resolveByName (@Nullable final String sHostName)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("resolveByName '" + sHostName + "'");
 
     InetAddress ret = null;
-    try
-    {
-      ret = Address.getByName (sHostName);
-    }
-    catch (final UnknownHostException ex)
-    {
-      // Fall through
-    }
+    if (sHostName != null)
+      try
+      {
+        // Checks "A" and "AAAA" records
+        ret = Address.getByName (sHostName);
+      }
+      catch (final UnknownHostException ex)
+      {
+        // Fall through
+      }
 
-    if (LOGGER.isDebugEnabled ())
-      if (ret == null)
-        LOGGER.debug ("resolveByName '" + sHostName + "' failed");
-      else
+    if (ret == null)
+    {
+      if (sHostName != null)
+        LOGGER.warn ("resolveByName '" + sHostName + "' failed");
+    }
+    else
+    {
+      if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("resolveByName '" + sHostName + "' resolved to " + ret);
+    }
 
     return ret;
+  }
+
+  @Nonnull
+  public static InetAddress [] resolveAllByName (@Nullable final String sHostName)
+  {
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("resolveAllByName '" + sHostName + "'");
+
+    InetAddress [] ret = null;
+    if (sHostName != null)
+      try
+      {
+        // Checks "A" and "AAAA" records
+        ret = Address.getAllByName (sHostName);
+      }
+      catch (final UnknownHostException ex)
+      {
+        // Fall through
+      }
+
+    if (ret == null)
+    {
+      if (sHostName != null)
+        LOGGER.warn ("resolveAllByName '" + sHostName + "' failed");
+    }
+    else
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("resolveAllByName '" + sHostName + "' resolved to " + Arrays.toString (ret));
+    }
+
+    return ret != null ? ret : IA0;
   }
 
   /**
@@ -87,27 +130,33 @@ public final class DNSResolver
     return new IPV4Addr (aAddress.getAddress ()).getAsString ();
   }
 
+  /**
+   * JavaScript callback function! Do not rename!
+   *
+   * @param sHostName
+   *        The host name.
+   * @return The resolved IP addresses as String or <code>null</code> if the
+   *         host name could not be resolved.
+   */
   @Nonnull
   public static String dnsResolveEx (final String sHostName)
   {
     final StringBuilder aSB = new StringBuilder ();
-    try
+    final InetAddress [] list = resolveAllByName (sHostName);
+    for (final InetAddress aInetAddress : list)
     {
-      final InetAddress [] list = InetAddress.getAllByName (sHostName);
-      for (final InetAddress aInetAddress : list)
-      {
-        if (aSB.length () > 0)
-          aSB.append ("; ");
-        aSB.append (aInetAddress.getHostAddress ());
-      }
-    }
-    catch (final UnknownHostException e)
-    {
-      LOGGER.error ("DNS name not resolvable " + sHostName, e);
+      if (aSB.length () > 0)
+        aSB.append ("; ");
+      aSB.append (aInetAddress.getHostAddress ());
     }
     return aSB.toString ();
   }
 
+  /**
+   * JavaScript callback function! Do not rename!
+   *
+   * @return My IP address as a String and never <code>null</code>.
+   */
   @Nonnull
   public static String getMyIpAddress ()
   {
@@ -115,7 +164,7 @@ public final class DNSResolver
     {
       final InetAddress aAddress = InetAddress.getLocalHost ();
       if (aAddress != null)
-        return new IPV4Addr (aAddress.getAddress ()).getAsString ();
+        return aAddress.getHostAddress ();
     }
     catch (final UnknownHostException ex)
     {

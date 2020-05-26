@@ -120,6 +120,7 @@ public final class DNSConfig
 
   static
   {
+    // Init Dnsjava with a custom ServerConfigProvider
     DnsjavaInit.initWithCustomDNSServers (getDefaultCustomServers ());
   }
 

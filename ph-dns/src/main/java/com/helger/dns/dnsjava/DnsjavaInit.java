@@ -38,6 +38,11 @@ import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 
+/**
+ * Simplification for setting DnsJava global config providers.
+ *
+ * @author Philip Helger
+ */
 @Immutable
 public final class DnsjavaInit
 {
@@ -67,7 +72,7 @@ public final class DnsjavaInit
     // Default ones
     final ICommonsList <ResolverConfigProvider> aConfigProviders = getDefaultResolverConfigProviders ();
 
-    // Add the custom one down below
+    // Add the custom ones as the last resort
     aConfigProviders.add (CustomServerConfigProvider.createFromInetAddressList (aCustomDNSServers));
 
     if (LOGGER.isInfoEnabled ())

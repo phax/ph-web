@@ -1080,9 +1080,10 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object.
+   * @return A non-<code>null</code> user agent object or <code>null</code> in
+   *         case of an internal inconsistency.
    */
-  @Nonnull
+  @Nullable
   public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final Object aAttr = aHttpRequest.getAttribute (IUserAgent.class.getName ());

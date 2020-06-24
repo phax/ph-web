@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.3.0 - work in progress
+* v9.3.0 - 2020-05-26
     * Extracted ph-dns as a separate subproject
     * Changed Maven groupId to `com.helger.web`
     * Removed deprecated methods from previous versions

@@ -118,6 +118,9 @@ public class StaticServerInfo implements Serializable
   }
 
   /**
+   * This is a shortcut for
+   * <code>getFullServerPath () + getContextPath ()</code>.
+   *
    * @return <code>scheme://server:port/context</code> or
    *         <code>scheme://server:port</code> for the ROOT context.
    */

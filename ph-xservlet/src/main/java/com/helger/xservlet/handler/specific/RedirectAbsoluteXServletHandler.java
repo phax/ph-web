@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.servlet.response.UnifiedResponse;
@@ -40,13 +41,26 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
    * Constructor.
    *
    * @param aTargetURL
-   *        The URL to redirect to. Is interpreted as an absolute URL.
+   *        The URL to redirect to. Is interpreted as an absolute URL. May not
+   *        be <code>null</code>.
    */
   public RedirectAbsoluteXServletHandler (@Nonnull final ISimpleURL aTargetURL)
   {
-    ValueEnforcer.notNull (aTargetURL, "aTargetURL");
+    ValueEnforcer.notNull (aTargetURL, "TargetURL");
 
     m_aTargetURL = aTargetURL;
+  }
+
+  /**
+   * @return The target URL as provided in the constructor. Never
+   *         <code>null</code>.
+   * @since 9.3.1
+   */
+  @Nonnull
+  @Nonempty
+  public final ISimpleURL getTargetURL ()
+  {
+    return m_aTargetURL;
   }
 
   public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,

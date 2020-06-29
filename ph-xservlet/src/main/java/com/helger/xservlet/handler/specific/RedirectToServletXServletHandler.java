@@ -39,7 +39,7 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    *
    * @param sServletPath
    *        The servlet path (relative to the current context) to redirect to.
-   *        Must started with a slash ("/").
+   *        Must start with a slash ("/").
    */
   public RedirectToServletXServletHandler (@Nonnull @Nonempty final String sServletPath)
   {
@@ -47,6 +47,18 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
     ValueEnforcer.isTrue (sServletPath.startsWith ("/"), "Path must start with '/'!");
 
     m_sServletPath = sServletPath;
+  }
+
+  /**
+   * @return The servlet path as provided in the constructor. Always starts with
+   *         a slash. Neither <code>null</code> nor empty.
+   * @since 9.3.1
+   */
+  @Nonnull
+  @Nonempty
+  public final String getServletPath ()
+  {
+    return m_sServletPath;
   }
 
   public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,

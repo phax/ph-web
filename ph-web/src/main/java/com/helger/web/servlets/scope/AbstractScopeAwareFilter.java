@@ -64,8 +64,7 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
   @Nonnull
   protected abstract EContinue doHttpFilter (@Nonnull HttpServletRequest aHttpRequest,
                                              @Nonnull HttpServletResponse aHttpResponse,
-                                             @Nonnull IRequestWebScope aRequestScope) throws IOException,
-                                                                                      ServletException;
+                                             @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
 
   @Override
   public final void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
@@ -73,8 +72,7 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
                                   @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
     // Check if a scope needs to be created
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
-                                                                                                           aHttpResponse))
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest, aHttpResponse))
     {
       // Apply any optional filter
       if (doHttpFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())

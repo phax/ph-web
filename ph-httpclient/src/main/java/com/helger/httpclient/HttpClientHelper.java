@@ -72,8 +72,7 @@ public final class HttpClientHelper
   {}
 
   @Nonnull
-  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
-                                               @Nonnull final ISimpleURL aSimpleURL)
+  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final ISimpleURL aSimpleURL)
   {
     final String sURI = aSimpleURL.getAsStringWithEncodedParameters ();
     return createRequest (eHTTPMethod, sURI);
@@ -164,8 +163,7 @@ public final class HttpClientHelper
   }
 
   @Nonnull
-  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
-                                               @Nullable final Credentials aProxyCredentials)
+  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
   {
     final HttpClientContext ret = HttpClientContext.create ();
     if (aProxy != null)
@@ -188,8 +186,7 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
-                                                  @Nonnull final Charset aCharset)
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap, @Nonnull final Charset aCharset)
   {
     ValueEnforcer.notNull (aCharset, "Charset");
     if (aMap == null || aMap.isEmpty ())

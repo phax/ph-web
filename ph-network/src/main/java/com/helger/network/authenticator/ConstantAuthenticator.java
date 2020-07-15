@@ -41,9 +41,7 @@ public class ConstantAuthenticator extends Authenticator
   private final String m_sUserName;
   private final String m_sPassword;
 
-  public ConstantAuthenticator (@Nullable final String sDomain,
-                                @Nonnull final String sUserName,
-                                @Nonnull final String sPassword)
+  public ConstantAuthenticator (@Nullable final String sDomain, @Nonnull final String sUserName, @Nonnull final String sPassword)
   {
     this (StringHelper.getConcatenatedOnDemand (sDomain, DOMAIN_SEPARATOR, sUserName), sPassword);
   }

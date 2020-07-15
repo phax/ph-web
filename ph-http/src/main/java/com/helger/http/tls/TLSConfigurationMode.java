@@ -115,15 +115,13 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
    *        The cipher suites to be used. May not be <code>null</code> and may
    *        not contain <code>null</code> values.
    */
-  public TLSConfigurationMode (@Nonnull @Nonempty final ETLSVersion [] aTLSVersions,
-                               @Nonnull final String [] aCipherSuites)
+  public TLSConfigurationMode (@Nonnull @Nonempty final ETLSVersion [] aTLSVersions, @Nonnull final String [] aCipherSuites)
   {
     ValueEnforcer.notEmptyNoNullValue (aTLSVersions, "TLSVersions");
     ValueEnforcer.notNullNoNullValue (aCipherSuites, "CipherSuites");
     m_aTLSVersions = new CommonsArrayList <> (aTLSVersions);
     // Use only the cipher suites that are supported
-    m_aCipherSuites = CommonsArrayList.createFiltered (aCipherSuites,
-                                                       x -> isSupportedCipherSuiteInSSLContext (aTLSVersions, x));
+    m_aCipherSuites = CommonsArrayList.createFiltered (aCipherSuites, x -> isSupportedCipherSuiteInSSLContext (aTLSVersions, x));
   }
 
   @Nonnull
@@ -188,8 +186,6 @@ public class TLSConfigurationMode implements ITLSConfigurationMode
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("TLSVersions", m_aTLSVersions)
-                                       .append ("CipherSuites", m_aCipherSuites)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("TLSVersions", m_aTLSVersions).append ("CipherSuites", m_aCipherSuites).getToString ();
   }
 }

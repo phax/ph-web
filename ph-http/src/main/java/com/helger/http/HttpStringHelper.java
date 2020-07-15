@@ -399,9 +399,7 @@ public final class HttpStringHelper
 
   public static boolean isQuotedText (@Nullable final char [] aChars)
   {
-    if (ArrayHelper.getSize (aChars) < 2 ||
-        aChars[0] != QUOTEDTEXT_BEGIN ||
-        aChars[aChars.length - 1] != QUOTEDTEXT_END)
+    if (ArrayHelper.getSize (aChars) < 2 || aChars[0] != QUOTEDTEXT_BEGIN || aChars[aChars.length - 1] != QUOTEDTEXT_END)
       return false;
     for (int i = 1; i < aChars.length - 1; ++i)
       if (!isQuotedTextChar (aChars[i]))
@@ -497,7 +495,6 @@ public final class HttpStringHelper
     if (n > MAX_INDEX)
       return n < 256;
     final int nMapping = MAPPINGS[n];
-    return (nMapping & (ALPHA | DIGIT | RESERVED | EXTRA | SAFE | UNSAFE)) == 0 ||
-           (nMapping & (ALPHA | DIGIT | EXTRA | SAFE)) != 0;
+    return (nMapping & (ALPHA | DIGIT | RESERVED | EXTRA | SAFE | UNSAFE)) == 0 || (nMapping & (ALPHA | DIGIT | EXTRA | SAFE)) != 0;
   }
 }

@@ -152,8 +152,7 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst ()
-                                                   : ArrayHelper.newArray (aValues, IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
 

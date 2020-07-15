@@ -102,29 +102,19 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkStatusCode (@Nonnull final String sRequestURL,
-                                  final int nStatusCode,
-                                  @Nonnull final EHttpMethod eHttpMethod)
+  protected void checkStatusCode (@Nonnull final String sRequestURL, final int nStatusCode, @Nonnull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
     if (nStatusCode < CHttp.HTTP_OK || nStatusCode >= CHttp.HTTP_BAD_REQUEST)
       if (!isSilentMode ())
         if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("HTTP status code " +
-                       nStatusCode +
-                       " in response to " +
-                       eHttpMethod.getName () +
-                       " '" +
-                       sRequestURL +
-                       "'");
+          LOGGER.warn ("HTTP status code " + nStatusCode + " in response to " + eHttpMethod.getName () + " '" + sRequestURL + "'");
   }
 
   private static boolean _isContentExpected (final int nStatusCode)
   {
     // >= 200 && < 300
-    return nStatusCode >= CHttp.HTTP_OK &&
-           nStatusCode < CHttp.HTTP_MULTIPLE_CHOICES &&
-           !ResponseHelper.isEmptyStatusCode (nStatusCode);
+    return nStatusCode >= CHttp.HTTP_OK && nStatusCode < CHttp.HTTP_MULTIPLE_CHOICES && !ResponseHelper.isEmptyStatusCode (nStatusCode);
   }
 
   /**
@@ -174,13 +164,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
       if (!isSilentMode ())
         if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("No content type on HTTP " +
-                       nStatusCode +
-                       " response to " +
-                       eHttpMethod.getName () +
-                       " '" +
-                       sRequestURL +
-                       "'");
+          LOGGER.warn ("No content type on HTTP " + nStatusCode + " response to " + eHttpMethod.getName () + " '" + sRequestURL + "'");
   }
 
   /**
@@ -224,8 +208,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                             @Nullable final Throwable aCaughtException,
                             final boolean bIsHandledAsync)
   {
-    ValueEnforcer.isTrue (aHttpResponse instanceof StatusAwareHttpResponseWrapper,
-                          "Must be a StatusAwareHttpResponseWrapper");
+    ValueEnforcer.isTrue (aHttpResponse instanceof StatusAwareHttpResponseWrapper, "Must be a StatusAwareHttpResponseWrapper");
     final String sRequestURL = RequestHelper.getURLDecoded (aHttpRequest);
     final int nStatusCode = ((StatusAwareHttpResponseWrapper) aHttpResponse).getStatusCode ();
     final HttpHeaderMap aHeaders = ((StatusAwareHttpResponseWrapper) aHttpResponse).headerMap ();

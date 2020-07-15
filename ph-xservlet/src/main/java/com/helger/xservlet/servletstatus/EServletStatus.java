@@ -51,8 +51,7 @@ public enum EServletStatus implements IHasDisplayText
     return m_aText.getDisplayText (aContentLocale);
   }
 
-  public static boolean isValidSuccessorOf (@Nullable final EServletStatus eOldStatus,
-                                            @Nonnull final EServletStatus eNewStatus)
+  public static boolean isValidSuccessorOf (@Nullable final EServletStatus eOldStatus, @Nonnull final EServletStatus eNewStatus)
   {
     if (eOldStatus == null)
     {

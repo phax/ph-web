@@ -112,8 +112,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
 
   public boolean supportsGZIP ()
   {
-    return supportsEncoding (AcceptEncodingHandler.GZIP_ENCODING) ||
-           supportsEncoding (AcceptEncodingHandler.X_GZIP_ENCODING);
+    return supportsEncoding (AcceptEncodingHandler.GZIP_ENCODING) || supportsEncoding (AcceptEncodingHandler.X_GZIP_ENCODING);
   }
 
   /**
@@ -150,8 +149,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
 
   public boolean supportsCompress ()
   {
-    return supportsEncoding (AcceptEncodingHandler.COMPRESS_ENCODING) ||
-           supportsEncoding (AcceptEncodingHandler.X_COMPRESS_ENCODING);
+    return supportsEncoding (AcceptEncodingHandler.COMPRESS_ENCODING) || supportsEncoding (AcceptEncodingHandler.X_COMPRESS_ENCODING);
   }
 
   /**

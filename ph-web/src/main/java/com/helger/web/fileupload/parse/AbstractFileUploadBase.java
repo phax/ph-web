@@ -271,8 +271,7 @@ public abstract class AbstractFileUploadBase
                                                                  aFileItemStream.isFormField (),
                                                                  aFileItemStream.getNameUnchecked ());
         aItems.add (aFileItem);
-        try (final InputStream aIS = aFileItemStream.openStream ();
-             final OutputStream aOS = aFileItem.getOutputStream ())
+        try (final InputStream aIS = aFileItemStream.openStream (); final OutputStream aOS = aFileItem.getOutputStream ())
         {
           final byte [] aBuffer = new byte [8192];
           int nBytesRead;
@@ -288,10 +287,7 @@ public abstract class AbstractFileUploadBase
         }
         catch (final IOException ex)
         {
-          throw new IOFileUploadException ("Processing of " +
-                                           RequestHelper.MULTIPART_FORM_DATA +
-                                           " request failed. " +
-                                           ex.getMessage (),
+          throw new IOFileUploadException ("Processing of " + RequestHelper.MULTIPART_FORM_DATA + " request failed. " + ex.getMessage (),
                                            ex);
         }
         if (aFileItem instanceof IFileItemHeadersSupport)
@@ -380,12 +376,10 @@ public abstract class AbstractFileUploadBase
     if (sContentDisposition != null)
     {
       final String sContentDispositionLC = sContentDisposition.toLowerCase (Locale.US);
-      if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) ||
-          sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
+      if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) || sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
       {
         // Parameter parser can handle null input
-        final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
-                                                                           .parse (sContentDisposition, ';');
+        final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (sContentDisposition, ';');
         if (aParams.containsKey ("filename"))
         {
           sFilename = aParams.get ("filename");
@@ -433,8 +427,7 @@ public abstract class AbstractFileUploadBase
     if (sContentDisposition != null && sContentDisposition.toLowerCase (Locale.US).startsWith (RequestHelper.FORM_DATA))
     {
       // Parameter parser can handle null input
-      final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
-                                                                         .parse (sContentDisposition, ';');
+      final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (sContentDisposition, ';');
       sFieldName = aParams.get ("name");
       if (sFieldName != null)
         sFieldName = sFieldName.trim ();
@@ -719,8 +712,7 @@ public abstract class AbstractFileUploadBase
           final String sFieldName = getFieldName (aFileItemHeaders);
           if (sFieldName != null)
           {
-            if (sSubContentType != null &&
-                sSubContentType.toLowerCase (Locale.US).startsWith (RequestHelper.MULTIPART_MIXED))
+            if (sSubContentType != null && sSubContentType.toLowerCase (Locale.US).startsWith (RequestHelper.MULTIPART_MIXED))
             {
               m_sCurrentFieldName = sFieldName;
               // Multiple files associated with this field name

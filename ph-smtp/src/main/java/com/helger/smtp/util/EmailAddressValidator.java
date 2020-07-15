@@ -90,12 +90,7 @@ public final class EmailAddressValidator
       // Do not log this message, as this method is potentially called very
       // often!
       if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Failed to check for MX record on host '" +
-                        sHostName +
-                        "': " +
-                        ex.getClass ().getName () +
-                        " - " +
-                        ex.getMessage ());
+        LOGGER.warn ("Failed to check for MX record on host '" + sHostName + "': " + ex.getClass ().getName () + " - " + ex.getMessage ());
       return false;
     }
   }

@@ -159,8 +159,7 @@ public final class ServletHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest,
-                                              @Nullable final String sFallback)
+  public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest, @Nullable final String sFallback)
   {
     String ret = null;
     if (aHttpRequest != null)
@@ -391,8 +390,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
-                                                  @Nullable final Charset aCharset)
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final Charset aCharset)
   {
     setRequestCharacterEncoding (aHttpRequest, aCharset != null ? aCharset.name () : null);
   }
@@ -406,8 +404,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
-                                                  @Nullable final String sCharset)
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final String sCharset)
   {
     if (StringHelper.hasText (sCharset))
       try

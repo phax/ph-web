@@ -151,9 +151,7 @@ public class RFC5987Encoder implements IEncoder <String, String>
         aSB.append ((char) b);
       else
       {
-        aSB.append (ESCAPE_CHAR)
-           .append (StringHelper.getHexChar ((b >> 4) & 0xf))
-           .append (StringHelper.getHexChar (b & 0xf));
+        aSB.append (ESCAPE_CHAR).append (StringHelper.getHexChar ((b >> 4) & 0xf)).append (StringHelper.getHexChar (b & 0xf));
       }
     }
 

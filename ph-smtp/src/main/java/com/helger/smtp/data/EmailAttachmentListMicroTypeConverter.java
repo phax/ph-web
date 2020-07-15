@@ -35,9 +35,7 @@ public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeCo
   {
     final IMicroElement eAttachmentList = new MicroElement (sNamespaceURI, sTagName);
     for (final IEmailAttachment aAttachment : aAttachmentList.directGetAllAttachments ())
-      eAttachmentList.appendChild (MicroTypeConverter.convertToMicroElement (aAttachment,
-                                                                             sNamespaceURI,
-                                                                             ELEMENT_ATTACHMENT));
+      eAttachmentList.appendChild (MicroTypeConverter.convertToMicroElement (aAttachment, sNamespaceURI, ELEMENT_ATTACHMENT));
     return eAttachmentList;
   }
 

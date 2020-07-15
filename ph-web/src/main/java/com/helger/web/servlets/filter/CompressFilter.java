@@ -48,8 +48,7 @@ import com.helger.servlet.response.gzip.GZIPResponse;
  */
 public class CompressFilter extends AbstractHttpServletFilter
 {
-  private static final String REQUEST_ATTR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
-                                             CompressFilter.class.getName ();
+  private static final String REQUEST_ATTR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + CompressFilter.class.getName ();
   private static final IMutableStatisticsHandlerCounter s_aStatsNone = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
                                                                                                             "$none");
 

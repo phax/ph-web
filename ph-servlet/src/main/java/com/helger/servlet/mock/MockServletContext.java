@@ -699,8 +699,7 @@ public class MockServletContext implements IServletContext310To400Migration
    * @return The created {@link MockServletContext}
    */
   @Nonnull
-  public static MockServletContext create (@Nullable final String sContextPath,
-                                           @Nullable final Map <String, String> aInitParams)
+  public static MockServletContext create (@Nullable final String sContextPath, @Nullable final Map <String, String> aInitParams)
   {
     return create (sContextPath, "", null, aInitParams);
   }
@@ -718,8 +717,7 @@ public class MockServletContext implements IServletContext310To400Migration
    * @return The created {@link MockServletContext}
    */
   @Nonnull
-  public static MockServletContext create (@Nullable final String sContextPath,
-                                           @Nullable final String sResourceBasePath)
+  public static MockServletContext create (@Nullable final String sContextPath, @Nullable final String sResourceBasePath)
   {
     return create (sContextPath, sResourceBasePath, null, null);
   }
@@ -745,10 +743,7 @@ public class MockServletContext implements IServletContext310To400Migration
                                            @Nullable final IReadableResourceProvider aResourceLoader,
                                            @Nullable final Map <String, String> aInitParams)
   {
-    final MockServletContext ret = new MockServletContext (sContextPath,
-                                                           sResourceBasePath,
-                                                           aResourceLoader,
-                                                           aInitParams);
+    final MockServletContext ret = new MockServletContext (sContextPath, sResourceBasePath, aResourceLoader, aInitParams);
     ret.initListeners ();
     return ret;
   }

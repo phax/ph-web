@@ -48,9 +48,7 @@ public final class MailConverter
   private MailConverter ()
   {}
 
-  public static void setSubject (@Nonnull final MimeMessage aMIMEMessage,
-                                 @Nonnull final String sSubject,
-                                 @Nonnull final Charset aCharset)
+  public static void setSubject (@Nonnull final MimeMessage aMIMEMessage, @Nonnull final String sSubject, @Nonnull final Charset aCharset)
   {
     try
     {
@@ -62,9 +60,7 @@ public final class MailConverter
     }
   }
 
-  public static void setText (@Nonnull final MimeBodyPart aMIMEBody,
-                              @Nonnull final String sText,
-                              @Nonnull final Charset aCharset)
+  public static void setText (@Nonnull final MimeBodyPart aMIMEBody, @Nonnull final String sText, @Nonnull final Charset aCharset)
   {
     try
     {
@@ -83,12 +79,9 @@ public final class MailConverter
     if (aMailData.getFrom () != null)
       aMIMEMessage.setFrom (InternetAddressHelper.getAsInternetAddress (aMailData.getFrom (), aCharset));
     aMIMEMessage.setReplyTo (InternetAddressHelper.getAsInternetAddressArray (aMailData.replyTo (), aCharset));
-    aMIMEMessage.setRecipients (Message.RecipientType.TO,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.to (), aCharset));
-    aMIMEMessage.setRecipients (Message.RecipientType.CC,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.cc (), aCharset));
-    aMIMEMessage.setRecipients (Message.RecipientType.BCC,
-                                InternetAddressHelper.getAsInternetAddressArray (aMailData.bcc (), aCharset));
+    aMIMEMessage.setRecipients (Message.RecipientType.TO, InternetAddressHelper.getAsInternetAddressArray (aMailData.to (), aCharset));
+    aMIMEMessage.setRecipients (Message.RecipientType.CC, InternetAddressHelper.getAsInternetAddressArray (aMailData.cc (), aCharset));
+    aMIMEMessage.setRecipients (Message.RecipientType.BCC, InternetAddressHelper.getAsInternetAddressArray (aMailData.bcc (), aCharset));
     if (aMailData.getSentDateTime () != null)
       aMIMEMessage.setSentDate (TypeConverter.convert (aMailData.getSentDateTime (), Date.class));
     if (aMailData.getSubject () != null)
@@ -108,8 +101,7 @@ public final class MailConverter
         if (aCharset != null)
         {
           aBodyPart.setContent (aMailData.getBody (),
-                                new MimeType (CMimeType.TEXT_HTML).addParameter (CMimeType.PARAMETER_NAME_CHARSET,
-                                                                                 aCharset.name ())
+                                new MimeType (CMimeType.TEXT_HTML).addParameter (CMimeType.PARAMETER_NAME_CHARSET, aCharset.name ())
                                                                   .getAsString ());
         }
         else

@@ -58,8 +58,7 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
    *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
    *        for the other cases.
    */
-  public XServletFilterSecurityXFrameOptions (@Nonnull final EXFrameOptionType eType,
-                                              @Nullable final ISimpleURL aDomain)
+  public XServletFilterSecurityXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
     if (eType.isURLRequired ())

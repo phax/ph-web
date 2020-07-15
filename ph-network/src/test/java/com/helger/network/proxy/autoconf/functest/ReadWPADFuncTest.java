@@ -36,14 +36,12 @@ import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
 {
-  public static String getProxyAutoConfigFunction (final IReadableResource aRes,
-                                                   final Charset aCharset) throws IOException
+  public static String getProxyAutoConfigFunction (final IReadableResource aRes, final Charset aCharset) throws IOException
   {
     final InputStream aIS = aRes.getInputStream ();
     if (aIS != null)
     {
-      try (final NonBlockingBufferedReader aReader = new NonBlockingBufferedReader (new InputStreamReader (aIS,
-                                                                                                           aCharset)))
+      try (final NonBlockingBufferedReader aReader = new NonBlockingBufferedReader (new InputStreamReader (aIS, aCharset)))
       {
         String sLine;
         final StringBuilder aAutoConfigScript = new StringBuilder ();
@@ -66,7 +64,7 @@ public final class ReadWPADFuncTest
     if (sAutoProxyConfig != null)
     {
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);
-      assertNotNull ( aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
+      assertNotNull (aPACHelper.findProxyForURL ("http://www.orf.at/index.html", "www.orf.at"));
     }
   }
 
@@ -75,8 +73,7 @@ public final class ReadWPADFuncTest
   {
     for (final String sFile : new String [] { "wpad01.dat", "wpad02.dat", "wpad03.dat" })
     {
-      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" +
-                                                                                         sFile),
+      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" + sFile),
                                                                   StandardCharsets.ISO_8859_1);
       assertNotNull (sFile + " failed", sAutoProxyConfig);
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);

@@ -55,10 +55,7 @@ public class SshProxy implements Proxy, AutoCloseable
       m_aSession.disconnect ();
   }
 
-  public void connect (final SocketFactory socketFactory,
-                       final String host,
-                       final int port,
-                       final int timeout) throws Exception
+  public void connect (final SocketFactory socketFactory, final String host, final int port, final int timeout) throws Exception
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("connecting session");

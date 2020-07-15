@@ -106,13 +106,7 @@ public final class NetworkPortHelper
     ValueEnforcer.isGE0 (nTimeoutMillisecs, "TimeoutMillisecs");
 
     if (!bSilentMode)
-      LOGGER.info ("Checking TCP port status for " +
-                   sHostName +
-                   ":" +
-                   nPort +
-                   " with timeouf of " +
-                   nTimeoutMillisecs +
-                   " ms");
+      LOGGER.info ("Checking TCP port status for " + sHostName + ":" + nPort + " with timeouf of " + nTimeoutMillisecs + " ms");
 
     ENetworkPortStatus ret;
     try (final Socket aSocket = new Socket ())

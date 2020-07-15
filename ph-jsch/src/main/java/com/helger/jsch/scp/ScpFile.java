@@ -53,8 +53,7 @@ public class ScpFile
   public void copyFrom (final File file, final String mode) throws IOException, JSchException
   {
     try (final FileInputStream from = new FileInputStream (file);
-         final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ())
-                                                     : getOutputStream (file.length (), mode))
+         final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ()) : getOutputStream (file.length (), mode))
     {
       StreamHelper.copyInputStreamToOutputStream (from, to);
     }

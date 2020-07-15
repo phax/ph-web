@@ -165,10 +165,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
 
     if (m_aResponseBody != null)
     {
-      aSB.append ("\nResponse Body (in ")
-         .append (getResponseCharset ().name ())
-         .append ("):\n")
-         .append (getResponseBodyAsString ());
+      aSB.append ("\nResponse Body (in ").append (getResponseCharset ().name ()).append ("):\n").append (getResponseBodyAsString ());
     }
     else
       aSB.append ("\nNo Response Body present!");

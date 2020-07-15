@@ -84,12 +84,7 @@ public final class XServletSettingsTest
                                                                            x.getClone ()
                                                                             .setHttpReferrerPolicy (EHttpReferrerPolicy.NO_REFERRER));
     CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x,
-                                                                           x.getClone ()
-                                                                            .setXFrameOptions (EXFrameOptionType.DENY,
-                                                                                               null));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x,
-                                                                           x.getClone ()
-                                                                            .setXFrameOptions (null,
-                                                                                               new SimpleURL ("bla")));
+                                                                           x.getClone ().setXFrameOptions (EXFrameOptionType.DENY, null));
+    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x, x.getClone ().setXFrameOptions (null, new SimpleURL ("bla")));
   }
 }

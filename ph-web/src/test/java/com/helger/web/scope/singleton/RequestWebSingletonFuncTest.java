@@ -64,8 +64,7 @@ public final class RequestWebSingletonFuncTest extends AbstractWebScopeAwareTest
     final MockRequestWebSingletonWithScopeCtor a = MockRequestWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
     assertTrue (AbstractRequestWebSingleton.isRequestSingletonInstantiated (MockRequestWebSingletonWithScopeCtor.class));
-    assertSame (a,
-                AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
+    assertSame (a, AbstractRequestWebSingleton.getRequestSingletonIfInstantiated (MockRequestWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
     assertEquals (0, a.get ());
     a.inc ();

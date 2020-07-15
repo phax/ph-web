@@ -120,17 +120,12 @@ public final class EmailGlobalSettings
    * @return {@link EChange}.
    */
   @Nonnull
-  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen,
-                                          @Nonnegative final int nMaxMailSendCount)
+  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen, @Nonnegative final int nMaxMailSendCount)
   {
     ValueEnforcer.isGT0 (nMaxMailQueueLen, "MaxMailQueueLen");
     ValueEnforcer.isGT0 (nMaxMailSendCount, "MaxMailSendCount");
     ValueEnforcer.isTrue (nMaxMailQueueLen >= nMaxMailSendCount,
-                          () -> "MaxMailQueueLen (" +
-                                nMaxMailQueueLen +
-                                ") must be >= than MaxMailSendCount (" +
-                                nMaxMailSendCount +
-                                ")");
+                          () -> "MaxMailQueueLen (" + nMaxMailQueueLen + ") must be >= than MaxMailSendCount (" + nMaxMailSendCount + ")");
 
     return s_aRWLock.writeLockedGet ( () -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)

@@ -102,8 +102,6 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel)
-                                       .append ("LogRemoteAddr", m_bLogRemoteAddr)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel).append ("LogRemoteAddr", m_bLogRemoteAddr).getToString ();
   }
 }

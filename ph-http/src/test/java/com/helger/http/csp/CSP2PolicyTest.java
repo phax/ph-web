@@ -33,8 +33,7 @@ public final class CSP2PolicyTest
   public void testBasic ()
   {
     assertEquals ("default-src 'self'",
-                  new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ().addKeywordSelf ()))
-                                   .getAsString ());
+                  new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ().addKeywordSelf ())).getAsString ());
     assertEquals ("default-src 'self'; img-src 'sha256-abc' 'nonce-123'; object-src media1.example.com media2.example.com *.cdn.example.com; script-src trustedscripts.example.com",
                   new CSP2Policy ().addDirective (CSP2Directive.createDefaultSrc (new CSP2SourceList ().addKeywordSelf ()))
                                    .addDirective (CSP2Directive.createImgSrc (new CSP2SourceList ().addHash (EMessageDigestAlgorithm.SHA_256,

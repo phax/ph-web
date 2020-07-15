@@ -45,8 +45,7 @@ public final class MicroTypeConverterRegistrar_ph_smtp implements IMicroTypeConv
   public void registerMicroTypeConverter (@Nonnull final IMicroTypeConverterRegistry aRegistry)
   {
     aRegistry.registerMicroElementTypeConverter (EmailAttachment.class, new EmailAttachmentMicroTypeConverter ());
-    aRegistry.registerMicroElementTypeConverter (EmailAttachmentList.class,
-                                                 new EmailAttachmentListMicroTypeConverter ());
+    aRegistry.registerMicroElementTypeConverter (EmailAttachmentList.class, new EmailAttachmentListMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (EmailData.class, new EmailDataMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (FailedMailData.class, new FailedMailDataMicroTypeConverter ());
     aRegistry.registerMicroElementTypeConverter (SMTPSettings.class, new SMTPSettingsMicroTypeConverter ());

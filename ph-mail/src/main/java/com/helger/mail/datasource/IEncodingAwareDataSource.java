@@ -50,8 +50,7 @@ public interface IEncodingAwareDataSource extends IExtendedDataSource, EncodingA
   }
 
   @Nonnull
-  static IEncodingAwareDataSource getEncodingAware (@Nonnull final DataSource aDS,
-                                                    @Nullable final IContentTransferEncoding aCTE)
+  static IEncodingAwareDataSource getEncodingAware (@Nonnull final DataSource aDS, @Nullable final IContentTransferEncoding aCTE)
   {
     return new IEncodingAwareDataSource ()
     {

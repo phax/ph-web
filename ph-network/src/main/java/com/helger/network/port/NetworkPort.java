@@ -90,11 +90,7 @@ public class NetworkPort implements INetworkPort
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_nPort)
-                                       .append (m_eProtocol)
-                                       .append (m_sName)
-                                       .append (m_sDescription)
-                                       .getHashCode ();
+    return new HashCodeGenerator (this).append (m_nPort).append (m_eProtocol).append (m_sName).append (m_sDescription).getHashCode ();
   }
 
   @Override

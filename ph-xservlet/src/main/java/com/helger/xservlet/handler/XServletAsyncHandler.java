@@ -76,8 +76,7 @@ public final class XServletAsyncHandler implements IXServletHandler
   private final ServletAsyncSpec m_aAsyncSpec;
   private final IXServletHandler m_aNestedHandler;
 
-  public XServletAsyncHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                               @Nonnull final IXServletHandler aNestedHandler)
+  public XServletAsyncHandler (@Nonnull final ServletAsyncSpec aAsyncSpec, @Nonnull final IXServletHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
@@ -101,11 +100,7 @@ public final class XServletAsyncHandler implements IXServletHandler
                              @Nonnull final EHttpMethod eHttpMethod,
                              @Nonnull final IRequestWebScope aRequestScope)
   {
-    final ExtAsyncContext aExtAsyncCtx = ExtAsyncContext.create (aHttpRequest,
-                                                                 aHttpResponse,
-                                                                 eHttpVersion,
-                                                                 eHttpMethod,
-                                                                 m_aAsyncSpec);
+    final ExtAsyncContext aExtAsyncCtx = ExtAsyncContext.create (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, m_aAsyncSpec);
 
     // Remember outside before it is too late :)
     final IAttributeContainerAny <String> aAttrs = aRequestScope.attrs ().getClone ();
@@ -183,8 +178,6 @@ public final class XServletAsyncHandler implements IXServletHandler
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("AsyncSpec", m_aAsyncSpec)
-                                       .append ("OriginalHandler", m_aNestedHandler)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("AsyncSpec", m_aAsyncSpec).append ("OriginalHandler", m_aNestedHandler).getToString ();
   }
 }

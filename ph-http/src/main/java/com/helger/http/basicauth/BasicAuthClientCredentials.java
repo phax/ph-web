@@ -106,9 +106,7 @@ public class BasicAuthClientCredentials implements Serializable
   @Nonempty
   public String getRequestValue ()
   {
-    final String sCombined = StringHelper.getConcatenatedOnDemand (m_sUserName,
-                                                                   HttpBasicAuth.USERNAME_PASSWORD_SEPARATOR,
-                                                                   m_sPassword);
+    final String sCombined = StringHelper.getConcatenatedOnDemand (m_sUserName, HttpBasicAuth.USERNAME_PASSWORD_SEPARATOR, m_sPassword);
     return HttpBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, HttpBasicAuth.CHARSET);
   }
 

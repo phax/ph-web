@@ -59,8 +59,7 @@ public final class DigestAuthServerBuilderTest
     b.setOpaque ("opaque");
     assertEquals ("Digest realm=\"xyz\", domain=\"/config\", nonce=\"blanonce\", opaque=\"opaque\"", b.build ());
     b.setStale (ETriState.FALSE);
-    assertEquals ("Digest realm=\"xyz\", domain=\"/config\", nonce=\"blanonce\", opaque=\"opaque\", stale=false",
-                  b.build ());
+    assertEquals ("Digest realm=\"xyz\", domain=\"/config\", nonce=\"blanonce\", opaque=\"opaque\", stale=false", b.build ());
     b.setAlgorithm (HttpDigestAuth.ALGORITHM_MD5_SESS);
     assertEquals ("Digest realm=\"xyz\", domain=\"/config\", nonce=\"blanonce\", opaque=\"opaque\", stale=false, algorithm=MD5-sess",
                   b.build ());

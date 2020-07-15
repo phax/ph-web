@@ -45,10 +45,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  *
  * @author Philip Helger
  */
-public final class SessionWebScopeActivator implements
-                                            Serializable,
-                                            HttpSessionActivationListener,
-                                            ISessionWebScopeDontPassivate
+public final class SessionWebScopeActivator implements Serializable, HttpSessionActivationListener, ISessionWebScopeDontPassivate
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScopeActivator.class);
 
@@ -91,10 +88,10 @@ public final class SessionWebScopeActivator implements
     if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Wrote info on session web scope '" +
-                        m_aSessionWebScope.getID () +
-                        "' of class " +
-                        ClassHelper.getClassLocalName (this),
-                        ScopeHelper.getDebugStackTrace ());
+                     m_aSessionWebScope.getID () +
+                     "' of class " +
+                     ClassHelper.getClassLocalName (this),
+                     ScopeHelper.getDebugStackTrace ());
   }
 
   @SuppressWarnings ("unchecked")
@@ -108,11 +105,8 @@ public final class SessionWebScopeActivator implements
 
     if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Read info on session scope: " +
-                        m_aAttrs.size () +
-                        " attrs of class " +
-                        ClassHelper.getClassLocalName (this),
-                        ScopeHelper.getDebugStackTrace ());
+        LOGGER.info ("Read info on session scope: " + m_aAttrs.size () + " attrs of class " + ClassHelper.getClassLocalName (this),
+                     ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
@@ -129,10 +123,10 @@ public final class SessionWebScopeActivator implements
       if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
         if (LOGGER.isInfoEnabled ())
           LOGGER.info ("Successfully passivated session web scope '" +
-                          m_aSessionWebScope.getID () +
-                          "' of class " +
-                          ClassHelper.getClassLocalName (this),
-                          ScopeHelper.getDebugStackTrace ());
+                       m_aSessionWebScope.getID () +
+                       "' of class " +
+                       ClassHelper.getClassLocalName (this),
+                       ScopeHelper.getDebugStackTrace ());
     }
   }
 
@@ -141,9 +135,7 @@ public final class SessionWebScopeActivator implements
     final HttpSession aHttpSession = aEvent.getSession ();
 
     // Create a new session web scope
-    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
-                                                                                               true,
-                                                                                               true);
+    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
 
     // Restore the read values into the scope
     if (m_aAttrs != null)
@@ -165,9 +157,9 @@ public final class SessionWebScopeActivator implements
     if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Successfully activated session web scope '" +
-                        aSessionWebScope.getID () +
-                        "' of class " +
-                        ClassHelper.getClassLocalName (this),
-                        ScopeHelper.getDebugStackTrace ());
+                     aSessionWebScope.getID () +
+                     "' of class " +
+                     ClassHelper.getClassLocalName (this),
+                     ScopeHelper.getDebugStackTrace ());
   }
 }

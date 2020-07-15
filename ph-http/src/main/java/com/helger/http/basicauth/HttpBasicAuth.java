@@ -94,8 +94,7 @@ public final class HttpBasicAuth
     // Do we have a username/password separator?
     final int nIndex = sUsernamePassword.indexOf (USERNAME_PASSWORD_SEPARATOR);
     if (nIndex >= 0)
-      return new BasicAuthClientCredentials (sUsernamePassword.substring (0, nIndex),
-                                             sUsernamePassword.substring (nIndex + 1));
+      return new BasicAuthClientCredentials (sUsernamePassword.substring (0, nIndex), sUsernamePassword.substring (nIndex + 1));
     return new BasicAuthClientCredentials (sUsernamePassword);
   }
 }

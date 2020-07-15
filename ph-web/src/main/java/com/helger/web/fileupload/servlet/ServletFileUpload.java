@@ -102,8 +102,7 @@ public class ServletFileUpload extends FileUpload
    *         uploaded content.
    */
   @Nonnull
-  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException,
-                                                                                            IOException
+  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException, IOException
   {
     return super.getItemIterator (new ServletRequestContext (aHttpRequest));
   }

@@ -60,8 +60,7 @@ public final class GlobalWebSingletonWithScopeCtorFuncTest extends AbstractWebSc
     final MockGlobalWebSingletonWithScopeCtor a = MockGlobalWebSingletonWithScopeCtor.getInstance ();
     assertNotNull (a);
     assertTrue (AbstractGlobalWebSingleton.isGlobalSingletonInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
-    assertSame (a,
-                AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
+    assertSame (a, AbstractGlobalWebSingleton.getGlobalSingletonIfInstantiated (MockGlobalWebSingletonWithScopeCtor.class));
     assertNotNull (a.getScope ());
 
     final MockGlobalWebSingletonWithScopeCtor b = MockGlobalWebSingletonWithScopeCtor.getInstance ();

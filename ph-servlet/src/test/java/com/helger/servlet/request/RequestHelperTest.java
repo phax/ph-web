@@ -40,8 +40,7 @@ public final class RequestHelperTest
     final MockServletContext aSC = MockServletContext.create ();
     try
     {
-      MockHttpServletRequest r = new MockHttpServletRequest (aSC,
-                                                             EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
+      MockHttpServletRequest r = new MockHttpServletRequest (aSC, EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
       r.addParameter ("abc", "xyz");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
@@ -74,8 +73,7 @@ public final class RequestHelperTest
     // Just a sanity check that parsing works :)
     assertEquals (sURL, aBaseURL.getAsStringWithEncodedParameters ());
     final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
-    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top",
-                  aStrippedURL.getAsStringWithEncodedParameters ());
+    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top", aStrippedURL.getAsStringWithEncodedParameters ());
   }
 
   @Test

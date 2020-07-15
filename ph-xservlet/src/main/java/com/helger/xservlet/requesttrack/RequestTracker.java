@@ -172,8 +172,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param aRequestScope
    *        The request scope itself.
    */
-  public static void addRequest (@Nonnull @Nonempty final String sRequestID,
-                                 @Nonnull final IRequestWebScope aRequestScope)
+  public static void addRequest (@Nonnull @Nonempty final String sRequestID, @Nonnull final IRequestWebScope aRequestScope)
   {
     getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, s_aParallelRunningCallbacks);
   }

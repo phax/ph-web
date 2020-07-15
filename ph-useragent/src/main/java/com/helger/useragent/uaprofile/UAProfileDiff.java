@@ -69,16 +69,15 @@ public class UAProfileDiff implements Serializable
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
-                                                               EMessageDigestAlgorithm.MD5)
+      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8), EMessageDigestAlgorithm.MD5)
                                                       .bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("MD5 digest mismatch of profile diff data! Expected '" +
-                          Base64.encodeBytes (aCalcedDigest) +
-                          "' but have '" +
-                          Base64.encodeBytes (m_aMD5Digest) +
-                          "'");
+                       Base64.encodeBytes (aCalcedDigest) +
+                       "' but have '" +
+                       Base64.encodeBytes (m_aMD5Digest) +
+                       "'");
     }
 
     m_aDocument = MicroReader.readMicroXML (sData);

@@ -122,9 +122,7 @@ public final class WebScopeSessionHelper
     ValueEnforcer.notNull (aHttpSession, "HttpSession");
 
     // Get the old session scope
-    final ISessionWebScope aOldSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
-                                                                                               false,
-                                                                                               false);
+    final ISessionWebScope aOldSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, false, false);
     if (aOldSessionScope == null)
       return null;
 
@@ -141,9 +139,7 @@ public final class WebScopeSessionHelper
 
     // Ensure that we get a new session!
     // Here it is OK to create a new session scope explicitly!
-    final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
-                                                                                               true,
-                                                                                               true);
+    final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
     _restoreScopeAttributes (aNewSessionScope, aSessionScopeValues);
     return aNewSessionScope;
   }

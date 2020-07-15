@@ -109,16 +109,14 @@ public final class RequestLogger
     return ret;
   }
 
-  public static void debugAppendRequestFields (@Nonnull final Map <String, String> aRequestFieldMap,
-                                               @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestFields (@Nonnull final Map <String, String> aRequestFieldMap, @Nonnull final StringBuilder aSB)
   {
     aSB.append ("Request:\n");
     for (final Map.Entry <String, String> aEntry : aRequestFieldMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = ").append (aEntry.getValue ()).append ('\n');
   }
 
-  public static void debugAppendRequestHeader (@Nonnull final HttpHeaderMap aRequestHeaderMap,
-                                               @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestHeader (@Nonnull final HttpHeaderMap aRequestHeaderMap, @Nonnull final StringBuilder aSB)
   {
     aSB.append ("Headers:\n");
     aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'), true);
@@ -128,8 +126,7 @@ public final class RequestLogger
   public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
-    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
-                                                                      .entrySet ())
+    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ()).entrySet ())
       ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
     return ret;
   }
@@ -162,8 +159,7 @@ public final class RequestLogger
     return aSB.toString ();
   }
 
-  public static void debugAppendRequestCookies (@Nonnull final HttpServletRequest aHttpRequest,
-                                                @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestCookies (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final StringBuilder aSB)
   {
     aSB.append ("Cookies:\n");
     final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);

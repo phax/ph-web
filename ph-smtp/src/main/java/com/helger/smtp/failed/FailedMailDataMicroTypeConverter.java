@@ -76,15 +76,12 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
                                                                        ELEMENT_SMTP_SETTINGS));
 
     // email data
-    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (),
-                                                                       sNamespaceURI,
-                                                                       ELEMENT_EMAIL_DATA));
+    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (), sNamespaceURI, ELEMENT_EMAIL_DATA));
 
     final MailTransportError aTransportError = aFailedMail.getTransportError ();
     if (aTransportError != null)
     {
-      eFailedMail.appendElement (sNamespaceURI, ELEMENT_ERROR_MSG)
-                 .appendText (aTransportError.getThrowable ().getMessage ());
+      eFailedMail.appendElement (sNamespaceURI, ELEMENT_ERROR_MSG).appendText (aTransportError.getThrowable ().getMessage ());
       for (final MailSendDetails aDetails : aTransportError.getAllDetails ())
       {
         eFailedMail.appendElement (sNamespaceURI, ELEMENT_DETAILS)

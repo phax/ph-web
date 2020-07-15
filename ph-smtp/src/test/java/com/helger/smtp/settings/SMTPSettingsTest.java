@@ -37,12 +37,7 @@ public final class SMTPSettingsTest
   @Test
   public void testConvert ()
   {
-    SMTPSettings aSettings = new SMTPSettings ("mail.example.com",
-                                               19,
-                                               "anyuser",
-                                               "secret",
-                                               StandardCharsets.UTF_8,
-                                               true);
+    SMTPSettings aSettings = new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", StandardCharsets.UTF_8, true);
     assertEquals ("mail.example.com", aSettings.getHostName ());
     assertEquals (19, aSettings.getPort ());
     assertEquals ("anyuser", aSettings.getUserName ());
@@ -51,16 +46,7 @@ public final class SMTPSettingsTest
     assertFalse (aSettings.isSTARTTLSEnabled ());
     XMLTestHelper.testMicroTypeConversion (aSettings);
 
-    aSettings = new SMTPSettings ("mail.example.com",
-                                  19,
-                                  "anyuser",
-                                  "secret",
-                                  StandardCharsets.UTF_8,
-                                  true,
-                                  true,
-                                  5000,
-                                  1200,
-                                  false);
+    aSettings = new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", StandardCharsets.UTF_8, true, true, 5000, 1200, false);
     assertEquals ("mail.example.com", aSettings.getHostName ());
     assertEquals (19, aSettings.getPort ());
     assertEquals ("anyuser", aSettings.getUserName ());

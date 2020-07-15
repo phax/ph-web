@@ -61,10 +61,8 @@ public class XServletHandlerTRACE implements IXServletHandler
                                                   .append (aHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);
     RequestHelper.forEachRequestHeader (aHttpRequest,
-                                        (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)
-                                                                          .append (": ")
-                                                                          .append (sHeaderValue)
-                                                                          .append (CHttp.EOL));
+                                        (sHeaderName,
+                                         sHeaderValue) -> aSB.append (sHeaderName).append (": ").append (sHeaderValue).append (CHttp.EOL));
 
     aHttpResponse.setContentType (CONTENT_TYPE);
     aHttpResponse.setContentLength (aSB.length ());

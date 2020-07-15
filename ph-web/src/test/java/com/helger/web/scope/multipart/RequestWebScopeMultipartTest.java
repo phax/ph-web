@@ -52,8 +52,7 @@ public final class RequestWebScopeMultipartTest
     aRequest.addParameter ("b", "...");
     aRequest.addParameter ("c", "...");
     assertEquals (5, aRequest.getParameterMap ().size ());
-    final RequestWebScopeMultipart aRequestScope = new RequestWebScopeMultipart (aRequest,
-                                                                                 new MockHttpServletResponse ());
+    final RequestWebScopeMultipart aRequestScope = new RequestWebScopeMultipart (aRequest, new MockHttpServletResponse ());
     aRequestScope.initScope ();
     final IRequestParamMap aRPM = aRequestScope.getRequestParamMap ();
     assertNotNull (aRPM);

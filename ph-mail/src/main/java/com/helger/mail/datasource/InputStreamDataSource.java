@@ -53,9 +53,7 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     this (aIS, sName, (String) null, DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
-                                final boolean bReadMultiple)
+  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, final boolean bReadMultiple)
   {
     this (aIS, sName, (String) null, bReadMultiple);
   }
@@ -68,16 +66,12 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), bReadMultiple);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
-                                @Nullable final IMimeType aContentType)
+  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, @Nullable final IMimeType aContentType)
   {
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
-                                @Nullable final String sContentType)
+  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, @Nullable final String sContentType)
   {
     this (aIS, sName, sContentType, DEFAULT_READ_MULTIPLE);
   }

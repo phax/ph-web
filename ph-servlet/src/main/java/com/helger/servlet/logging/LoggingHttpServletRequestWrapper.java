@@ -194,9 +194,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public boolean isFormPost ()
   {
     final String sContentType = getContentType ();
-    return sContentType != null &&
-           sContentType.contains (FORM_CONTENT_TYPE) &&
-           METHOD_POST.equalsIgnoreCase (getMethod ());
+    return sContentType != null && sContentType.contains (FORM_CONTENT_TYPE) && METHOD_POST.equalsIgnoreCase (getMethod ());
   }
 
   private static class ParamNameEnumeration implements Enumeration <String>

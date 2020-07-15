@@ -49,9 +49,7 @@ public final class ProxySettings implements IProxySettings
   private final String m_sProxyUserName;
   private final String m_sProxyPassword;
 
-  public ProxySettings (@Nonnull final Proxy.Type eProxyType,
-                        @Nullable final String sProxyHost,
-                        @Nonnegative final int nProxyPort)
+  public ProxySettings (@Nonnull final Proxy.Type eProxyType, @Nullable final String sProxyHost, @Nonnegative final int nProxyPort)
   {
     this (eProxyType, sProxyHost, nProxyPort, null, null);
   }

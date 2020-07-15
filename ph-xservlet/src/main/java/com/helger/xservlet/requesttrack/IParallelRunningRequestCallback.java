@@ -43,8 +43,7 @@ public interface IParallelRunningRequestCallback extends ICallback
    *        The list of requests currently running. The size should be identical
    *        to the number of parallel requests. Never <code>null</code>.
    */
-  void onParallelRunningRequests (@Nonnegative int nParallelRequests,
-                                  @Nonnull @Nonempty List <TrackedRequest> aRequests);
+  void onParallelRunningRequests (@Nonnegative int nParallelRequests, @Nonnull @Nonempty List <TrackedRequest> aRequests);
 
   /**
    * This method is only called after the threshold was exceeded, when it is

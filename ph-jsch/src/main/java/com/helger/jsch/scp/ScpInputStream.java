@@ -34,9 +34,8 @@ public class ScpInputStream extends InputStream
   private final ScpConnection m_aConnection;
   private InputStream m_aIS;
 
-  public ScpInputStream (final ISessionFactory sessionFactory,
-                         final String path,
-                         final ECopyMode copyMode) throws JSchException, IOException
+  public ScpInputStream (final ISessionFactory sessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
+                                                                                                            IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpInputStream");

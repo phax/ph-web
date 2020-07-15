@@ -136,11 +136,7 @@ public class DefaultSessionFactory implements ISessionFactory
       m_nPort = port;
   }
 
-  private DefaultSessionFactory (final JSch jsch,
-                                 final String username,
-                                 final String hostname,
-                                 final int port,
-                                 final Proxy proxy)
+  private DefaultSessionFactory (final JSch jsch, final String username, final String hostname, final int port, final Proxy proxy)
   {
     m_aJSch = jsch;
     m_sUsername = username;
@@ -478,22 +474,12 @@ public class DefaultSessionFactory implements ISessionFactory
   @Override
   public AbstractSessionFactoryBuilder newSessionFactoryBuilder ()
   {
-    return new AbstractSessionFactoryBuilder (m_aJSch,
-                                              m_sUsername,
-                                              m_sHostname,
-                                              m_nPort,
-                                              m_aProxy,
-                                              m_aConfig,
-                                              m_aUserInfo)
+    return new AbstractSessionFactoryBuilder (m_aJSch, m_sUsername, m_sHostname, m_nPort, m_aProxy, m_aConfig, m_aUserInfo)
     {
       @Override
       public ISessionFactory build ()
       {
-        final DefaultSessionFactory ret = new DefaultSessionFactory (m_aJsch,
-                                                                     m_sUsername,
-                                                                     m_sHostname,
-                                                                     m_nPort,
-                                                                     m_aProxy);
+        final DefaultSessionFactory ret = new DefaultSessionFactory (m_aJsch, m_sUsername, m_sHostname, m_nPort, m_aProxy);
         ret.m_aConfig = m_aConfig;
         ret.m_sPassword = m_sPassword;
         ret.m_aUserInfo = m_aUserInfo;

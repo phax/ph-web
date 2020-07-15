@@ -49,17 +49,14 @@ public final class XMLSitemapProviderTest
       FileOperations.createDirIfNotExisting (aTargetDir);
       try
       {
-        assertTrue (XMLSitemapProvider.createSitemapFiles (aTargetDir, bUseGZip, FULL_SERVER_CONTEXT_PATH)
-                                      .isSuccess ());
+        assertTrue (XMLSitemapProvider.createSitemapFiles (aTargetDir, bUseGZip, FULL_SERVER_CONTEXT_PATH).isSuccess ());
         assertTrue (FileHelper.existsFile (new File (aTargetDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME)));
 
         // 3 URL sets are present
         final int nMax = 3;
         for (int nIndex = 0; nIndex < nMax; ++nIndex)
-          assertTrue (FileHelper.existsFile (new File (aTargetDir,
-                                                       XMLSitemapIndex.getSitemapFilename (nIndex, bUseGZip))));
-        assertFalse (FileHelper.existsFile (new File (aTargetDir,
-                                                      XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
+          assertTrue (FileHelper.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nIndex, bUseGZip))));
+        assertFalse (FileHelper.existsFile (new File (aTargetDir, XMLSitemapIndex.getSitemapFilename (nMax, bUseGZip))));
       }
       finally
       {

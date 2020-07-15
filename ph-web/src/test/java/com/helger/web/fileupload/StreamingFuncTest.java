@@ -215,8 +215,7 @@ public final class StreamingFuncTest
 
   @Nonnull
   @ReturnsMutableCopy
-  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream,
-                                                       final int pLength) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 

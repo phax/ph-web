@@ -49,9 +49,7 @@ public class ByteArrayDataSource implements IExtendedDataSource
   private byte [] m_aBytes;
   private final String m_sName;
 
-  public ByteArrayDataSource (@Nonnull final byte [] aBytes,
-                              @Nullable final String sContentType,
-                              @Nullable final String sName)
+  public ByteArrayDataSource (@Nonnull final byte [] aBytes, @Nullable final String sContentType, @Nullable final String sName)
   {
     ValueEnforcer.notNull (aBytes, "Bytes");
     m_aBytes = aBytes;

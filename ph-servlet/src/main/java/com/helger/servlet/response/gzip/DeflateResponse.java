@@ -68,10 +68,6 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
                                                                      final long nContentLength,
                                                                      @Nonnegative final long nMinCompressSize) throws IOException
   {
-    return new DeflateServletOutputStream (aHttpRequest,
-                                           aHttpResponse,
-                                           sContentEncoding,
-                                           nContentLength,
-                                           nMinCompressSize);
+    return new DeflateServletOutputStream (aHttpRequest, aHttpResponse, sContentEncoding, nContentLength, nMinCompressSize);
   }
 }

@@ -67,8 +67,7 @@ public class LoggingParallelRunningRequestCallback implements IParallelRunningRe
     return this;
   }
 
-  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests,
-                                         @Nonnull @Nonempty final List <TrackedRequest> aRequests)
+  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests, @Nonnull @Nonempty final List <TrackedRequest> aRequests)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Currently " + nParallelRequests + " parallel requests are active!");
   }

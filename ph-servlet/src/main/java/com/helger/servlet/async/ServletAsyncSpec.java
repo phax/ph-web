@@ -45,9 +45,7 @@ public class ServletAsyncSpec
   /** The constant defining "no timeout defined" */
   public static final long NO_TIMEOUT = 0L;
   /** The constant for synchronous invocations */
-  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false,
-                                                                         NO_TIMEOUT,
-                                                                         (Iterable <? extends AsyncListener>) null);
+  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false, NO_TIMEOUT, (Iterable <? extends AsyncListener>) null);
 
   private final boolean m_bAsynchronous;
   private final long m_nTimeoutMillis;
@@ -182,8 +180,7 @@ public class ServletAsyncSpec
   @Nonnull
   public static ServletAsyncSpec createAsyncDefault ()
   {
-    return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND
-                                                   : 30 * CGlobal.MILLISECONDS_PER_SECOND,
+    return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND : 30 * CGlobal.MILLISECONDS_PER_SECOND,
                         null);
   }
 }

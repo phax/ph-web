@@ -148,8 +148,6 @@ public class HttpClientRetryHandler implements HttpRequestRetryHandler
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("MaxRetries", m_nMaxRetries)
-                                       .append ("RetryMode", m_eRetryMode)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("MaxRetries", m_nMaxRetries).append ("RetryMode", m_eRetryMode).getToString ();
   }
 }

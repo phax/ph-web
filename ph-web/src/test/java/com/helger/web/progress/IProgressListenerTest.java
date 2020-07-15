@@ -92,11 +92,7 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
     {
       for (int i = 0; i < NUM_ITEMS; i++)
       {
-        final String header = "-----1234\r\n" +
-                              "Content-Disposition: form-data; name=\"field" +
-                              (i + 1) +
-                              "\"\r\n" +
-                              "\r\n";
+        final String header = "-----1234\r\n" + "Content-Disposition: form-data; name=\"field" + (i + 1) + "\"\r\n" + "\r\n";
         baos.write (header.getBytes (US_ASCII));
         for (int j = 0; j < 16384 + i; j++)
         {
@@ -124,9 +120,8 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
     _runTest (NUM_ITEMS, contents.length, request);
   }
 
-  private void _runTest (final int NUM_ITEMS,
-                         final long pContentLength,
-                         final MockHttpServletRequest request) throws FileUploadException, IOException
+  private void _runTest (final int NUM_ITEMS, final long pContentLength, final MockHttpServletRequest request) throws FileUploadException,
+                                                                                                               IOException
   {
     final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null));
     final ProgressListenerImpl listener = new ProgressListenerImpl (pContentLength, NUM_ITEMS);

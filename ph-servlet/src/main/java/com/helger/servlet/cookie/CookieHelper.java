@@ -76,8 +76,7 @@ public final class CookieHelper
     return null;
   }
 
-  public static boolean containsCookie (@Nonnull final HttpServletRequest aHttpRequest,
-                                        @Nonnull final String sCookieName)
+  public static boolean containsCookie (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final String sCookieName)
   {
     return getCookie (aHttpRequest, sCookieName) != null;
   }
@@ -118,10 +117,7 @@ public final class CookieHelper
   {
     // Always use the context path from the global scope!
     final String sContextPath = ServletContextPathHolder.getContextPath ();
-    return createCookie (sName,
-                         sValue,
-                         StringHelper.hasText (sContextPath) ? sContextPath : "/",
-                         bExpireWhenBrowserIsClosed);
+    return createCookie (sName, sValue, StringHelper.hasText (sContextPath) ? sContextPath : "/", bExpireWhenBrowserIsClosed);
   }
 
   /**

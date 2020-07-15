@@ -89,9 +89,7 @@ public interface IProxySettings extends Serializable
    */
   default boolean hasInetSocketAddress (@Nullable final InetSocketAddress aAddr)
   {
-    return aAddr != null &&
-           EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) &&
-           getProxyPort () == aAddr.getPort ();
+    return aAddr != null && EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) && getProxyPort () == aAddr.getPort ();
   }
 
   /**
@@ -145,7 +143,6 @@ public interface IProxySettings extends Serializable
 
     final String sProxyPassword = getProxyPassword ();
     // Constructor does not take null password!
-    return new PasswordAuthentication (getProxyUserName (),
-                                       sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
+    return new PasswordAuthentication (getProxyUserName (), sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
   }
 }

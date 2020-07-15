@@ -108,14 +108,12 @@ public abstract class AbstractXServlet extends HttpServlet
    * Internal request attribute defining whether a request was handled
    * asynchronously. If this attribute is not present, it means synchronous
    */
-  public static final String REQUEST_ATTR_HANDLED_ASYNC = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
-                                                          "request-is-async";
+  public static final String REQUEST_ATTR_HANDLED_ASYNC = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "request-is-async";
   /**
    * Internal request attribute defining whether a request scope was created or
    * re-used
    */
-  public static final String REQUEST_ATTR_SCOPE_CREATED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
-                                                          "request-scope-created";
+  public static final String REQUEST_ATTR_SCOPE_CREATED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "request-scope-created";
 
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractXServlet.class);
 
@@ -163,18 +161,12 @@ public abstract class AbstractXServlet extends HttpServlet
     m_aHandlerRegistry.registerHandler (EHttpMethod.TRACE, new XServletHandlerTRACE (), false);
 
     // Default HEAD handler -> invoke with GET
-    m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD,
-                                        (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope) -> {
-                                          final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
-                                          // Change method from HEAD to GET!
-                                          _invokeHandler (aHttpRequest,
-                                                          aResponseWrapper,
-                                                          eHttpVersion,
-                                                          EHttpMethod.GET,
-                                                          aRequestScope);
-                                          aResponseWrapper.setContentLengthAutomatically ();
-                                        },
-                                        false);
+    m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD, (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope) -> {
+      final CountingOnlyHttpServletResponse aResponseWrapper = new CountingOnlyHttpServletResponse (aHttpResponse);
+      // Change method from HEAD to GET!
+      _invokeHandler (aHttpRequest, aResponseWrapper, eHttpVersion, EHttpMethod.GET, aRequestScope);
+      aResponseWrapper.setContentLengthAutomatically ();
+    }, false);
 
     // Default OPTIONS handler
     m_aHandlerRegistry.registerHandler (EHttpMethod.OPTIONS,
@@ -335,8 +327,7 @@ public abstract class AbstractXServlet extends HttpServlet
     }
 
     // HTTP method is supported by this servlet implementation
-    final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> (2 +
-                                                                                               m_aFilterHighLevelList.size ());
+    final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> (2 + m_aFilterHighLevelList.size ());
     // Add new instance all the time!
     aEffectiveFilters.add (new XServletFilterTimer (this));
     // Add new instance all the time!
@@ -496,8 +487,7 @@ public abstract class AbstractXServlet extends HttpServlet
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
     // Create effective filter list with all internal filters as well
-    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (4 +
-                                                                                                 m_aFilterLowLevelList.size ());
+    final ICommonsList <IXServletLowLevelFilter> aEffectiveFilterList = new CommonsArrayList <> (4 + m_aFilterLowLevelList.size ());
     // Add internal filters - always first
     aEffectiveFilterList.add (XServletFilterSecurityPoxy.INSTANCE);
     aEffectiveFilterList.add (XServletFilterConsistency.INSTANCE);
@@ -588,8 +578,7 @@ public abstract class AbstractXServlet extends HttpServlet
 
   // Avoid overloading in sub classes
   @Override
-  public final void service (@Nonnull final ServletRequest req,
-                             @Nonnull final ServletResponse res) throws ServletException, IOException
+  public final void service (@Nonnull final ServletRequest req, @Nonnull final ServletResponse res) throws ServletException, IOException
   {
     super.service (req, res);
   }

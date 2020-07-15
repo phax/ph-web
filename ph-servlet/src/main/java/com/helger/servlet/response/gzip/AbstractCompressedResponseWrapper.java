@@ -142,10 +142,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   private void _updateStatus (final int nStatusCode)
   {
     // sc<200 || sc==204 || sc==205 || sc>=300
-    if (nStatusCode < SC_OK ||
-        nStatusCode == SC_NO_CONTENT ||
-        nStatusCode == SC_RESET_CONTENT ||
-        nStatusCode >= SC_MULTIPLE_CHOICES)
+    if (nStatusCode < SC_OK || nStatusCode == SC_NO_CONTENT || nStatusCode == SC_RESET_CONTENT || nStatusCode >= SC_MULTIPLE_CHOICES)
     {
       setNoCompression ();
     }

@@ -87,7 +87,7 @@ public class WebScopeTestRule extends ExternalResource
   @ReturnsMutableCopy
   public final ICommonsMap <String, String> getServletContextInitParameters ()
   {
-    return new CommonsHashMap<> (m_aServletContextInitParameters);
+    return new CommonsHashMap <> (m_aServletContextInitParameters);
   }
 
   /**

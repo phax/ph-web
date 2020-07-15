@@ -77,8 +77,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    *        The default values to use, if no value is present in the request
    *        scope.
    */
-  public RequestFieldDataMultiValue (@Nonnull @Nonempty final String sFieldName,
-                                     @Nullable final Collection <String> aDefaultValues)
+  public RequestFieldDataMultiValue (@Nonnull @Nonempty final String sFieldName, @Nullable final Collection <String> aDefaultValues)
   {
     super (sFieldName);
     // Always create a copy

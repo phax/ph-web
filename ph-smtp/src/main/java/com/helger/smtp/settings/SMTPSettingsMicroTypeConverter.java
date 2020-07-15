@@ -98,8 +98,7 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
                                                                      EmailGlobalSettings.getConnectionTimeoutMilliSecs ());
 
     final String sTimeoutMilliSecs = eSMTPSettings.getAttributeValue (ATTR_TIMEOUT);
-    final long nTimeoutMilliSecs = StringParser.parseLong (sTimeoutMilliSecs,
-                                                           EmailGlobalSettings.getTimeoutMilliSecs ());
+    final long nTimeoutMilliSecs = StringParser.parseLong (sTimeoutMilliSecs, EmailGlobalSettings.getTimeoutMilliSecs ());
 
     final String sDebugSMTP = eSMTPSettings.getAttributeValue (ATTR_DEBUG_SMTP);
     final boolean bDebugSMTP = StringParser.parseBool (sDebugSMTP, EmailGlobalSettings.isDebugSMTP ());

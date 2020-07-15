@@ -117,14 +117,14 @@ public final class HttpProxyConfigTest
       assertTrue (aPC.getNonProxyHosts ().isEmpty ());
       aPC.activateGlobally ();
 
-      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, new CommonsArrayList<> ("localhost"));
+      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, new CommonsArrayList <> ("localhost"));
       assertNotNull (aPC.getNonProxyHosts ());
       assertEquals (1, aPC.getNonProxyHosts ().size ());
       assertTrue (aPC.getNonProxyHosts ().contains ("localhost"));
       assertFalse (aPC.getNonProxyHosts ().contains ("127.0.0.1"));
       aPC.activateGlobally ();
 
-      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, new CommonsArrayList<> ("localhost", "127.0.0.1"));
+      aPC = new HttpProxyConfig (EHttpProxyType.HTTP, "host", 8080, new CommonsArrayList <> ("localhost", "127.0.0.1"));
       assertNotNull (aPC.getNonProxyHosts ());
       assertEquals (2, aPC.getNonProxyHosts ().size ());
       assertTrue (aPC.getNonProxyHosts ().contains ("localhost"));
@@ -134,7 +134,7 @@ public final class HttpProxyConfigTest
       aPC = new HttpProxyConfig (EHttpProxyType.HTTP,
                                  "host",
                                  8080,
-                                 new CommonsArrayList<> (null, "localhost", "", "127.0.0.1", "", "", "", ""));
+                                 new CommonsArrayList <> (null, "localhost", "", "127.0.0.1", "", "", "", ""));
       assertNotNull (aPC.getNonProxyHosts ());
       assertEquals (2, aPC.getNonProxyHosts ().size ());
       assertTrue (aPC.getNonProxyHosts ().contains ("localhost"));

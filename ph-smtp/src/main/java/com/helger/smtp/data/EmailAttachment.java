@@ -56,9 +56,7 @@ public class EmailAttachment implements IEmailAttachment
     this (sFilename, aContent, (Charset) null);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final byte [] aContent,
-                          @Nullable final Charset aCharset)
+  public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final byte [] aContent, @Nullable final Charset aCharset)
   {
     this (sFilename, aContent, aCharset, DEFAULT_DISPOSITION);
   }
@@ -98,11 +96,7 @@ public class EmailAttachment implements IEmailAttachment
                                                                        @Nullable final Charset aCharset,
                                                                        @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
-    this (sFilename,
-          aInputStreamProvider,
-          aCharset,
-          FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename),
-          eDisposition);
+    this (sFilename, aInputStreamProvider, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
   }
 
   public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,

@@ -84,13 +84,7 @@ public interface ISessionFactory
   default String getAsString ()
   {
     final Proxy aProxy = getProxy ();
-    return (aProxy == null ? "" : aProxy.toString () + " ") +
-           "ssh://" +
-           getUsername () +
-           "@" +
-           getHostname () +
-           ":" +
-           getPort ();
+    return (aProxy == null ? "" : aProxy.toString () + " ") + "ssh://" + getUsername () + "@" + getHostname () + ":" + getPort ();
   }
 
 }

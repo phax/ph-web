@@ -62,10 +62,7 @@ public interface IFileItemFactory extends Serializable
    * @return The newly created file item.
    */
   @Nonnull
-  IFileItem createItem (@Nullable String sFieldName,
-                        @Nullable String sContentType,
-                        boolean bIsFormField,
-                        @Nullable String sFileName);
+  IFileItem createItem (@Nullable String sFieldName, @Nullable String sContentType, boolean bIsFormField, @Nullable String sFileName);
 
   @Nonnull
   @ReturnsMutableCopy

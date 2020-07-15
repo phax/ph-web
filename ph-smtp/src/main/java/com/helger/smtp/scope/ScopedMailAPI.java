@@ -102,8 +102,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    *         number of {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
-  public int queueMails (@Nonnull final ISMTPSettings aSMTPSettings,
-                         @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
+  public int queueMails (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
   {
     return MailAPI.queueMails (aSMTPSettings, aMailDataList);
   }

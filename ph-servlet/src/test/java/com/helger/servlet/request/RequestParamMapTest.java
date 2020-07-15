@@ -346,8 +346,7 @@ public final class RequestParamMapTest
     assertEquals (0, aMap.getMap ("columns", "name", "test").getAsObjectMap ().size ());
 
     CommonsTestHelper.testDefaultSerialization (aMap);
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
-                                                                       aMap.getMap ("columns", "name"));
+    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"), aMap.getMap ("columns", "name"));
     CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
                                                                        aMap.getMap ("columns", "name-equals"));
     CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (aMap.getMap ("columns", "name"),

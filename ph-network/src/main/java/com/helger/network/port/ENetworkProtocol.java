@@ -42,9 +42,7 @@ public enum ENetworkProtocol implements IHasID <String>
     {
       if (nPort >= CNetworkPort.MINIMUM_PORT_NUMBER)
         try (final ServerSocket aSocket = ServerSocketFactory.getDefault ()
-                                                             .createServerSocket (nPort,
-                                                                                  1,
-                                                                                  InetAddress.getByName ("localhost")))
+                                                             .createServerSocket (nPort, 1, InetAddress.getByName ("localhost")))
         {
           aSocket.setReuseAddress (true);
           return true;

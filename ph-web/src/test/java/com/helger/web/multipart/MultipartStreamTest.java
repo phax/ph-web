@@ -42,10 +42,7 @@ public final class MultipartStreamTest
     final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
     final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
     final int nBufSize = aBoundary.length;
-    final MultipartStream ms = new MultipartStream (aIS,
-                                                    aBoundary,
-                                                    nBufSize,
-                                                    new MultipartProgressNotifier (null, aContents.length));
+    final MultipartStream ms = new MultipartStream (aIS, aBoundary, nBufSize, new MultipartProgressNotifier (null, aContents.length));
     assertNotNull (ms);
   }
 
@@ -56,9 +53,7 @@ public final class MultipartStreamTest
     final byte [] contents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
     final InputStream aIS = new NonBlockingByteArrayInputStream (contents);
     final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
-    final MultipartStream ms = new MultipartStream (aIS,
-                                                    aBoundary,
-                                                    new MultipartProgressNotifier (null, contents.length));
+    final MultipartStream ms = new MultipartStream (aIS, aBoundary, new MultipartProgressNotifier (null, contents.length));
     assertNotNull (ms);
   }
 }

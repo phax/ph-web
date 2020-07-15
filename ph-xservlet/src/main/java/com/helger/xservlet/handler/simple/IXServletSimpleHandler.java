@@ -147,8 +147,7 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    * @throws Exception
    *         In case of an error
    */
-  void handleRequest (@Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                      @Nonnull UnifiedResponse aUnifiedResponse) throws Exception;
+  void handleRequest (@Nonnull IRequestWebScopeWithoutResponse aRequestScope, @Nonnull UnifiedResponse aUnifiedResponse) throws Exception;
 
   /**
    * Called when an exception occurred in

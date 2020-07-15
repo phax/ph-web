@@ -108,8 +108,7 @@ public class HttpClientManager implements AutoCloseable
    *         If this manager was already closed!
    */
   @Nonnull
-  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
-                                        @Nullable final HttpContext aHttpContext) throws IOException
+  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext) throws IOException
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
@@ -151,8 +150,7 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
-  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
-                        @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+  public <T> T execute (@Nonnull final HttpUriRequest aRequest, @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
   {
     return execute (aRequest, (HttpContext) null, aResponseHandler);
   }

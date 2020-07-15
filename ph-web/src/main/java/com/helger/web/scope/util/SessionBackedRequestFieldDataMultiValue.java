@@ -44,8 +44,7 @@ public class SessionBackedRequestFieldDataMultiValue extends RequestFieldDataMul
     _init ();
   }
 
-  public SessionBackedRequestFieldDataMultiValue (@Nonnull final String sFieldName,
-                                                  @Nullable final Collection <String> aDefaultValues)
+  public SessionBackedRequestFieldDataMultiValue (@Nonnull final String sFieldName, @Nullable final Collection <String> aDefaultValues)
   {
     super (sFieldName, aDefaultValues);
     _init ();

@@ -131,9 +131,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
     SimpleFileIO.writeFile (file2, expected2, StandardCharsets.UTF_8);
     SimpleFileIO.writeFile (file3, expected3, StandardCharsets.UTF_8);
 
-    try (ScpInputStream inputStream = new ScpInputStream (sessionFactory,
-                                                          joinPath (scpPath, dir1Name, "*"),
-                                                          ECopyMode.RECURSIVE))
+    try (ScpInputStream inputStream = new ScpInputStream (sessionFactory, joinPath (scpPath, dir1Name, "*"), ECopyMode.RECURSIVE))
     {
       final Map <String, String> fileNameToContents = new HashMap <> ();
       final List <String> dirs = new ArrayList <> ();
@@ -173,9 +171,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
   @Test
   public void testOutputStream ()
   {
-    try (final ScpOutputStream outputStream = new ScpOutputStream (sessionFactory,
-                                                                   joinPath (scpPath, dir1Name),
-                                                                   ECopyMode.RECURSIVE))
+    try (final ScpOutputStream outputStream = new ScpOutputStream (sessionFactory, joinPath (scpPath, dir1Name), ECopyMode.RECURSIVE))
     {
       outputStream.putNextEntry (file1Name, expected1.length ());
       outputStream.write (expected1.getBytes (StandardCharsets.UTF_8));

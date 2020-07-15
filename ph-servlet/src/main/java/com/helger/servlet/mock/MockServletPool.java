@@ -107,9 +107,7 @@ public class MockServletPool
     @Override
     public String toString ()
     {
-      return new ToStringGenerator (this).append ("servlet", m_aServlet)
-                                         .append ("servletPath", m_sServletPath)
-                                         .getToString ();
+      return new ToStringGenerator (this).append ("servlet", m_aServlet).append ("servletPath", m_sServletPath).getToString ();
     }
   }
 
@@ -170,16 +168,10 @@ public class MockServletPool
     {
       // Check path uniqueness
       if (aItem.getServletPath ().equals (sServletPath))
-        throw new IllegalArgumentException ("Another servlet with the path '" +
-                                            sServletPath +
-                                            "' is already registered: " +
-                                            aItem);
+        throw new IllegalArgumentException ("Another servlet with the path '" + sServletPath + "' is already registered: " + aItem);
       // Check name uniqueness
       if (aItem.getServletName ().equals (sServletName))
-        throw new IllegalArgumentException ("Another servlet with the name '" +
-                                            sServletName +
-                                            "' is already registered: " +
-                                            aItem);
+        throw new IllegalArgumentException ("Another servlet with the name '" + sServletName + "' is already registered: " + aItem);
     }
 
     // Instantiate servlet

@@ -117,8 +117,7 @@ public final class RequestScopeInitializer implements AutoCloseable
 
       // Wow...
       if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("The existing request scope is no longer valid - creating a new one: " +
-                      aExistingRequestScope.toString ());
+        LOGGER.error ("The existing request scope is no longer valid - creating a new one: " + aExistingRequestScope.toString ());
     }
 
     // No valid scope present

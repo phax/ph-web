@@ -310,9 +310,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes,
-                           @Nonnegative final int nOfs,
-                           @Nonnegative final int nLen) throws IOException
+  public final void write (@Nonnull final byte [] aBytes, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
   {
     _prepareToWrite (nLen);
     m_aOS.write (aBytes, nOfs, nLen);

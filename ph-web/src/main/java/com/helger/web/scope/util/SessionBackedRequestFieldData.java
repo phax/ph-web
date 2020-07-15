@@ -74,7 +74,6 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     final String sSuperDefaultValue = super.getDefaultValue ();
     // Get session scope only if it already exists - don't create one here!
     final IScope aSessionScope = WebScopeManager.getSessionScope (false);
-    return aSessionScope == null ? sSuperDefaultValue
-                                 : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);
+    return aSessionScope == null ? sSuperDefaultValue : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);
   }
 }

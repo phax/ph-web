@@ -180,8 +180,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
     final IMicroElement ret = new MicroElement (sNamespaceURI, ELEMENT_URL);
     ret.appendElement (sNamespaceURI, ELEMENT_LOC).appendText (m_sLocation);
     if (m_aLastModification != null)
-      ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD)
-         .appendText (PDTWebDateHelper.getAsStringXSD (m_aLastModification));
+      ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD).appendText (PDTWebDateHelper.getAsStringXSD (m_aLastModification));
     if (m_eChangeFreq != null)
       ret.appendElement (sNamespaceURI, ELEMENT_CHANGEFREQ).appendText (m_eChangeFreq.getText ());
     if (m_sPriority != null)

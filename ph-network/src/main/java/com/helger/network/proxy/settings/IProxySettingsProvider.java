@@ -40,9 +40,7 @@ public interface IProxySettingsProvider extends Serializable
    *         that none was found.
    */
   @Nullable
-  ICommonsList <IProxySettings> getAllProxySettings (@Nullable String sProtocol,
-                                                     @Nullable String sHostName,
-                                                     @CheckForSigned int nPort);
+  ICommonsList <IProxySettings> getAllProxySettings (@Nullable String sProtocol, @Nullable String sHostName, @CheckForSigned int nPort);
 
   /**
    * Invoked if the connection to a proxy server failed. The action to take

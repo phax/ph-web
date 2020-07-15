@@ -41,8 +41,7 @@ public class UseSystemProxyConfig implements IProxyConfig
 
   public boolean isUseSystemProxies ()
   {
-    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES),
-                                   false);
+    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES), false);
   }
 
   public void activateGlobally ()

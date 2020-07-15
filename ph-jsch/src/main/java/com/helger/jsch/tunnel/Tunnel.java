@@ -169,10 +169,7 @@ public class Tunnel
    * @see com.jcraft.jsch.Session#setPortForwardingL(String, int, String, int)
    * @see <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a>
    */
-  public Tunnel (final String localAlias,
-                 final int localPort,
-                 final String destinationHostname,
-                 final int destinationPort)
+  public Tunnel (final String localAlias, final int localPort, final String destinationHostname, final int destinationPort)
   {
     m_sLocalAlias = localAlias;
     m_nLocalPort = localPort;

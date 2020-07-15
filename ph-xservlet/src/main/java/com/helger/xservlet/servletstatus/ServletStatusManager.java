@@ -103,8 +103,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     return m_aMap.computeIfAbsent (sKey, k -> new ServletStatus (aServletClass.getName ()));
   }
 
-  private void _updateStatus (@Nonnull final Class <? extends GenericServlet> aServletClass,
-                              @Nonnull final EServletStatus eNewStatus)
+  private void _updateStatus (@Nonnull final Class <? extends GenericServlet> aServletClass, @Nonnull final EServletStatus eNewStatus)
   {
     ValueEnforcer.notNull (eNewStatus, "NewStatus");
 
@@ -132,8 +131,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     _updateStatus (aServletClass, EServletStatus.INITED);
   }
 
-  public void onServletInitFailed (@Nonnull final Exception aInitException,
-                                   @Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletInitFailed (@Nonnull final Exception aInitException, @Nonnull final Class <? extends GenericServlet> aServletClass)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("onServletInitFailed: " + aServletClass, aInitException);
@@ -193,9 +191,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     {
       try
       {
-        for (final ServletRegistration aRegistration : aGlobalScope.getServletContext ()
-                                                                   .getServletRegistrations ()
-                                                                   .values ())
+        for (final ServletRegistration aRegistration : aGlobalScope.getServletContext ().getServletRegistrations ().values ())
           if (aRegistration.getClassName ().equals (sClassName))
             return true;
       }

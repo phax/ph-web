@@ -112,8 +112,7 @@ public final class WebScopeManager
       {
         // Ensure the activator is present
         if (aHttpSession.getAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR) == null)
-          aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR,
-                                     new SessionWebScopeActivator (aSessionWebScope));
+          aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR, new SessionWebScopeActivator (aSessionWebScope));
       }
       else
       {
@@ -333,8 +332,7 @@ public final class WebScopeManager
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
-  public static ISessionWebScope internalGetSessionScope (final boolean bCreateIfNotExisting,
-                                                          final boolean bItsOkayToCreateANewSession)
+  public static ISessionWebScope internalGetSessionScope (final boolean bCreateIfNotExisting, final boolean bItsOkayToCreateANewSession)
   {
     // Try to to resolve the current request scope
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();

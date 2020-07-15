@@ -38,9 +38,7 @@ import com.helger.network.port.SchemeDefaultPortMapper;
 public enum EHttpProxyType implements IProxySettingsPerProtocol
 {
   HTTP ("http", EURLProtocol.HTTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP)),
-  HTTPS ("https",
-         EURLProtocol.HTTPS,
-         SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTPS)),
+  HTTPS ("https", EURLProtocol.HTTPS, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTPS)),
   // Default proxy port for FTP is also 80! This is not a copy/paste error!
   FTP ("ftp", EURLProtocol.FTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP));
 
@@ -48,9 +46,7 @@ public enum EHttpProxyType implements IProxySettingsPerProtocol
   private final IURLProtocol m_aURLProtocol;
   private final int m_nDefaultPort;
 
-  EHttpProxyType (@Nonnull @Nonempty final String sID,
-                  @Nonnull final IURLProtocol aURLProtocol,
-                  @Nonnegative final int nDefaultPort)
+  EHttpProxyType (@Nonnull @Nonempty final String sID, @Nonnull final IURLProtocol aURLProtocol, @Nonnegative final int nDefaultPort)
   {
     m_sID = sID;
     m_aURLProtocol = aURLProtocol;

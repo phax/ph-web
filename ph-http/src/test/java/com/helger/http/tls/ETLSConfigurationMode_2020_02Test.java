@@ -39,8 +39,7 @@ public final class ETLSConfigurationMode_2020_02Test
   {
     for (final ETLSConfigurationMode_2020_02 e : ETLSConfigurationMode_2020_02.values ())
     {
-      if (e == ETLSConfigurationMode_2020_02.MODERN &&
-          EJavaVersion.getCurrentVersion ().isOlderOrEqualsThan (EJavaVersion.JDK_10))
+      if (e == ETLSConfigurationMode_2020_02.MODERN && EJavaVersion.getCurrentVersion ().isOlderOrEqualsThan (EJavaVersion.JDK_10))
       {
         // The modern suite only supports Java 11 and onwards
         continue;

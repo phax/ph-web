@@ -160,11 +160,7 @@ public final class HttpDigestAuth
         if (aChars[nIndex] != HttpStringHelper.QUOTEDTEXT_END)
         {
           if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Quoted string of token '" +
-                             sToken +
-                             "' is not terminated correctly: '" +
-                             aChars[nIndex] +
-                             "'");
+            LOGGER.error ("Quoted string of token '" + sToken + "' is not terminated correctly: '" + aChars[nIndex] + "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);
@@ -181,11 +177,7 @@ public final class HttpDigestAuth
         if (nStartIndex == nIndex)
         {
           if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("No token and no whitespace found for auth-param value of '" +
-                             sToken +
-                             "': '" +
-                             aChars[nIndex] +
-                             "'");
+            LOGGER.error ("No token and no whitespace found for auth-param value of '" + sToken + "': '" + aChars[nIndex] + "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);

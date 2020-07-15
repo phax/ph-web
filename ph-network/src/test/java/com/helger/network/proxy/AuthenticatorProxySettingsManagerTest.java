@@ -63,9 +63,7 @@ public final class AuthenticatorProxySettingsManagerTest
   @Test
   public void testNoConfigurationSimpleAPI ()
   {
-    final PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at",
-                                                                                                             80,
-                                                                                                             "http");
+    final PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at", 80, "http");
     assertNull (aPA);
   }
 
@@ -125,9 +123,7 @@ public final class AuthenticatorProxySettingsManagerTest
                                                                                                                                  : null,
                                                                                                    "pw")));
 
-    PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at",
-                                                                                                       80,
-                                                                                                       "http");
+    PasswordAuthentication aPA = AuthenticatorProxySettingsManager.requestProxyPasswordAuthentication ("orf.at", 80, "http");
     assertNotNull (aPA);
     assertEquals ("user", aPA.getUserName ());
     assertEquals ("pw", new String (aPA.getPassword ()));
@@ -139,14 +135,13 @@ public final class AuthenticatorProxySettingsManagerTest
   @Test
   public void testProxyMultipleNone ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   8080),
-                                                                                new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv2",
-                                                                                                   8080)));
+    ProxySettingsManager.registerProvider ( (sProtocol, sHostName, nPort) -> new CommonsArrayList <> (
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv",
+                                                                                                                         8080),
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv2",
+                                                                                                                         8080)));
 
     final PasswordAuthentication aPA = Authenticator.requestPasswordAuthentication ("orf.at",
                                                                                     null,
@@ -162,16 +157,15 @@ public final class AuthenticatorProxySettingsManagerTest
   @Test
   public void testProxyMultipleMixed ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   8080),
-                                                                                new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv2",
-                                                                                                   8080,
-                                                                                                   "user",
-                                                                                                   "pw")));
+    ProxySettingsManager.registerProvider ( (sProtocol, sHostName, nPort) -> new CommonsArrayList <> (
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv",
+                                                                                                                         8080),
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv2",
+                                                                                                                         8080,
+                                                                                                                         "user",
+                                                                                                                         "pw")));
 
     final PasswordAuthentication aPA = Authenticator.requestPasswordAuthentication ("orf.at",
                                                                                     null,
@@ -189,18 +183,17 @@ public final class AuthenticatorProxySettingsManagerTest
   @Test
   public void testProxyMultipleBoth ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   8080,
-                                                                                                   "user1",
-                                                                                                   "pw1"),
-                                                                                new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv2",
-                                                                                                   8080,
-                                                                                                   "user2",
-                                                                                                   "pw2")));
+    ProxySettingsManager.registerProvider ( (sProtocol, sHostName, nPort) -> new CommonsArrayList <> (
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv",
+                                                                                                                         8080,
+                                                                                                                         "user1",
+                                                                                                                         "pw1"),
+                                                                                                      new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                         "http://proxysrv2",
+                                                                                                                         8080,
+                                                                                                                         "user2",
+                                                                                                                         "pw2")));
 
     final PasswordAuthentication aPA = Authenticator.requestPasswordAuthentication ("orf.at",
                                                                                     null,

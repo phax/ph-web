@@ -69,25 +69,16 @@ public final class FailedMailDataTest
          .addAll (new EmailAddress ("replyto1@example.org"),
                   new EmailAddress ("replyto2@example.org"),
                   new EmailAddress ("replyto3@example.org"));
-    aData.to ()
-         .addAll (new EmailAddress ("to1@example.org"),
-                  new EmailAddress ("to2@example.org"),
-                  new EmailAddress ("to3@example.org"));
-    aData.cc ()
-         .addAll (new EmailAddress ("cc1@example.org"),
-                  new EmailAddress ("cc2@example.org"),
-                  new EmailAddress ("cc3@example.org"));
+    aData.to ().addAll (new EmailAddress ("to1@example.org"), new EmailAddress ("to2@example.org"), new EmailAddress ("to3@example.org"));
+    aData.cc ().addAll (new EmailAddress ("cc1@example.org"), new EmailAddress ("cc2@example.org"), new EmailAddress ("cc3@example.org"));
     aData.bcc ()
-         .addAll (new EmailAddress ("bcc1@example.org"),
-                  new EmailAddress ("bcc2@example.org"),
-                  new EmailAddress ("bcc3@example.org"));
+         .addAll (new EmailAddress ("bcc1@example.org"), new EmailAddress ("bcc2@example.org"), new EmailAddress ("bcc3@example.org"));
     aData.setSentDateTime (PDTFactory.getCurrentLocalDateTime ());
     aData.setSubject ("This is a test");
     aData.setBody ("This is my mail that failed\nIt contains a lot of information.\nBla bla bla\nAll the best to you.");
     final EmailAttachmentList aAttachments = new EmailAttachmentList ();
     aAttachments.addAttachment (new EmailAttachment ("file1.txt", "Bla foo fasel".getBytes (StandardCharsets.UTF_8)));
-    aAttachments.addAttachment (new EmailAttachment ("file2.txt",
-                                                     "Bla foo fasel. Bla foo fasel.".getBytes (StandardCharsets.UTF_8)));
+    aAttachments.addAttachment (new EmailAttachment ("file2.txt", "Bla foo fasel. Bla foo fasel.".getBytes (StandardCharsets.UTF_8)));
     aData.setAttachments (aAttachments);
     // Some custom attributes for fun
     aData.attrs ().putIn ("Attr1", "3.14");

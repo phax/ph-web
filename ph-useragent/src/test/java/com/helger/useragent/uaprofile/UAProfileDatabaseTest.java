@@ -151,8 +151,7 @@ public final class UAProfileDatabaseTest
   public void testUAProfMultiDiff ()
   {
     final HttpHeaderMap aMap = new HttpHeaderMap ();
-    aMap.addHeader ("x-wap-profile",
-                    "\"1-diGacUwQ6eeOlaWB6cFEag==\", \"2-diGacUwQ6eeOlaWB6cFEag==\", \"3-diGacUwQ6eeOlaWB6cFEag==\"");
+    aMap.addHeader ("x-wap-profile", "\"1-diGacUwQ6eeOlaWB6cFEag==\", \"2-diGacUwQ6eeOlaWB6cFEag==\", \"3-diGacUwQ6eeOlaWB6cFEag==\"");
     aMap.addHeader ("x-wap-profile-diff",
                     "1;<?xml version=\"1.0\"?><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\">1</rdf:RDF>");
     aMap.addHeader ("x-wap-profile-diff",

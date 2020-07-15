@@ -94,8 +94,7 @@ public class TunnelConnectionManager implements Closeable
    *         For connection failures
    * @see #setTunnelConnections(Iterable)
    */
-  public TunnelConnectionManager (final ISessionFactory baseSessionFactory,
-                                  final String... pathAndSpecList) throws JSchException
+  public TunnelConnectionManager (final ISessionFactory baseSessionFactory, final String... pathAndSpecList) throws JSchException
   {
     this (baseSessionFactory, Arrays.asList (pathAndSpecList));
   }
@@ -114,8 +113,7 @@ public class TunnelConnectionManager implements Closeable
    *         For connection failures
    * @see #setTunnelConnections(Iterable)
    */
-  public TunnelConnectionManager (final ISessionFactory baseSessionFactory,
-                                  final Iterable <String> pathAndSpecList) throws JSchException
+  public TunnelConnectionManager (final ISessionFactory baseSessionFactory, final Iterable <String> pathAndSpecList) throws JSchException
   {
     this (baseSessionFactory);
     setTunnelConnections (pathAndSpecList);
@@ -198,12 +196,10 @@ public class TunnelConnectionManager implements Closeable
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnectionsFromFile (final File tunnelsConfig,
-                                            @Nonnull final Charset aCharset) throws IOException, JSchException
+  public void setTunnelConnectionsFromFile (final File tunnelsConfig, @Nonnull final Charset aCharset) throws IOException, JSchException
   {
     final List <String> aLines = new ArrayList <> ();
-    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig,
-                                                                                                       aCharset)))
+    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig, aCharset)))
     {
       String sLine;
       while ((sLine = reader.readLine ()) != null)

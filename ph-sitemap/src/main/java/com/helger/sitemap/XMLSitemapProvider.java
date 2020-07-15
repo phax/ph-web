@@ -83,8 +83,7 @@ public final class XMLSitemapProvider
   }
 
   @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
-                                             @Nonnull @Nonempty final String sFullContextPath)
+  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory, @Nonnull @Nonempty final String sFullContextPath)
   {
     return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP, sFullContextPath);
   }

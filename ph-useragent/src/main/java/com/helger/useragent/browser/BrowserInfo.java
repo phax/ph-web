@@ -78,8 +78,7 @@ public class BrowserInfo implements IHasDisplayText, Serializable
   @OverrideOnDemand
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
-    return m_eBrowserType == null ? null
-                                  : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
+    return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
   }
 
   @Nonnull
@@ -93,8 +92,6 @@ public class BrowserInfo implements IHasDisplayText, Serializable
   {
     if (isItNot ())
       return new ToStringGenerator (null).append ("isIt", "not").getToString ();
-    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType)
-                                       .appendIfNotNull ("version", m_aVersion)
-                                       .getToString ();
+    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType).appendIfNotNull ("version", m_aVersion).getToString ();
   }
 }

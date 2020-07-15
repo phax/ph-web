@@ -56,9 +56,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   {
     // Don't use "MockServletContext" to avoid that the global Servlet Context
     // Path is overriden!
-    final OfflineHttpServletRequest ret = new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ()
-                                                                                        .getServletContext (),
-                                                                         false);
+    final OfflineHttpServletRequest ret = new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ().getServletContext (), false);
     // Use a fixed session ID, because Quartz jobs regularly use the session and
     // this avoids spanning too many sessions
     ret.setSessionID ("quartz.job." + ClassHelper.getClassLocalName (getClass ()));
@@ -86,8 +84,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    *        The current job execution context. Never <code>null</code>.
    */
   @OverrideOnDemand
-  protected void beforeExecuteInScope (@Nonnull final JobDataMap aJobDataMap,
-                                       @Nonnull final IJobExecutionContext aContext)
+  protected void beforeExecuteInScope (@Nonnull final JobDataMap aJobDataMap, @Nonnull final IJobExecutionContext aContext)
   {}
 
   @Override

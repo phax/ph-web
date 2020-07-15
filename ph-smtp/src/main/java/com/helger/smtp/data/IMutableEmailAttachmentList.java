@@ -44,8 +44,7 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    * @param <ISP>
    *        Input stream provider type
    */
-  default <ISP extends IHasInputStream & Serializable> void addAttachment (@Nonnull final String sFilename,
-                                                                           @Nonnull final ISP aISS)
+  default <ISP extends IHasInputStream & Serializable> void addAttachment (@Nonnull final String sFilename, @Nonnull final ISP aISS)
   {
     addAttachment (new EmailAttachment (sFilename, aISS));
   }

@@ -147,8 +147,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
   IRequestParamMap getMap (@Nonnull @Nonempty String... aPath);
 
   /**
-   * Check if this map, contains the passed key. This will be true both for nested
-   * maps as well as for values.
+   * Check if this map, contains the passed key. This will be true both for
+   * nested maps as well as for values.
    *
    * @param sKey
    *        The key to check.
@@ -158,7 +158,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
   boolean containsKey (@Nullable String sKey);
 
   /**
-   * @return A set of all contained key. Never <code>null</code> but maybe empty.
+   * @return A set of all contained key. Never <code>null</code> but maybe
+   *         empty.
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -166,8 +167,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
 
   /**
    * @return A collection of all values of this map. The type of the value is
-   *         usually either {@link String}, file item (from upload) or {@link Map}
-   *         from String to Object.
+   *         usually either {@link String}, file item (from upload) or
+   *         {@link Map} from String to Object.
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -182,8 +183,8 @@ public interface IRequestParamMap extends IHasSize, Serializable
   ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ();
 
   /**
-   * @return A key/value map, with enforced values. If this map contains a nested
-   *         map, the nested maps are ignored!
+   * @return A key/value map, with enforced values. If this map contains a
+   *         nested map, the nested maps are ignored!
    */
   @Nonnull
   @ReturnsMutableCopy

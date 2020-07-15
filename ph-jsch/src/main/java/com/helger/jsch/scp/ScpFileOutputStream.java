@@ -26,9 +26,8 @@ public class ScpFileOutputStream extends OutputStream
 {
   private final ScpOutputStream m_aOS;
 
-  ScpFileOutputStream (final ISessionFactory sessionFactory,
-                       final String directory,
-                       final ScpEntry scpEntry) throws JSchException, IOException
+  ScpFileOutputStream (final ISessionFactory sessionFactory, final String directory, final ScpEntry scpEntry) throws JSchException,
+                                                                                                              IOException
   {
     m_aOS = new ScpOutputStream (sessionFactory, directory, ECopyMode.FILE_ONLY);
     m_aOS.putNextEntry (scpEntry);

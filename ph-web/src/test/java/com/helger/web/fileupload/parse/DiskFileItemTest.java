@@ -243,7 +243,7 @@ public final class DiskFileItemTest
     // Deserialize the test object
     Object result = null;
     try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (baos.toByteArray ());
-        final ObjectInputStream ois = new ObjectInputStream (bais))
+         final ObjectInputStream ois = new ObjectInputStream (bais))
     {
       result = ois.readObject ();
     }

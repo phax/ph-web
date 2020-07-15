@@ -120,8 +120,7 @@ public class XServletHandlerRegistry
    *         methods.
    * @see #copyHandlerToAll(EHttpMethod)
    */
-  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod,
-                              @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
+  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod, @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
   {
     ValueEnforcer.notNull (eFromMethod, "FromMethod");
     ValueEnforcer.notEmptyNoNullValue (aToMethods, "ToMethods");

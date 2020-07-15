@@ -64,11 +64,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
         {
           add = 16;
         }
-        final String header = "-----1234\r\n" +
-                              "Content-Disposition: form-data; name=\"field" +
-                              (num++) +
-                              "\"\r\n" +
-                              "\r\n";
+        final String header = "-----1234\r\n" + "Content-Disposition: form-data; name=\"field" + (num++) + "\"\r\n" + "\r\n";
         baos.write (header.getBytes (StandardCharsets.US_ASCII));
         for (int j = 0; j < i; j++)
         {
@@ -129,8 +125,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (40);
-    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII))
-                                       .setContentType (CONTENT_TYPE);
+    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII)).setContentType (CONTENT_TYPE);
     fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     item = fileItems.get (0);
@@ -138,8 +133,7 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (30);
-    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII))
-                                       .setContentType (CONTENT_TYPE);
+    req = new MockHttpServletRequest ().setContent (request.getBytes (StandardCharsets.US_ASCII)).setContentType (CONTENT_TYPE);
     try
     {
       upload.parseRequest (req);

@@ -56,9 +56,7 @@ public class HttpProxyConfig implements IProxyConfig
   private final String m_sPassword;
   private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
 
-  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
-                          @Nonnull @Nonempty final String sHost,
-                          @Nonnegative final int nPort)
+  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType, @Nonnull @Nonempty final String sHost, @Nonnegative final int nPort)
   {
     this (eProxyType, sHost, nPort, (String) null, (String) null, (List <String>) null);
   }
@@ -154,8 +152,7 @@ public class HttpProxyConfig implements IProxyConfig
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPort (), Integer.toString (m_nPort));
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyUserName (), m_sUserName);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPassword (), m_sPassword);
-    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (),
-                                       StringHelper.getImploded ('|', m_aNonProxyHosts));
+    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (), StringHelper.getImploded ('|', m_aNonProxyHosts));
   }
 
   public static void deactivateGlobally ()

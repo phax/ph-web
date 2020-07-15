@@ -182,8 +182,7 @@ public final class ResponseHelper
    * @param nContentLength
    *        The content length to set
    */
-  public static void setContentLength (@Nonnull final HttpServletResponse aHttpResponse,
-                                       @Nonnegative final long nContentLength)
+  public static void setContentLength (@Nonnull final HttpServletResponse aHttpResponse, @Nonnegative final long nContentLength)
   {
     if (nContentLength < Integer.MAX_VALUE)
       aHttpResponse.setContentLength ((int) nContentLength);

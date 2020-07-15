@@ -42,8 +42,7 @@ public final class UnifiedResponseTest
     final boolean bIncludeSubdomains = true;
     aResponse.setStrictTransportSecurity (nMaxAgeSeconds, bIncludeSubdomains);
     assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY));
-    final ICommonsList <String> aValues = aResponse.responseHeaderMap ()
-                                                   .getAllHeaderValues (CHttpHeader.STRICT_TRANSPORT_SECURITY);
+    final ICommonsList <String> aValues = aResponse.responseHeaderMap ().getAllHeaderValues (CHttpHeader.STRICT_TRANSPORT_SECURITY);
     assertEquals (1, aValues.size ());
     assertEquals ("max-age=" + nMaxAgeSeconds + ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS, aValues.get (0));
   }
@@ -57,8 +56,7 @@ public final class UnifiedResponseTest
     assertFalse (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
     aResponse.setAllowMimeSniffing (false);
     assertTrue (aResponse.responseHeaderMap ().containsHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS));
-    final ICommonsList <String> aValues = aResponse.responseHeaderMap ()
-                                                   .getAllHeaderValues (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
+    final ICommonsList <String> aValues = aResponse.responseHeaderMap ().getAllHeaderValues (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     assertEquals (1, aValues.size ());
     assertEquals (CHttpHeader.VALUE_NOSNIFF, aValues.get (0));
   }

@@ -59,8 +59,7 @@ public class MultipartProgressNotifier implements Serializable
    * @param nContentLength
    *        The expected content length.
    */
-  public MultipartProgressNotifier (@Nullable final IProgressListener aListener,
-                                    @CheckForSigned final long nContentLength)
+  public MultipartProgressNotifier (@Nullable final IProgressListener aListener, @CheckForSigned final long nContentLength)
   {
     if (aListener != null && LOGGER.isDebugEnabled ())
       LOGGER.debug ("setting progress listener " + aListener);

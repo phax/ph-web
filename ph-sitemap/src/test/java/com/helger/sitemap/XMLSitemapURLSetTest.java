@@ -45,10 +45,7 @@ public final class XMLSitemapURLSetTest
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir")));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"),
-                                 PDTFactory.getCurrentLocalDateTime (),
-                                 null,
-                                 null));
+    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"), PDTFactory.getCurrentLocalDateTime (), null, null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value&param2=value2"),
                                  PDTFactory.getCurrentLocalDateTime (),

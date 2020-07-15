@@ -64,8 +64,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     ValueEnforcer.notNull (aOther, "Other");
     m_eHttpReferrerPolicy = aOther.m_eHttpReferrerPolicy;
     m_eXFrameOptionsType = aOther.m_eXFrameOptionsType;
-    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain == null ? null
-                                                                   : new SimpleURL (aOther.m_aXFrameOptionsDomain);
+    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain == null ? null : new SimpleURL (aOther.m_aXFrameOptionsDomain);
     m_bIsMultipartEnabled = aOther.m_bIsMultipartEnabled;
   }
 

@@ -143,8 +143,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
    * @return <code>true</code> to log, <code>false</code> to not log the request
    */
   @OverrideOnDemand
-  protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse)
+  protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
   {
     boolean bLog = isGloballyEnabled () && m_aLogger.isInfoEnabled ();
     if (bLog)

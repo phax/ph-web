@@ -144,12 +144,7 @@ public final class RequestTrackingManager
       {
         // Should never happen
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Request ID '" +
-                        sRequestID +
-                        "' is already registered! Old TR: " +
-                        aOldTR +
-                        "; New TR: " +
-                        aTR);
+          LOGGER.error ("Request ID '" + sRequestID + "' is already registered! Old TR: " + aOldTR + "; New TR: " + aTR);
       }
       if (m_bParallelRunningRequestCheckEnabled && m_aOpenRequests.size () >= m_nParallelRunningRequestBarrier)
       {

@@ -52,8 +52,7 @@ public final class FileUploadHelper
   {
     if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {
-      throw new InvalidFileNameException (sFilename,
-                                          "Invalid filename: " + StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
+      throw new InvalidFileNameException (sFilename, "Invalid filename: " + StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
     }
     return sFilename;
   }

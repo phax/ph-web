@@ -221,10 +221,7 @@ public class MultipartStream implements Serializable
    *        any.
    * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
-  public MultipartStream (final InputStream aIS,
-                          final byte [] aBoundary,
-                          final int nBufSize,
-                          final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final MultipartProgressNotifier aNotifier)
   {
     m_aIS = aIS;
     m_nBufSize = nBufSize;
@@ -429,8 +426,7 @@ public class MultipartStream implements Serializable
         aBAOS.write (b);
       }
 
-      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding,
-                                                                               SystemHelper.getSystemCharset ());
+      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding, SystemHelper.getSystemCharset ());
       return aBAOS.getAsString (aCharsetToUse);
     }
   }

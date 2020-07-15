@@ -77,8 +77,7 @@ public final class MailAPITest
         EmailGlobalSettings.addEmailDataTransportListener (new LoggingTransportListener ());
         EmailGlobalSettings.addEmailDataTransportListener (new LoggingTransportListener (EErrorLevel.WARN));
 
-        final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
-                                                                                          .getDocumentElement (),
+        final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes).getDocumentElement (),
                                                                                SMTPSettings.class);
         final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
         aMailData.to ().add (new EmailAddress ("ph@helger.com"));
@@ -117,8 +116,7 @@ public final class MailAPITest
     final IReadableResource aRes = new ClassPathResource ("smtp-settings.xml");
     if (aRes.exists ())
     {
-      final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
-                                                                                        .getDocumentElement (),
+      final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes).getDocumentElement (),
                                                                              SMTPSettings.class);
       final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
       aMailData.to ().add (new EmailAddress ("ph@helger.com"));

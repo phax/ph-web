@@ -136,12 +136,7 @@ public class DiskFileItemFactory implements IFileItemFactory
                                   final boolean bIsFormField,
                                   @Nullable final String sFileName)
   {
-    final DiskFileItem aFileItem = new DiskFileItem (sFieldName,
-                                                     sContentType,
-                                                     bIsFormField,
-                                                     sFileName,
-                                                     m_nSizeThreshold,
-                                                     m_aRepository);
+    final DiskFileItem aFileItem = new DiskFileItem (sFieldName, sContentType, bIsFormField, sFileName, m_nSizeThreshold, m_aRepository);
     // Add the temp file - may be non-existing if the size is below the
     // threshold
     _addTempFile (aFileItem.getTempFile ());

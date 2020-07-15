@@ -39,9 +39,8 @@ public class ScpOutputStream extends OutputStream
   private final ScpConnection m_aConnection;
   private OutputStream m_aOS;
 
-  public ScpOutputStream (final ISessionFactory sessionFactory,
-                          final String path,
-                          final ECopyMode copyMode) throws JSchException, IOException
+  public ScpOutputStream (final ISessionFactory sessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
+                                                                                                             IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpOutputStream to " + sessionFactory.getAsString () + " " + path);

@@ -166,8 +166,7 @@ public final class TunnelConnectionTest
   public void testConnection ()
   {
     final int tunnelPort1 = 59701;
-    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory,
-                                                                   new Tunnel (tunnelPort1, "localhost", servicePort)))
+    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory, new Tunnel (tunnelPort1, "localhost", servicePort)))
     {
       tunnelConnection.open ();
 
@@ -188,9 +187,7 @@ public final class TunnelConnectionTest
     {
       tunnelConnection.open ();
 
-      assertEquals (expected,
-                    _writeToService (tunnelConnection.getTunnel (hostname, servicePort).getAssignedLocalPort (),
-                                     expected));
+      assertEquals (expected, _writeToService (tunnelConnection.getTunnel (hostname, servicePort).getAssignedLocalPort (), expected));
     }
     catch (final Exception e)
     {

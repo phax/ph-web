@@ -194,8 +194,7 @@ public class UserAgent implements IUserAgent
         // IE Compatibility Mode check
         // http://blogs.msdn.com/b/ie/archive/2010/03/23/introducing-ie9-s-user-agent-string.aspx
         final Version aVersion = Version.parse (sInfoIE.substring (IE_SEARCH_STRING.length ()).trim ());
-        final boolean bIsIECompatibilityMode = aVersion.getMajor () == IE_VERSION_IN_COMPATIBILITY_MODE &&
-                                               sTrident != null;
+        final boolean bIsIECompatibilityMode = aVersion.getMajor () == IE_VERSION_IN_COMPATIBILITY_MODE && sTrident != null;
         m_aInfoIE = new BrowserInfoIE (aVersion, bIsIECompatibilityMode);
       }
     }
@@ -315,8 +314,7 @@ public class UserAgent implements IUserAgent
       if (sVersion == null)
         m_aInfoKonqueror = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoKonqueror = new BrowserInfo (EBrowserType.KONQUEROR,
-                                            Version.parse (sVersion.substring (KONQUEROR_PREFIX.length ())));
+        m_aInfoKonqueror = new BrowserInfo (EBrowserType.KONQUEROR, Version.parse (sVersion.substring (KONQUEROR_PREFIX.length ())));
     }
     return m_aInfoKonqueror;
   }

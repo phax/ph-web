@@ -64,16 +64,14 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    */
   @Nonnull
   protected abstract EContinue onFilterBefore (@Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException,
-                                                                                          ServletException;
+                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException, ServletException;
 
   @Override
   @Nonnull
   @OverrideOnDemand
   public final EContinue onFilterBefore (@Nonnull final HttpServletRequest aHttpRequest,
                                          @Nonnull final HttpServletResponse aHttpResponse,
-                                         @Nonnull final IRequestWebScope aRequestScope) throws IOException,
-                                                                                        ServletException
+                                         @Nonnull final IRequestWebScope aRequestScope) throws IOException, ServletException
   {
     // Check HTTP version
     final EHttpVersion eHTTPVersion = RequestHelper.getHttpVersion (aHttpRequest);

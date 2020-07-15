@@ -35,8 +35,7 @@ public class RequestWebScopeMultipart extends RequestWebScope
 {
   private boolean m_bParsedMultipart = false;
 
-  public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse)
+  public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
   {
     super (aHttpRequest, aHttpResponse);
   }
@@ -79,8 +78,6 @@ public class RequestWebScopeMultipart extends RequestWebScope
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ParsedMultipart", m_bParsedMultipart)
-                            .getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("ParsedMultipart", m_bParsedMultipart).getToString ();
   }
 }

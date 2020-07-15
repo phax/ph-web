@@ -74,8 +74,7 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addScheme (@Nonnull @Nonempty final String sScheme)
   {
     ValueEnforcer.notEmpty (sScheme, "Scheme");
-    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"),
-                          () -> "Passed scheme '" + sScheme + "' is invalid!");
+    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"), () -> "Passed scheme '" + sScheme + "' is invalid!");
     m_aList.add (sScheme);
     return this;
   }
@@ -204,21 +203,21 @@ public class CSP2SourceList implements Serializable
 
   /**
    * Add the provided nonce value. The {@value #HASH_PREFIX} and
-   * {@link #HASH_SUFFIX} are added automatically. The byte array is automatically
-   * Bas64 encoded!
+   * {@link #HASH_SUFFIX} are added automatically. The byte array is
+   * automatically Bas64 encoded!
    *
    * @param eMDAlgo
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
+   *        <code>null</code>.
    * @param aHashValue
    *        The plain hash digest value. May not be <code>null</code>.
    * @return this for chaining
    */
   @Nonnull
-  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo,
-                                 @Nonnull @Nonempty final byte [] aHashValue)
+  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo, @Nonnull @Nonempty final byte [] aHashValue)
   {
     ValueEnforcer.notEmpty (aHashValue, "HashValue");
     return addHash (eMDAlgo, Base64.safeEncodeBytes (aHashValue));
@@ -232,7 +231,8 @@ public class CSP2SourceList implements Serializable
    *        The message digest algorithm used. May only
    *        {@link EMessageDigestAlgorithm#SHA_256},
    *        {@link EMessageDigestAlgorithm#SHA_384} or
-   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be <code>null</code>.
+   *        {@link EMessageDigestAlgorithm#SHA_512}. May not be
+   *        <code>null</code>.
    * @param sHashBase64Value
    *        The Base64 encoded hash value
    * @return this for chaining
@@ -264,7 +264,8 @@ public class CSP2SourceList implements Serializable
   }
 
   /**
-   * @return The whole source list as a single string, separated by a blank char.
+   * @return The whole source list as a single string, separated by a blank
+   *         char.
    */
   @Nonnull
   public String getAsString ()

@@ -69,8 +69,7 @@ public final class FileItemHeadersTest
     }
 
     {
-      assertEquals ("form-data; name=\"FileItem\"; filename=\"file1.txt\"",
-                    aMutableFileItemHeaders.getHeader ("Content-Disposition"));
+      assertEquals ("form-data; name=\"FileItem\"; filename=\"file1.txt\"", aMutableFileItemHeaders.getHeader ("Content-Disposition"));
       assertEquals ("text/plain", aMutableFileItemHeaders.getHeader ("Content-Type"));
       assertEquals ("text/plain", aMutableFileItemHeaders.getHeader ("content-type"));
       assertEquals ("headerValue1", aMutableFileItemHeaders.getHeader ("TestHeader"));

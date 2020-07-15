@@ -52,12 +52,12 @@ public final class DNSConfig
   private static final ICommonsList <InetAddress> CUSTOM_DEFAULT_DNS_SERVERS = new CommonsArrayList <> ();
   static
   {
-    // CloudFlare DNS
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 1, 1, 1));
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 0, 0, 1));
     // Google DNS
     CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (8, 8, 8, 8));
     CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (8, 8, 4, 4));
+    // CloudFlare DNS
+    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 1, 1, 1));
+    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 0, 0, 1));
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfig.class);

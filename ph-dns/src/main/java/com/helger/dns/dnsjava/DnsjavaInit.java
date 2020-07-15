@@ -82,7 +82,7 @@ public final class DnsjavaInit
     ResolverConfig.setConfigProviders (aConfigProviders);
   }
 
-  public static void detDefaultConfig ()
+  public static void setDefaultConfig ()
   {
     // Default ones
     final ICommonsList <ResolverConfigProvider> aConfigProviders = getDefaultResolverConfigProviders ();

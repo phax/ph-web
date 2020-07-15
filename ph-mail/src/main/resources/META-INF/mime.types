@@ -2,15 +2,15 @@
 # 
 # Copyright
 # 
-# Copyright (c) Philip Helger 2014 - 2019
+# Copyright (c) Philip Helger 2014 - 2020
 # http://www.helger.com
 # 
 # All Rights Reserved
 # Use, duplication or disclosure restricted by Philip Helger
 # 
-# Vienna, Austria, Europe, World, Milky Way, Universe, 2014 - 2019
+# Vienna, Austria, Europe, World, Milky Way, Universe, 2014 - 2020
 #
-# Created on: 2019-11-21T17:30:44.704Z
+# Created on: 2020-07-15T18:44:01.020Z
 # Created by: com.helger.mail.supplementary.main.MainCreateMimeTypesFileNameMapForJavaxActivation
 #
 type=application/STEP exts=step,stp
@@ -18,6 +18,7 @@ type=application/acrobat exts=pdf
 type=application/andrew-inset exts=ez
 type=application/annodex exts=anx
 type=application/atom+xml exts=atom
+type=application/bzip2 exts=bz2,bz
 type=application/cdr exts=cdr
 type=application/clariscad exts=ccad
 type=application/coreldraw exts=cdr
@@ -51,7 +52,7 @@ type=application/java exts=class
 type=application/java-archive exts=jar
 type=application/java-byte-code exts=class
 type=application/java-vm exts=class
-type=application/javascript exts=js,jsm
+type=application/javascript exts=js,jsm,mjs
 type=application/jrd+json exts=jrd
 type=application/json exts=json
 type=application/ld+json exts=jsonld
@@ -83,7 +84,7 @@ type=application/pcap exts=pcap,cap,dmp
 type=application/pdf exts=pdf
 type=application/pgp exts=pgp,gpg,asc
 type=application/pgp-encrypted exts=pgp,gpg,asc
-type=application/pgp-keys exts=skr,pkr,asc,pgp,gpg
+type=application/pgp-keys exts=skr,pkr,asc,pgp,gpg,key
 type=application/pgp-signature exts=asc,sig,pgp,gpg
 type=application/photoshop exts=psd
 type=application/pics-rules exts=prf
@@ -92,6 +93,7 @@ type=application/pkcs12 exts=p12,pfx
 type=application/pkcs7-mime exts=p7c,p7m
 type=application/pkcs7-signature exts=p7s
 type=application/pkcs8 exts=p8
+type=application/pkcs8-encrypted exts=p8e
 type=application/pkix-cert exts=cer
 type=application/pkix-crl exts=crl
 type=application/pkix-pkipath exts=pkipath
@@ -115,17 +117,23 @@ type=application/smil+xml exts=smil,smi,sml,kino
 type=application/solids exts=sol
 type=application/sql exts=sql
 type=application/stuffit exts=sit
+type=application/trig exts=trig
 type=application/vnd.adobe.flash.movie exts=swf,spl
+type=application/vnd.adobe.illustrator exts=ai
+type=application/vnd.amazon.mobi8-ebook exts=azw3,kfx
 type=application/vnd.android.package-archive exts=apk
+type=application/vnd.appimage exts=appimage
 type=application/vnd.apple.keynote exts=key
 type=application/vnd.apple.mpegurl exts=m3u,m3u8
 type=application/vnd.chess-pgn exts=pgn
 type=application/vnd.coffeescript exts=coffee
 type=application/vnd.comicbook+zip exts=cbz
+type=application/vnd.comicbook-rar exts=cbr
 type=application/vnd.corel-draw exts=cdr
 type=application/vnd.debian.binary-package exts=deb,udeb
 type=application/vnd.emusic-emusic_package exts=emp
 type=application/vnd.flatpak exts=flatpak,xdgapp
+type=application/vnd.flatpak.ref exts=flatpakref
 type=application/vnd.flatpak.repo exts=flatpakrepo
 type=application/vnd.framemaker exts=fm
 type=application/vnd.geo+json exts=geojson
@@ -209,9 +217,11 @@ type=application/vnd.palm exts=prc,pdb,pqa,oprc
 type=application/vnd.rar exts=rar
 type=application/vnd.rim.cod exts=cod
 type=application/vnd.rn-realmedia exts=rm,rmj,rmm,rms,rmx,rmvb
+type=application/vnd.rn-realmedia-vbr exts=rm,rmj,rmm,rms,rmx,rmvb
 type=application/vnd.sdp exts=sdp
 type=application/vnd.smaf exts=mmf,smaf
 type=application/vnd.snap exts=snap
+type=application/vnd.sqlite3 exts=sqlite3
 type=application/vnd.squashfs exts=sqsh
 type=application/vnd.stardivision.calc exts=sdc
 type=application/vnd.stardivision.chart exts=sds
@@ -237,6 +247,7 @@ type=application/vnd.tcpdump.pcap exts=pcap,cap,dmp
 type=application/vnd.visio exts=vsd,vst,vsw,vss
 type=application/vnd.wordperfect exts=wp,wp4,wp5,wp6,wpd,wpp
 type=application/vnd.xdgapp exts=flatpak,xdgapp
+type=application/vnd.youtube.yt exts=yt
 type=application/winhlp exts=hlp
 type=application/wk1 exts=123,wk1,wk3,wk4,wks
 type=application/wmf exts=wmf
@@ -252,6 +263,7 @@ type=application/x-amipro exts=sam
 type=application/x-annodex exts=anx
 type=application/x-aportisdoc exts=pdb,pdc
 type=application/x-apple-diskimage exts=dmg
+type=application/x-appleworks-document exts=cwk
 type=application/x-applix-spreadsheet exts=as
 type=application/x-applix-word exts=aw
 type=application/x-archive exts=a,ar
@@ -259,6 +271,7 @@ type=application/x-arj exts=arj
 type=application/x-asp exts=asp
 type=application/x-atari-2600-rom exts=a26
 type=application/x-atari-7800-rom exts=a78
+type=application/x-atari-lynx-rom exts=lnx
 type=application/x-awk exts=awk
 type=application/x-bcpio exts=bcpio
 type=application/x-bittorrent exts=torrent
@@ -302,6 +315,8 @@ type=application/x-dvi exts=dvi
 type=application/x-e-theme exts=etheme
 type=application/x-egon exts=egon
 type=application/x-emf exts=emf
+type=application/x-fd-file exts=fd,qd
+type=application/x-fds-disk exts=fds
 type=application/x-fictionbook exts=fb2
 type=application/x-fictionbook+xml exts=fb2
 type=application/x-flash-video exts=flv
@@ -326,7 +341,7 @@ type=application/x-gamegear-rom exts=gg
 type=application/x-gba-rom exts=gba,agb
 type=application/x-gedcom exts=ged,gedcom
 type=application/x-genesis-32x-rom exts=32x,mdx
-type=application/x-genesis-rom exts=gen,smd
+type=application/x-genesis-rom exts=gen,smd,sgd
 type=application/x-gettext exts=po
 type=application/x-gettext-translation exts=gmo,mo
 type=application/x-glade exts=glade
@@ -342,6 +357,8 @@ type=application/x-gtar exts=tar,gtar,gem
 type=application/x-gtk-builder exts=ui
 type=application/x-gzip exts=gz
 type=application/x-hdf exts=hdf,hdf4,h4,hdf5,h5
+type=application/x-hfe-file exts=hfe
+type=application/x-hfe-floppy-image exts=hfe
 type=application/x-hwp exts=hwp
 type=application/x-hwt exts=hwt
 type=application/x-ica exts=ica
@@ -350,7 +367,7 @@ type=application/x-iphone exts=iii
 type=application/x-ipix exts=ipx
 type=application/x-ipscript exts=ips
 type=application/x-ipynb+json exts=ipynb
-type=application/x-iso9660-appimage exts=appimage,AppImage
+type=application/x-iso9660-appimage exts=appimage
 type=application/x-iso9660-image exts=iso,iso9660
 type=application/x-it87 exts=it87
 type=application/x-iwork-keynote-sffkey exts=key
@@ -363,7 +380,7 @@ type=application/x-java-jnlp-file exts=jnlp
 type=application/x-java-keystore exts=jks,ks
 type=application/x-java-pack200 exts=pack
 type=application/x-java-vm exts=class
-type=application/x-javascript exts=js,jsm
+type=application/x-javascript exts=js,jsm,mjs
 type=application/x-jbuilder-project exts=jpr,jpx
 type=application/x-karbon exts=karbon
 type=application/x-kchart exts=chrt
@@ -404,6 +421,7 @@ type=application/x-mathematica exts=nb
 type=application/x-mdb exts=mdb
 type=application/x-mif exts=mif
 type=application/x-mimearchive exts=mhtml,mht
+type=application/x-mobi8-ebook exts=azw3,kfx
 type=application/x-mobipocket-ebook exts=mobi,prc
 type=application/x-ms-asx exts=asx,wax,wvx,wmx
 type=application/x-ms-dos-executable exts=exe
@@ -428,6 +446,7 @@ type=application/x-mswrite exts=wri
 type=application/x-msx-rom exts=msx
 type=application/x-n64-rom exts=n64,z64,v64
 type=application/x-navi-animation exts=ani
+type=application/x-neo-geo-pocket-color-rom exts=ngc
 type=application/x-neo-geo-pocket-rom exts=ngp
 type=application/x-nes-rom exts=nes,nez,unf,unif
 type=application/x-netcdf exts=cdf,nc
@@ -458,6 +477,7 @@ type=application/x-planperfect exts=pln
 type=application/x-pocket-word exts=psw
 type=application/x-pw exts=pw
 type=application/x-python-bytecode exts=pyc,pyo
+type=application/x-qemu-disk exts=qcow2,qcow
 type=application/x-qpress exts=qp
 type=application/x-qtiplot exts=qti
 type=application/x-quattropro exts=wb1,wb2,wb3
@@ -467,15 +487,17 @@ type=application/x-qw exts=qif
 type=application/x-rar exts=rar
 type=application/x-rar-compressed exts=rar
 type=application/x-raw-disk-image exts=img
+type=application/x-raw-floppy-disk-image exts=fd,qd
 type=application/x-redhat-package-manager exts=rpm
 type=application/x-reject exts=rej
 type=application/x-rnc exts=rnc
 type=application/x-rpm exts=rpm
 type=application/x-ruby exts=rb
 type=application/x-sami exts=smi,sami
-type=application/x-saturn-rom exts=bin,iso
+type=application/x-sap-file exts=sap
+type=application/x-saturn-rom exts=iso
 type=application/x-sdp exts=sdp
-type=application/x-sega-cd-rom exts=bin,iso
+type=application/x-sega-cd-rom exts=iso
 type=application/x-sg1000-rom exts=sg
 type=application/x-shar exts=shar
 type=application/x-shared-library-la exts=la
@@ -492,6 +514,8 @@ type=application/x-source-rpm exts=spm
 type=application/x-spss-por exts=por
 type=application/x-spss-sav exts=sav,zsav
 type=application/x-spss-savefile exts=sav,zsav
+type=application/x-sqlite2 exts=sqlite2
+type=application/x-sqlite3 exts=sqlite3
 type=application/x-srt exts=srt
 type=application/x-stuffit exts=sit
 type=application/x-subrip exts=srt
@@ -506,6 +530,9 @@ type=application/x-tex-gf exts=gf
 type=application/x-tex-pk exts=pk
 type=application/x-tgif exts=obj
 type=application/x-theme exts=theme
+type=application/x-thomson-cartridge-memo7 exts=m7
+type=application/x-thomson-cassette exts=k7
+type=application/x-thomson-sap-image exts=sap
 type=application/x-trash exts=bak,old,sik
 type=application/x-trig exts=trig
 type=application/x-troff exts=tr,roff,t
@@ -513,6 +540,7 @@ type=application/x-troff-man exts=man
 type=application/x-tzo exts=tzo
 type=application/x-ufraw exts=ufraw
 type=application/x-ustar exts=ustar
+type=application/x-virtual-boy-rom exts=vb
 type=application/x-vnd.kde.kexi exts=kexi
 type=application/x-wais-source exts=src
 type=application/x-wbfs exts=iso
@@ -522,6 +550,8 @@ type=application/x-wii-rom exts=iso
 type=application/x-wii-wad exts=wad
 type=application/x-windows-themepack exts=themepack
 type=application/x-wmf exts=wmf
+type=application/x-wonderswan-color-rom exts=wsc
+type=application/x-wonderswan-rom exts=ws
 type=application/x-wordperfect exts=wp,wp4,wp5,wp6,wpd,wpp
 type=application/x-wpg exts=wpg
 type=application/x-wwf exts=wwf
@@ -537,22 +567,26 @@ type=application/x-yaml exts=yaml,yml
 type=application/x-zip exts=zip
 type=application/x-zip-compressed exts=zip
 type=application/x-zoo exts=zoo
-type=application/xhtml+xml exts=xhtml,xht
+type=application/x-zstd-compressed-tar exts=tzst
+type=application/xhtml+xml exts=xhtml,xht,html,htm
+type=application/xliff+xml exts=xlf,xliff
 type=application/xml exts=xml,xbl,xsd,rng
 type=application/xml-dtd exts=dtd
 type=application/xml-external-parsed-entity exts=ent
+type=application/xps exts=oxps,xps
 type=application/xslt+xml exts=xsl,xslt
 type=application/xspf+xml exts=xspf
 type=application/ynd.ms-pkipko exts=pko
 type=application/zip exts=zip
 type=application/zlib exts=zz
+type=application/zstd exts=zst
 type=audio/3gpp exts=3gp,3gpp,3ga
 type=audio/3gpp-encrypted exts=3gp,3gpp,3ga
 type=audio/3gpp2 exts=3g2,3gp2,3gpp2
 type=audio/AMR exts=amr
 type=audio/AMR-WB exts=awb
 type=audio/TSP-audio exts=tsi
-type=audio/aac exts=aac
+type=audio/aac exts=aac,adts,ass
 type=audio/ac3 exts=ac3
 type=audio/amr-encrypted exts=amr
 type=audio/amr-wb-encrypted exts=awb
@@ -561,6 +595,7 @@ type=audio/basic exts=au,snd
 type=audio/flac exts=flac
 type=audio/iMelody exts=imy,ime
 type=audio/m3u exts=m3u,m3u8,vlc
+type=audio/m4a exts=m4a,f4a
 type=audio/mid exts=rmi
 type=audio/midi exts=mid,midi,kar
 type=audio/mobile-xmf exts=xmf
@@ -571,7 +606,11 @@ type=audio/mpeg exts=mp3,mpga
 type=audio/mpegurl exts=m3u,m3u8,vlc
 type=audio/ogg exts=oga,ogg,opus
 type=audio/prs.sid exts=sid,psid
+type=audio/scpls exts=pls
 type=audio/tta exts=tta
+type=audio/usac exts=loas,xhe
+type=audio/vnd.audible exts=aa,aax
+type=audio/vnd.audible.aax exts=aa,aax
 type=audio/vnd.dts exts=dts
 type=audio/vnd.dts.hd exts=dtshd
 type=audio/vnd.m-realaudio exts=ra,rax,ram
@@ -580,6 +619,7 @@ type=audio/vnd.wave exts=wav
 type=audio/vorbis exts=oga,ogg
 type=audio/wav exts=wav
 type=audio/wma exts=wma
+type=audio/x-aac exts=aac,adts,ass
 type=audio/x-aifc exts=aifc,aiffc
 type=audio/x-aiff exts=aiff,aif
 type=audio/x-aiffc exts=aifc,aiffc
@@ -597,6 +637,7 @@ type=audio/x-it exts=it
 type=audio/x-m3u exts=m3u,m3u8,vlc
 type=audio/x-m4a exts=m4a,f4a
 type=audio/x-m4b exts=m4b,f4b
+type=audio/x-m4r exts=m4r
 type=audio/x-matroska exts=mka
 type=audio/x-midi exts=mid,midi,kar
 type=audio/x-minipsf exts=minipsf
@@ -607,12 +648,14 @@ type=audio/x-mp3 exts=mp3,mpga
 type=audio/x-mp3-playlist exts=m3u,m3u8,vlc
 type=audio/x-mpeg exts=mp3,mpga
 type=audio/x-mpegurl exts=m3u,m3u8,vlc
+type=audio/x-mpg exts=mp3,mpga
 type=audio/x-ms-asx exts=asx,wax,wvx,wmx
 type=audio/x-ms-wma exts=wma
 type=audio/x-musepack exts=mpc,mpp
 type=audio/x-ogg exts=oga,ogg,opus
 type=audio/x-oggflac exts=oga,ogg
 type=audio/x-opus+ogg exts=opus
+type=audio/x-pn-audibleaudio exts=aa,aax
 type=audio/x-pn-realaudio exts=ra,rax,ram
 type=audio/x-psf exts=psf
 type=audio/x-psflib exts=psflib
@@ -622,6 +665,7 @@ type=audio/x-rn-3gpp-amr-wb exts=3gp,3gpp,3ga
 type=audio/x-rn-3gpp-amr-wb-encrypted exts=3gp,3gpp,3ga
 type=audio/x-s3m exts=s3m
 type=audio/x-scpls exts=pls
+type=audio/x-shorten exts=shn
 type=audio/x-speex exts=spx
 type=audio/x-speex+ogg exts=oga,ogg
 type=audio/x-stm exts=stm
@@ -638,26 +682,38 @@ type=audio/x-xmf exts=xmf
 type=audio/xmf exts=xmf
 type=chemical/x-pdb exts=xyz
 type=flv-application/octet-stream exts=flv
+type=font/collection exts=ttc
+type=font/otf exts=otf
+type=font/ttf exts=ttf,ttc
+type=font/woff exts=woff
+type=font/woff2 exts=woff2
 type=image/bmp exts=bmp,dib
 type=image/cdr exts=cdr
 type=image/cgm exts=cgm
 type=image/emf exts=emf
 type=image/fax-g3 exts=g3
 type=image/fits exts=fits
+type=image/g3fax exts=g3
 type=image/gif exts=gif
+type=image/heic exts=heic,heif
+type=image/heic-sequence exts=heic,heif
+type=image/heif exts=heic,heif
+type=image/heif-sequence exts=heic,heif
 type=image/ico exts=ico
 type=image/icon exts=ico
 type=image/ief exts=ief
-type=image/jp2 exts=jp2,jpx,jpf,j2k,jpc
-type=image/jpeg exts=jpeg,jpg,jpe
-type=image/jpeg2000 exts=jp2,jpx,jpf,j2k,jpc
-type=image/jpeg2000-image exts=jp2,jpx,jpf,j2k,jpc
-type=image/jpx exts=jp2,jpx,jpf,j2k,jpc
+type=image/jp2 exts=jp2,jpg2,j2k,jpc,jpf,jpx
+type=image/jpeg exts=jpg,jpeg,jpe
+type=image/jpeg2000 exts=jp2,jpg2,j2k,jpc,jpf,jpx
+type=image/jpeg2000-image exts=jp2,jpg2,j2k,jpc,jpf,jpx
+type=image/jpm exts=jpm,jpgm
+type=image/jpx exts=jpf,jpx
+type=image/ktx exts=ktx
 type=image/openraster exts=ora
 type=image/pdf exts=pdf
 type=image/photoshop exts=psd
 type=image/pipeg exts=jfif
-type=image/pjpeg exts=jpeg,jpg,jpe
+type=image/pjpeg exts=jpg,jpeg,jpe
 type=image/png exts=png
 type=image/psd exts=psd
 type=image/rle exts=rle
@@ -693,14 +749,18 @@ type=image/x-eps exts=eps,epsi,epsf
 type=image/x-exr exts=exr
 type=image/x-fits exts=fits
 type=image/x-fuji-raf exts=raf
-type=image/x-icb exts=icb,tga,tpic,vda,vst
+type=image/x-gimp-gbr exts=gbr
+type=image/x-gimp-gih exts=gih
+type=image/x-gimp-pat exts=pat
+type=image/x-icb exts=tga,icb,tpic,vda,vst
 type=image/x-icns exts=icns
 type=image/x-ico exts=ico
 type=image/x-icon exts=ico
 type=image/x-iff exts=iff,ilbm,lbm
 type=image/x-ilbm exts=iff,ilbm,lbm
 type=image/x-jng exts=jng
-type=image/x-jpeg2000-image exts=jp2,jpx,jpf,j2k,jpc
+type=image/x-jp2-codestream exts=j2c,j2k,jpc
+type=image/x-jpeg2000-image exts=jp2,jpg2,j2k,jpc,jpf,jpx
 type=image/x-kodak-dcr exts=dcr
 type=image/x-kodak-k25 exts=k25
 type=image/x-kodak-kdc exts=kdc
@@ -713,6 +773,8 @@ type=image/x-nikon-nef exts=nef
 type=image/x-olympus-orf exts=orf
 type=image/x-panasonic-raw exts=raw
 type=image/x-panasonic-raw2 exts=rw2
+type=image/x-panasonic-rw exts=raw
+type=image/x-panasonic-rw2 exts=rw2
 type=image/x-pcx exts=pcx
 type=image/x-pentax-pef exts=pef
 type=image/x-photo-cd exts=pcd
@@ -732,7 +794,7 @@ type=image/x-sony-arw exts=arw
 type=image/x-sony-sr2 exts=sr2
 type=image/x-sony-srf exts=srf
 type=image/x-sun-raster exts=sun
-type=image/x-tga exts=icb,tga,tpic,vda,vst
+type=image/x-tga exts=tga,icb,tpic,vda,vst
 type=image/x-win-bitmap exts=cur
 type=image/x-win-metafile exts=wmf
 type=image/x-wmf exts=wmf
@@ -746,7 +808,10 @@ type=image/x.djvu exts=djvu,djv
 type=message/rfc822 exts=eml,mht,mhtml,nws
 type=model/iges exts=igs,iges
 type=model/mesh exts=mesh,msh,silo
+type=model/stl exts=stl
 type=model/vrml exts=vrm,vrml,wrl
+type=model/x.stl-ascii exts=stl
+type=model/x.stl-binary exts=stl
 type=text/cache-manifest exts=manifest
 type=text/calendar exts=vcs,ics
 type=text/css exts=css,CSSL
@@ -760,7 +825,7 @@ type=text/h323 exts=323
 type=text/html exts=html,htm
 type=text/ico exts=ico
 type=text/iuls exts=uls
-type=text/javascript exts=js,jsm
+type=text/javascript exts=js,jsm,mjs
 type=text/markdown exts=md,mkd,markdown
 type=text/mathml exts=mml
 type=text/plain exts=txt,asc,bas
@@ -777,7 +842,9 @@ type=text/troff exts=tr,roff,t
 type=text/turtle exts=ttl
 type=text/vcard exts=vcard,vcf,vct,gcrd
 type=text/vnd.graphviz exts=gv,dot
+type=text/vnd.qt.linguist exts=ts
 type=text/vnd.rn-realtext exts=rt
+type=text/vnd.senx.warpscript exts=mc2
 type=text/vnd.sun.j2me.app-descriptor exts=jad
 type=text/vnd.trolltech.linguist exts=ts
 type=text/vnd.wap.wml exts=wml
@@ -797,6 +864,7 @@ type=text/x-component exts=htc
 type=text/x-csharp exts=cs
 type=text/x-csrc exts=c
 type=text/x-csv exts=csv
+type=text/x-dbus-service exts=service
 type=text/x-dcl exts=dcl
 type=text/x-diff exts=diff,patch
 type=text/x-dsl exts=dsl
@@ -812,6 +880,8 @@ type=text/x-gettext-translation-template exts=pot
 type=text/x-gherkin exts=feature
 type=text/x-go exts=go
 type=text/x-google-video-pointer exts=gvp
+type=text/x-gradle exts=gradle
+type=text/x-groovy exts=groovy,gvy,gy,gsh
 type=text/x-haskell exts=hs
 type=text/x-iMelody exts=imy,ime
 type=text/x-idl exts=idl
@@ -840,16 +910,20 @@ type=text/x-ocaml exts=ml,mli
 type=text/x-ocl exts=ocl
 type=text/x-octave exts=m
 type=text/x-ooc exts=ooc
+type=text/x-opencl-src exts=cl
 type=text/x-opml exts=opml
 type=text/x-opml+xml exts=opml
 type=text/x-pascal exts=p,pas
 type=text/x-patch exts=diff,patch
+type=text/x-perl exts=pl,PL,pm,al,perl,pod,t
 type=text/x-po exts=po
 type=text/x-pot exts=pot
 type=text/x-python exts=py,pyx,wsgi
+type=text/x-python3 exts=py,py3,py3x
 type=text/x-qml exts=qml,qmltypes,qmlproject
 type=text/x-reject exts=rej
 type=text/x-rpm-spec exts=spec
+type=text/x-rst exts=rst
 type=text/x-sass exts=sass
 type=text/x-scala exts=scala
 type=text/x-scheme exts=scm,ss
@@ -861,6 +935,7 @@ type=text/x-ssa exts=ssa,ass
 type=text/x-subviewer exts=sub
 type=text/x-svhdr exts=svh
 type=text/x-svsrc exts=sv
+type=text/x-systemd-unit exts=automount,device,mount,path,scope,service,slice,socket,swap,target,timer
 type=text/x-tcl exts=tcl,tk
 type=text/x-tex exts=tex,ltx,sty,cls,dtx,ins,latex
 type=text/x-texinfo exts=texi,texinfo
@@ -881,6 +956,7 @@ type=text/x-vhdl exts=vhd,vhdl
 type=text/x-xmi exts=xmi
 type=text/x-xslfo exts=fo,xslfo
 type=text/x-yaml exts=yaml,yml
+type=text/x.gcode exts=gcode
 type=text/xml exts=xml,xbl,xsd,rng
 type=text/xml-external-parsed-entity exts=ent
 type=text/yaml exts=yaml,yml
@@ -896,10 +972,12 @@ type=video/dv exts=dv
 type=video/fli exts=fli,flc
 type=video/flv exts=flv
 type=video/gl exts=gl
+type=video/mj2 exts=mj2,mjp2
 type=video/mp2t exts=m2t,m2ts,ts,mts,cpi,clpi,mpl,mpls,bdm,bdmv
 type=video/mp4 exts=mp4,m4v,f4v,lrv
 type=video/mp4v-es exts=mp4,m4v,f4v,lrv
 type=video/mpeg exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
+type=video/mpeg-system exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
 type=video/msvideo exts=avi,avf,divx
 type=video/ogg exts=ogv,ogg
 type=video/quicktime exts=qt,mov,moov,qtvr
@@ -919,11 +997,14 @@ type=video/x-la-asf exts=lsf,lsx
 type=video/x-m4v exts=mp4,m4v,f4v,lrv
 type=video/x-matroska exts=mkv
 type=video/x-matroska-3d exts=mk3d
+type=video/x-mjpeg exts=mjpeg,mjpg
 type=video/x-mng exts=mng
 type=video/x-mpeg exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
+type=video/x-mpeg-system exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
 type=video/x-mpeg2 exts=mpeg,mpg,mp2,mpe,vob,mpa,mpv2
 type=video/x-mpegurl exts=m1u,m4u,mxu
 type=video/x-ms-asf exts=asf,asr
+type=video/x-ms-asf-plugin exts=asf,asr
 type=video/x-ms-wax exts=asx,wax,wvx,wmx
 type=video/x-ms-wm exts=asf,asr
 type=video/x-ms-wmv exts=wmv

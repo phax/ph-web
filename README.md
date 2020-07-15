@@ -57,6 +57,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 * v9.3.1 - work in progress
     * Updated to ph-commons 9.4.6
     * Deprecated `AcceptMimeTypeHandler.safeParseMimeType`
+    * Updated predefine MIME types list
 * v9.3.0 - 2020-05-26
     * Extracted ph-dns as a separate subproject
     * Changed Maven groupId to `com.helger.web`

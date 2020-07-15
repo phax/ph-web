@@ -23,6 +23,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.mime.IMimeType;
+import com.helger.commons.mime.MimeTypeParser;
 
 /**
  * Represents a list of Accept HTTP header values
@@ -89,7 +90,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
    */
   public double getQualityOfMimeType (@Nonnull final String sMimeType)
   {
-    return getQualityOfMimeType (AcceptMimeTypeHandler.safeParseMimeType (sMimeType));
+    return getQualityOfMimeType (MimeTypeParser.safeParseMimeType (sMimeType));
   }
 
   /**
@@ -117,7 +118,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
    */
   public boolean supportsMimeType (@Nonnull final String sMimeType)
   {
-    return supportsMimeType (AcceptMimeTypeHandler.safeParseMimeType (sMimeType));
+    return supportsMimeType (MimeTypeParser.safeParseMimeType (sMimeType));
   }
 
   /**
@@ -144,7 +145,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
    */
   public boolean explicitlySupportsMimeType (@Nonnull final String sMimeType)
   {
-    return explicitlySupportsMimeType (AcceptMimeTypeHandler.safeParseMimeType (sMimeType));
+    return explicitlySupportsMimeType (MimeTypeParser.safeParseMimeType (sMimeType));
   }
 
   /**

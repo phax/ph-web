@@ -24,13 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.codec.DecodeException;
-import com.helger.commons.codec.RFC2616Codec;
 import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeType;
 import com.helger.commons.mime.MimeTypeParser;
-import com.helger.commons.mime.MimeTypeParserException;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 
@@ -105,34 +102,19 @@ public final class AcceptMimeTypeHandler
     return ret;
   }
 
+  /**
+   * RFC 2616 enabled MIME type parser
+   * 
+   * @param sMimeType
+   *        MIME type to parse
+   * @return <code>null</code> if parsing failed.
+   * @deprecated Since 9.3.1 - use
+   *             {@link MimeTypeParser#safeParseMimeType(String)} instead.
+   */
   @Nullable
+  @Deprecated
   public static IMimeType safeParseMimeType (@Nullable final String sMimeType)
   {
-    String sRealMimeType = sMimeType;
-    if (RFC2616Codec.isMaybeEncoded (sRealMimeType))
-    {
-      // Check if it is encoded with double quotes
-      try
-      {
-        sRealMimeType = new RFC2616Codec ().getDecodedAsString (sRealMimeType);
-      }
-      catch (final DecodeException ex)
-      {
-        // Ignore and continue with the original one
-      }
-    }
-
-    try
-    {
-      return MimeTypeParser.parseMimeType (sRealMimeType);
-    }
-    catch (final MimeTypeParserException ex)
-    {
-      if ("*".equals (sRealMimeType))
-        return new MimeType (EMimeContentType._STAR, "*");
-    }
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Unparsable MIME type '" + sMimeType + "'");
-    return null;
+    return MimeTypeParser.safeParseMimeType (sMimeType);
   }
 }

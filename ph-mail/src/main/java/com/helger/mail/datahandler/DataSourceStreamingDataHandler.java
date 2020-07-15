@@ -22,6 +22,12 @@ import java.io.InputStream;
 import javax.activation.DataSource;
 import javax.annotation.Nonnull;
 
+/**
+ * An implementation of AbstractStreamingDataHandler using {@link DataSource} as
+ * the source.
+ * 
+ * @author Philip Helger
+ */
 public class DataSourceStreamingDataHandler extends AbstractStreamingDataHandler
 {
   public DataSourceStreamingDataHandler (@Nonnull final DataSource aDataSource)

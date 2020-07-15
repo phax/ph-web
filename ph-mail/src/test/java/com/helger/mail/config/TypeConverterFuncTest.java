@@ -26,6 +26,11 @@ import org.junit.Test;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.typeconvert.TypeConverter;
 
+/**
+ * Test {@link TypeConverter} registrations.
+ *
+ * @author Philip Helger
+ */
 public final class TypeConverterFuncTest
 {
   @Test

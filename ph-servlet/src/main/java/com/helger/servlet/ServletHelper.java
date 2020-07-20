@@ -435,7 +435,10 @@ public final class ServletHelper
       sPath = aSC.getRealPath ("");
     }
     if (StringHelper.hasNoText (sPath))
+    {
+      // This is e.g. the case if "Unpack WAR files" in Tomcat is disabled
       throw new IllegalStateException ("Failed to determine real path of ServletContext " + aSC);
+    }
     return sPath;
   }
 }

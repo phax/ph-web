@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
@@ -37,6 +38,8 @@ import com.helger.servlet.response.EXFrameOptionType;
  */
 public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFilter
 {
+  private final EXFrameOptionType m_eType;
+  private final ISimpleURL m_aDomain;
   private final String m_sHeaderValue;
 
   /**
@@ -64,10 +67,46 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
     if (eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");
 
+    m_eType = eType;
+    m_aDomain = aDomain;
     if (eType.isURLRequired ())
       m_sHeaderValue = eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ();
     else
       m_sHeaderValue = eType.getID ();
+  }
+
+  /**
+   * @return The X-Frame-Options type provided in the constructor. Never
+   *         <code>null</code>.
+   * @since 9.3.2
+   */
+  @Nonnull
+  public final EXFrameOptionType getXFrameOptionsType ()
+  {
+    return m_eType;
+  }
+
+  /**
+   * @return The domain passed in the constructor. May be <code>null</code>. Is
+   *         not <code>null</code> if the {@link #getXFrameOptionsType()}
+   *         requires a URL.
+   * @since 9.3.2
+   */
+  @Nullable
+  public final ISimpleURL getDomain ()
+  {
+    return m_aDomain;
+  }
+
+  /**
+   * @return The header values to be used. Neither <code>null</code> nor empty.
+   * @since 9.3.2
+   */
+  @Nonnull
+  @Nonempty
+  public final String getHeaderValue ()
+  {
+    return m_sHeaderValue;
   }
 
   @Nonnull

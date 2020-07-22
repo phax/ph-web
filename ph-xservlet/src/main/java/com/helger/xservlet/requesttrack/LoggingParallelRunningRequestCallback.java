@@ -55,13 +55,13 @@ public class LoggingParallelRunningRequestCallback implements IParallelRunningRe
   }
 
   @Nonnull
-  public IErrorLevel getErrorLevel ()
+  public final IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }
 
   @Nonnull
-  public LoggingParallelRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
+  public final LoggingParallelRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (aErrorLevel, "ErrorLevel");
     return this;

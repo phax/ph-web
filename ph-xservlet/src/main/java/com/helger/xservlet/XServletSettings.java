@@ -44,8 +44,11 @@ import com.helger.servlet.response.EXFrameOptionType;
  */
 public class XServletSettings implements Serializable, ICloneable <XServletSettings>
 {
+  public static final EHttpReferrerPolicy DEFAULT_HTTP_REFERRER_POLICY = EHttpReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN;
+  public static final boolean DEFAULT_MULTIPART_ENABLED = true;
+
   /** Best tradeoff between security and convenience */
-  private EHttpReferrerPolicy m_eHttpReferrerPolicy = EHttpReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN;
+  private EHttpReferrerPolicy m_eHttpReferrerPolicy = DEFAULT_HTTP_REFERRER_POLICY;
 
   /** Best tradeoff between security and convenience */
   private EXFrameOptionType m_eXFrameOptionsType = EXFrameOptionType.DEFAULT;
@@ -54,7 +57,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
   private ISimpleURL m_aXFrameOptionsDomain;
 
   /** By default Multipart handling is enabled */
-  private boolean m_bIsMultipartEnabled = true;
+  private boolean m_bIsMultipartEnabled = DEFAULT_MULTIPART_ENABLED;
 
   public XServletSettings ()
   {}
@@ -73,7 +76,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    *         set.
    */
   @Nullable
-  public EHttpReferrerPolicy getHttpReferrerPolicy ()
+  public final EHttpReferrerPolicy getHttpReferrerPolicy ()
   {
     return m_eHttpReferrerPolicy;
   }
@@ -82,7 +85,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @return <code>true</code> if a referrer policy is set, <code>false</code>
    *         if not.
    */
-  public boolean hasHttpReferrerPolicy ()
+  public final boolean hasHttpReferrerPolicy ()
   {
     return m_eHttpReferrerPolicy != null;
   }
@@ -96,7 +99,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @return this for chaining
    */
   @Nonnull
-  public XServletSettings setHttpReferrerPolicy (@Nullable final EHttpReferrerPolicy eHttpReferrerPolicy)
+  public final XServletSettings setHttpReferrerPolicy (@Nullable final EHttpReferrerPolicy eHttpReferrerPolicy)
   {
     m_eHttpReferrerPolicy = eHttpReferrerPolicy;
     return this;
@@ -107,7 +110,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @since 9.1.1
    */
   @Nullable
-  public EXFrameOptionType getXFrameOptionsType ()
+  public final EXFrameOptionType getXFrameOptionsType ()
   {
     return m_eXFrameOptionsType;
   }
@@ -118,7 +121,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @since 9.1.1
    */
   @Nullable
-  public ISimpleURL getXFrameOptionsDomain ()
+  public final ISimpleURL getXFrameOptionsDomain ()
   {
     return m_aXFrameOptionsDomain;
   }
@@ -128,7 +131,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    *         <code>false</code> if not.
    * @since 9.1.1
    */
-  public boolean hasXFrameOptions ()
+  public final boolean hasXFrameOptions ()
   {
     return m_eXFrameOptionsType != null;
   }
@@ -155,7 +158,7 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @since 9.1.1
    */
   @Nonnull
-  public XServletSettings setXFrameOptions (@Nullable final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public final XServletSettings setXFrameOptions (@Nullable final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
   {
     if (eType != null && eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");
@@ -165,13 +168,13 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     return this;
   }
 
-  public boolean isMultipartEnabled ()
+  public final boolean isMultipartEnabled ()
   {
     return m_bIsMultipartEnabled;
   }
 
   @Nonnull
-  public XServletSettings setMultipartEnabled (final boolean bIsMultipartEnabled)
+  public final XServletSettings setMultipartEnabled (final boolean bIsMultipartEnabled)
   {
     m_bIsMultipartEnabled = bIsMultipartEnabled;
     return this;

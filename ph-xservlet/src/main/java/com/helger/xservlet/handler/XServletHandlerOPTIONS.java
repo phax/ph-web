@@ -55,6 +55,16 @@ public class XServletHandlerOPTIONS implements IXServletHandler
     m_aAllowProvider = ValueEnforcer.notNull (aAllowProvider, "AllowProvider");
   }
 
+  /**
+   * @return The value supplier passed in the constructor.
+   * @since 9.3.2
+   */
+  @Nonnull
+  public final ISupplier <String> getAllowValueProvider ()
+  {
+    return m_aAllowProvider;
+  }
+
   public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
                          @Nonnull final HttpServletResponse aHttpResponse,
                          @Nonnull final EHttpVersion eHTTPVersion,

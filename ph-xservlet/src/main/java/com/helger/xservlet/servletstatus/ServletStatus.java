@@ -42,7 +42,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @since 9.0.0
  */
 @NotThreadSafe
-public final class ServletStatus
+public class ServletStatus
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ServletStatus.class);
 
@@ -58,13 +58,13 @@ public final class ServletStatus
 
   @Nonnull
   @Nonempty
-  public String getClassName ()
+  public final String getClassName ()
   {
     return m_sClassName;
   }
 
   @Nullable
-  public EServletStatus getCurrentStatus ()
+  public final EServletStatus getCurrentStatus ()
   {
     return m_eCurrentStatus;
   }
@@ -92,13 +92,13 @@ public final class ServletStatus
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsMap <EServletStatus, LocalDateTime> getStatusChangeMap ()
+  public final ICommonsMap <EServletStatus, LocalDateTime> getStatusChangeMap ()
   {
     return m_aStatusChangeDates.getClone ();
   }
 
   @Nullable
-  public LocalDateTime getDateTimeOfStatus (@Nonnull final EServletStatus eStatus)
+  public final LocalDateTime getDateTimeOfStatus (@Nonnull final EServletStatus eStatus)
   {
     return eStatus == null ? null : m_aStatusChangeDates.get (eStatus);
   }
@@ -109,7 +109,7 @@ public final class ServletStatus
   }
 
   @Nonnegative
-  public int getInvocationCount ()
+  public final int getInvocationCount ()
   {
     return m_aInvocationCount.get ();
   }

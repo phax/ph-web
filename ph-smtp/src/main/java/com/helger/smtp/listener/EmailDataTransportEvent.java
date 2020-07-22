@@ -30,6 +30,11 @@ import com.helger.smtp.data.IEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailSendDetails;
 
+/**
+ * Email data transport event for later evaluation.
+ *
+ * @author Philip Helger
+ */
 @Immutable
 public class EmailDataTransportEvent
 {

@@ -24,6 +24,11 @@ import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 
+/**
+ * Micro type converter for class {@link EmailAttachmentList}.
+ *
+ * @author Philip Helger
+ */
 public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeConverter <EmailAttachmentList>
 {
   private static final String ELEMENT_ATTACHMENT = "attachment";

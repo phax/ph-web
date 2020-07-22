@@ -36,6 +36,12 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
 
+/**
+ * This class represents a single email that was tried to be send out but
+ * failed.
+ *
+ * @author Philip Helger
+ */
 @Immutable
 public class FailedMailData implements ITypedObject <String>, Serializable
 {

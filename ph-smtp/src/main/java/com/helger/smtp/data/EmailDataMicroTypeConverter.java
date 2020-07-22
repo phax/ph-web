@@ -34,6 +34,11 @@ import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
+/**
+ * Micro type converter for class {@link EmailData}.
+ *
+ * @author Philip Helger
+ */
 public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <EmailData>
 {
   private static final String ATTR_TYPE = "type";

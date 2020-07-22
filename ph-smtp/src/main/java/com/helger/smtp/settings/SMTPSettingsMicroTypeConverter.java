@@ -30,6 +30,11 @@ import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 
+/**
+ * Micro type converter for class {@link SMTPSettings}
+ *
+ * @author Philip Helger
+ */
 public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter <SMTPSettings>
 {
   private static final String ATTR_HOST = "host";

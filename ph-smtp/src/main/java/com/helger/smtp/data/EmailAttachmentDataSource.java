@@ -24,6 +24,11 @@ import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.mail.datasource.InputStreamProviderDataSource;
 
+/**
+ * Implementation of {@link IEmailAttachmentDataSource}
+ *
+ * @author Philip Helger
+ */
 public class EmailAttachmentDataSource extends InputStreamProviderDataSource implements IEmailAttachmentDataSource
 {
   private final EEmailAttachmentDisposition m_eDisposition;

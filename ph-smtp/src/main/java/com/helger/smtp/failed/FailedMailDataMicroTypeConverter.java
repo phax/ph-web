@@ -43,6 +43,11 @@ import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
+/**
+ * Micro type converter for class {@link FailedMailData}.
+ *
+ * @author Philip Helger
+ */
 public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <FailedMailData>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (FailedMailDataMicroTypeConverter.class);

@@ -17,8 +17,8 @@
 package com.helger.servlet;
 
 /**
- * Global Web settings.
- * 
+ * Global Servlet settings.
+ *
  * @author Philip Helger
  */
 public final class ServletSettings

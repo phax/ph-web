@@ -94,12 +94,45 @@ public final class CookieHelper
    * @param bExpireWhenBrowserIsClosed
    *        <code>true</code> if this is a browser session cookie
    * @return The created cookie object.
+   * @deprecated Since 9.3.2; Use
+   *             {@link #createCookie(String, String, String, boolean, boolean)}
+   *             instead
+   */
+  @Nonnull
+  @Deprecated
+  public static Cookie createCookie (@Nonnull final String sName,
+                                     @Nullable final String sValue,
+                                     final String sPath,
+                                     final boolean bExpireWhenBrowserIsClosed)
+  {
+    // false as default
+    return createCookie (sName, sValue, sPath, bExpireWhenBrowserIsClosed, false);
+  }
+
+  /**
+   * Create a cookie that is bound on a certain path within the local web
+   * server.
+   *
+   * @param sName
+   *        The cookie name.
+   * @param sValue
+   *        The cookie value.
+   * @param sPath
+   *        The path the cookie is valid for.
+   * @param bExpireWhenBrowserIsClosed
+   *        <code>true</code> if this is a browser session cookie
+   * @param bSecure
+   *        <code>true</code> to send the cookie from the browser to the server
+   *        only when using a secure protocol (e.g. https)
+   * @return The created cookie object.
+   * @since 9.3.2
    */
   @Nonnull
   public static Cookie createCookie (@Nonnull final String sName,
                                      @Nullable final String sValue,
                                      final String sPath,
-                                     final boolean bExpireWhenBrowserIsClosed)
+                                     final boolean bExpireWhenBrowserIsClosed,
+                                     final boolean bSecure)
   {
     final Cookie aCookie = new Cookie (sName, sValue);
     aCookie.setPath (sPath);
@@ -107,17 +140,60 @@ public final class CookieHelper
       aCookie.setMaxAge (-1);
     else
       aCookie.setMaxAge (DEFAULT_MAX_AGE_SECONDS);
+    aCookie.setSecure (bSecure);
     return aCookie;
   }
 
+  /**
+   * Create a cookie that is bound to the servlet context path within the local
+   * web server.
+   *
+   * @param sName
+   *        The cookie name.
+   * @param sValue
+   *        The cookie value.
+   * @param bExpireWhenBrowserIsClosed
+   *        <code>true</code> if this is a browser session cookie
+   * @return The created cookie object.
+   * @deprecated Since 9.3.2; Use
+   *             {@link #createContextCookie(String, String, boolean, boolean)}
+   *             instead
+   */
+  @Deprecated
   @Nonnull
   public static Cookie createContextCookie (@Nonnull final String sName,
                                             @Nullable final String sValue,
                                             final boolean bExpireWhenBrowserIsClosed)
   {
+    // false as default
+    return createContextCookie (sName, sValue, bExpireWhenBrowserIsClosed, false);
+  }
+
+  /**
+   * Create a cookie that is bound to the servlet context path within the local
+   * web server.
+   *
+   * @param sName
+   *        The cookie name.
+   * @param sValue
+   *        The cookie value.
+   * @param bExpireWhenBrowserIsClosed
+   *        <code>true</code> if this is a browser session cookie
+   * @param bSecure
+   *        <code>true</code> to send the cookie from the browser to the server
+   *        only when using a secure protocol (e.g. https)
+   * @return The created cookie object.
+   * @since 9.3.2
+   */
+  @Nonnull
+  public static Cookie createContextCookie (@Nonnull final String sName,
+                                            @Nullable final String sValue,
+                                            final boolean bExpireWhenBrowserIsClosed,
+                                            final boolean bSecure)
+  {
     // Always use the context path from the global scope!
     final String sContextPath = ServletContextPathHolder.getContextPath ();
-    return createCookie (sName, sValue, StringHelper.hasText (sContextPath) ? sContextPath : "/", bExpireWhenBrowserIsClosed);
+    return createCookie (sName, sValue, StringHelper.hasText (sContextPath) ? sContextPath : "/", bExpireWhenBrowserIsClosed, bSecure);
   }
 
   /**

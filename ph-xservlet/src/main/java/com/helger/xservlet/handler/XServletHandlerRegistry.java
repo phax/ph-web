@@ -48,7 +48,7 @@ import com.helger.xservlet.handler.simple.XServletHandlerToSimpleHandler;
 public class XServletHandlerRegistry
 {
   /** The main handler map */
-  private final ICommonsMap <EHttpMethod, IXServletHandler> m_aHandler = new CommonsEnumMap <> (EHttpMethod.class);
+  private final ICommonsMap <EHttpMethod, IXServletHandler> m_aHandlers = new CommonsEnumMap <> (EHttpMethod.class);
 
   public XServletHandlerRegistry ()
   {}
@@ -73,15 +73,15 @@ public class XServletHandlerRegistry
     ValueEnforcer.notNull (eMethod, "HTTPMethod");
     ValueEnforcer.notNull (aLowLevelHandler, "Handler");
 
-    if (!bAllowOverwrite && m_aHandler.containsKey (eMethod))
+    if (!bAllowOverwrite && m_aHandlers.containsKey (eMethod))
     {
       // Programming error
       throw new IllegalStateException ("An HTTP handler for HTTP method " +
                                        eMethod +
                                        " is already registered: " +
-                                       m_aHandler.get (eMethod));
+                                       m_aHandlers.get (eMethod));
     }
-    m_aHandler.put (eMethod, aLowLevelHandler);
+    m_aHandlers.put (eMethod, aLowLevelHandler);
   }
 
   public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletSimpleHandler aSimpleHandler)
@@ -102,6 +102,23 @@ public class XServletHandlerRegistry
 
     // Register as a regular handler
     registerHandler (eMethod, aRealHandler, false);
+  }
+
+  /**
+   * Remove the handler for a certain HTTP method.
+   *
+   * @param eMethod
+   *        The HTTP method to be used. May be <code>null</code>.
+   * @return {@link EChange#CHANGED} if removal was successful,
+   *         {@link EChange#UNCHANGED} otherwise. Never <code>null</code>.
+   * @since 9.3.2
+   */
+  @Nonnull
+  public EChange unregisterHandler (@Nullable final EHttpMethod eMethod)
+  {
+    if (eMethod == null)
+      return EChange.UNCHANGED;
+    return m_aHandlers.removeObject (eMethod);
   }
 
   /**
@@ -166,7 +183,7 @@ public class XServletHandlerRegistry
   public EnumSet <EHttpMethod> getAllowedHTTPMethods ()
   {
     // Return all methods for which handlers are registered
-    final EnumSet <EHttpMethod> ret = EnumSet.copyOf (m_aHandler.keySet ());
+    final EnumSet <EHttpMethod> ret = EnumSet.copyOf (m_aHandlers.keySet ());
     if (!ret.contains (EHttpMethod.GET))
     {
       // If GET is not supported, HEAD is also not supported
@@ -184,23 +201,23 @@ public class XServletHandlerRegistry
   @Nullable
   public IXServletHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
   {
-    return m_aHandler.get (eHttpMethod);
+    return m_aHandlers.get (eHttpMethod);
   }
 
   public void forEachHandler (@Nonnull final Consumer <? super IXServletHandler> aConsumer)
   {
-    m_aHandler.forEachValue (aConsumer);
+    m_aHandlers.forEachValue (aConsumer);
   }
 
   public <EXTYPE extends Throwable> void forEachHandlerThrowing (@Nonnull final IThrowingConsumer <? super IXServletHandler, EXTYPE> aConsumer) throws EXTYPE
   {
-    for (final IXServletHandler aHandler : m_aHandler.values ())
+    for (final IXServletHandler aHandler : m_aHandlers.values ())
       aConsumer.accept (aHandler);
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Handler", m_aHandler).getToString ();
+    return new ToStringGenerator (this).append ("Handlers", m_aHandlers).getToString ();
   }
 }

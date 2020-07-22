@@ -32,16 +32,13 @@ import com.helger.commons.functional.Predicates;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Immutable default implementation of {@link IProxySettings}
  *
  * @author Philip Helger
  */
 @Immutable
-@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
-public final class ProxySettings implements IProxySettings
+public class ProxySettings implements IProxySettings
 {
   private final Proxy.Type m_eProxyType;
   private final String m_sProxyHost;
@@ -69,31 +66,31 @@ public final class ProxySettings implements IProxySettings
   }
 
   @Nonnull
-  public Proxy.Type getProxyType ()
+  public final Proxy.Type getProxyType ()
   {
     return m_eProxyType;
   }
 
   @Nullable
-  public String getProxyHost ()
+  public final String getProxyHost ()
   {
     return m_sProxyHost;
   }
 
   @Nonnegative
-  public int getProxyPort ()
+  public final int getProxyPort ()
   {
     return m_nProxyPort;
   }
 
   @Nullable
-  public String getProxyUserName ()
+  public final String getProxyUserName ()
   {
     return m_sProxyUserName;
   }
 
   @Nullable
-  public String getProxyPassword ()
+  public final String getProxyPassword ()
   {
     return m_sProxyPassword;
   }

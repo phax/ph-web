@@ -39,7 +39,7 @@ public class HttpProxyAuthenticator extends Authenticator
   }
 
   @Nonnull
-  public EHttpProxyType getProxyType ()
+  public final EHttpProxyType getProxyType ()
   {
     return m_eProxyType;
   }

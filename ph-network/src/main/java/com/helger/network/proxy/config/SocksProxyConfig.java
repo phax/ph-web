@@ -74,13 +74,13 @@ public class SocksProxyConfig implements IProxyConfig
   }
 
   @Nonnull
-  public String getHost ()
+  public final String getHost ()
   {
     return m_sHost;
   }
 
   @Nonnegative
-  public int getPort ()
+  public final int getPort ()
   {
     return m_nPort;
   }

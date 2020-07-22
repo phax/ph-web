@@ -91,19 +91,19 @@ public class HttpProxyConfig implements IProxyConfig
   }
 
   @Nonnull
-  public EHttpProxyType getType ()
+  public final EHttpProxyType getType ()
   {
     return m_eProxyType;
   }
 
   @Nonnull
-  public String getHost ()
+  public final String getHost ()
   {
     return m_sHost;
   }
 
   @Nonnegative
-  public int getPort ()
+  public final int getPort ()
   {
     return m_nPort;
   }
@@ -114,20 +114,20 @@ public class HttpProxyConfig implements IProxyConfig
   }
 
   @Nullable
-  public String getUserName ()
+  public final String getUserName ()
   {
     return m_sUserName;
   }
 
   @Nullable
-  public String getPassword ()
+  public final String getPassword ()
   {
     return m_sPassword;
   }
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <String> getNonProxyHosts ()
+  public final ICommonsList <String> getNonProxyHosts ()
   {
     return m_aNonProxyHosts.getClone ();
   }
@@ -168,9 +168,15 @@ public class HttpProxyConfig implements IProxyConfig
   }
 
   @Nonnull
+  public InetSocketAddress getAsInetSocketAddress ()
+  {
+    return new InetSocketAddress (m_sHost, m_nPort);
+  }
+
+  @Nonnull
   public Proxy getAsProxy ()
   {
-    return new Proxy (Proxy.Type.HTTP, new InetSocketAddress (m_sHost, m_nPort));
+    return new Proxy (Proxy.Type.HTTP, getAsInetSocketAddress ());
   }
 
   @Override

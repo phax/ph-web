@@ -73,7 +73,7 @@ public final class FailedMailDataTest
     aData.cc ().addAll (new EmailAddress ("cc1@example.org"), new EmailAddress ("cc2@example.org"), new EmailAddress ("cc3@example.org"));
     aData.bcc ()
          .addAll (new EmailAddress ("bcc1@example.org"), new EmailAddress ("bcc2@example.org"), new EmailAddress ("bcc3@example.org"));
-    aData.setSentDateTime (PDTFactory.getCurrentLocalDateTime ());
+    aData.setSentDateTime (PDTFactory.getCurrentLocalDateTimeMillisOnly ());
     aData.setSubject ("This is a test");
     aData.setBody ("This is my mail that failed\nIt contains a lot of information.\nBla bla bla\nAll the best to you.");
     final EmailAttachmentList aAttachments = new EmailAttachmentList ();

@@ -59,6 +59,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
 
   private final String m_sLocation;
   private final LocalDateTime m_aLastModification;
+  private final String m_sLastMod;
   private final EXMLSitemapChangeFequency m_eChangeFreq;
   private final double m_dPriority;
   private final String m_sPriority;
@@ -87,6 +88,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
     if (m_sLocation.length () > LOCATION_MAX_LENGTH)
       throw new IllegalArgumentException ("URL location is too long!");
     m_aLastModification = PDTHelper.isNullValue (aLastModification) ? null : aLastModification;
+    m_sLastMod = PDTWebDateHelper.getAsStringXSD (m_aLastModification);
     m_eChangeFreq = eChangeFreq;
     m_dPriority = aPriority == null ? DEFAULT_PRIORITY : aPriority.doubleValue ();
     m_sPriority = aPriority == null ? null : aPriority.toString ();
@@ -125,7 +127,8 @@ public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
     {
       // 23 == length of formatted date
       // YYYY-MM-DDThh:mm:ss.sss
-      ret += _getTagOutputLength (ELEMENT_LASTMOD) + 23;
+      // The milliseconds have beteween 1 and 9 fraction digits
+      ret += _getTagOutputLength (ELEMENT_LASTMOD) + m_sLastMod.length ();
     }
 
     if (m_eChangeFreq != null)
@@ -179,8 +182,8 @@ public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
     final String sNamespaceURI = CXMLSitemap.XML_NAMESPACE_0_9;
     final IMicroElement ret = new MicroElement (sNamespaceURI, ELEMENT_URL);
     ret.appendElement (sNamespaceURI, ELEMENT_LOC).appendText (m_sLocation);
-    if (m_aLastModification != null)
-      ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD).appendText (PDTWebDateHelper.getAsStringXSD (m_aLastModification));
+    if (m_sLastMod != null)
+      ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD).appendText (m_sLastMod);
     if (m_eChangeFreq != null)
       ret.appendElement (sNamespaceURI, ELEMENT_CHANGEFREQ).appendText (m_eChangeFreq.getText ());
     if (m_sPriority != null)

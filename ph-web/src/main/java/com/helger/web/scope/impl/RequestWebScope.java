@@ -161,7 +161,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // done initialization
-    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Created request web scope '" + super.getID () + "' of class " + ClassHelper.getClassLocalName (RequestWebScope.class),
                      ScopeHelper.getDebugStackTrace ());
@@ -351,7 +351,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     }
 
     // done initialization
-    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Initialized request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());
@@ -360,7 +360,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Override
   protected void postDestroy ()
   {
-    if (ScopeHelper.debugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());

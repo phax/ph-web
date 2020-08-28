@@ -85,7 +85,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
       out.writeObject (aRelevantObjects);
     }
 
-    if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Wrote info on session web scope '" +
                      m_aSessionWebScope.getID () +
@@ -103,7 +103,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
     // Read session attributes
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
-    if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Read info on session scope: " + m_aAttrs.size () + " attrs of class " + ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());
@@ -120,7 +120,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
         if (aValue instanceof ISessionWebScopePassivationHandler)
           ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
 
-      if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
+      if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
         if (LOGGER.isInfoEnabled ())
           LOGGER.info ("Successfully passivated session web scope '" +
                        m_aSessionWebScope.getID () +
@@ -154,7 +154,7 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
           ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
     }
 
-    if (ScopeHelper.debugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Successfully activated session web scope '" +
                      aSessionWebScope.getID () +

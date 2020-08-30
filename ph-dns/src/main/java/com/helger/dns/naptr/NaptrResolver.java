@@ -17,6 +17,7 @@
 package com.helger.dns.naptr;
 
 import java.net.InetAddress;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -59,6 +60,12 @@ public final class NaptrResolver
 
   private NaptrResolver ()
   {}
+
+  @Nonnull
+  public static final Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
+  {
+    return x -> sServiceName.equalsIgnoreCase (x);
+  }
 
   @Nullable
   private static String _getAppliedNAPTRRegEx (@Nonnull final String sRegEx, @Nonnull final String sDomainName)
@@ -166,13 +173,42 @@ public final class NaptrResolver
                                           @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
                                           @Nonnull @Nonempty final String sServiceName) throws TextParseException
   {
-    ValueEnforcer.notEmpty (sServiceName, "ServiceName");
+    return resolveFromUNAPTR (sDNSName, aCustomDNSServers, getDefaultServiceNameMatcher (sServiceName));
+  }
+
+  /**
+   * Look up the passed DNS name (usually a dynamic DNS name that was created by
+   * an algorithm) and resolve any U-NAPTR records matching the provided service
+   * name.
+   *
+   * @param sDNSName
+   *        The created DNS name. May be <code>null</code>.
+   * @param aCustomDNSServers
+   *        Optional primary DNS server addresses to be used for resolution. May
+   *        be <code>null</code>. If present, these servers have precedence.
+   * @param aServiceNameMatcher
+   *        A matcher for service names (inside the U NAPTR) to query. May not
+   *        be <code>null</code>. The service name needs to be matched
+   *        case-insensitive. For e-SENS/Peppol test for "Meta:SMP"
+   * @return <code>null</code> if no U-NAPTR was found or could not be resolved.
+   *         If non-<code>null</code> the fully qualified domain name, including
+   *         and protocol (like http://) is returned.
+   * @throws TextParseException
+   *         In case the original DNS name does not constitute a valid DNS name
+   *         and could not be parsed
+   */
+  @Nullable
+  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
+                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
+                                          @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher) throws TextParseException
+  {
+    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
 
     final ICommonsList <NAPTRRecord> aNaptrRecords = lookupNAPTRRecords (sDNSName, aCustomDNSServers);
     if (aNaptrRecords == null)
       return null;
 
-    return resolveUNAPTR (sDNSName, aNaptrRecords, sServiceName);
+    return resolveUNAPTR (sDNSName, aNaptrRecords, aServiceNameMatcher);
   }
 
   @Nullable
@@ -180,9 +216,17 @@ public final class NaptrResolver
                                       @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
                                       @Nonnull @Nonempty final String sServiceName)
   {
+    return resolveUNAPTR (sDNSName, aNaptrRecords, getDefaultServiceNameMatcher (sServiceName));
+  }
+
+  @Nullable
+  public static String resolveUNAPTR (@Nonnull final String sDNSName,
+                                      @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                                      @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher)
+  {
     ValueEnforcer.notNull (sDNSName, "DNSName");
     ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
-    ValueEnforcer.notEmpty (sServiceName, "ServiceName");
+    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
 
     final ICommonsList <NAPTRRecord> aMatchingRecords = new CommonsArrayList <> ();
     for (final NAPTRRecord aRecord : aNaptrRecords)
@@ -198,7 +242,7 @@ public final class NaptrResolver
        * app-protocol)]<br>
        * ; The service-parms are considered case-insensitive.
        */
-      if ("U".equalsIgnoreCase (aRecord.getFlags ()) && sServiceName.equalsIgnoreCase (aRecord.getService ()))
+      if ("U".equalsIgnoreCase (aRecord.getFlags ()) && aServiceNameMatcher.test (aRecord.getService ()))
         aMatchingRecords.add (aRecord);
     }
 

@@ -28,6 +28,7 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.StringMap;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.datetime.PDTFactory;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -118,7 +119,7 @@ public class EmailData implements IMutableEmailData
   @Nonnull
   public final EmailData setSentDateTime (@Nullable final LocalDateTime aSentDateTime)
   {
-    m_aSentDateTime = aSentDateTime;
+    m_aSentDateTime = PDTFactory.getWithMillisOnly (aSentDateTime);
     return this;
   }
 

@@ -100,7 +100,7 @@ public class FailedMailData implements ITypedObject <String>, Serializable
                          @Nullable final MailTransportError aError)
   {
     this (GlobalIDFactory.getNewPersistentStringID (),
-          PDTFactory.getCurrentLocalDateTime (),
+          PDTFactory.getCurrentLocalDateTimeMillisOnly (),
           aSettings,
           aEmailData == null ? null : aEmailData.getSentDateTime (),
           aEmailData,

@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.3.3 - work in progress
+* v9.3.3 - 2020-08-30
     * Updated to ph-commons 9.4.7
 * v9.3.2 - 2020-08-18
     * Updated API in ph-xservlet

@@ -89,8 +89,9 @@ public final class XMLSitemapURLSetTest
     final int nEmptyLength = s.getOutputLength ();
 
     // Build a very lengthy item
+    // Use a time with 3 digit milliseconds for known length
     final XMLSitemapURL aLongURL = new XMLSitemapURL (new SimpleURL ("http://www.myverlonghostnamethatisunreasoanble.com/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/filename?param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value#anchor"),
-                                                      PDTFactory.getCurrentLocalDateTime (),
+                                                      PDTFactory.getCurrentLocalDateTime ().withNano (123_000_000),
                                                       EXMLSitemapChangeFequency.NEVER,
                                                       Double.valueOf (1d / 9));
     final int nURLLength = aLongURL.getOutputLength ();

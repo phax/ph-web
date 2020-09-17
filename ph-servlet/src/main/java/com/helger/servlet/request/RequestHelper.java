@@ -210,8 +210,9 @@ public final class RequestHelper
    * (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
    * This method returns the percent decoded parameters
-   * <table summary="Examples of Returned Values">
-   * <tr align=left>
+   * <table>
+   * <caption>Examples of Returned Values</caption>
+   * <tr>
    * <th>First line of HTTP request</th>
    * <th>Returned Value</th>
    * <tr>
@@ -260,8 +261,9 @@ public final class RequestHelper
    * (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
    * This method returns the percent encoded parameters "as is"
-   * <table summary="Examples of Returned Values">
-   * <tr align=left>
+   * <table>
+   * <caption>Examples of Returned Values</caption>
+   * <tr>
    * <th>First line of HTTP request</th>
    * <th>Returned Value</th>
    * <tr>

@@ -35,8 +35,8 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * {@link ServletRegistration} object.
    * <p>
    * If this ServletContext already contains a preliminary ServletRegistration
-   * for a servlet with the given <tt>servletName</tt>, it will be completed (by
-   * assigning the given <tt>jspFile</tt> to it) and returned.
+   * for a servlet with the given <code>servletName</code>, it will be completed
+   * (by assigning the given <code>jspFile</code> to it) and returned.
    *
    * @param sServletName
    *        the name of the servlet
@@ -44,9 +44,9 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *        the full path to a JSP file within the web application beginning
    *        with a `/'.
    * @return a ServletRegistration object that may be used to further configure
-   *         the registered servlet, or <tt>null</tt> if this ServletContext
+   *         the registered servlet, or <code>null</code> if this ServletContext
    *         already contains a complete ServletRegistration for a servlet with
-   *         the given <tt>servletName</tt>
+   *         the given <code>servletName</code>
    * @throws IllegalStateException
    *         if this ServletContext has already been initialized
    * @throws IllegalArgumentException
@@ -66,10 +66,10 @@ public interface IServletContext310To400Migration extends IServletContext300To31
 
   /**
    * Gets the session timeout in minutes that are supported by default for this
-   * <tt>ServletContext</tt>.
+   * <code>ServletContext</code>.
    *
    * @return the session timeout in minutes that are supported by default for
-   *         this <tt>ServletContext</tt>
+   *         this <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
@@ -105,12 +105,13 @@ public interface IServletContext310To400Migration extends IServletContext300To31
 
   /**
    * Gets the request character encoding that are supported by default for this
-   * <tt>ServletContext</tt>. This method returns null if no request encoding
-   * character encoding has been specified in deployment descriptor or container
-   * specific configuration (for all web applications in the container).
+   * <code>ServletContext</code>. This method returns null if no request
+   * encoding character encoding has been specified in deployment descriptor or
+   * container specific configuration (for all web applications in the
+   * container).
    *
    * @return the request character encoding that are supported by default for
-   *         this <tt>ServletContext</tt>
+   *         this <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
@@ -146,12 +147,13 @@ public interface IServletContext310To400Migration extends IServletContext300To31
 
   /**
    * Gets the response character encoding that are supported by default for this
-   * <tt>ServletContext</tt>. This method returns null if no response encoding
-   * character encoding has been specified in deployment descriptor or container
-   * specific configuration (for all web applications in the container).
+   * <code>ServletContext</code>. This method returns null if no response
+   * encoding character encoding has been specified in deployment descriptor or
+   * container specific configuration (for all web applications in the
+   * container).
    *
    * @return the request character encoding that are supported by default for
-   *         this <tt>ServletContext</tt>
+   *         this <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a

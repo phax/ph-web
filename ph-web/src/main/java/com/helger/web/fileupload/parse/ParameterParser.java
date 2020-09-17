@@ -82,8 +82,8 @@ public class ParameterParser implements Serializable
   /**
    * Are there any characters left to parse?
    *
-   * @return <tt>true</tt> if there are unparsed characters, <tt>false</tt>
-   *         otherwise.
+   * @return <code>true</code> if there are unparsed characters,
+   *         <code>false</code> otherwise.
    */
   private boolean _hasChar ()
   {
@@ -95,8 +95,8 @@ public class ParameterParser implements Serializable
    * and trailing blanks as well as enclosing quotation marks, when necessary.
    *
    * @param bQuoted
-   *        <tt>true</tt> if quotation marks are expected, <tt>false</tt>
-   *        otherwise.
+   *        <code>true</code> if quotation marks are expected,
+   *        <code>false</code> otherwise.
    * @return the token
    */
   @Nullable
@@ -190,11 +190,12 @@ public class ParameterParser implements Serializable
   }
 
   /**
-   * Returns <tt>true</tt> if parameter names are to be converted to lower case
-   * when name/value pairs are parsed.
+   * Returns <code>true</code> if parameter names are to be converted to lower
+   * case when name/value pairs are parsed.
    *
-   * @return <tt>true</tt> if parameter names are to be converted to lower case
-   *         when name/value pairs are parsed. Otherwise returns <tt>false</tt>
+   * @return <code>true</code> if parameter names are to be converted to lower
+   *         case when name/value pairs are parsed. Otherwise returns
+   *         <code>false</code>
    */
   public boolean isLowerCaseNames ()
   {
@@ -206,8 +207,8 @@ public class ParameterParser implements Serializable
    * name/value pairs are parsed.
    *
    * @param bLowerCaseNames
-   *        <tt>true</tt> if parameter names are to be converted to lower case
-   *        when name/value pairs are parsed. <tt>false</tt> otherwise.
+   *        <code>true</code> if parameter names are to be converted to lower
+   *        case when name/value pairs are parsed. <code>false</code> otherwise.
    * @return this
    */
   @Nonnull

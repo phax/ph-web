@@ -54,8 +54,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.3.4 - work in progress
+* v9.3.4 - 2020-09-17
     * `NaptrResolver` received a more flexible service name resolution
+    * Updated to Jakarta JAXB 2.3.3
 * v9.3.3 - 2020-08-30
     * Updated to ph-commons 9.4.7
 * v9.3.2 - 2020-08-18

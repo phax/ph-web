@@ -263,6 +263,22 @@ public class CSP2Directive implements ICSPDirective
   }
 
   /**
+   * Restricts the URLs which can be used in a document's <base> element. If
+   * this value is absent, then any URI is allowed. If this directive is absent,
+   * the user agent will use the value in the <base> element.
+   *
+   * @param sValue
+   *        value
+   * @return new directive
+   * @since CSP v2
+   */
+  @Nonnull
+  public static CSP2Directive createBaseURI (@Nullable final String sValue)
+  {
+    return new CSP2Directive ("base-uri", sValue);
+  }
+
+  /**
    * Defines valid sources for web workers and nested browsing contexts loaded
    * using elements such as &lt;frame&gt; and &lt;iframe&gt;
    *
@@ -323,5 +339,51 @@ public class CSP2Directive implements ICSPDirective
   public static CSP2Directive createPluginTypes (@Nullable final CSP2SourceList aValue)
   {
     return new CSP2Directive ("plugin-types", aValue);
+  }
+
+  /**
+   * Specifies valid sources of application manifest files.
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v3
+   * @since 9.3.5
+   */
+  @Nonnull
+  public static CSP2Directive createManifestSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("manifest-src", aValue);
+  }
+
+  /**
+   * Specifies valid sources to be prefetched or prerendered (draft).
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v3
+   * @since 9.3.5
+   */
+  @Nonnull
+  public static CSP2Directive createPrefetchSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("prefetch-src", aValue);
+  }
+
+  /**
+   * pecifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.
+   * (draft).
+   *
+   * @param aValue
+   *        Value list to use. May be be <code>null</code>.
+   * @return New {@link CSP2Directive}
+   * @since CSP v3
+   * @since 9.3.5
+   */
+  @Nonnull
+  public static CSP2Directive createWorkerSrc (@Nullable final CSP2SourceList aValue)
+  {
+    return new CSP2Directive ("worker-src", aValue);
   }
 }

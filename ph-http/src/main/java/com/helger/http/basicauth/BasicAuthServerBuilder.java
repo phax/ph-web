@@ -19,6 +19,7 @@ package com.helger.http.basicauth;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
@@ -33,6 +34,12 @@ public class BasicAuthServerBuilder implements Serializable
 
   public BasicAuthServerBuilder ()
   {}
+
+  @Nullable
+  public String getRealm ()
+  {
+    return m_sRealm;
+  }
 
   /**
    * Set the realm to be used.
@@ -71,6 +78,6 @@ public class BasicAuthServerBuilder implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("realm", m_sRealm).getToString ();
+    return new ToStringGenerator (this).append ("Realm", m_sRealm).getToString ();
   }
 }

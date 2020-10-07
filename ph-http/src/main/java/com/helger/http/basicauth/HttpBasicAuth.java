@@ -19,12 +19,14 @@ package com.helger.http.basicauth;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.base64.Base64;
 import com.helger.commons.regex.RegExHelper;
@@ -96,5 +98,25 @@ public final class HttpBasicAuth
     if (nIndex >= 0)
       return new BasicAuthClientCredentials (sUsernamePassword.substring (0, nIndex), sUsernamePassword.substring (nIndex + 1));
     return new BasicAuthClientCredentials (sUsernamePassword);
+  }
+
+  /**
+   * Create the request HTTP header value for use with the
+   * {@link com.helger.commons.http.CHttpHeader#AUTHORIZATION} header name.
+   *
+   * @param sUserName
+   *        The user name to use. May neither be <code>null</code> nor empty.
+   * @param sPassword
+   *        The password to use. May be <code>null</code> or empty to indicate
+   *        that no password is present.
+   * @return The HTTP header value to use. Neither <code>null</code> nor empty.
+   * @since 9.3.5
+   */
+  @Nonnull
+  @Nonempty
+  public static String getHttpHeaderValue (@Nonnull @Nonempty final String sUserName, @Nullable final String sPassword)
+  {
+    final String sCombined = StringHelper.getConcatenatedOnDemand (sUserName, USERNAME_PASSWORD_SEPARATOR, sPassword);
+    return HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, CHARSET);
   }
 }

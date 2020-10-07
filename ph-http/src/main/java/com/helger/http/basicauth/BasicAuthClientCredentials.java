@@ -24,7 +24,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.base64.Base64;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.StringHelper;
@@ -106,8 +105,7 @@ public class BasicAuthClientCredentials implements Serializable
   @Nonempty
   public String getRequestValue ()
   {
-    final String sCombined = StringHelper.getConcatenatedOnDemand (m_sUserName, HttpBasicAuth.USERNAME_PASSWORD_SEPARATOR, m_sPassword);
-    return HttpBasicAuth.HEADER_VALUE_PREFIX_BASIC + " " + Base64.safeEncode (sCombined, HttpBasicAuth.CHARSET);
+    return HttpBasicAuth.getHttpHeaderValue (m_sUserName, m_sPassword);
   }
 
   @Override
@@ -130,6 +128,6 @@ public class BasicAuthClientCredentials implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("userName", m_sUserName).appendPassword ("password").getToString ();
+    return new ToStringGenerator (this).append ("UserName", m_sUserName).appendPassword ("Password").getToString ();
   }
 }

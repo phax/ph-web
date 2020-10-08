@@ -36,6 +36,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
   public AcceptMimeTypeList ()
   {}
 
+  // TODO 10.x make chainable
   public void addMimeType (@Nonnull final IMimeType aMimeType, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notNull (aMimeType, "MimeType");

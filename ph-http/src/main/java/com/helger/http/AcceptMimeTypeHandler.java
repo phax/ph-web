@@ -61,7 +61,7 @@ public final class AcceptMimeTypeHandler
     }
     else
     {
-      // Charsets are separated by "," or ", "
+      // MIME types are separated by "," or ", "
       for (final String sItem : StringHelper.getExploded (',', sAcceptMimeTypes))
       {
         // Qualities are separated by ";"
@@ -104,7 +104,7 @@ public final class AcceptMimeTypeHandler
 
   /**
    * RFC 2616 enabled MIME type parser
-   * 
+   *
    * @param sMimeType
    *        MIME type to parse
    * @return <code>null</code> if parsing failed.

@@ -37,18 +37,18 @@ import com.helger.commons.string.ToStringGenerator;
 @Immutable
 public class QValue implements Comparable <QValue>, Serializable
 {
-  /** Minimum quality value */
+  /** Minimum quality value: 0 */
   public static final double MIN_QUALITY = 0;
-  /** Maximum quality value */
+  /** Maximum quality value: 1 */
   public static final double MAX_QUALITY = 1;
-  /** 50% quantile quality value */
+  /** 50% quantile quality value: 0.5 */
   public static final double HALF_QUALITY = 0.5;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (QValue.class);
 
-  /** Minimum quality */
+  /** Minimum quality: 0 */
   public static final QValue MIN_QVALUE = new QValue (MIN_QUALITY);
-  /** Maximum quality */
+  /** Maximum quality: 1 */
   public static final QValue MAX_QVALUE = new QValue (MAX_QUALITY);
 
   private final double m_dQuality;
@@ -91,11 +91,6 @@ public class QValue implements Comparable <QValue>, Serializable
   public double getQuality ()
   {
     return m_dQuality;
-  }
-
-  public int compareTo (@Nonnull final QValue rhs)
-  {
-    return Double.compare (m_dQuality, rhs.m_dQuality);
   }
 
   /**
@@ -157,6 +152,11 @@ public class QValue implements Comparable <QValue>, Serializable
   public boolean isBetweenMinimumAndMaximum ()
   {
     return isAboveMinimumQuality () && isBelowMaximumQuality ();
+  }
+
+  public int compareTo (@Nonnull final QValue rhs)
+  {
+    return Double.compare (m_dQuality, rhs.m_dQuality);
   }
 
   @Override

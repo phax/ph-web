@@ -73,7 +73,7 @@ public final class AcceptMimeTypeHandler
           dQuality = StringParser.parseDouble (aParts[1].trim ().substring (2), QValue.MAX_QUALITY);
 
         final String sMimeType = aParts[0];
-        IMimeType aMimeType = safeParseMimeType (sMimeType);
+        IMimeType aMimeType = MimeTypeParser.safeParseMimeType (sMimeType);
         if (aMimeType != null)
         {
           if (aMimeType.hasAnyParameters ())
@@ -104,7 +104,7 @@ public final class AcceptMimeTypeHandler
 
   /**
    * RFC 2616 enabled MIME type parser
-   * 
+   *
    * @param sMimeType
    *        MIME type to parse
    * @return <code>null</code> if parsing failed.

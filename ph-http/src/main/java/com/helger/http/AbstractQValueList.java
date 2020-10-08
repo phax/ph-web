@@ -136,10 +136,31 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
   @Nonnull
   protected String getAsHttpHeaderValue (@Nonnull final Function <KEYTYPE, String> aKeyTransformer)
   {
+    return getAsHttpHeaderValue (m_aMap, aKeyTransformer);
+  }
+
+  /**
+   * Static implementation of converting a map to String.
+   *
+   * @param aMap
+   *        The map to be converted. May not be <code>null</code>.
+   * @param aKeyTransformer
+   *        The transformer from T to String. May not be <code>null</code>.
+   * @return The string representation of this list e.g. for usage in HTTP
+   *         headers.
+   * @param <T>
+   *        Key type
+   * @since 9.3.5
+   */
+  @Nonnull
+  public static <T> String getAsHttpHeaderValue (@Nonnull final ICommonsOrderedMap <T, QValue> aMap,
+                                                 @Nonnull final Function <T, String> aKeyTransformer)
+  {
+    ValueEnforcer.notNull (aMap, "Map");
     ValueEnforcer.notNull (aKeyTransformer, "KeyTransformer");
 
     final StringBuilder aSB = new StringBuilder ();
-    for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
+    for (final Map.Entry <T, QValue> aEntry : aMap.entrySet ())
     {
       if (aSB.length () > 0)
         aSB.append (", ");

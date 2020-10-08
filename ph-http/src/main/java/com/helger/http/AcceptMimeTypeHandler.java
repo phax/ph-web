@@ -104,7 +104,7 @@ public final class AcceptMimeTypeHandler
 
   /**
    * RFC 2616 enabled MIME type parser
-   *
+   * 
    * @param sMimeType
    *        MIME type to parse
    * @return <code>null</code> if parsing failed.

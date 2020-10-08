@@ -16,6 +16,7 @@
  */
 package com.helger.http;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -118,5 +119,20 @@ public final class AcceptMimeTypeHandlerTest
     assertTrue (c.explicitlySupportsMimeType ("application/html"));
     assertFalse (c.explicitlySupportsMimeType ("application/xml"));
     assertFalse (c.explicitlySupportsMimeType ("image/gif"));
+  }
+
+  @Test
+  public void testGetAsHttpHeaderValue ()
+  {
+    final AcceptMimeTypeList c = new AcceptMimeTypeList ();
+    c.addMimeType ("text/xml", 1);
+    c.addMimeType ("application/xml", 1);
+    c.addMimeType ("application/json", 0.9);
+    c.addMimeType ("*", 0);
+    final String s = c.getAsHttpHeaderValue ();
+    assertEquals ("text/xml; q=1.0, application/xml; q=1.0, application/json; q=0.9, */*; q=0.0", s);
+    final AcceptMimeTypeList c2 = AcceptMimeTypeHandler.getAcceptMimeTypes (s);
+    assertNotNull (c2);
+    assertEquals (c, c2);
   }
 }

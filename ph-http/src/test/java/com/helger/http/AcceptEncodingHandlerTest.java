@@ -16,6 +16,7 @@
  */
 package com.helger.http;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
@@ -67,5 +68,19 @@ public final class AcceptEncodingHandlerTest
     CommonsAssert.assertEquals (1, aAE.getQualityOfEncoding ("gzip"));
     CommonsAssert.assertEquals (0.7, aAE.getQualityOfEncoding ("other"));
     CommonsAssert.assertEquals (0.5, aAE.getQualityOfEncoding ("identity"));
+  }
+
+  @Test
+  public void testGetAsHttpHeaderValue ()
+  {
+    final AcceptEncodingList c = new AcceptEncodingList ();
+    c.addEncoding ("bla", 1);
+    c.addEncoding ("foo", 0.9);
+    c.addEncoding ("*", 0);
+    final String s = c.getAsHttpHeaderValue ();
+    assertEquals ("bla; q=1.0, foo; q=0.9, *; q=0.0", s);
+    final AcceptEncodingList c2 = AcceptEncodingHandler.getAcceptEncodings (s);
+    assertNotNull (c2);
+    assertEquals (c, c2);
   }
 }

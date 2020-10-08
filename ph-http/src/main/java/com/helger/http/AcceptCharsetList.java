@@ -16,12 +16,15 @@
  */
 package com.helger.http;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.function.Function;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 
 /**
  * Represents a list of Accept-Charset values as specified in the HTTP header
@@ -39,7 +42,16 @@ public class AcceptCharsetList extends AbstractQValueList <String>
     return sCharset.toLowerCase (Locale.US);
   }
 
-  public void addCharset (@Nonnull final String sCharset, @Nonnegative final double dQuality)
+  @Nonnull
+  public AcceptCharsetList addCharset (@Nonnull final Charset aCharset, @Nonnegative final double dQuality)
+  {
+    ValueEnforcer.notNull (aCharset, "Charset");
+    addCharset (aCharset.name (), dQuality);
+    return this;
+  }
+
+  // TODO 10.x make chainable
+  public void addCharset (@Nonnull @Nonempty final String sCharset, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sCharset, "Charset");
     qvalueMap ().put (_unify (sCharset), new QValue (dQuality));
@@ -95,5 +107,12 @@ public class AcceptCharsetList extends AbstractQValueList <String>
 
     final QValue aQuality = qvalueMap ().get (_unify (sCharset));
     return aQuality != null && aQuality.isAboveMinimumQuality ();
+  }
+
+  @Override
+  @Nonnull
+  public String getAsHttpHeaderValue ()
+  {
+    return getAsHttpHeaderValue (Function.identity ());
   }
 }

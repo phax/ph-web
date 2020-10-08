@@ -16,8 +16,11 @@
  */
 package com.helger.http;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
@@ -25,6 +28,14 @@ import com.helger.commons.equals.EqualsHelper;
 
 public final class AcceptCharsetHandlerTest
 {
+  @Test
+  public void testEmpty ()
+  {
+    final AcceptCharsetList c = AcceptCharsetHandler.getAcceptCharsets (null);
+    assertNotNull (c);
+    assertEquals ("*; q=1.0", c.getAsHttpHeaderValue ());
+  }
+
   @Test
   public void testSimple ()
   {
@@ -88,5 +99,19 @@ public final class AcceptCharsetHandlerTest
     assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-15")));
     // Default charset
     assertTrue (EqualsHelper.equals (0.9d, c.getQualityOfCharset ("ISO-8859-1")));
+  }
+
+  @Test
+  public void testGetAsHttpHeaderValue ()
+  {
+    final AcceptCharsetList c = new AcceptCharsetList ();
+    c.addCharset (StandardCharsets.UTF_8, 1);
+    c.addCharset (StandardCharsets.ISO_8859_1, 0.9);
+    c.addCharset ("*", 0.1);
+    final String s = c.getAsHttpHeaderValue ();
+    assertEquals ("utf-8; q=1.0, iso-8859-1; q=0.9, *; q=0.1", s);
+    final AcceptCharsetList c2 = AcceptCharsetHandler.getAcceptCharsets (s);
+    assertNotNull (c2);
+    assertEquals (c, c2);
   }
 }

@@ -22,8 +22,10 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeTypeParser;
+import com.helger.commons.mime.MimeTypeParserException;
 
 /**
  * Represents a list of Accept HTTP header values
@@ -35,6 +37,15 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
 {
   public AcceptMimeTypeList ()
   {}
+
+  @Nonnull
+  public AcceptMimeTypeList addMimeType (@Nonnull @Nonempty final String sMimeType,
+                                         @Nonnegative final double dQuality) throws MimeTypeParserException
+  {
+    ValueEnforcer.notEmpty (sMimeType, "MimeType");
+    addMimeType (MimeTypeParser.parseMimeType (sMimeType), dQuality);
+    return this;
+  }
 
   // TODO 10.x make chainable
   public void addMimeType (@Nonnull final IMimeType aMimeType, @Nonnegative final double dQuality)
@@ -163,5 +174,12 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
       return false;
     final QValue aQuality = qvalueMap ().get (aMimeType);
     return aQuality != null && aQuality.isAboveMinimumQuality ();
+  }
+
+  @Override
+  @Nonnull
+  public String getAsHttpHeaderValue ()
+  {
+    return getAsHttpHeaderValue (IMimeType::getAsString);
   }
 }

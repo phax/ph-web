@@ -18,12 +18,15 @@ package com.helger.http;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -109,6 +112,57 @@ public abstract class AbstractQValueList <KEYTYPE extends Serializable> implemen
         ret.put (aEntry.getKey (), aQValue);
     }
     return ret;
+  }
+
+  /**
+   * @return The string representation of this list e.g. for usage in HTTP
+   *         headers.
+   * @since 9.3.5
+   */
+  @Nonnull
+  public abstract String getAsHttpHeaderValue ();
+
+  /**
+   * Abstract implementation that requires a converter from the KEYTYPE generic
+   * parameter to String.
+   *
+   * @param aKeyTransformer
+   *        The transformer from KEYTYPE to String. May not be
+   *        <code>null</code>.
+   * @return The string representation of this list e.g. for usage in HTTP
+   *         headers.
+   * @since 9.3.5
+   */
+  @Nonnull
+  protected String getAsHttpHeaderValue (@Nonnull final Function <KEYTYPE, String> aKeyTransformer)
+  {
+    ValueEnforcer.notNull (aKeyTransformer, "KeyTransformer");
+
+    final StringBuilder aSB = new StringBuilder ();
+    for (final Map.Entry <KEYTYPE, QValue> aEntry : m_aMap.entrySet ())
+    {
+      if (aSB.length () > 0)
+        aSB.append (", ");
+      aSB.append (aKeyTransformer.apply (aEntry.getKey ())).append ("; q=").append (aEntry.getValue ().getQuality ());
+    }
+    return aSB.toString ();
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final AbstractQValueList <?> rhs = (AbstractQValueList <?>) o;
+    return m_aMap.equals (rhs.m_aMap);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_aMap).getHashCode ();
   }
 
   @Override

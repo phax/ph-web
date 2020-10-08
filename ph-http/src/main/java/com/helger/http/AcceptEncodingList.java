@@ -17,6 +17,7 @@
 package com.helger.http;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -42,6 +43,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
     return sEncoding.toLowerCase (Locale.US);
   }
 
+  // TODO 10.x make chainable
   public void addEncoding (@Nonnull final String sEncoding, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sEncoding, "Encoding");
@@ -166,5 +168,12 @@ public class AcceptEncodingList extends AbstractQValueList <String>
     if (supportsEncoding (AcceptEncodingHandler.X_COMPRESS_ENCODING))
       return AcceptEncodingHandler.X_COMPRESS_ENCODING;
     return null;
+  }
+
+  @Override
+  @Nonnull
+  public String getAsHttpHeaderValue ()
+  {
+    return getAsHttpHeaderValue (Function.identity ());
   }
 }

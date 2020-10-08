@@ -58,6 +58,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
     * Updated to dnsjava 3.3.0
     * Extended CSP directives to also support `manifest-src`, `prefetch-src`, `worker-src` and `base-uri`
     * Extended `HttpBasicAuth` API with a static method to create the header value
+    * Extended the `Accept*HeaderList` classes to also provide the String representation via `getAsHttpHeaderValue`
 * v9.3.4 - 2020-09-17
     * `NaptrResolver` received a more flexible service name resolution
     * Updated to Jakarta JAXB 2.3.3

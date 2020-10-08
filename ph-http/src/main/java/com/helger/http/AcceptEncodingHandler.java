@@ -70,7 +70,7 @@ public final class AcceptEncodingHandler
     }
     else
     {
-      // Charsets are separated by "," or ", "
+      // Encodings are separated by "," or ", "
       for (final String sItem : StringHelper.getExploded (',', sAcceptEncoding))
       {
         // Qualities are separated by ";"

@@ -17,6 +17,7 @@
 package com.helger.http;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -39,6 +40,7 @@ public class AcceptLanguageList extends AbstractQValueList <String>
     return sLanguage.toLowerCase (Locale.US);
   }
 
+  // TODO 10.x make chainable
   public void addLanguage (@Nonnull final String sLanguage, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sLanguage, "Language");
@@ -96,5 +98,12 @@ public class AcceptLanguageList extends AbstractQValueList <String>
 
     final QValue aQuality = qvalueMap ().get (_unify (sLanguage));
     return aQuality != null && aQuality.isAboveMinimumQuality ();
+  }
+
+  @Override
+  @Nonnull
+  public String getAsHttpHeaderValue ()
+  {
+    return getAsHttpHeaderValue (Function.identity ());
   }
 }

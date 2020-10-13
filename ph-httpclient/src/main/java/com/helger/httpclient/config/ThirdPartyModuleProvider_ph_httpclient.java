@@ -42,7 +42,7 @@ public final class ThirdPartyModuleProvider_ph_httpclient implements IThirdParty
   public static final IThirdPartyModule HTTP_COMPONENTS = new ThirdPartyModule ("Apache HttpComponents",
                                                                                 "Apache",
                                                                                 ELicense.APACHE2,
-                                                                                new Version (4, 5, 12),
+                                                                                new Version (4, 5, 13),
                                                                                 "http://hc.apache.org/");
 
   @Nullable

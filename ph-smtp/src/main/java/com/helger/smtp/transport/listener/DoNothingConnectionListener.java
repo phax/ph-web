@@ -17,11 +17,12 @@
 package com.helger.smtp.transport.listener;
 
 import javax.annotation.Nonnull;
-import javax.mail.event.ConnectionEvent;
-import javax.mail.event.ConnectionListener;
 
 import com.helger.commons.callback.ICallback;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.mail.event.ConnectionEvent;
+import jakarta.mail.event.ConnectionListener;
 
 /**
  * An implementation of {@link ConnectionListener} that does nothing.

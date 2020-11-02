@@ -50,18 +50,18 @@ package com.helger.smtp.samples;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.mail.Folder;
-import javax.mail.FolderClosedException;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.event.MessageCountAdapter;
-import javax.mail.event.MessageCountEvent;
-
 import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 import com.sun.mail.imap.IMAPFolder;
+
+import jakarta.mail.Folder;
+import jakarta.mail.FolderClosedException;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.event.MessageCountAdapter;
+import jakarta.mail.event.MessageCountEvent;
 
 /* Monitors given mailbox for new mail */
 

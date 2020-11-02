@@ -18,11 +18,12 @@ package com.helger.smtp.data;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.mail.Part;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.lang.EnumHelper;
+
+import jakarta.mail.Part;
 
 /**
  * Determine the disposition type

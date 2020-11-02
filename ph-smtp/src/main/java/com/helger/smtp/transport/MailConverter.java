@@ -22,11 +22,6 @@ import java.util.Date;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.mime.MimeType;
@@ -35,6 +30,12 @@ import com.helger.mail.address.InternetAddressHelper;
 import com.helger.smtp.data.IEmailAttachmentDataSource;
 import com.helger.smtp.data.IMutableEmailAttachmentList;
 import com.helger.smtp.data.IMutableEmailData;
+
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 /**
  * Fill a {@link MimeMessage} object with the data of an

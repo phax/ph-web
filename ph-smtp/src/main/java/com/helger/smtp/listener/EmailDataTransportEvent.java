@@ -20,7 +20,6 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import javax.mail.internet.MimeMessage;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -29,6 +28,8 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.smtp.data.IEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailSendDetails;
+
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Email data transport event for later evaluation.

@@ -19,12 +19,12 @@ package com.helger.mail.config;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import javax.mail.internet.InternetAddress;
-
 import org.junit.Test;
 
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.typeconvert.TypeConverter;
+
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * Test {@link TypeConverter} registrations.

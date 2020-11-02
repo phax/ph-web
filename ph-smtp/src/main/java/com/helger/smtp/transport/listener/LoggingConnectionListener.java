@@ -17,8 +17,6 @@
 package com.helger.smtp.transport.listener;
 
 import javax.annotation.Nonnull;
-import javax.mail.event.ConnectionEvent;
-import javax.mail.event.ConnectionListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +27,9 @@ import com.helger.commons.error.level.EErrorLevel;
 import com.helger.commons.error.level.IErrorLevel;
 import com.helger.commons.log.LogHelper;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.mail.event.ConnectionEvent;
+import jakarta.mail.event.ConnectionListener;
 
 /**
  * An implementation of {@link ConnectionListener} that logs stuff to a logger.

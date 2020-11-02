@@ -20,12 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.mail.EncodingAware;
 
 import com.helger.mail.cte.IContentTransferEncoding;
+
+import jakarta.activation.DataSource;
+import jakarta.mail.EncodingAware;
 
 /**
  * Extension interface for {@link DataSource} that includes

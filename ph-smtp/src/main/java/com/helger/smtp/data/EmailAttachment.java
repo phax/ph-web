@@ -22,7 +22,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
-import javax.activation.FileTypeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -35,6 +34,8 @@ import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.io.streamprovider.ByteArrayInputStreamProvider;
 import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.activation.FileTypeMap;
 
 /**
  * Base implementation for interface {@link IEmailAttachment}.

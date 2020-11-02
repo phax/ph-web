@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +30,8 @@ import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
+
+import jakarta.activation.DataSource;
 
 /**
  * <p>
@@ -45,11 +46,12 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
  * with {@link #getInputStream()} and process the file without attempting to
  * load it into memory, which may come handy with large files.
  * <p>
- * While this interface does not extend <code>javax.activation.DataSource</code>
- * per se (to avoid a seldom used dependency), several of the defined methods
- * are specifically defined with the same signatures as methods in that
- * interface. This allows an implementation of this interface to also implement
- * <code>javax.activation.DataSource</code> with minimal additional work.
+ * While this interface does not extend
+ * <code>jakarta.activation.DataSource</code> per se (to avoid a seldom used
+ * dependency), several of the defined methods are specifically defined with the
+ * same signatures as methods in that interface. This allows an implementation
+ * of this interface to also implement
+ * <code>jakarta.activation.DataSource</code> with minimal additional work.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>

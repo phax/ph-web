@@ -19,7 +19,6 @@ package com.helger.mail.datasource;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +29,8 @@ import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.activation.DataSource;
 
 /**
  * A special {@link DataSource} implementation based on data from

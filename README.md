@@ -56,7 +56,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v9.3.5 - work in progress
     * Updated to Apache httpclient 4.5.13
-    * Updated to dnsjava 3.3.0
+    * Updated to dnsjava 3.3.1
     * Extended CSP directives to also support `manifest-src`, `prefetch-src`, `worker-src` and `base-uri`
     * Extended `HttpBasicAuth` API with a static method to create the header value
     * Extended the `Accept*HeaderList` classes to also provide the String representation via `getAsHttpHeaderValue`

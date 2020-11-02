@@ -109,7 +109,7 @@ public class NonCachingDnsResolver implements DnsResolver
         {
           // It's a CName - so a name pointing to a name
           // recursively resolve :)
-          final InetAddress [] aNested = resolve (((CNAMERecord) aRecord).getAlias ().toString ());
+          final InetAddress [] aNested = resolve (((CNAMERecord) aRecord).getName ().toString ());
           if (aNested != null)
             aAddrs.addAll (aNested);
         }
@@ -123,10 +123,7 @@ public class NonCachingDnsResolver implements DnsResolver
           else
           {
             if (LOGGER.isDebugEnabled ())
-              LOGGER.debug ("Unknown record type found for host '" +
-                            sHost +
-                            "': " +
-                            ClassHelper.getClassLocalName (aRecord));
+              LOGGER.debug ("Unknown record type found for host '" + sHost + "': " + ClassHelper.getClassLocalName (aRecord));
           }
       }
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);

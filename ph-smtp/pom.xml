@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger.web</groupId>
     <artifactId>ph-web-parent-pom</artifactId>
-    <version>9.4.0-SNAPSHOT</version>
+    <version>9.4.0</version>
   </parent>
   <artifactId>ph-smtp</artifactId>
   <packaging>bundle</packaging>

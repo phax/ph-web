@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.4.0 - work in progress
+* v9.4.0 - 2020-11-13
     * Updated to Apache httpclient 4.5.13
     * Updated to dnsjava 3.3.1
     * Updated to Jakarta Mail 2.0.0 (requiring Jakarta Activation as well)

@@ -57,31 +57,32 @@ public final class NaptrResolver
     return x -> sServiceName.equalsIgnoreCase (x);
   }
 
+  // !^.*$!http://test-infra.peppol.at!
   @Nullable
-  private static String _getAppliedNAPTRRegEx (@Nonnull final String sRegEx, @Nonnull final String sDomainName)
+  private static String _getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
   {
-    final char cSep = sRegEx.charAt (0);
-    final int nSecond = sRegEx.indexOf (cSep, 1);
+    final char cSep = sNaptrRegEx.charAt (0);
+    final int nSecond = sNaptrRegEx.indexOf (cSep, 1);
     if (nSecond < 0)
     {
-      LOGGER.warn ("NAPTR regex '" + sRegEx + "' - failed to find second separator");
+      LOGGER.warn ("NAPTR regex '" + sNaptrRegEx + "' - failed to find second separator");
       return null;
     }
-    final String sRE = sRegEx.substring (1, nSecond);
-    final int nThird = sRegEx.indexOf (cSep, nSecond + 1);
+    final String sRegEx = sNaptrRegEx.substring (1, nSecond);
+    final int nThird = sNaptrRegEx.indexOf (cSep, nSecond + 1);
     if (nThird < 0)
     {
-      LOGGER.warn ("NAPTR regex '" + sRegEx + "' - failed to find third separator");
+      LOGGER.warn ("NAPTR regex '" + sNaptrRegEx + "' - failed to find third separator");
       return null;
     }
-    final String sRepl = sRegEx.substring (nSecond + 1, nThird);
-    final String sFlags = sRegEx.substring (nThird + 1);
+    final String sReplacement = sNaptrRegEx.substring (nSecond + 1, nThird);
+    final String sFlags = sNaptrRegEx.substring (nThird + 1);
 
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("NAPTR regex: '" + sRE + "' - '" + sRepl + "' - '" + sFlags + "'");
+      LOGGER.debug ("NAPTR regex: '" + sRegEx + "' - '" + sReplacement + "' - '" + sFlags + "'");
 
     final int nOptions = "i".equalsIgnoreCase (sFlags) ? Pattern.CASE_INSENSITIVE : 0;
-    final String ret = RegExHelper.stringReplacePattern (sRE, nOptions, sDomainName, sRepl);
+    final String ret = RegExHelper.stringReplacePattern (sRegEx, nOptions, sDomainName, sReplacement);
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("  NAPTR replacement: '" + sDomainName + "' -> '" + ret + "'");
@@ -96,13 +97,21 @@ public final class NaptrResolver
     return NaptrLookup.builder ().domainName (sDNSName).customDNSServers (aCustomDNSServers).maxRetries (1).lookup ();
   }
 
+  @Nullable
+  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
+                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
+                                          @Nonnull @Nonempty final String sServiceName) throws TextParseException
+  {
+    return resolveFromUNAPTR (sDNSName, aCustomDNSServers, getDefaultServiceNameMatcher (sServiceName));
+  }
+
   /**
    * Look up the passed DNS name (usually a dynamic DNS name that was created by
    * an algorithm) and resolve any U-NAPTR records matching the provided service
    * name.
    *
    * @param sDNSName
-   *        The created DNS name. May be <code>null</code>.
+   *        The domain name to resolve. May be <code>null</code>.
    * @param aCustomDNSServers
    *        Optional primary DNS server addresses to be used for resolution. May
    *        be <code>null</code>. If present, these servers have precedence.

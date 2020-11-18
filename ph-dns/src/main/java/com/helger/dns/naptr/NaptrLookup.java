@@ -48,8 +48,8 @@ public class NaptrLookup
                       @CheckForSigned final long nExecutionDurationWarnMS,
                       @Nullable final CallbackList <INaptrLookupTimeExceededCallback> aExecutionTimeExceededHandlers)
   {
-    ValueEnforcer.notNull (aDomainName, "DNSName");
-    ValueEnforcer.isGE0 (nMaxRetries, "MAxRetries");
+    ValueEnforcer.notNull (aDomainName, "DomainName");
+    ValueEnforcer.isGE0 (nMaxRetries, "MaxRetries");
 
     m_aDomainName = aDomainName;
     m_aCustomDNSServers = new CommonsArrayList <> (aCustomDNSServers);
@@ -214,9 +214,14 @@ public class NaptrLookup
     @Nonnull
     public final Builder maxRetries (@Nonnegative final int n)
     {
-      ValueEnforcer.isGE0 (n, "MaxRetries");
       m_nMaxRetries = n;
       return this;
+    }
+
+    @Nonnull
+    public final Builder noRetries ()
+    {
+      return maxRetries (0);
     }
 
     @Nonnull
@@ -244,7 +249,9 @@ public class NaptrLookup
     public NaptrLookup build ()
     {
       if (m_aDomainName == null)
-        throw new IllegalStateException ("DomainName is required");
+        throw new IllegalStateException ("The domain name is required");
+      if (m_nMaxRetries < 0)
+        throw new IllegalStateException ("The maximum number of retries must be >= 0");
 
       return new NaptrLookup (m_aDomainName,
                               m_aCustomDNSServers,

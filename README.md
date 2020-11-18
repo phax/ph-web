@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.40 - 2020-11-18
+* v9.5.0 - 2020-11-18
     * Reverted back to Jakarta Mail 1.6.5 (because BouncyCastle is still on the old version)
     * Reverted back to Jakarta Activation 1.2.2 (because BouncyCastle is still on the old version)
     * Removed the default DNS servers for usage with the NAPTR record resolution

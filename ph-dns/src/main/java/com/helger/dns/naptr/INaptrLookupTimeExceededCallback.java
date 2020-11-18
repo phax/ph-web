@@ -16,7 +16,8 @@
  */
 package com.helger.dns.naptr;
 
-import javax.annotation.Nonnegative;
+import java.time.Duration;
+
 import javax.annotation.Nonnull;
 
 import com.helger.commons.callback.ICallback;
@@ -36,11 +37,11 @@ public interface INaptrLookupTimeExceededCallback extends ICallback
    *
    * @param sMsg
    *        The message to locate the source. May not be <code>null</code>.
-   * @param nExecutionMillis
-   *        The milliseconds the execution took. Always &gt; 0.
-   * @param nLimitMillis
-   *        The milliseconds the execution should not exceed. So the maximum
+   * @param aExecutionDuration
+   *        The duration the execution took. Always &gt; 0.
+   * @param aLimitDuration
+   *        The duration the execution should not exceed. So the maximum
    *        configured execution time. Always &gt; 0.
    */
-  void onLookupTimeExceeded (@Nonnull String sMsg, @Nonnegative long nExecutionMillis, @Nonnegative long nLimitMillis);
+  void onLookupTimeExceeded (@Nonnull String sMsg, @Nonnull Duration aExecutionDuration, @Nonnull Duration aLimitDuration);
 }

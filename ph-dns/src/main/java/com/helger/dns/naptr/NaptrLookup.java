@@ -1,9 +1,8 @@
 package com.helger.dns.naptr;
 
 import java.net.InetAddress;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
-import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +19,6 @@ import org.xbill.DNS.Record;
 import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
-import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.CallbackList;
 import com.helger.commons.collection.impl.CommonsArrayList;
@@ -42,13 +40,15 @@ public class NaptrLookup
   private final Name m_aDomainName;
   private final ICommonsList <InetAddress> m_aCustomDNSServers;
   private final int m_nMaxRetries;
-  private final long m_nExecutionDurationWarnMS;
+  private final Duration m_aTimeout;
+  private final Duration m_aExecutionDurationWarn;
   private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers;
 
   public NaptrLookup (@Nonnull final Name aDomainName,
                       @Nullable final ICommonsList <InetAddress> aCustomDNSServers,
                       @Nonnegative final int nMaxRetries,
-                      @CheckForSigned final long nExecutionDurationWarnMS,
+                      @Nullable final Duration aTimeout,
+                      @Nullable final Duration aExecutionDurationWarn,
                       @Nullable final CallbackList <INaptrLookupTimeExceededCallback> aExecutionTimeExceededHandlers)
   {
     ValueEnforcer.notNull (aDomainName, "DomainName");
@@ -57,7 +57,8 @@ public class NaptrLookup
     m_aDomainName = aDomainName;
     m_aCustomDNSServers = new CommonsArrayList <> (aCustomDNSServers);
     m_nMaxRetries = nMaxRetries;
-    m_nExecutionDurationWarnMS = nExecutionDurationWarnMS;
+    m_aTimeout = aTimeout;
+    m_aExecutionDurationWarn = aExecutionDurationWarn;
     m_aExecutionTimeExceededHandlers = new CallbackList <> (aExecutionTimeExceededHandlers);
   }
 
@@ -79,9 +80,12 @@ public class NaptrLookup
     try
     {
       // Use the default (static) cache that is used by default
-      final Lookup aLookup = new Lookup (m_aDomainName, Type.NAPTR);
       final ExtendedResolver aResolver = ResolverHelper.createExtendedResolver (m_aCustomDNSServers);
       aResolver.setRetries (m_nMaxRetries);
+      if (m_aTimeout != null)
+        aResolver.setTimeout (m_aTimeout);
+
+      final Lookup aLookup = new Lookup (m_aDomainName, Type.NAPTR);
       aLookup.setResolver (aResolver);
 
       // By default try UDP
@@ -129,13 +133,14 @@ public class NaptrLookup
     {
       // Check execution time
       aSW.stop ();
-      if (m_nExecutionDurationWarnMS > 0 && aSW.getMillis () > m_nExecutionDurationWarnMS)
+      final Duration aDuration = aSW.getDuration ();
+      if (m_aExecutionDurationWarn != null && aDuration.compareTo (m_aExecutionDurationWarn) > 0)
       {
         final String sMessage = "Looking up NAPTR record of '" +
                                 sDomainName +
                                 "'" +
                                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "");
-        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage, aSW.getMillis (), m_nExecutionDurationWarnMS));
+        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage, aDuration, m_aExecutionDurationWarn));
       }
     }
   }
@@ -150,12 +155,13 @@ public class NaptrLookup
   public static class Builder
   {
     public static final int DEFAULT_MAX_RETRIES = 1;
-    public static final long DEFAULT_EXECUTION_DURATION_WARN_MS = CGlobal.MILLISECONDS_PER_SECOND;
+    public static final Duration DEFAULT_EXECUTION_DURATION_WARN = Duration.ofSeconds (1);
 
     private Name m_aDomainName;
     private final ICommonsList <InetAddress> m_aCustomDNSServers = new CommonsArrayList <> ();
     private int m_nMaxRetries = DEFAULT_MAX_RETRIES;
-    private long m_nExecutionDurationWarnMS = DEFAULT_EXECUTION_DURATION_WARN_MS;
+    private Duration m_aTimeout;
+    private Duration m_aExecutionDurationWarn = DEFAULT_EXECUTION_DURATION_WARN;
     private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers = new CallbackList <> ();
 
     public Builder ()
@@ -244,9 +250,22 @@ public class NaptrLookup
     }
 
     @Nonnull
-    public final Builder maxRetries (@Nonnegative final int n)
+    public final Builder maxRetries (final int n)
     {
       m_nMaxRetries = n;
+      return this;
+    }
+
+    @Nonnull
+    public final Builder timeoutMS (final long n)
+    {
+      return timeout (Duration.ofMillis (n));
+    }
+
+    @Nonnull
+    public final Builder timeout (@Nullable final Duration a)
+    {
+      m_aTimeout = a;
       return this;
     }
 
@@ -257,15 +276,15 @@ public class NaptrLookup
     }
 
     @Nonnull
-    public final Builder executionTimeWarnMS (@Nullable final TimeUnit eTimeUnit, final long nDuration)
+    public final Builder executionDurationWarnMS (final long nMillis)
     {
-      return executionTimeWarnMS (eTimeUnit == null ? 0 : eTimeUnit.toSeconds (nDuration));
+      return executionDurationWarn (nMillis < 0 ? null : Duration.ofMillis (nMillis));
     }
 
     @Nonnull
-    public final Builder executionTimeWarnMS (final long n)
+    public final Builder executionDurationWarn (@Nullable final Duration a)
     {
-      m_nExecutionDurationWarnMS = n;
+      m_aExecutionDurationWarn = a;
       return this;
     }
 
@@ -288,7 +307,8 @@ public class NaptrLookup
       return new NaptrLookup (m_aDomainName,
                               m_aCustomDNSServers,
                               m_nMaxRetries,
-                              m_nExecutionDurationWarnMS,
+                              m_aTimeout,
+                              m_aExecutionDurationWarn,
                               m_aExecutionTimeExceededHandlers);
     }
 

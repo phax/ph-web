@@ -248,6 +248,7 @@ public class NaptrResolver
   {
     private String m_sDomainName;
     private final ICommonsList <NAPTRRecord> m_aNaptrRecords = new CommonsArrayList <> ();
+    private boolean m_bNaptrLookupProvided = false;
     private Predicate <? super String> m_aServiceNameMatcher;
 
     public Builder ()
@@ -281,6 +282,8 @@ public class NaptrResolver
     @Nonnull
     public final Builder naptrRecords (@Nullable final NaptrLookup a)
     {
+      if (a != null)
+        m_bNaptrLookupProvided = true;
       return naptrRecords (a == null ? null : a.lookup ());
     }
 
@@ -357,7 +360,21 @@ public class NaptrResolver
       if (StringHelper.hasNoText (m_sDomainName))
         throw new IllegalStateException ("Domain name is required");
       if (m_aNaptrRecords.isEmpty ())
-        LOGGER.warn ("No NAPTR records are provided");
+      {
+        LOGGER.warn ("No NAPTR records are provided." + (m_bNaptrLookupProvided ? "" : " Using the default lookup."));
+
+        // If no NAPTR Records are present and no lookup was yet performed, do a
+        // simple default lookup
+        if (!m_bNaptrLookupProvided)
+          try
+          {
+            naptrRecords (NaptrLookup.builder ().domainName (m_sDomainName));
+          }
+          catch (final TextParseException ex)
+          {
+            LOGGER.error ("Creepy domain found", ex);
+          }
+      }
       if (m_aServiceNameMatcher == null)
         throw new IllegalStateException ("The service name predicate is required");
 

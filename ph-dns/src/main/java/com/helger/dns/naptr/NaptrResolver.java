@@ -23,10 +23,12 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.NAPTRRecord;
+import org.xbill.DNS.Name;
 import org.xbill.DNS.TextParseException;
 
 import com.helger.commons.ValueEnforcer;
@@ -44,12 +46,26 @@ import com.helger.commons.string.StringHelper;
  * @since 5.1.5
  */
 @Immutable
-public final class NaptrResolver
+public class NaptrResolver
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrResolver.class);
 
-  private NaptrResolver ()
-  {}
+  private final String m_sDomainName;
+  private final ICommonsList <NAPTRRecord> m_aNaptrRecords;
+  private final Predicate <? super String> m_aServiceNameMatcher;
+
+  public NaptrResolver (@Nonnull final String sDomainName,
+                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  {
+    ValueEnforcer.notNull (sDomainName, "DomainName");
+    ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
+    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
+
+    m_sDomainName = sDomainName;
+    m_aNaptrRecords = aNaptrRecords;
+    m_aServiceNameMatcher = aServiceNameMatcher;
+  }
 
   @Nonnull
   public static Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
@@ -57,7 +73,7 @@ public final class NaptrResolver
     return x -> sServiceName.equalsIgnoreCase (x);
   }
 
-  // !^.*$!http://test-infra.peppol.at!
+  // NaptrRegex is e.g. <code>!^.*$!http://test-infra.peppol.at!</code>
   @Nullable
   private static String _getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
   {
@@ -89,79 +105,11 @@ public final class NaptrResolver
     return ret;
   }
 
-  @Deprecated
   @Nullable
-  public static ICommonsList <NAPTRRecord> lookupNAPTRRecords (@Nullable final String sDNSName,
-                                                               @Nullable final Iterable <? extends InetAddress> aCustomDNSServers) throws TextParseException
+  public String resolveUNAPTR ()
   {
-    return NaptrLookup.builder ().domainName (sDNSName).customDNSServers (aCustomDNSServers).maxRetries (1).lookup ();
-  }
-
-  @Nullable
-  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
-                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
-                                          @Nonnull @Nonempty final String sServiceName) throws TextParseException
-  {
-    return resolveFromUNAPTR (sDNSName, aCustomDNSServers, getDefaultServiceNameMatcher (sServiceName));
-  }
-
-  /**
-   * Look up the passed DNS name (usually a dynamic DNS name that was created by
-   * an algorithm) and resolve any U-NAPTR records matching the provided service
-   * name.
-   *
-   * @param sDNSName
-   *        The domain name to resolve. May be <code>null</code>.
-   * @param aCustomDNSServers
-   *        Optional primary DNS server addresses to be used for resolution. May
-   *        be <code>null</code>. If present, these servers have precedence.
-   * @param aServiceNameMatcher
-   *        A matcher for service names (inside the U NAPTR) to query. May not
-   *        be <code>null</code>. The service name needs to be matched
-   *        case-insensitive. For e-SENS/Peppol test for "Meta:SMP"
-   * @return <code>null</code> if no U-NAPTR was found or could not be resolved.
-   *         If non-<code>null</code> the fully qualified domain name, including
-   *         and protocol (like http://) is returned.
-   * @throws TextParseException
-   *         In case the original DNS name does not constitute a valid DNS name
-   *         and could not be parsed
-   */
-  @Nullable
-  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
-                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
-                                          @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher) throws TextParseException
-  {
-    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
-
-    final ICommonsList <NAPTRRecord> aNaptrRecords = NaptrLookup.builder ()
-                                                                .domainName (sDNSName)
-                                                                .customDNSServers (aCustomDNSServers)
-                                                                .lookup ();
-    if (aNaptrRecords == null)
-      return null;
-
-    return resolveUNAPTR (sDNSName, aNaptrRecords, aServiceNameMatcher);
-  }
-
-  @Nullable
-  public static String resolveUNAPTR (@Nonnull final String sDNSName,
-                                      @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
-                                      @Nonnull @Nonempty final String sServiceName)
-  {
-    return resolveUNAPTR (sDNSName, aNaptrRecords, getDefaultServiceNameMatcher (sServiceName));
-  }
-
-  @Nullable
-  public static String resolveUNAPTR (@Nonnull final String sDNSName,
-                                      @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
-                                      @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher)
-  {
-    ValueEnforcer.notNull (sDNSName, "DNSName");
-    ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
-    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
-
     final ICommonsList <NAPTRRecord> aMatchingRecords = new CommonsArrayList <> ();
-    for (final NAPTRRecord aRecord : aNaptrRecords)
+    for (final NAPTRRecord aRecord : m_aNaptrRecords)
     {
       /**
        * RFC 2915: Flags are single characters from the set [A-Z0-9]. The case
@@ -174,7 +122,7 @@ public final class NaptrResolver
        * app-protocol)]<br>
        * ; The service-parms are considered case-insensitive.
        */
-      if ("U".equalsIgnoreCase (aRecord.getFlags ()) && aServiceNameMatcher.test (aRecord.getService ()))
+      if ("U".equalsIgnoreCase (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
         aMatchingRecords.add (aRecord);
     }
 
@@ -182,7 +130,7 @@ public final class NaptrResolver
     {
       // No matching NAPTR present
       if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("No matching DNS U-NAPTR records returned for '" + sDNSName + "'");
+        LOGGER.warn ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
       return null;
     }
 
@@ -200,11 +148,11 @@ public final class NaptrResolver
       // At least 3 separator chars must be present :)
       if (StringHelper.getLength (sRegEx) > 3)
       {
-        final String sFinalDNSName = _getAppliedNAPTRRegEx (sRegEx, sDNSName);
+        final String sFinalDNSName = _getAppliedNAPTRRegEx (sRegEx, m_sDomainName);
         if (sFinalDNSName != null)
         {
           if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Using '" + sFinalDNSName + "' for original DNS name '" + sDNSName + "'");
+            LOGGER.debug ("Using '" + sFinalDNSName + "' for original domain name '" + m_sDomainName + "'");
 
           return sFinalDNSName;
         }
@@ -214,9 +162,206 @@ public final class NaptrResolver
     // Weird - no regexp present
     if (LOGGER.isWarnEnabled ())
       LOGGER.warn ("None of the matching DNS NAPTR records for '" +
-                   sDNSName +
+                   m_sDomainName +
                    "' has a valid regular expression. Details: " +
                    aMatchingRecords);
     return null;
+  }
+
+  @Nullable
+  @Deprecated
+  public static ICommonsList <NAPTRRecord> lookupNAPTRRecords (@Nullable final String sDNSName,
+                                                               @Nullable final Iterable <? extends InetAddress> aCustomDNSServers) throws TextParseException
+  {
+    return NaptrLookup.builder ().domainName (sDNSName).customDNSServers (aCustomDNSServers).maxRetries (1).lookup ();
+  }
+
+  @Nullable
+  @Deprecated
+  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
+                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
+                                          @Nonnull @Nonempty final String sServiceName) throws TextParseException
+  {
+    return resolveFromUNAPTR (sDNSName, aCustomDNSServers, getDefaultServiceNameMatcher (sServiceName));
+  }
+
+  /**
+   * Look up the passed DNS name (usually a dynamic DNS name that was created by
+   * an algorithm) and resolve any U-NAPTR records matching the provided service
+   * name.
+   *
+   * @param sDomainName
+   *        The domain name to resolve. May be <code>null</code>.
+   * @param aCustomDNSServers
+   *        Optional primary DNS server addresses to be used for resolution. May
+   *        be <code>null</code>. If present, these servers have precedence.
+   * @param aServiceNameMatcher
+   *        A matcher for service names (inside the U NAPTR) to query. May not
+   *        be <code>null</code>. The service name needs to be matched
+   *        case-insensitive. For e-SENS/Peppol test for "Meta:SMP"
+   * @return <code>null</code> if no U-NAPTR was found or could not be resolved.
+   *         If non-<code>null</code> the fully qualified domain name, including
+   *         and protocol (like http://) is returned.
+   * @throws TextParseException
+   *         In case the original DNS name does not constitute a valid DNS name
+   *         and could not be parsed
+   */
+  @Nullable
+  @Deprecated
+  public static String resolveFromUNAPTR (@Nullable final String sDomainName,
+                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
+                                          @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher) throws TextParseException
+  {
+    return builder ().domainName (sDomainName)
+                     .naptrRecords (NaptrLookup.builder ().domainName (sDomainName).customDNSServers (aCustomDNSServers))
+                     .serviceName (aServiceNameMatcher)
+                     .build ()
+                     .resolveUNAPTR ();
+  }
+
+  @Nullable
+  @Deprecated
+  public static String resolveUNAPTR (@Nonnull final String sDNSName,
+                                      @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                                      @Nonnull @Nonempty final String sServiceName)
+  {
+    return builder ().domainName (sDNSName).naptrRecords (aNaptrRecords).serviceName (sServiceName).build ().resolveUNAPTR ();
+  }
+
+  @Nullable
+  @Deprecated
+  public static String resolveUNAPTR (@Nonnull final String sDNSName,
+                                      @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                                      @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  {
+    return builder ().domainName (sDNSName).naptrRecords (aNaptrRecords).serviceName (aServiceNameMatcher).build ().resolveUNAPTR ();
+  }
+
+  @Nonnull
+  public static Builder builder ()
+  {
+    return new Builder ();
+  }
+
+  @NotThreadSafe
+  public static class Builder
+  {
+    private String m_sDomainName;
+    private final ICommonsList <NAPTRRecord> m_aNaptrRecords = new CommonsArrayList <> ();
+    private Predicate <? super String> m_aServiceNameMatcher;
+
+    public Builder ()
+    {}
+
+    @Nonnull
+    public final Builder domainName (@Nullable final NaptrLookup.Builder a)
+    {
+      return domainName (a == null ? null : a.domainName ());
+    }
+
+    @Nonnull
+    public final Builder domainName (@Nullable final Name a)
+    {
+      return domainName (a == null ? null : a.toString (false));
+    }
+
+    @Nonnull
+    public final Builder domainName (@Nullable final String s)
+    {
+      m_sDomainName = s;
+      return this;
+    }
+
+    @Nonnull
+    public final Builder naptrRecords (@Nullable final NaptrLookup.Builder a)
+    {
+      return naptrRecords (a == null ? null : a.build ());
+    }
+
+    @Nonnull
+    public final Builder naptrRecords (@Nullable final NaptrLookup a)
+    {
+      return naptrRecords (a == null ? null : a.lookup ());
+    }
+
+    @Nonnull
+    public final Builder naptrRecord (@Nullable final NAPTRRecord a)
+    {
+      if (a == null)
+        m_aNaptrRecords.clear ();
+      else
+        m_aNaptrRecords.set (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder naptrRecords (@Nullable final NAPTRRecord... a)
+    {
+      if (a == null)
+        m_aNaptrRecords.clear ();
+      else
+        m_aNaptrRecords.setAll (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder naptrRecords (@Nullable final Iterable <? extends NAPTRRecord> a)
+    {
+      if (a == null)
+        m_aNaptrRecords.clear ();
+      else
+        m_aNaptrRecords.setAll (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder addNaptrRecord (@Nullable final NAPTRRecord a)
+    {
+      if (a != null)
+        m_aNaptrRecords.add (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder addNaptrRecords (@Nullable final NAPTRRecord... a)
+    {
+      if (a != null)
+        m_aNaptrRecords.addAll (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder addNaptrRecords (@Nullable final Iterable <? extends NAPTRRecord> a)
+    {
+      if (a != null)
+        m_aNaptrRecords.addAll (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder serviceName (@Nullable final String s)
+    {
+      return serviceName (s == null ? null : getDefaultServiceNameMatcher (s));
+    }
+
+    @Nonnull
+    public final Builder serviceName (@Nullable final Predicate <? super String> a)
+    {
+      m_aServiceNameMatcher = a;
+      return this;
+    }
+
+    @Nonnull
+    public NaptrResolver build ()
+    {
+      if (StringHelper.hasNoText (m_sDomainName))
+        throw new IllegalStateException ("Domain name is required");
+      if (m_aNaptrRecords.isEmpty ())
+        LOGGER.warn ("No NAPTR records are provided");
+      if (m_aServiceNameMatcher == null)
+        throw new IllegalStateException ("The service name predicate is required");
+
+      return new NaptrResolver (m_sDomainName, m_aNaptrRecords, m_aServiceNameMatcher);
+    }
   }
 }

@@ -59,6 +59,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
     * Reverted back to Jakarta Activation 1.2.2 (because BouncyCastle is still on the old version)
     * Removed the default DNS servers for usage with the NAPTR record resolution
     * Added a new class `NaptrLookup` to provide a more flexible NAPTR resolution logic
+    * The class `NaptrResolver` was changed to also use the builder pattern
 * v9.4.0 - 2020-11-13 (don't use)
     * Updated to Apache httpclient 4.5.13
     * Updated to dnsjava 3.3.1

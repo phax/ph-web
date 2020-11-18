@@ -7,6 +7,8 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ import com.helger.dns.resolve.ResolverHelper;
  * @author Philip Helger
  * @since 9.5.0
  */
+@Immutable
 public class NaptrLookup
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrLookup.class);
@@ -143,6 +146,7 @@ public class NaptrLookup
     return new Builder ();
   }
 
+  @NotThreadSafe
   public static class Builder
   {
     public static final int DEFAULT_MAX_RETRIES = 1;
@@ -160,6 +164,18 @@ public class NaptrLookup
       m_aExecutionTimeExceededHandlers.add (new LoggingNaptrLookupTimeExceededCallback (false));
     }
 
+    @Nullable
+    public final Name domainName ()
+    {
+      return m_aDomainName;
+    }
+
+    @Nullable
+    public final String domainNameString ()
+    {
+      return m_aDomainName == null ? null : m_aDomainName.toString (false);
+    }
+
     @Nonnull
     public final Builder domainName (@Nullable final String s) throws TextParseException
     {
@@ -174,7 +190,7 @@ public class NaptrLookup
     }
 
     @Nonnull
-    public final Builder customDNSServers (@Nullable final InetAddress a)
+    public final Builder customDNSServer (@Nullable final InetAddress a)
     {
       if (a == null)
         m_aCustomDNSServers.clear ();
@@ -208,6 +224,22 @@ public class NaptrLookup
     {
       if (a != null)
         m_aCustomDNSServers.add (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder addCustomDNSServers (@Nullable final InetAddress... a)
+    {
+      if (a != null)
+        m_aCustomDNSServers.addAll (a);
+      return this;
+    }
+
+    @Nonnull
+    public final Builder addCustomDNSServers (@Nullable final Iterable <? extends InetAddress> a)
+    {
+      if (a != null)
+        m_aCustomDNSServers.addAll (a);
       return this;
     }
 

@@ -26,21 +26,16 @@ import javax.annotation.concurrent.Immutable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xbill.DNS.ExtendedResolver;
-import org.xbill.DNS.Lookup;
 import org.xbill.DNS.NAPTRRecord;
-import org.xbill.DNS.Record;
 import org.xbill.DNS.TextParseException;
-import org.xbill.DNS.Type;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.compare.CompareHelper;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
-import com.helger.dns.config.DNSConfig;
-import com.helger.dns.resolve.ResolverHelper;
 
 /**
  * Helper class to resolve NAPTR DNS records for BDMSL
@@ -53,16 +48,11 @@ public final class NaptrResolver
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrResolver.class);
 
-  static
-  {
-    DNSConfig.ensureInited ();
-  }
-
   private NaptrResolver ()
   {}
 
   @Nonnull
-  public static final Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
+  public static Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
   {
     return x -> sServiceName.equalsIgnoreCase (x);
   }
@@ -73,107 +63,37 @@ public final class NaptrResolver
     final char cSep = sRegEx.charAt (0);
     final int nSecond = sRegEx.indexOf (cSep, 1);
     if (nSecond < 0)
+    {
+      LOGGER.warn ("NAPTR regex '" + sRegEx + "' - failed to find second separator");
       return null;
-    final String sEre = sRegEx.substring (1, nSecond);
+    }
+    final String sRE = sRegEx.substring (1, nSecond);
     final int nThird = sRegEx.indexOf (cSep, nSecond + 1);
     if (nThird < 0)
+    {
+      LOGGER.warn ("NAPTR regex '" + sRegEx + "' - failed to find third separator");
       return null;
+    }
     final String sRepl = sRegEx.substring (nSecond + 1, nThird);
     final String sFlags = sRegEx.substring (nThird + 1);
 
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("NAPTR regex: '" + sEre + "' - '" + sRepl + "' - '" + sFlags + "'");
+      LOGGER.debug ("NAPTR regex: '" + sRE + "' - '" + sRepl + "' - '" + sFlags + "'");
 
     final int nOptions = "i".equalsIgnoreCase (sFlags) ? Pattern.CASE_INSENSITIVE : 0;
-    final String ret = RegExHelper.stringReplacePattern (sEre, nOptions, sDomainName, sRepl);
+    final String ret = RegExHelper.stringReplacePattern (sRE, nOptions, sDomainName, sRepl);
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("  NAPTR replacement: '" + sDomainName + "' -> '" + ret + "'");
     return ret;
   }
 
+  @Deprecated
   @Nullable
   public static ICommonsList <NAPTRRecord> lookupNAPTRRecords (@Nullable final String sDNSName,
                                                                @Nullable final Iterable <? extends InetAddress> aCustomDNSServers) throws TextParseException
   {
-    if (StringHelper.hasNoText (sDNSName))
-      return null;
-
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Trying to look up NAPTR on '" + sDNSName + "'");
-
-    final int nMaxRetries = 1;
-
-    // Use the default (static) cache that is used by default
-    final Lookup aLookup = new Lookup (sDNSName, Type.NAPTR);
-    final ExtendedResolver aResolver = ResolverHelper.createExtendedResolver (aCustomDNSServers);
-    aResolver.setRetries (nMaxRetries);
-    aLookup.setResolver (aResolver);
-
-    // By default try UDP
-    // Stumbled upon an issue, where UDP datagram size was too small for MTU
-    // size of 1500
-    Record [] aRecords;
-    int nLeft = nMaxRetries;
-    do
-    {
-      aRecords = aLookup.run ();
-      --nLeft;
-    } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
-
-    if (aLookup.getResult () == Lookup.TRY_AGAIN)
-    {
-      // Retry with TCP instead of UDP
-      aResolver.setTCP (true);
-
-      nLeft = nMaxRetries;
-      do
-      {
-        aRecords = aLookup.run ();
-        --nLeft;
-      } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
-    }
-
-    if (aLookup.getResult () != Lookup.SUCCESSFUL)
-    {
-      // Wrong domain name
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Error looking up '" + sDNSName + "': " + aLookup.getErrorString ());
-      return null;
-    }
-
-    final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
-    for (final Record aRecord : aRecords)
-      ret.add ((NAPTRRecord) aRecord);
-    return ret;
-  }
-
-  /**
-   * Look up the passed DNS name (usually a dynamic DNS name that was created by
-   * an algorithm) and resolve any U-NAPTR records matching the provided service
-   * name.
-   *
-   * @param sDNSName
-   *        The created DNS name. May be <code>null</code>.
-   * @param aCustomDNSServers
-   *        Optional primary DNS server addresses to be used for resolution. May
-   *        be <code>null</code>. If present, these servers have precedence.
-   * @param sServiceName
-   *        The service name (inside the U NAPTR) to query. May neither be
-   *        <code>null</code> nor empty. For e-SENS/PEPPOL use "Meta:SMP"
-   * @return <code>null</code> if no U-NAPTR was found or could not be resolved.
-   *         If non-<code>null</code> the fully qualified domain name, including
-   *         and protocol (like http://) is returned.
-   * @throws TextParseException
-   *         In case the original DNS name does not constitute a valid DNS name
-   *         and could not be parsed
-   */
-  @Nullable
-  public static String resolveFromUNAPTR (@Nullable final String sDNSName,
-                                          @Nullable final Iterable <? extends InetAddress> aCustomDNSServers,
-                                          @Nonnull @Nonempty final String sServiceName) throws TextParseException
-  {
-    return resolveFromUNAPTR (sDNSName, aCustomDNSServers, getDefaultServiceNameMatcher (sServiceName));
+    return NaptrLookup.builder ().domainName (sDNSName).customDNSServers (aCustomDNSServers).maxRetries (1).lookup ();
   }
 
   /**
@@ -204,7 +124,10 @@ public final class NaptrResolver
   {
     ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
 
-    final ICommonsList <NAPTRRecord> aNaptrRecords = lookupNAPTRRecords (sDNSName, aCustomDNSServers);
+    final ICommonsList <NAPTRRecord> aNaptrRecords = NaptrLookup.builder ()
+                                                                .domainName (sDNSName)
+                                                                .customDNSServers (aCustomDNSServers)
+                                                                .lookup ();
     if (aNaptrRecords == null)
       return null;
 
@@ -256,9 +179,9 @@ public final class NaptrResolver
 
     // Sort by order than by preference according to RFC 2915
     aMatchingRecords.sort ( (x, y) -> {
-      int ret = x.getOrder () - y.getOrder ();
+      int ret = CompareHelper.compare (x.getOrder (), y.getOrder ());
       if (ret == 0)
-        ret = x.getPreference () - y.getPreference ();
+        ret = CompareHelper.compare (x.getPreference (), y.getPreference ());
       return ret;
     });
     for (final NAPTRRecord aRecord : aMatchingRecords)

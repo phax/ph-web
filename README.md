@@ -54,10 +54,12 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.4.1 - 2020-11-18
+* v9.40 - 2020-11-18
     * Reverted back to Jakarta Mail 1.6.5 (because BouncyCastle is still on the old version)
     * Reverted back to Jakarta Activation 1.2.2 (because BouncyCastle is still on the old version)
-* v9.4.0 - 2020-11-13
+    * Removed the default DNS servers for usage with the NAPTR record resolution
+    * Added a new class `NaptrLookup` to provide a more flexible NAPTR resolution logic
+* v9.4.0 - 2020-11-13 (don't use)
     * Updated to Apache httpclient 4.5.13
     * Updated to dnsjava 3.3.1
     * Updated to Jakarta Mail 2.0.0 (requiring Jakarta Activation as well)

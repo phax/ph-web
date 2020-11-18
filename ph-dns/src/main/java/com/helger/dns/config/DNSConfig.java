@@ -28,11 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.system.SystemProperties;
-import com.helger.dns.dnsjava.DnsjavaInit;
 import com.helger.dns.ip.IPV4Addr;
 
 /**
@@ -43,22 +39,17 @@ import com.helger.dns.ip.IPV4Addr;
 @Immutable
 public final class DNSConfig
 {
+  // Some predefined DNS servers from cloud services
+  public static final InetAddress DNS_GOOGLE_1 = IPV4Addr.getAsInetAddress (8, 8, 8, 8);
+  public static final InetAddress DNS_GOOGLE_2 = IPV4Addr.getAsInetAddress (8, 8, 4, 4);
+  public static final InetAddress DNS_CLOUDFLARE_1 = IPV4Addr.getAsInetAddress (1, 1, 1, 1);
+  public static final InetAddress DNS_CLOUDFLARE_2 = IPV4Addr.getAsInetAddress (1, 0, 0, 1);
+
   // Taken from ExtendedResolver.DEFAULT_TIMEOUT
-  private static final Duration DEFAULT_RESOLVER_TIMEOUT = Duration.ofSeconds (5);
+  public static final Duration DEFAULT_RESOLVER_TIMEOUT = Duration.ofSeconds (5);
 
   // Taken from ExtendedResolver.retries field
-  private static final int DEFAULT_RESOLVER_RETRIES = 3;
-
-  private static final ICommonsList <InetAddress> CUSTOM_DEFAULT_DNS_SERVERS = new CommonsArrayList <> ();
-  static
-  {
-    // Google DNS
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (8, 8, 8, 8));
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (8, 8, 4, 4));
-    // CloudFlare DNS
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 1, 1, 1));
-    CUSTOM_DEFAULT_DNS_SERVERS.add (IPV4Addr.getAsInetAddress (1, 0, 0, 1));
-  }
+  public static final int DEFAULT_RESOLVER_RETRIES = 3;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfig.class);
 
@@ -109,23 +100,5 @@ public final class DNSConfig
   public static int getResolverRetries ()
   {
     return DEFAULT_RESOLVER_RETRIES;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public static ICommonsList <InetAddress> getDefaultCustomServers ()
-  {
-    return CUSTOM_DEFAULT_DNS_SERVERS.getClone ();
-  }
-
-  static
-  {
-    // Init Dnsjava with a custom ServerConfigProvider
-    DnsjavaInit.initWithCustomDNSServers (getDefaultCustomServers ());
-  }
-
-  public static void ensureInited ()
-  {
-    /* empty - just to ensure the DnsjavaInit is called */
   }
 }

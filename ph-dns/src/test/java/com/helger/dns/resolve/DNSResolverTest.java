@@ -24,22 +24,13 @@ import java.net.InetAddress;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.dns.config.DNSConfig;
-
 public final class DNSResolverTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolverTest.class);
-
-  @BeforeClass
-  public static void before ()
-  {
-    DNSConfig.ensureInited ();
-  }
 
   @Nullable
   private static InetAddress _resolveByName (@Nonnull final String sHostName)

@@ -37,11 +37,6 @@ import com.helger.dns.config.DNSConfig;
 @Immutable
 public final class ResolverHelper
 {
-  static
-  {
-    DNSConfig.ensureInited ();
-  }
-
   private ResolverHelper ()
   {}
 
@@ -103,11 +98,6 @@ public final class ResolverHelper
     });
     // Add default servers as fallbacks
     forEachDefaultResolver (x -> {
-      if (!_isContained (aResolvers, x))
-        aResolvers.add (x);
-    });
-    // Add custom default servers last
-    forEachResolver (DNSConfig.getDefaultCustomServers (), x -> {
       if (!_isContained (aResolvers, x))
         aResolvers.add (x);
     });

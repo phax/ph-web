@@ -29,7 +29,7 @@ import com.helger.smtp.data.IEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailSendDetails;
 
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage;
 
 /**
  * Email data transport event for later evaluation.

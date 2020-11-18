@@ -41,7 +41,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
   private static final Logger LOGGER = LoggerFactory.getLogger (MainCreateMimeTypesFileNameMapForJavaxActivation.class);
 
   /**
-   * Create the mime.types file that is read by jakarta.activation. See class
+   * Create the mime.types file that is read by javax.activation. See class
    * javax.annotation.MimetypesFileTypeMap
    *
    * @param args

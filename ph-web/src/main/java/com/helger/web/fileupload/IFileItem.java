@@ -31,7 +31,7 @@ import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
-import jakarta.activation.DataSource;
+import javax.activation.DataSource;
 
 /**
  * <p>
@@ -47,11 +47,11 @@ import jakarta.activation.DataSource;
  * load it into memory, which may come handy with large files.
  * <p>
  * While this interface does not extend
- * <code>jakarta.activation.DataSource</code> per se (to avoid a seldom used
+ * <code>javax.activation.DataSource</code> per se (to avoid a seldom used
  * dependency), several of the defined methods are specifically defined with the
  * same signatures as methods in that interface. This allows an implementation
  * of this interface to also implement
- * <code>jakarta.activation.DataSource</code> with minimal additional work.
+ * <code>javax.activation.DataSource</code> with minimal additional work.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>

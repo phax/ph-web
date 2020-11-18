@@ -28,8 +28,8 @@ import com.helger.commons.error.level.IErrorLevel;
 import com.helger.commons.log.LogHelper;
 import com.helger.commons.string.ToStringGenerator;
 
-import jakarta.mail.event.ConnectionEvent;
-import jakarta.mail.event.ConnectionListener;
+import javax.mail.event.ConnectionEvent;
+import javax.mail.event.ConnectionListener;
 
 /**
  * An implementation of {@link ConnectionListener} that logs stuff to a logger.

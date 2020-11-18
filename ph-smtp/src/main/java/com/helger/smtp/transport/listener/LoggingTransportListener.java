@@ -34,9 +34,9 @@ import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.transport.MailSendDetails;
 
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 /**
  * An implementation of {@link IEmailDataTransportListener} that logs stuff to a

@@ -16,9 +16,9 @@
  */
 package com.helger.mail.activation;
 
-import com.helger.commons.io.resource.ClassPathResource;
+import javax.activation.MimetypesFileTypeMap;
 
-import jakarta.activation.MimetypesFileTypeMap;
+import com.helger.commons.io.resource.ClassPathResource;
 
 /**
  * A special file type map, that contains all entries from the

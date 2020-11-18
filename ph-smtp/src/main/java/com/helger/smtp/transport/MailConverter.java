@@ -31,11 +31,11 @@ import com.helger.smtp.data.IEmailAttachmentDataSource;
 import com.helger.smtp.data.IMutableEmailAttachmentList;
 import com.helger.smtp.data.IMutableEmailData;
 
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  * Fill a {@link MimeMessage} object with the data of an

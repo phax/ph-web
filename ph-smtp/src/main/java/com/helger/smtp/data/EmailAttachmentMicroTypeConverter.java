@@ -29,7 +29,7 @@ import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 
-import jakarta.activation.FileTypeMap;
+import javax.activation.FileTypeMap;
 
 /**
  * Micro type converter for class {@link EmailAttachment}.

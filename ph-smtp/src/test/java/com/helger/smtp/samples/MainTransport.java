@@ -53,19 +53,19 @@ import java.util.Properties;
 import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
 
-import jakarta.mail.Address;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.SendFailedException;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.event.ConnectionEvent;
-import jakarta.mail.event.ConnectionListener;
-import jakarta.mail.event.TransportEvent;
-import jakarta.mail.event.TransportListener;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.event.ConnectionEvent;
+import javax.mail.event.ConnectionListener;
+import javax.mail.event.TransportEvent;
+import javax.mail.event.TransportListener;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * transport is a simple program that creates a message, explicitly retrieves a

@@ -23,7 +23,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.id.IHasID;
 import com.helger.commons.lang.EnumHelper;
 
-import jakarta.mail.Part;
+import javax.mail.Part;
 
 /**
  * Determine the disposition type

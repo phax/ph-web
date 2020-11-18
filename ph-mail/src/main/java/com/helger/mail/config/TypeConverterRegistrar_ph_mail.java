@@ -21,13 +21,12 @@ import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.annotation.IsSPIImplementation;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.typeconvert.ITypeConverterRegistrarSPI;
 import com.helger.commons.typeconvert.ITypeConverterRegistry;
-
-import jakarta.mail.internet.InternetAddress;
 
 /**
  * Register all TypeConverter implementations of this project.

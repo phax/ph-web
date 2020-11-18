@@ -35,7 +35,7 @@ import com.helger.commons.io.streamprovider.ByteArrayInputStreamProvider;
 import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.string.ToStringGenerator;
 
-import jakarta.activation.FileTypeMap;
+import javax.activation.FileTypeMap;
 
 /**
  * Base implementation for interface {@link IEmailAttachment}.

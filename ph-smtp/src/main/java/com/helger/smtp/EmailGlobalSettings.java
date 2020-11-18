@@ -40,7 +40,7 @@ import com.helger.commons.system.SystemProperties;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import jakarta.mail.event.ConnectionListener;
+import javax.mail.event.ConnectionListener;
 
 /**
  * Global settings for the mail transport.

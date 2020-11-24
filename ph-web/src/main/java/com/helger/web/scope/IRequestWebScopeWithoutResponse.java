@@ -19,6 +19,7 @@ package com.helger.web.scope;
 import java.nio.charset.Charset;
 import java.security.Principal;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
@@ -125,6 +126,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> containing the name of the MIME type of the
    *         request, or null if the type is not known
    */
+  @Nullable
   default String getContentType ()
   {
     return getRequest ().getContentType ();
@@ -138,6 +140,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return an integer containing the length of the request body or -1 if the
    *         length is not known
    */
+  @CheckForSigned
   default long getContentLength ()
   {
     return RequestHelper.getContentLength (getRequest ());

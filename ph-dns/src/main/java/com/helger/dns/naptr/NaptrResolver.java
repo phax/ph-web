@@ -33,6 +33,7 @@ import org.xbill.DNS.TextParseException;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.VisibleForTesting;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.compare.CompareHelper;
@@ -75,7 +76,8 @@ public class NaptrResolver
 
   // NaptrRegex is e.g. <code>!^.*$!http://test-infra.peppol.at!</code>
   @Nullable
-  private static String _getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
+  @VisibleForTesting
+  static String getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
   {
     final char cSep = sNaptrRegEx.charAt (0);
     final int nSecond = sNaptrRegEx.indexOf (cSep, 1);
@@ -84,7 +86,12 @@ public class NaptrResolver
       LOGGER.warn ("NAPTR regex '" + sNaptrRegEx + "' - failed to find second separator");
       return null;
     }
-    final String sRegEx = sNaptrRegEx.substring (1, nSecond);
+    String sRegEx = sNaptrRegEx.substring (1, nSecond);
+    if (!sRegEx.startsWith ("^"))
+      sRegEx = '^' + sRegEx;
+    if (!sRegEx.endsWith ("$"))
+      sRegEx = sRegEx + '$';
+
     final int nThird = sNaptrRegEx.indexOf (cSep, nSecond + 1);
     if (nThird < 0)
     {
@@ -148,7 +155,7 @@ public class NaptrResolver
       // At least 3 separator chars must be present :)
       if (StringHelper.getLength (sRegEx) > 3)
       {
-        final String sFinalDNSName = _getAppliedNAPTRRegEx (sRegEx, m_sDomainName);
+        final String sFinalDNSName = getAppliedNAPTRRegEx (sRegEx, m_sDomainName);
         if (sFinalDNSName != null)
         {
           if (LOGGER.isDebugEnabled ())

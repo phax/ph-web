@@ -54,6 +54,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v9.5.2 - work in progress
+    * Fixed the NAPTR resolution to be compatible with https://issues.oasis-open.org/browse/BDXR-29
 * v9.5.1 - 2020-11-25
     * Fixed an endless recursion in `NonCachingDnsResolver`
 * v9.5.0 - 2020-11-18

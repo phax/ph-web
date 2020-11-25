@@ -19,8 +19,10 @@ package com.helger.httpclient;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import org.apache.http.conn.DnsResolver;
@@ -60,7 +62,7 @@ public class NonCachingDnsResolver implements DnsResolver
   {}
 
   @Nonnull
-  protected Lookup createLookup (@Nonnull final String sHost) throws TextParseException
+  public static Lookup createDefaultLookup (@Nonnull final String sHost) throws TextParseException
   {
     final Lookup aDNSLookup = new Lookup (sHost, Type.ANY);
     try
@@ -70,7 +72,7 @@ public class NonCachingDnsResolver implements DnsResolver
     catch (final UnknownHostException ex)
     {
       // Shit happens - no special resolver needed
-      LOGGER.warn ("Failed to set SimpleResolver");
+      LOGGER.warn ("Failed to set SimpleResolver to DNSLookup", ex);
     }
     // No cache!
     aDNSLookup.setCache (null);
@@ -78,7 +80,14 @@ public class NonCachingDnsResolver implements DnsResolver
   }
 
   @Nonnull
-  public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
+  protected Lookup createLookup (@Nonnull final String sHost) throws TextParseException
+  {
+    return createDefaultLookup (sHost);
+  }
+
+  @Nonnull
+  public InetAddress [] resolveExt (@Nonnull final String sHost,
+                                    @Nullable final Consumer <? super Record> aRecordConsumer) throws UnknownHostException
   {
     ValueEnforcer.notNull (sHost, "Host");
     final String sRealHost = sHost.endsWith (".") ? sHost : sHost + ".";
@@ -110,13 +119,17 @@ public class NonCachingDnsResolver implements DnsResolver
       final ICommonsList <InetAddress> aAddrs = new CommonsArrayList <> ();
       for (final Record aRecord : aRecords)
       {
+        // Invoke consumer
+        if (aRecordConsumer != null)
+          aRecordConsumer.accept (aRecord);
+
         if (aRecord instanceof CNAMERecord)
         {
           // It's a CName - so a name pointing to a name
           final String sNextLevel = ((CNAMERecord) aRecord).getTarget ().toString ();
           if (sNextLevel.equals (sRealHost))
           {
-            LOGGER.warn ("Result record is the same as the request '" + sNextLevel + "' - avoid endless recursion");
+            LOGGER.warn ("Target record is the same as the request '" + sNextLevel + "' - avoid endless recursion");
           }
           else
           {
@@ -145,5 +158,11 @@ public class NonCachingDnsResolver implements DnsResolver
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Return for '" + sRealHost + "': " + Arrays.toString (ret));
     return ret;
+  }
+
+  @Nonnull
+  public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
+  {
+    return resolveExt (sHost, null);
   }
 }

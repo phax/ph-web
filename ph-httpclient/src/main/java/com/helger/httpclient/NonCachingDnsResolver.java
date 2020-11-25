@@ -34,6 +34,7 @@ import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.lang.ClassHelper;
@@ -69,6 +70,7 @@ public class NonCachingDnsResolver implements DnsResolver
     catch (final UnknownHostException ex)
     {
       // Shit happens - no special resolver needed
+      LOGGER.warn ("Failed to set SimpleResolver");
     }
     // No cache!
     aDNSLookup.setCache (null);
@@ -78,40 +80,51 @@ public class NonCachingDnsResolver implements DnsResolver
   @Nonnull
   public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
   {
+    ValueEnforcer.notNull (sHost, "Host");
+    final String sRealHost = sHost.endsWith (".") ? sHost : sHost + ".";
+
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("DNS resolving host '" + sHost + "'");
+      LOGGER.debug ("DNS resolving host '" + sRealHost + "'");
 
     Record [] aRecords = null;
     try
     {
-      final Lookup aDNSLookup = createLookup (sHost);
+      final Lookup aDNSLookup = createLookup (sRealHost);
       aRecords = aDNSLookup.run ();
     }
     catch (final TextParseException ex)
     {
       if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Failed to parse host '" + sHost + "'", ex);
+        LOGGER.error ("Failed to parse host '" + sRealHost + "'", ex);
     }
 
     final InetAddress [] ret;
     if (aRecords == null || aRecords.length == 0)
     {
       // E.g. for IP addresses - use system resolution
-      ret = InetAddress.getAllByName (sHost);
+      ret = InetAddress.getAllByName (sRealHost);
     }
     else
     {
-      // Names found
+      // Records found
       final ICommonsList <InetAddress> aAddrs = new CommonsArrayList <> ();
       for (final Record aRecord : aRecords)
       {
         if (aRecord instanceof CNAMERecord)
         {
           // It's a CName - so a name pointing to a name
-          // recursively resolve :)
-          final InetAddress [] aNested = resolve (((CNAMERecord) aRecord).getName ().toString ());
-          if (aNested != null)
-            aAddrs.addAll (aNested);
+          final String sNextLevel = ((CNAMERecord) aRecord).getTarget ().toString ();
+          if (sNextLevel.equals (sRealHost))
+          {
+            LOGGER.warn ("Result record is the same as the request '" + sNextLevel + "' - avoid endless recursion");
+          }
+          else
+          {
+            // recursively resolve :)
+            final InetAddress [] aNested = resolve (sNextLevel);
+            if (aNested != null)
+              aAddrs.addAll (aNested);
+          }
         }
         else
           if (aRecord instanceof ARecord)
@@ -123,14 +136,14 @@ public class NonCachingDnsResolver implements DnsResolver
           else
           {
             if (LOGGER.isDebugEnabled ())
-              LOGGER.debug ("Unknown record type found for host '" + sHost + "': " + ClassHelper.getClassLocalName (aRecord));
+              LOGGER.debug ("Unknown record type found for host '" + sRealHost + "': " + ClassHelper.getClassLocalName (aRecord));
           }
       }
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);
     }
 
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Return for '" + sHost + "': " + Arrays.toString (ret));
+      LOGGER.debug ("Return for '" + sRealHost + "': " + Arrays.toString (ret));
     return ret;
   }
 }

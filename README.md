@@ -54,6 +54,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v9.5.1 - 2020-11-25
+    * Fixed an endless recursion in `NonCachingDnsResolver`
 * v9.5.0 - 2020-11-18
     * Reverted back to Jakarta Mail 1.6.5 (because BouncyCastle is still on the old version)
     * Reverted back to Jakarta Activation 1.2.2 (because BouncyCastle is still on the old version)

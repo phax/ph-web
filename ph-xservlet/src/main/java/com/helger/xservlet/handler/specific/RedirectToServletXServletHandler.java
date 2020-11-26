@@ -18,6 +18,9 @@ package com.helger.xservlet.handler.specific;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.StringHelper;
@@ -32,6 +35,8 @@ import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
  */
 public class RedirectToServletXServletHandler implements IXServletSimpleHandler
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (RedirectToServletXServletHandler.class);
+
   private final String m_sServletPath;
 
   /**
@@ -69,6 +74,9 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
     final String sQueryString = aRequestScope.getQueryString ();
     if (StringHelper.hasText (sQueryString))
       sRedirectURL += "?" + sQueryString;
+
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Sending redirect to '" + sRedirectURL + "'");
 
     aUnifiedResponse.setRedirect (sRedirectURL);
   }

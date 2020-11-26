@@ -20,6 +20,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.url.ISimpleURL;
@@ -35,6 +38,8 @@ import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
  */
 public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (RedirectAbsoluteXServletHandler.class);
+
   private final ISimpleURL m_aTargetURL;
 
   /**
@@ -80,6 +85,12 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
           for (final String sValue : (String []) aValue)
             aTargetURL.add (sKey, sValue);
     }
-    aUnifiedResponse.setRedirect (aTargetURL.getAsStringWithEncodedParameters ());
+
+    final String sRedirectURL = aTargetURL.getAsStringWithEncodedParameters ();
+
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Sending redirect to '" + sRedirectURL + "'");
+
+    aUnifiedResponse.setRedirect (sRedirectURL);
   }
 }

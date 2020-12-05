@@ -174,6 +174,12 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   @Nonnull
+  public static ExtendedHttpResponseException create (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  {
+    return create (aHttpResponse.getStatusLine (), aHttpResponse, aHttpResponse.getEntity ());
+  }
+
+  @Nonnull
   public static ExtendedHttpResponseException create (@Nonnull final StatusLine aStatusLine,
                                                       @Nonnull final HttpResponse aHttpResponse,
                                                       @Nonnull final HttpEntity aEntity) throws IOException

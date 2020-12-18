@@ -26,6 +26,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
+import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -52,6 +53,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLInitializationException;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultClientConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
@@ -240,6 +242,12 @@ public class HttpClientFactory implements IHttpClientProvider
     return aConnMgr;
   }
 
+  @Nullable
+  protected ConnectionReuseStrategy createConnectionReuseStrategy ()
+  {
+    return DefaultClientConnectionReuseStrategy.INSTANCE;
+  }
+
   @Nonnull
   public RequestConfig.Builder createRequestConfigBuilder ()
   {
@@ -287,6 +295,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
     final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
     final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
+    final ConnectionReuseStrategy aConnectionReuseStrategy = createConnectionReuseStrategy ();
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = m_aSettings.getProxyHost ();
     final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
@@ -332,7 +341,8 @@ public class HttpClientFactory implements IHttpClientProvider
                                               .setConnectionManager (aConnMgr)
                                               .setDefaultRequestConfig (aRequestConfig)
                                               .setDefaultCredentialsProvider (aCredentialsProvider)
-                                              .setRoutePlanner (aRoutePlanner);
+                                              .setRoutePlanner (aRoutePlanner)
+                                              .setConnectionReuseStrategy (aConnectionReuseStrategy);
 
     // Allow gzip,compress
     aHCB.addInterceptorLast (new RequestAcceptEncoding ());

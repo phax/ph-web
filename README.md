@@ -57,6 +57,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 * v9.5.2 - work in progress
     * Updated to Apache httpcore 4.4.14
     * Fixed the NAPTR resolution to be compatible with https://issues.oasis-open.org/browse/BDXR-29
+    * Made the `ConnectionReuseStrategy` customizable in `HttpClientFactory`
 * v9.5.1 - 2020-11-25
     * Fixed an endless recursion in `NonCachingDnsResolver`
 * v9.5.0 - 2020-11-18

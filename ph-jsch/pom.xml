@@ -30,7 +30,6 @@
   <description>Java wrapper around JSch</description>
   <url>https://github.com/phax/ph-web/ph-jsch</url>
   <inceptionYear>2020</inceptionYear>
-  
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -58,7 +57,6 @@
       <groupId>com.helger</groupId>
       <artifactId>ph-commons</artifactId>
     </dependency>
-    
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
@@ -82,6 +80,8 @@
             <Automatic-Module-Name>com.helger.jsch</Automatic-Module-Name>
             <Export-Package>com.helger.jsch.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI</Provide-Capability>
           </instructions>
         </configuration>
       </plugin>

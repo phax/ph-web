@@ -30,7 +30,7 @@
   <description>Java library with basic web functionality</description>
   <url>https://github.com/phax/ph-web/ph-web</url>
   <inceptionYear>2014</inceptionYear>
-
+  
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -38,12 +38,12 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
+  
   <organization>
     <name>Philip Helger</name>
     <url>http://www.helger.com</url>
   </organization>
-
+  
   <developers>
     <developer>
       <id>philip</id>
@@ -52,7 +52,7 @@
       <url>http://www.helger.com</url>
     </developer>
   </developers>
-
+  
   <dependencies>
     <dependency>
       <groupId>com.helger</groupId>
@@ -82,7 +82,6 @@
       <groupId>com.helger.web</groupId>
       <artifactId>ph-servlet</artifactId>
     </dependency>
-    
     <dependency>
       <groupId>com.sun.activation</groupId>
       <artifactId>jakarta.activation</artifactId>
@@ -111,7 +110,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
   <build>
     <plugins>
       <plugin>
@@ -123,8 +122,7 @@
             <Automatic-Module-Name>com.helger.web</Automatic-Module-Name>
             <Export-Package>com.helger.web.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
-            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)",
-osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)",
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)",
 osgi.serviceloader; filter:="(osgi.serviceloader=com.helger.web.fileupload.IFileItemFactoryProviderSPI)"; cardinality:=multiple; resolution:=optional,
 osgi.serviceloader; filter:="(osgi.serviceloader=com.helger.web.progress.IProgressListenerProviderSPI)"; cardinality:=multiple; resolution:=optional</Require-Capability>
             <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI</Provide-Capability>

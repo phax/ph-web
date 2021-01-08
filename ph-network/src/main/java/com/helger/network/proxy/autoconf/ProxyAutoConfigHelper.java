@@ -18,10 +18,13 @@ package com.helger.network.proxy.autoconf;
 
 import java.net.Proxy;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.slf4j.Logger;
@@ -33,7 +36,6 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.exception.InitializationException;
 import com.helger.commons.io.resource.ClassPathResource;
 import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.script.ScriptHelper;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.StringParser;
 import com.helger.commons.timing.StopWatch;
@@ -44,15 +46,16 @@ import com.helger.network.proxy.settings.ProxySettings;
 
 /**
  * Proxy Auto Configuration helper. Requires ph-dns to work.
- * 
+ *
  * @author Philip Helger
  */
 public final class ProxyAutoConfigHelper
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
 
+  public static final Charset DEFAULT_SCRIPT_CHARSET = StandardCharsets.ISO_8859_1;
   // create a Nashorn script engine
-  private static final ScriptEngine s_aScriptEngine = ScriptHelper.createNashornEngine ();
+  private static final ScriptEngine s_aScriptEngine = new ScriptEngineManager ().getEngineByName ("nashorn");
 
   static
   {
@@ -62,7 +65,7 @@ public final class ProxyAutoConfigHelper
       s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolve(hostName); }");
       s_aScriptEngine.eval ("var dnsResolveEx = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolveEx(hostName); }");
       s_aScriptEngine.eval ("var myIpAddress = function(){ return " + DNSResolver.class.getName () + ".getMyIpAddress(); }");
-      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
+      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
         if (LOGGER.isInfoEnabled ())
@@ -81,7 +84,7 @@ public final class ProxyAutoConfigHelper
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
-    s_aScriptEngine.eval (m_aPACRes.getReader (ScriptHelper.DEFAULT_SCRIPT_CHARSET));
+    s_aScriptEngine.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
   }
 
   public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException

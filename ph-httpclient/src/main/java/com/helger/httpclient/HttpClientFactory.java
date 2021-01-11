@@ -243,7 +243,7 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  protected ConnectionReuseStrategy createConnectionReuseStrategy ()
+  public ConnectionReuseStrategy createConnectionReuseStrategy ()
   {
     return DefaultClientConnectionReuseStrategy.INSTANCE;
   }

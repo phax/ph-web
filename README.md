@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.5.2 - work in progress
+* v9.5.2 - 2021-01-11
     * Updated to Apache httpcore 4.4.14
     * Fixed the NAPTR resolution to be compatible with https://issues.oasis-open.org/browse/BDXR-29
     * Made the `ConnectionReuseStrategy` customizable in `HttpClientFactory`

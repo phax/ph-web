@@ -76,12 +76,14 @@ public final class MailAPI
                                                                                                                   "$mails.queued");
 
   private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
   private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> QUEUE_CACHE = new CommonsHashMap <> ();
   // Just to have custom named threads....
   private static final ThreadFactory THREAD_FACTORY = new BasicThreadFactory.Builder ().setNamingPattern ("MailAPI-%d")
                                                                                        .setDaemon (true)
                                                                                        .setPriority (Thread.NORM_PRIORITY)
                                                                                        .build ();
+  @GuardedBy ("RW_LOCK")
   private static final ExecutorService SENDER_THREAD_POOL = new ThreadPoolExecutor (0,
                                                                                     Integer.MAX_VALUE,
                                                                                     60L,

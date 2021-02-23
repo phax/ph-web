@@ -72,23 +72,23 @@ public final class MailAPI
   public static final boolean DEFAULT_STOP_IMMEDIATLY = false;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (MailAPI.class);
-  private static final IMutableStatisticsHandlerCounter s_aQueuedMailHdl = StatisticsManager.getCounterHandler (MailAPI.class.getName () +
-                                                                                                                "$mails.queued");
+  private static final IMutableStatisticsHandlerCounter STATS_MAILS_QUEUED = StatisticsManager.getCounterHandler (MailAPI.class.getName () +
+                                                                                                                  "$mails.queued");
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> s_aQueueCache = new CommonsHashMap <> ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> QUEUE_CACHE = new CommonsHashMap <> ();
   // Just to have custom named threads....
-  private static final ThreadFactory s_aThreadFactory = new BasicThreadFactory.Builder ().setNamingPattern ("MailAPI-%d")
-                                                                                         .setDaemon (true)
-                                                                                         .setPriority (Thread.NORM_PRIORITY)
-                                                                                         .build ();
-  private static final ExecutorService s_aSenderThreadPool = new ThreadPoolExecutor (0,
-                                                                                     Integer.MAX_VALUE,
-                                                                                     60L,
-                                                                                     TimeUnit.SECONDS,
-                                                                                     new SynchronousQueue <Runnable> (),
-                                                                                     s_aThreadFactory);
-  @GuardedBy ("s_aRWLock")
+  private static final ThreadFactory THREAD_FACTORY = new BasicThreadFactory.Builder ().setNamingPattern ("MailAPI-%d")
+                                                                                       .setDaemon (true)
+                                                                                       .setPriority (Thread.NORM_PRIORITY)
+                                                                                       .build ();
+  private static final ExecutorService SENDER_THREAD_POOL = new ThreadPoolExecutor (0,
+                                                                                    Integer.MAX_VALUE,
+                                                                                    60L,
+                                                                                    TimeUnit.SECONDS,
+                                                                                    new SynchronousQueue <Runnable> (),
+                                                                                    THREAD_FACTORY);
+  @GuardedBy ("RW_LOCK")
   private static FailedMailQueue s_aFailedMailQueue = new FailedMailQueue ();
 
   private MailAPI ()
@@ -100,7 +100,7 @@ public final class MailAPI
   @Nonnull
   public static FailedMailQueue getFailedMailQueue ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_aFailedMailQueue);
+    return RW_LOCK.readLockedGet ( () -> s_aFailedMailQueue);
   }
 
   /**
@@ -113,11 +113,11 @@ public final class MailAPI
   {
     ValueEnforcer.notNull (aFailedMailQueue, "FailedMailQueue");
 
-    s_aRWLock.writeLocked ( () -> {
+    RW_LOCK.writeLocked ( () -> {
       s_aFailedMailQueue = aFailedMailQueue;
 
       // Update all existing queues
-      for (final MailQueuePerSMTP aMailQueue : s_aQueueCache.values ())
+      for (final MailQueuePerSMTP aMailQueue : QUEUE_CACHE.values ())
         aMailQueue.setFailedMailQueue (aFailedMailQueue);
     });
 
@@ -130,24 +130,24 @@ public final class MailAPI
   private static MailQueuePerSMTP _getOrCreateMailQueuePerSMTP (@Nonnull final ISMTPSettings aSMTPSettings)
   {
     ValueEnforcer.notNull (aSMTPSettings, "SmtpSettings");
-    if (s_aSenderThreadPool.isShutdown ())
+    if (SENDER_THREAD_POOL.isShutdown ())
       throw new IllegalStateException ("Cannot submit to mailqueues that are already stopped!");
 
     // get queue per SMTP
-    MailQueuePerSMTP aSMTPQueue = s_aQueueCache.get (aSMTPSettings);
+    MailQueuePerSMTP aSMTPQueue = QUEUE_CACHE.get (aSMTPSettings);
     if (aSMTPQueue == null)
     {
       // create a new queue
       aSMTPQueue = new MailQueuePerSMTP (EmailGlobalSettings.getMaxMailQueueLength (),
                                          EmailGlobalSettings.getMaxMailSendCount (),
                                          aSMTPSettings,
-                                         s_aFailedMailQueue);
+                                         getFailedMailQueue ());
 
       // put queue in cache
-      s_aQueueCache.put (aSMTPSettings, aSMTPQueue);
+      QUEUE_CACHE.put (aSMTPSettings, aSMTPQueue);
 
       // and start running the queue
-      s_aSenderThreadPool.submit (aSMTPQueue::collect);
+      SENDER_THREAD_POOL.submit (aSMTPQueue::collect);
     }
     return aSMTPQueue;
   }
@@ -200,7 +200,7 @@ public final class MailAPI
       throw new IllegalArgumentException ("At least one message has to be supplied!");
 
     MailQueuePerSMTP aSMTPQueue;
-    s_aRWLock.writeLock ().lock ();
+    RW_LOCK.writeLock ().lock ();
     try
     {
       // get queue per SMTP settings
@@ -220,7 +220,7 @@ public final class MailAPI
     }
     finally
     {
-      s_aRWLock.writeLock ().unlock ();
+      RW_LOCK.writeLock ().unlock ();
     }
 
     int nQueuedMails = 0;
@@ -236,7 +236,7 @@ public final class MailAPI
       }
 
       // queue the mail
-      s_aQueuedMailHdl.increment ();
+      STATS_MAILS_QUEUED.increment ();
 
       // Do some consistency checks to ensure this particular email can be
       // send
@@ -347,7 +347,7 @@ public final class MailAPI
   {
     int ret = 0;
     // count over all queues
-    for (final MailQueuePerSMTP aQueue : s_aQueueCache.values ())
+    for (final MailQueuePerSMTP aQueue : QUEUE_CACHE.values ())
       ret += aQueue.getQueueLength ();
     return ret;
   }
@@ -355,7 +355,7 @@ public final class MailAPI
   @Nonnegative
   public static int getTotalQueueLength ()
   {
-    return s_aRWLock.readLockedInt (MailAPI::_getTotalQueueLength);
+    return RW_LOCK.readLockedInt (MailAPI::_getTotalQueueLength);
   }
 
   /**
@@ -383,21 +383,21 @@ public final class MailAPI
   @Nonnull
   public static EChange stop (final boolean bStopImmediately)
   {
-    s_aRWLock.writeLock ().lock ();
+    RW_LOCK.writeLock ().lock ();
     try
     {
       // Check if the thread pool is already shut down
-      if (s_aSenderThreadPool.isShutdown ())
+      if (SENDER_THREAD_POOL.isShutdown ())
         return EChange.UNCHANGED;
 
       // don't take any more actions
-      s_aSenderThreadPool.shutdown ();
+      SENDER_THREAD_POOL.shutdown ();
 
       // stop all specific queues afterwards
-      for (final MailQueuePerSMTP aQueue : s_aQueueCache.values ())
+      for (final MailQueuePerSMTP aQueue : QUEUE_CACHE.values ())
         aQueue.stopQueuingNewObjects (bStopImmediately);
 
-      final int nQueues = s_aQueueCache.size ();
+      final int nQueues = QUEUE_CACHE.size ();
       // Subtract 1 for the STOP_MESSAGE
       final int nQueueLength = _getTotalQueueLength () - 1;
       if (nQueues > 0 || nQueueLength > 0)
@@ -413,13 +413,13 @@ public final class MailAPI
     }
     finally
     {
-      s_aRWLock.writeLock ().unlock ();
+      RW_LOCK.writeLock ().unlock ();
     }
 
     // Don't wait in a writeLock!
     try
     {
-      while (!s_aSenderThreadPool.awaitTermination (1, TimeUnit.SECONDS))
+      while (!SENDER_THREAD_POOL.awaitTermination (1, TimeUnit.SECONDS))
       {
         // wait until we're done
       }

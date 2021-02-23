@@ -19,12 +19,22 @@ package com.helger.smtp.transport;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.mail.Address;
+import javax.mail.AuthenticationFailedException;
+import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.event.ConnectionListener;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +53,7 @@ import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.email.IEmailAddress;
 import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.commons.state.EChange;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.ToStringGenerator;
@@ -55,15 +66,6 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.sun.mail.smtp.SMTPAddressSucceededException;
 
-import javax.mail.Address;
-import javax.mail.AuthenticationFailedException;
-import javax.mail.MessagingException;
-import javax.mail.SendFailedException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.event.ConnectionListener;
-import javax.mail.internet.MimeMessage;
-
 /**
  * The wrapper around the main javax.mail transport
  *
@@ -74,19 +76,45 @@ public final class MailTransport
 {
   public static final String SMTP_PROTOCOL = "smtp";
   public static final String SMTPS_PROTOCOL = "smtps";
+
+  public static final String HEADER_MESSAGE_ID = "Message-ID";
+  public static final String HEADER_X_MAILER = "X-Mailer";
+
   public static final String X_MAILER = "ph-smtp";
 
-  private static final IMutableStatisticsHandlerCounter s_aStatsCountSuccess = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
-                                                                                                                    "$success");
-  private static final IMutableStatisticsHandlerCounter s_aStatsCountFailed = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
-                                                                                                                   "$failed");
+  private static final IMutableStatisticsHandlerCounter STATS_SEND_SUCCESS = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
+                                                                                                                  "$success");
+  private static final IMutableStatisticsHandlerCounter STATS_SEND_FAILURE = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
+                                                                                                                  "$failed");
   private static final Logger LOGGER = LoggerFactory.getLogger (MailTransport.class);
-  private static final String HEADER_MESSAGE_ID = "Message-ID";
+  private static final ICommonsMap <String, String> DEFAULT_MAIL_PROPERTIES = new CommonsHashMap <> ();
+  private static final AtomicInteger INSTANCE_COUNT = new AtomicInteger (0);
 
   private final ISMTPSettings m_aSMTPSettings;
   private final boolean m_bSMTPS;
   private final ICommonsMap <String, String> m_aMailProperties;
   private final Session m_aSession;
+
+  /**
+   * Set default mail properties that are added all the time. This can e.g. be
+   * used to change the mail transport.
+   *
+   * @param aMap
+   *        The map to be set. May be <code>null</code> or empty.
+   * @return {@link EChange#CHANGED} if something changed. Never
+   *         <code>null</code>.
+   * @since 9.5.3
+   */
+  @Nonnull
+  public static EChange setDefaultMailProperties (@Nullable final Map <String, String> aMap)
+  {
+    if (INSTANCE_COUNT.get () > 0)
+      LOGGER.warn ("You are changing the default Mail Properties even though " +
+                   INSTANCE_COUNT.get () +
+                   " instance(s) of MailTransport were already created! This has no impact on existing instances!");
+
+    return DEFAULT_MAIL_PROPERTIES.setAll (aMap);
+  }
 
   /**
    * Check if the "smtps" properties should be used or not.
@@ -172,8 +200,12 @@ public final class MailTransport
 
     // Create session based on properties
     final Properties aProps = new Properties ();
+    // Add default first
+    aProps.putAll (DEFAULT_MAIL_PROPERTIES);
     aProps.putAll (m_aMailProperties);
     m_aSession = Session.getInstance (aProps);
+
+    INSTANCE_COUNT.incrementAndGet ();
   }
 
   @Nonnull
@@ -244,7 +276,7 @@ public final class MailTransport
               // Preserve explicitly specified message id...
               aMimeMessage.setHeader (HEADER_MESSAGE_ID, sMessageID);
             }
-            aMimeMessage.setHeader ("X-Mailer", X_MAILER);
+            aMimeMessage.setHeader (HEADER_X_MAILER, X_MAILER);
 
             if (LOGGER.isInfoEnabled ())
               LOGGER.info ("Delivering mail from " +
@@ -332,7 +364,7 @@ public final class MailTransport
                 aEmailDataTransportListener.messageDelivered (aEvent);
 
               // Remove message from list of remaining
-              s_aStatsCountSuccess.increment ();
+              STATS_SEND_SUCCESS.increment ();
             }
             else
             {
@@ -342,7 +374,7 @@ public final class MailTransport
 
               // Sending exactly this message failed
               aFailedMessages.put (aEmailData, new MailTransportError (ex, aDetails));
-              s_aStatsCountFailed.increment ();
+              STATS_SEND_FAILURE.increment ();
             }
             // Remove message from list of remaining as we put it in the
             // failed message list manually in case of error
@@ -378,7 +410,7 @@ public final class MailTransport
             // Remove message from list of remaining as we put it in the
             // failed message list manually
             aRemainingMessages.remove (aEmailData);
-            s_aStatsCountFailed.increment ();
+            STATS_SEND_FAILURE.increment ();
           }
         } // for all messages
       }

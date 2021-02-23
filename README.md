@@ -54,6 +54,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v9.5.3 - work in progress
+    * Extended `MailTransport` with default properties (e.g. for using other transport implementations)
 * v9.5.2 - 2021-01-11
     * Updated to Apache httpcore 4.4.14
     * Fixed the NAPTR resolution to be compatible with https://issues.oasis-open.org/browse/BDXR-29

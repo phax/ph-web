@@ -181,6 +181,11 @@ public final class RequestTrackingManager
         if (LOGGER.isErrorEnabled ())
           LOGGER.error ("Failed to remove internal request with ID '" + sRequestID + "'");
       }
+      else
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Removed request with ID '" + sRequestID + "'");
+      }
       if (m_bParallelRunningRequestCheckEnabled &&
           m_bParallelRunningRequestsAboveLimit &&
           m_aOpenRequests.size () < m_nParallelRunningRequestBarrier)
@@ -204,9 +209,6 @@ public final class RequestTrackingManager
 
   public void checkForLongRunningRequests (@Nonnull final ICallbackList <ILongRunningRequestCallback> aCallbacks)
   {
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Checking for long running requests");
-
     if (aCallbacks.isNotEmpty ())
     {
       m_aRWLock.readLock ().lock ();
@@ -215,6 +217,9 @@ public final class RequestTrackingManager
         // Check only if they are enabled!
         if (m_bLongRunningCheckEnabled)
         {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Checking for long running requests");
+
           // Grab in read lock!
           final long nNotificationMS = m_nLongRunningMilliSeconds;
 

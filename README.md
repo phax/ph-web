@@ -54,7 +54,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.5.3 - work in progress
+* v9.5.3 - 2021-03-03
     * Extended `MailTransport` with default properties (e.g. for using other transport implementations)
 * v9.5.2 - 2021-01-11
     * Updated to Apache httpcore 4.4.14

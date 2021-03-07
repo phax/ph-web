@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.http.CHttp;
 import com.helger.commons.http.EHttpMethod;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpVersion;
@@ -61,8 +62,10 @@ public class XServletHandlerTRACE implements IXServletHandler
                                                   .append (aHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);
     RequestHelper.forEachRequestHeader (aHttpRequest,
-                                        (sHeaderName,
-                                         sHeaderValue) -> aSB.append (sHeaderName).append (": ").append (sHeaderValue).append (CHttp.EOL));
+                                        (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)
+                                                                          .append (": ")
+                                                                          .append (HttpHeaderMap.getUnifiedValue (sHeaderValue, true))
+                                                                          .append (CHttp.EOL));
 
     aHttpResponse.setContentType (CONTENT_TYPE);
     aHttpResponse.setContentLength (aSB.length ());

@@ -785,7 +785,7 @@ public class MultipartStream implements Serializable
         if (nAvailable == 0)
           return 0;
       }
-      final long nSkipped = Math.min (nAvailable, nBytes);
+      final int nSkipped = (int) Math.min (nAvailable, nBytes);
       m_nHead += nSkipped;
       return nSkipped;
     }

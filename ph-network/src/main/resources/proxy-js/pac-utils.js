@@ -34,20 +34,20 @@ function convert_addr(ipchars) {
 
 function isInNet(ipaddr, pattern, maskstr) {
     // The "/.../.test()" version does not work with Nashorn
-    var test = new RegExp("^(\\d{1,3})\\.(\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$").test(ipaddr);
+    var test = new RegExp("^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$").test(ipaddr);
     if (test == null) {
         ipaddr = dnsResolve(ipaddr);
         if (ipaddr == null)
             return false;
     } else if (test[1] > 255 || test[2] > 255 || 
                test[3] > 255 || test[4] > 255) {
-        return false;    // not an IP address
+        // not an IP address
+        return false;    
     }
     var host = convert_addr(ipaddr);
     var pat  = convert_addr(pattern);
     var mask = convert_addr(maskstr);
     return ((host & mask) == (pat & mask));
-    
 }
 
 function convert_addr6(ipchars) {
@@ -198,21 +198,18 @@ function dateRange() {
         return false;
     }
     var isGMT = (arguments[argc - 1] == 'GMT');
-
     if (isGMT) {
         argc--;
     }
-    // function will work even without explict handling of this case
+    // function will work even without explicit handling of this case
     if (argc == 1) {
         var tmp = parseInt(arguments[0]);
         if (isNaN(tmp)) {
-            return ((isGMT ? date.getUTCMonth() : date.getMonth()) ==
-getMonth(arguments[0]));
+            return ((isGMT ? date.getUTCMonth() : date.getMonth()) == getMonth(arguments[0]));
         } else if (tmp < 32) {
             return ((isGMT ? date.getUTCDate() : date.getDate()) == tmp);
         } else { 
-            return ((isGMT ? date.getUTCFullYear() : date.getFullYear()) ==
-tmp);
+            return ((isGMT ? date.getUTCFullYear() : date.getFullYear()) == tmp);
         }
     }
     var year = date.getFullYear();

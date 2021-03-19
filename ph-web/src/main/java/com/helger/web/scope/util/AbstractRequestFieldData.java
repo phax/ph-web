@@ -16,8 +16,6 @@
  */
 package com.helger.web.scope.util;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
@@ -35,7 +33,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @since 9.0.2
  */
 @Immutable
-public abstract class AbstractRequestFieldData implements Serializable
+public abstract class AbstractRequestFieldData
 {
   private final String m_sFieldName;
 

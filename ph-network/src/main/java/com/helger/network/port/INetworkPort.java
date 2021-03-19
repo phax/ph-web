@@ -16,8 +16,6 @@
  */
 package com.helger.network.port;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
@@ -30,7 +28,7 @@ import com.helger.commons.text.IHasDescription;
  *
  * @author Philip Helger
  */
-public interface INetworkPort extends IHasName, IHasDescription, Serializable
+public interface INetworkPort extends IHasName, IHasDescription
 {
   /**
    * @return The numeric port number

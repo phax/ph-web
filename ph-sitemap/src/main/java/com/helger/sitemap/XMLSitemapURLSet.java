@@ -16,7 +16,6 @@
  */
 package com.helger.sitemap;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnegative;
@@ -42,7 +41,7 @@ import com.helger.xml.microdom.serialize.MicroWriter;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class XMLSitemapURLSet implements IHasLastModificationDateTime, Serializable
+public class XMLSitemapURLSet implements IHasLastModificationDateTime
 {
   public static final int MAX_URLS_PER_FILE = 50000;
   public static final int MAX_FILE_SIZE = 10 * CGlobal.BYTES_PER_MEGABYTE;

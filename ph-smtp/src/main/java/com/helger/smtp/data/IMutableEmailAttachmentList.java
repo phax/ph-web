@@ -16,8 +16,6 @@
  */
 package com.helger.smtp.data;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -41,10 +39,8 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    * @param aISS
    *        The {@link IHasInputStream} representing the data. May not be
    *        <code>null</code>.
-   * @param <ISP>
-   *        Input stream provider type
    */
-  default <ISP extends IHasInputStream & Serializable> void addAttachment (@Nonnull final String sFilename, @Nonnull final ISP aISS)
+  default void addAttachment (@Nonnull final String sFilename, @Nonnull final IHasInputStream aISS)
   {
     addAttachment (new EmailAttachment (sFilename, aISS));
   }

@@ -16,8 +16,6 @@
  */
 package com.helger.http.digestauth;
 
-import java.io.Serializable;
-
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +37,7 @@ import com.helger.http.HttpStringHelper;
  * @author Philip Helger
  */
 @Immutable
-public class DigestAuthClientCredentials implements Serializable
+public class DigestAuthClientCredentials
 {
   public static final int EXPECTED_RESPONSE_LENGTH = 32;
   public static final int EXPECTED_NONCE_COUNT_LENGTH = 8;

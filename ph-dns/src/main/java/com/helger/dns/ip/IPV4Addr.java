@@ -16,7 +16,6 @@
  */
 package com.helger.dns.ip;
 
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -40,7 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class IPV4Addr implements Serializable
+public class IPV4Addr
 {
   /** A regular expression pattern to validate IPv4 addresses */
   public static final String PATTERN_IPV4 = "\\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}\\b";
@@ -85,7 +84,10 @@ public class IPV4Addr implements Serializable
    * @param n4
    *        fourth number
    */
-  public IPV4Addr (@Nonnegative final int n1, @Nonnegative final int n2, @Nonnegative final int n3, @Nonnegative final int n4)
+  public IPV4Addr (@Nonnegative final int n1,
+                   @Nonnegative final int n2,
+                   @Nonnegative final int n3,
+                   @Nonnegative final int n4)
   {
     m_nIP0 = _validatePart (n1);
     m_nIP1 = _validatePart (n2);
@@ -106,7 +108,10 @@ public class IPV4Addr implements Serializable
     // Values are guaranteed to be 0-255
     try
     {
-      return InetAddress.getByAddress (new byte [] { (byte) (n0 & 0xff), (byte) (n1 & 0xff), (byte) (n2 & 0xff), (byte) (n3 & 0xff) });
+      return InetAddress.getByAddress (new byte [] { (byte) (n0 & 0xff),
+                                                     (byte) (n1 & 0xff),
+                                                     (byte) (n2 & 0xff),
+                                                     (byte) (n3 & 0xff) });
     }
     catch (final UnknownHostException ex)
     {
@@ -191,6 +196,9 @@ public class IPV4Addr implements Serializable
     final String [] aParts = StringHelper.getExplodedArray ('.', sText);
     if (aParts.length != PARTS)
       throw new IllegalArgumentException ("Expected exactly " + PARTS + " parts");
-    return new IPV4Addr (_parsePart (aParts[0]), _parsePart (aParts[1]), _parsePart (aParts[2]), _parsePart (aParts[3]));
+    return new IPV4Addr (_parsePart (aParts[0]),
+                         _parsePart (aParts[1]),
+                         _parsePart (aParts[2]),
+                         _parsePart (aParts[3]));
   }
 }

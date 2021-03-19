@@ -16,7 +16,6 @@
  */
 package com.helger.sitemap;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnegative;
@@ -43,7 +42,7 @@ import com.helger.xml.serialize.write.XMLMaskHelper;
  * @author Philip Helger
  */
 @Immutable
-public class XMLSitemapURL implements IHasLastModificationDateTime, Serializable
+public class XMLSitemapURL implements IHasLastModificationDateTime
 {
   /** Maximum length of a single URL */
   public static final int LOCATION_MAX_LENGTH = 2048;

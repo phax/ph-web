@@ -33,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  * @param <KEYTYPE>
- *        The key type for the map. Must implement Serializable.
+ *        The key type for the map.
  */
 public abstract class AbstractQValueList <KEYTYPE>
 {

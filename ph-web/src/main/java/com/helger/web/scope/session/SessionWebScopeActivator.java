@@ -19,7 +19,6 @@ package com.helger.web.scope.session;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -45,7 +44,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  *
  * @author Philip Helger
  */
-public final class SessionWebScopeActivator implements Serializable, HttpSessionActivationListener, ISessionWebScopeDontPassivate
+public final class SessionWebScopeActivator implements HttpSessionActivationListener, ISessionWebScopeDontPassivate
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScopeActivator.class);
 
@@ -105,7 +104,10 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
 
     if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Read info on session scope: " + m_aAttrs.size () + " attrs of class " + ClassHelper.getClassLocalName (this),
+        LOGGER.info ("Read info on session scope: " +
+                     m_aAttrs.size () +
+                     " attrs of class " +
+                     ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());
   }
 
@@ -135,7 +137,9 @@ public final class SessionWebScopeActivator implements Serializable, HttpSession
     final HttpSession aHttpSession = aEvent.getSession ();
 
     // Create a new session web scope
-    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
+    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
+                                                                                               true,
+                                                                                               true);
 
     // Restore the read values into the scope
     if (m_aAttrs != null)

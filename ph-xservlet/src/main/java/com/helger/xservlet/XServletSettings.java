@@ -16,8 +16,6 @@
  */
 package com.helger.xservlet;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -42,7 +40,7 @@ import com.helger.servlet.response.EXFrameOptionType;
  *
  * @author Philip Helger
  */
-public class XServletSettings implements Serializable, ICloneable <XServletSettings>
+public class XServletSettings implements ICloneable <XServletSettings>
 {
   public static final EHttpReferrerPolicy DEFAULT_HTTP_REFERRER_POLICY = EHttpReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN;
   public static final boolean DEFAULT_MULTIPART_ENABLED = true;
@@ -67,7 +65,8 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
     ValueEnforcer.notNull (aOther, "Other");
     m_eHttpReferrerPolicy = aOther.m_eHttpReferrerPolicy;
     m_eXFrameOptionsType = aOther.m_eXFrameOptionsType;
-    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain == null ? null : new SimpleURL (aOther.m_aXFrameOptionsDomain);
+    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain == null ? null
+                                                                   : new SimpleURL (aOther.m_aXFrameOptionsDomain);
     m_bIsMultipartEnabled = aOther.m_bIsMultipartEnabled;
   }
 
@@ -158,7 +157,8 @@ public class XServletSettings implements Serializable, ICloneable <XServletSetti
    * @since 9.1.1
    */
   @Nonnull
-  public final XServletSettings setXFrameOptions (@Nullable final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public final XServletSettings setXFrameOptions (@Nullable final EXFrameOptionType eType,
+                                                  @Nullable final ISimpleURL aDomain)
   {
     if (eType != null && eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");

@@ -16,8 +16,6 @@
  */
 package com.helger.mail.cte;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 
 import com.helger.commons.codec.IByteArrayCodec;
@@ -29,7 +27,7 @@ import com.helger.commons.id.IHasID;
  *
  * @author Philip Helger
  */
-public interface IContentTransferEncoding extends IHasID <String>, Serializable
+public interface IContentTransferEncoding extends IHasID <String>
 {
   /**
    * @return A new encoder for this Content Transfer Encoding. May not be

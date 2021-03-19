@@ -16,8 +16,6 @@
  */
 package com.helger.http.csp;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +37,7 @@ import com.helger.commons.string.ToStringGenerator;
  *        The CSP directive type
  */
 @NotThreadSafe
-public abstract class AbstractCSPPolicy <T extends ICSPDirective> implements Serializable
+public abstract class AbstractCSPPolicy <T extends ICSPDirective>
 {
   private final ICommonsList <T> m_aList = new CommonsArrayList <> ();
 

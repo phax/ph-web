@@ -16,8 +16,6 @@
  */
 package com.helger.xservlet.forcedredirect;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -37,7 +35,7 @@ public class ForcedRedirectException extends RuntimeException
 
   private final String m_sSourceMenuItemID;
   private final ISimpleURL m_aRedirectTargetURL;
-  private final Serializable m_aContent;
+  private final Object m_aContent;
 
   /**
    * Constructor
@@ -53,7 +51,7 @@ public class ForcedRedirectException extends RuntimeException
    */
   public ForcedRedirectException (@Nonnull @Nonempty final String sSourceMenuItemID,
                                   @Nonnull final ISimpleURL aRedirectTargetURL,
-                                  @Nullable final Serializable aContent)
+                                  @Nullable final Object aContent)
   {
     m_sSourceMenuItemID = ValueEnforcer.notEmpty (sSourceMenuItemID, "SourceMenuItemID");
     m_aRedirectTargetURL = ValueEnforcer.notNull (aRedirectTargetURL, "RedirectTargetURL");
@@ -87,7 +85,7 @@ public class ForcedRedirectException extends RuntimeException
    *         class is not accessible from here!
    */
   @Nullable
-  public Serializable getContent ()
+  public Object getContent ()
   {
     return m_aContent;
   }

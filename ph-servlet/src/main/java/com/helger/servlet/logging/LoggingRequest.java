@@ -16,8 +16,6 @@
  */
 package com.helger.servlet.logging;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,7 +24,7 @@ import com.helger.commons.http.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
 
-final class LoggingRequest implements Serializable
+final class LoggingRequest
 {
   private String m_sSender;
   private String m_sMethod;

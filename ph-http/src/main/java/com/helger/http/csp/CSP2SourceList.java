@@ -16,8 +16,6 @@
  */
 package com.helger.http.csp;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -41,7 +39,7 @@ import com.helger.security.messagedigest.EMessageDigestAlgorithm;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class CSP2SourceList implements Serializable
+public class CSP2SourceList
 {
   public static final String KEYWORD_NONE = "'none'";
   public static final String KEYWORD_SELF = "'self'";
@@ -74,7 +72,8 @@ public class CSP2SourceList implements Serializable
   public CSP2SourceList addScheme (@Nonnull @Nonempty final String sScheme)
   {
     ValueEnforcer.notEmpty (sScheme, "Scheme");
-    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"), () -> "Passed scheme '" + sScheme + "' is invalid!");
+    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"),
+                          () -> "Passed scheme '" + sScheme + "' is invalid!");
     m_aList.add (sScheme);
     return this;
   }
@@ -217,7 +216,8 @@ public class CSP2SourceList implements Serializable
    * @return this for chaining
    */
   @Nonnull
-  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo, @Nonnull @Nonempty final byte [] aHashValue)
+  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo,
+                                 @Nonnull @Nonempty final byte [] aHashValue)
   {
     ValueEnforcer.notEmpty (aHashValue, "HashValue");
     return addHash (eMDAlgo, Base64.safeEncodeBytes (aHashValue));

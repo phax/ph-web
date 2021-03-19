@@ -16,7 +16,6 @@
  */
 package com.helger.network.proxy.config;
 
-import java.io.Serializable;
 import java.net.Proxy;
 
 import javax.annotation.Nullable;
@@ -29,7 +28,7 @@ import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
  * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
-public interface IProxyConfig extends Serializable
+public interface IProxyConfig
 {
   /**
    * Activate this proxy configuration.

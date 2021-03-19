@@ -16,7 +16,6 @@
  */
 package com.helger.web.scope.impl;
 
-import java.io.Serializable;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
@@ -79,7 +78,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * @since 9.0.6
    */
   @FunctionalInterface
-  public static interface IParamValueCleanser extends Serializable
+  public static interface IParamValueCleanser
   {
     /**
      * Get the cleaned value of a parameter value.

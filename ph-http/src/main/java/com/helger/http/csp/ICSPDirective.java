@@ -16,8 +16,6 @@
  */
 package com.helger.http.csp;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,7 +28,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author Philip Helger
  */
-public interface ICSPDirective extends IHasName, Serializable
+public interface ICSPDirective extends IHasName
 {
   /**
    * @return The name of this directive.

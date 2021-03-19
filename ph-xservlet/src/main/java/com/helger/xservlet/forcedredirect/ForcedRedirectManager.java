@@ -16,8 +16,6 @@
  */
 package com.helger.xservlet.forcedredirect;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
@@ -38,9 +36,9 @@ import com.helger.web.scope.singleton.AbstractSessionWebSingleton;
 /**
  * Stores per-session the data to be used in a Post-Redirect-Get scenario.<br>
  * This class usually takes 'IHCNode' but because of the reverse dependencies,
- * this type cannot be used and is therefore abstracted as 'Serializable' in
- * this implementation. So all the time you read 'Serializable' consider it to
- * be 'IHCNode'.
+ * this type cannot be used and is therefore abstracted as 'Object' in this
+ * implementation. So all the time you read 'Object' consider it to be
+ * 'IHCNode'.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -53,7 +51,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   private static final Logger LOGGER = LoggerFactory.getLogger (ForcedRedirectManager.class);
 
   @GuardedBy ("m_aRWLock")
-  private final ICommonsMap <String, Serializable> m_aMap = new CommonsHashMap <> ();
+  private final ICommonsMap <String, Object> m_aMap = new CommonsHashMap <> ();
 
   @Deprecated
   @UsedViaReflection
@@ -92,7 +90,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   }
 
   @Nullable
-  public Serializable getContent (@Nullable final String sMenuItemID)
+  public Object getContent (@Nullable final String sMenuItemID)
   {
     if (StringHelper.hasNoText (sMenuItemID))
       return null;
@@ -111,7 +109,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   }
 
   @Nullable
-  public static Serializable getLastForcedRedirectContent (@Nullable final String sMenuItemID)
+  public static Object getLastForcedRedirectContent (@Nullable final String sMenuItemID)
   {
     if (StringHelper.hasNoText (sMenuItemID))
       return null;
@@ -125,13 +123,13 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   }
 
   @Nullable
-  public Serializable getAndRemoveContent (@Nullable final String sMenuItemID)
+  public Object getAndRemoveContent (@Nullable final String sMenuItemID)
   {
     if (StringHelper.hasNoText (sMenuItemID))
       return null;
 
     // Get in write lock
-    final Serializable ret = m_aRWLock.writeLockedGet ( () -> m_aMap.remove (sMenuItemID));
+    final Object ret = m_aRWLock.writeLockedGet ( () -> m_aMap.remove (sMenuItemID));
     if (ret != null)
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Removed content of last forced redirect from '" + sMenuItemID + "'");
@@ -139,7 +137,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   }
 
   @Nullable
-  public static Serializable getAndRemoveLastForcedRedirectContent (@Nullable final String sMenuItemID)
+  public static Object getAndRemoveLastForcedRedirectContent (@Nullable final String sMenuItemID)
   {
     if (StringHelper.hasNoText (sMenuItemID))
       return null;
@@ -162,6 +160,6 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("map", m_aMap).getToString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("Map", m_aMap).getToString ();
   }
 }

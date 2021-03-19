@@ -29,9 +29,8 @@ import com.helger.commons.email.IEmailAddress;
 
 /**
  * Contains all possible fields for mail sending in a read-only fashion. If the
- * email data should be serializable, the attribute values must implement
- * Serializable. If the email data should be used in failed mail data, than only
- * String values are allowed!
+ * email data should be used in failed mail data, than only String values are
+ * allowed!
  *
  * @author Philip Helger
  */

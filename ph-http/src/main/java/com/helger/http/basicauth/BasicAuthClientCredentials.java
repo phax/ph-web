@@ -16,8 +16,6 @@
  */
 package com.helger.http.basicauth;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -35,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class BasicAuthClientCredentials implements Serializable
+public class BasicAuthClientCredentials
 {
   private final String m_sUserName;
   private final String m_sPassword;

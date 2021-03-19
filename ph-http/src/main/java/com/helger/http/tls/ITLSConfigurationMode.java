@@ -16,8 +16,6 @@
  */
 package com.helger.http.tls;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,7 +28,7 @@ import com.helger.commons.collection.impl.ICommonsList;
  * @author Philip Helger
  * @since 9.0.5
  */
-public interface ITLSConfigurationMode extends Serializable
+public interface ITLSConfigurationMode
 {
   /**
    * @return A list of supported TLS versions in the correct order. May not be

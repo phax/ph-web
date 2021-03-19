@@ -19,9 +19,9 @@ package com.helger.web.fileupload;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
+import javax.activation.DataSource;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,8 +30,6 @@ import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
-
-import javax.activation.DataSource;
 
 /**
  * <p>
@@ -46,11 +44,10 @@ import javax.activation.DataSource;
  * with {@link #getInputStream()} and process the file without attempting to
  * load it into memory, which may come handy with large files.
  * <p>
- * While this interface does not extend
- * <code>javax.activation.DataSource</code> per se (to avoid a seldom used
- * dependency), several of the defined methods are specifically defined with the
- * same signatures as methods in that interface. This allows an implementation
- * of this interface to also implement
+ * While this interface does not extend <code>javax.activation.DataSource</code>
+ * per se (to avoid a seldom used dependency), several of the defined methods
+ * are specifically defined with the same signatures as methods in that
+ * interface. This allows an implementation of this interface to also implement
  * <code>javax.activation.DataSource</code> with minimal additional work.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -59,7 +56,7 @@ import javax.activation.DataSource;
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public interface IFileItem extends Serializable, DataSource, IHasInputStream
+public interface IFileItem extends DataSource, IHasInputStream
 {
   /**
    * @return An {@link InputStream} that can be used to retrieve the contents of

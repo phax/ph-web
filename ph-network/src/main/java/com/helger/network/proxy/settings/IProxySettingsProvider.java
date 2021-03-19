@@ -17,7 +17,6 @@
 package com.helger.network.proxy.settings;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.SocketAddress;
 import java.net.URI;
 
@@ -27,7 +26,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.collection.impl.ICommonsList;
 
-public interface IProxySettingsProvider extends Serializable
+public interface IProxySettingsProvider
 {
   /**
    * @param sProtocol
@@ -40,12 +39,14 @@ public interface IProxySettingsProvider extends Serializable
    *         that none was found.
    */
   @Nullable
-  ICommonsList <IProxySettings> getAllProxySettings (@Nullable String sProtocol, @Nullable String sHostName, @CheckForSigned int nPort);
+  ICommonsList <IProxySettings> getAllProxySettings (@Nullable String sProtocol,
+                                                     @Nullable String sHostName,
+                                                     @CheckForSigned int nPort);
 
   /**
    * Invoked if the connection to a proxy server failed. The action to take
    * depends on your requirements.
-   * 
+   *
    * @param aProxySettings
    *        The proxy settings that contains the failed proxy. Never
    *        <code>null</code>.

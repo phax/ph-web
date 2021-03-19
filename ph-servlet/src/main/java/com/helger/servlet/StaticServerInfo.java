@@ -16,8 +16,6 @@
  */
 package com.helger.servlet;
 
-import java.io.Serializable;
-
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -40,12 +38,12 @@ import com.helger.servlet.request.RequestHelper;
  * @author Philip Helger
  */
 @Immutable
-public class StaticServerInfo implements Serializable
+public class StaticServerInfo
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (StaticServerInfo.class);
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
   private static StaticServerInfo s_aDefault;
 
   private final String m_sScheme;
@@ -144,7 +142,7 @@ public class StaticServerInfo implements Serializable
 
   public static boolean isSet ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_aDefault != null);
+    return RW_LOCK.readLockedBoolean ( () -> s_aDefault != null);
   }
 
   @Nonnull
@@ -159,14 +157,14 @@ public class StaticServerInfo implements Serializable
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Static server information set: " + aDefault.toString ());
-    s_aRWLock.writeLockedGet ( () -> s_aDefault = aDefault);
+    RW_LOCK.writeLockedGet ( () -> s_aDefault = aDefault);
     return aDefault;
   }
 
   @Nonnull
   public static StaticServerInfo getInstance ()
   {
-    final StaticServerInfo ret = s_aRWLock.readLockedGet ( () -> s_aDefault);
+    final StaticServerInfo ret = RW_LOCK.readLockedGet ( () -> s_aDefault);
     if (ret == null)
       throw new IllegalStateException ("No default web server info present!");
     return ret;

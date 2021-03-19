@@ -16,8 +16,6 @@
  */
 package com.helger.http.basicauth;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -28,7 +26,7 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.HttpStringHelper;
 
 @NotThreadSafe
-public class BasicAuthServerBuilder implements Serializable
+public class BasicAuthServerBuilder
 {
   private String m_sRealm;
 

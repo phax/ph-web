@@ -19,7 +19,6 @@ package com.helger.sitemap;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.zip.GZIPOutputStream;
 
@@ -54,9 +53,10 @@ import com.helger.xml.serialize.write.IXMLWriterSettings;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class XMLSitemapIndex implements Serializable
+public class XMLSitemapIndex
 {
   public static final boolean DEFAULT_USE_GZIP = true;
+
   private static final String ELEMENT_SITEMAPINDEX = "sitemapindex";
   private static final String ELEMENT_SITEMAP = "sitemap";
   private static final String ELEMENT_LOC = "loc";
@@ -191,12 +191,14 @@ public class XMLSitemapIndex implements Serializable
 
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
-      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC).appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
+      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
+              .appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
       {
-        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD).appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
+        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
+                .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
       }
       ++nIndex;
     }
@@ -248,7 +250,9 @@ public class XMLSitemapIndex implements Serializable
     final IXMLWriterSettings aXWS = getXMLWriterSettings ();
 
     // Write base file
-    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath), new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME), aXWS)
+    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath),
+                                 new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
+                                 aXWS)
                    .isFailure ())
     {
       if (LOGGER.isErrorEnabled ())

@@ -18,7 +18,6 @@ package com.helger.web.multipart;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import javax.annotation.CheckForSigned;
@@ -97,7 +96,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Sean C. Sullivan
  * @version $Id: MultipartStream.java 735374 2009-01-18 02:18:45Z jochen $
  */
-public class MultipartStream implements Serializable
+public class MultipartStream
 {
   /**
    * The Carriage Return ASCII character value.
@@ -221,7 +220,10 @@ public class MultipartStream implements Serializable
    *        any.
    * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
-  public MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS,
+                          final byte [] aBoundary,
+                          final int nBufSize,
+                          final MultipartProgressNotifier aNotifier)
   {
     m_aIS = aIS;
     m_nBufSize = nBufSize;
@@ -426,7 +428,8 @@ public class MultipartStream implements Serializable
         aBAOS.write (b);
       }
 
-      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding, SystemHelper.getSystemCharset ());
+      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding,
+                                                                               SystemHelper.getSystemCharset ());
       return aBAOS.getAsString (aCharsetToUse);
     }
   }

@@ -16,7 +16,6 @@
  */
 package com.helger.network.proxy.settings;
 
-import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -34,7 +33,7 @@ import com.helger.commons.string.StringHelper;
  * @author Philip Helger
  * @since 9.0.2
  */
-public interface IProxySettings extends Serializable
+public interface IProxySettings
 {
   /**
    * @return The proxy type to be used. May not be <code>null</code>.
@@ -89,7 +88,9 @@ public interface IProxySettings extends Serializable
    */
   default boolean hasInetSocketAddress (@Nullable final InetSocketAddress aAddr)
   {
-    return aAddr != null && EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) && getProxyPort () == aAddr.getPort ();
+    return aAddr != null &&
+           EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) &&
+           getProxyPort () == aAddr.getPort ();
   }
 
   /**
@@ -143,6 +144,7 @@ public interface IProxySettings extends Serializable
 
     final String sProxyPassword = getProxyPassword ();
     // Constructor does not take null password!
-    return new PasswordAuthentication (getProxyUserName (), sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
+    return new PasswordAuthentication (getProxyUserName (),
+                                       sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
   }
 }

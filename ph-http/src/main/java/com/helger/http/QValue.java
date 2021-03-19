@@ -16,8 +16,6 @@
  */
 package com.helger.http;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
@@ -35,7 +33,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class QValue implements Comparable <QValue>, Serializable
+public class QValue implements Comparable <QValue>
 {
   /** Minimum quality value: 0 */
   public static final double MIN_QUALITY = 0;

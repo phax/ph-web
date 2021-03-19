@@ -16,7 +16,6 @@
  */
 package com.helger.servlet.request;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -40,7 +39,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public final class RequestParamMapItem implements Serializable
+public final class RequestParamMapItem
 {
   private String m_sValue;
   private final ICommonsOrderedMap <String, RequestParamMapItem> m_aChildren = new CommonsLinkedHashMap <> ();

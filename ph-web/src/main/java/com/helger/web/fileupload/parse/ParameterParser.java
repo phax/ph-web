@@ -16,7 +16,6 @@
  */
 package com.helger.web.fileupload.parse;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -41,7 +40,7 @@ import com.helger.commons.string.StringHelper;
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
 @NotThreadSafe
-public class ParameterParser implements Serializable
+public class ParameterParser
 {
   /**
    * String to be parsed.

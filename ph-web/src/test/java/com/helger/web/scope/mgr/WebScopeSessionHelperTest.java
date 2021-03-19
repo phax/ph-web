@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Nullable;
@@ -44,7 +43,7 @@ import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
  */
 public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCase
 {
-  public static final class MockScopeRenewalAware implements IScopeRenewalAware, Serializable
+  public static final class MockScopeRenewalAware implements IScopeRenewalAware
   {
     private final String m_sStr;
 

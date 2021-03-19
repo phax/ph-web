@@ -16,8 +16,6 @@
  */
 package com.helger.mail.datasource;
 
-import java.io.Serializable;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.annotation.Nonnull;
@@ -32,7 +30,7 @@ import com.helger.mail.cte.IContentTransferEncoding;
  *
  * @author Philip Helger
  */
-public interface IExtendedDataSource extends DataSource, Serializable
+public interface IExtendedDataSource extends DataSource
 {
   IMimeType DEFAULT_CONTENT_TYPE = CMimeType.APPLICATION_OCTET_STREAM;
 

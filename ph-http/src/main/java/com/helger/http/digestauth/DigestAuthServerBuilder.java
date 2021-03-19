@@ -16,8 +16,6 @@
  */
 package com.helger.http.digestauth;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
@@ -38,7 +36,7 @@ import com.helger.http.HttpStringHelper;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class DigestAuthServerBuilder implements Serializable
+public class DigestAuthServerBuilder
 {
   private String m_sRealm;
   private final ICommonsOrderedSet <String> m_aDomains = new CommonsLinkedHashSet <> ();
@@ -264,7 +262,8 @@ public class DigestAuthServerBuilder implements Serializable
     ret.append (" realm=").append (HttpStringHelper.getQuotedTextString (m_sRealm));
     if (m_aDomains.isNotEmpty ())
     {
-      ret.append (", domain=").append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
+      ret.append (", domain=")
+         .append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
     }
     // Nonce is required
     ret.append (", nonce=").append (HttpStringHelper.getQuotedTextString (m_sNonce));

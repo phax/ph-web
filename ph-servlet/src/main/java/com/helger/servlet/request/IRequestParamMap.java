@@ -16,7 +16,6 @@
  */
 package com.helger.servlet.request;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -39,7 +38,7 @@ import com.helger.commons.typeconvert.TypeConverter;
  *
  * @author Philip Helger
  */
-public interface IRequestParamMap extends IHasSize, Serializable
+public interface IRequestParamMap extends IHasSize
 {
   boolean contains (@Nonnull @Nonempty String... aPath);
 

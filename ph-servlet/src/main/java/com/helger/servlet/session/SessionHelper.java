@@ -44,7 +44,7 @@ public final class SessionHelper
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionHelper.class);
 
   @PresentForCodeCoverage
-  private static final SessionHelper s_aInstance = new SessionHelper ();
+  private static final SessionHelper INSTANCE = new SessionHelper ();
 
   private SessionHelper ()
   {}

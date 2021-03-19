@@ -42,7 +42,7 @@ import com.helger.commons.email.IEmailAddress;
 public final class InternetAddressHelper
 {
   @PresentForCodeCoverage
-  private static final InternetAddressHelper s_aInstance = new InternetAddressHelper ();
+  private static final InternetAddressHelper INSTANCE = new InternetAddressHelper ();
 
   private InternetAddressHelper ()
   {}

@@ -45,14 +45,14 @@ public final class UserAgentDatabase
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (UserAgentDatabase.class);
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
-  private static final ICommonsSet <String> s_aUniqueUserAgents = new CommonsHashSet <> ();
-  @GuardedBy ("s_aRWLock")
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static final ICommonsSet <String> UNIQUE_USER_AGENTS = new CommonsHashSet <> ();
+  @GuardedBy ("RW_LOCK")
   private static Consumer <? super IUserAgent> s_aNewUserAgentCallback;
 
   @PresentForCodeCoverage
-  private static final UserAgentDatabase s_aInstance = new UserAgentDatabase ();
+  private static final UserAgentDatabase INSTANCE = new UserAgentDatabase ();
 
   private UserAgentDatabase ()
   {}
@@ -67,7 +67,7 @@ public final class UserAgentDatabase
    */
   public static void setUserAgentCallback (@Nullable final Consumer <? super IUserAgent> aCallback)
   {
-    s_aRWLock.writeLockedGet ( () -> s_aNewUserAgentCallback = aCallback);
+    RW_LOCK.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
   }
 
   @Nullable
@@ -79,13 +79,13 @@ public final class UserAgentDatabase
     // Decrypt outside the lock
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
-    final boolean bAdded = s_aRWLock.writeLockedBoolean ( () -> s_aUniqueUserAgents.add (sUserAgent));
+    final boolean bAdded = RW_LOCK.writeLockedBoolean ( () -> UNIQUE_USER_AGENTS.add (sUserAgent));
     if (bAdded)
     {
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Found new UserAgent '" + sUserAgent + "'");
 
-      s_aRWLock.readLocked ( () -> {
+      RW_LOCK.readLocked ( () -> {
         if (s_aNewUserAgentCallback != null)
           s_aNewUserAgentCallback.accept (aUserAgent);
       });
@@ -97,6 +97,6 @@ public final class UserAgentDatabase
   @ReturnsMutableCopy
   public static ICommonsSet <String> getAllUniqueUserAgents ()
   {
-    return s_aRWLock.readLockedGet (s_aUniqueUserAgents::getClone);
+    return RW_LOCK.readLockedGet (UNIQUE_USER_AGENTS::getClone);
   }
 }

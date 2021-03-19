@@ -43,7 +43,7 @@ public final class WebScopeAwareTestSetup
   public static final String MOCK_CONTEXT_PATH = "/MockContext";
 
   @PresentForCodeCoverage
-  private static final WebScopeAwareTestSetup s_aInstance = new WebScopeAwareTestSetup ();
+  private static final WebScopeAwareTestSetup INSTANCE = new WebScopeAwareTestSetup ();
 
   private WebScopeAwareTestSetup ()
   {}

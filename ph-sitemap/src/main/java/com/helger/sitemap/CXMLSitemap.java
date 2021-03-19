@@ -49,7 +49,7 @@ public final class CXMLSitemap
                                                                                        .setIncorrectCharacterHandling (EXMLIncorrectCharacterHandling.DO_NOT_WRITE_LOG_WARNING);
 
   @PresentForCodeCoverage
-  private static final CXMLSitemap s_aInstance = new CXMLSitemap ();
+  private static final CXMLSitemap INSTANCE = new CXMLSitemap ();
 
   private CXMLSitemap ()
   {}

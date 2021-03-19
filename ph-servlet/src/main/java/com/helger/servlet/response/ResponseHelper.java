@@ -48,7 +48,7 @@ import com.helger.servlet.request.RequestHelper;
 public final class ResponseHelper
 {
   @PresentForCodeCoverage
-  private static final ResponseHelper s_aInstance = new ResponseHelper ();
+  private static final ResponseHelper INSTANCE = new ResponseHelper ();
 
   private ResponseHelper ()
   {}

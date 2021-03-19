@@ -63,13 +63,13 @@ public final class WebScopeManager
   private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                                      "sessionwebscope.activator";
   private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeManager.class);
-  private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
+  private static final AtomicBoolean SESSION_PASSIVATION_ALLOWED = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final ICommonsSet <String> s_aSessionsInInvalidation = new CommonsHashSet <> ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  private static final ICommonsSet <String> SESSION_IN_INVALIDATION = new CommonsHashSet <> ();
 
   @PresentForCodeCoverage
-  private static final WebScopeManager s_aInstance = new WebScopeManager ();
+  private static final WebScopeManager INSTANCE = new WebScopeManager ();
 
   private WebScopeManager ()
   {}
@@ -82,7 +82,7 @@ public final class WebScopeManager
    */
   public static boolean isSessionPassivationAllowed ()
   {
-    return s_aSessionPassivationAllowed.get ();
+    return SESSION_PASSIVATION_ALLOWED.get ();
   }
 
   /**
@@ -94,7 +94,7 @@ public final class WebScopeManager
    */
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
-    s_aSessionPassivationAllowed.set (bSessionPassivationAllowed);
+    SESSION_PASSIVATION_ALLOWED.set (bSessionPassivationAllowed);
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
 
@@ -112,7 +112,8 @@ public final class WebScopeManager
       {
         // Ensure the activator is present
         if (aHttpSession.getAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR) == null)
-          aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR, new SessionWebScopeActivator (aSessionWebScope));
+          aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR,
+                                     new SessionWebScopeActivator (aSessionWebScope));
       }
       else
       {
@@ -332,7 +333,8 @@ public final class WebScopeManager
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
-  public static ISessionWebScope internalGetSessionScope (final boolean bCreateIfNotExisting, final boolean bItsOkayToCreateANewSession)
+  public static ISessionWebScope internalGetSessionScope (final boolean bCreateIfNotExisting,
+                                                          final boolean bItsOkayToCreateANewSession)
   {
     // Try to to resolve the current request scope
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
@@ -405,7 +407,7 @@ public final class WebScopeManager
       // a previous invocation are invalidated on Tomcat restart
 
       // Ensure that session.invalidate can not be called recursively
-      final boolean bCanInvalidateSession = s_aRWLock.writeLockedBoolean ( () -> s_aSessionsInInvalidation.add (sSessionID));
+      final boolean bCanInvalidateSession = RW_LOCK.writeLockedBoolean ( () -> SESSION_IN_INVALIDATION.add (sSessionID));
 
       if (bCanInvalidateSession)
       {
@@ -422,7 +424,7 @@ public final class WebScopeManager
         finally
         {
           // Remove from "in invalidation" list
-          s_aRWLock.writeLockedBoolean ( () -> s_aSessionsInInvalidation.remove (sSessionID));
+          RW_LOCK.writeLocked ( () -> SESSION_IN_INVALIDATION.remove (sSessionID));
         }
       }
     }

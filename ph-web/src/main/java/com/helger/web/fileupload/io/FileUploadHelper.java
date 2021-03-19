@@ -30,7 +30,7 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
 public final class FileUploadHelper
 {
   @PresentForCodeCoverage
-  private static final FileUploadHelper s_aInstance = new FileUploadHelper ();
+  private static final FileUploadHelper INSTANCE = new FileUploadHelper ();
 
   private FileUploadHelper ()
   {}

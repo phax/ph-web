@@ -40,7 +40,7 @@ public final class AcceptCharsetHandler
   public static final String DEFAULT_CHARSET = StandardCharsets.ISO_8859_1.name ();
 
   @PresentForCodeCoverage
-  private static final AcceptCharsetHandler s_aInstance = new AcceptCharsetHandler ();
+  private static final AcceptCharsetHandler INSTANCE = new AcceptCharsetHandler ();
 
   private AcceptCharsetHandler ()
   {}

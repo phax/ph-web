@@ -118,7 +118,7 @@ public final class RequestHelper
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestHelper.class);
 
   @PresentForCodeCoverage
-  private static final RequestHelper s_aInstance = new RequestHelper ();
+  private static final RequestHelper INSTANCE = new RequestHelper ();
 
   private RequestHelper ()
   {}

@@ -30,7 +30,7 @@ import com.jcraft.jsch.JSch;
 public final class JSchInit
 {
   @PresentForCodeCoverage
-  private static final JSchInit s_aInstance = new JSchInit ();
+  private static final JSchInit INSTANCE = new JSchInit ();
 
   private JSchInit ()
   {}

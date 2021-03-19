@@ -54,7 +54,7 @@ public final class DNSConfig
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfig.class);
 
   @PresentForCodeCoverage
-  private static final DNSConfig s_aInstance = new DNSConfig ();
+  private static final DNSConfig INSTANCE = new DNSConfig ();
 
   private DNSConfig ()
   {}

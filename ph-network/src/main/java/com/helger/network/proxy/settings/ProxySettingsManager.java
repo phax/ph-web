@@ -48,9 +48,9 @@ import com.helger.commons.state.EHandled;
 public final class ProxySettingsManager
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxySettingsManager.class);
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
-  private static final ICommonsList <IProxySettingsProvider> s_aList = new CommonsArrayList <> ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static final ICommonsList <IProxySettingsProvider> LIST = new CommonsArrayList <> ();
 
   private ProxySettingsManager ()
   {}
@@ -59,13 +59,13 @@ public final class ProxySettingsManager
   @ReturnsMutableCopy
   public static ICommonsList <IProxySettingsProvider> getAllProviders ()
   {
-    return s_aRWLock.readLockedGet (s_aList::getClone);
+    return RW_LOCK.readLockedGet (LIST::getClone);
   }
 
   public static void registerProvider (@Nonnull final IProxySettingsProvider aProvider)
   {
     ValueEnforcer.notNull (aProvider, "Provider");
-    s_aRWLock.writeLockedBoolean ( () -> s_aList.add (aProvider));
+    RW_LOCK.writeLocked ( () -> LIST.add (aProvider));
 
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Registered proxy settings provider " + aProvider);
@@ -77,7 +77,7 @@ public final class ProxySettingsManager
     if (aProvider == null)
       return EChange.UNCHANGED;
 
-    final EChange eChange = s_aRWLock.writeLockedGet ( () -> s_aList.removeObject (aProvider));
+    final EChange eChange = RW_LOCK.writeLockedGet ( () -> LIST.removeObject (aProvider));
     if (eChange.isChanged ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Unregistered proxy settings provider " + aProvider);
@@ -87,7 +87,7 @@ public final class ProxySettingsManager
   @Nonnull
   public static EChange removeAllProviders ()
   {
-    final EChange eChange = s_aRWLock.writeLockedGet (s_aList::removeAll);
+    final EChange eChange = RW_LOCK.writeLockedGet (LIST::removeAll);
     if (eChange.isChanged ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Removed all proxy settings provider");
@@ -139,7 +139,9 @@ public final class ProxySettingsManager
   }
 
   @Nonnull
-  public static EHandled onConnectionFailed (@Nonnull final URI aURI, @Nonnull final SocketAddress aAddr, @Nonnull final IOException ex)
+  public static EHandled onConnectionFailed (@Nonnull final URI aURI,
+                                             @Nonnull final SocketAddress aAddr,
+                                             @Nonnull final IOException ex)
   {
     final String sProtocol = aURI.getScheme ();
     final String sHostName = aURI.getHost ();

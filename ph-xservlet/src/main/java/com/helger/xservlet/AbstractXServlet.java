@@ -139,7 +139,7 @@ public abstract class AbstractXServlet extends HttpServlet
                                                                                                                                 "$method.unhandled");
 
   /** Indicator whether it is the first request or not */
-  private static final AtomicBoolean s_aFirstRequest = new AtomicBoolean (true);
+  private static final AtomicBoolean FIRST_REQUEST = new AtomicBoolean (true);
 
   /** The main handler map */
   private final XServletHandlerRegistry m_aHandlerRegistry = new XServletHandlerRegistry ();
@@ -474,7 +474,7 @@ public abstract class AbstractXServlet extends HttpServlet
     // here HTTP version and method are valid
 
     // May already be set in test cases!
-    if (s_aFirstRequest.getAndSet (false) && !StaticServerInfo.isSet ())
+    if (FIRST_REQUEST.getAndSet (false) && !StaticServerInfo.isSet ())
     {
       // First set the default web server info
       StaticServerInfo.init (aHttpRequest.getScheme (),

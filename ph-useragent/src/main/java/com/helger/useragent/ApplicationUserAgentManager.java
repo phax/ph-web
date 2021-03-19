@@ -35,7 +35,7 @@ import com.helger.xml.microdom.util.XMLListHandler;
 @Immutable
 public final class ApplicationUserAgentManager
 {
-  private static final ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
+  private static final ICommonsSet <String> SET = new CommonsHashSet <> ();
 
   static
   {
@@ -43,7 +43,7 @@ public final class ApplicationUserAgentManager
   }
 
   @PresentForCodeCoverage
-  private static final ApplicationUserAgentManager s_aInstance = new ApplicationUserAgentManager ();
+  private static final ApplicationUserAgentManager INSTANCE = new ApplicationUserAgentManager ();
 
   private ApplicationUserAgentManager ()
   {}
@@ -53,7 +53,7 @@ public final class ApplicationUserAgentManager
     final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
-    s_aSet.addAll (aList);
+    SET.addAll (aList);
   }
 
   @Nullable
@@ -61,13 +61,13 @@ public final class ApplicationUserAgentManager
   {
     if (StringHelper.hasNoText (sFullUserAgent))
       return null;
-    return s_aSet.findFirst (sFullUserAgent::contains);
+    return SET.findFirst (sFullUserAgent::contains);
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static ICommonsCollection <String> getAllItems ()
   {
-    return s_aSet.getClone ();
+    return SET.getClone ();
   }
 }

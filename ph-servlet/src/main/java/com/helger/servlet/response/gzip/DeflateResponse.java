@@ -50,14 +50,14 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
     }
   }
 
-  private static final IMutableStatisticsHandlerCounter s_aStatsDeflate = StatisticsManager.getCounterHandler (DeflateResponse.class);
+  private static final IMutableStatisticsHandlerCounter STATS_COUNTER_DEFLATE = StatisticsManager.getCounterHandler (DeflateResponse.class);
 
   public DeflateResponse (@Nonnull final HttpServletRequest aHttpRequest,
                           @Nonnull final HttpServletResponse aHttpResponse,
                           @Nonnull final String sContentEncoding)
   {
     super (aHttpRequest, aHttpResponse, sContentEncoding);
-    s_aStatsDeflate.increment ();
+    STATS_COUNTER_DEFLATE.increment ();
   }
 
   @Override

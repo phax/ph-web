@@ -32,13 +32,13 @@ public final class ProgressListenerProvider
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProgressListenerProvider.class);
 
-  private static final IProgressListenerProviderSPI s_aProgressListenerProvider;
+  private static final IProgressListenerProviderSPI PROVIDER;
 
   static
   {
-    s_aProgressListenerProvider = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
-    if (s_aProgressListenerProvider != null)
-      LOGGER.info ("Using progress listener provider " + s_aProgressListenerProvider);
+    PROVIDER = ServiceLoaderHelper.getFirstSPIImplementation (IProgressListenerProviderSPI.class);
+    if (PROVIDER != null)
+      LOGGER.info ("Using progress listener provider " + PROVIDER);
   }
 
   private ProgressListenerProvider ()
@@ -47,12 +47,12 @@ public final class ProgressListenerProvider
   @Nullable
   public static IProgressListenerProviderSPI getProgressListenerProvider ()
   {
-    return s_aProgressListenerProvider;
+    return PROVIDER;
   }
 
   @Nullable
   public static IProgressListener getProgressListener ()
   {
-    return s_aProgressListenerProvider == null ? null : s_aProgressListenerProvider.getProgressListener ();
+    return PROVIDER == null ? null : PROVIDER.getProgressListener ();
   }
 }

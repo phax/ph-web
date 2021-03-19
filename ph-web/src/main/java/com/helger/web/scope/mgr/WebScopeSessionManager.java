@@ -42,7 +42,7 @@ public final class WebScopeSessionManager
   private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeSessionManager.class);
 
   @PresentForCodeCoverage
-  private static final WebScopeSessionManager s_aInstance = new WebScopeSessionManager ();
+  private static final WebScopeSessionManager INSTANCE = new WebScopeSessionManager ();
 
   private WebScopeSessionManager ()
   {}

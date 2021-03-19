@@ -84,17 +84,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @NotThreadSafe
 public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
-  // Because of transient field
-  private static final long serialVersionUID = 1379943273879417L;
-
   private static final Logger LOGGER = LoggerFactory.getLogger (DiskFileItem.class);
-
-  /**
-   * Default content charset to be used when no explicit charset parameter is
-   * provided by the sender. Media subtypes of the "text" type are defined to
-   * have a default charset value of "ISO-8859-1" when received via HTTP.
-   */
-  public static final String DEFAULT_CHARSET = StandardCharsets.ISO_8859_1.name ();
 
   /**
    * Default content charset to be used when no explicit charset parameter is
@@ -104,14 +94,25 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public static final Charset DEFAULT_CHARSET_OBJ = StandardCharsets.ISO_8859_1;
 
   /**
+   * Default content charset to be used when no explicit charset parameter is
+   * provided by the sender. Media subtypes of the "text" type are defined to
+   * have a default charset value of "ISO-8859-1" when received via HTTP.
+   */
+  public static final String DEFAULT_CHARSET = DEFAULT_CHARSET_OBJ.name ();
+
+  /**
    * UID used in unique file name generation.
    */
-  private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (), ':', '_'), '-', '_');
+  private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (),
+                                                                                      ':',
+                                                                                      '_'),
+                                                             '-',
+                                                             '_');
 
   /**
    * Counter used in unique identifier generation.
    */
-  private static final AtomicInteger s_aTempFileCounter = new AtomicInteger (0);
+  private static final AtomicInteger TEMP_FILE_COUNTER = new AtomicInteger (0);
 
   /**
    * The name of the form field as provided by the browser.
@@ -211,11 +212,14 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_nSizeThreshold = ValueEnforcer.isGT0 (nSizeThreshold, "SizeThreshold");
     m_aTempDir = aRepository != null ? aRepository : new File (SystemProperties.getTmpDir ());
     if (!FileHelper.existsDir (m_aTempDir))
-      throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " +
+                                          m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canRead ())
-      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " +
+                                          m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canWrite ())
-      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " +
+                                          m_aTempDir.getAbsolutePath ());
   }
 
   /**
@@ -300,7 +304,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     {
       // If you manage to get more than 100 million of ids, you'll
       // start getting ids longer than 8 characters.
-      final String sUniqueID = StringHelper.getLeadingZero (s_aTempFileCounter.getAndIncrement (), 8);
+      final String sUniqueID = StringHelper.getLeadingZero (TEMP_FILE_COUNTER.getAndIncrement (), 8);
       final String sTempFileName = "upload_" + UID + "_" + sUniqueID + ".tmp";
       m_aTempFile = new File (m_aTempDir, sTempFileName);
     }
@@ -351,7 +355,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String getCharSet ()
   {
     // Parameter parser can handle null input
-    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (getContentType (), ';');
+    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                       .parse (getContentType (), ';');
     return aParams.get ("charset");
   }
 

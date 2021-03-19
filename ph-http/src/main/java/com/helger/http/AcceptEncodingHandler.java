@@ -54,7 +54,7 @@ public final class AcceptEncodingHandler
   private static final Logger LOGGER = LoggerFactory.getLogger (AcceptEncodingHandler.class);
 
   @PresentForCodeCoverage
-  private static final AcceptEncodingHandler s_aInstance = new AcceptEncodingHandler ();
+  private static final AcceptEncodingHandler INSTANCE = new AcceptEncodingHandler ();
 
   private AcceptEncodingHandler ()
   {}

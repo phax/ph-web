@@ -50,10 +50,10 @@ public final class RequestLogger
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestLogger.class);
 
-  private static final AnnotationUsageCache s_aOfflineCache = new AnnotationUsageCache (IsOffline.class);
+  private static final AnnotationUsageCache IS_OFFLINE_CACHE = new AnnotationUsageCache (IsOffline.class);
 
   @PresentForCodeCoverage
-  private static final RequestLogger s_aInstance = new RequestLogger ();
+  private static final RequestLogger INSTANCE = new RequestLogger ();
 
   private RequestLogger ()
   {}
@@ -65,7 +65,7 @@ public final class RequestLogger
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
-    if (s_aOfflineCache.hasAnnotation (aHttpRequest))
+    if (IS_OFFLINE_CACHE.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
       ret.put ("Offline", "true");

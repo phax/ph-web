@@ -42,7 +42,7 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
   private static final Logger LOGGER = LoggerFactory.getLogger (XServletFilterTrackRequest.class);
 
   /** Thread-safe request counter */
-  private static final AtomicLong s_aRequestID = new AtomicLong (0);
+  private static final AtomicLong REQUEST_ID = new AtomicLong (0);
 
   private boolean m_bTrackedRequest = false;
 
@@ -65,7 +65,7 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
     }
 
     // Create a unique ID for the request
-    sID = Long.toString (s_aRequestID.incrementAndGet ());
+    sID = Long.toString (REQUEST_ID.incrementAndGet ());
 
     // Remember in request scope
     aRequestScope.attrs ().putIn (REQUEST_ATTR_ID, sID);

@@ -37,7 +37,7 @@ public final class CWeb
   public static final Charset CHARSET_MULTIPART_OBJ = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
-  private static final CWeb s_aInstance = new CWeb ();
+  private static final CWeb INSTANCE = new CWeb ();
 
   private CWeb ()
   {}

@@ -52,18 +52,18 @@ public final class NetworkOnlineStatusDeterminator
   /** Default connection timeout of 2 seconds */
   public static final int DEFAULT_CONNECTION_TIMEOUT_MILLISECONDS = 2_000;
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
   private static Duration s_aCacheDuration = DEFAULT_CACHE_DURATION;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static int s_nConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MILLISECONDS;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static LocalDateTime s_aLastCheckDT = null;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static ENetworkOnlineStatus s_eStatus = ENetworkOnlineStatus.UNDEFINED;
 
   @PresentForCodeCoverage
-  private static final NetworkOnlineStatusDeterminator s_aInstance = new NetworkOnlineStatusDeterminator ();
+  private static final NetworkOnlineStatusDeterminator INSTANCE = new NetworkOnlineStatusDeterminator ();
 
   private NetworkOnlineStatusDeterminator ()
   {}
@@ -74,7 +74,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnull
   public static Duration getCacheDuration ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_aCacheDuration);
+    return RW_LOCK.readLockedGet ( () -> s_aCacheDuration);
   }
 
   /**
@@ -86,7 +86,7 @@ public final class NetworkOnlineStatusDeterminator
   public static void setCacheDuration (@Nonnull final Duration aCacheDuration)
   {
     ValueEnforcer.notNull (aCacheDuration, "CacheDuration");
-    s_aRWLock.writeLockedGet ( () -> s_aCacheDuration = aCacheDuration);
+    RW_LOCK.writeLockedGet ( () -> s_aCacheDuration = aCacheDuration);
   }
 
   /**
@@ -95,7 +95,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnegative
   public static int getConnectionTimeoutMilliseconds ()
   {
-    return s_aRWLock.readLockedInt ( () -> s_nConnectionTimeout);
+    return RW_LOCK.readLockedInt ( () -> s_nConnectionTimeout);
   }
 
   /**
@@ -107,7 +107,7 @@ public final class NetworkOnlineStatusDeterminator
   public static void setConnectionTimeoutMilliseconds (final int nConnectionTimeout)
   {
     ValueEnforcer.isGT0 (nConnectionTimeout, "ConnectionTimeout");
-    s_aRWLock.writeLockedInt ( () -> s_nConnectionTimeout = nConnectionTimeout);
+    RW_LOCK.writeLockedInt ( () -> s_nConnectionTimeout = nConnectionTimeout);
   }
 
   /**
@@ -117,7 +117,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nullable
   public static LocalDateTime getLastCheckDT ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_aLastCheckDT);
+    return RW_LOCK.readLockedGet ( () -> s_aLastCheckDT);
   }
 
   /**
@@ -127,7 +127,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnull
   public static ENetworkOnlineStatus getCachedNetworkStatus ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_eStatus);
+    return RW_LOCK.readLockedGet ( () -> s_eStatus);
   }
 
   /**
@@ -136,7 +136,7 @@ public final class NetworkOnlineStatusDeterminator
    */
   public static void resetCachedStatus ()
   {
-    s_aRWLock.writeLocked ( () -> {
+    RW_LOCK.writeLocked ( () -> {
       s_aLastCheckDT = null;
       s_eStatus = ENetworkOnlineStatus.UNDEFINED;
     });
@@ -150,7 +150,7 @@ public final class NetworkOnlineStatusDeterminator
   @Nonnull
   public static ENetworkOnlineStatus getNetworkStatus ()
   {
-    s_aRWLock.readLock ().lock ();
+    RW_LOCK.readLock ().lock ();
     try
     {
       if (s_eStatus.isDefined ())
@@ -163,7 +163,7 @@ public final class NetworkOnlineStatusDeterminator
     }
     finally
     {
-      s_aRWLock.readLock ().unlock ();
+      RW_LOCK.readLock ().unlock ();
     }
 
     // An update is needed
@@ -179,11 +179,13 @@ public final class NetworkOnlineStatusDeterminator
   public static ENetworkOnlineStatus getNetworkStatusNoCache ()
   {
     final LocalDateTime aNow = PDTFactory.getCurrentLocalDateTime ();
-    s_aRWLock.writeLock ().lock ();
+    RW_LOCK.writeLock ().lock ();
     try
     {
       // Check all host names in parallel, if they are reachable
-      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com", "www.facebook.com", "www.microsoft.com");
+      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com",
+                                                                        "www.facebook.com",
+                                                                        "www.microsoft.com");
       final ExecutorService aES = Executors.newFixedThreadPool (aHostNames.size ());
       final AtomicInteger aReachable = new AtomicInteger (0);
       for (final String sHostName : aHostNames)
@@ -199,7 +201,7 @@ public final class NetworkOnlineStatusDeterminator
     }
     finally
     {
-      s_aRWLock.writeLock ().unlock ();
+      RW_LOCK.writeLock ().unlock ();
     }
   }
 }

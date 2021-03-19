@@ -61,7 +61,7 @@ public final class HttpDigestAuth
   private static final Charset CHARSET = StandardCharsets.ISO_8859_1;
 
   @PresentForCodeCoverage
-  private static final HttpDigestAuth s_aInstance = new HttpDigestAuth ();
+  private static final HttpDigestAuth INSTANCE = new HttpDigestAuth ();
 
   private HttpDigestAuth ()
   {}

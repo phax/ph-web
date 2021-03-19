@@ -48,7 +48,7 @@ public final class HttpBasicAuth
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpDigestAuth.class);
 
   @PresentForCodeCoverage
-  private static final HttpBasicAuth s_aInstance = new HttpBasicAuth ();
+  private static final HttpBasicAuth INSTANCE = new HttpBasicAuth ();
 
   private HttpBasicAuth ()
   {}

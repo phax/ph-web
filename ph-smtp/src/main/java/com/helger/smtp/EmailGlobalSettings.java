@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
+import javax.mail.event.ConnectionListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,6 @@ import com.helger.commons.system.SystemProperties;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import javax.mail.event.ConnectionListener;
 
 /**
  * Global settings for the mail transport.
@@ -60,30 +60,30 @@ public final class EmailGlobalSettings
   public static final long DEFAULT_TIMEOUT_MILLISECS = 10 * CGlobal.MILLISECONDS_PER_SECOND;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (EmailGlobalSettings.class);
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
 
   // Mail queue settings
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static int s_nMaxMailQueueLen = DEFAULT_MAX_QUEUE_LENGTH;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static int s_nMaxMailSendCount = DEFAULT_MAX_SEND_COUNT;
 
   // SMTP connection settings
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static boolean s_bUseSSL = DEFAULT_USE_SSL;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static boolean s_bUseSTARTTLS = DEFAULT_USE_STARTTLS;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static long s_nConnectionTimeoutMilliSecs = DEFAULT_CONNECT_TIMEOUT_MILLISECS;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static long s_nTimeoutMilliSecs = DEFAULT_TIMEOUT_MILLISECS;
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static boolean s_bDebugSMTP = GlobalDebug.isDebugMode ();
 
   // Transport settings
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static ICommonsList <ConnectionListener> s_aConnectionListeners = new CommonsArrayList <> ();
-  @GuardedBy ("s_aRWLock")
+  @GuardedBy ("RW_LOCK")
   private static ICommonsList <IEmailDataTransportListener> s_aEmailDataTransportListeners = new CommonsArrayList <> ();
 
   private EmailGlobalSettings ()
@@ -95,7 +95,7 @@ public final class EmailGlobalSettings
   @Nonnegative
   public static int getMaxMailQueueLength ()
   {
-    return s_aRWLock.readLockedInt ( () -> s_nMaxMailQueueLen);
+    return RW_LOCK.readLockedInt ( () -> s_nMaxMailQueueLen);
   }
 
   /**
@@ -105,7 +105,7 @@ public final class EmailGlobalSettings
   @Nonnegative
   public static int getMaxMailSendCount ()
   {
-    return s_aRWLock.readLockedInt ( () -> s_nMaxMailSendCount);
+    return RW_LOCK.readLockedInt ( () -> s_nMaxMailSendCount);
   }
 
   /**
@@ -120,14 +120,19 @@ public final class EmailGlobalSettings
    * @return {@link EChange}.
    */
   @Nonnull
-  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen, @Nonnegative final int nMaxMailSendCount)
+  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen,
+                                          @Nonnegative final int nMaxMailSendCount)
   {
     ValueEnforcer.isGT0 (nMaxMailQueueLen, "MaxMailQueueLen");
     ValueEnforcer.isGT0 (nMaxMailSendCount, "MaxMailSendCount");
     ValueEnforcer.isTrue (nMaxMailQueueLen >= nMaxMailSendCount,
-                          () -> "MaxMailQueueLen (" + nMaxMailQueueLen + ") must be >= than MaxMailSendCount (" + nMaxMailSendCount + ")");
+                          () -> "MaxMailQueueLen (" +
+                                nMaxMailQueueLen +
+                                ") must be >= than MaxMailSendCount (" +
+                                nMaxMailSendCount +
+                                ")");
 
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)
         return EChange.UNCHANGED;
       s_nMaxMailQueueLen = nMaxMailQueueLen;
@@ -141,7 +146,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isUseSSL ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bUseSSL);
+    return RW_LOCK.readLockedBoolean ( () -> s_bUseSSL);
   }
 
   /**
@@ -154,7 +159,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setUseSSL (final boolean bUseSSL)
   {
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (s_bUseSSL == bUseSSL)
         return EChange.UNCHANGED;
       s_bUseSSL = bUseSSL;
@@ -167,7 +172,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isUseSTARTTLS ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bUseSTARTTLS);
+    return RW_LOCK.readLockedBoolean ( () -> s_bUseSTARTTLS);
   }
 
   /**
@@ -180,7 +185,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setUseSTARTTLS (final boolean bUseSTARTTLS)
   {
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (s_bUseSTARTTLS == bUseSTARTTLS)
         return EChange.UNCHANGED;
       s_bUseSTARTTLS = bUseSTARTTLS;
@@ -196,7 +201,7 @@ public final class EmailGlobalSettings
   @CheckForSigned
   public static long getConnectionTimeoutMilliSecs ()
   {
-    return s_aRWLock.readLockedLong ( () -> s_nConnectionTimeoutMilliSecs);
+    return RW_LOCK.readLockedLong ( () -> s_nConnectionTimeoutMilliSecs);
   }
 
   /**
@@ -211,7 +216,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setConnectionTimeoutMilliSecs (final long nMilliSecs)
   {
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (s_nConnectionTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -229,7 +234,7 @@ public final class EmailGlobalSettings
   @CheckForSigned
   public static long getTimeoutMilliSecs ()
   {
-    return s_aRWLock.readLockedLong ( () -> s_nTimeoutMilliSecs);
+    return RW_LOCK.readLockedLong ( () -> s_nTimeoutMilliSecs);
   }
 
   /**
@@ -244,7 +249,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setTimeoutMilliSecs (final long nMilliSecs)
   {
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (s_nTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -261,7 +266,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isDebugSMTP ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bDebugSMTP);
+    return RW_LOCK.readLockedBoolean ( () -> s_bDebugSMTP);
   }
 
   /**
@@ -274,7 +279,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange setDebugSMTP (final boolean bDebugSMTP)
   {
-    return s_aRWLock.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet ( () -> {
       if (s_bDebugSMTP == bDebugSMTP)
         return EChange.UNCHANGED;
       s_bDebugSMTP = bDebugSMTP;
@@ -292,7 +297,7 @@ public final class EmailGlobalSettings
   public static void addConnectionListener (@Nonnull final ConnectionListener aConnectionListener)
   {
     ValueEnforcer.notNull (aConnectionListener, "ConnectionListener");
-    s_aRWLock.writeLockedBoolean ( () -> s_aConnectionListeners.add (aConnectionListener));
+    RW_LOCK.writeLockedBoolean ( () -> s_aConnectionListeners.add (aConnectionListener));
   }
 
   /**
@@ -309,7 +314,7 @@ public final class EmailGlobalSettings
     if (aConnectionListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLockedGet ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
+    return RW_LOCK.writeLockedGet ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
   }
 
   /**
@@ -321,7 +326,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange removeAllConnectionListeners ()
   {
-    return s_aRWLock.writeLockedGet (s_aConnectionListeners::removeAll);
+    return RW_LOCK.writeLockedGet (s_aConnectionListeners::removeAll);
   }
 
   /**
@@ -331,7 +336,7 @@ public final class EmailGlobalSettings
    */
   public static boolean hasConnectionListeners ()
   {
-    return s_aRWLock.readLockedBoolean (s_aConnectionListeners::isNotEmpty);
+    return RW_LOCK.readLockedBoolean (s_aConnectionListeners::isNotEmpty);
   }
 
   /**
@@ -342,7 +347,7 @@ public final class EmailGlobalSettings
   @ReturnsMutableCopy
   public static ICommonsList <ConnectionListener> getAllConnectionListeners ()
   {
-    return s_aRWLock.readLockedGet (s_aConnectionListeners::getClone);
+    return RW_LOCK.readLockedGet (s_aConnectionListeners::getClone);
   }
 
   /**
@@ -355,7 +360,7 @@ public final class EmailGlobalSettings
   public static void addEmailDataTransportListener (@Nonnull final IEmailDataTransportListener aEmailDataTransportListener)
   {
     ValueEnforcer.notNull (aEmailDataTransportListener, "EmailDataTransportListener");
-    s_aRWLock.writeLockedBoolean ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
+    RW_LOCK.writeLockedBoolean ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
   }
 
   /**
@@ -372,7 +377,7 @@ public final class EmailGlobalSettings
     if (aEmailDataTransportListener == null)
       return EChange.UNCHANGED;
 
-    return s_aRWLock.writeLockedGet ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
+    return RW_LOCK.writeLockedGet ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
   }
 
   /**
@@ -384,7 +389,7 @@ public final class EmailGlobalSettings
   @Nonnull
   public static EChange removeAllEmailDataTransportListeners ()
   {
-    return s_aRWLock.writeLockedGet (s_aEmailDataTransportListeners::removeAll);
+    return RW_LOCK.writeLockedGet (s_aEmailDataTransportListeners::removeAll);
   }
 
   /**
@@ -394,7 +399,7 @@ public final class EmailGlobalSettings
    */
   public static boolean hasEmailDataTransportListeners ()
   {
-    return s_aRWLock.readLockedBoolean (s_aEmailDataTransportListeners::isNotEmpty);
+    return RW_LOCK.readLockedBoolean (s_aEmailDataTransportListeners::isNotEmpty);
   }
 
   /**
@@ -405,7 +410,7 @@ public final class EmailGlobalSettings
   @ReturnsMutableCopy
   public static ICommonsList <IEmailDataTransportListener> getAllEmailDataTransportListeners ()
   {
-    return s_aRWLock.readLockedGet (s_aEmailDataTransportListeners::getClone);
+    return RW_LOCK.readLockedGet (s_aEmailDataTransportListeners::getClone);
   }
 
   /**
@@ -441,7 +446,7 @@ public final class EmailGlobalSettings
    */
   public static void setToDefault ()
   {
-    s_aRWLock.writeLocked ( () -> {
+    RW_LOCK.writeLocked ( () -> {
       s_nMaxMailQueueLen = DEFAULT_MAX_QUEUE_LENGTH;
       s_nMaxMailSendCount = DEFAULT_MAX_SEND_COUNT;
       s_bUseSSL = DEFAULT_USE_SSL;

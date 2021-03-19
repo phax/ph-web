@@ -45,7 +45,7 @@ public final class WebScopeSessionHelper
   private static final Logger LOGGER = LoggerFactory.getLogger (WebScopeSessionHelper.class);
 
   @PresentForCodeCoverage
-  private static final WebScopeSessionHelper s_aInstance = new WebScopeSessionHelper ();
+  private static final WebScopeSessionHelper INSTANCE = new WebScopeSessionHelper ();
 
   private WebScopeSessionHelper ()
   {}

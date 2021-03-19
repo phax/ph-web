@@ -47,10 +47,10 @@ public final class ServletHelper
   public static final boolean DEFAULT_LOG_EXCEPTIONS = false;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (ServletHelper.class);
-  private static final AtomicBoolean s_aLogExceptions = new AtomicBoolean (DEFAULT_LOG_EXCEPTIONS);
+  private static final AtomicBoolean LOG_EXCEPTIONS = new AtomicBoolean (DEFAULT_LOG_EXCEPTIONS);
 
   @PresentForCodeCoverage
-  private static final ServletHelper s_aInstance = new ServletHelper ();
+  private static final ServletHelper INSTANCE = new ServletHelper ();
 
   private ServletHelper ()
   {}
@@ -66,7 +66,7 @@ public final class ServletHelper
    */
   public static void setLogExceptions (final boolean bLog)
   {
-    s_aLogExceptions.set (bLog);
+    LOG_EXCEPTIONS.set (bLog);
   }
 
   /**
@@ -76,7 +76,7 @@ public final class ServletHelper
    */
   public static boolean isLogExceptions ()
   {
-    return s_aLogExceptions.get ();
+    return LOG_EXCEPTIONS.get ();
   }
 
   /**

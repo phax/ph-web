@@ -34,7 +34,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 public final class WebExceptionHelper
 {
   @PresentForCodeCoverage
-  private static final WebExceptionHelper s_aInstance = new WebExceptionHelper ();
+  private static final WebExceptionHelper INSTANCE = new WebExceptionHelper ();
 
   private WebExceptionHelper ()
   {}

@@ -52,11 +52,11 @@ public final class SchemeDefaultPortMapper
   public static final String SCHEME_HTTPS = "https";
 
   @PresentForCodeCoverage
-  private static final SchemeDefaultPortMapper s_aInstance = new SchemeDefaultPortMapper ();
+  private static final SchemeDefaultPortMapper INSTANCE = new SchemeDefaultPortMapper ();
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
-  private static final ICommonsMap <String, Integer> s_aMap = new CommonsHashMap <> ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static final ICommonsMap <String, Integer> MAP = new CommonsHashMap <> ();
 
   static
   {
@@ -73,10 +73,10 @@ public final class SchemeDefaultPortMapper
     ValueEnforcer.notEmpty (sSchemeName, "SchemeName");
     ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), "Invalid port provided");
 
-    s_aRWLock.writeLocked ( () -> {
-      if (s_aMap.containsKey (sSchemeName))
+    RW_LOCK.writeLocked ( () -> {
+      if (MAP.containsKey (sSchemeName))
         throw new IllegalArgumentException ("A default port for scheme '" + sSchemeName + "' is already registered!");
-      s_aMap.put (sSchemeName, Integer.valueOf (nPort));
+      MAP.put (sSchemeName, Integer.valueOf (nPort));
     });
   }
 
@@ -84,7 +84,7 @@ public final class SchemeDefaultPortMapper
   {
     if (StringHelper.hasText (sSchemeName))
     {
-      final Integer aDefaultPort = s_aRWLock.readLockedGet ( () -> s_aMap.get (sSchemeName));
+      final Integer aDefaultPort = RW_LOCK.readLockedGet ( () -> MAP.get (sSchemeName));
       if (aDefaultPort != null)
         return aDefaultPort.intValue ();
     }
@@ -108,6 +108,6 @@ public final class SchemeDefaultPortMapper
   @ReturnsMutableCopy
   public static ICommonsMap <String, Integer> getAll ()
   {
-    return s_aRWLock.readLockedGet (s_aMap::getClone);
+    return RW_LOCK.readLockedGet (MAP::getClone);
   }
 }

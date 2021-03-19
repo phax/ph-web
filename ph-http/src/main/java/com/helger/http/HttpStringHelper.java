@@ -214,7 +214,7 @@ public final class HttpStringHelper
   }
 
   @PresentForCodeCoverage
-  private static final HttpStringHelper s_aInstance = new HttpStringHelper ();
+  private static final HttpStringHelper INSTANCE = new HttpStringHelper ();
 
   private HttpStringHelper ()
   {}

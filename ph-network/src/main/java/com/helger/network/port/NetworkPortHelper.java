@@ -43,7 +43,7 @@ public final class NetworkPortHelper
   private static final Logger LOGGER = LoggerFactory.getLogger (NetworkPortHelper.class);
 
   @PresentForCodeCoverage
-  private static final NetworkPortHelper s_aInstance = new NetworkPortHelper ();
+  private static final NetworkPortHelper INSTANCE = new NetworkPortHelper ();
 
   private NetworkPortHelper ()
   {}

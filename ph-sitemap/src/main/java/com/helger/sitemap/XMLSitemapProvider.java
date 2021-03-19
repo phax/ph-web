@@ -45,15 +45,15 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public final class XMLSitemapProvider
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (XMLSitemapProvider.class);
-  private static final ICommonsList <IXMLSitemapProviderSPI> s_aProviders;
+  private static final ICommonsList <IXMLSitemapProviderSPI> PROVIDERS;
 
   static
   {
-    s_aProviders = ServiceLoaderHelper.getAllSPIImplementations (IXMLSitemapProviderSPI.class);
+    PROVIDERS = ServiceLoaderHelper.getAllSPIImplementations (IXMLSitemapProviderSPI.class);
   }
 
   @PresentForCodeCoverage
-  private static final XMLSitemapProvider s_aInstance = new XMLSitemapProvider ();
+  private static final XMLSitemapProvider INSTANCE = new XMLSitemapProvider ();
 
   private XMLSitemapProvider ()
   {}
@@ -61,7 +61,7 @@ public final class XMLSitemapProvider
   @Nonnegative
   public static int getProviderCount ()
   {
-    return s_aProviders.size ();
+    return PROVIDERS.size ();
   }
 
   /**
@@ -75,7 +75,7 @@ public final class XMLSitemapProvider
   public static void forEachURLSet (@Nonnull final Consumer <? super XMLSitemapURLSet> aConsumer)
   {
     ValueEnforcer.notNull (aConsumer, "Consumer");
-    for (final IXMLSitemapProviderSPI aSPI : s_aProviders)
+    for (final IXMLSitemapProviderSPI aSPI : PROVIDERS)
     {
       final XMLSitemapURLSet aURLSet = aSPI.createURLSet ();
       aConsumer.accept (aURLSet);
@@ -99,15 +99,15 @@ public final class XMLSitemapProvider
                           () -> "The passed file is not an existing directory: " + aTargetDirectory);
 
     // Any provider present?
-    if (s_aProviders.isEmpty ())
+    if (PROVIDERS.isEmpty ())
       return ESuccess.SUCCESS;
 
     if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Writing XML sitemap files for " + s_aProviders.size () + " providers");
+      LOGGER.info ("Writing XML sitemap files for " + PROVIDERS.size () + " providers");
 
     // Start creating the index
     final XMLSitemapIndex aIndex = new XMLSitemapIndex (bUseGZip);
-    for (final IXMLSitemapProviderSPI aSPI : s_aProviders)
+    for (final IXMLSitemapProviderSPI aSPI : PROVIDERS)
     {
       final XMLSitemapURLSet aURLSet = aSPI.createURLSet ();
       if (aURLSet == null)

@@ -137,7 +137,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    */
   public static void setParamValueCleanser (@Nullable final IParamValueCleanser aParamValueCleanser)
   {
-    RW_LOCK.writeLockedGet ( () -> s_aParamValueCleanser = aParamValueCleanser);
+    RW_LOCK.writeLocked ( () -> s_aParamValueCleanser = aParamValueCleanser);
   }
 
   @Nonnull

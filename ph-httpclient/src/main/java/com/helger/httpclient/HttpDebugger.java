@@ -38,19 +38,19 @@ import org.slf4j.LoggerFactory;
 public final class HttpDebugger
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpDebugger.class);
-  private static final AtomicBoolean s_aEnabled = new AtomicBoolean (false);
+  private static final AtomicBoolean ENABLED = new AtomicBoolean (false);
 
   private HttpDebugger ()
   {}
 
   public static boolean isEnabled ()
   {
-    return s_aEnabled.get ();
+    return ENABLED.get ();
   }
 
   public static void setEnabled (final boolean bEnabled)
   {
-    s_aEnabled.set (bEnabled);
+    ENABLED.set (bEnabled);
   }
 
   /**

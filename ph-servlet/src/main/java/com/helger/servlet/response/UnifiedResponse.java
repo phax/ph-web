@@ -101,7 +101,7 @@ public class UnifiedResponse
   public static final int MAX_CSS_KB_FOR_IE = 288;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (UnifiedResponse.class);
-  private static final AtomicInteger s_aResponseNum = new AtomicInteger (0);
+  private static final AtomicInteger RESPONSE_NUM = new AtomicInteger (0);
 
   // Input fields set from request
   private final EHttpVersion m_eHttpVersion;
@@ -148,7 +148,7 @@ public class UnifiedResponse
    * Unique internal ID for each response, so that error messages can be more
    * easily aggregated.
    */
-  private final int m_nResponseID = s_aResponseNum.incrementAndGet ();
+  private final int m_nResponseID = RESPONSE_NUM.incrementAndGet ();
 
   /**
    * The request URL, lazily initialized.

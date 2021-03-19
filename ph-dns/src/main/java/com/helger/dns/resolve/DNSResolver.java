@@ -44,7 +44,7 @@ public final class DNSResolver
   private static final InetAddress [] IA0 = new InetAddress [0];
 
   @PresentForCodeCoverage
-  private static final DNSResolver s_aInstance = new DNSResolver ();
+  private static final DNSResolver INSTANCE = new DNSResolver ();
 
   private DNSResolver ()
   {}

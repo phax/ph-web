@@ -157,7 +157,7 @@ public class StaticServerInfo
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Static server information set: " + aDefault.toString ());
-    RW_LOCK.writeLockedGet ( () -> s_aDefault = aDefault);
+    RW_LOCK.writeLocked ( () -> s_aDefault = aDefault);
     return aDefault;
   }
 

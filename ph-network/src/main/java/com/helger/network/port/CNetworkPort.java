@@ -39,7 +39,7 @@ public final class CNetworkPort
   public static final int MAXIMUM_PORT_NUMBER = 65535;
 
   @PresentForCodeCoverage
-  private static final CNetworkPort s_aInstance = new CNetworkPort ();
+  private static final CNetworkPort INSTANCE = new CNetworkPort ();
 
   private CNetworkPort ()
   {}

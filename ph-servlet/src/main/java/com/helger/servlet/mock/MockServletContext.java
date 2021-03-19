@@ -85,7 +85,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
   public static final String DEFAULT_SERVLET_CONTEXT_PATH = "";
   private static final Logger LOGGER = LoggerFactory.getLogger (MockServletContext.class);
-  private static final AtomicBoolean s_aReThrowListenerException = new AtomicBoolean (false);
+  private static final AtomicBoolean RE_THROW_LISTENER_EXCEPTION = new AtomicBoolean (false);
 
   private final IReadableResourceProvider m_aResourceProvider;
   private final String m_sResourceBasePath;
@@ -104,7 +104,7 @@ public class MockServletContext implements IServletContext310To400Migration
    */
   public static boolean isReThrowListenerException ()
   {
-    return s_aReThrowListenerException.get ();
+    return RE_THROW_LISTENER_EXCEPTION.get ();
   }
 
   /**
@@ -114,7 +114,7 @@ public class MockServletContext implements IServletContext310To400Migration
    */
   public static void setReThrowListenerException (final boolean bReThrowListenerException)
   {
-    s_aReThrowListenerException.set (bReThrowListenerException);
+    RE_THROW_LISTENER_EXCEPTION.set (bReThrowListenerException);
   }
 
   /**

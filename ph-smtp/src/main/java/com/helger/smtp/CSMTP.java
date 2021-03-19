@@ -49,7 +49,7 @@ public final class CSMTP
   public static final Charset CHARSET_SMTP_OBJ = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
-  private static final CSMTP s_aInstance = new CSMTP ();
+  private static final CSMTP INSTANCE = new CSMTP ();
 
   private CSMTP ()
   {}

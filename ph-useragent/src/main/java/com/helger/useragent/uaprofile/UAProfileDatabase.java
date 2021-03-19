@@ -61,27 +61,27 @@ public final class UAProfileDatabase
 
   private static final Logger LOGGER = LoggerFactory.getLogger (UAProfileDatabase.class);
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
-  private static final ICommonsSet <UAProfile> s_aUniqueUAProfiles = new CommonsHashSet <> ();
-  @GuardedBy ("s_aRWLock")
-  private static Consumer <UAProfile> s_aNewUAProfileCallback;
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static final ICommonsSet <UAProfile> UNIQUE_UA_PROFILES = new CommonsHashSet <> ();
+  @GuardedBy ("RW_LOCK")
+  private static Consumer <? super UAProfile> s_aNewUAProfileCallback;
 
   @PresentForCodeCoverage
-  private static final UAProfileDatabase s_aInstance = new UAProfileDatabase ();
+  private static final UAProfileDatabase INSTANCE = new UAProfileDatabase ();
 
   private UAProfileDatabase ()
   {}
 
   @Nullable
-  public static Consumer <UAProfile> getNewUAProfileCallback ()
+  public static Consumer <? super UAProfile> getNewUAProfileCallback ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_aNewUAProfileCallback);
+    return RW_LOCK.readLockedGet ( () -> s_aNewUAProfileCallback);
   }
 
-  public static void setNewUAProfileCallback (@Nullable final Consumer <UAProfile> aCallback)
+  public static void setNewUAProfileCallback (@Nullable final Consumer <? super UAProfile> aCallback)
   {
-    s_aRWLock.writeLockedGet ( () -> s_aNewUAProfileCallback = aCallback);
+    RW_LOCK.writeLocked ( () -> s_aNewUAProfileCallback = aCallback);
   }
 
   @Nullable
@@ -269,7 +269,11 @@ public final class UAProfileDatabase
                   else
                   {
                     if (LOGGER.isWarnEnabled ())
-                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" + sDiffDigest + "' from token '" + sToken + "'");
+                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" +
+                                   sDiffDigest +
+                                   "' from token '" +
+                                   sToken +
+                                   "'");
                   }
                 }
                 else
@@ -354,7 +358,7 @@ public final class UAProfileDatabase
 
     if (aUAProfile.isSet ())
     {
-      final boolean bAdded = s_aRWLock.writeLockedBoolean ( () -> s_aUniqueUAProfiles.add (aUAProfile));
+      final boolean bAdded = RW_LOCK.writeLockedBoolean ( () -> UNIQUE_UA_PROFILES.add (aUAProfile));
       if (bAdded)
       {
         if (LOGGER.isDebugEnabled ())
@@ -371,6 +375,6 @@ public final class UAProfileDatabase
   @ReturnsMutableCopy
   public static ICommonsSet <UAProfile> getAllUniqueUAProfiles ()
   {
-    return s_aRWLock.readLockedGet (s_aUniqueUAProfiles::getClone);
+    return RW_LOCK.readLockedGet (UNIQUE_UA_PROFILES::getClone);
   }
 }

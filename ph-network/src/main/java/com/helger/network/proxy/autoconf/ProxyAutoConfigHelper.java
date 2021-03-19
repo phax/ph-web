@@ -55,17 +55,17 @@ public final class ProxyAutoConfigHelper
 
   public static final Charset DEFAULT_SCRIPT_CHARSET = StandardCharsets.ISO_8859_1;
   // create a Nashorn script engine
-  private static final ScriptEngine s_aScriptEngine = new ScriptEngineManager ().getEngineByName ("nashorn");
+  private static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager ().getEngineByName ("nashorn");
 
   static
   {
     try
     {
       final StopWatch aSW = StopWatch.createdStarted ();
-      s_aScriptEngine.eval ("var dnsResolve = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolve(hostName); }");
-      s_aScriptEngine.eval ("var dnsResolveEx = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolveEx(hostName); }");
-      s_aScriptEngine.eval ("var myIpAddress = function(){ return " + DNSResolver.class.getName () + ".getMyIpAddress(); }");
-      s_aScriptEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
+      SCRIPT_ENGINE.eval ("var dnsResolve = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolve(hostName); }");
+      SCRIPT_ENGINE.eval ("var dnsResolveEx = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolveEx(hostName); }");
+      SCRIPT_ENGINE.eval ("var myIpAddress = function(){ return " + DNSResolver.class.getName () + ".getMyIpAddress(); }");
+      SCRIPT_ENGINE.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
       final long nMS = aSW.stopAndGetMillis ();
       if (nMS > 100)
         if (LOGGER.isInfoEnabled ())
@@ -84,14 +84,14 @@ public final class ProxyAutoConfigHelper
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
-    s_aScriptEngine.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
+    SCRIPT_ENGINE.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
   }
 
   public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException
   {
     m_aPACRes = null;
     m_sPACCode = ValueEnforcer.notNull (sPACCode, "PACCode");
-    s_aScriptEngine.eval (m_sPACCode);
+    SCRIPT_ENGINE.eval (m_sPACCode);
   }
 
   // Cannot be static, because it needs the evaluation in the constructor
@@ -100,7 +100,7 @@ public final class ProxyAutoConfigHelper
   {
     // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
     // PAC file!
-    final Object aResult = s_aScriptEngine.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
+    final Object aResult = SCRIPT_ENGINE.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
     if (aResult == null)
       return null;
 

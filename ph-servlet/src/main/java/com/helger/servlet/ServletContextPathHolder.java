@@ -42,12 +42,12 @@ public final class ServletContextPathHolder
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ServletContextPathHolder.class);
 
+  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (GlobalDebug.DEFAULT_SILENT_MODE);
   private static String s_sServletContextPath;
   private static String s_sCustomContextPath;
-  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (GlobalDebug.DEFAULT_SILENT_MODE);
 
   @PresentForCodeCoverage
-  private static final ServletContextPathHolder s_aInstance = new ServletContextPathHolder ();
+  private static final ServletContextPathHolder INSTANCE = new ServletContextPathHolder ();
 
   private ServletContextPathHolder ()
   {}
@@ -76,7 +76,11 @@ public final class ServletContextPathHolder
       if (!s_sServletContextPath.equals (sServletContextPath))
       {
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Overwriting servlet context path '" + s_sServletContextPath + "' with '" + sServletContextPath + "'",
+          LOGGER.error ("Overwriting servlet context path '" +
+                        s_sServletContextPath +
+                        "' with '" +
+                        sServletContextPath +
+                        "'",
                         new IllegalStateException ("Just for tracking how this happens"));
         s_sServletContextPath = sServletContextPath;
       }
@@ -130,7 +134,11 @@ public final class ServletContextPathHolder
       if (!s_sCustomContextPath.equals (sCustomContextPath))
       {
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Overwriting custom servlet context path '" + s_sCustomContextPath + "' with '" + sCustomContextPath + "'",
+          LOGGER.error ("Overwriting custom servlet context path '" +
+                        s_sCustomContextPath +
+                        "' with '" +
+                        sCustomContextPath +
+                        "'",
                         new IllegalStateException ("Just for tracking how this happens"));
         s_sCustomContextPath = sCustomContextPath;
       }

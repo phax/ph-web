@@ -40,10 +40,10 @@ import com.helger.commons.email.EmailAddressHelper;
 public final class EmailAddressValidator
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidator.class);
-  private static final AtomicBoolean s_aPerformMXRecordCheck = new AtomicBoolean (false);
+  private static final AtomicBoolean PERFORM_MX_RECORD_CHECK = new AtomicBoolean (false);
 
   @PresentForCodeCoverage
-  private static final EmailAddressValidator s_aInstance = new EmailAddressValidator ();
+  private static final EmailAddressValidator INSTANCE = new EmailAddressValidator ();
 
   private EmailAddressValidator ()
   {}
@@ -56,7 +56,7 @@ public final class EmailAddressValidator
    */
   public static void setPerformMXRecordCheck (final boolean bPerformMXRecordCheck)
   {
-    s_aPerformMXRecordCheck.set (bPerformMXRecordCheck);
+    PERFORM_MX_RECORD_CHECK.set (bPerformMXRecordCheck);
 
     if (LOGGER.isInfoEnabled ())
       LOGGER.info ("Email address record check is " + (bPerformMXRecordCheck ? "enabled" : "disabled"));
@@ -67,7 +67,7 @@ public final class EmailAddressValidator
    */
   public static boolean isPerformMXRecordCheck ()
   {
-    return s_aPerformMXRecordCheck.get ();
+    return PERFORM_MX_RECORD_CHECK.get ();
   }
 
   /**
@@ -110,7 +110,7 @@ public final class EmailAddressValidator
    */
   public static boolean isValid (@Nullable final String sEmail)
   {
-    return s_aPerformMXRecordCheck.get () ? isValidWithMXCheck (sEmail) : EmailAddressHelper.isValid (sEmail);
+    return PERFORM_MX_RECORD_CHECK.get () ? isValidWithMXCheck (sEmail) : EmailAddressHelper.isValid (sEmail);
   }
 
   /**

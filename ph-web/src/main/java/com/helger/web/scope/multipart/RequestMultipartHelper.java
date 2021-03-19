@@ -59,7 +59,7 @@ public final class RequestMultipartHelper
   public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestMultipartHelper.class);
-  private static final IFileItemFactoryProviderSPI s_aFIFP;
+  private static final IFileItemFactoryProviderSPI PROVIDER;
 
   static
   {
@@ -71,7 +71,7 @@ public final class RequestMultipartHelper
     }
     else
       aFIFP = GlobalDiskFileItemFactory::getInstance;
-    s_aFIFP = aFIFP;
+    PROVIDER = aFIFP;
   }
 
   private RequestMultipartHelper ()
@@ -113,7 +113,7 @@ public final class RequestMultipartHelper
     try
     {
       // Setup the ServletFileUpload....
-      final ServletFileUpload aUpload = new ServletFileUpload (s_aFIFP.getFileItemFactory ());
+      final ServletFileUpload aUpload = new ServletFileUpload (PROVIDER.getFileItemFactory ());
       aUpload.setSizeMax (MAX_REQUEST_SIZE);
       aUpload.setHeaderEncoding (CWeb.CHARSET_REQUEST_OBJ.name ());
       final IProgressListener aProgressListener = ProgressListenerProvider.getProgressListener ();

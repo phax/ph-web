@@ -57,14 +57,14 @@ public final class ResponseHelperSettings
 
   private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHelperSettings.class);
 
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
   private static int s_nExpirationSeconds = DEFAULT_EXPIRATION_SECONDS;
   private static boolean s_bResponseCompressionEnabled = DEFAULT_RESPONSE_COMPRESSION_ENABLED;
   private static boolean s_bResponseGzipEnabled = DEFAULT_RESPONSE_GZIP_ENABLED;
   private static boolean s_bResponseDeflateEnabled = DEFAULT_RESPONSE_DERFLATE_ENABLED;
 
   @PresentForCodeCoverage
-  private static final ResponseHelperSettings s_aInstance = new ResponseHelperSettings ();
+  private static final ResponseHelperSettings INSTANCE = new ResponseHelperSettings ();
 
   private ResponseHelperSettings ()
   {}
@@ -75,7 +75,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseCompressionEnabled ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
+    return RW_LOCK.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
   }
 
   /**
@@ -88,7 +88,7 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
@@ -105,7 +105,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseGzipEnabled ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bResponseGzipEnabled);
+    return RW_LOCK.readLockedBoolean ( () -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -119,7 +119,7 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
@@ -136,7 +136,7 @@ public final class ResponseHelperSettings
    */
   public static boolean isResponseDeflateEnabled ()
   {
-    return s_aRWLock.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
+    return RW_LOCK.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -150,7 +150,7 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
@@ -186,7 +186,7 @@ public final class ResponseHelperSettings
    */
   public static int getExpirationSeconds ()
   {
-    return s_aRWLock.readLockedInt ( () -> s_nExpirationSeconds);
+    return RW_LOCK.readLockedInt ( () -> s_nExpirationSeconds);
   }
 
   /**
@@ -200,7 +200,7 @@ public final class ResponseHelperSettings
   @Nonnull
   public static EChange setExpirationSeconds (final int nExpirationSeconds)
   {
-    final EChange ret = s_aRWLock.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
       if (s_nExpirationSeconds == nExpirationSeconds)
         return EChange.UNCHANGED;
       s_nExpirationSeconds = nExpirationSeconds;

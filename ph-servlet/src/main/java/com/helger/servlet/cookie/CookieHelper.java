@@ -46,7 +46,7 @@ public final class CookieHelper
   public static final int DEFAULT_MAX_AGE_SECONDS = 30 * CGlobal.SECONDS_PER_DAY;
 
   @PresentForCodeCoverage
-  private static final CookieHelper s_aInstance = new CookieHelper ();
+  private static final CookieHelper INSTANCE = new CookieHelper ();
 
   private CookieHelper ()
   {}

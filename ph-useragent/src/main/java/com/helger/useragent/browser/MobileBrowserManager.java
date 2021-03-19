@@ -34,7 +34,7 @@ import com.helger.xml.microdom.util.XMLListHandler;
 @Immutable
 public final class MobileBrowserManager
 {
-  private static final ICommonsSet <String> s_aSet = new CommonsHashSet <> ();
+  private static final ICommonsSet <String> SET = new CommonsHashSet <> ();
 
   static
   {
@@ -42,7 +42,7 @@ public final class MobileBrowserManager
   }
 
   @PresentForCodeCoverage
-  private static final MobileBrowserManager s_aInstance = new MobileBrowserManager ();
+  private static final MobileBrowserManager INSTANCE = new MobileBrowserManager ();
 
   private MobileBrowserManager ()
   {}
@@ -58,7 +58,7 @@ public final class MobileBrowserManager
     final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
-    s_aSet.addAllMapped (aList, MobileBrowserManager::_unify);
+    SET.addAllMapped (aList, MobileBrowserManager::_unify);
   }
 
   @Nullable
@@ -68,6 +68,6 @@ public final class MobileBrowserManager
       return null;
 
     final String sUnifiedUA = _unify (sFullUserAgent);
-    return s_aSet.findFirst (sUnifiedUA::contains);
+    return SET.findFirst (sUnifiedUA::contains);
   }
 }

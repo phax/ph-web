@@ -36,7 +36,7 @@ public final class AcceptLanguageHandler
   public static final String ANY_LANGUAGE = "*";
 
   @PresentForCodeCoverage
-  private static final AcceptLanguageHandler s_aInstance = new AcceptLanguageHandler ();
+  private static final AcceptLanguageHandler INSTANCE = new AcceptLanguageHandler ();
 
   private AcceptLanguageHandler ()
   {}

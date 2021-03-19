@@ -49,7 +49,7 @@ public final class RFC2047Helper
   public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
   @PresentForCodeCoverage
-  private static final RFC2047Helper s_aInstance = new RFC2047Helper ();
+  private static final RFC2047Helper INSTANCE = new RFC2047Helper ();
 
   private RFC2047Helper ()
   {}

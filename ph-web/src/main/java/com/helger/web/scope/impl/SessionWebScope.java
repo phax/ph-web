@@ -55,11 +55,12 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();
     m_aHttpSession = aHttpSession;
 
-    attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
-      if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
-        LOGGER.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
-      return EContinue.CONTINUE;
-    });
+    if (false)
+      attrs ().beforeSetValueCallbacks ().add ( (aName, aNewValueValue) -> {
+        if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
+          LOGGER.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
+        return EContinue.CONTINUE;
+      });
   }
 
   @Nonnull

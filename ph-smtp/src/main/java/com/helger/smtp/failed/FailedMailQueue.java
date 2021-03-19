@@ -16,8 +16,6 @@
  */
 package com.helger.smtp.failed;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,12 +42,12 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @ThreadSafe
-public class FailedMailQueue implements Serializable
+public class FailedMailQueue
 {
-  private static final IMutableStatisticsHandlerCounter s_aStatsCountAdd = StatisticsManager.getCounterHandler (FailedMailQueue.class.getName () +
-                                                                                                                "$add");
-  private static final IMutableStatisticsHandlerCounter s_aStatsCountRemove = StatisticsManager.getCounterHandler (FailedMailQueue.class.getName () +
-                                                                                                                   "$remove");
+  private static final IMutableStatisticsHandlerCounter STATS_COUNTER_ADD = StatisticsManager.getCounterHandler (FailedMailQueue.class.getName () +
+                                                                                                                 "$add");
+  private static final IMutableStatisticsHandlerCounter STATS_COUNTER_REMOVE = StatisticsManager.getCounterHandler (FailedMailQueue.class.getName () +
+                                                                                                                    "$remove");
 
   protected final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
@@ -62,7 +60,7 @@ public class FailedMailQueue implements Serializable
   protected void internalAdd (@Nonnull final FailedMailData aFailedMailData)
   {
     m_aMap.put (aFailedMailData.getID (), aFailedMailData);
-    s_aStatsCountAdd.increment ();
+    STATS_COUNTER_ADD.increment ();
   }
 
   public void add (@Nonnull final FailedMailData aFailedMailData)
@@ -78,7 +76,7 @@ public class FailedMailQueue implements Serializable
   {
     final FailedMailData ret = m_aMap.remove (sID);
     if (ret != null)
-      s_aStatsCountRemove.increment ();
+      STATS_COUNTER_REMOVE.increment ();
     return ret;
   }
 

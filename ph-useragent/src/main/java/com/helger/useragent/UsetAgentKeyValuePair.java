@@ -14,26 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.useragent.uaprofile;
+package com.helger.useragent;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.collection.impl.ICommonsCollection;
-
-/**
- * User Agent Profile Header provider
- *
- * @author Philip Helger
- */
-public interface IUAProfileHeaderProvider
+@Immutable
+public class UsetAgentKeyValuePair
 {
-  @Nonnull
-  ICommonsCollection <String> getAllHeaderNames ();
+  private final String m_sKey;
+  private final String m_sValue;
 
-  @Nonnull
-  ICommonsCollection <String> getHeaders (@Nullable String sName);
+  public UsetAgentKeyValuePair (@Nullable final String sKey, @Nullable final String sValue)
+  {
+    m_sKey = sKey;
+    m_sValue = sValue;
+  }
 
   @Nullable
-  String getHeaderValue (@Nullable String sName);
+  public String getKey ()
+  {
+    return m_sKey;
+  }
+
+  @Nullable
+  public String getValue ()
+  {
+    return m_sValue;
+  }
 }

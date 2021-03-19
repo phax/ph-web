@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.xml.mock.XMLTestHelper;
 
 /**
@@ -43,6 +42,5 @@ public final class EmailAttachmentTest
     assertNotNull (a.getAsDataSource ());
 
     XMLTestHelper.testMicroTypeConversion (a);
-    CommonsTestHelper.testDefaultSerialization (a);
   }
 }

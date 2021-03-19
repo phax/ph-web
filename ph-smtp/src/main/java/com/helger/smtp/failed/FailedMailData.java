@@ -16,7 +16,6 @@
  */
 package com.helger.smtp.failed;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
@@ -43,7 +42,7 @@ import com.helger.smtp.transport.MailTransportError;
  * @author Philip Helger
  */
 @Immutable
-public class FailedMailData implements ITypedObject <String>, Serializable
+public class FailedMailData implements ITypedObject <String>
 {
   public static final ObjectType TYPE_FAILEDMAIL = new ObjectType ("failedmail");
 
@@ -136,7 +135,8 @@ public class FailedMailData implements ITypedObject <String>, Serializable
     m_sID = ValueEnforcer.notNull (sID, "ID");
     m_aErrorDT = ValueEnforcer.notNull (aErrorDT, "ErrorDT");
     m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");
-    m_aOriginalSentDateTime = aOriginalSentDT != null ? aOriginalSentDT : aEmailData != null ? aEmailData.getSentDateTime () : null;
+    m_aOriginalSentDateTime = aOriginalSentDT != null ? aOriginalSentDT
+                                                      : aEmailData != null ? aEmailData.getSentDateTime () : null;
     m_aEmailData = aEmailData;
     m_aError = aError;
   }

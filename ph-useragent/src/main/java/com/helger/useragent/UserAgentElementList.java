@@ -16,14 +16,12 @@
  */
 package com.helger.useragent;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.helger.collection.pair.IPair;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.CommonsArrayList;
@@ -37,9 +35,9 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class UserAgentElementList implements Serializable
+public class UserAgentElementList
 {
-  private final ICommonsList <Serializable> m_aList;
+  private final ICommonsList <Object> m_aList;
 
   public UserAgentElementList ()
   {
@@ -51,7 +49,7 @@ public class UserAgentElementList implements Serializable
     m_aList = aOther.getAllElements ();
   }
 
-  public void add (@Nonnull final IPair <String, String> aPair)
+  public void add (@Nonnull final UsetAgentKeyValuePair aPair)
   {
     ValueEnforcer.notNull (aPair, "Pair");
     m_aList.add (aPair);
@@ -71,7 +69,7 @@ public class UserAgentElementList implements Serializable
 
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsList <Serializable> getAllElements ()
+  public ICommonsList <Object> getAllElements ()
   {
     return m_aList.getClone ();
   }
@@ -80,11 +78,11 @@ public class UserAgentElementList implements Serializable
   public String getPairValue (@Nullable final String sKey)
   {
     for (final Object aObj : m_aList)
-      if (aObj instanceof IPair <?, ?>)
+      if (aObj instanceof UsetAgentKeyValuePair)
       {
-        final IPair <?, ?> aPair = (IPair <?, ?>) aObj;
-        if (EqualsHelper.equals (aPair.getFirst (), sKey))
-          return (String) aPair.getSecond ();
+        final UsetAgentKeyValuePair aPair = (UsetAgentKeyValuePair) aObj;
+        if (EqualsHelper.equals (aPair.getKey (), sKey))
+          return aPair.getValue ();
       }
     return null;
   }

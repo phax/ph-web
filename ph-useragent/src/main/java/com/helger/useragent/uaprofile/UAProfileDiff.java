@@ -16,7 +16,6 @@
  */
 package com.helger.useragent.uaprofile;
 
-import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -46,7 +45,7 @@ import com.helger.xml.microdom.serialize.MicroReader;
  * @author Philip Helger
  */
 @Immutable
-public class UAProfileDiff implements Serializable
+public class UAProfileDiff
 {
   public static final int EXPECTED_MD5_DIGEST_BYTES = 16;
   private static final Logger LOGGER = LoggerFactory.getLogger (UAProfileDiff.class);
@@ -69,7 +68,8 @@ public class UAProfileDiff implements Serializable
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8), EMessageDigestAlgorithm.MD5)
+      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
+                                                               EMessageDigestAlgorithm.MD5)
                                                       .bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         if (LOGGER.isWarnEnabled ())

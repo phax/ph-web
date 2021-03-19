@@ -17,7 +17,6 @@
 package com.helger.smtp.data;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
@@ -33,7 +32,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author Philip Helger
  */
-public interface IEmailAttachment extends IHasInputStream, Serializable
+public interface IEmailAttachment extends IHasInputStream
 {
   /**
    * @return The filename of the attachment

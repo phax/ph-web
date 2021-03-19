@@ -16,7 +16,6 @@
  */
 package com.helger.useragent.browser;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -35,7 +34,7 @@ import com.helger.commons.version.Version;
  * @author Philip Helger
  */
 @Immutable
-public class BrowserInfo implements IHasDisplayText, Serializable
+public class BrowserInfo implements IHasDisplayText
 {
   /** Is it not */
   public static final BrowserInfo IS_IT_NOT = new BrowserInfo ();
@@ -78,7 +77,8 @@ public class BrowserInfo implements IHasDisplayText, Serializable
   @OverrideOnDemand
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
-    return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
+    return m_eBrowserType == null ? null
+                                  : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
   }
 
   @Nonnull
@@ -92,6 +92,8 @@ public class BrowserInfo implements IHasDisplayText, Serializable
   {
     if (isItNot ())
       return new ToStringGenerator (null).append ("isIt", "not").getToString ();
-    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType).appendIfNotNull ("version", m_aVersion).getToString ();
+    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType)
+                                       .appendIfNotNull ("version", m_aVersion)
+                                       .getToString ();
   }
 }

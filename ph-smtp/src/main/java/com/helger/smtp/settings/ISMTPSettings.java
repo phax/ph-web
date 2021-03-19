@@ -16,7 +16,6 @@
  */
 package com.helger.smtp.settings;
 
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import javax.annotation.CheckForSigned;
@@ -30,7 +29,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author Philip Helger
  */
-public interface ISMTPSettings extends Serializable
+public interface ISMTPSettings
 {
   /**
    * @return The SMTP server host name

@@ -19,9 +19,9 @@ package com.helger.smtp.data;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
+import javax.activation.FileTypeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,8 +34,6 @@ import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.io.streamprovider.ByteArrayInputStreamProvider;
 import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.string.ToStringGenerator;
-
-import javax.activation.FileTypeMap;
 
 /**
  * Base implementation for interface {@link IEmailAttachment}.
@@ -57,7 +55,9 @@ public class EmailAttachment implements IEmailAttachment
     this (sFilename, aContent, (Charset) null);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final byte [] aContent, @Nullable final Charset aCharset)
+  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                          @Nonnull final byte [] aContent,
+                          @Nullable final Charset aCharset)
   {
     this (sFilename, aContent, aCharset, DEFAULT_DISPOSITION);
   }
@@ -79,32 +79,36 @@ public class EmailAttachment implements IEmailAttachment
     this (sFilename, new ByteArrayInputStreamProvider (aContent), aCharset, sContentType, eDisposition);
   }
 
-  public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                                                                       @Nonnull final ISP aInputStreamProvider)
+  public <ISP extends IHasInputStream> EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                                                        @Nonnull final ISP aInputStreamProvider)
   {
     this (sFilename, aInputStreamProvider, (Charset) null);
   }
 
-  public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                                                                       @Nonnull final ISP aInputStreamProvider,
-                                                                       @Nullable final Charset aCharset)
+  public <ISP extends IHasInputStream> EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                                                        @Nonnull final ISP aInputStreamProvider,
+                                                        @Nullable final Charset aCharset)
   {
     this (sFilename, aInputStreamProvider, aCharset, DEFAULT_DISPOSITION);
   }
 
-  public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                                                                       @Nonnull final ISP aInputStreamProvider,
-                                                                       @Nullable final Charset aCharset,
-                                                                       @Nonnull final EEmailAttachmentDisposition eDisposition)
+  public <ISP extends IHasInputStream> EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                                                        @Nonnull final ISP aInputStreamProvider,
+                                                        @Nullable final Charset aCharset,
+                                                        @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
-    this (sFilename, aInputStreamProvider, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
+    this (sFilename,
+          aInputStreamProvider,
+          aCharset,
+          FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename),
+          eDisposition);
   }
 
-  public <ISP extends IHasInputStream & Serializable> EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                                                                       @Nonnull final ISP aInputStreamProvider,
-                                                                       @Nullable final Charset aCharset,
-                                                                       @Nullable final String sContentType,
-                                                                       @Nonnull final EEmailAttachmentDisposition eDisposition)
+  public <ISP extends IHasInputStream> EmailAttachment (@Nonnull @Nonempty final String sFilename,
+                                                        @Nonnull final ISP aInputStreamProvider,
+                                                        @Nullable final Charset aCharset,
+                                                        @Nullable final String sContentType,
+                                                        @Nonnull final EEmailAttachmentDisposition eDisposition)
   {
     m_sFilename = ValueEnforcer.notEmpty (sFilename, "Filename");
     m_aInputStreamProvider = ValueEnforcer.notNull (aInputStreamProvider, "InputStreamProvider");

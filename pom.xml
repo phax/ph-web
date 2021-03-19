@@ -26,7 +26,7 @@
   </parent>
   <groupId>com.helger.web</groupId>
   <artifactId>ph-web-parent-pom</artifactId>
-  <version>9.5.4-SNAPSHOT</version>
+  <version>9.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ph-web-parent-pom</name>
   <description>Base POM to build the ph-web projects</description>
@@ -65,16 +65,16 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.helger</groupId>
+        <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>9.5.5</version>
+        <version>10.0.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>com.helger</groupId>
+        <groupId>com.helger.schedule</groupId>
         <artifactId>ph-schedule-parent-pom</artifactId>
-        <version>4.1.1</version>
+        <version>4.2.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -115,6 +115,11 @@
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>1.15</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
       </dependency>
 
       <dependency>

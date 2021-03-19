@@ -16,7 +16,6 @@
  */
 package com.helger.http;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -36,7 +35,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @param <KEYTYPE>
  *        The key type for the map. Must implement Serializable.
  */
-public abstract class AbstractQValueList <KEYTYPE extends Serializable> implements Serializable
+public abstract class AbstractQValueList <KEYTYPE>
 {
   // Maps something to quality
   private final ICommonsOrderedMap <KEYTYPE, QValue> m_aMap = new CommonsLinkedHashMap <> ();

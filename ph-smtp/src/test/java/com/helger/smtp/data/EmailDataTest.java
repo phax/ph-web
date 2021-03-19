@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.helger.commons.email.EmailAddress;
-import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.xml.mock.XMLTestHelper;
 
 public final class EmailDataTest
@@ -47,7 +46,6 @@ public final class EmailDataTest
     aEmailData.bcc ().set (aMA);
     assertEquals (aMA, aEmailData.bcc ().get (0));
 
-    CommonsTestHelper.testDefaultSerialization (aEmailData);
     XMLTestHelper.testMicroTypeConversion (aEmailData);
 
     assertEquals (0, aEmailData.attrs ().size ());
@@ -57,6 +55,5 @@ public final class EmailDataTest
     assertEquals (2, aEmailData.attrs ().size ());
 
     XMLTestHelper.testMicroTypeConversion (aEmailData);
-    CommonsTestHelper.testDefaultSerialization (aEmailData);
   }
 }

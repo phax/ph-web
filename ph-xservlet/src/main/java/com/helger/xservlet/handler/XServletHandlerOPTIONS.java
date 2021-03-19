@@ -17,6 +17,7 @@
 package com.helger.xservlet.handler;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
@@ -24,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.functional.ISupplier;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.string.ToStringGenerator;
@@ -41,7 +41,7 @@ import com.helger.web.scope.IRequestWebScope;
  */
 public class XServletHandlerOPTIONS implements IXServletHandler
 {
-  private final ISupplier <String> m_aAllowProvider;
+  private final Supplier <String> m_aAllowProvider;
 
   /**
    * Constructor
@@ -50,7 +50,7 @@ public class XServletHandlerOPTIONS implements IXServletHandler
    *        The supplier to use. Must be a supplier, because the underlying
    *        "Allow" string can change at runtime!
    */
-  public XServletHandlerOPTIONS (@Nonnull final ISupplier <String> aAllowProvider)
+  public XServletHandlerOPTIONS (@Nonnull final Supplier <String> aAllowProvider)
   {
     m_aAllowProvider = ValueEnforcer.notNull (aAllowProvider, "AllowProvider");
   }
@@ -60,7 +60,7 @@ public class XServletHandlerOPTIONS implements IXServletHandler
    * @since 9.3.2
    */
   @Nonnull
-  public final ISupplier <String> getAllowValueProvider ()
+  public final Supplier <String> getAllowValueProvider ()
   {
     return m_aAllowProvider;
   }

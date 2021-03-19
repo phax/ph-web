@@ -33,15 +33,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.charset.CharsetHelper;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.IMimeType;
@@ -96,7 +95,7 @@ public class MockHttpServletResponse implements HttpServletResponse
 
   // HttpServletResponse properties
   private final ICommonsList <Cookie> m_aCookies = new CommonsArrayList <> ();
-  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
+  private final HttpHeaderMap m_aHeaders = new HttpHeaderMap ();
   private int m_nStatus = HttpServletResponse.SC_OK;
   private String m_sErrorMessage;
   private String m_sRedirectedUrl;
@@ -308,7 +307,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     m_sContentType = null;
     m_aLocale = null;
     m_aCookies.clear ();
-    m_aHeaders.clear ();
+    m_aHeaders.removeAll ();
     m_nStatus = HttpServletResponse.SC_OK;
     m_sErrorMessage = null;
   }
@@ -347,16 +346,9 @@ public class MockHttpServletResponse implements HttpServletResponse
     return null;
   }
 
-  @Nullable
-  private static String _unifyHeaderName (@Nullable final String sName)
-  {
-    // Same as in MockHttpServletRequest
-    return sName == null ? null : sName.toLowerCase (Locale.US);
-  }
-
   public boolean containsHeader (@Nullable final String sName)
   {
-    return m_aHeaders.containsKey (_unifyHeaderName (sName));
+    return m_aHeaders.containsHeaders (sName);
   }
 
   /**
@@ -369,7 +361,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @ReturnsMutableCopy
   public ICommonsSet <String> getHeaderNames ()
   {
-    return m_aHeaders.copyOfKeySet ();
+    return m_aHeaders.getAllHeaderNames ();
   }
 
   /**
@@ -384,7 +376,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final ICommonsOrderedSet <String> aSet = m_aHeaders.get (_unifyHeaderName (sName));
+    final ICommonsList <String> aSet = m_aHeaders.getAllHeaderValues (sName);
     return aSet == null ? null : aSet.getFirst ();
   }
 
@@ -398,7 +390,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nonnull
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
-    return new CommonsArrayList <> (m_aHeaders.get (_unifyHeaderName (sName)));
+    return m_aHeaders.getAllHeaderValues (sName);
   }
 
   /**
@@ -516,8 +508,8 @@ public class MockHttpServletResponse implements HttpServletResponse
 
   private void _doAddHeaderValue (@Nullable final String sName, @Nullable final String aValue, final boolean bReplace)
   {
-    if (bReplace || !m_aHeaders.containsSingle (_unifyHeaderName (sName), aValue))
-      m_aHeaders.putSingle (_unifyHeaderName (sName), aValue);
+    if (bReplace || !m_aHeaders.containsHeaders (sName))
+      m_aHeaders.addHeader (sName, aValue);
   }
 
   public void setStatus (final int nStatus)

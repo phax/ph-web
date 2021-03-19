@@ -16,7 +16,6 @@
  */
 package com.helger.servlet.mock;
 
-import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -255,53 +254,6 @@ public class MockHttpSession implements HttpSession
     return m_bIsNew;
   }
 
-  /**
-   * Serialize the attributes of this session into an object that can be turned
-   * into a byte array with standard Java serialization.
-   *
-   * @return a representation of this session's serialized state
-   */
-  @Nonnull
-  public Serializable serializeState ()
-  {
-    final ICommonsMap <String, Object> aState = new CommonsHashMap <> ();
-    for (final Map.Entry <String, Object> entry : m_aAttributes.entrySet ())
-    {
-      final String sName = entry.getKey ();
-      final Object aValue = entry.getValue ();
-      if (aValue instanceof Serializable)
-      {
-        aState.put (sName, aValue);
-      }
-      else
-      {
-        // Not serializable... Servlet containers usually automatically
-        // unbind the attribute in this case.
-        if (aValue instanceof HttpSessionBindingListener)
-        {
-          ((HttpSessionBindingListener) aValue).valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
-        }
-      }
-    }
-    m_aAttributes.clear ();
-    return aState;
-  }
-
-  /**
-   * Deserialize the attributes of this session from a state object created by
-   * {@link #serializeState()}.
-   *
-   * @param aState
-   *        a representation of this session's serialized state
-   */
-  @SuppressWarnings ("unchecked")
-  public void deserializeState (@Nonnull final Serializable aState)
-  {
-    if (!(aState instanceof Map))
-      throw new IllegalArgumentException ("Serialized state needs to be of type [java.util.Map]");
-    m_aAttributes.putAll ((Map <String, Object>) aState);
-  }
-
   @Override
   public String toString ()
   {
@@ -310,7 +262,8 @@ public class MockHttpSession implements HttpSession
                                        .append ("maxInactiveInterval", m_nMaxInactiveInterval)
                                        .append ("lastAccessedTime", m_nLastAccessedTime)
                                        .appendIfNotNull ("servletContext",
-                                                         m_aServletContext == null ? null : m_aServletContext.getServerInfo ())
+                                                         m_aServletContext == null ? null
+                                                                                   : m_aServletContext.getServerInfo ())
                                        .append ("attributes", m_aAttributes)
                                        .append ("isInvalidated", m_bInvalidated)
                                        .append ("isNew", m_bIsNew)

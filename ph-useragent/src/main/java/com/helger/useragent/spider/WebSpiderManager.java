@@ -49,10 +49,11 @@ public final class WebSpiderManager
 {
   private static final class SingletonHolder
   {
-    static final WebSpiderManager s_aInstance = new WebSpiderManager ();
+    static final WebSpiderManager INSTANCE = new WebSpiderManager ();
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger (WebSpiderManager.class);
+
   private final ICommonsMap <String, WebSpiderInfo> m_aMap = new CommonsHashMap <> ();
 
   private WebSpiderManager ()
@@ -123,7 +124,7 @@ public final class WebSpiderManager
   @Nonnull
   public static WebSpiderManager getInstance ()
   {
-    return SingletonHolder.s_aInstance;
+    return SingletonHolder.INSTANCE;
   }
 
   @Nonnull

@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
 /**
@@ -53,30 +52,5 @@ public final class SessionWebSingletonFuncTest extends AbstractWebScopeAwareTest
 
     final MockSessionWebSingleton b = MockSessionWebSingleton.getInstance ();
     assertSame (a, b);
-
-    CommonsTestHelper.testDefaultSerialization (a);
-  }
-
-  @Test
-  public void testSerialize ()
-  {
-    assertTrue (AbstractSessionWebSingleton.getAllSessionSingletons ().isEmpty ());
-    assertFalse (AbstractSessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));
-    assertNull (AbstractSessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
-
-    final MockSessionWebSingletonWithScopeCtor a = MockSessionWebSingletonWithScopeCtor.getInstance ();
-    assertNotNull (a);
-    assertTrue (AbstractSessionWebSingleton.isSessionSingletonInstantiated (MockSessionWebSingletonWithScopeCtor.class));
-    assertSame (a, AbstractSessionWebSingleton.getSessionSingletonIfInstantiated (MockSessionWebSingletonWithScopeCtor.class));
-    assertNotNull (a.getScope ());
-    assertEquals (0, a.get ());
-    a.inc ();
-    assertEquals (1, a.get ());
-
-    final MockSessionWebSingletonWithScopeCtor b = MockSessionWebSingletonWithScopeCtor.getInstance ();
-    assertNotNull (b.getScope ());
-    assertSame (a, b);
-
-    CommonsTestHelper.testDefaultSerialization (a);
   }
 }

@@ -42,9 +42,6 @@ import com.helger.web.scope.ISessionWebScope;
 @ThreadSafe
 public class SessionWebScope extends SessionScope implements ISessionWebScope
 {
-  // Because of transient field
-  private static final long serialVersionUID = 8912368923565761267L;
-
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScope.class);
 
   private final LocalDateTime m_aCreationDT;

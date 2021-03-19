@@ -25,11 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.collection.multimap.IMultiMapListBased;
-import com.helger.collection.multimap.MultiHashMapArrayListBased;
 import com.helger.commons.CGlobal;
 import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.EChange;
@@ -122,8 +123,8 @@ public final class RequestMultipartHelper
       ServletHelper.setRequestCharacterEncoding (aHttpRequest, CWeb.CHARSET_REQUEST_OBJ);
 
       // Group all items with the same name together
-      final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <> ();
-      final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased <> ();
+      final ICommonsMap <String, ICommonsList <String>> aFormFields = new CommonsHashMap <> ();
+      final ICommonsMap <String, ICommonsList <IFileItem>> aFormFiles = new CommonsHashMap <> ();
       final ICommonsList <IFileItem> aFileItems = aUpload.parseRequest (aHttpRequest);
       for (final IFileItem aFileItem : aFileItems)
       {
@@ -131,10 +132,11 @@ public final class RequestMultipartHelper
         {
           // We need to explicitly use the charset, as by default only the
           // charset from the content type is used!
-          aFormFields.putSingle (aFileItem.getFieldName (), aFileItem.getString (CWeb.CHARSET_REQUEST_OBJ));
+          aFormFields.computeIfAbsent (aFileItem.getFieldName (), k -> new CommonsArrayList <> ())
+                     .add (aFileItem.getString (CWeb.CHARSET_REQUEST_OBJ));
         }
         else
-          aFormFiles.putSingle (aFileItem.getFieldName (), aFileItem);
+          aFormFiles.computeIfAbsent (aFileItem.getFieldName (), k -> new CommonsArrayList <> ()).add (aFileItem);
       }
 
       // set all form fields
@@ -152,7 +154,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirst ()
+                                                   : ArrayHelper.newArray (aValues, IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
 

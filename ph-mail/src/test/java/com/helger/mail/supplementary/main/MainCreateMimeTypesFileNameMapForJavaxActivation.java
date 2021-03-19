@@ -28,7 +28,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
+import com.helger.commons.collection.impl.CommonsHashMap;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsMap;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.string.StringHelper;
@@ -56,7 +58,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
     try
     {
       // build map from MimeType to list of extensions
-      final MultiHashMapLinkedHashSetBased <String, String> aMap = new MultiHashMapLinkedHashSetBased <> ();
+      final ICommonsMap <String, ICommonsOrderedSet <String>> aMap = new CommonsHashMap <> ();
 
       for (final MimeTypeInfo aInfo : MimeTypeInfoManager.getDefaultInstance ().getAllMimeTypeInfos ())
         for (final String sExt : aInfo.getAllExtensions ())
@@ -64,7 +66,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
           // Skip the one empty extension!
           if (sExt.length () > 0)
             for (final String sMimeType : aInfo.getAllMimeTypeStrings ())
-              aMap.putSingle (sMimeType, sExt);
+              aMap.computeIfAbsent (sMimeType, k -> new CommonsLinkedHashSet <> ()).add (sExt);
         }
 
       // write file in format iso-8859-1!
@@ -79,7 +81,8 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       w.write ("#\n");
 
       // write MIME type mapping
-      for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : aMap.getSortedByKey (Comparator.naturalOrder ()).entrySet ())
+      for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : aMap.getSortedByKey (Comparator.naturalOrder ())
+                                                                              .entrySet ())
         w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (',', aEntry.getValue ()) + "\n");
 
       // done

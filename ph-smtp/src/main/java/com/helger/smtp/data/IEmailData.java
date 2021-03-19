@@ -16,7 +16,6 @@
  */
 package com.helger.smtp.data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.Nonnegative;
@@ -36,7 +35,7 @@ import com.helger.commons.email.IEmailAddress;
  *
  * @author Philip Helger
  */
-public interface IEmailData extends Serializable
+public interface IEmailData
 {
   /**
    * @return The type of the email - text or html.

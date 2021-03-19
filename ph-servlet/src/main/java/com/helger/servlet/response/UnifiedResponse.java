@@ -236,9 +236,11 @@ public class UnifiedResponse
     if (!m_bAlreadyEmittedRequestHeaders)
     {
       final StringBuilder aSB = new StringBuilder ();
-      aSB.append ("  Request Headers: " + m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+      aSB.append ("  Request Headers: " +
+                  m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
       if (m_aResponseHeaderMap.isNotEmpty ())
-        aSB.append ("\n  Response Headers: " + m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+        aSB.append ("\n  Response Headers: " +
+                    m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
 
       if (LOGGER.isWarnEnabled ())
         LOGGER.warn (aSB.toString ());
@@ -455,7 +457,9 @@ public class UnifiedResponse
    */
   @Nonnull
   @SuppressFBWarnings ("EI_EXPOSE_REP2")
-  public final UnifiedResponse setContent (@Nonnull final byte [] aContent, @Nonnegative final int nOfs, @Nonnegative final int nLen)
+  public final UnifiedResponse setContent (@Nonnull final byte [] aContent,
+                                           @Nonnegative final int nOfs,
+                                           @Nonnegative final int nLen)
   {
     ValueEnforcer.isArrayOfsLen (aContent, nOfs, nLen);
     if (hasContent ())
@@ -629,7 +633,11 @@ public class UnifiedResponse
     // -> Strip all paths and replace all invalid characters
     final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilename));
     if (!sFilename.equals (sFilenameToUse))
-      logWarn ("Content-Dispostion filename was internally modified from '" + sFilename + "' to '" + sFilenameToUse + "'");
+      logWarn ("Content-Dispostion filename was internally modified from '" +
+               sFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // Disabled because of the extended UTF-8 handling (RFC 5987)
     if (false)
@@ -643,7 +651,11 @@ public class UnifiedResponse
 
     // Are we overwriting?
     if (m_sContentDispositionFilename != null)
-      logInfo ("Overwriting Content-Dispostion filename from '" + m_sContentDispositionFilename + "' to '" + sFilenameToUse + "'");
+      logInfo ("Overwriting Content-Dispostion filename from '" +
+               m_sContentDispositionFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // No URL encoding necessary.
     // Filename must be in ISO-8859-1
@@ -805,11 +817,13 @@ public class UnifiedResponse
 
     if (m_eHttpVersion.is10 ())
     {
-      m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES, PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
+      m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
+                                          PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
     }
     else
     {
-      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true).setMaxAgeSeconds (nSeconds);
+      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true)
+                                                                                 .setMaxAgeSeconds (nSeconds);
       setCacheControl (aCacheControlBuilder);
     }
     return this;
@@ -886,7 +900,8 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl, @Nonnull final ERedirectMode eRedirectMode)
+  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl,
+                                            @Nonnull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
@@ -900,7 +915,8 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl, @Nonnull final ERedirectMode eRedirectMode)
+  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl,
+                                            @Nonnull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
@@ -1129,7 +1145,9 @@ public class UnifiedResponse
   {
     setCustomResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                              new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                                                    (bIncludeSubdomains ? ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+                                                                    (bIncludeSubdomains ? ";" +
+                                                                                          CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                        : ""));
     return this;
   }
 
@@ -1168,14 +1186,16 @@ public class UnifiedResponse
    * @since 6.0.5
    */
   @Nonnull
-  public final UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public final UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType,
+                                                 @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
     if (eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
+      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
+                               eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
       setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;
@@ -1207,7 +1227,8 @@ public class UnifiedResponse
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void addCustomResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public final void addCustomResponseHeader (@Nonnull @Nonempty final String sName,
+                                             @Nonnull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1239,7 +1260,8 @@ public class UnifiedResponse
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void setCustomResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public final void setCustomResponseHeader (@Nonnull @Nonempty final String sName,
+                                             @Nonnull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1309,7 +1331,9 @@ public class UnifiedResponse
     if (m_aCacheControl != null)
     {
       if (!bIsHttp11)
-        logWarn ("Sending a Cache-Control header for HTTP version " + m_eHttpVersion + " may have no or limited effect!");
+        logWarn ("Sending a Cache-Control header for HTTP version " +
+                 m_eHttpVersion +
+                 " may have no or limited effect!");
 
       if (m_aCacheControl.isPrivate ())
       {
@@ -1369,7 +1393,8 @@ public class UnifiedResponse
     }
   }
 
-  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet) throws IOException
+  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse,
+                              final boolean bStatusCodeWasAlreadySet) throws IOException
   {
     if (m_aContentArray != null)
     {
@@ -1427,7 +1452,14 @@ public class UnifiedResponse
             final OutputStream aOS = aHttpResponse.getOutputStream ();
             final MutableLong aByteCount = new MutableLong (0);
 
-            if (StreamHelper.copyInputStreamToOutputStream (aContentIS, aOS, aByteCount).isSuccess ())
+            if (StreamHelper.copyByteStream ()
+                            .from (aContentIS)
+                            .closeFrom (true)
+                            .to (aOS)
+                            .closeTo (true)
+                            .copyByteCount (aByteCount)
+                            .build ()
+                            .isSuccess ())
             {
               // Copying succeeded
               final long nBytesCopied = aByteCount.longValue ();
@@ -1570,8 +1602,11 @@ public class UnifiedResponse
         if (hasContent ())
           logWarn ("Ignoring provided content because a status code is specified!");
       }
-      if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED && !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
-        logWarn ("Status code UNAUTHORIZED (401) is returned, but no " + CHttpHeader.WWW_AUTHENTICATE + " HTTP response header is set!");
+      if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
+          !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
+        logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
+                 CHttpHeader.WWW_AUTHENTICATE +
+                 " HTTP response header is set!");
 
       // Content may be present so, sendError is not an option here!
       if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContentArray == null)
@@ -1630,7 +1665,10 @@ public class UnifiedResponse
       {
         // Filename needs to be surrounded with double quotes (single quotes
         // don't work).
-        aSB.append (m_eContentDispositionType.getID ()).append ("; filename=\"").append (m_sContentDispositionFilename).append ('"');
+        aSB.append (m_eContentDispositionType.getID ())
+           .append ("; filename=\"")
+           .append (m_sContentDispositionFilename)
+           .append ('"');
 
         // Check if we need an UTF-8 filename
         // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788
@@ -1693,7 +1731,9 @@ public class UnifiedResponse
     {
       final String sCharset = m_aCharset.name ();
       if (m_aMimeType == null)
-        logWarn ("If no MimeType present, the client cannot get notified about the character encoding '" + sCharset + "'");
+        logWarn ("If no MimeType present, the client cannot get notified about the character encoding '" +
+                 sCharset +
+                 "'");
 
       // Check with request charset
       final QValue aQuality = m_aAcceptCharsetList.getQValueOfCharset (sCharset);
@@ -1758,6 +1798,8 @@ public class UnifiedResponse
   @Nonnull
   public static UnifiedResponse createSimple (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest), RequestHelper.getHttpMethod (aHttpRequest), aHttpRequest);
+    return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest),
+                                RequestHelper.getHttpMethod (aHttpRequest),
+                                aHttpRequest);
   }
 }

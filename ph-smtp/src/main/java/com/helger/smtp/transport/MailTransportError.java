@@ -16,8 +16,6 @@
  */
 package com.helger.smtp.transport;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -34,7 +32,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class MailTransportError implements Serializable
+public class MailTransportError
 {
   private final Throwable m_aThrowable;
   private final ICommonsList <MailSendDetails> m_aDetails = new CommonsArrayList <> ();
@@ -44,7 +42,8 @@ public class MailTransportError implements Serializable
     this (aThrowable, null);
   }
 
-  public MailTransportError (@Nonnull final Throwable aThrowable, @Nullable final Iterable <? extends MailSendDetails> aDetails)
+  public MailTransportError (@Nonnull final Throwable aThrowable,
+                             @Nullable final Iterable <? extends MailSendDetails> aDetails)
   {
     m_aThrowable = ValueEnforcer.notNull (aThrowable, "Throwable");
     m_aDetails.addAll (aDetails);
@@ -70,6 +69,8 @@ public class MailTransportError implements Serializable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Throwable", m_aThrowable).append ("Details", m_aDetails).getToString ();
+    return new ToStringGenerator (this).append ("Throwable", m_aThrowable)
+                                       .append ("Details", m_aDetails)
+                                       .getToString ();
   }
 }

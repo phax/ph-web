@@ -79,9 +79,9 @@ public final class MailAPI
   @GuardedBy ("RW_LOCK")
   private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> QUEUE_CACHE = new CommonsHashMap <> ();
   // Just to have custom named threads....
-  private static final ThreadFactory THREAD_FACTORY = new BasicThreadFactory.Builder ().setNamingPattern ("MailAPI-%d")
-                                                                                       .setDaemon (true)
-                                                                                       .setPriority (Thread.NORM_PRIORITY)
+  private static final ThreadFactory THREAD_FACTORY = new BasicThreadFactory.Builder ().namingPattern ("MailAPI-%d")
+                                                                                       .daemon (true)
+                                                                                       .priority (Thread.NORM_PRIORITY)
                                                                                        .build ();
   @GuardedBy ("RW_LOCK")
   private static final ExecutorService SENDER_THREAD_POOL = new ThreadPoolExecutor (0,
@@ -176,7 +176,8 @@ public final class MailAPI
    * @return {@link ESuccess}.
    */
   @Nonnull
-  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final IMutableEmailData aMailData)
+  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings,
+                                    @Nonnull final IMutableEmailData aMailData)
   {
     final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <> (aMailData));
     return ESuccess.valueOf (nQueuedMails == 1);
@@ -337,7 +338,8 @@ public final class MailAPI
       if (!bWasQueued)
       {
         // Mail was not queued - put in failed mail queue
-        aSMTPQueue.getFailedMailQueue ().add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
+        aSMTPQueue.getFailedMailQueue ()
+                  .add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
       }
     }
     return nQueuedMails;

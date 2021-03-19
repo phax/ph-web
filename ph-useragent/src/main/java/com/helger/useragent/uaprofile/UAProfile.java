@@ -16,7 +16,6 @@
  */
 package com.helger.useragent.uaprofile;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ import com.helger.commons.string.ToStringGenerator;
  * @author Philip Helger
  */
 @Immutable
-public class UAProfile implements Serializable
+public class UAProfile
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (UAProfile.class);
   public static final UAProfile EMPTY = new UAProfile ();
@@ -56,7 +55,8 @@ public class UAProfile implements Serializable
     m_aProfileDiffData = null;
   }
 
-  public UAProfile (@Nullable final List <String> aProfileUrls, @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
+  public UAProfile (@Nullable final List <String> aProfileUrls,
+                    @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
   {
     final int nUrls = CollectionHelper.getSize (aProfileUrls);
     final int nDiffs = CollectionHelper.getSize (aProfileDiffData);
@@ -107,7 +107,8 @@ public class UAProfile implements Serializable
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UAProfile rhs = (UAProfile) o;
-    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) && EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
+    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&
+           EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
   }
 
   @Override

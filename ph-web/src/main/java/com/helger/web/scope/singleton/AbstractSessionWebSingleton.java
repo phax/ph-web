@@ -19,7 +19,6 @@ package com.helger.web.scope.singleton;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,7 +37,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
-public abstract class AbstractSessionWebSingleton extends AbstractSingleton implements IWebSingleton, Serializable
+public abstract class AbstractSessionWebSingleton extends AbstractSingleton implements IWebSingleton
 {
   protected AbstractSessionWebSingleton ()
   {}

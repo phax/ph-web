@@ -92,6 +92,6 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
     }
 
     // Read via reader to avoid duplication in memory
-    return JsonReader.builder ().setSource (aEntity.getContent (), aCharset).read ();
+    return JsonReader.builder ().source (aEntity.getContent (), aCharset).read ();
   }
 }

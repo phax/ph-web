@@ -50,7 +50,6 @@ import javax.servlet.http.Part;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.collection.multimap.MultiHashMapLinkedHashSetBased;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -69,6 +68,7 @@ import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
+import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.commons.io.stream.StreamHelper;
@@ -128,7 +128,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   private int m_nLocalPort = DEFAULT_SERVER_PORT;
   private String m_sAuthType;
   private Cookie [] m_aCookies;
-  private final MultiHashMapLinkedHashSetBased <String, String> m_aHeaders = new MultiHashMapLinkedHashSetBased <> ();
+  private final HttpHeaderMap m_aHeaders = new HttpHeaderMap ();
   private EHttpMethod m_eMethod;
   private String m_sPathInfo;
   private String m_sContextPath = "";
@@ -807,12 +807,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
     return ArrayHelper.getCopy (m_aCookies);
   }
 
-  @Nullable
-  private static String _getUnifiedHeaderName (@Nullable final String s)
-  {
-    return s == null ? null : s.toLowerCase (Locale.US);
-  }
-
   /**
    * Add a header entry for the given name.
    * <p>
@@ -840,14 +834,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   @Nonnull
   public final MockHttpServletRequest addHeader (@Nullable final String sName, @Nullable final String aValue)
   {
-    m_aHeaders.putSingle (_getUnifiedHeaderName (sName), aValue);
+    m_aHeaders.addHeader (sName, aValue);
     return this;
   }
 
   @Nonnull
   public MockHttpServletRequest removeHeader (@Nullable final String sName)
   {
-    m_aHeaders.remove (_getUnifiedHeaderName (sName));
+    m_aHeaders.removeHeaders (sName);
     return this;
   }
 
@@ -868,21 +862,21 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   @Nullable
   public String getHeader (@Nullable final String sName)
   {
-    final ICommonsSet <String> aValue = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    final ICommonsList <String> aValue = m_aHeaders.getAllHeaderValues (sName);
     return aValue == null || aValue.isEmpty () ? null : String.valueOf (aValue.iterator ().next ());
   }
 
   @Nonnull
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
-    final ICommonsSet <String> vals = m_aHeaders.get (_getUnifiedHeaderName (sName));
+    final ICommonsList <String> vals = m_aHeaders.getAllHeaderValues (sName);
     return IteratorHelper.getEnumeration (vals);
   }
 
   @Nonnull
   public Enumeration <String> getHeaderNames ()
   {
-    return IteratorHelper.getEnumeration (m_aHeaders.keySet ());
+    return IteratorHelper.getEnumeration (m_aHeaders.getAllHeaderNames ());
   }
 
   @Nonnull

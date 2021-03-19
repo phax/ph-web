@@ -55,16 +55,16 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestTracker.class);
 
-  private static final CallbackList <ILongRunningRequestCallback> s_aLongRunningCallbacks = new CallbackList <> ();
-  private static final CallbackList <IParallelRunningRequestCallback> s_aParallelRunningCallbacks = new CallbackList <> ();
+  private static final CallbackList <ILongRunningRequestCallback> CB_LONG_RUNNING = new CallbackList <> ();
+  private static final CallbackList <IParallelRunningRequestCallback> CB_PARALLEL_RUNNING = new CallbackList <> ();
 
   static
   {
     // Register default callbacks
-    s_aLongRunningCallbacks.add (new LoggingLongRunningRequestCallback (EErrorLevel.ERROR));
-    // s_aLongRunningCallbacks.add (new AuditingLongRunningRequestCallback ());
-    s_aParallelRunningCallbacks.add (new LoggingParallelRunningRequestCallback (EErrorLevel.WARN));
-    // s_aParallelRunningCallbacks.add (new
+    CB_LONG_RUNNING.add (new LoggingLongRunningRequestCallback (EErrorLevel.ERROR));
+    // CB_LONG_RUNNING.add (new AuditingLongRunningRequestCallback ());
+    CB_PARALLEL_RUNNING.add (new LoggingParallelRunningRequestCallback (EErrorLevel.WARN));
+    // CB_PARALLEL_RUNNING.add (new
     // AuditingParallelRunningRequestCallback ());
   }
 
@@ -72,14 +72,14 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   @ReturnsMutableObject
   public static CallbackList <ILongRunningRequestCallback> longRunningRequestCallbacks ()
   {
-    return s_aLongRunningCallbacks;
+    return CB_LONG_RUNNING;
   }
 
   @Nonnull
   @ReturnsMutableObject
   public static CallbackList <IParallelRunningRequestCallback> parallelRunningRequestCallbacks ()
   {
-    return s_aParallelRunningCallbacks;
+    return CB_PARALLEL_RUNNING;
   }
 
   private final RequestTrackingManager m_aRequestTrackingMgr = new RequestTrackingManager ();
@@ -106,7 +106,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
         try (final WebScoped aWebScoped = new WebScoped (aRequest))
         {
           // Check for long running requests
-          m_aRequestTrackingMgr.checkForLongRunningRequests (s_aLongRunningCallbacks);
+          m_aRequestTrackingMgr.checkForLongRunningRequests (CB_LONG_RUNNING);
         }
         catch (final Exception ex)
         {
@@ -121,8 +121,8 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   public RequestTracker ()
   {
     // Create the executor service
-    m_aExecSvc = Executors.newSingleThreadScheduledExecutor (new BasicThreadFactory.Builder ().setNamingPattern ("RequestTrackerMonitor-%d")
-                                                                                              .setDaemon (true)
+    m_aExecSvc = Executors.newSingleThreadScheduledExecutor (new BasicThreadFactory.Builder ().namingPattern ("RequestTrackerMonitor-%d")
+                                                                                              .daemon (true)
                                                                                               .build ());
 
     // Start the monitoring thread to check every 2 seconds
@@ -172,9 +172,10 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param aRequestScope
    *        The request scope itself.
    */
-  public static void addRequest (@Nonnull @Nonempty final String sRequestID, @Nonnull final IRequestWebScope aRequestScope)
+  public static void addRequest (@Nonnull @Nonempty final String sRequestID,
+                                 @Nonnull final IRequestWebScope aRequestScope)
   {
-    getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, s_aParallelRunningCallbacks);
+    getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, CB_PARALLEL_RUNNING);
   }
 
   /**
@@ -187,6 +188,6 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   {
     final RequestTracker aTracker = getGlobalSingletonIfInstantiated (RequestTracker.class);
     if (aTracker != null)
-      aTracker.m_aRequestTrackingMgr.removeRequest (sRequestID, s_aParallelRunningCallbacks);
+      aTracker.m_aRequestTrackingMgr.removeRequest (sRequestID, CB_PARALLEL_RUNNING);
   }
 }

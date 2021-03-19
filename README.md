@@ -59,6 +59,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v9.6.0 - work in progress
+    * Updated to ph-commons 10
 * v9.5.3 - 2021-03-03
     * Extended `MailTransport` with default properties (e.g. for using other transport implementations)
 * v9.5.2 - 2021-01-11

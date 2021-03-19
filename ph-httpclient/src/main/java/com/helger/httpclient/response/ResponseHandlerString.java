@@ -18,6 +18,7 @@ package com.helger.httpclient.response;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +30,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.functional.IConsumer;
 import com.helger.httpclient.HttpClientHelper;
 
 /**
@@ -42,7 +42,7 @@ import com.helger.httpclient.HttpClientHelper;
 public class ResponseHandlerString implements ResponseHandler <String>
 {
   private final ContentType m_aDefault;
-  private IConsumer <Charset> m_aCharsetConsumer;
+  private Consumer <Charset> m_aCharsetConsumer;
 
   public ResponseHandlerString ()
   {
@@ -70,7 +70,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
   }
 
   @Nullable
-  public final IConsumer <Charset> getCharsetConsumer ()
+  public final Consumer <Charset> getCharsetConsumer ()
   {
     return m_aCharsetConsumer;
   }
@@ -84,7 +84,7 @@ public class ResponseHandlerString implements ResponseHandler <String>
    * @return this for chaining
    */
   @Nonnull
-  public final ResponseHandlerString setCharsetConsumer (@Nullable final IConsumer <Charset> aCharsetConsumer)
+  public final ResponseHandlerString setCharsetConsumer (@Nullable final Consumer <Charset> aCharsetConsumer)
   {
     m_aCharsetConsumer = aCharsetConsumer;
     return this;

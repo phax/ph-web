@@ -42,9 +42,6 @@ import com.helger.web.scope.IGlobalWebScope;
 @ThreadSafe
 public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
-  // Because of transient field
-  private static final long serialVersionUID = 15665138713664L;
-
   private final LocalDateTime m_aCreationDT;
   private final transient ServletContext m_aSC;
 

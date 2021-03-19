@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.mime.MimeTypeParserException;
 
 /**
  * Test class for class {@link AcceptMimeTypeHandler}
@@ -122,7 +123,7 @@ public final class AcceptMimeTypeHandlerTest
   }
 
   @Test
-  public void testGetAsHttpHeaderValue ()
+  public void testGetAsHttpHeaderValue () throws MimeTypeParserException
   {
     final AcceptMimeTypeList c = new AcceptMimeTypeList ();
     c.addMimeType ("text/xml", 1);

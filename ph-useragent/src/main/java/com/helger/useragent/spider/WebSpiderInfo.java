@@ -16,8 +16,6 @@
  */
 package com.helger.useragent.spider;
 
-import java.io.Serializable;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -33,7 +31,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-public class WebSpiderInfo implements IHasID <String>, Serializable
+public class WebSpiderInfo implements IHasID <String>
 {
   private final String m_sID;
   private String m_sName;
@@ -101,7 +99,11 @@ public class WebSpiderInfo implements IHasID <String>, Serializable
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_sID).append (m_sName).append (m_eType).append (m_sInfo).getHashCode ();
+    return new HashCodeGenerator (this).append (m_sID)
+                                       .append (m_sName)
+                                       .append (m_eType)
+                                       .append (m_sInfo)
+                                       .getHashCode ();
   }
 
   @Override

@@ -21,7 +21,6 @@ import java.util.regex.Matcher;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.collection.pair.Pair;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -42,7 +41,7 @@ public final class UserAgentDecryptor
   private static final String SKIP_PREFIX = "User-Agent: ";
 
   @PresentForCodeCoverage
-  private static final UserAgentDecryptor s_aInstance = new UserAgentDecryptor ();
+  private static final UserAgentDecryptor INSTANCE = new UserAgentDecryptor ();
 
   private UserAgentDecryptor ()
   {}
@@ -79,7 +78,7 @@ public final class UserAgentDecryptor
           if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sFullValue))
             ret.add (sFullValue);
           else
-            ret.add (Pair.create (sKey, sValue));
+            ret.add (new UsetAgentKeyValuePair (sKey, sValue));
           break;
         }
         case ' ':
@@ -89,7 +88,7 @@ public final class UserAgentDecryptor
           final String sText = aSS.getUntilIndex (nIndex).trim ();
           final Matcher aMatcher = RegExHelper.getMatcher ("([^\\s]+)\\s+([0-9]+\\.[0-9]+)", sText);
           if (aMatcher.matches ())
-            ret.add (Pair.create (aMatcher.group (1), aMatcher.group (2)));
+            ret.add (new UsetAgentKeyValuePair (aMatcher.group (1), aMatcher.group (2)));
           else
             ret.add (sText);
           break;

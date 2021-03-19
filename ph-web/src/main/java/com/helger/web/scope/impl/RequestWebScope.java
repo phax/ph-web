@@ -98,13 +98,11 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     String getCleanedValue (@Nonnull String sParamName, @Nonnegative int nParamIndex, @Nullable String sParamValue);
   }
 
-  // Because of transient field
-  private static final long serialVersionUID = 78563987233147L;
-
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestWebScope.class);
-  private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + "requestscope.inited";
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
+  private static final String REQUEST_ATTR_SCOPE_INITED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                                          "requestscope.inited";
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
   private static IParamValueCleanser s_aParamValueCleanser = (n, i, v) -> getWithoutForbiddenCharsAndNormalized (v);
 
   private final LocalDateTime m_aCreationDT;
@@ -124,7 +122,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Nullable
   public static IParamValueCleanser getParamValueCleanser ()
   {
-    return s_aRWLock.readLockedGet ( () -> s_aParamValueCleanser);
+    return RW_LOCK.readLockedGet ( () -> s_aParamValueCleanser);
   }
 
   /**
@@ -140,7 +138,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    */
   public static void setParamValueCleanser (@Nullable final IParamValueCleanser aParamValueCleanser)
   {
-    s_aRWLock.writeLockedGet ( () -> s_aParamValueCleanser = aParamValueCleanser);
+    RW_LOCK.writeLockedGet ( () -> s_aParamValueCleanser = aParamValueCleanser);
   }
 
   @Nonnull
@@ -152,7 +150,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return GlobalIDFactory.getNewIntID () + "@" + RequestHelper.getRequestURIDecoded (aHttpRequest);
   }
 
-  public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
+  public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
+                          @Nonnull final HttpServletResponse aHttpResponse)
   {
     super (_createScopeID (aHttpRequest));
 
@@ -163,7 +162,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Created request web scope '" + super.getID () + "' of class " + ClassHelper.getClassLocalName (RequestWebScope.class),
+        LOGGER.info ("Created request web scope '" +
+                     super.getID () +
+                     "' of class " +
+                     ClassHelper.getClassLocalName (RequestWebScope.class),
                      ScopeHelper.getDebugStackTrace ());
   }
 
@@ -353,7 +355,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Initialized request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+        LOGGER.info ("Initialized request web scope '" +
+                     getID () +
+                     "' of class " +
+                     ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());
   }
 

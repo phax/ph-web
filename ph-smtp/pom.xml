@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger.web</groupId>
     <artifactId>ph-web-parent-pom</artifactId>
-    <version>9.5.4-SNAPSHOT</version>
+    <version>9.6.0-SNAPSHOT</version>
   </parent>
   <artifactId>ph-smtp</artifactId>
   <packaging>bundle</packaging>
@@ -55,19 +55,19 @@
   
   <dependencies>
     <dependency>
-      <groupId>com.helger</groupId>
+      <groupId>com.helger.commons</groupId>
       <artifactId>ph-commons</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.helger</groupId>
+      <groupId>com.helger.commons</groupId>
       <artifactId>ph-xml</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.helger</groupId>
+      <groupId>com.helger.commons</groupId>
       <artifactId>ph-datetime</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.helger</groupId>
+      <groupId>com.helger.commons</groupId>
       <artifactId>ph-scopes</artifactId>
     </dependency>
     <dependency>

@@ -24,8 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.collection.IteratorHelper;
+import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsCollection;
 import com.helger.commons.hierarchy.IChildrenProvider;
 import com.helger.commons.string.ToStringGenerator;
@@ -55,7 +55,7 @@ public class ChildrenProviderNetworkInterface implements IChildrenProvider <Netw
   public ICommonsCollection <NetworkInterface> getAllChildren (@Nonnull final NetworkInterface aCurrent)
   {
     final Enumeration <NetworkInterface> aSubIFs = aCurrent.getSubInterfaces ();
-    return aSubIFs.hasMoreElements () ? CollectionHelper.newList (aSubIFs) : null;
+    return aSubIFs.hasMoreElements () ? new CommonsArrayList <> (aSubIFs) : null;
   }
 
   @Override

@@ -31,7 +31,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.CodingStyleguideUnaware;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
@@ -135,7 +135,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
   @ReturnsMutableCopy
   public ICommonsList <IEmailAttachmentDataSource> getAsDataSourceList ()
   {
-    return CollectionHelper.newListMapped (m_aMap.values (), IEmailAttachment::getAsDataSource);
+    return new CommonsArrayList <> (m_aMap.values (), IEmailAttachment::getAsDataSource);
   }
 
   @Nonnull

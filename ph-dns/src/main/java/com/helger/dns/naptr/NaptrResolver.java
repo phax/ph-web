@@ -34,6 +34,7 @@ import org.xbill.DNS.TextParseException;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.VisibleForTesting;
+import com.helger.commons.builder.IBuilder;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.compare.CompareHelper;
@@ -220,7 +221,9 @@ public class NaptrResolver
                                           @Nonnull @Nonempty final Predicate <? super String> aServiceNameMatcher) throws TextParseException
   {
     return builder ().domainName (sDomainName)
-                     .naptrRecords (NaptrLookup.builder ().domainName (sDomainName).customDNSServers (aCustomDNSServers))
+                     .naptrRecords (NaptrLookup.builder ()
+                                               .domainName (sDomainName)
+                                               .customDNSServers (aCustomDNSServers))
                      .serviceName (aServiceNameMatcher)
                      .build ()
                      .resolveUNAPTR ();
@@ -232,7 +235,11 @@ public class NaptrResolver
                                       @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
                                       @Nonnull @Nonempty final String sServiceName)
   {
-    return builder ().domainName (sDNSName).naptrRecords (aNaptrRecords).serviceName (sServiceName).build ().resolveUNAPTR ();
+    return builder ().domainName (sDNSName)
+                     .naptrRecords (aNaptrRecords)
+                     .serviceName (sServiceName)
+                     .build ()
+                     .resolveUNAPTR ();
   }
 
   @Nullable
@@ -241,7 +248,11 @@ public class NaptrResolver
                                       @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
                                       @Nonnull final Predicate <? super String> aServiceNameMatcher)
   {
-    return builder ().domainName (sDNSName).naptrRecords (aNaptrRecords).serviceName (aServiceNameMatcher).build ().resolveUNAPTR ();
+    return builder ().domainName (sDNSName)
+                     .naptrRecords (aNaptrRecords)
+                     .serviceName (aServiceNameMatcher)
+                     .build ()
+                     .resolveUNAPTR ();
   }
 
   @Nonnull
@@ -251,7 +262,7 @@ public class NaptrResolver
   }
 
   @NotThreadSafe
-  public static class Builder
+  public static class Builder implements IBuilder <NaptrResolver>
   {
     private String m_sDomainName;
     private final ICommonsList <NAPTRRecord> m_aNaptrRecords = new CommonsArrayList <> ();

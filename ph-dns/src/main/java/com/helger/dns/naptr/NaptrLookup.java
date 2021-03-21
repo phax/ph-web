@@ -38,6 +38,7 @@ import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.builder.IBuilder;
 import com.helger.commons.callback.CallbackList;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -211,7 +212,13 @@ public class NaptrLookup
         ret.add ((NAPTRRecord) aRecord);
 
       if (aIsEnabled.getAsBoolean ())
-        aLogger.accept ("  Returning " + ret.size () + " NAPTR record(s) for '" + sDomainName + "' after " + nLookupRuns + " lookups");
+        aLogger.accept ("  Returning " +
+                        ret.size () +
+                        " NAPTR record(s) for '" +
+                        sDomainName +
+                        "' after " +
+                        nLookupRuns +
+                        " lookups");
 
       return ret;
     }
@@ -226,7 +233,9 @@ public class NaptrLookup
                                 sDomainName +
                                 "'" +
                                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "");
-        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage, aDuration, m_aExecutionDurationWarn));
+        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage,
+                                                                               aDuration,
+                                                                               m_aExecutionDurationWarn));
       }
     }
   }
@@ -238,7 +247,7 @@ public class NaptrLookup
   }
 
   @NotThreadSafe
-  public static class Builder
+  public static class Builder implements IBuilder <NaptrLookup>
   {
     public static final int DEFAULT_MAX_RETRIES = 1;
     public static final Duration DEFAULT_EXECUTION_DURATION_WARN = Duration.ofSeconds (1);

@@ -59,6 +59,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v9.6.1 - work in progress
+    * Updated to ph-commons 10.1
 * v9.6.0 - 2021-03-22
     * Updated to ph-commons 10
 * v9.5.3 - 2021-03-03

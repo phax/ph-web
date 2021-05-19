@@ -61,6 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v9.6.1 - work in progress
     * Updated to ph-commons 10.1
+    * Updated to Jakarta Mail 1.6.7
 * v9.6.0 - 2021-03-22
     * Updated to ph-commons 10
 * v9.5.3 - 2021-03-03

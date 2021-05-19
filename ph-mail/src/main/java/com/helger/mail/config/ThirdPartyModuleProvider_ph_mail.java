@@ -37,7 +37,7 @@ public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModule
   public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("Jakarta Mail",
                                                                            "Eclipse Foundation",
                                                                            ELicense.EPL20,
-                                                                           new Version (1, 6, 5),
+                                                                           new Version (1, 6, 7),
                                                                            "https://eclipse-ee4j.github.io/mail/");
 
   @Nullable

@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ArrayHelper;
 
 /**
  * A special authenticator for HTTP/HTTPS/FTPS proxy connections.
@@ -61,7 +62,8 @@ public class HttpProxyAuthenticator extends Authenticator
           // Seems to be OK.
           final String sProxyUser = m_eProxyType.getProxyUserName ();
           final String sProxyPassword = m_eProxyType.getProxyPassword ();
-          return new PasswordAuthentication (sProxyUser, sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
+          return new PasswordAuthentication (sProxyUser,
+                                             sProxyPassword == null ? ArrayHelper.EMPTY_CHAR_ARRAY : sProxyPassword.toCharArray ());
         }
       }
     }

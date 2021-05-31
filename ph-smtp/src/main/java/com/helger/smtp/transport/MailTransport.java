@@ -160,15 +160,13 @@ public final class MailTransport
       {
         ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_CLASS.getPropertyName (bSMTPS),
                  com.sun.mail.util.MailSSLSocketFactory.class.getName ());
-        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS),
-                 Integer.toString (aSettings.getPort ()));
+        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS), Integer.toString (aSettings.getPort ()));
       }
 
     // Set connection timeout
     final long nConnectionTimeoutMilliSecs = aSettings.getConnectionTimeoutMilliSecs ();
     if (nConnectionTimeoutMilliSecs > 0)
-      ret.put (ESMTPTransportProperty.CONNECTIONTIMEOUT.getPropertyName (bSMTPS),
-               Long.toString (nConnectionTimeoutMilliSecs));
+      ret.put (ESMTPTransportProperty.CONNECTIONTIMEOUT.getPropertyName (bSMTPS), Long.toString (nConnectionTimeoutMilliSecs));
 
     // Set socket timeout
     final long nTimeoutMilliSecs = aSettings.getTimeoutMilliSecs ();
@@ -305,10 +303,8 @@ public final class MailTransport
              * was sent, the valid address to which the message was not sent and
              * the invalid addresses
              */
-            final ICommonsSet <String> aValidSent = new CommonsHashSet <> (ex.getValidSentAddresses (),
-                                                                           Address::toString);
-            final ICommonsSet <String> aValidUnsent = new CommonsHashSet <> (ex.getValidUnsentAddresses (),
-                                                                             Address::toString);
+            final ICommonsSet <String> aValidSent = new CommonsHashSet <> (ex.getValidSentAddresses (), Address::toString);
+            final ICommonsSet <String> aValidUnsent = new CommonsHashSet <> (ex.getValidUnsentAddresses (), Address::toString);
             final ICommonsSet <String> aInvalid = new CommonsHashSet <> (ex.getInvalidAddresses (), Address::toString);
 
             final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList <> ();
@@ -323,8 +319,7 @@ public final class MailTransport
                                                    ssfe.getAddress ().toString (),
                                                    ssfe.getCommand (),
                                                    ssfe.getMessage ().trim (),
-                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
-                                                                                      ESMTPErrorCode.FALLBACK)));
+                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (), ESMTPErrorCode.FALLBACK)));
               }
               else
                 if (ex2 instanceof SMTPAddressSucceededException)
@@ -334,8 +329,7 @@ public final class MailTransport
                                                      ssfe.getAddress ().toString (),
                                                      ssfe.getCommand (),
                                                      ssfe.getMessage ().trim (),
-                                                     ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
-                                                                                        ESMTPErrorCode.FALLBACK)));
+                                                     ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (), ESMTPErrorCode.FALLBACK)));
                 }
 
               bex = (MessagingException) ex2;
@@ -428,8 +422,7 @@ public final class MailTransport
       catch (final MessagingException ex)
       {
         if (WebExceptionHelper.isServerNotReachableConnection (ex.getCause ()))
-          aExceptionToBeRemembered = new MailSendException ("Failed to connect to mail server: " +
-                                                            ex.getCause ().getMessage ());
+          aExceptionToBeRemembered = new MailSendException ("Failed to connect to mail server: " + ex.getCause ().getMessage ());
         else
           aExceptionToBeRemembered = new MailSendException ("Mail server connection failed", ex);
       }

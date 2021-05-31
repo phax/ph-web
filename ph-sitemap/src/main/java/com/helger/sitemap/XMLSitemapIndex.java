@@ -191,14 +191,12 @@ public class XMLSitemapIndex
 
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
-      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
-              .appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
+      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC).appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
       {
-        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
-                .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
+        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD).appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
       }
       ++nIndex;
     }
@@ -250,9 +248,7 @@ public class XMLSitemapIndex
     final IXMLWriterSettings aXWS = getXMLWriterSettings ();
 
     // Write base file
-    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath),
-                                 new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
-                                 aXWS)
+    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath), new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME), aXWS)
                    .isFailure ())
     {
       if (LOGGER.isErrorEnabled ())

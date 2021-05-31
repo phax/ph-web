@@ -168,34 +168,34 @@ public final class StreamingFuncTest
   public void testFILEUPLOAD135 () throws Exception
   {
     final byte [] request = _newShortRequest ();
-    ICommonsList <IFileItem> fileItems;
-    try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (request))
+    final ICommonsList <IFileItem> aFileItems;
+    try (final NonBlockingByteArrayInputStream aBAIS = new NonBlockingByteArrayInputStream (request))
     {
-      fileItems = _parseUploadToList (new InputStream ()
+      aFileItems = _parseUploadToList (new InputStream ()
       {
         @Override
         public int read () throws IOException
         {
-          return bais.read ();
+          return aBAIS.read ();
         }
 
         @Override
         public int read (final byte b[], final int off, final int len) throws IOException
         {
-          return bais.read (b, off, Math.min (len, 3));
+          return aBAIS.read (b, off, Math.min (len, 3));
         }
       }, request.length);
     }
-    final Iterator <IFileItem> fileIter = fileItems.iterator ();
-    assertTrue (fileIter.hasNext ());
-    final IFileItem item = fileIter.next ();
+    final Iterator <IFileItem> aFileIter = aFileItems.iterator ();
+    assertTrue (aFileIter.hasNext ());
+    final IFileItem item = aFileIter.next ();
     assertEquals ("field", item.getFieldName ());
-    final byte [] bytes = item.directGet ();
-    assertEquals (3, bytes.length);
-    assertEquals ((byte) '1', bytes[0]);
-    assertEquals ((byte) '2', bytes[1]);
-    assertEquals ((byte) '3', bytes[2]);
-    assertFalse (fileIter.hasNext ());
+    final byte [] aBytes = item.directGet ();
+    assertEquals (3, aBytes.length);
+    assertEquals ((byte) '1', aBytes[0]);
+    assertEquals ((byte) '2', aBytes[1]);
+    assertEquals ((byte) '3', aBytes[2]);
+    assertFalse (aFileIter.hasNext ());
   }
 
   private IFileItemIterator _parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException

@@ -24,6 +24,7 @@ import java.net.SocketAddress;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.string.StringHelper;
 
@@ -88,9 +89,7 @@ public interface IProxySettings
    */
   default boolean hasInetSocketAddress (@Nullable final InetSocketAddress aAddr)
   {
-    return aAddr != null &&
-           EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) &&
-           getProxyPort () == aAddr.getPort ();
+    return aAddr != null && EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) && getProxyPort () == aAddr.getPort ();
   }
 
   /**
@@ -145,6 +144,6 @@ public interface IProxySettings
     final String sProxyPassword = getProxyPassword ();
     // Constructor does not take null password!
     return new PasswordAuthentication (getProxyUserName (),
-                                       sProxyPassword == null ? new char [0] : sProxyPassword.toCharArray ());
+                                       sProxyPassword == null ? ArrayHelper.EMPTY_CHAR_ARRAY : sProxyPassword.toCharArray ());
   }
 }

@@ -44,30 +44,12 @@ public final class DefaultNetworkPorts
 
   public static final INetworkPort TCP_0 = _registerPort (0, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_0 = _registerPort (0, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort TCP_1_tcpmux = _registerPort (1,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "tcpmux",
-                                                                 "TCP Port Service Multiplexer");
-  public static final INetworkPort UDP_1_tcpmux = _registerPort (1,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "tcpmux",
-                                                                 "TCP Port Service Multiplexer");
-  public static final INetworkPort TCP_2_compressnet = _registerPort (2,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "compressnet",
-                                                                      "Management Utility");
-  public static final INetworkPort UDP_2_compressnet = _registerPort (2,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "compressnet",
-                                                                      "Management Utility");
-  public static final INetworkPort TCP_3_compressnet = _registerPort (3,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "compressnet",
-                                                                      "Compression Process");
-  public static final INetworkPort UDP_3_compressnet = _registerPort (3,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "compressnet",
-                                                                      "Compression Process");
+  public static final INetworkPort TCP_1_tcpmux = _registerPort (1, ENetworkProtocol.TCP, "tcpmux", "TCP Port Service Multiplexer");
+  public static final INetworkPort UDP_1_tcpmux = _registerPort (1, ENetworkProtocol.UDP, "tcpmux", "TCP Port Service Multiplexer");
+  public static final INetworkPort TCP_2_compressnet = _registerPort (2, ENetworkProtocol.TCP, "compressnet", "Management Utility");
+  public static final INetworkPort UDP_2_compressnet = _registerPort (2, ENetworkProtocol.UDP, "compressnet", "Management Utility");
+  public static final INetworkPort TCP_3_compressnet = _registerPort (3, ENetworkProtocol.TCP, "compressnet", "Compression Process");
+  public static final INetworkPort UDP_3_compressnet = _registerPort (3, ENetworkProtocol.UDP, "compressnet", "Compression Process");
   public static final INetworkPort TCP_5_rje = _registerPort (5, ENetworkProtocol.TCP, "rje", "Remote Job Entry");
   public static final INetworkPort UDP_5_rje = _registerPort (5, ENetworkProtocol.UDP, "rje", "Remote Job Entry");
   public static final INetworkPort TCP_7_echo = _registerPort (7, ENetworkProtocol.TCP, "echo", "Echo");
@@ -81,160 +63,58 @@ public final class DefaultNetworkPorts
   public static final INetworkPort TCP_15 = _registerPort (15, ENetworkProtocol.TCP, "", "Unassigned [was netstat]");
   public static final INetworkPort TCP_17_qotd = _registerPort (17, ENetworkProtocol.TCP, "qotd", "Quote of the Day");
   public static final INetworkPort UDP_17_qotd = _registerPort (17, ENetworkProtocol.UDP, "qotd", "Quote of the Day");
-  public static final INetworkPort TCP_18_msp = _registerPort (18,
-                                                               ENetworkProtocol.TCP,
-                                                               "msp",
-                                                               "Message Send Protocol (historic)");
-  public static final INetworkPort UDP_18_msp = _registerPort (18,
-                                                               ENetworkProtocol.UDP,
-                                                               "msp",
-                                                               "Message Send Protocol (historic)");
-  public static final INetworkPort TCP_19_chargen = _registerPort (19,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "chargen",
-                                                                   "Character Generator");
-  public static final INetworkPort UDP_19_chargen = _registerPort (19,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "chargen",
-                                                                   "Character Generator");
-  public static final INetworkPort TCP_20_ftp_data = _registerPort (20,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "ftp-data",
-                                                                    "File Transfer [Default Data]");
-  public static final INetworkPort UDP_20_ftp_data = _registerPort (20,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "ftp-data",
-                                                                    "File Transfer [Default Data]");
-  public static final INetworkPort TCP_21_ftp = _registerPort (21,
-                                                               ENetworkProtocol.TCP,
-                                                               "ftp",
-                                                               "File Transfer Protocol [Control]");
-  public static final INetworkPort UDP_21_ftp = _registerPort (21,
-                                                               ENetworkProtocol.UDP,
-                                                               "ftp",
-                                                               "File Transfer Protocol [Control]");
-  public static final INetworkPort TCP_22_ssh = _registerPort (22,
-                                                               ENetworkProtocol.TCP,
-                                                               "ssh",
-                                                               "The Secure Shell (SSH) Protocol");
-  public static final INetworkPort UDP_22_ssh = _registerPort (22,
-                                                               ENetworkProtocol.UDP,
-                                                               "ssh",
-                                                               "The Secure Shell (SSH) Protocol");
+  public static final INetworkPort TCP_18_msp = _registerPort (18, ENetworkProtocol.TCP, "msp", "Message Send Protocol (historic)");
+  public static final INetworkPort UDP_18_msp = _registerPort (18, ENetworkProtocol.UDP, "msp", "Message Send Protocol (historic)");
+  public static final INetworkPort TCP_19_chargen = _registerPort (19, ENetworkProtocol.TCP, "chargen", "Character Generator");
+  public static final INetworkPort UDP_19_chargen = _registerPort (19, ENetworkProtocol.UDP, "chargen", "Character Generator");
+  public static final INetworkPort TCP_20_ftp_data = _registerPort (20, ENetworkProtocol.TCP, "ftp-data", "File Transfer [Default Data]");
+  public static final INetworkPort UDP_20_ftp_data = _registerPort (20, ENetworkProtocol.UDP, "ftp-data", "File Transfer [Default Data]");
+  public static final INetworkPort TCP_21_ftp = _registerPort (21, ENetworkProtocol.TCP, "ftp", "File Transfer Protocol [Control]");
+  public static final INetworkPort UDP_21_ftp = _registerPort (21, ENetworkProtocol.UDP, "ftp", "File Transfer Protocol [Control]");
+  public static final INetworkPort TCP_22_ssh = _registerPort (22, ENetworkProtocol.TCP, "ssh", "The Secure Shell (SSH) Protocol");
+  public static final INetworkPort UDP_22_ssh = _registerPort (22, ENetworkProtocol.UDP, "ssh", "The Secure Shell (SSH) Protocol");
   public static final INetworkPort TCP_23_telnet = _registerPort (23, ENetworkProtocol.TCP, "telnet", "Telnet");
   public static final INetworkPort UDP_23_telnet = _registerPort (23, ENetworkProtocol.UDP, "telnet", "Telnet");
   public static final INetworkPort TCP_24 = _registerPort (24, ENetworkProtocol.TCP, "", "any private mail system");
   public static final INetworkPort UDP_24 = _registerPort (24, ENetworkProtocol.UDP, "", "any private mail system");
-  public static final INetworkPort TCP_25_smtp = _registerPort (25,
-                                                                ENetworkProtocol.TCP,
-                                                                "smtp",
-                                                                "Simple Mail Transfer");
-  public static final INetworkPort UDP_25_smtp = _registerPort (25,
-                                                                ENetworkProtocol.UDP,
-                                                                "smtp",
-                                                                "Simple Mail Transfer");
-  public static final INetworkPort TCP_27_nsw_fe = _registerPort (27,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "nsw-fe",
-                                                                  "NSW User System FE");
-  public static final INetworkPort UDP_27_nsw_fe = _registerPort (27,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "nsw-fe",
-                                                                  "NSW User System FE");
+  public static final INetworkPort TCP_25_smtp = _registerPort (25, ENetworkProtocol.TCP, "smtp", "Simple Mail Transfer");
+  public static final INetworkPort UDP_25_smtp = _registerPort (25, ENetworkProtocol.UDP, "smtp", "Simple Mail Transfer");
+  public static final INetworkPort TCP_27_nsw_fe = _registerPort (27, ENetworkProtocol.TCP, "nsw-fe", "NSW User System FE");
+  public static final INetworkPort UDP_27_nsw_fe = _registerPort (27, ENetworkProtocol.UDP, "nsw-fe", "NSW User System FE");
   public static final INetworkPort TCP_29_msg_icp = _registerPort (29, ENetworkProtocol.TCP, "msg-icp", "MSG ICP");
   public static final INetworkPort UDP_29_msg_icp = _registerPort (29, ENetworkProtocol.UDP, "msg-icp", "MSG ICP");
-  public static final INetworkPort TCP_31_msg_auth = _registerPort (31,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "msg-auth",
-                                                                    "MSG Authentication");
-  public static final INetworkPort UDP_31_msg_auth = _registerPort (31,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "msg-auth",
-                                                                    "MSG Authentication");
-  public static final INetworkPort TCP_33_dsp = _registerPort (33,
-                                                               ENetworkProtocol.TCP,
-                                                               "dsp",
-                                                               "Display Support Protocol");
-  public static final INetworkPort UDP_33_dsp = _registerPort (33,
-                                                               ENetworkProtocol.UDP,
-                                                               "dsp",
-                                                               "Display Support Protocol");
+  public static final INetworkPort TCP_31_msg_auth = _registerPort (31, ENetworkProtocol.TCP, "msg-auth", "MSG Authentication");
+  public static final INetworkPort UDP_31_msg_auth = _registerPort (31, ENetworkProtocol.UDP, "msg-auth", "MSG Authentication");
+  public static final INetworkPort TCP_33_dsp = _registerPort (33, ENetworkProtocol.TCP, "dsp", "Display Support Protocol");
+  public static final INetworkPort UDP_33_dsp = _registerPort (33, ENetworkProtocol.UDP, "dsp", "Display Support Protocol");
   public static final INetworkPort TCP_35 = _registerPort (35, ENetworkProtocol.TCP, "", "any private printer server");
   public static final INetworkPort UDP_35 = _registerPort (35, ENetworkProtocol.UDP, "", "any private printer server");
   public static final INetworkPort TCP_37_time = _registerPort (37, ENetworkProtocol.TCP, "time", "Time");
   public static final INetworkPort UDP_37_time = _registerPort (37, ENetworkProtocol.UDP, "time", "Time");
-  public static final INetworkPort TCP_38_rap = _registerPort (38,
-                                                               ENetworkProtocol.TCP,
-                                                               "rap",
-                                                               "Route Access Protocol");
-  public static final INetworkPort UDP_38_rap = _registerPort (38,
-                                                               ENetworkProtocol.UDP,
-                                                               "rap",
-                                                               "Route Access Protocol");
-  public static final INetworkPort TCP_39_rlp = _registerPort (39,
-                                                               ENetworkProtocol.TCP,
-                                                               "rlp",
-                                                               "Resource Location Protocol");
-  public static final INetworkPort UDP_39_rlp = _registerPort (39,
-                                                               ENetworkProtocol.UDP,
-                                                               "rlp",
-                                                               "Resource Location Protocol");
+  public static final INetworkPort TCP_38_rap = _registerPort (38, ENetworkProtocol.TCP, "rap", "Route Access Protocol");
+  public static final INetworkPort UDP_38_rap = _registerPort (38, ENetworkProtocol.UDP, "rap", "Route Access Protocol");
+  public static final INetworkPort TCP_39_rlp = _registerPort (39, ENetworkProtocol.TCP, "rlp", "Resource Location Protocol");
+  public static final INetworkPort UDP_39_rlp = _registerPort (39, ENetworkProtocol.UDP, "rlp", "Resource Location Protocol");
   public static final INetworkPort TCP_41_graphics = _registerPort (41, ENetworkProtocol.TCP, "graphics", "Graphics");
   public static final INetworkPort UDP_41_graphics = _registerPort (41, ENetworkProtocol.UDP, "graphics", "Graphics");
   public static final INetworkPort TCP_42_name = _registerPort (42, ENetworkProtocol.TCP, "name", "Host Name Server");
   public static final INetworkPort UDP_42_name = _registerPort (42, ENetworkProtocol.UDP, "name", "Host Name Server");
-  public static final INetworkPort TCP_42_nameserver = _registerPort (42,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "nameserver",
-                                                                      "Host Name Server");
-  public static final INetworkPort UDP_42_nameserver = _registerPort (42,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "nameserver",
-                                                                      "Host Name Server");
+  public static final INetworkPort TCP_42_nameserver = _registerPort (42, ENetworkProtocol.TCP, "nameserver", "Host Name Server");
+  public static final INetworkPort UDP_42_nameserver = _registerPort (42, ENetworkProtocol.UDP, "nameserver", "Host Name Server");
   public static final INetworkPort TCP_43_nicname = _registerPort (43, ENetworkProtocol.TCP, "nicname", "Who Is");
   public static final INetworkPort UDP_43_nicname = _registerPort (43, ENetworkProtocol.UDP, "nicname", "Who Is");
-  public static final INetworkPort TCP_44_mpm_flags = _registerPort (44,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "mpm-flags",
-                                                                     "MPM FLAGS Protocol");
-  public static final INetworkPort UDP_44_mpm_flags = _registerPort (44,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "mpm-flags",
-                                                                     "MPM FLAGS Protocol");
-  public static final INetworkPort TCP_45_mpm = _registerPort (45,
-                                                               ENetworkProtocol.TCP,
-                                                               "mpm",
-                                                               "Message Processing Module [recv]");
-  public static final INetworkPort UDP_45_mpm = _registerPort (45,
-                                                               ENetworkProtocol.UDP,
-                                                               "mpm",
-                                                               "Message Processing Module [recv]");
-  public static final INetworkPort TCP_46_mpm_snd = _registerPort (46,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "mpm-snd",
-                                                                   "MPM [default send]");
-  public static final INetworkPort UDP_46_mpm_snd = _registerPort (46,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "mpm-snd",
-                                                                   "MPM [default send]");
+  public static final INetworkPort TCP_44_mpm_flags = _registerPort (44, ENetworkProtocol.TCP, "mpm-flags", "MPM FLAGS Protocol");
+  public static final INetworkPort UDP_44_mpm_flags = _registerPort (44, ENetworkProtocol.UDP, "mpm-flags", "MPM FLAGS Protocol");
+  public static final INetworkPort TCP_45_mpm = _registerPort (45, ENetworkProtocol.TCP, "mpm", "Message Processing Module [recv]");
+  public static final INetworkPort UDP_45_mpm = _registerPort (45, ENetworkProtocol.UDP, "mpm", "Message Processing Module [recv]");
+  public static final INetworkPort TCP_46_mpm_snd = _registerPort (46, ENetworkProtocol.TCP, "mpm-snd", "MPM [default send]");
+  public static final INetworkPort UDP_46_mpm_snd = _registerPort (46, ENetworkProtocol.UDP, "mpm-snd", "MPM [default send]");
   public static final INetworkPort TCP_47 = _registerPort (47, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_47 = _registerPort (47, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort TCP_48_auditd = _registerPort (48,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "auditd",
-                                                                  "Digital Audit Daemon");
-  public static final INetworkPort UDP_48_auditd = _registerPort (48,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "auditd",
-                                                                  "Digital Audit Daemon");
-  public static final INetworkPort TCP_49_tacacs = _registerPort (49,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "tacacs",
-                                                                  "Login Host Protocol (TACACS)");
-  public static final INetworkPort UDP_49_tacacs = _registerPort (49,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "tacacs",
-                                                                  "Login Host Protocol (TACACS)");
+  public static final INetworkPort TCP_48_auditd = _registerPort (48, ENetworkProtocol.TCP, "auditd", "Digital Audit Daemon");
+  public static final INetworkPort UDP_48_auditd = _registerPort (48, ENetworkProtocol.UDP, "auditd", "Digital Audit Daemon");
+  public static final INetworkPort TCP_49_tacacs = _registerPort (49, ENetworkProtocol.TCP, "tacacs", "Login Host Protocol (TACACS)");
+  public static final INetworkPort UDP_49_tacacs = _registerPort (49, ENetworkProtocol.UDP, "tacacs", "Login Host Protocol (TACACS)");
   public static final INetworkPort TCP_50_re_mail_ck = _registerPort (50,
                                                                       ENetworkProtocol.TCP,
                                                                       "re-mail-ck",
@@ -243,46 +123,16 @@ public final class DefaultNetworkPorts
                                                                       ENetworkProtocol.UDP,
                                                                       "re-mail-ck",
                                                                       "Remote Mail Checking Protocol");
-  public static final INetworkPort TCP_52_xns_time = _registerPort (52,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "xns-time",
-                                                                    "XNS Time Protocol");
-  public static final INetworkPort UDP_52_xns_time = _registerPort (52,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "xns-time",
-                                                                    "XNS Time Protocol");
-  public static final INetworkPort TCP_53_domain = _registerPort (53,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "domain",
-                                                                  "Domain Name Server");
-  public static final INetworkPort UDP_53_domain = _registerPort (53,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "domain",
-                                                                  "Domain Name Server");
-  public static final INetworkPort TCP_54_xns_ch = _registerPort (54,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "xns-ch",
-                                                                  "XNS Clearinghouse");
-  public static final INetworkPort UDP_54_xns_ch = _registerPort (54,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "xns-ch",
-                                                                  "XNS Clearinghouse");
-  public static final INetworkPort TCP_55_isi_gl = _registerPort (55,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "isi-gl",
-                                                                  "ISI Graphics Language");
-  public static final INetworkPort UDP_55_isi_gl = _registerPort (55,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "isi-gl",
-                                                                  "ISI Graphics Language");
-  public static final INetworkPort TCP_56_xns_auth = _registerPort (56,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "xns-auth",
-                                                                    "XNS Authentication");
-  public static final INetworkPort UDP_56_xns_auth = _registerPort (56,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "xns-auth",
-                                                                    "XNS Authentication");
+  public static final INetworkPort TCP_52_xns_time = _registerPort (52, ENetworkProtocol.TCP, "xns-time", "XNS Time Protocol");
+  public static final INetworkPort UDP_52_xns_time = _registerPort (52, ENetworkProtocol.UDP, "xns-time", "XNS Time Protocol");
+  public static final INetworkPort TCP_53_domain = _registerPort (53, ENetworkProtocol.TCP, "domain", "Domain Name Server");
+  public static final INetworkPort UDP_53_domain = _registerPort (53, ENetworkProtocol.UDP, "domain", "Domain Name Server");
+  public static final INetworkPort TCP_54_xns_ch = _registerPort (54, ENetworkProtocol.TCP, "xns-ch", "XNS Clearinghouse");
+  public static final INetworkPort UDP_54_xns_ch = _registerPort (54, ENetworkProtocol.UDP, "xns-ch", "XNS Clearinghouse");
+  public static final INetworkPort TCP_55_isi_gl = _registerPort (55, ENetworkProtocol.TCP, "isi-gl", "ISI Graphics Language");
+  public static final INetworkPort UDP_55_isi_gl = _registerPort (55, ENetworkProtocol.UDP, "isi-gl", "ISI Graphics Language");
+  public static final INetworkPort TCP_56_xns_auth = _registerPort (56, ENetworkProtocol.TCP, "xns-auth", "XNS Authentication");
+  public static final INetworkPort UDP_56_xns_auth = _registerPort (56, ENetworkProtocol.UDP, "xns-auth", "XNS Authentication");
   public static final INetworkPort TCP_57 = _registerPort (57, ENetworkProtocol.TCP, "", "any private terminal access");
   public static final INetworkPort UDP_57 = _registerPort (57, ENetworkProtocol.UDP, "", "any private terminal access");
   public static final INetworkPort TCP_58_xns_mail = _registerPort (58, ENetworkProtocol.TCP, "xns-mail", "XNS Mail");
@@ -295,224 +145,74 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_62_acas = _registerPort (62, ENetworkProtocol.UDP, "acas", "ACA Services");
   public static final INetworkPort TCP_63_whois__ = _registerPort (63, ENetworkProtocol.TCP, "whois++", "whois++");
   public static final INetworkPort UDP_63_whois__ = _registerPort (63, ENetworkProtocol.UDP, "whois++", "whois++");
-  public static final INetworkPort TCP_64_covia = _registerPort (64,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "covia",
-                                                                 "Communications Integrator (CI)");
-  public static final INetworkPort UDP_64_covia = _registerPort (64,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "covia",
-                                                                 "Communications Integrator (CI)");
-  public static final INetworkPort TCP_65_tacacs_ds = _registerPort (65,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "tacacs-ds",
-                                                                     "TACACS-Database Service");
-  public static final INetworkPort UDP_65_tacacs_ds = _registerPort (65,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "tacacs-ds",
-                                                                     "TACACS-Database Service");
-  public static final INetworkPort TCP_66_sql_net = _registerPort (66,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "sql*net",
-                                                                   "Oracle SQL*NET");
-  public static final INetworkPort UDP_66_sql_net = _registerPort (66,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "sql*net",
-                                                                   "Oracle SQL*NET");
-  public static final INetworkPort TCP_67_bootps = _registerPort (67,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "bootps",
-                                                                  "Bootstrap Protocol Server");
-  public static final INetworkPort UDP_67_bootps = _registerPort (67,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "bootps",
-                                                                  "Bootstrap Protocol Server");
-  public static final INetworkPort TCP_68_bootpc = _registerPort (68,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "bootpc",
-                                                                  "Bootstrap Protocol Client");
-  public static final INetworkPort UDP_68_bootpc = _registerPort (68,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "bootpc",
-                                                                  "Bootstrap Protocol Client");
-  public static final INetworkPort TCP_69_tftp = _registerPort (69,
-                                                                ENetworkProtocol.TCP,
-                                                                "tftp",
-                                                                "Trivial File Transfer");
-  public static final INetworkPort UDP_69_tftp = _registerPort (69,
-                                                                ENetworkProtocol.UDP,
-                                                                "tftp",
-                                                                "Trivial File Transfer");
+  public static final INetworkPort TCP_64_covia = _registerPort (64, ENetworkProtocol.TCP, "covia", "Communications Integrator (CI)");
+  public static final INetworkPort UDP_64_covia = _registerPort (64, ENetworkProtocol.UDP, "covia", "Communications Integrator (CI)");
+  public static final INetworkPort TCP_65_tacacs_ds = _registerPort (65, ENetworkProtocol.TCP, "tacacs-ds", "TACACS-Database Service");
+  public static final INetworkPort UDP_65_tacacs_ds = _registerPort (65, ENetworkProtocol.UDP, "tacacs-ds", "TACACS-Database Service");
+  public static final INetworkPort TCP_66_sql_net = _registerPort (66, ENetworkProtocol.TCP, "sql*net", "Oracle SQL*NET");
+  public static final INetworkPort UDP_66_sql_net = _registerPort (66, ENetworkProtocol.UDP, "sql*net", "Oracle SQL*NET");
+  public static final INetworkPort TCP_67_bootps = _registerPort (67, ENetworkProtocol.TCP, "bootps", "Bootstrap Protocol Server");
+  public static final INetworkPort UDP_67_bootps = _registerPort (67, ENetworkProtocol.UDP, "bootps", "Bootstrap Protocol Server");
+  public static final INetworkPort TCP_68_bootpc = _registerPort (68, ENetworkProtocol.TCP, "bootpc", "Bootstrap Protocol Client");
+  public static final INetworkPort UDP_68_bootpc = _registerPort (68, ENetworkProtocol.UDP, "bootpc", "Bootstrap Protocol Client");
+  public static final INetworkPort TCP_69_tftp = _registerPort (69, ENetworkProtocol.TCP, "tftp", "Trivial File Transfer");
+  public static final INetworkPort UDP_69_tftp = _registerPort (69, ENetworkProtocol.UDP, "tftp", "Trivial File Transfer");
   public static final INetworkPort TCP_70_gopher = _registerPort (70, ENetworkProtocol.TCP, "gopher", "Gopher");
   public static final INetworkPort UDP_70_gopher = _registerPort (70, ENetworkProtocol.UDP, "gopher", "Gopher");
-  public static final INetworkPort TCP_71_netrjs_1 = _registerPort (71,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "netrjs-1",
-                                                                    "Remote Job Service");
-  public static final INetworkPort UDP_71_netrjs_1 = _registerPort (71,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "netrjs-1",
-                                                                    "Remote Job Service");
-  public static final INetworkPort TCP_72_netrjs_2 = _registerPort (72,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "netrjs-2",
-                                                                    "Remote Job Service");
-  public static final INetworkPort UDP_72_netrjs_2 = _registerPort (72,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "netrjs-2",
-                                                                    "Remote Job Service");
-  public static final INetworkPort TCP_73_netrjs_3 = _registerPort (73,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "netrjs-3",
-                                                                    "Remote Job Service");
-  public static final INetworkPort UDP_73_netrjs_3 = _registerPort (73,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "netrjs-3",
-                                                                    "Remote Job Service");
-  public static final INetworkPort TCP_74_netrjs_4 = _registerPort (74,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "netrjs-4",
-                                                                    "Remote Job Service");
-  public static final INetworkPort UDP_74_netrjs_4 = _registerPort (74,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "netrjs-4",
-                                                                    "Remote Job Service");
-  public static final INetworkPort TCP_75 = _registerPort (75,
-                                                           ENetworkProtocol.TCP,
-                                                           "",
-                                                           "any private dial out service");
-  public static final INetworkPort UDP_75 = _registerPort (75,
-                                                           ENetworkProtocol.UDP,
-                                                           "",
-                                                           "any private dial out service");
-  public static final INetworkPort TCP_76_deos = _registerPort (76,
-                                                                ENetworkProtocol.TCP,
-                                                                "deos",
-                                                                "Distributed External Object Store");
-  public static final INetworkPort UDP_76_deos = _registerPort (76,
-                                                                ENetworkProtocol.UDP,
-                                                                "deos",
-                                                                "Distributed External Object Store");
+  public static final INetworkPort TCP_71_netrjs_1 = _registerPort (71, ENetworkProtocol.TCP, "netrjs-1", "Remote Job Service");
+  public static final INetworkPort UDP_71_netrjs_1 = _registerPort (71, ENetworkProtocol.UDP, "netrjs-1", "Remote Job Service");
+  public static final INetworkPort TCP_72_netrjs_2 = _registerPort (72, ENetworkProtocol.TCP, "netrjs-2", "Remote Job Service");
+  public static final INetworkPort UDP_72_netrjs_2 = _registerPort (72, ENetworkProtocol.UDP, "netrjs-2", "Remote Job Service");
+  public static final INetworkPort TCP_73_netrjs_3 = _registerPort (73, ENetworkProtocol.TCP, "netrjs-3", "Remote Job Service");
+  public static final INetworkPort UDP_73_netrjs_3 = _registerPort (73, ENetworkProtocol.UDP, "netrjs-3", "Remote Job Service");
+  public static final INetworkPort TCP_74_netrjs_4 = _registerPort (74, ENetworkProtocol.TCP, "netrjs-4", "Remote Job Service");
+  public static final INetworkPort UDP_74_netrjs_4 = _registerPort (74, ENetworkProtocol.UDP, "netrjs-4", "Remote Job Service");
+  public static final INetworkPort TCP_75 = _registerPort (75, ENetworkProtocol.TCP, "", "any private dial out service");
+  public static final INetworkPort UDP_75 = _registerPort (75, ENetworkProtocol.UDP, "", "any private dial out service");
+  public static final INetworkPort TCP_76_deos = _registerPort (76, ENetworkProtocol.TCP, "deos", "Distributed External Object Store");
+  public static final INetworkPort UDP_76_deos = _registerPort (76, ENetworkProtocol.UDP, "deos", "Distributed External Object Store");
   public static final INetworkPort TCP_77 = _registerPort (77, ENetworkProtocol.TCP, "", "any private RJE service");
   public static final INetworkPort UDP_77 = _registerPort (77, ENetworkProtocol.UDP, "", "any private RJE service");
   public static final INetworkPort TCP_78_vettcp = _registerPort (78, ENetworkProtocol.TCP, "vettcp", "vettcp");
   public static final INetworkPort UDP_78_vettcp = _registerPort (78, ENetworkProtocol.UDP, "vettcp", "vettcp");
   public static final INetworkPort TCP_79_finger = _registerPort (79, ENetworkProtocol.TCP, "finger", "Finger");
   public static final INetworkPort UDP_79_finger = _registerPort (79, ENetworkProtocol.UDP, "finger", "Finger");
-  public static final INetworkPort TCP_80_http = _registerPort (80,
-                                                                ENetworkProtocol.TCP,
-                                                                "http",
-                                                                "World Wide Web HTTP");
-  public static final INetworkPort UDP_80_http = _registerPort (80,
-                                                                ENetworkProtocol.UDP,
-                                                                "http",
-                                                                "World Wide Web HTTP");
+  public static final INetworkPort TCP_80_http = _registerPort (80, ENetworkProtocol.TCP, "http", "World Wide Web HTTP");
+  public static final INetworkPort UDP_80_http = _registerPort (80, ENetworkProtocol.UDP, "http", "World Wide Web HTTP");
   public static final INetworkPort TCP_80_www = _registerPort (80, ENetworkProtocol.TCP, "www", "World Wide Web HTTP");
   public static final INetworkPort UDP_80_www = _registerPort (80, ENetworkProtocol.UDP, "www", "World Wide Web HTTP");
-  public static final INetworkPort TCP_80_www_http = _registerPort (80,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "www-http",
-                                                                    "World Wide Web HTTP");
-  public static final INetworkPort UDP_80_www_http = _registerPort (80,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "www-http",
-                                                                    "World Wide Web HTTP");
+  public static final INetworkPort TCP_80_www_http = _registerPort (80, ENetworkProtocol.TCP, "www-http", "World Wide Web HTTP");
+  public static final INetworkPort UDP_80_www_http = _registerPort (80, ENetworkProtocol.UDP, "www-http", "World Wide Web HTTP");
   public static final INetworkPort TCP_82_xfer = _registerPort (82, ENetworkProtocol.TCP, "xfer", "XFER Utility");
   public static final INetworkPort UDP_82_xfer = _registerPort (82, ENetworkProtocol.UDP, "xfer", "XFER Utility");
-  public static final INetworkPort TCP_83_mit_ml_dev = _registerPort (83,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "mit-ml-dev",
-                                                                      "MIT ML Device");
-  public static final INetworkPort UDP_83_mit_ml_dev = _registerPort (83,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "mit-ml-dev",
-                                                                      "MIT ML Device");
-  public static final INetworkPort TCP_84_ctf = _registerPort (84,
-                                                               ENetworkProtocol.TCP,
-                                                               "ctf",
-                                                               "Common Trace Facility");
-  public static final INetworkPort UDP_84_ctf = _registerPort (84,
-                                                               ENetworkProtocol.UDP,
-                                                               "ctf",
-                                                               "Common Trace Facility");
-  public static final INetworkPort TCP_85_mit_ml_dev = _registerPort (85,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "mit-ml-dev",
-                                                                      "MIT ML Device");
-  public static final INetworkPort UDP_85_mit_ml_dev = _registerPort (85,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "mit-ml-dev",
-                                                                      "MIT ML Device");
-  public static final INetworkPort TCP_86_mfcobol = _registerPort (86,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "mfcobol",
-                                                                   "Micro Focus Cobol");
-  public static final INetworkPort UDP_86_mfcobol = _registerPort (86,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "mfcobol",
-                                                                   "Micro Focus Cobol");
+  public static final INetworkPort TCP_83_mit_ml_dev = _registerPort (83, ENetworkProtocol.TCP, "mit-ml-dev", "MIT ML Device");
+  public static final INetworkPort UDP_83_mit_ml_dev = _registerPort (83, ENetworkProtocol.UDP, "mit-ml-dev", "MIT ML Device");
+  public static final INetworkPort TCP_84_ctf = _registerPort (84, ENetworkProtocol.TCP, "ctf", "Common Trace Facility");
+  public static final INetworkPort UDP_84_ctf = _registerPort (84, ENetworkProtocol.UDP, "ctf", "Common Trace Facility");
+  public static final INetworkPort TCP_85_mit_ml_dev = _registerPort (85, ENetworkProtocol.TCP, "mit-ml-dev", "MIT ML Device");
+  public static final INetworkPort UDP_85_mit_ml_dev = _registerPort (85, ENetworkProtocol.UDP, "mit-ml-dev", "MIT ML Device");
+  public static final INetworkPort TCP_86_mfcobol = _registerPort (86, ENetworkProtocol.TCP, "mfcobol", "Micro Focus Cobol");
+  public static final INetworkPort UDP_86_mfcobol = _registerPort (86, ENetworkProtocol.UDP, "mfcobol", "Micro Focus Cobol");
   public static final INetworkPort TCP_87 = _registerPort (87, ENetworkProtocol.TCP, "", "any private terminal link");
   public static final INetworkPort UDP_87 = _registerPort (87, ENetworkProtocol.UDP, "", "any private terminal link");
   public static final INetworkPort TCP_88_kerberos = _registerPort (88, ENetworkProtocol.TCP, "kerberos", "Kerberos");
   public static final INetworkPort UDP_88_kerberos = _registerPort (88, ENetworkProtocol.UDP, "kerberos", "Kerberos");
-  public static final INetworkPort TCP_89_su_mit_tg = _registerPort (89,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "su-mit-tg",
-                                                                     "SU/MIT Telnet Gateway");
-  public static final INetworkPort UDP_89_su_mit_tg = _registerPort (89,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "su-mit-tg",
-                                                                     "SU/MIT Telnet Gateway");
-  public static final INetworkPort TCP_90_dnsix = _registerPort (90,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "dnsix",
-                                                                 "DNSIX Securit Attribute Token Map");
-  public static final INetworkPort UDP_90_dnsix = _registerPort (90,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "dnsix",
-                                                                 "DNSIX Securit Attribute Token Map");
-  public static final INetworkPort TCP_91_mit_dov = _registerPort (91,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "mit-dov",
-                                                                   "MIT Dover Spooler");
-  public static final INetworkPort UDP_91_mit_dov = _registerPort (91,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "mit-dov",
-                                                                   "MIT Dover Spooler");
-  public static final INetworkPort TCP_92_npp = _registerPort (92,
-                                                               ENetworkProtocol.TCP,
-                                                               "npp",
-                                                               "Network Printing Protocol");
-  public static final INetworkPort UDP_92_npp = _registerPort (92,
-                                                               ENetworkProtocol.UDP,
-                                                               "npp",
-                                                               "Network Printing Protocol");
-  public static final INetworkPort TCP_93_dcp = _registerPort (93,
-                                                               ENetworkProtocol.TCP,
-                                                               "dcp",
-                                                               "Device Control Protocol");
-  public static final INetworkPort UDP_93_dcp = _registerPort (93,
-                                                               ENetworkProtocol.UDP,
-                                                               "dcp",
-                                                               "Device Control Protocol");
-  public static final INetworkPort TCP_94_objcall = _registerPort (94,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "objcall",
-                                                                   "Tivoli Object Dispatcher");
-  public static final INetworkPort UDP_94_objcall = _registerPort (94,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "objcall",
-                                                                   "Tivoli Object Dispatcher");
+  public static final INetworkPort TCP_89_su_mit_tg = _registerPort (89, ENetworkProtocol.TCP, "su-mit-tg", "SU/MIT Telnet Gateway");
+  public static final INetworkPort UDP_89_su_mit_tg = _registerPort (89, ENetworkProtocol.UDP, "su-mit-tg", "SU/MIT Telnet Gateway");
+  public static final INetworkPort TCP_90_dnsix = _registerPort (90, ENetworkProtocol.TCP, "dnsix", "DNSIX Securit Attribute Token Map");
+  public static final INetworkPort UDP_90_dnsix = _registerPort (90, ENetworkProtocol.UDP, "dnsix", "DNSIX Securit Attribute Token Map");
+  public static final INetworkPort TCP_91_mit_dov = _registerPort (91, ENetworkProtocol.TCP, "mit-dov", "MIT Dover Spooler");
+  public static final INetworkPort UDP_91_mit_dov = _registerPort (91, ENetworkProtocol.UDP, "mit-dov", "MIT Dover Spooler");
+  public static final INetworkPort TCP_92_npp = _registerPort (92, ENetworkProtocol.TCP, "npp", "Network Printing Protocol");
+  public static final INetworkPort UDP_92_npp = _registerPort (92, ENetworkProtocol.UDP, "npp", "Network Printing Protocol");
+  public static final INetworkPort TCP_93_dcp = _registerPort (93, ENetworkProtocol.TCP, "dcp", "Device Control Protocol");
+  public static final INetworkPort UDP_93_dcp = _registerPort (93, ENetworkProtocol.UDP, "dcp", "Device Control Protocol");
+  public static final INetworkPort TCP_94_objcall = _registerPort (94, ENetworkProtocol.TCP, "objcall", "Tivoli Object Dispatcher");
+  public static final INetworkPort UDP_94_objcall = _registerPort (94, ENetworkProtocol.UDP, "objcall", "Tivoli Object Dispatcher");
   public static final INetworkPort TCP_95_supdup = _registerPort (95, ENetworkProtocol.TCP, "supdup", "SUPDUP");
   public static final INetworkPort UDP_95_supdup = _registerPort (95, ENetworkProtocol.UDP, "supdup", "SUPDUP");
-  public static final INetworkPort TCP_96_dixie = _registerPort (96,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "dixie",
-                                                                 "DIXIE Protocol Specification");
-  public static final INetworkPort UDP_96_dixie = _registerPort (96,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "dixie",
-                                                                 "DIXIE Protocol Specification");
+  public static final INetworkPort TCP_96_dixie = _registerPort (96, ENetworkProtocol.TCP, "dixie", "DIXIE Protocol Specification");
+  public static final INetworkPort UDP_96_dixie = _registerPort (96, ENetworkProtocol.UDP, "dixie", "DIXIE Protocol Specification");
   public static final INetworkPort TCP_97_swift_rvf = _registerPort (97,
                                                                      ENetworkProtocol.TCP,
                                                                      "swift-rvf",
@@ -523,30 +223,12 @@ public final class DefaultNetworkPorts
                                                                      "Swift Remote Virtural File Protocol");
   public static final INetworkPort TCP_98_tacnews = _registerPort (98, ENetworkProtocol.TCP, "tacnews", "TAC News");
   public static final INetworkPort UDP_98_tacnews = _registerPort (98, ENetworkProtocol.UDP, "tacnews", "TAC News");
-  public static final INetworkPort TCP_99_metagram = _registerPort (99,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "metagram",
-                                                                    "Metagram Relay");
-  public static final INetworkPort UDP_99_metagram = _registerPort (99,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "metagram",
-                                                                    "Metagram Relay");
-  public static final INetworkPort TCP_101_hostname = _registerPort (101,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "hostname",
-                                                                     "NIC Host Name Server");
-  public static final INetworkPort UDP_101_hostname = _registerPort (101,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "hostname",
-                                                                     "NIC Host Name Server");
-  public static final INetworkPort TCP_102_iso_tsap = _registerPort (102,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "iso-tsap",
-                                                                     "ISO-TSAP Class 0");
-  public static final INetworkPort UDP_102_iso_tsap = _registerPort (102,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "iso-tsap",
-                                                                     "ISO-TSAP Class 0");
+  public static final INetworkPort TCP_99_metagram = _registerPort (99, ENetworkProtocol.TCP, "metagram", "Metagram Relay");
+  public static final INetworkPort UDP_99_metagram = _registerPort (99, ENetworkProtocol.UDP, "metagram", "Metagram Relay");
+  public static final INetworkPort TCP_101_hostname = _registerPort (101, ENetworkProtocol.TCP, "hostname", "NIC Host Name Server");
+  public static final INetworkPort UDP_101_hostname = _registerPort (101, ENetworkProtocol.UDP, "hostname", "NIC Host Name Server");
+  public static final INetworkPort TCP_102_iso_tsap = _registerPort (102, ENetworkProtocol.TCP, "iso-tsap", "ISO-TSAP Class 0");
+  public static final INetworkPort UDP_102_iso_tsap = _registerPort (102, ENetworkProtocol.UDP, "iso-tsap", "ISO-TSAP Class 0");
   public static final INetworkPort TCP_103_gppitnp = _registerPort (103,
                                                                     ENetworkProtocol.TCP,
                                                                     "gppitnp",
@@ -563,70 +245,22 @@ public final class DefaultNetworkPorts
                                                                      ENetworkProtocol.UDP,
                                                                      "acr-nema",
                                                                      "ACR-NEMA Digital Imag. & Comm. 300");
-  public static final INetworkPort TCP_105_cso = _registerPort (105,
-                                                                ENetworkProtocol.TCP,
-                                                                "cso",
-                                                                "CCSO name server protocol");
-  public static final INetworkPort UDP_105_cso = _registerPort (105,
-                                                                ENetworkProtocol.UDP,
-                                                                "cso",
-                                                                "CCSO name server protocol");
-  public static final INetworkPort TCP_105_csnet_ns = _registerPort (105,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "csnet-ns",
-                                                                     "Mailbox Name Nameserver");
-  public static final INetworkPort UDP_105_csnet_ns = _registerPort (105,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "csnet-ns",
-                                                                     "Mailbox Name Nameserver");
-  public static final INetworkPort TCP_106__com_tsmux = _registerPort (106,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "3com-tsmux",
-                                                                       "3COM-TSMUX");
-  public static final INetworkPort UDP_106__com_tsmux = _registerPort (106,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "3com-tsmux",
-                                                                       "3COM-TSMUX");
-  public static final INetworkPort TCP_107_rtelnet = _registerPort (107,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "rtelnet",
-                                                                    "Remote Telnet Service");
-  public static final INetworkPort UDP_107_rtelnet = _registerPort (107,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "rtelnet",
-                                                                    "Remote Telnet Service");
-  public static final INetworkPort TCP_108_snagas = _registerPort (108,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "snagas",
-                                                                   "SNA Gateway Access Server");
-  public static final INetworkPort UDP_108_snagas = _registerPort (108,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "snagas",
-                                                                   "SNA Gateway Access Server");
-  public static final INetworkPort TCP_109_pop2 = _registerPort (109,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "pop2",
-                                                                 "Post Office Protocol - Version 2");
-  public static final INetworkPort UDP_109_pop2 = _registerPort (109,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "pop2",
-                                                                 "Post Office Protocol - Version 2");
-  public static final INetworkPort TCP_110_pop3 = _registerPort (110,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "pop3",
-                                                                 "Post Office Protocol - Version 3");
-  public static final INetworkPort UDP_110_pop3 = _registerPort (110,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "pop3",
-                                                                 "Post Office Protocol - Version 3");
-  public static final INetworkPort TCP_111_sunrpc = _registerPort (111,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "sunrpc",
-                                                                   "SUN Remote Procedure Call");
-  public static final INetworkPort UDP_111_sunrpc = _registerPort (111,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "sunrpc",
-                                                                   "SUN Remote Procedure Call");
+  public static final INetworkPort TCP_105_cso = _registerPort (105, ENetworkProtocol.TCP, "cso", "CCSO name server protocol");
+  public static final INetworkPort UDP_105_cso = _registerPort (105, ENetworkProtocol.UDP, "cso", "CCSO name server protocol");
+  public static final INetworkPort TCP_105_csnet_ns = _registerPort (105, ENetworkProtocol.TCP, "csnet-ns", "Mailbox Name Nameserver");
+  public static final INetworkPort UDP_105_csnet_ns = _registerPort (105, ENetworkProtocol.UDP, "csnet-ns", "Mailbox Name Nameserver");
+  public static final INetworkPort TCP_106__com_tsmux = _registerPort (106, ENetworkProtocol.TCP, "3com-tsmux", "3COM-TSMUX");
+  public static final INetworkPort UDP_106__com_tsmux = _registerPort (106, ENetworkProtocol.UDP, "3com-tsmux", "3COM-TSMUX");
+  public static final INetworkPort TCP_107_rtelnet = _registerPort (107, ENetworkProtocol.TCP, "rtelnet", "Remote Telnet Service");
+  public static final INetworkPort UDP_107_rtelnet = _registerPort (107, ENetworkProtocol.UDP, "rtelnet", "Remote Telnet Service");
+  public static final INetworkPort TCP_108_snagas = _registerPort (108, ENetworkProtocol.TCP, "snagas", "SNA Gateway Access Server");
+  public static final INetworkPort UDP_108_snagas = _registerPort (108, ENetworkProtocol.UDP, "snagas", "SNA Gateway Access Server");
+  public static final INetworkPort TCP_109_pop2 = _registerPort (109, ENetworkProtocol.TCP, "pop2", "Post Office Protocol - Version 2");
+  public static final INetworkPort UDP_109_pop2 = _registerPort (109, ENetworkProtocol.UDP, "pop2", "Post Office Protocol - Version 2");
+  public static final INetworkPort TCP_110_pop3 = _registerPort (110, ENetworkProtocol.TCP, "pop3", "Post Office Protocol - Version 3");
+  public static final INetworkPort UDP_110_pop3 = _registerPort (110, ENetworkProtocol.UDP, "pop3", "Post Office Protocol - Version 3");
+  public static final INetworkPort TCP_111_sunrpc = _registerPort (111, ENetworkProtocol.TCP, "sunrpc", "SUN Remote Procedure Call");
+  public static final INetworkPort UDP_111_sunrpc = _registerPort (111, ENetworkProtocol.UDP, "sunrpc", "SUN Remote Procedure Call");
   public static final INetworkPort TCP_112_mcidas = _registerPort (112,
                                                                    ENetworkProtocol.TCP,
                                                                    "mcidas",
@@ -636,82 +270,28 @@ public final class DefaultNetworkPorts
                                                                    "mcidas",
                                                                    "McIDAS Data Transmission Protocol");
   public static final INetworkPort TCP_113_ident = _registerPort (113, ENetworkProtocol.TCP, "ident", "");
-  public static final INetworkPort TCP_113_auth = _registerPort (113,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "auth",
-                                                                 "Authentication Service");
-  public static final INetworkPort UDP_113_auth = _registerPort (113,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "auth",
-                                                                 "Authentication Service");
-  public static final INetworkPort TCP_115_sftp = _registerPort (115,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "sftp",
-                                                                 "Simple File Transfer Protocol");
-  public static final INetworkPort UDP_115_sftp = _registerPort (115,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "sftp",
-                                                                 "Simple File Transfer Protocol");
-  public static final INetworkPort TCP_116_ansanotify = _registerPort (116,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "ansanotify",
-                                                                       "ANSA REX Notify");
-  public static final INetworkPort UDP_116_ansanotify = _registerPort (116,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "ansanotify",
-                                                                       "ANSA REX Notify");
-  public static final INetworkPort TCP_117_uucp_path = _registerPort (117,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "uucp-path",
-                                                                      "UUCP Path Service");
-  public static final INetworkPort UDP_117_uucp_path = _registerPort (117,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "uucp-path",
-                                                                      "UUCP Path Service");
-  public static final INetworkPort TCP_118_sqlserv = _registerPort (118,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "sqlserv",
-                                                                    "SQL Services");
-  public static final INetworkPort UDP_118_sqlserv = _registerPort (118,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "sqlserv",
-                                                                    "SQL Services");
-  public static final INetworkPort TCP_119_nntp = _registerPort (119,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "nntp",
-                                                                 "Network News Transfer Protocol");
-  public static final INetworkPort UDP_119_nntp = _registerPort (119,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "nntp",
-                                                                 "Network News Transfer Protocol");
+  public static final INetworkPort TCP_113_auth = _registerPort (113, ENetworkProtocol.TCP, "auth", "Authentication Service");
+  public static final INetworkPort UDP_113_auth = _registerPort (113, ENetworkProtocol.UDP, "auth", "Authentication Service");
+  public static final INetworkPort TCP_115_sftp = _registerPort (115, ENetworkProtocol.TCP, "sftp", "Simple File Transfer Protocol");
+  public static final INetworkPort UDP_115_sftp = _registerPort (115, ENetworkProtocol.UDP, "sftp", "Simple File Transfer Protocol");
+  public static final INetworkPort TCP_116_ansanotify = _registerPort (116, ENetworkProtocol.TCP, "ansanotify", "ANSA REX Notify");
+  public static final INetworkPort UDP_116_ansanotify = _registerPort (116, ENetworkProtocol.UDP, "ansanotify", "ANSA REX Notify");
+  public static final INetworkPort TCP_117_uucp_path = _registerPort (117, ENetworkProtocol.TCP, "uucp-path", "UUCP Path Service");
+  public static final INetworkPort UDP_117_uucp_path = _registerPort (117, ENetworkProtocol.UDP, "uucp-path", "UUCP Path Service");
+  public static final INetworkPort TCP_118_sqlserv = _registerPort (118, ENetworkProtocol.TCP, "sqlserv", "SQL Services");
+  public static final INetworkPort UDP_118_sqlserv = _registerPort (118, ENetworkProtocol.UDP, "sqlserv", "SQL Services");
+  public static final INetworkPort TCP_119_nntp = _registerPort (119, ENetworkProtocol.TCP, "nntp", "Network News Transfer Protocol");
+  public static final INetworkPort UDP_119_nntp = _registerPort (119, ENetworkProtocol.UDP, "nntp", "Network News Transfer Protocol");
   public static final INetworkPort TCP_120_cfdptkt = _registerPort (120, ENetworkProtocol.TCP, "cfdptkt", "CFDPTKT");
   public static final INetworkPort UDP_120_cfdptkt = _registerPort (120, ENetworkProtocol.UDP, "cfdptkt", "CFDPTKT");
-  public static final INetworkPort TCP_121_erpc = _registerPort (121,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "erpc",
-                                                                 "Encore Expedited Remote Pro.Call");
-  public static final INetworkPort UDP_121_erpc = _registerPort (121,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "erpc",
-                                                                 "Encore Expedited Remote Pro.Call");
+  public static final INetworkPort TCP_121_erpc = _registerPort (121, ENetworkProtocol.TCP, "erpc", "Encore Expedited Remote Pro.Call");
+  public static final INetworkPort UDP_121_erpc = _registerPort (121, ENetworkProtocol.UDP, "erpc", "Encore Expedited Remote Pro.Call");
   public static final INetworkPort TCP_122_smakynet = _registerPort (122, ENetworkProtocol.TCP, "smakynet", "SMAKYNET");
   public static final INetworkPort UDP_122_smakynet = _registerPort (122, ENetworkProtocol.UDP, "smakynet", "SMAKYNET");
-  public static final INetworkPort TCP_123_ntp = _registerPort (123,
-                                                                ENetworkProtocol.TCP,
-                                                                "ntp",
-                                                                "Network Time Protocol");
-  public static final INetworkPort UDP_123_ntp = _registerPort (123,
-                                                                ENetworkProtocol.UDP,
-                                                                "ntp",
-                                                                "Network Time Protocol");
-  public static final INetworkPort TCP_124_ansatrader = _registerPort (124,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "ansatrader",
-                                                                       "ANSA REX Trader");
-  public static final INetworkPort UDP_124_ansatrader = _registerPort (124,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "ansatrader",
-                                                                       "ANSA REX Trader");
+  public static final INetworkPort TCP_123_ntp = _registerPort (123, ENetworkProtocol.TCP, "ntp", "Network Time Protocol");
+  public static final INetworkPort UDP_123_ntp = _registerPort (123, ENetworkProtocol.UDP, "ntp", "Network Time Protocol");
+  public static final INetworkPort TCP_124_ansatrader = _registerPort (124, ENetworkProtocol.TCP, "ansatrader", "ANSA REX Trader");
+  public static final INetworkPort UDP_124_ansatrader = _registerPort (124, ENetworkProtocol.UDP, "ansatrader", "ANSA REX Trader");
   public static final INetworkPort TCP_125_locus_map = _registerPort (125,
                                                                       ENetworkProtocol.TCP,
                                                                       "locus-map",
@@ -738,78 +318,24 @@ public final class DefaultNetworkPorts
                                                                        ENetworkProtocol.UDP,
                                                                        "gss-xlicen",
                                                                        "GSS X License Verification");
-  public static final INetworkPort TCP_129_pwdgen = _registerPort (129,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "pwdgen",
-                                                                   "Password Generator Protocol");
-  public static final INetworkPort UDP_129_pwdgen = _registerPort (129,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "pwdgen",
-                                                                   "Password Generator Protocol");
-  public static final INetworkPort TCP_130_cisco_fna = _registerPort (130,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cisco-fna",
-                                                                      "cisco FNATIVE");
-  public static final INetworkPort UDP_130_cisco_fna = _registerPort (130,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cisco-fna",
-                                                                      "cisco FNATIVE");
-  public static final INetworkPort TCP_131_cisco_tna = _registerPort (131,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cisco-tna",
-                                                                      "cisco TNATIVE");
-  public static final INetworkPort UDP_131_cisco_tna = _registerPort (131,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cisco-tna",
-                                                                      "cisco TNATIVE");
-  public static final INetworkPort TCP_132_cisco_sys = _registerPort (132,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cisco-sys",
-                                                                      "cisco SYSMAINT");
-  public static final INetworkPort UDP_132_cisco_sys = _registerPort (132,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cisco-sys",
-                                                                      "cisco SYSMAINT");
-  public static final INetworkPort TCP_133_statsrv = _registerPort (133,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "statsrv",
-                                                                    "Statistics Service");
-  public static final INetworkPort UDP_133_statsrv = _registerPort (133,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "statsrv",
-                                                                    "Statistics Service");
-  public static final INetworkPort TCP_134_ingres_net = _registerPort (134,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "ingres-net",
-                                                                       "INGRES-NET Service");
-  public static final INetworkPort UDP_134_ingres_net = _registerPort (134,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "ingres-net",
-                                                                       "INGRES-NET Service");
-  public static final INetworkPort TCP_135_epmap = _registerPort (135,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "epmap",
-                                                                  "DCE endpoint resolution");
-  public static final INetworkPort UDP_135_epmap = _registerPort (135,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "epmap",
-                                                                  "DCE endpoint resolution");
-  public static final INetworkPort TCP_136_profile = _registerPort (136,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "profile",
-                                                                    "PROFILE Naming System");
-  public static final INetworkPort UDP_136_profile = _registerPort (136,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "profile",
-                                                                    "PROFILE Naming System");
-  public static final INetworkPort TCP_137_netbios_ns = _registerPort (137,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "netbios-ns",
-                                                                       "NETBIOS Name Service");
-  public static final INetworkPort UDP_137_netbios_ns = _registerPort (137,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "netbios-ns",
-                                                                       "NETBIOS Name Service");
+  public static final INetworkPort TCP_129_pwdgen = _registerPort (129, ENetworkProtocol.TCP, "pwdgen", "Password Generator Protocol");
+  public static final INetworkPort UDP_129_pwdgen = _registerPort (129, ENetworkProtocol.UDP, "pwdgen", "Password Generator Protocol");
+  public static final INetworkPort TCP_130_cisco_fna = _registerPort (130, ENetworkProtocol.TCP, "cisco-fna", "cisco FNATIVE");
+  public static final INetworkPort UDP_130_cisco_fna = _registerPort (130, ENetworkProtocol.UDP, "cisco-fna", "cisco FNATIVE");
+  public static final INetworkPort TCP_131_cisco_tna = _registerPort (131, ENetworkProtocol.TCP, "cisco-tna", "cisco TNATIVE");
+  public static final INetworkPort UDP_131_cisco_tna = _registerPort (131, ENetworkProtocol.UDP, "cisco-tna", "cisco TNATIVE");
+  public static final INetworkPort TCP_132_cisco_sys = _registerPort (132, ENetworkProtocol.TCP, "cisco-sys", "cisco SYSMAINT");
+  public static final INetworkPort UDP_132_cisco_sys = _registerPort (132, ENetworkProtocol.UDP, "cisco-sys", "cisco SYSMAINT");
+  public static final INetworkPort TCP_133_statsrv = _registerPort (133, ENetworkProtocol.TCP, "statsrv", "Statistics Service");
+  public static final INetworkPort UDP_133_statsrv = _registerPort (133, ENetworkProtocol.UDP, "statsrv", "Statistics Service");
+  public static final INetworkPort TCP_134_ingres_net = _registerPort (134, ENetworkProtocol.TCP, "ingres-net", "INGRES-NET Service");
+  public static final INetworkPort UDP_134_ingres_net = _registerPort (134, ENetworkProtocol.UDP, "ingres-net", "INGRES-NET Service");
+  public static final INetworkPort TCP_135_epmap = _registerPort (135, ENetworkProtocol.TCP, "epmap", "DCE endpoint resolution");
+  public static final INetworkPort UDP_135_epmap = _registerPort (135, ENetworkProtocol.UDP, "epmap", "DCE endpoint resolution");
+  public static final INetworkPort TCP_136_profile = _registerPort (136, ENetworkProtocol.TCP, "profile", "PROFILE Naming System");
+  public static final INetworkPort UDP_136_profile = _registerPort (136, ENetworkProtocol.UDP, "profile", "PROFILE Naming System");
+  public static final INetworkPort TCP_137_netbios_ns = _registerPort (137, ENetworkProtocol.TCP, "netbios-ns", "NETBIOS Name Service");
+  public static final INetworkPort UDP_137_netbios_ns = _registerPort (137, ENetworkProtocol.UDP, "netbios-ns", "NETBIOS Name Service");
   public static final INetworkPort TCP_138_netbios_dgm = _registerPort (138,
                                                                         ENetworkProtocol.TCP,
                                                                         "netbios-dgm",
@@ -826,46 +352,16 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "netbios-ssn",
                                                                         "NETBIOS Session Service");
-  public static final INetworkPort TCP_140_emfis_data = _registerPort (140,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "emfis-data",
-                                                                       "EMFIS Data Service");
-  public static final INetworkPort UDP_140_emfis_data = _registerPort (140,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "emfis-data",
-                                                                       "EMFIS Data Service");
-  public static final INetworkPort TCP_141_emfis_cntl = _registerPort (141,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "emfis-cntl",
-                                                                       "EMFIS Control Service");
-  public static final INetworkPort UDP_141_emfis_cntl = _registerPort (141,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "emfis-cntl",
-                                                                       "EMFIS Control Service");
-  public static final INetworkPort TCP_142_bl_idm = _registerPort (142,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "bl-idm",
-                                                                   "Britton-Lee IDM");
-  public static final INetworkPort UDP_142_bl_idm = _registerPort (142,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "bl-idm",
-                                                                   "Britton-Lee IDM");
-  public static final INetworkPort TCP_143_imap = _registerPort (143,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "imap",
-                                                                 "Internet Message Access Protocol");
-  public static final INetworkPort UDP_143_imap = _registerPort (143,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "imap",
-                                                                 "Internet Message Access Protocol");
-  public static final INetworkPort TCP_144_uma = _registerPort (144,
-                                                                ENetworkProtocol.TCP,
-                                                                "uma",
-                                                                "Universal Management Architecture");
-  public static final INetworkPort UDP_144_uma = _registerPort (144,
-                                                                ENetworkProtocol.UDP,
-                                                                "uma",
-                                                                "Universal Management Architecture");
+  public static final INetworkPort TCP_140_emfis_data = _registerPort (140, ENetworkProtocol.TCP, "emfis-data", "EMFIS Data Service");
+  public static final INetworkPort UDP_140_emfis_data = _registerPort (140, ENetworkProtocol.UDP, "emfis-data", "EMFIS Data Service");
+  public static final INetworkPort TCP_141_emfis_cntl = _registerPort (141, ENetworkProtocol.TCP, "emfis-cntl", "EMFIS Control Service");
+  public static final INetworkPort UDP_141_emfis_cntl = _registerPort (141, ENetworkProtocol.UDP, "emfis-cntl", "EMFIS Control Service");
+  public static final INetworkPort TCP_142_bl_idm = _registerPort (142, ENetworkProtocol.TCP, "bl-idm", "Britton-Lee IDM");
+  public static final INetworkPort UDP_142_bl_idm = _registerPort (142, ENetworkProtocol.UDP, "bl-idm", "Britton-Lee IDM");
+  public static final INetworkPort TCP_143_imap = _registerPort (143, ENetworkProtocol.TCP, "imap", "Internet Message Access Protocol");
+  public static final INetworkPort UDP_143_imap = _registerPort (143, ENetworkProtocol.UDP, "imap", "Internet Message Access Protocol");
+  public static final INetworkPort TCP_144_uma = _registerPort (144, ENetworkProtocol.TCP, "uma", "Universal Management Architecture");
+  public static final INetworkPort UDP_144_uma = _registerPort (144, ENetworkProtocol.UDP, "uma", "Universal Management Architecture");
   public static final INetworkPort TCP_145_uaac = _registerPort (145, ENetworkProtocol.TCP, "uaac", "UAAC Protocol");
   public static final INetworkPort UDP_145_uaac = _registerPort (145, ENetworkProtocol.UDP, "uaac", "UAAC Protocol");
   public static final INetworkPort TCP_146_iso_tp0 = _registerPort (146, ENetworkProtocol.TCP, "iso-tp0", "ISO-IP0");
@@ -874,36 +370,18 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_147_iso_ip = _registerPort (147, ENetworkProtocol.UDP, "iso-ip", "ISO-IP");
   public static final INetworkPort TCP_148_jargon = _registerPort (148, ENetworkProtocol.TCP, "jargon", "Jargon");
   public static final INetworkPort UDP_148_jargon = _registerPort (148, ENetworkProtocol.UDP, "jargon", "Jargon");
-  public static final INetworkPort TCP_149_aed_512 = _registerPort (149,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "aed-512",
-                                                                    "AED 512 Emulation Service");
-  public static final INetworkPort UDP_149_aed_512 = _registerPort (149,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "aed-512",
-                                                                    "AED 512 Emulation Service");
+  public static final INetworkPort TCP_149_aed_512 = _registerPort (149, ENetworkProtocol.TCP, "aed-512", "AED 512 Emulation Service");
+  public static final INetworkPort UDP_149_aed_512 = _registerPort (149, ENetworkProtocol.UDP, "aed-512", "AED 512 Emulation Service");
   public static final INetworkPort TCP_150_sql_net = _registerPort (150, ENetworkProtocol.TCP, "sql-net", "SQL-NET");
   public static final INetworkPort UDP_150_sql_net = _registerPort (150, ENetworkProtocol.UDP, "sql-net", "SQL-NET");
   public static final INetworkPort TCP_151_hems = _registerPort (151, ENetworkProtocol.TCP, "hems", "HEMS");
   public static final INetworkPort UDP_151_hems = _registerPort (151, ENetworkProtocol.UDP, "hems", "HEMS");
-  public static final INetworkPort TCP_152_bftp = _registerPort (152,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "bftp",
-                                                                 "Background File Transfer Program");
-  public static final INetworkPort UDP_152_bftp = _registerPort (152,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "bftp",
-                                                                 "Background File Transfer Program");
+  public static final INetworkPort TCP_152_bftp = _registerPort (152, ENetworkProtocol.TCP, "bftp", "Background File Transfer Program");
+  public static final INetworkPort UDP_152_bftp = _registerPort (152, ENetworkProtocol.UDP, "bftp", "Background File Transfer Program");
   public static final INetworkPort TCP_153_sgmp = _registerPort (153, ENetworkProtocol.TCP, "sgmp", "SGMP");
   public static final INetworkPort UDP_153_sgmp = _registerPort (153, ENetworkProtocol.UDP, "sgmp", "SGMP");
-  public static final INetworkPort TCP_154_netsc_prod = _registerPort (154,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "netsc-prod",
-                                                                       "NETSC");
-  public static final INetworkPort UDP_154_netsc_prod = _registerPort (154,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "netsc-prod",
-                                                                       "NETSC");
+  public static final INetworkPort TCP_154_netsc_prod = _registerPort (154, ENetworkProtocol.TCP, "netsc-prod", "NETSC");
+  public static final INetworkPort UDP_154_netsc_prod = _registerPort (154, ENetworkProtocol.UDP, "netsc-prod", "NETSC");
   public static final INetworkPort TCP_155_netsc_dev = _registerPort (155, ENetworkProtocol.TCP, "netsc-dev", "NETSC");
   public static final INetworkPort UDP_155_netsc_dev = _registerPort (155, ENetworkProtocol.UDP, "netsc-dev", "NETSC");
   public static final INetworkPort TCP_156_sqlsrv = _registerPort (156, ENetworkProtocol.TCP, "sqlsrv", "SQL Service");
@@ -916,58 +394,22 @@ public final class DefaultNetworkPorts
                                                                      ENetworkProtocol.UDP,
                                                                      "knet-cmp",
                                                                      "KNET/VM Command/Message Protocol");
-  public static final INetworkPort TCP_158_pcmail_srv = _registerPort (158,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "pcmail-srv",
-                                                                       "PCMail Server");
-  public static final INetworkPort UDP_158_pcmail_srv = _registerPort (158,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "pcmail-srv",
-                                                                       "PCMail Server");
-  public static final INetworkPort TCP_159_nss_routing = _registerPort (159,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "nss-routing",
-                                                                        "NSS-Routing");
-  public static final INetworkPort UDP_159_nss_routing = _registerPort (159,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "nss-routing",
-                                                                        "NSS-Routing");
-  public static final INetworkPort TCP_160_sgmp_traps = _registerPort (160,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "sgmp-traps",
-                                                                       "SGMP-TRAPS");
-  public static final INetworkPort UDP_160_sgmp_traps = _registerPort (160,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "sgmp-traps",
-                                                                       "SGMP-TRAPS");
+  public static final INetworkPort TCP_158_pcmail_srv = _registerPort (158, ENetworkProtocol.TCP, "pcmail-srv", "PCMail Server");
+  public static final INetworkPort UDP_158_pcmail_srv = _registerPort (158, ENetworkProtocol.UDP, "pcmail-srv", "PCMail Server");
+  public static final INetworkPort TCP_159_nss_routing = _registerPort (159, ENetworkProtocol.TCP, "nss-routing", "NSS-Routing");
+  public static final INetworkPort UDP_159_nss_routing = _registerPort (159, ENetworkProtocol.UDP, "nss-routing", "NSS-Routing");
+  public static final INetworkPort TCP_160_sgmp_traps = _registerPort (160, ENetworkProtocol.TCP, "sgmp-traps", "SGMP-TRAPS");
+  public static final INetworkPort UDP_160_sgmp_traps = _registerPort (160, ENetworkProtocol.UDP, "sgmp-traps", "SGMP-TRAPS");
   public static final INetworkPort TCP_161_snmp = _registerPort (161, ENetworkProtocol.TCP, "snmp", "SNMP");
   public static final INetworkPort UDP_161_snmp = _registerPort (161, ENetworkProtocol.UDP, "snmp", "SNMP");
   public static final INetworkPort TCP_162_snmptrap = _registerPort (162, ENetworkProtocol.TCP, "snmptrap", "SNMPTRAP");
   public static final INetworkPort UDP_162_snmptrap = _registerPort (162, ENetworkProtocol.UDP, "snmptrap", "SNMPTRAP");
-  public static final INetworkPort TCP_163_cmip_man = _registerPort (163,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "cmip-man",
-                                                                     "CMIP/TCP Manager");
-  public static final INetworkPort UDP_163_cmip_man = _registerPort (163,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "cmip-man",
-                                                                     "CMIP/TCP Manager");
-  public static final INetworkPort TCP_164_cmip_agent = _registerPort (164,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "cmip-agent",
-                                                                       "CMIP/TCP Agent");
-  public static final INetworkPort UDP_164_cmip_agent = _registerPort (164,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "cmip-agent",
-                                                                       "CMIP/TCP Agent");
-  public static final INetworkPort TCP_165_xns_courier = _registerPort (165,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "xns-courier",
-                                                                        "Xerox");
-  public static final INetworkPort UDP_165_xns_courier = _registerPort (165,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "xns-courier",
-                                                                        "Xerox");
+  public static final INetworkPort TCP_163_cmip_man = _registerPort (163, ENetworkProtocol.TCP, "cmip-man", "CMIP/TCP Manager");
+  public static final INetworkPort UDP_163_cmip_man = _registerPort (163, ENetworkProtocol.UDP, "cmip-man", "CMIP/TCP Manager");
+  public static final INetworkPort TCP_164_cmip_agent = _registerPort (164, ENetworkProtocol.TCP, "cmip-agent", "CMIP/TCP Agent");
+  public static final INetworkPort UDP_164_cmip_agent = _registerPort (164, ENetworkProtocol.UDP, "cmip-agent", "CMIP/TCP Agent");
+  public static final INetworkPort TCP_165_xns_courier = _registerPort (165, ENetworkProtocol.TCP, "xns-courier", "Xerox");
+  public static final INetworkPort UDP_165_xns_courier = _registerPort (165, ENetworkProtocol.UDP, "xns-courier", "Xerox");
   public static final INetworkPort TCP_166_s_net = _registerPort (166, ENetworkProtocol.TCP, "s-net", "Sirius Systems");
   public static final INetworkPort UDP_166_s_net = _registerPort (166, ENetworkProtocol.UDP, "s-net", "Sirius Systems");
   public static final INetworkPort TCP_167_namp = _registerPort (167, ENetworkProtocol.TCP, "namp", "NAMP");
@@ -976,14 +418,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_168_rsvd = _registerPort (168, ENetworkProtocol.UDP, "rsvd", "RSVD");
   public static final INetworkPort TCP_169_send = _registerPort (169, ENetworkProtocol.TCP, "send", "SEND");
   public static final INetworkPort UDP_169_send = _registerPort (169, ENetworkProtocol.UDP, "send", "SEND");
-  public static final INetworkPort TCP_170_print_srv = _registerPort (170,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "print-srv",
-                                                                      "Network PostScript");
-  public static final INetworkPort UDP_170_print_srv = _registerPort (170,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "print-srv",
-                                                                      "Network PostScript");
+  public static final INetworkPort TCP_170_print_srv = _registerPort (170, ENetworkProtocol.TCP, "print-srv", "Network PostScript");
+  public static final INetworkPort UDP_170_print_srv = _registerPort (170, ENetworkProtocol.UDP, "print-srv", "Network PostScript");
   public static final INetworkPort TCP_171_multiplex = _registerPort (171,
                                                                       ENetworkProtocol.TCP,
                                                                       "multiplex",
@@ -992,148 +428,52 @@ public final class DefaultNetworkPorts
                                                                       ENetworkProtocol.UDP,
                                                                       "multiplex",
                                                                       "Network Innovations Multiplex");
-  public static final INetworkPort TCP_172_cl_1 = _registerPort (172,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "cl/1",
-                                                                 "Network Innovations CL/1");
-  public static final INetworkPort UDP_172_cl_1 = _registerPort (172,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "cl/1",
-                                                                 "Network Innovations CL/1");
-  public static final INetworkPort TCP_173_xyplex_mux = _registerPort (173,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "xyplex-mux",
-                                                                       "Xyplex");
-  public static final INetworkPort UDP_173_xyplex_mux = _registerPort (173,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "xyplex-mux",
-                                                                       "Xyplex");
+  public static final INetworkPort TCP_172_cl_1 = _registerPort (172, ENetworkProtocol.TCP, "cl/1", "Network Innovations CL/1");
+  public static final INetworkPort UDP_172_cl_1 = _registerPort (172, ENetworkProtocol.UDP, "cl/1", "Network Innovations CL/1");
+  public static final INetworkPort TCP_173_xyplex_mux = _registerPort (173, ENetworkProtocol.TCP, "xyplex-mux", "Xyplex");
+  public static final INetworkPort UDP_173_xyplex_mux = _registerPort (173, ENetworkProtocol.UDP, "xyplex-mux", "Xyplex");
   public static final INetworkPort TCP_174_mailq = _registerPort (174, ENetworkProtocol.TCP, "mailq", "MAILQ");
   public static final INetworkPort UDP_174_mailq = _registerPort (174, ENetworkProtocol.UDP, "mailq", "MAILQ");
   public static final INetworkPort TCP_175_vmnet = _registerPort (175, ENetworkProtocol.TCP, "vmnet", "VMNET");
   public static final INetworkPort UDP_175_vmnet = _registerPort (175, ENetworkProtocol.UDP, "vmnet", "VMNET");
-  public static final INetworkPort TCP_176_genrad_mux = _registerPort (176,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "genrad-mux",
-                                                                       "GENRAD-MUX");
-  public static final INetworkPort UDP_176_genrad_mux = _registerPort (176,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "genrad-mux",
-                                                                       "GENRAD-MUX");
-  public static final INetworkPort TCP_177_xdmcp = _registerPort (177,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "xdmcp",
-                                                                  "X Display Manager Control Protocol");
-  public static final INetworkPort UDP_177_xdmcp = _registerPort (177,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "xdmcp",
-                                                                  "X Display Manager Control Protocol");
-  public static final INetworkPort TCP_178_nextstep = _registerPort (178,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "nextstep",
-                                                                     "NextStep Window Server");
-  public static final INetworkPort UDP_178_nextstep = _registerPort (178,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "nextstep",
-                                                                     "NextStep Window Server");
-  public static final INetworkPort TCP_179_bgp = _registerPort (179,
-                                                                ENetworkProtocol.TCP,
-                                                                "bgp",
-                                                                "Border Gateway Protocol");
-  public static final INetworkPort UDP_179_bgp = _registerPort (179,
-                                                                ENetworkProtocol.UDP,
-                                                                "bgp",
-                                                                "Border Gateway Protocol");
+  public static final INetworkPort TCP_176_genrad_mux = _registerPort (176, ENetworkProtocol.TCP, "genrad-mux", "GENRAD-MUX");
+  public static final INetworkPort UDP_176_genrad_mux = _registerPort (176, ENetworkProtocol.UDP, "genrad-mux", "GENRAD-MUX");
+  public static final INetworkPort TCP_177_xdmcp = _registerPort (177, ENetworkProtocol.TCP, "xdmcp", "X Display Manager Control Protocol");
+  public static final INetworkPort UDP_177_xdmcp = _registerPort (177, ENetworkProtocol.UDP, "xdmcp", "X Display Manager Control Protocol");
+  public static final INetworkPort TCP_178_nextstep = _registerPort (178, ENetworkProtocol.TCP, "nextstep", "NextStep Window Server");
+  public static final INetworkPort UDP_178_nextstep = _registerPort (178, ENetworkProtocol.UDP, "nextstep", "NextStep Window Server");
+  public static final INetworkPort TCP_179_bgp = _registerPort (179, ENetworkProtocol.TCP, "bgp", "Border Gateway Protocol");
+  public static final INetworkPort UDP_179_bgp = _registerPort (179, ENetworkProtocol.UDP, "bgp", "Border Gateway Protocol");
   public static final INetworkPort TCP_180_ris = _registerPort (180, ENetworkProtocol.TCP, "ris", "Intergraph");
   public static final INetworkPort UDP_180_ris = _registerPort (180, ENetworkProtocol.UDP, "ris", "Intergraph");
   public static final INetworkPort TCP_181_unify = _registerPort (181, ENetworkProtocol.TCP, "unify", "Unify");
   public static final INetworkPort UDP_181_unify = _registerPort (181, ENetworkProtocol.UDP, "unify", "Unify");
-  public static final INetworkPort TCP_182_audit = _registerPort (182,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "audit",
-                                                                  "Unisys Audit SITP");
-  public static final INetworkPort UDP_182_audit = _registerPort (182,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "audit",
-                                                                  "Unisys Audit SITP");
+  public static final INetworkPort TCP_182_audit = _registerPort (182, ENetworkProtocol.TCP, "audit", "Unisys Audit SITP");
+  public static final INetworkPort UDP_182_audit = _registerPort (182, ENetworkProtocol.UDP, "audit", "Unisys Audit SITP");
   public static final INetworkPort TCP_183_ocbinder = _registerPort (183, ENetworkProtocol.TCP, "ocbinder", "OCBinder");
   public static final INetworkPort UDP_183_ocbinder = _registerPort (183, ENetworkProtocol.UDP, "ocbinder", "OCBinder");
   public static final INetworkPort TCP_184_ocserver = _registerPort (184, ENetworkProtocol.TCP, "ocserver", "OCServer");
   public static final INetworkPort UDP_184_ocserver = _registerPort (184, ENetworkProtocol.UDP, "ocserver", "OCServer");
-  public static final INetworkPort TCP_185_remote_kis = _registerPort (185,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "remote-kis",
-                                                                       "Remote-KIS");
-  public static final INetworkPort UDP_185_remote_kis = _registerPort (185,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "remote-kis",
-                                                                       "Remote-KIS");
+  public static final INetworkPort TCP_185_remote_kis = _registerPort (185, ENetworkProtocol.TCP, "remote-kis", "Remote-KIS");
+  public static final INetworkPort UDP_185_remote_kis = _registerPort (185, ENetworkProtocol.UDP, "remote-kis", "Remote-KIS");
   public static final INetworkPort TCP_186_kis = _registerPort (186, ENetworkProtocol.TCP, "kis", "KIS Protocol");
   public static final INetworkPort UDP_186_kis = _registerPort (186, ENetworkProtocol.UDP, "kis", "KIS Protocol");
-  public static final INetworkPort TCP_187_aci = _registerPort (187,
-                                                                ENetworkProtocol.TCP,
-                                                                "aci",
-                                                                "Application Communication Interface");
-  public static final INetworkPort UDP_187_aci = _registerPort (187,
-                                                                ENetworkProtocol.UDP,
-                                                                "aci",
-                                                                "Application Communication Interface");
-  public static final INetworkPort TCP_188_mumps = _registerPort (188,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "mumps",
-                                                                  "Plus Five's MUMPS");
-  public static final INetworkPort UDP_188_mumps = _registerPort (188,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "mumps",
-                                                                  "Plus Five's MUMPS");
-  public static final INetworkPort TCP_189_qft = _registerPort (189,
-                                                                ENetworkProtocol.TCP,
-                                                                "qft",
-                                                                "Queued File Transport");
-  public static final INetworkPort UDP_189_qft = _registerPort (189,
-                                                                ENetworkProtocol.UDP,
-                                                                "qft",
-                                                                "Queued File Transport");
-  public static final INetworkPort TCP_190_gacp = _registerPort (190,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "gacp",
-                                                                 "Gateway Access Control Protocol");
-  public static final INetworkPort UDP_190_gacp = _registerPort (190,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "gacp",
-                                                                 "Gateway Access Control Protocol");
-  public static final INetworkPort TCP_191_prospero = _registerPort (191,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "prospero",
-                                                                     "Prospero Directory Service");
-  public static final INetworkPort UDP_191_prospero = _registerPort (191,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "prospero",
-                                                                     "Prospero Directory Service");
-  public static final INetworkPort TCP_192_osu_nms = _registerPort (192,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "osu-nms",
-                                                                    "OSU Network Monitoring System");
-  public static final INetworkPort UDP_192_osu_nms = _registerPort (192,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "osu-nms",
-                                                                    "OSU Network Monitoring System");
-  public static final INetworkPort TCP_193_srmp = _registerPort (193,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "srmp",
-                                                                 "Spider Remote Monitoring Protocol");
-  public static final INetworkPort UDP_193_srmp = _registerPort (193,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "srmp",
-                                                                 "Spider Remote Monitoring Protocol");
-  public static final INetworkPort TCP_194_irc = _registerPort (194,
-                                                                ENetworkProtocol.TCP,
-                                                                "irc",
-                                                                "Internet Relay Chat Protocol");
-  public static final INetworkPort UDP_194_irc = _registerPort (194,
-                                                                ENetworkProtocol.UDP,
-                                                                "irc",
-                                                                "Internet Relay Chat Protocol");
+  public static final INetworkPort TCP_187_aci = _registerPort (187, ENetworkProtocol.TCP, "aci", "Application Communication Interface");
+  public static final INetworkPort UDP_187_aci = _registerPort (187, ENetworkProtocol.UDP, "aci", "Application Communication Interface");
+  public static final INetworkPort TCP_188_mumps = _registerPort (188, ENetworkProtocol.TCP, "mumps", "Plus Five's MUMPS");
+  public static final INetworkPort UDP_188_mumps = _registerPort (188, ENetworkProtocol.UDP, "mumps", "Plus Five's MUMPS");
+  public static final INetworkPort TCP_189_qft = _registerPort (189, ENetworkProtocol.TCP, "qft", "Queued File Transport");
+  public static final INetworkPort UDP_189_qft = _registerPort (189, ENetworkProtocol.UDP, "qft", "Queued File Transport");
+  public static final INetworkPort TCP_190_gacp = _registerPort (190, ENetworkProtocol.TCP, "gacp", "Gateway Access Control Protocol");
+  public static final INetworkPort UDP_190_gacp = _registerPort (190, ENetworkProtocol.UDP, "gacp", "Gateway Access Control Protocol");
+  public static final INetworkPort TCP_191_prospero = _registerPort (191, ENetworkProtocol.TCP, "prospero", "Prospero Directory Service");
+  public static final INetworkPort UDP_191_prospero = _registerPort (191, ENetworkProtocol.UDP, "prospero", "Prospero Directory Service");
+  public static final INetworkPort TCP_192_osu_nms = _registerPort (192, ENetworkProtocol.TCP, "osu-nms", "OSU Network Monitoring System");
+  public static final INetworkPort UDP_192_osu_nms = _registerPort (192, ENetworkProtocol.UDP, "osu-nms", "OSU Network Monitoring System");
+  public static final INetworkPort TCP_193_srmp = _registerPort (193, ENetworkProtocol.TCP, "srmp", "Spider Remote Monitoring Protocol");
+  public static final INetworkPort UDP_193_srmp = _registerPort (193, ENetworkProtocol.UDP, "srmp", "Spider Remote Monitoring Protocol");
+  public static final INetworkPort TCP_194_irc = _registerPort (194, ENetworkProtocol.TCP, "irc", "Internet Relay Chat Protocol");
+  public static final INetworkPort UDP_194_irc = _registerPort (194, ENetworkProtocol.UDP, "irc", "Internet Relay Chat Protocol");
   public static final INetworkPort TCP_195_dn6_nlm_aud = _registerPort (195,
                                                                         ENetworkProtocol.TCP,
                                                                         "dn6-nlm-aud",
@@ -1150,14 +490,8 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "dn6-smm-red",
                                                                         "DNSIX Session Mgt Module Audit Redir");
-  public static final INetworkPort TCP_197_dls = _registerPort (197,
-                                                                ENetworkProtocol.TCP,
-                                                                "dls",
-                                                                "Directory Location Service");
-  public static final INetworkPort UDP_197_dls = _registerPort (197,
-                                                                ENetworkProtocol.UDP,
-                                                                "dls",
-                                                                "Directory Location Service");
+  public static final INetworkPort TCP_197_dls = _registerPort (197, ENetworkProtocol.TCP, "dls", "Directory Location Service");
+  public static final INetworkPort UDP_197_dls = _registerPort (197, ENetworkProtocol.UDP, "dls", "Directory Location Service");
   public static final INetworkPort TCP_198_dls_mon = _registerPort (198,
                                                                     ENetworkProtocol.TCP,
                                                                     "dls-mon",
@@ -1168,62 +502,26 @@ public final class DefaultNetworkPorts
                                                                     "Directory Location Service Monitor");
   public static final INetworkPort TCP_199_smux = _registerPort (199, ENetworkProtocol.TCP, "smux", "SMUX");
   public static final INetworkPort UDP_199_smux = _registerPort (199, ENetworkProtocol.UDP, "smux", "SMUX");
-  public static final INetworkPort TCP_200_src = _registerPort (200,
-                                                                ENetworkProtocol.TCP,
-                                                                "src",
-                                                                "IBM System Resource Controller");
-  public static final INetworkPort UDP_200_src = _registerPort (200,
-                                                                ENetworkProtocol.UDP,
-                                                                "src",
-                                                                "IBM System Resource Controller");
-  public static final INetworkPort TCP_201_at_rtmp = _registerPort (201,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "at-rtmp",
-                                                                    "AppleTalk Routing Maintenance");
-  public static final INetworkPort UDP_201_at_rtmp = _registerPort (201,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "at-rtmp",
-                                                                    "AppleTalk Routing Maintenance");
-  public static final INetworkPort TCP_202_at_nbp = _registerPort (202,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "at-nbp",
-                                                                   "AppleTalk Name Binding");
-  public static final INetworkPort UDP_202_at_nbp = _registerPort (202,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "at-nbp",
-                                                                   "AppleTalk Name Binding");
+  public static final INetworkPort TCP_200_src = _registerPort (200, ENetworkProtocol.TCP, "src", "IBM System Resource Controller");
+  public static final INetworkPort UDP_200_src = _registerPort (200, ENetworkProtocol.UDP, "src", "IBM System Resource Controller");
+  public static final INetworkPort TCP_201_at_rtmp = _registerPort (201, ENetworkProtocol.TCP, "at-rtmp", "AppleTalk Routing Maintenance");
+  public static final INetworkPort UDP_201_at_rtmp = _registerPort (201, ENetworkProtocol.UDP, "at-rtmp", "AppleTalk Routing Maintenance");
+  public static final INetworkPort TCP_202_at_nbp = _registerPort (202, ENetworkProtocol.TCP, "at-nbp", "AppleTalk Name Binding");
+  public static final INetworkPort UDP_202_at_nbp = _registerPort (202, ENetworkProtocol.UDP, "at-nbp", "AppleTalk Name Binding");
   public static final INetworkPort TCP_203_at_3 = _registerPort (203, ENetworkProtocol.TCP, "at-3", "AppleTalk Unused");
   public static final INetworkPort UDP_203_at_3 = _registerPort (203, ENetworkProtocol.UDP, "at-3", "AppleTalk Unused");
-  public static final INetworkPort TCP_204_at_echo = _registerPort (204,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "at-echo",
-                                                                    "AppleTalk Echo");
-  public static final INetworkPort UDP_204_at_echo = _registerPort (204,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "at-echo",
-                                                                    "AppleTalk Echo");
+  public static final INetworkPort TCP_204_at_echo = _registerPort (204, ENetworkProtocol.TCP, "at-echo", "AppleTalk Echo");
+  public static final INetworkPort UDP_204_at_echo = _registerPort (204, ENetworkProtocol.UDP, "at-echo", "AppleTalk Echo");
   public static final INetworkPort TCP_205_at_5 = _registerPort (205, ENetworkProtocol.TCP, "at-5", "AppleTalk Unused");
   public static final INetworkPort UDP_205_at_5 = _registerPort (205, ENetworkProtocol.UDP, "at-5", "AppleTalk Unused");
-  public static final INetworkPort TCP_206_at_zis = _registerPort (206,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "at-zis",
-                                                                   "AppleTalk Zone Information");
-  public static final INetworkPort UDP_206_at_zis = _registerPort (206,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "at-zis",
-                                                                   "AppleTalk Zone Information");
+  public static final INetworkPort TCP_206_at_zis = _registerPort (206, ENetworkProtocol.TCP, "at-zis", "AppleTalk Zone Information");
+  public static final INetworkPort UDP_206_at_zis = _registerPort (206, ENetworkProtocol.UDP, "at-zis", "AppleTalk Zone Information");
   public static final INetworkPort TCP_207_at_7 = _registerPort (207, ENetworkProtocol.TCP, "at-7", "AppleTalk Unused");
   public static final INetworkPort UDP_207_at_7 = _registerPort (207, ENetworkProtocol.UDP, "at-7", "AppleTalk Unused");
   public static final INetworkPort TCP_208_at_8 = _registerPort (208, ENetworkProtocol.TCP, "at-8", "AppleTalk Unused");
   public static final INetworkPort UDP_208_at_8 = _registerPort (208, ENetworkProtocol.UDP, "at-8", "AppleTalk Unused");
-  public static final INetworkPort TCP_209_qmtp = _registerPort (209,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "qmtp",
-                                                                 "The Quick Mail Transfer Protocol");
-  public static final INetworkPort UDP_209_qmtp = _registerPort (209,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "qmtp",
-                                                                 "The Quick Mail Transfer Protocol");
+  public static final INetworkPort TCP_209_qmtp = _registerPort (209, ENetworkProtocol.TCP, "qmtp", "The Quick Mail Transfer Protocol");
+  public static final INetworkPort UDP_209_qmtp = _registerPort (209, ENetworkProtocol.UDP, "qmtp", "The Quick Mail Transfer Protocol");
   public static final INetworkPort TCP_210_z39_50 = _registerPort (210, ENetworkProtocol.TCP, "z39.50", "ANSI Z39.50");
   public static final INetworkPort UDP_210_z39_50 = _registerPort (210, ENetworkProtocol.UDP, "z39.50", "ANSI Z39.50");
   public static final INetworkPort TCP_211__14c_g = _registerPort (211,
@@ -1240,14 +538,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_213_ipx = _registerPort (213, ENetworkProtocol.UDP, "ipx", "IPX");
   public static final INetworkPort TCP_214_vmpwscs = _registerPort (214, ENetworkProtocol.TCP, "vmpwscs", "VM PWSCS");
   public static final INetworkPort UDP_214_vmpwscs = _registerPort (214, ENetworkProtocol.UDP, "vmpwscs", "VM PWSCS");
-  public static final INetworkPort TCP_215_softpc = _registerPort (215,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "softpc",
-                                                                   "Insignia Solutions");
-  public static final INetworkPort UDP_215_softpc = _registerPort (215,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "softpc",
-                                                                   "Insignia Solutions");
+  public static final INetworkPort TCP_215_softpc = _registerPort (215, ENetworkProtocol.TCP, "softpc", "Insignia Solutions");
+  public static final INetworkPort UDP_215_softpc = _registerPort (215, ENetworkProtocol.UDP, "softpc", "Insignia Solutions");
   public static final INetworkPort TCP_216_CAIlic = _registerPort (216,
                                                                    ENetworkProtocol.TCP,
                                                                    "CAIlic",
@@ -1258,14 +550,8 @@ public final class DefaultNetworkPorts
                                                                    "Computer Associates Int'l License Server");
   public static final INetworkPort TCP_217_dbase = _registerPort (217, ENetworkProtocol.TCP, "dbase", "dBASE Unix");
   public static final INetworkPort UDP_217_dbase = _registerPort (217, ENetworkProtocol.UDP, "dbase", "dBASE Unix");
-  public static final INetworkPort TCP_218_mpp = _registerPort (218,
-                                                                ENetworkProtocol.TCP,
-                                                                "mpp",
-                                                                "Netix Message Posting Protocol");
-  public static final INetworkPort UDP_218_mpp = _registerPort (218,
-                                                                ENetworkProtocol.UDP,
-                                                                "mpp",
-                                                                "Netix Message Posting Protocol");
+  public static final INetworkPort TCP_218_mpp = _registerPort (218, ENetworkProtocol.TCP, "mpp", "Netix Message Posting Protocol");
+  public static final INetworkPort UDP_218_mpp = _registerPort (218, ENetworkProtocol.UDP, "mpp", "Netix Message Posting Protocol");
   public static final INetworkPort TCP_219_uarps = _registerPort (219, ENetworkProtocol.TCP, "uarps", "Unisys ARPs");
   public static final INetworkPort UDP_219_uarps = _registerPort (219, ENetworkProtocol.UDP, "uarps", "Unisys ARPs");
   public static final INetworkPort TCP_220_imap3 = _registerPort (220,
@@ -1276,86 +562,32 @@ public final class DefaultNetworkPorts
                                                                   ENetworkProtocol.UDP,
                                                                   "imap3",
                                                                   "Interactive Mail Access Protocol v3");
-  public static final INetworkPort TCP_221_fln_spx = _registerPort (221,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "fln-spx",
-                                                                    "Berkeley rlogind with SPX auth");
-  public static final INetworkPort UDP_221_fln_spx = _registerPort (221,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "fln-spx",
-                                                                    "Berkeley rlogind with SPX auth");
-  public static final INetworkPort TCP_222_rsh_spx = _registerPort (222,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "rsh-spx",
-                                                                    "Berkeley rshd with SPX auth");
-  public static final INetworkPort UDP_222_rsh_spx = _registerPort (222,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "rsh-spx",
-                                                                    "Berkeley rshd with SPX auth");
-  public static final INetworkPort TCP_223_cdc = _registerPort (223,
-                                                                ENetworkProtocol.TCP,
-                                                                "cdc",
-                                                                "Certificate Distribution Center");
-  public static final INetworkPort UDP_223_cdc = _registerPort (223,
-                                                                ENetworkProtocol.UDP,
-                                                                "cdc",
-                                                                "Certificate Distribution Center");
-  public static final INetworkPort TCP_224_masqdialer = _registerPort (224,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "masqdialer",
-                                                                       "masqdialer");
-  public static final INetworkPort UDP_224_masqdialer = _registerPort (224,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "masqdialer",
-                                                                       "masqdialer");
+  public static final INetworkPort TCP_221_fln_spx = _registerPort (221, ENetworkProtocol.TCP, "fln-spx", "Berkeley rlogind with SPX auth");
+  public static final INetworkPort UDP_221_fln_spx = _registerPort (221, ENetworkProtocol.UDP, "fln-spx", "Berkeley rlogind with SPX auth");
+  public static final INetworkPort TCP_222_rsh_spx = _registerPort (222, ENetworkProtocol.TCP, "rsh-spx", "Berkeley rshd with SPX auth");
+  public static final INetworkPort UDP_222_rsh_spx = _registerPort (222, ENetworkProtocol.UDP, "rsh-spx", "Berkeley rshd with SPX auth");
+  public static final INetworkPort TCP_223_cdc = _registerPort (223, ENetworkProtocol.TCP, "cdc", "Certificate Distribution Center");
+  public static final INetworkPort UDP_223_cdc = _registerPort (223, ENetworkProtocol.UDP, "cdc", "Certificate Distribution Center");
+  public static final INetworkPort TCP_224_masqdialer = _registerPort (224, ENetworkProtocol.TCP, "masqdialer", "masqdialer");
+  public static final INetworkPort UDP_224_masqdialer = _registerPort (224, ENetworkProtocol.UDP, "masqdialer", "masqdialer");
   public static final INetworkPort TCP_242_direct = _registerPort (242, ENetworkProtocol.TCP, "direct", "Direct");
   public static final INetworkPort UDP_242_direct = _registerPort (242, ENetworkProtocol.UDP, "direct", "Direct");
-  public static final INetworkPort TCP_243_sur_meas = _registerPort (243,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "sur-meas",
-                                                                     "Survey Measurement");
-  public static final INetworkPort UDP_243_sur_meas = _registerPort (243,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "sur-meas",
-                                                                     "Survey Measurement");
-  public static final INetworkPort TCP_244_inbusiness = _registerPort (244,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "inbusiness",
-                                                                       "inbusiness");
-  public static final INetworkPort UDP_244_inbusiness = _registerPort (244,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "inbusiness",
-                                                                       "inbusiness");
+  public static final INetworkPort TCP_243_sur_meas = _registerPort (243, ENetworkProtocol.TCP, "sur-meas", "Survey Measurement");
+  public static final INetworkPort UDP_243_sur_meas = _registerPort (243, ENetworkProtocol.UDP, "sur-meas", "Survey Measurement");
+  public static final INetworkPort TCP_244_inbusiness = _registerPort (244, ENetworkProtocol.TCP, "inbusiness", "inbusiness");
+  public static final INetworkPort UDP_244_inbusiness = _registerPort (244, ENetworkProtocol.UDP, "inbusiness", "inbusiness");
   public static final INetworkPort TCP_245_link = _registerPort (245, ENetworkProtocol.TCP, "link", "LINK");
   public static final INetworkPort UDP_245_link = _registerPort (245, ENetworkProtocol.UDP, "link", "LINK");
-  public static final INetworkPort TCP_246_dsp3270 = _registerPort (246,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "dsp3270",
-                                                                    "Display Systems Protocol");
-  public static final INetworkPort UDP_246_dsp3270 = _registerPort (246,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "dsp3270",
-                                                                    "Display Systems Protocol");
-  public static final INetworkPort TCP_247_subntbcst_tftp = _registerPort (247,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "subntbcst_tftp",
-                                                                           "SUBNTBCST_TFTP");
-  public static final INetworkPort UDP_247_subntbcst_tftp = _registerPort (247,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "subntbcst_tftp",
-                                                                           "SUBNTBCST_TFTP");
+  public static final INetworkPort TCP_246_dsp3270 = _registerPort (246, ENetworkProtocol.TCP, "dsp3270", "Display Systems Protocol");
+  public static final INetworkPort UDP_246_dsp3270 = _registerPort (246, ENetworkProtocol.UDP, "dsp3270", "Display Systems Protocol");
+  public static final INetworkPort TCP_247_subntbcst_tftp = _registerPort (247, ENetworkProtocol.TCP, "subntbcst_tftp", "SUBNTBCST_TFTP");
+  public static final INetworkPort UDP_247_subntbcst_tftp = _registerPort (247, ENetworkProtocol.UDP, "subntbcst_tftp", "SUBNTBCST_TFTP");
   public static final INetworkPort TCP_248_bhfhs = _registerPort (248, ENetworkProtocol.TCP, "bhfhs", "bhfhs");
   public static final INetworkPort UDP_248_bhfhs = _registerPort (248, ENetworkProtocol.UDP, "bhfhs", "bhfhs");
   public static final INetworkPort TCP_256_rap = _registerPort (256, ENetworkProtocol.TCP, "rap", "RAP");
   public static final INetworkPort UDP_256_rap = _registerPort (256, ENetworkProtocol.UDP, "rap", "RAP");
-  public static final INetworkPort TCP_257_set = _registerPort (257,
-                                                                ENetworkProtocol.TCP,
-                                                                "set",
-                                                                "Secure Electronic Transaction");
-  public static final INetworkPort UDP_257_set = _registerPort (257,
-                                                                ENetworkProtocol.UDP,
-                                                                "set",
-                                                                "Secure Electronic Transaction");
+  public static final INetworkPort TCP_257_set = _registerPort (257, ENetworkProtocol.TCP, "set", "Secure Electronic Transaction");
+  public static final INetworkPort UDP_257_set = _registerPort (257, ENetworkProtocol.UDP, "set", "Secure Electronic Transaction");
   public static final INetworkPort TCP_259_esro_gen = _registerPort (259,
                                                                      ENetworkProtocol.TCP,
                                                                      "esro-gen",
@@ -1366,28 +598,16 @@ public final class DefaultNetworkPorts
                                                                      "Efficient Short Remote Operations");
   public static final INetworkPort TCP_260_openport = _registerPort (260, ENetworkProtocol.TCP, "openport", "Openport");
   public static final INetworkPort UDP_260_openport = _registerPort (260, ENetworkProtocol.UDP, "openport", "Openport");
-  public static final INetworkPort TCP_261_nsiiops = _registerPort (261,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "nsiiops",
-                                                                    "IIOP Name Service over TLS/SSL");
-  public static final INetworkPort UDP_261_nsiiops = _registerPort (261,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "nsiiops",
-                                                                    "IIOP Name Service over TLS/SSL");
+  public static final INetworkPort TCP_261_nsiiops = _registerPort (261, ENetworkProtocol.TCP, "nsiiops", "IIOP Name Service over TLS/SSL");
+  public static final INetworkPort UDP_261_nsiiops = _registerPort (261, ENetworkProtocol.UDP, "nsiiops", "IIOP Name Service over TLS/SSL");
   public static final INetworkPort TCP_262_arcisdms = _registerPort (262, ENetworkProtocol.TCP, "arcisdms", "Arcisdms");
   public static final INetworkPort UDP_262_arcisdms = _registerPort (262, ENetworkProtocol.UDP, "arcisdms", "Arcisdms");
   public static final INetworkPort TCP_263_hdap = _registerPort (263, ENetworkProtocol.TCP, "hdap", "HDAP");
   public static final INetworkPort UDP_263_hdap = _registerPort (263, ENetworkProtocol.UDP, "hdap", "HDAP");
   public static final INetworkPort TCP_264_bgmp = _registerPort (264, ENetworkProtocol.TCP, "bgmp", "BGMP");
   public static final INetworkPort UDP_264_bgmp = _registerPort (264, ENetworkProtocol.UDP, "bgmp", "BGMP");
-  public static final INetworkPort TCP_265_x_bone_ctl = _registerPort (265,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "x-bone-ctl",
-                                                                       "X-Bone CTL");
-  public static final INetworkPort UDP_265_x_bone_ctl = _registerPort (265,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "x-bone-ctl",
-                                                                       "X-Bone CTL");
+  public static final INetworkPort TCP_265_x_bone_ctl = _registerPort (265, ENetworkProtocol.TCP, "x-bone-ctl", "X-Bone CTL");
+  public static final INetworkPort UDP_265_x_bone_ctl = _registerPort (265, ENetworkProtocol.UDP, "x-bone-ctl", "X-Bone CTL");
   public static final INetworkPort TCP_266_sst = _registerPort (266, ENetworkProtocol.TCP, "sst", "SCSI on ST");
   public static final INetworkPort UDP_266_sst = _registerPort (266, ENetworkProtocol.UDP, "sst", "SCSI on ST");
   public static final INetworkPort TCP_267_td_service = _registerPort (267,
@@ -1398,22 +618,10 @@ public final class DefaultNetworkPorts
                                                                        ENetworkProtocol.UDP,
                                                                        "td-service",
                                                                        "Tobit David Service Layer");
-  public static final INetworkPort TCP_268_td_replica = _registerPort (268,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "td-replica",
-                                                                       "Tobit David Replica");
-  public static final INetworkPort UDP_268_td_replica = _registerPort (268,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "td-replica",
-                                                                       "Tobit David Replica");
-  public static final INetworkPort TCP_269_manet = _registerPort (269,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "manet",
-                                                                  "MANET Protocols");
-  public static final INetworkPort UDP_269_manet = _registerPort (269,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "manet",
-                                                                  "MANET Protocols");
+  public static final INetworkPort TCP_268_td_replica = _registerPort (268, ENetworkProtocol.TCP, "td-replica", "Tobit David Replica");
+  public static final INetworkPort UDP_268_td_replica = _registerPort (268, ENetworkProtocol.UDP, "td-replica", "Tobit David Replica");
+  public static final INetworkPort TCP_269_manet = _registerPort (269, ENetworkProtocol.TCP, "manet", "MANET Protocols");
+  public static final INetworkPort UDP_269_manet = _registerPort (269, ENetworkProtocol.UDP, "manet", "MANET Protocols");
   public static final INetworkPort TCP_270 = _registerPort (270, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_270_gist = _registerPort (270,
                                                                  ENetworkProtocol.UDP,
@@ -1424,30 +632,12 @@ public final class DefaultNetworkPorts
                                                                    "pt-tls",
                                                                    "IETF Network Endpoint Assessment (NEA) Posture Transport Protocol over TLS (PT-TLS)");
   public static final INetworkPort UDP_271 = _registerPort (271, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort TCP_280_http_mgmt = _registerPort (280,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "http-mgmt",
-                                                                      "http-mgmt");
-  public static final INetworkPort UDP_280_http_mgmt = _registerPort (280,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "http-mgmt",
-                                                                      "http-mgmt");
-  public static final INetworkPort TCP_281_personal_link = _registerPort (281,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "personal-link",
-                                                                          "Personal Link");
-  public static final INetworkPort UDP_281_personal_link = _registerPort (281,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "personal-link",
-                                                                          "Personal Link");
-  public static final INetworkPort TCP_282_cableport_ax = _registerPort (282,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "cableport-ax",
-                                                                         "Cable Port A/X");
-  public static final INetworkPort UDP_282_cableport_ax = _registerPort (282,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "cableport-ax",
-                                                                         "Cable Port A/X");
+  public static final INetworkPort TCP_280_http_mgmt = _registerPort (280, ENetworkProtocol.TCP, "http-mgmt", "http-mgmt");
+  public static final INetworkPort UDP_280_http_mgmt = _registerPort (280, ENetworkProtocol.UDP, "http-mgmt", "http-mgmt");
+  public static final INetworkPort TCP_281_personal_link = _registerPort (281, ENetworkProtocol.TCP, "personal-link", "Personal Link");
+  public static final INetworkPort UDP_281_personal_link = _registerPort (281, ENetworkProtocol.UDP, "personal-link", "Personal Link");
+  public static final INetworkPort TCP_282_cableport_ax = _registerPort (282, ENetworkProtocol.TCP, "cableport-ax", "Cable Port A/X");
+  public static final INetworkPort UDP_282_cableport_ax = _registerPort (282, ENetworkProtocol.UDP, "cableport-ax", "Cable Port A/X");
   public static final INetworkPort TCP_283_rescap = _registerPort (283, ENetworkProtocol.TCP, "rescap", "rescap");
   public static final INetworkPort UDP_283_rescap = _registerPort (283, ENetworkProtocol.UDP, "rescap", "rescap");
   public static final INetworkPort TCP_284_corerjd = _registerPort (284, ENetworkProtocol.TCP, "corerjd", "corerjd");
@@ -1456,22 +646,10 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_286_fxp = _registerPort (286, ENetworkProtocol.UDP, "fxp", "FXP Communication");
   public static final INetworkPort TCP_287_k_block = _registerPort (287, ENetworkProtocol.TCP, "k-block", "K-BLOCK");
   public static final INetworkPort UDP_287_k_block = _registerPort (287, ENetworkProtocol.UDP, "k-block", "K-BLOCK");
-  public static final INetworkPort TCP_308_novastorbakcup = _registerPort (308,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "novastorbakcup",
-                                                                           "Novastor Backup");
-  public static final INetworkPort UDP_308_novastorbakcup = _registerPort (308,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "novastorbakcup",
-                                                                           "Novastor Backup");
-  public static final INetworkPort TCP_309_entrusttime = _registerPort (309,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "entrusttime",
-                                                                        "EntrustTime");
-  public static final INetworkPort UDP_309_entrusttime = _registerPort (309,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "entrusttime",
-                                                                        "EntrustTime");
+  public static final INetworkPort TCP_308_novastorbakcup = _registerPort (308, ENetworkProtocol.TCP, "novastorbakcup", "Novastor Backup");
+  public static final INetworkPort UDP_308_novastorbakcup = _registerPort (308, ENetworkProtocol.UDP, "novastorbakcup", "Novastor Backup");
+  public static final INetworkPort TCP_309_entrusttime = _registerPort (309, ENetworkProtocol.TCP, "entrusttime", "EntrustTime");
+  public static final INetworkPort UDP_309_entrusttime = _registerPort (309, ENetworkProtocol.UDP, "entrusttime", "EntrustTime");
   public static final INetworkPort TCP_310_bhmds = _registerPort (310, ENetworkProtocol.TCP, "bhmds", "bhmds");
   public static final INetworkPort UDP_310_bhmds = _registerPort (310, ENetworkProtocol.UDP, "bhmds", "bhmds");
   public static final INetworkPort TCP_311_asip_webadmin = _registerPort (311,
@@ -1484,52 +662,22 @@ public final class DefaultNetworkPorts
                                                                           "AppleShare IP WebAdmin");
   public static final INetworkPort TCP_312_vslmp = _registerPort (312, ENetworkProtocol.TCP, "vslmp", "VSLMP");
   public static final INetworkPort UDP_312_vslmp = _registerPort (312, ENetworkProtocol.UDP, "vslmp", "VSLMP");
-  public static final INetworkPort TCP_313_magenta_logic = _registerPort (313,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "magenta-logic",
-                                                                          "Magenta Logic");
-  public static final INetworkPort UDP_313_magenta_logic = _registerPort (313,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "magenta-logic",
-                                                                          "Magenta Logic");
-  public static final INetworkPort TCP_314_opalis_robot = _registerPort (314,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "opalis-robot",
-                                                                         "Opalis Robot");
-  public static final INetworkPort UDP_314_opalis_robot = _registerPort (314,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "opalis-robot",
-                                                                         "Opalis Robot");
+  public static final INetworkPort TCP_313_magenta_logic = _registerPort (313, ENetworkProtocol.TCP, "magenta-logic", "Magenta Logic");
+  public static final INetworkPort UDP_313_magenta_logic = _registerPort (313, ENetworkProtocol.UDP, "magenta-logic", "Magenta Logic");
+  public static final INetworkPort TCP_314_opalis_robot = _registerPort (314, ENetworkProtocol.TCP, "opalis-robot", "Opalis Robot");
+  public static final INetworkPort UDP_314_opalis_robot = _registerPort (314, ENetworkProtocol.UDP, "opalis-robot", "Opalis Robot");
   public static final INetworkPort TCP_315_dpsi = _registerPort (315, ENetworkProtocol.TCP, "dpsi", "DPSI");
   public static final INetworkPort UDP_315_dpsi = _registerPort (315, ENetworkProtocol.UDP, "dpsi", "DPSI");
   public static final INetworkPort TCP_316_decauth = _registerPort (316, ENetworkProtocol.TCP, "decauth", "decAuth");
   public static final INetworkPort UDP_316_decauth = _registerPort (316, ENetworkProtocol.UDP, "decauth", "decAuth");
   public static final INetworkPort TCP_317_zannet = _registerPort (317, ENetworkProtocol.TCP, "zannet", "Zannet");
   public static final INetworkPort UDP_317_zannet = _registerPort (317, ENetworkProtocol.UDP, "zannet", "Zannet");
-  public static final INetworkPort TCP_318_pkix_timestamp = _registerPort (318,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "pkix-timestamp",
-                                                                           "PKIX TimeStamp");
-  public static final INetworkPort UDP_318_pkix_timestamp = _registerPort (318,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "pkix-timestamp",
-                                                                           "PKIX TimeStamp");
-  public static final INetworkPort TCP_319_ptp_event = _registerPort (319,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ptp-event",
-                                                                      "PTP Event");
-  public static final INetworkPort UDP_319_ptp_event = _registerPort (319,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ptp-event",
-                                                                      "PTP Event");
-  public static final INetworkPort TCP_320_ptp_general = _registerPort (320,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "ptp-general",
-                                                                        "PTP General");
-  public static final INetworkPort UDP_320_ptp_general = _registerPort (320,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "ptp-general",
-                                                                        "PTP General");
+  public static final INetworkPort TCP_318_pkix_timestamp = _registerPort (318, ENetworkProtocol.TCP, "pkix-timestamp", "PKIX TimeStamp");
+  public static final INetworkPort UDP_318_pkix_timestamp = _registerPort (318, ENetworkProtocol.UDP, "pkix-timestamp", "PKIX TimeStamp");
+  public static final INetworkPort TCP_319_ptp_event = _registerPort (319, ENetworkProtocol.TCP, "ptp-event", "PTP Event");
+  public static final INetworkPort UDP_319_ptp_event = _registerPort (319, ENetworkProtocol.UDP, "ptp-event", "PTP Event");
+  public static final INetworkPort TCP_320_ptp_general = _registerPort (320, ENetworkProtocol.TCP, "ptp-general", "PTP General");
+  public static final INetworkPort UDP_320_ptp_general = _registerPort (320, ENetworkProtocol.UDP, "ptp-general", "PTP General");
   public static final INetworkPort TCP_321_pip = _registerPort (321, ENetworkProtocol.TCP, "pip", "PIP");
   public static final INetworkPort UDP_321_pip = _registerPort (321, ENetworkProtocol.UDP, "pip", "PIP");
   public static final INetworkPort TCP_322_rtsps = _registerPort (322, ENetworkProtocol.TCP, "rtsps", "RTSPS");
@@ -1544,40 +692,16 @@ public final class DefaultNetworkPorts
                                                                          "rpki-rtr-tls",
                                                                          "Resource PKI to Router Protocol over TLS");
   public static final INetworkPort UDP_324 = _registerPort (324, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort TCP_333_texar = _registerPort (333,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "texar",
-                                                                  "Texar Security Port");
-  public static final INetworkPort UDP_333_texar = _registerPort (333,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "texar",
-                                                                  "Texar Security Port");
-  public static final INetworkPort TCP_344_pdap = _registerPort (344,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "pdap",
-                                                                 "Prospero Data Access Protocol");
-  public static final INetworkPort UDP_344_pdap = _registerPort (344,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "pdap",
-                                                                 "Prospero Data Access Protocol");
-  public static final INetworkPort TCP_345_pawserv = _registerPort (345,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "pawserv",
-                                                                    "Perf Analysis Workbench");
-  public static final INetworkPort UDP_345_pawserv = _registerPort (345,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "pawserv",
-                                                                    "Perf Analysis Workbench");
+  public static final INetworkPort TCP_333_texar = _registerPort (333, ENetworkProtocol.TCP, "texar", "Texar Security Port");
+  public static final INetworkPort UDP_333_texar = _registerPort (333, ENetworkProtocol.UDP, "texar", "Texar Security Port");
+  public static final INetworkPort TCP_344_pdap = _registerPort (344, ENetworkProtocol.TCP, "pdap", "Prospero Data Access Protocol");
+  public static final INetworkPort UDP_344_pdap = _registerPort (344, ENetworkProtocol.UDP, "pdap", "Prospero Data Access Protocol");
+  public static final INetworkPort TCP_345_pawserv = _registerPort (345, ENetworkProtocol.TCP, "pawserv", "Perf Analysis Workbench");
+  public static final INetworkPort UDP_345_pawserv = _registerPort (345, ENetworkProtocol.UDP, "pawserv", "Perf Analysis Workbench");
   public static final INetworkPort TCP_346_zserv = _registerPort (346, ENetworkProtocol.TCP, "zserv", "Zebra server");
   public static final INetworkPort UDP_346_zserv = _registerPort (346, ENetworkProtocol.UDP, "zserv", "Zebra server");
-  public static final INetworkPort TCP_347_fatserv = _registerPort (347,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "fatserv",
-                                                                    "Fatmen Server");
-  public static final INetworkPort UDP_347_fatserv = _registerPort (347,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "fatserv",
-                                                                    "Fatmen Server");
+  public static final INetworkPort TCP_347_fatserv = _registerPort (347, ENetworkProtocol.TCP, "fatserv", "Fatmen Server");
+  public static final INetworkPort UDP_347_fatserv = _registerPort (347, ENetworkProtocol.UDP, "fatserv", "Fatmen Server");
   public static final INetworkPort TCP_348_csi_sgwp = _registerPort (348,
                                                                      ENetworkProtocol.TCP,
                                                                      "csi-sgwp",
@@ -1588,64 +712,28 @@ public final class DefaultNetworkPorts
                                                                      "Cabletron Management Protocol");
   public static final INetworkPort TCP_349_mftp = _registerPort (349, ENetworkProtocol.TCP, "mftp", "mftp");
   public static final INetworkPort UDP_349_mftp = _registerPort (349, ENetworkProtocol.UDP, "mftp", "mftp");
-  public static final INetworkPort TCP_350_matip_type_a = _registerPort (350,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "matip-type-a",
-                                                                         "MATIP Type A");
-  public static final INetworkPort UDP_350_matip_type_a = _registerPort (350,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "matip-type-a",
-                                                                         "MATIP Type A");
-  public static final INetworkPort TCP_351_matip_type_b = _registerPort (351,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "matip-type-b",
-                                                                         "MATIP Type B");
-  public static final INetworkPort UDP_351_matip_type_b = _registerPort (351,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "matip-type-b",
-                                                                         "MATIP Type B");
+  public static final INetworkPort TCP_350_matip_type_a = _registerPort (350, ENetworkProtocol.TCP, "matip-type-a", "MATIP Type A");
+  public static final INetworkPort UDP_350_matip_type_a = _registerPort (350, ENetworkProtocol.UDP, "matip-type-a", "MATIP Type A");
+  public static final INetworkPort TCP_351_matip_type_b = _registerPort (351, ENetworkProtocol.TCP, "matip-type-b", "MATIP Type B");
+  public static final INetworkPort UDP_351_matip_type_b = _registerPort (351, ENetworkProtocol.UDP, "matip-type-b", "MATIP Type B");
   public static final INetworkPort TCP_351_bhoetty = _registerPort (351, ENetworkProtocol.TCP, "bhoetty", "bhoetty");
   public static final INetworkPort UDP_351_bhoetty = _registerPort (351, ENetworkProtocol.UDP, "bhoetty", "bhoetty");
-  public static final INetworkPort TCP_352_dtag_ste_sb = _registerPort (352,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "dtag-ste-sb",
-                                                                        "DTAG");
-  public static final INetworkPort UDP_352_dtag_ste_sb = _registerPort (352,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "dtag-ste-sb",
-                                                                        "DTAG");
+  public static final INetworkPort TCP_352_dtag_ste_sb = _registerPort (352, ENetworkProtocol.TCP, "dtag-ste-sb", "DTAG");
+  public static final INetworkPort UDP_352_dtag_ste_sb = _registerPort (352, ENetworkProtocol.UDP, "dtag-ste-sb", "DTAG");
   public static final INetworkPort TCP_352_bhoedap4 = _registerPort (352, ENetworkProtocol.TCP, "bhoedap4", "bhoedap4");
   public static final INetworkPort UDP_352_bhoedap4 = _registerPort (352, ENetworkProtocol.UDP, "bhoedap4", "bhoedap4");
   public static final INetworkPort TCP_353_ndsauth = _registerPort (353, ENetworkProtocol.TCP, "ndsauth", "NDSAUTH");
   public static final INetworkPort UDP_353_ndsauth = _registerPort (353, ENetworkProtocol.UDP, "ndsauth", "NDSAUTH");
   public static final INetworkPort TCP_354_bh611 = _registerPort (354, ENetworkProtocol.TCP, "bh611", "bh611");
   public static final INetworkPort UDP_354_bh611 = _registerPort (354, ENetworkProtocol.UDP, "bh611", "bh611");
-  public static final INetworkPort TCP_355_datex_asn = _registerPort (355,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "datex-asn",
-                                                                      "DATEX-ASN");
-  public static final INetworkPort UDP_355_datex_asn = _registerPort (355,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "datex-asn",
-                                                                      "DATEX-ASN");
-  public static final INetworkPort TCP_356_cloanto_net_1 = _registerPort (356,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "cloanto-net-1",
-                                                                          "Cloanto Net 1");
-  public static final INetworkPort UDP_356_cloanto_net_1 = _registerPort (356,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "cloanto-net-1",
-                                                                          "Cloanto Net 1");
+  public static final INetworkPort TCP_355_datex_asn = _registerPort (355, ENetworkProtocol.TCP, "datex-asn", "DATEX-ASN");
+  public static final INetworkPort UDP_355_datex_asn = _registerPort (355, ENetworkProtocol.UDP, "datex-asn", "DATEX-ASN");
+  public static final INetworkPort TCP_356_cloanto_net_1 = _registerPort (356, ENetworkProtocol.TCP, "cloanto-net-1", "Cloanto Net 1");
+  public static final INetworkPort UDP_356_cloanto_net_1 = _registerPort (356, ENetworkProtocol.UDP, "cloanto-net-1", "Cloanto Net 1");
   public static final INetworkPort TCP_357_bhevent = _registerPort (357, ENetworkProtocol.TCP, "bhevent", "bhevent");
   public static final INetworkPort UDP_357_bhevent = _registerPort (357, ENetworkProtocol.UDP, "bhevent", "bhevent");
-  public static final INetworkPort TCP_358_shrinkwrap = _registerPort (358,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "shrinkwrap",
-                                                                       "Shrinkwrap");
-  public static final INetworkPort UDP_358_shrinkwrap = _registerPort (358,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "shrinkwrap",
-                                                                       "Shrinkwrap");
+  public static final INetworkPort TCP_358_shrinkwrap = _registerPort (358, ENetworkProtocol.TCP, "shrinkwrap", "Shrinkwrap");
+  public static final INetworkPort UDP_358_shrinkwrap = _registerPort (358, ENetworkProtocol.UDP, "shrinkwrap", "Shrinkwrap");
   public static final INetworkPort TCP_359_nsrmp = _registerPort (359,
                                                                   ENetworkProtocol.TCP,
                                                                   "nsrmp",
@@ -1654,138 +742,48 @@ public final class DefaultNetworkPorts
                                                                   ENetworkProtocol.UDP,
                                                                   "nsrmp",
                                                                   "Network Security Risk Management Protocol");
-  public static final INetworkPort TCP_360_scoi2odialog = _registerPort (360,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "scoi2odialog",
-                                                                         "scoi2odialog");
-  public static final INetworkPort UDP_360_scoi2odialog = _registerPort (360,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "scoi2odialog",
-                                                                         "scoi2odialog");
+  public static final INetworkPort TCP_360_scoi2odialog = _registerPort (360, ENetworkProtocol.TCP, "scoi2odialog", "scoi2odialog");
+  public static final INetworkPort UDP_360_scoi2odialog = _registerPort (360, ENetworkProtocol.UDP, "scoi2odialog", "scoi2odialog");
   public static final INetworkPort TCP_361_semantix = _registerPort (361, ENetworkProtocol.TCP, "semantix", "Semantix");
   public static final INetworkPort UDP_361_semantix = _registerPort (361, ENetworkProtocol.UDP, "semantix", "Semantix");
   public static final INetworkPort TCP_362_srssend = _registerPort (362, ENetworkProtocol.TCP, "srssend", "SRS Send");
   public static final INetworkPort UDP_362_srssend = _registerPort (362, ENetworkProtocol.UDP, "srssend", "SRS Send");
-  public static final INetworkPort TCP_363_rsvp_tunnel = _registerPort (363,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "rsvp_tunnel",
-                                                                        "RSVP Tunnel");
-  public static final INetworkPort UDP_363_rsvp_tunnel = _registerPort (363,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "rsvp_tunnel",
-                                                                        "RSVP Tunnel");
-  public static final INetworkPort TCP_364_aurora_cmgr = _registerPort (364,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "aurora-cmgr",
-                                                                        "Aurora CMGR");
-  public static final INetworkPort UDP_364_aurora_cmgr = _registerPort (364,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "aurora-cmgr",
-                                                                        "Aurora CMGR");
+  public static final INetworkPort TCP_363_rsvp_tunnel = _registerPort (363, ENetworkProtocol.TCP, "rsvp_tunnel", "RSVP Tunnel");
+  public static final INetworkPort UDP_363_rsvp_tunnel = _registerPort (363, ENetworkProtocol.UDP, "rsvp_tunnel", "RSVP Tunnel");
+  public static final INetworkPort TCP_364_aurora_cmgr = _registerPort (364, ENetworkProtocol.TCP, "aurora-cmgr", "Aurora CMGR");
+  public static final INetworkPort UDP_364_aurora_cmgr = _registerPort (364, ENetworkProtocol.UDP, "aurora-cmgr", "Aurora CMGR");
   public static final INetworkPort TCP_365_dtk = _registerPort (365, ENetworkProtocol.TCP, "dtk", "DTK");
   public static final INetworkPort UDP_365_dtk = _registerPort (365, ENetworkProtocol.UDP, "dtk", "DTK");
   public static final INetworkPort TCP_366_odmr = _registerPort (366, ENetworkProtocol.TCP, "odmr", "ODMR");
   public static final INetworkPort UDP_366_odmr = _registerPort (366, ENetworkProtocol.UDP, "odmr", "ODMR");
-  public static final INetworkPort TCP_367_mortgageware = _registerPort (367,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "mortgageware",
-                                                                         "MortgageWare");
-  public static final INetworkPort UDP_367_mortgageware = _registerPort (367,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "mortgageware",
-                                                                         "MortgageWare");
+  public static final INetworkPort TCP_367_mortgageware = _registerPort (367, ENetworkProtocol.TCP, "mortgageware", "MortgageWare");
+  public static final INetworkPort UDP_367_mortgageware = _registerPort (367, ENetworkProtocol.UDP, "mortgageware", "MortgageWare");
   public static final INetworkPort TCP_368_qbikgdp = _registerPort (368, ENetworkProtocol.TCP, "qbikgdp", "QbikGDP");
   public static final INetworkPort UDP_368_qbikgdp = _registerPort (368, ENetworkProtocol.UDP, "qbikgdp", "QbikGDP");
-  public static final INetworkPort TCP_369_rpc2portmap = _registerPort (369,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "rpc2portmap",
-                                                                        "rpc2portmap");
-  public static final INetworkPort UDP_369_rpc2portmap = _registerPort (369,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "rpc2portmap",
-                                                                        "rpc2portmap");
-  public static final INetworkPort TCP_370_codaauth2 = _registerPort (370,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "codaauth2",
-                                                                      "codaauth2");
-  public static final INetworkPort UDP_370_codaauth2 = _registerPort (370,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "codaauth2",
-                                                                      "codaauth2");
-  public static final INetworkPort TCP_371_clearcase = _registerPort (371,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "clearcase",
-                                                                      "Clearcase");
-  public static final INetworkPort UDP_371_clearcase = _registerPort (371,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "clearcase",
-                                                                      "Clearcase");
-  public static final INetworkPort TCP_372_ulistproc = _registerPort (372,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ulistproc",
-                                                                      "ListProcessor");
-  public static final INetworkPort UDP_372_ulistproc = _registerPort (372,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ulistproc",
-                                                                      "ListProcessor");
-  public static final INetworkPort TCP_373_legent_1 = _registerPort (373,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "legent-1",
-                                                                     "Legent Corporation");
-  public static final INetworkPort UDP_373_legent_1 = _registerPort (373,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "legent-1",
-                                                                     "Legent Corporation");
-  public static final INetworkPort TCP_374_legent_2 = _registerPort (374,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "legent-2",
-                                                                     "Legent Corporation");
-  public static final INetworkPort UDP_374_legent_2 = _registerPort (374,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "legent-2",
-                                                                     "Legent Corporation");
+  public static final INetworkPort TCP_369_rpc2portmap = _registerPort (369, ENetworkProtocol.TCP, "rpc2portmap", "rpc2portmap");
+  public static final INetworkPort UDP_369_rpc2portmap = _registerPort (369, ENetworkProtocol.UDP, "rpc2portmap", "rpc2portmap");
+  public static final INetworkPort TCP_370_codaauth2 = _registerPort (370, ENetworkProtocol.TCP, "codaauth2", "codaauth2");
+  public static final INetworkPort UDP_370_codaauth2 = _registerPort (370, ENetworkProtocol.UDP, "codaauth2", "codaauth2");
+  public static final INetworkPort TCP_371_clearcase = _registerPort (371, ENetworkProtocol.TCP, "clearcase", "Clearcase");
+  public static final INetworkPort UDP_371_clearcase = _registerPort (371, ENetworkProtocol.UDP, "clearcase", "Clearcase");
+  public static final INetworkPort TCP_372_ulistproc = _registerPort (372, ENetworkProtocol.TCP, "ulistproc", "ListProcessor");
+  public static final INetworkPort UDP_372_ulistproc = _registerPort (372, ENetworkProtocol.UDP, "ulistproc", "ListProcessor");
+  public static final INetworkPort TCP_373_legent_1 = _registerPort (373, ENetworkProtocol.TCP, "legent-1", "Legent Corporation");
+  public static final INetworkPort UDP_373_legent_1 = _registerPort (373, ENetworkProtocol.UDP, "legent-1", "Legent Corporation");
+  public static final INetworkPort TCP_374_legent_2 = _registerPort (374, ENetworkProtocol.TCP, "legent-2", "Legent Corporation");
+  public static final INetworkPort UDP_374_legent_2 = _registerPort (374, ENetworkProtocol.UDP, "legent-2", "Legent Corporation");
   public static final INetworkPort TCP_375_hassle = _registerPort (375, ENetworkProtocol.TCP, "hassle", "Hassle");
   public static final INetworkPort UDP_375_hassle = _registerPort (375, ENetworkProtocol.UDP, "hassle", "Hassle");
-  public static final INetworkPort TCP_376_nip = _registerPort (376,
-                                                                ENetworkProtocol.TCP,
-                                                                "nip",
-                                                                "Amiga Envoy Network Inquiry Proto");
-  public static final INetworkPort UDP_376_nip = _registerPort (376,
-                                                                ENetworkProtocol.UDP,
-                                                                "nip",
-                                                                "Amiga Envoy Network Inquiry Proto");
-  public static final INetworkPort TCP_377_tnETOS = _registerPort (377,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "tnETOS",
-                                                                   "NEC Corporation");
-  public static final INetworkPort UDP_377_tnETOS = _registerPort (377,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "tnETOS",
-                                                                   "NEC Corporation");
-  public static final INetworkPort TCP_378_dsETOS = _registerPort (378,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "dsETOS",
-                                                                   "NEC Corporation");
-  public static final INetworkPort UDP_378_dsETOS = _registerPort (378,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "dsETOS",
-                                                                   "NEC Corporation");
-  public static final INetworkPort TCP_379_is99c = _registerPort (379,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "is99c",
-                                                                  "TIA/EIA/IS-99 modem client");
-  public static final INetworkPort UDP_379_is99c = _registerPort (379,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "is99c",
-                                                                  "TIA/EIA/IS-99 modem client");
-  public static final INetworkPort TCP_380_is99s = _registerPort (380,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "is99s",
-                                                                  "TIA/EIA/IS-99 modem server");
-  public static final INetworkPort UDP_380_is99s = _registerPort (380,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "is99s",
-                                                                  "TIA/EIA/IS-99 modem server");
+  public static final INetworkPort TCP_376_nip = _registerPort (376, ENetworkProtocol.TCP, "nip", "Amiga Envoy Network Inquiry Proto");
+  public static final INetworkPort UDP_376_nip = _registerPort (376, ENetworkProtocol.UDP, "nip", "Amiga Envoy Network Inquiry Proto");
+  public static final INetworkPort TCP_377_tnETOS = _registerPort (377, ENetworkProtocol.TCP, "tnETOS", "NEC Corporation");
+  public static final INetworkPort UDP_377_tnETOS = _registerPort (377, ENetworkProtocol.UDP, "tnETOS", "NEC Corporation");
+  public static final INetworkPort TCP_378_dsETOS = _registerPort (378, ENetworkProtocol.TCP, "dsETOS", "NEC Corporation");
+  public static final INetworkPort UDP_378_dsETOS = _registerPort (378, ENetworkProtocol.UDP, "dsETOS", "NEC Corporation");
+  public static final INetworkPort TCP_379_is99c = _registerPort (379, ENetworkProtocol.TCP, "is99c", "TIA/EIA/IS-99 modem client");
+  public static final INetworkPort UDP_379_is99c = _registerPort (379, ENetworkProtocol.UDP, "is99c", "TIA/EIA/IS-99 modem client");
+  public static final INetworkPort TCP_380_is99s = _registerPort (380, ENetworkProtocol.TCP, "is99s", "TIA/EIA/IS-99 modem server");
+  public static final INetworkPort UDP_380_is99s = _registerPort (380, ENetworkProtocol.UDP, "is99s", "TIA/EIA/IS-99 modem server");
   public static final INetworkPort TCP_381_hp_collector = _registerPort (381,
                                                                          ENetworkProtocol.TCP,
                                                                          "hp-collector",
@@ -1810,46 +808,16 @@ public final class DefaultNetworkPorts
                                                                          ENetworkProtocol.UDP,
                                                                          "hp-alarm-mgr",
                                                                          "hp performance data alarm manager");
-  public static final INetworkPort TCP_384_arns = _registerPort (384,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "arns",
-                                                                 "A Remote Network Server System");
-  public static final INetworkPort UDP_384_arns = _registerPort (384,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "arns",
-                                                                 "A Remote Network Server System");
-  public static final INetworkPort TCP_385_ibm_app = _registerPort (385,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "ibm-app",
-                                                                    "IBM Application");
-  public static final INetworkPort UDP_385_ibm_app = _registerPort (385,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "ibm-app",
-                                                                    "IBM Application");
-  public static final INetworkPort TCP_386_asa = _registerPort (386,
-                                                                ENetworkProtocol.TCP,
-                                                                "asa",
-                                                                "ASA Message Router Object Def.");
-  public static final INetworkPort UDP_386_asa = _registerPort (386,
-                                                                ENetworkProtocol.UDP,
-                                                                "asa",
-                                                                "ASA Message Router Object Def.");
-  public static final INetworkPort TCP_387_aurp = _registerPort (387,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "aurp",
-                                                                 "Appletalk Update-Based Routing Pro.");
-  public static final INetworkPort UDP_387_aurp = _registerPort (387,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "aurp",
-                                                                 "Appletalk Update-Based Routing Pro.");
-  public static final INetworkPort TCP_388_unidata_ldm = _registerPort (388,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "unidata-ldm",
-                                                                        "Unidata LDM");
-  public static final INetworkPort UDP_388_unidata_ldm = _registerPort (388,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "unidata-ldm",
-                                                                        "Unidata LDM");
+  public static final INetworkPort TCP_384_arns = _registerPort (384, ENetworkProtocol.TCP, "arns", "A Remote Network Server System");
+  public static final INetworkPort UDP_384_arns = _registerPort (384, ENetworkProtocol.UDP, "arns", "A Remote Network Server System");
+  public static final INetworkPort TCP_385_ibm_app = _registerPort (385, ENetworkProtocol.TCP, "ibm-app", "IBM Application");
+  public static final INetworkPort UDP_385_ibm_app = _registerPort (385, ENetworkProtocol.UDP, "ibm-app", "IBM Application");
+  public static final INetworkPort TCP_386_asa = _registerPort (386, ENetworkProtocol.TCP, "asa", "ASA Message Router Object Def.");
+  public static final INetworkPort UDP_386_asa = _registerPort (386, ENetworkProtocol.UDP, "asa", "ASA Message Router Object Def.");
+  public static final INetworkPort TCP_387_aurp = _registerPort (387, ENetworkProtocol.TCP, "aurp", "Appletalk Update-Based Routing Pro.");
+  public static final INetworkPort UDP_387_aurp = _registerPort (387, ENetworkProtocol.UDP, "aurp", "Appletalk Update-Based Routing Pro.");
+  public static final INetworkPort TCP_388_unidata_ldm = _registerPort (388, ENetworkProtocol.TCP, "unidata-ldm", "Unidata LDM");
+  public static final INetworkPort UDP_388_unidata_ldm = _registerPort (388, ENetworkProtocol.UDP, "unidata-ldm", "Unidata LDM");
   public static final INetworkPort TCP_389_ldap = _registerPort (389,
                                                                  ENetworkProtocol.TCP,
                                                                  "ldap",
@@ -1878,46 +846,16 @@ public final class DefaultNetworkPorts
                                                                             "SynOptics Port Broker Port");
   public static final INetworkPort TCP_393_meta5 = _registerPort (393, ENetworkProtocol.TCP, "meta5", "Meta5");
   public static final INetworkPort UDP_393_meta5 = _registerPort (393, ENetworkProtocol.UDP, "meta5", "Meta5");
-  public static final INetworkPort TCP_394_embl_ndt = _registerPort (394,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "embl-ndt",
-                                                                     "EMBL Nucleic Data Transfer");
-  public static final INetworkPort UDP_394_embl_ndt = _registerPort (394,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "embl-ndt",
-                                                                     "EMBL Nucleic Data Transfer");
-  public static final INetworkPort TCP_395_netcp = _registerPort (395,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "netcp",
-                                                                  "NetScout Control Protocol");
-  public static final INetworkPort UDP_395_netcp = _registerPort (395,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "netcp",
-                                                                  "NetScout Control Protocol");
-  public static final INetworkPort TCP_396_netware_ip = _registerPort (396,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "netware-ip",
-                                                                       "Novell Netware over IP");
-  public static final INetworkPort UDP_396_netware_ip = _registerPort (396,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "netware-ip",
-                                                                       "Novell Netware over IP");
-  public static final INetworkPort TCP_397_mptn = _registerPort (397,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "mptn",
-                                                                 "Multi Protocol Trans. Net.");
-  public static final INetworkPort UDP_397_mptn = _registerPort (397,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "mptn",
-                                                                 "Multi Protocol Trans. Net.");
-  public static final INetworkPort TCP_398_kryptolan = _registerPort (398,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "kryptolan",
-                                                                      "Kryptolan");
-  public static final INetworkPort UDP_398_kryptolan = _registerPort (398,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "kryptolan",
-                                                                      "Kryptolan");
+  public static final INetworkPort TCP_394_embl_ndt = _registerPort (394, ENetworkProtocol.TCP, "embl-ndt", "EMBL Nucleic Data Transfer");
+  public static final INetworkPort UDP_394_embl_ndt = _registerPort (394, ENetworkProtocol.UDP, "embl-ndt", "EMBL Nucleic Data Transfer");
+  public static final INetworkPort TCP_395_netcp = _registerPort (395, ENetworkProtocol.TCP, "netcp", "NetScout Control Protocol");
+  public static final INetworkPort UDP_395_netcp = _registerPort (395, ENetworkProtocol.UDP, "netcp", "NetScout Control Protocol");
+  public static final INetworkPort TCP_396_netware_ip = _registerPort (396, ENetworkProtocol.TCP, "netware-ip", "Novell Netware over IP");
+  public static final INetworkPort UDP_396_netware_ip = _registerPort (396, ENetworkProtocol.UDP, "netware-ip", "Novell Netware over IP");
+  public static final INetworkPort TCP_397_mptn = _registerPort (397, ENetworkProtocol.TCP, "mptn", "Multi Protocol Trans. Net.");
+  public static final INetworkPort UDP_397_mptn = _registerPort (397, ENetworkProtocol.UDP, "mptn", "Multi Protocol Trans. Net.");
+  public static final INetworkPort TCP_398_kryptolan = _registerPort (398, ENetworkProtocol.TCP, "kryptolan", "Kryptolan");
+  public static final INetworkPort UDP_398_kryptolan = _registerPort (398, ENetworkProtocol.UDP, "kryptolan", "Kryptolan");
   public static final INetworkPort TCP_399_iso_tsap_c2 = _registerPort (399,
                                                                         ENetworkProtocol.TCP,
                                                                         "iso-tsap-c2",
@@ -1926,22 +864,10 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "iso-tsap-c2",
                                                                         "ISO Transport Class 2 Non-Control over UDP");
-  public static final INetworkPort TCP_400_osb_sd = _registerPort (400,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "osb-sd",
-                                                                   "Oracle Secure Backup");
-  public static final INetworkPort UDP_400_osb_sd = _registerPort (400,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "osb-sd",
-                                                                   "Oracle Secure Backup");
-  public static final INetworkPort TCP_401_ups = _registerPort (401,
-                                                                ENetworkProtocol.TCP,
-                                                                "ups",
-                                                                "Uninterruptible Power Supply");
-  public static final INetworkPort UDP_401_ups = _registerPort (401,
-                                                                ENetworkProtocol.UDP,
-                                                                "ups",
-                                                                "Uninterruptible Power Supply");
+  public static final INetworkPort TCP_400_osb_sd = _registerPort (400, ENetworkProtocol.TCP, "osb-sd", "Oracle Secure Backup");
+  public static final INetworkPort UDP_400_osb_sd = _registerPort (400, ENetworkProtocol.UDP, "osb-sd", "Oracle Secure Backup");
+  public static final INetworkPort TCP_401_ups = _registerPort (401, ENetworkProtocol.TCP, "ups", "Uninterruptible Power Supply");
+  public static final INetworkPort UDP_401_ups = _registerPort (401, ENetworkProtocol.UDP, "ups", "Uninterruptible Power Supply");
   public static final INetworkPort TCP_402_genie = _registerPort (402, ENetworkProtocol.TCP, "genie", "Genie Protocol");
   public static final INetworkPort UDP_402_genie = _registerPort (402, ENetworkProtocol.UDP, "genie", "Genie Protocol");
   public static final INetworkPort TCP_403_decap = _registerPort (403, ENetworkProtocol.TCP, "decap", "decap");
@@ -1950,14 +876,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_404_nced = _registerPort (404, ENetworkProtocol.UDP, "nced", "nced");
   public static final INetworkPort TCP_405_ncld = _registerPort (405, ENetworkProtocol.TCP, "ncld", "ncld");
   public static final INetworkPort UDP_405_ncld = _registerPort (405, ENetworkProtocol.UDP, "ncld", "ncld");
-  public static final INetworkPort TCP_406_imsp = _registerPort (406,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "imsp",
-                                                                 "Interactive Mail Support Protocol");
-  public static final INetworkPort UDP_406_imsp = _registerPort (406,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "imsp",
-                                                                 "Interactive Mail Support Protocol");
+  public static final INetworkPort TCP_406_imsp = _registerPort (406, ENetworkProtocol.TCP, "imsp", "Interactive Mail Support Protocol");
+  public static final INetworkPort UDP_406_imsp = _registerPort (406, ENetworkProtocol.UDP, "imsp", "Interactive Mail Support Protocol");
   public static final INetworkPort TCP_407_timbuktu = _registerPort (407, ENetworkProtocol.TCP, "timbuktu", "Timbuktu");
   public static final INetworkPort UDP_407_timbuktu = _registerPort (407, ENetworkProtocol.UDP, "timbuktu", "Timbuktu");
   public static final INetworkPort TCP_408_prm_sm = _registerPort (408,
@@ -1994,26 +914,14 @@ public final class DefaultNetworkPorts
                                                                            ENetworkProtocol.UDP,
                                                                            "synoptics-trap",
                                                                            "Trap Convention Port");
-  public static final INetworkPort TCP_413_smsp = _registerPort (413,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "smsp",
-                                                                 "Storage Management Services Protocol");
-  public static final INetworkPort UDP_413_smsp = _registerPort (413,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "smsp",
-                                                                 "Storage Management Services Protocol");
+  public static final INetworkPort TCP_413_smsp = _registerPort (413, ENetworkProtocol.TCP, "smsp", "Storage Management Services Protocol");
+  public static final INetworkPort UDP_413_smsp = _registerPort (413, ENetworkProtocol.UDP, "smsp", "Storage Management Services Protocol");
   public static final INetworkPort TCP_414_infoseek = _registerPort (414, ENetworkProtocol.TCP, "infoseek", "InfoSeek");
   public static final INetworkPort UDP_414_infoseek = _registerPort (414, ENetworkProtocol.UDP, "infoseek", "InfoSeek");
   public static final INetworkPort TCP_415_bnet = _registerPort (415, ENetworkProtocol.TCP, "bnet", "BNet");
   public static final INetworkPort UDP_415_bnet = _registerPort (415, ENetworkProtocol.UDP, "bnet", "BNet");
-  public static final INetworkPort TCP_416_silverplatter = _registerPort (416,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "silverplatter",
-                                                                          "Silverplatter");
-  public static final INetworkPort UDP_416_silverplatter = _registerPort (416,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "silverplatter",
-                                                                          "Silverplatter");
+  public static final INetworkPort TCP_416_silverplatter = _registerPort (416, ENetworkProtocol.TCP, "silverplatter", "Silverplatter");
+  public static final INetworkPort UDP_416_silverplatter = _registerPort (416, ENetworkProtocol.UDP, "silverplatter", "Silverplatter");
   public static final INetworkPort TCP_417_onmux = _registerPort (417, ENetworkProtocol.TCP, "onmux", "Onmux");
   public static final INetworkPort UDP_417_onmux = _registerPort (417, ENetworkProtocol.UDP, "onmux", "Onmux");
   public static final INetworkPort TCP_418_hyper_g = _registerPort (418, ENetworkProtocol.TCP, "hyper-g", "Hyper-G");
@@ -2046,14 +954,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_425_icad_el = _registerPort (425, ENetworkProtocol.UDP, "icad-el", "ICAD");
   public static final INetworkPort TCP_426_smartsdp = _registerPort (426, ENetworkProtocol.TCP, "smartsdp", "smartsdp");
   public static final INetworkPort UDP_426_smartsdp = _registerPort (426, ENetworkProtocol.UDP, "smartsdp", "smartsdp");
-  public static final INetworkPort TCP_427_svrloc = _registerPort (427,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "svrloc",
-                                                                   "Server Location");
-  public static final INetworkPort UDP_427_svrloc = _registerPort (427,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "svrloc",
-                                                                   "Server Location");
+  public static final INetworkPort TCP_427_svrloc = _registerPort (427, ENetworkProtocol.TCP, "svrloc", "Server Location");
+  public static final INetworkPort UDP_427_svrloc = _registerPort (427, ENetworkProtocol.UDP, "svrloc", "Server Location");
   public static final INetworkPort TCP_428_ocs_cmu = _registerPort (428, ENetworkProtocol.TCP, "ocs_cmu", "OCS_CMU");
   public static final INetworkPort UDP_428_ocs_cmu = _registerPort (428, ENetworkProtocol.UDP, "ocs_cmu", "OCS_CMU");
   public static final INetworkPort TCP_429_ocs_amu = _registerPort (429, ENetworkProtocol.TCP, "ocs_amu", "OCS_AMU");
@@ -2064,30 +966,12 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_431_utmpcd = _registerPort (431, ENetworkProtocol.UDP, "utmpcd", "UTMPCD");
   public static final INetworkPort TCP_432_iasd = _registerPort (432, ENetworkProtocol.TCP, "iasd", "IASD");
   public static final INetworkPort UDP_432_iasd = _registerPort (432, ENetworkProtocol.UDP, "iasd", "IASD");
-  public static final INetworkPort TCP_433_nnsp = _registerPort (433,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "nnsp",
-                                                                 "NNTP for transit servers (NNSP)");
-  public static final INetworkPort UDP_433_nnsp = _registerPort (433,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "nnsp",
-                                                                 "NNTP for transit servers (NNSP)");
-  public static final INetworkPort TCP_434_mobileip_agent = _registerPort (434,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "mobileip-agent",
-                                                                           "MobileIP-Agent");
-  public static final INetworkPort UDP_434_mobileip_agent = _registerPort (434,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "mobileip-agent",
-                                                                           "MobileIP-Agent");
-  public static final INetworkPort TCP_435_mobilip_mn = _registerPort (435,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "mobilip-mn",
-                                                                       "MobilIP-MN");
-  public static final INetworkPort UDP_435_mobilip_mn = _registerPort (435,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "mobilip-mn",
-                                                                       "MobilIP-MN");
+  public static final INetworkPort TCP_433_nnsp = _registerPort (433, ENetworkProtocol.TCP, "nnsp", "NNTP for transit servers (NNSP)");
+  public static final INetworkPort UDP_433_nnsp = _registerPort (433, ENetworkProtocol.UDP, "nnsp", "NNTP for transit servers (NNSP)");
+  public static final INetworkPort TCP_434_mobileip_agent = _registerPort (434, ENetworkProtocol.TCP, "mobileip-agent", "MobileIP-Agent");
+  public static final INetworkPort UDP_434_mobileip_agent = _registerPort (434, ENetworkProtocol.UDP, "mobileip-agent", "MobileIP-Agent");
+  public static final INetworkPort TCP_435_mobilip_mn = _registerPort (435, ENetworkProtocol.TCP, "mobilip-mn", "MobilIP-MN");
+  public static final INetworkPort UDP_435_mobilip_mn = _registerPort (435, ENetworkProtocol.UDP, "mobilip-mn", "MobilIP-MN");
   public static final INetworkPort TCP_436_dna_cml = _registerPort (436, ENetworkProtocol.TCP, "dna-cml", "DNA-CML");
   public static final INetworkPort UDP_436_dna_cml = _registerPort (436, ENetworkProtocol.UDP, "dna-cml", "DNA-CML");
   public static final INetworkPort TCP_437_comscm = _registerPort (437, ENetworkProtocol.TCP, "comscm", "comscm");
@@ -2098,46 +982,16 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_439_dasp = _registerPort (439, ENetworkProtocol.UDP, "dasp", "dasp");
   public static final INetworkPort TCP_440_sgcp = _registerPort (440, ENetworkProtocol.TCP, "sgcp", "sgcp");
   public static final INetworkPort UDP_440_sgcp = _registerPort (440, ENetworkProtocol.UDP, "sgcp", "sgcp");
-  public static final INetworkPort TCP_441_decvms_sysmgt = _registerPort (441,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "decvms-sysmgt",
-                                                                          "decvms-sysmgt");
-  public static final INetworkPort UDP_441_decvms_sysmgt = _registerPort (441,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "decvms-sysmgt",
-                                                                          "decvms-sysmgt");
-  public static final INetworkPort TCP_442_cvc_hostd = _registerPort (442,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cvc_hostd",
-                                                                      "cvc_hostd");
-  public static final INetworkPort UDP_442_cvc_hostd = _registerPort (442,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cvc_hostd",
-                                                                      "cvc_hostd");
-  public static final INetworkPort TCP_443_https = _registerPort (443,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "https",
-                                                                  "http protocol over TLS/SSL");
-  public static final INetworkPort UDP_443_https = _registerPort (443,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "https",
-                                                                  "http protocol over TLS/SSL");
-  public static final INetworkPort TCP_444_snpp = _registerPort (444,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "snpp",
-                                                                 "Simple Network Paging Protocol");
-  public static final INetworkPort UDP_444_snpp = _registerPort (444,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "snpp",
-                                                                 "Simple Network Paging Protocol");
-  public static final INetworkPort TCP_445_microsoft_ds = _registerPort (445,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "microsoft-ds",
-                                                                         "Microsoft-DS");
-  public static final INetworkPort UDP_445_microsoft_ds = _registerPort (445,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "microsoft-ds",
-                                                                         "Microsoft-DS");
+  public static final INetworkPort TCP_441_decvms_sysmgt = _registerPort (441, ENetworkProtocol.TCP, "decvms-sysmgt", "decvms-sysmgt");
+  public static final INetworkPort UDP_441_decvms_sysmgt = _registerPort (441, ENetworkProtocol.UDP, "decvms-sysmgt", "decvms-sysmgt");
+  public static final INetworkPort TCP_442_cvc_hostd = _registerPort (442, ENetworkProtocol.TCP, "cvc_hostd", "cvc_hostd");
+  public static final INetworkPort UDP_442_cvc_hostd = _registerPort (442, ENetworkProtocol.UDP, "cvc_hostd", "cvc_hostd");
+  public static final INetworkPort TCP_443_https = _registerPort (443, ENetworkProtocol.TCP, "https", "http protocol over TLS/SSL");
+  public static final INetworkPort UDP_443_https = _registerPort (443, ENetworkProtocol.UDP, "https", "http protocol over TLS/SSL");
+  public static final INetworkPort TCP_444_snpp = _registerPort (444, ENetworkProtocol.TCP, "snpp", "Simple Network Paging Protocol");
+  public static final INetworkPort UDP_444_snpp = _registerPort (444, ENetworkProtocol.UDP, "snpp", "Simple Network Paging Protocol");
+  public static final INetworkPort TCP_445_microsoft_ds = _registerPort (445, ENetworkProtocol.TCP, "microsoft-ds", "Microsoft-DS");
+  public static final INetworkPort UDP_445_microsoft_ds = _registerPort (445, ENetworkProtocol.UDP, "microsoft-ds", "Microsoft-DS");
   public static final INetworkPort TCP_446_ddm_rdb = _registerPort (446,
                                                                     ENetworkProtocol.TCP,
                                                                     "ddm-rdb",
@@ -2162,14 +1016,8 @@ public final class DefaultNetworkPorts
                                                                     ENetworkProtocol.UDP,
                                                                     "ddm-ssl",
                                                                     "DDM-Remote DB Access Using Secure Sockets");
-  public static final INetworkPort TCP_449_as_servermap = _registerPort (449,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "as-servermap",
-                                                                         "AS Server Mapper");
-  public static final INetworkPort UDP_449_as_servermap = _registerPort (449,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "as-servermap",
-                                                                         "AS Server Mapper");
+  public static final INetworkPort TCP_449_as_servermap = _registerPort (449, ENetworkProtocol.TCP, "as-servermap", "AS Server Mapper");
+  public static final INetworkPort UDP_449_as_servermap = _registerPort (449, ENetworkProtocol.UDP, "as-servermap", "AS Server Mapper");
   public static final INetworkPort TCP_450_tserver = _registerPort (450,
                                                                     ENetworkProtocol.TCP,
                                                                     "tserver",
@@ -2186,180 +1034,66 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "sfs-smp-net",
                                                                         "Cray Network Semaphore server");
-  public static final INetworkPort TCP_452_sfs_config = _registerPort (452,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "sfs-config",
-                                                                       "Cray SFS config server");
-  public static final INetworkPort UDP_452_sfs_config = _registerPort (452,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "sfs-config",
-                                                                       "Cray SFS config server");
-  public static final INetworkPort TCP_453_creativeserver = _registerPort (453,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "creativeserver",
-                                                                           "CreativeServer");
-  public static final INetworkPort UDP_453_creativeserver = _registerPort (453,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "creativeserver",
-                                                                           "CreativeServer");
-  public static final INetworkPort TCP_454_contentserver = _registerPort (454,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "contentserver",
-                                                                          "ContentServer");
-  public static final INetworkPort UDP_454_contentserver = _registerPort (454,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "contentserver",
-                                                                          "ContentServer");
-  public static final INetworkPort TCP_455_creativepartnr = _registerPort (455,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "creativepartnr",
-                                                                           "CreativePartnr");
-  public static final INetworkPort UDP_455_creativepartnr = _registerPort (455,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "creativepartnr",
-                                                                           "CreativePartnr");
-  public static final INetworkPort TCP_456_macon_tcp = _registerPort (456,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "macon-tcp",
-                                                                      "macon-tcp");
-  public static final INetworkPort UDP_456_macon_udp = _registerPort (456,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "macon-udp",
-                                                                      "macon-udp");
+  public static final INetworkPort TCP_452_sfs_config = _registerPort (452, ENetworkProtocol.TCP, "sfs-config", "Cray SFS config server");
+  public static final INetworkPort UDP_452_sfs_config = _registerPort (452, ENetworkProtocol.UDP, "sfs-config", "Cray SFS config server");
+  public static final INetworkPort TCP_453_creativeserver = _registerPort (453, ENetworkProtocol.TCP, "creativeserver", "CreativeServer");
+  public static final INetworkPort UDP_453_creativeserver = _registerPort (453, ENetworkProtocol.UDP, "creativeserver", "CreativeServer");
+  public static final INetworkPort TCP_454_contentserver = _registerPort (454, ENetworkProtocol.TCP, "contentserver", "ContentServer");
+  public static final INetworkPort UDP_454_contentserver = _registerPort (454, ENetworkProtocol.UDP, "contentserver", "ContentServer");
+  public static final INetworkPort TCP_455_creativepartnr = _registerPort (455, ENetworkProtocol.TCP, "creativepartnr", "CreativePartnr");
+  public static final INetworkPort UDP_455_creativepartnr = _registerPort (455, ENetworkProtocol.UDP, "creativepartnr", "CreativePartnr");
+  public static final INetworkPort TCP_456_macon_tcp = _registerPort (456, ENetworkProtocol.TCP, "macon-tcp", "macon-tcp");
+  public static final INetworkPort UDP_456_macon_udp = _registerPort (456, ENetworkProtocol.UDP, "macon-udp", "macon-udp");
   public static final INetworkPort TCP_457_scohelp = _registerPort (457, ENetworkProtocol.TCP, "scohelp", "scohelp");
   public static final INetworkPort UDP_457_scohelp = _registerPort (457, ENetworkProtocol.UDP, "scohelp", "scohelp");
-  public static final INetworkPort TCP_458_appleqtc = _registerPort (458,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "appleqtc",
-                                                                     "apple quick time");
-  public static final INetworkPort UDP_458_appleqtc = _registerPort (458,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "appleqtc",
-                                                                     "apple quick time");
-  public static final INetworkPort TCP_459_ampr_rcmd = _registerPort (459,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ampr-rcmd",
-                                                                      "ampr-rcmd");
-  public static final INetworkPort UDP_459_ampr_rcmd = _registerPort (459,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ampr-rcmd",
-                                                                      "ampr-rcmd");
+  public static final INetworkPort TCP_458_appleqtc = _registerPort (458, ENetworkProtocol.TCP, "appleqtc", "apple quick time");
+  public static final INetworkPort UDP_458_appleqtc = _registerPort (458, ENetworkProtocol.UDP, "appleqtc", "apple quick time");
+  public static final INetworkPort TCP_459_ampr_rcmd = _registerPort (459, ENetworkProtocol.TCP, "ampr-rcmd", "ampr-rcmd");
+  public static final INetworkPort UDP_459_ampr_rcmd = _registerPort (459, ENetworkProtocol.UDP, "ampr-rcmd", "ampr-rcmd");
   public static final INetworkPort TCP_460_skronk = _registerPort (460, ENetworkProtocol.TCP, "skronk", "skronk");
   public static final INetworkPort UDP_460_skronk = _registerPort (460, ENetworkProtocol.UDP, "skronk", "skronk");
-  public static final INetworkPort TCP_461_datasurfsrv = _registerPort (461,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "datasurfsrv",
-                                                                        "DataRampSrv");
-  public static final INetworkPort UDP_461_datasurfsrv = _registerPort (461,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "datasurfsrv",
-                                                                        "DataRampSrv");
-  public static final INetworkPort TCP_462_datasurfsrvsec = _registerPort (462,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "datasurfsrvsec",
-                                                                           "DataRampSrvSec");
-  public static final INetworkPort UDP_462_datasurfsrvsec = _registerPort (462,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "datasurfsrvsec",
-                                                                           "DataRampSrvSec");
+  public static final INetworkPort TCP_461_datasurfsrv = _registerPort (461, ENetworkProtocol.TCP, "datasurfsrv", "DataRampSrv");
+  public static final INetworkPort UDP_461_datasurfsrv = _registerPort (461, ENetworkProtocol.UDP, "datasurfsrv", "DataRampSrv");
+  public static final INetworkPort TCP_462_datasurfsrvsec = _registerPort (462, ENetworkProtocol.TCP, "datasurfsrvsec", "DataRampSrvSec");
+  public static final INetworkPort UDP_462_datasurfsrvsec = _registerPort (462, ENetworkProtocol.UDP, "datasurfsrvsec", "DataRampSrvSec");
   public static final INetworkPort TCP_463_alpes = _registerPort (463, ENetworkProtocol.TCP, "alpes", "alpes");
   public static final INetworkPort UDP_463_alpes = _registerPort (463, ENetworkProtocol.UDP, "alpes", "alpes");
   public static final INetworkPort TCP_464_kpasswd = _registerPort (464, ENetworkProtocol.TCP, "kpasswd", "kpasswd");
   public static final INetworkPort UDP_464_kpasswd = _registerPort (464, ENetworkProtocol.UDP, "kpasswd", "kpasswd");
-  public static final INetworkPort TCP_465_urd = _registerPort (465,
-                                                                ENetworkProtocol.TCP,
-                                                                "urd",
-                                                                "URL Rendezvous Directory for SSM");
+  public static final INetworkPort TCP_465_urd = _registerPort (465, ENetworkProtocol.TCP, "urd", "URL Rendezvous Directory for SSM");
   public static final INetworkPort TCP_465_submissions = _registerPort (465,
                                                                         ENetworkProtocol.TCP,
                                                                         "submissions",
                                                                         "Message Submission over TLS protocol");
-  public static final INetworkPort UDP_465_igmpv3lite = _registerPort (465,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "igmpv3lite",
-                                                                       "IGMP over UDP for SSM");
-  public static final INetworkPort TCP_466_digital_vrc = _registerPort (466,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "digital-vrc",
-                                                                        "digital-vrc");
-  public static final INetworkPort UDP_466_digital_vrc = _registerPort (466,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "digital-vrc",
-                                                                        "digital-vrc");
-  public static final INetworkPort TCP_467_mylex_mapd = _registerPort (467,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "mylex-mapd",
-                                                                       "mylex-mapd");
-  public static final INetworkPort UDP_467_mylex_mapd = _registerPort (467,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "mylex-mapd",
-                                                                       "mylex-mapd");
+  public static final INetworkPort UDP_465_igmpv3lite = _registerPort (465, ENetworkProtocol.UDP, "igmpv3lite", "IGMP over UDP for SSM");
+  public static final INetworkPort TCP_466_digital_vrc = _registerPort (466, ENetworkProtocol.TCP, "digital-vrc", "digital-vrc");
+  public static final INetworkPort UDP_466_digital_vrc = _registerPort (466, ENetworkProtocol.UDP, "digital-vrc", "digital-vrc");
+  public static final INetworkPort TCP_467_mylex_mapd = _registerPort (467, ENetworkProtocol.TCP, "mylex-mapd", "mylex-mapd");
+  public static final INetworkPort UDP_467_mylex_mapd = _registerPort (467, ENetworkProtocol.UDP, "mylex-mapd", "mylex-mapd");
   public static final INetworkPort TCP_468_photuris = _registerPort (468, ENetworkProtocol.TCP, "photuris", "proturis");
   public static final INetworkPort UDP_468_photuris = _registerPort (468, ENetworkProtocol.UDP, "photuris", "proturis");
-  public static final INetworkPort TCP_469_rcp = _registerPort (469,
-                                                                ENetworkProtocol.TCP,
-                                                                "rcp",
-                                                                "Radio Control Protocol");
-  public static final INetworkPort UDP_469_rcp = _registerPort (469,
-                                                                ENetworkProtocol.UDP,
-                                                                "rcp",
-                                                                "Radio Control Protocol");
-  public static final INetworkPort TCP_470_scx_proxy = _registerPort (470,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "scx-proxy",
-                                                                      "scx-proxy");
-  public static final INetworkPort UDP_470_scx_proxy = _registerPort (470,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "scx-proxy",
-                                                                      "scx-proxy");
+  public static final INetworkPort TCP_469_rcp = _registerPort (469, ENetworkProtocol.TCP, "rcp", "Radio Control Protocol");
+  public static final INetworkPort UDP_469_rcp = _registerPort (469, ENetworkProtocol.UDP, "rcp", "Radio Control Protocol");
+  public static final INetworkPort TCP_470_scx_proxy = _registerPort (470, ENetworkProtocol.TCP, "scx-proxy", "scx-proxy");
+  public static final INetworkPort UDP_470_scx_proxy = _registerPort (470, ENetworkProtocol.UDP, "scx-proxy", "scx-proxy");
   public static final INetworkPort TCP_471_mondex = _registerPort (471, ENetworkProtocol.TCP, "mondex", "Mondex");
   public static final INetworkPort UDP_471_mondex = _registerPort (471, ENetworkProtocol.UDP, "mondex", "Mondex");
-  public static final INetworkPort TCP_472_ljk_login = _registerPort (472,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ljk-login",
-                                                                      "ljk-login");
-  public static final INetworkPort UDP_472_ljk_login = _registerPort (472,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ljk-login",
-                                                                      "ljk-login");
-  public static final INetworkPort TCP_473_hybrid_pop = _registerPort (473,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "hybrid-pop",
-                                                                       "hybrid-pop");
-  public static final INetworkPort UDP_473_hybrid_pop = _registerPort (473,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "hybrid-pop",
-                                                                       "hybrid-pop");
+  public static final INetworkPort TCP_472_ljk_login = _registerPort (472, ENetworkProtocol.TCP, "ljk-login", "ljk-login");
+  public static final INetworkPort UDP_472_ljk_login = _registerPort (472, ENetworkProtocol.UDP, "ljk-login", "ljk-login");
+  public static final INetworkPort TCP_473_hybrid_pop = _registerPort (473, ENetworkProtocol.TCP, "hybrid-pop", "hybrid-pop");
+  public static final INetworkPort UDP_473_hybrid_pop = _registerPort (473, ENetworkProtocol.UDP, "hybrid-pop", "hybrid-pop");
   public static final INetworkPort TCP_474_tn_tl_w1 = _registerPort (474, ENetworkProtocol.TCP, "tn-tl-w1", "tn-tl-w1");
   public static final INetworkPort UDP_474_tn_tl_w2 = _registerPort (474, ENetworkProtocol.UDP, "tn-tl-w2", "tn-tl-w2");
-  public static final INetworkPort TCP_475_tcpnethaspsrv = _registerPort (475,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "tcpnethaspsrv",
-                                                                          "tcpnethaspsrv");
-  public static final INetworkPort UDP_475_tcpnethaspsrv = _registerPort (475,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "tcpnethaspsrv",
-                                                                          "tcpnethaspsrv");
-  public static final INetworkPort TCP_476_tn_tl_fd1 = _registerPort (476,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "tn-tl-fd1",
-                                                                      "tn-tl-fd1");
-  public static final INetworkPort UDP_476_tn_tl_fd1 = _registerPort (476,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "tn-tl-fd1",
-                                                                      "tn-tl-fd1");
+  public static final INetworkPort TCP_475_tcpnethaspsrv = _registerPort (475, ENetworkProtocol.TCP, "tcpnethaspsrv", "tcpnethaspsrv");
+  public static final INetworkPort UDP_475_tcpnethaspsrv = _registerPort (475, ENetworkProtocol.UDP, "tcpnethaspsrv", "tcpnethaspsrv");
+  public static final INetworkPort TCP_476_tn_tl_fd1 = _registerPort (476, ENetworkProtocol.TCP, "tn-tl-fd1", "tn-tl-fd1");
+  public static final INetworkPort UDP_476_tn_tl_fd1 = _registerPort (476, ENetworkProtocol.UDP, "tn-tl-fd1", "tn-tl-fd1");
   public static final INetworkPort TCP_477_ss7ns = _registerPort (477, ENetworkProtocol.TCP, "ss7ns", "ss7ns");
   public static final INetworkPort UDP_477_ss7ns = _registerPort (477, ENetworkProtocol.UDP, "ss7ns", "ss7ns");
   public static final INetworkPort TCP_478_spsc = _registerPort (478, ENetworkProtocol.TCP, "spsc", "spsc");
   public static final INetworkPort UDP_478_spsc = _registerPort (478, ENetworkProtocol.UDP, "spsc", "spsc");
-  public static final INetworkPort TCP_479_iafserver = _registerPort (479,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "iafserver",
-                                                                      "iafserver");
-  public static final INetworkPort UDP_479_iafserver = _registerPort (479,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "iafserver",
-                                                                      "iafserver");
+  public static final INetworkPort TCP_479_iafserver = _registerPort (479, ENetworkProtocol.TCP, "iafserver", "iafserver");
+  public static final INetworkPort UDP_479_iafserver = _registerPort (479, ENetworkProtocol.UDP, "iafserver", "iafserver");
   public static final INetworkPort TCP_480_iafdbase = _registerPort (480, ENetworkProtocol.TCP, "iafdbase", "iafdbase");
   public static final INetworkPort UDP_480_iafdbase = _registerPort (480, ENetworkProtocol.UDP, "iafdbase", "iafdbase");
   public static final INetworkPort TCP_481_ph = _registerPort (481, ENetworkProtocol.TCP, "ph", "Ph service");
@@ -2376,14 +1110,8 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "integra-sme",
                                                                         "Integra Software Management Environment");
-  public static final INetworkPort TCP_485_powerburst = _registerPort (485,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "powerburst",
-                                                                       "Air Soft Power Burst");
-  public static final INetworkPort UDP_485_powerburst = _registerPort (485,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "powerburst",
-                                                                       "Air Soft Power Burst");
+  public static final INetworkPort TCP_485_powerburst = _registerPort (485, ENetworkProtocol.TCP, "powerburst", "Air Soft Power Burst");
+  public static final INetworkPort UDP_485_powerburst = _registerPort (485, ENetworkProtocol.UDP, "powerburst", "Air Soft Power Burst");
   public static final INetworkPort TCP_486_avian = _registerPort (486, ENetworkProtocol.TCP, "avian", "avian");
   public static final INetworkPort UDP_486_avian = _registerPort (486, ENetworkProtocol.UDP, "avian", "avian");
   public static final INetworkPort TCP_487_saft = _registerPort (487,
@@ -2396,22 +1124,10 @@ public final class DefaultNetworkPorts
                                                                  "saft Simple Asynchronous File Transfer");
   public static final INetworkPort TCP_488_gss_http = _registerPort (488, ENetworkProtocol.TCP, "gss-http", "gss-http");
   public static final INetworkPort UDP_488_gss_http = _registerPort (488, ENetworkProtocol.UDP, "gss-http", "gss-http");
-  public static final INetworkPort TCP_489_nest_protocol = _registerPort (489,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "nest-protocol",
-                                                                          "nest-protocol");
-  public static final INetworkPort UDP_489_nest_protocol = _registerPort (489,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "nest-protocol",
-                                                                          "nest-protocol");
-  public static final INetworkPort TCP_490_micom_pfs = _registerPort (490,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "micom-pfs",
-                                                                      "micom-pfs");
-  public static final INetworkPort UDP_490_micom_pfs = _registerPort (490,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "micom-pfs",
-                                                                      "micom-pfs");
+  public static final INetworkPort TCP_489_nest_protocol = _registerPort (489, ENetworkProtocol.TCP, "nest-protocol", "nest-protocol");
+  public static final INetworkPort UDP_489_nest_protocol = _registerPort (489, ENetworkProtocol.UDP, "nest-protocol", "nest-protocol");
+  public static final INetworkPort TCP_490_micom_pfs = _registerPort (490, ENetworkProtocol.TCP, "micom-pfs", "micom-pfs");
+  public static final INetworkPort UDP_490_micom_pfs = _registerPort (490, ENetworkProtocol.UDP, "micom-pfs", "micom-pfs");
   public static final INetworkPort TCP_491_go_login = _registerPort (491, ENetworkProtocol.TCP, "go-login", "go-login");
   public static final INetworkPort UDP_491_go_login = _registerPort (491, ENetworkProtocol.UDP, "go-login", "go-login");
   public static final INetworkPort TCP_492_ticf_1 = _registerPort (492,
@@ -2432,22 +1148,10 @@ public final class DefaultNetworkPorts
                                                                    "Transport Independent Convergence for FNA");
   public static final INetworkPort TCP_494_pov_ray = _registerPort (494, ENetworkProtocol.TCP, "pov-ray", "POV-Ray");
   public static final INetworkPort UDP_494_pov_ray = _registerPort (494, ENetworkProtocol.UDP, "pov-ray", "POV-Ray");
-  public static final INetworkPort TCP_495_intecourier = _registerPort (495,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "intecourier",
-                                                                        "intecourier");
-  public static final INetworkPort UDP_495_intecourier = _registerPort (495,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "intecourier",
-                                                                        "intecourier");
-  public static final INetworkPort TCP_496_pim_rp_disc = _registerPort (496,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "pim-rp-disc",
-                                                                        "PIM-RP-DISC");
-  public static final INetworkPort UDP_496_pim_rp_disc = _registerPort (496,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "pim-rp-disc",
-                                                                        "PIM-RP-DISC");
+  public static final INetworkPort TCP_495_intecourier = _registerPort (495, ENetworkProtocol.TCP, "intecourier", "intecourier");
+  public static final INetworkPort UDP_495_intecourier = _registerPort (495, ENetworkProtocol.UDP, "intecourier", "intecourier");
+  public static final INetworkPort TCP_496_pim_rp_disc = _registerPort (496, ENetworkProtocol.TCP, "pim-rp-disc", "PIM-RP-DISC");
+  public static final INetworkPort UDP_496_pim_rp_disc = _registerPort (496, ENetworkProtocol.UDP, "pim-rp-disc", "PIM-RP-DISC");
   public static final INetworkPort TCP_497_retrospect = _registerPort (497,
                                                                        ENetworkProtocol.TCP,
                                                                        "retrospect",
@@ -2458,38 +1162,20 @@ public final class DefaultNetworkPorts
                                                                        "Retrospect backup and restore service");
   public static final INetworkPort TCP_498_siam = _registerPort (498, ENetworkProtocol.TCP, "siam", "siam");
   public static final INetworkPort UDP_498_siam = _registerPort (498, ENetworkProtocol.UDP, "siam", "siam");
-  public static final INetworkPort TCP_499_iso_ill = _registerPort (499,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "iso-ill",
-                                                                    "ISO ILL Protocol");
-  public static final INetworkPort UDP_499_iso_ill = _registerPort (499,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "iso-ill",
-                                                                    "ISO ILL Protocol");
+  public static final INetworkPort TCP_499_iso_ill = _registerPort (499, ENetworkProtocol.TCP, "iso-ill", "ISO ILL Protocol");
+  public static final INetworkPort UDP_499_iso_ill = _registerPort (499, ENetworkProtocol.UDP, "iso-ill", "ISO ILL Protocol");
   public static final INetworkPort TCP_500_isakmp = _registerPort (500, ENetworkProtocol.TCP, "isakmp", "isakmp");
   public static final INetworkPort UDP_500_isakmp = _registerPort (500, ENetworkProtocol.UDP, "isakmp", "isakmp");
   public static final INetworkPort TCP_501_stmf = _registerPort (501, ENetworkProtocol.TCP, "stmf", "STMF");
   public static final INetworkPort UDP_501_stmf = _registerPort (501, ENetworkProtocol.UDP, "stmf", "STMF");
-  public static final INetworkPort TCP_502_mbap = _registerPort (502,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "mbap",
-                                                                 "Modbus Application Protocol");
-  public static final INetworkPort UDP_502_mbap = _registerPort (502,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "mbap",
-                                                                 "Modbus Application Protocol");
+  public static final INetworkPort TCP_502_mbap = _registerPort (502, ENetworkProtocol.TCP, "mbap", "Modbus Application Protocol");
+  public static final INetworkPort UDP_502_mbap = _registerPort (502, ENetworkProtocol.UDP, "mbap", "Modbus Application Protocol");
   public static final INetworkPort TCP_503_intrinsa = _registerPort (503, ENetworkProtocol.TCP, "intrinsa", "Intrinsa");
   public static final INetworkPort UDP_503_intrinsa = _registerPort (503, ENetworkProtocol.UDP, "intrinsa", "Intrinsa");
   public static final INetworkPort TCP_504_citadel = _registerPort (504, ENetworkProtocol.TCP, "citadel", "citadel");
   public static final INetworkPort UDP_504_citadel = _registerPort (504, ENetworkProtocol.UDP, "citadel", "citadel");
-  public static final INetworkPort TCP_505_mailbox_lm = _registerPort (505,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "mailbox-lm",
-                                                                       "mailbox-lm");
-  public static final INetworkPort UDP_505_mailbox_lm = _registerPort (505,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "mailbox-lm",
-                                                                       "mailbox-lm");
+  public static final INetworkPort TCP_505_mailbox_lm = _registerPort (505, ENetworkProtocol.TCP, "mailbox-lm", "mailbox-lm");
+  public static final INetworkPort UDP_505_mailbox_lm = _registerPort (505, ENetworkProtocol.UDP, "mailbox-lm", "mailbox-lm");
   public static final INetworkPort TCP_506_ohimsrv = _registerPort (506, ENetworkProtocol.TCP, "ohimsrv", "ohimsrv");
   public static final INetworkPort UDP_506_ohimsrv = _registerPort (506, ENetworkProtocol.UDP, "ohimsrv", "ohimsrv");
   public static final INetworkPort TCP_507_crs = _registerPort (507, ENetworkProtocol.TCP, "crs", "crs");
@@ -2498,14 +1184,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_508_xvttp = _registerPort (508, ENetworkProtocol.UDP, "xvttp", "xvttp");
   public static final INetworkPort TCP_509_snare = _registerPort (509, ENetworkProtocol.TCP, "snare", "snare");
   public static final INetworkPort UDP_509_snare = _registerPort (509, ENetworkProtocol.UDP, "snare", "snare");
-  public static final INetworkPort TCP_510_fcp = _registerPort (510,
-                                                                ENetworkProtocol.TCP,
-                                                                "fcp",
-                                                                "FirstClass Protocol");
-  public static final INetworkPort UDP_510_fcp = _registerPort (510,
-                                                                ENetworkProtocol.UDP,
-                                                                "fcp",
-                                                                "FirstClass Protocol");
+  public static final INetworkPort TCP_510_fcp = _registerPort (510, ENetworkProtocol.TCP, "fcp", "FirstClass Protocol");
+  public static final INetworkPort UDP_510_fcp = _registerPort (510, ENetworkProtocol.UDP, "fcp", "FirstClass Protocol");
   public static final INetworkPort TCP_511_passgo = _registerPort (511, ENetworkProtocol.TCP, "passgo", "PassGo");
   public static final INetworkPort UDP_511_passgo = _registerPort (511, ENetworkProtocol.UDP, "passgo", "PassGo");
   public static final INetworkPort TCP_512_exec = _registerPort (512,
@@ -2546,10 +1226,7 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_518_ntalk = _registerPort (518, ENetworkProtocol.UDP, "ntalk", "");
   public static final INetworkPort TCP_519_utime = _registerPort (519, ENetworkProtocol.TCP, "utime", "unixtime");
   public static final INetworkPort UDP_519_utime = _registerPort (519, ENetworkProtocol.UDP, "utime", "unixtime");
-  public static final INetworkPort TCP_520_efs = _registerPort (520,
-                                                                ENetworkProtocol.TCP,
-                                                                "efs",
-                                                                "extended file name server");
+  public static final INetworkPort TCP_520_efs = _registerPort (520, ENetworkProtocol.TCP, "efs", "extended file name server");
   public static final INetworkPort UDP_520_router = _registerPort (520,
                                                                    ENetworkProtocol.UDP,
                                                                    "router",
@@ -2568,14 +1245,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_526_tempo = _registerPort (526, ENetworkProtocol.UDP, "tempo", "newdate");
   public static final INetworkPort TCP_527_stx = _registerPort (527, ENetworkProtocol.TCP, "stx", "Stock IXChange");
   public static final INetworkPort UDP_527_stx = _registerPort (527, ENetworkProtocol.UDP, "stx", "Stock IXChange");
-  public static final INetworkPort TCP_528_custix = _registerPort (528,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "custix",
-                                                                   "Customer IXChange");
-  public static final INetworkPort UDP_528_custix = _registerPort (528,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "custix",
-                                                                   "Customer IXChange");
+  public static final INetworkPort TCP_528_custix = _registerPort (528, ENetworkProtocol.TCP, "custix", "Customer IXChange");
+  public static final INetworkPort UDP_528_custix = _registerPort (528, ENetworkProtocol.UDP, "custix", "Customer IXChange");
   public static final INetworkPort TCP_529_irc_serv = _registerPort (529, ENetworkProtocol.TCP, "irc-serv", "IRC-SERV");
   public static final INetworkPort UDP_529_irc_serv = _registerPort (529, ENetworkProtocol.UDP, "irc-serv", "IRC-SERV");
   public static final INetworkPort TCP_530_courier = _registerPort (530, ENetworkProtocol.TCP, "courier", "rpc");
@@ -2584,40 +1255,16 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_531_conference = _registerPort (531, ENetworkProtocol.UDP, "conference", "chat");
   public static final INetworkPort TCP_532_netnews = _registerPort (532, ENetworkProtocol.TCP, "netnews", "readnews");
   public static final INetworkPort UDP_532_netnews = _registerPort (532, ENetworkProtocol.UDP, "netnews", "readnews");
-  public static final INetworkPort TCP_533_netwall = _registerPort (533,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "netwall",
-                                                                    "for emergency broadcasts");
-  public static final INetworkPort UDP_533_netwall = _registerPort (533,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "netwall",
-                                                                    "for emergency broadcasts");
-  public static final INetworkPort TCP_534_windream = _registerPort (534,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "windream",
-                                                                     "windream Admin");
-  public static final INetworkPort UDP_534_windream = _registerPort (534,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "windream",
-                                                                     "windream Admin");
+  public static final INetworkPort TCP_533_netwall = _registerPort (533, ENetworkProtocol.TCP, "netwall", "for emergency broadcasts");
+  public static final INetworkPort UDP_533_netwall = _registerPort (533, ENetworkProtocol.UDP, "netwall", "for emergency broadcasts");
+  public static final INetworkPort TCP_534_windream = _registerPort (534, ENetworkProtocol.TCP, "windream", "windream Admin");
+  public static final INetworkPort UDP_534_windream = _registerPort (534, ENetworkProtocol.UDP, "windream", "windream Admin");
   public static final INetworkPort TCP_535_iiop = _registerPort (535, ENetworkProtocol.TCP, "iiop", "iiop");
   public static final INetworkPort UDP_535_iiop = _registerPort (535, ENetworkProtocol.UDP, "iiop", "iiop");
-  public static final INetworkPort TCP_536_opalis_rdv = _registerPort (536,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "opalis-rdv",
-                                                                       "opalis-rdv");
-  public static final INetworkPort UDP_536_opalis_rdv = _registerPort (536,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "opalis-rdv",
-                                                                       "opalis-rdv");
-  public static final INetworkPort TCP_537_nmsp = _registerPort (537,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "nmsp",
-                                                                 "Networked Media Streaming Protocol");
-  public static final INetworkPort UDP_537_nmsp = _registerPort (537,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "nmsp",
-                                                                 "Networked Media Streaming Protocol");
+  public static final INetworkPort TCP_536_opalis_rdv = _registerPort (536, ENetworkProtocol.TCP, "opalis-rdv", "opalis-rdv");
+  public static final INetworkPort UDP_536_opalis_rdv = _registerPort (536, ENetworkProtocol.UDP, "opalis-rdv", "opalis-rdv");
+  public static final INetworkPort TCP_537_nmsp = _registerPort (537, ENetworkProtocol.TCP, "nmsp", "Networked Media Streaming Protocol");
+  public static final INetworkPort UDP_537_nmsp = _registerPort (537, ENetworkProtocol.UDP, "nmsp", "Networked Media Streaming Protocol");
   public static final INetworkPort TCP_538_gdomap = _registerPort (538, ENetworkProtocol.TCP, "gdomap", "gdomap");
   public static final INetworkPort UDP_538_gdomap = _registerPort (538, ENetworkProtocol.UDP, "gdomap", "gdomap");
   public static final INetworkPort TCP_539_apertus_ldp = _registerPort (539,
@@ -2630,112 +1277,46 @@ public final class DefaultNetworkPorts
                                                                         "Apertus Technologies Load Determination");
   public static final INetworkPort TCP_540_uucp = _registerPort (540, ENetworkProtocol.TCP, "uucp", "uucpd");
   public static final INetworkPort UDP_540_uucp = _registerPort (540, ENetworkProtocol.UDP, "uucp", "uucpd");
-  public static final INetworkPort TCP_541_uucp_rlogin = _registerPort (541,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "uucp-rlogin",
-                                                                        "uucp-rlogin");
-  public static final INetworkPort UDP_541_uucp_rlogin = _registerPort (541,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "uucp-rlogin",
-                                                                        "uucp-rlogin");
+  public static final INetworkPort TCP_541_uucp_rlogin = _registerPort (541, ENetworkProtocol.TCP, "uucp-rlogin", "uucp-rlogin");
+  public static final INetworkPort UDP_541_uucp_rlogin = _registerPort (541, ENetworkProtocol.UDP, "uucp-rlogin", "uucp-rlogin");
   public static final INetworkPort TCP_542_commerce = _registerPort (542, ENetworkProtocol.TCP, "commerce", "commerce");
   public static final INetworkPort UDP_542_commerce = _registerPort (542, ENetworkProtocol.UDP, "commerce", "commerce");
   public static final INetworkPort TCP_543_klogin = _registerPort (543, ENetworkProtocol.TCP, "klogin", "");
   public static final INetworkPort UDP_543_klogin = _registerPort (543, ENetworkProtocol.UDP, "klogin", "");
   public static final INetworkPort TCP_544_kshell = _registerPort (544, ENetworkProtocol.TCP, "kshell", "krcmd");
   public static final INetworkPort UDP_544_kshell = _registerPort (544, ENetworkProtocol.UDP, "kshell", "krcmd");
-  public static final INetworkPort TCP_545_appleqtcsrvr = _registerPort (545,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "appleqtcsrvr",
-                                                                         "appleqtcsrvr");
-  public static final INetworkPort UDP_545_appleqtcsrvr = _registerPort (545,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "appleqtcsrvr",
-                                                                         "appleqtcsrvr");
-  public static final INetworkPort TCP_546_dhcpv6_client = _registerPort (546,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "dhcpv6-client",
-                                                                          "DHCPv6 Client");
-  public static final INetworkPort UDP_546_dhcpv6_client = _registerPort (546,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "dhcpv6-client",
-                                                                          "DHCPv6 Client");
-  public static final INetworkPort TCP_547_dhcpv6_server = _registerPort (547,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "dhcpv6-server",
-                                                                          "DHCPv6 Server");
-  public static final INetworkPort UDP_547_dhcpv6_server = _registerPort (547,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "dhcpv6-server",
-                                                                          "DHCPv6 Server");
-  public static final INetworkPort TCP_548_afpovertcp = _registerPort (548,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "afpovertcp",
-                                                                       "AFP over TCP");
-  public static final INetworkPort UDP_548_afpovertcp = _registerPort (548,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "afpovertcp",
-                                                                       "AFP over TCP");
+  public static final INetworkPort TCP_545_appleqtcsrvr = _registerPort (545, ENetworkProtocol.TCP, "appleqtcsrvr", "appleqtcsrvr");
+  public static final INetworkPort UDP_545_appleqtcsrvr = _registerPort (545, ENetworkProtocol.UDP, "appleqtcsrvr", "appleqtcsrvr");
+  public static final INetworkPort TCP_546_dhcpv6_client = _registerPort (546, ENetworkProtocol.TCP, "dhcpv6-client", "DHCPv6 Client");
+  public static final INetworkPort UDP_546_dhcpv6_client = _registerPort (546, ENetworkProtocol.UDP, "dhcpv6-client", "DHCPv6 Client");
+  public static final INetworkPort TCP_547_dhcpv6_server = _registerPort (547, ENetworkProtocol.TCP, "dhcpv6-server", "DHCPv6 Server");
+  public static final INetworkPort UDP_547_dhcpv6_server = _registerPort (547, ENetworkProtocol.UDP, "dhcpv6-server", "DHCPv6 Server");
+  public static final INetworkPort TCP_548_afpovertcp = _registerPort (548, ENetworkProtocol.TCP, "afpovertcp", "AFP over TCP");
+  public static final INetworkPort UDP_548_afpovertcp = _registerPort (548, ENetworkProtocol.UDP, "afpovertcp", "AFP over TCP");
   public static final INetworkPort TCP_549_idfp = _registerPort (549, ENetworkProtocol.TCP, "idfp", "IDFP");
   public static final INetworkPort UDP_549_idfp = _registerPort (549, ENetworkProtocol.UDP, "idfp", "IDFP");
   public static final INetworkPort TCP_550_new_rwho = _registerPort (550, ENetworkProtocol.TCP, "new-rwho", "new-who");
   public static final INetworkPort UDP_550_new_rwho = _registerPort (550, ENetworkProtocol.UDP, "new-rwho", "new-who");
-  public static final INetworkPort TCP_551_cybercash = _registerPort (551,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cybercash",
-                                                                      "cybercash");
-  public static final INetworkPort UDP_551_cybercash = _registerPort (551,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cybercash",
-                                                                      "cybercash");
-  public static final INetworkPort TCP_552_devshr_nts = _registerPort (552,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "devshr-nts",
-                                                                       "DeviceShare");
-  public static final INetworkPort UDP_552_devshr_nts = _registerPort (552,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "devshr-nts",
-                                                                       "DeviceShare");
+  public static final INetworkPort TCP_551_cybercash = _registerPort (551, ENetworkProtocol.TCP, "cybercash", "cybercash");
+  public static final INetworkPort UDP_551_cybercash = _registerPort (551, ENetworkProtocol.UDP, "cybercash", "cybercash");
+  public static final INetworkPort TCP_552_devshr_nts = _registerPort (552, ENetworkProtocol.TCP, "devshr-nts", "DeviceShare");
+  public static final INetworkPort UDP_552_devshr_nts = _registerPort (552, ENetworkProtocol.UDP, "devshr-nts", "DeviceShare");
   public static final INetworkPort TCP_553_pirp = _registerPort (553, ENetworkProtocol.TCP, "pirp", "pirp");
   public static final INetworkPort UDP_553_pirp = _registerPort (553, ENetworkProtocol.UDP, "pirp", "pirp");
-  public static final INetworkPort TCP_554_rtsp = _registerPort (554,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "rtsp",
-                                                                 "Real Time Streaming Protocol (RTSP)");
-  public static final INetworkPort UDP_554_rtsp = _registerPort (554,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "rtsp",
-                                                                 "Real Time Streaming Protocol (RTSP)");
+  public static final INetworkPort TCP_554_rtsp = _registerPort (554, ENetworkProtocol.TCP, "rtsp", "Real Time Streaming Protocol (RTSP)");
+  public static final INetworkPort UDP_554_rtsp = _registerPort (554, ENetworkProtocol.UDP, "rtsp", "Real Time Streaming Protocol (RTSP)");
   public static final INetworkPort TCP_555_dsf = _registerPort (555, ENetworkProtocol.TCP, "dsf", "");
   public static final INetworkPort UDP_555_dsf = _registerPort (555, ENetworkProtocol.UDP, "dsf", "");
-  public static final INetworkPort TCP_556_remotefs = _registerPort (556,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "remotefs",
-                                                                     "rfs server");
-  public static final INetworkPort UDP_556_remotefs = _registerPort (556,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "remotefs",
-                                                                     "rfs server");
-  public static final INetworkPort TCP_557_openvms_sysipc = _registerPort (557,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "openvms-sysipc",
-                                                                           "openvms-sysipc");
-  public static final INetworkPort UDP_557_openvms_sysipc = _registerPort (557,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "openvms-sysipc",
-                                                                           "openvms-sysipc");
+  public static final INetworkPort TCP_556_remotefs = _registerPort (556, ENetworkProtocol.TCP, "remotefs", "rfs server");
+  public static final INetworkPort UDP_556_remotefs = _registerPort (556, ENetworkProtocol.UDP, "remotefs", "rfs server");
+  public static final INetworkPort TCP_557_openvms_sysipc = _registerPort (557, ENetworkProtocol.TCP, "openvms-sysipc", "openvms-sysipc");
+  public static final INetworkPort UDP_557_openvms_sysipc = _registerPort (557, ENetworkProtocol.UDP, "openvms-sysipc", "openvms-sysipc");
   public static final INetworkPort TCP_558_sdnskmp = _registerPort (558, ENetworkProtocol.TCP, "sdnskmp", "SDNSKMP");
   public static final INetworkPort UDP_558_sdnskmp = _registerPort (558, ENetworkProtocol.UDP, "sdnskmp", "SDNSKMP");
   public static final INetworkPort TCP_559_teedtap = _registerPort (559, ENetworkProtocol.TCP, "teedtap", "TEEDTAP");
   public static final INetworkPort UDP_559_teedtap = _registerPort (559, ENetworkProtocol.UDP, "teedtap", "TEEDTAP");
-  public static final INetworkPort TCP_560_rmonitor = _registerPort (560,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "rmonitor",
-                                                                     "rmonitord");
-  public static final INetworkPort UDP_560_rmonitor = _registerPort (560,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "rmonitor",
-                                                                     "rmonitord");
+  public static final INetworkPort TCP_560_rmonitor = _registerPort (560, ENetworkProtocol.TCP, "rmonitor", "rmonitord");
+  public static final INetworkPort UDP_560_rmonitor = _registerPort (560, ENetworkProtocol.UDP, "rmonitor", "rmonitord");
   public static final INetworkPort TCP_561_monitor = _registerPort (561, ENetworkProtocol.TCP, "monitor", "");
   public static final INetworkPort UDP_561_monitor = _registerPort (561, ENetworkProtocol.UDP, "monitor", "");
   public static final INetworkPort TCP_562_chshell = _registerPort (562, ENetworkProtocol.TCP, "chshell", "chcmd");
@@ -2748,70 +1329,28 @@ public final class DefaultNetworkPorts
                                                                   ENetworkProtocol.UDP,
                                                                   "nntps",
                                                                   "nntp protocol over TLS/SSL (was snntp)");
-  public static final INetworkPort TCP_564__pfs = _registerPort (564,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "9pfs",
-                                                                 "plan 9 file service");
-  public static final INetworkPort UDP_564__pfs = _registerPort (564,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "9pfs",
-                                                                 "plan 9 file service");
+  public static final INetworkPort TCP_564__pfs = _registerPort (564, ENetworkProtocol.TCP, "9pfs", "plan 9 file service");
+  public static final INetworkPort UDP_564__pfs = _registerPort (564, ENetworkProtocol.UDP, "9pfs", "plan 9 file service");
   public static final INetworkPort TCP_565_whoami = _registerPort (565, ENetworkProtocol.TCP, "whoami", "whoami");
   public static final INetworkPort UDP_565_whoami = _registerPort (565, ENetworkProtocol.UDP, "whoami", "whoami");
-  public static final INetworkPort TCP_566_streettalk = _registerPort (566,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "streettalk",
-                                                                       "streettalk");
-  public static final INetworkPort UDP_566_streettalk = _registerPort (566,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "streettalk",
-                                                                       "streettalk");
-  public static final INetworkPort TCP_567_banyan_rpc = _registerPort (567,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "banyan-rpc",
-                                                                       "banyan-rpc");
-  public static final INetworkPort UDP_567_banyan_rpc = _registerPort (567,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "banyan-rpc",
-                                                                       "banyan-rpc");
-  public static final INetworkPort TCP_568_ms_shuttle = _registerPort (568,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "ms-shuttle",
-                                                                       "microsoft shuttle");
-  public static final INetworkPort UDP_568_ms_shuttle = _registerPort (568,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "ms-shuttle",
-                                                                       "microsoft shuttle");
-  public static final INetworkPort TCP_569_ms_rome = _registerPort (569,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "ms-rome",
-                                                                    "microsoft rome");
-  public static final INetworkPort UDP_569_ms_rome = _registerPort (569,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "ms-rome",
-                                                                    "microsoft rome");
+  public static final INetworkPort TCP_566_streettalk = _registerPort (566, ENetworkProtocol.TCP, "streettalk", "streettalk");
+  public static final INetworkPort UDP_566_streettalk = _registerPort (566, ENetworkProtocol.UDP, "streettalk", "streettalk");
+  public static final INetworkPort TCP_567_banyan_rpc = _registerPort (567, ENetworkProtocol.TCP, "banyan-rpc", "banyan-rpc");
+  public static final INetworkPort UDP_567_banyan_rpc = _registerPort (567, ENetworkProtocol.UDP, "banyan-rpc", "banyan-rpc");
+  public static final INetworkPort TCP_568_ms_shuttle = _registerPort (568, ENetworkProtocol.TCP, "ms-shuttle", "microsoft shuttle");
+  public static final INetworkPort UDP_568_ms_shuttle = _registerPort (568, ENetworkProtocol.UDP, "ms-shuttle", "microsoft shuttle");
+  public static final INetworkPort TCP_569_ms_rome = _registerPort (569, ENetworkProtocol.TCP, "ms-rome", "microsoft rome");
+  public static final INetworkPort UDP_569_ms_rome = _registerPort (569, ENetworkProtocol.UDP, "ms-rome", "microsoft rome");
   public static final INetworkPort TCP_570_meter = _registerPort (570, ENetworkProtocol.TCP, "meter", "demon");
   public static final INetworkPort UDP_570_meter = _registerPort (570, ENetworkProtocol.UDP, "meter", "demon");
   public static final INetworkPort TCP_571_meter = _registerPort (571, ENetworkProtocol.TCP, "meter", "udemon");
   public static final INetworkPort UDP_571_meter = _registerPort (571, ENetworkProtocol.UDP, "meter", "udemon");
   public static final INetworkPort TCP_572_sonar = _registerPort (572, ENetworkProtocol.TCP, "sonar", "sonar");
   public static final INetworkPort UDP_572_sonar = _registerPort (572, ENetworkProtocol.UDP, "sonar", "sonar");
-  public static final INetworkPort TCP_573_banyan_vip = _registerPort (573,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "banyan-vip",
-                                                                       "banyan-vip");
-  public static final INetworkPort UDP_573_banyan_vip = _registerPort (573,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "banyan-vip",
-                                                                       "banyan-vip");
-  public static final INetworkPort TCP_574_ftp_agent = _registerPort (574,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ftp-agent",
-                                                                      "FTP Software Agent System");
-  public static final INetworkPort UDP_574_ftp_agent = _registerPort (574,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ftp-agent",
-                                                                      "FTP Software Agent System");
+  public static final INetworkPort TCP_573_banyan_vip = _registerPort (573, ENetworkProtocol.TCP, "banyan-vip", "banyan-vip");
+  public static final INetworkPort UDP_573_banyan_vip = _registerPort (573, ENetworkProtocol.UDP, "banyan-vip", "banyan-vip");
+  public static final INetworkPort TCP_574_ftp_agent = _registerPort (574, ENetworkProtocol.TCP, "ftp-agent", "FTP Software Agent System");
+  public static final INetworkPort UDP_574_ftp_agent = _registerPort (574, ENetworkProtocol.UDP, "ftp-agent", "FTP Software Agent System");
   public static final INetworkPort TCP_575_vemmi = _registerPort (575, ENetworkProtocol.TCP, "vemmi", "VEMMI");
   public static final INetworkPort UDP_575_vemmi = _registerPort (575, ENetworkProtocol.UDP, "vemmi", "VEMMI");
   public static final INetworkPort TCP_576_ipcd = _registerPort (576, ENetworkProtocol.TCP, "ipcd", "ipcd");
@@ -2822,30 +1361,12 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_578_ipdd = _registerPort (578, ENetworkProtocol.UDP, "ipdd", "ipdd");
   public static final INetworkPort TCP_579_decbsrv = _registerPort (579, ENetworkProtocol.TCP, "decbsrv", "decbsrv");
   public static final INetworkPort UDP_579_decbsrv = _registerPort (579, ENetworkProtocol.UDP, "decbsrv", "decbsrv");
-  public static final INetworkPort TCP_580_sntp_heartbeat = _registerPort (580,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "sntp-heartbeat",
-                                                                           "SNTP HEARTBEAT");
-  public static final INetworkPort UDP_580_sntp_heartbeat = _registerPort (580,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "sntp-heartbeat",
-                                                                           "SNTP HEARTBEAT");
-  public static final INetworkPort TCP_581_bdp = _registerPort (581,
-                                                                ENetworkProtocol.TCP,
-                                                                "bdp",
-                                                                "Bundle Discovery Protocol");
-  public static final INetworkPort UDP_581_bdp = _registerPort (581,
-                                                                ENetworkProtocol.UDP,
-                                                                "bdp",
-                                                                "Bundle Discovery Protocol");
-  public static final INetworkPort TCP_582_scc_security = _registerPort (582,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "scc-security",
-                                                                         "SCC Security");
-  public static final INetworkPort UDP_582_scc_security = _registerPort (582,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "scc-security",
-                                                                         "SCC Security");
+  public static final INetworkPort TCP_580_sntp_heartbeat = _registerPort (580, ENetworkProtocol.TCP, "sntp-heartbeat", "SNTP HEARTBEAT");
+  public static final INetworkPort UDP_580_sntp_heartbeat = _registerPort (580, ENetworkProtocol.UDP, "sntp-heartbeat", "SNTP HEARTBEAT");
+  public static final INetworkPort TCP_581_bdp = _registerPort (581, ENetworkProtocol.TCP, "bdp", "Bundle Discovery Protocol");
+  public static final INetworkPort UDP_581_bdp = _registerPort (581, ENetworkProtocol.UDP, "bdp", "Bundle Discovery Protocol");
+  public static final INetworkPort TCP_582_scc_security = _registerPort (582, ENetworkProtocol.TCP, "scc-security", "SCC Security");
+  public static final INetworkPort UDP_582_scc_security = _registerPort (582, ENetworkProtocol.UDP, "scc-security", "SCC Security");
   public static final INetworkPort TCP_583_philips_vc = _registerPort (583,
                                                                        ENetworkProtocol.TCP,
                                                                        "philips-vc",
@@ -2854,30 +1375,12 @@ public final class DefaultNetworkPorts
                                                                        ENetworkProtocol.UDP,
                                                                        "philips-vc",
                                                                        "Philips Video-Conferencing");
-  public static final INetworkPort TCP_584_keyserver = _registerPort (584,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "keyserver",
-                                                                      "Key Server");
-  public static final INetworkPort UDP_584_keyserver = _registerPort (584,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "keyserver",
-                                                                      "Key Server");
-  public static final INetworkPort TCP_586_password_chg = _registerPort (586,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "password-chg",
-                                                                         "Password Change");
-  public static final INetworkPort UDP_586_password_chg = _registerPort (586,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "password-chg",
-                                                                         "Password Change");
-  public static final INetworkPort TCP_587_submission = _registerPort (587,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "submission",
-                                                                       "Message Submission");
-  public static final INetworkPort UDP_587_submission = _registerPort (587,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "submission",
-                                                                       "Message Submission");
+  public static final INetworkPort TCP_584_keyserver = _registerPort (584, ENetworkProtocol.TCP, "keyserver", "Key Server");
+  public static final INetworkPort UDP_584_keyserver = _registerPort (584, ENetworkProtocol.UDP, "keyserver", "Key Server");
+  public static final INetworkPort TCP_586_password_chg = _registerPort (586, ENetworkProtocol.TCP, "password-chg", "Password Change");
+  public static final INetworkPort UDP_586_password_chg = _registerPort (586, ENetworkProtocol.UDP, "password-chg", "Password Change");
+  public static final INetworkPort TCP_587_submission = _registerPort (587, ENetworkProtocol.TCP, "submission", "Message Submission");
+  public static final INetworkPort UDP_587_submission = _registerPort (587, ENetworkProtocol.UDP, "submission", "Message Submission");
   public static final INetworkPort TCP_588_cal = _registerPort (588, ENetworkProtocol.TCP, "cal", "CAL");
   public static final INetworkPort UDP_588_cal = _registerPort (588, ENetworkProtocol.UDP, "cal", "CAL");
   public static final INetworkPort TCP_589_eyelink = _registerPort (589, ENetworkProtocol.TCP, "eyelink", "EyeLink");
@@ -2892,42 +1395,18 @@ public final class DefaultNetworkPorts
                                                                      ENetworkProtocol.UDP,
                                                                      "http-alt",
                                                                      "FileMaker, Inc. - HTTP Alternate (see Port 80)");
-  public static final INetworkPort TCP_592_eudora_set = _registerPort (592,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "eudora-set",
-                                                                       "Eudora Set");
-  public static final INetworkPort UDP_592_eudora_set = _registerPort (592,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "eudora-set",
-                                                                       "Eudora Set");
-  public static final INetworkPort TCP_593_http_rpc_epmap = _registerPort (593,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "http-rpc-epmap",
-                                                                           "HTTP RPC Ep Map");
-  public static final INetworkPort UDP_593_http_rpc_epmap = _registerPort (593,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "http-rpc-epmap",
-                                                                           "HTTP RPC Ep Map");
+  public static final INetworkPort TCP_592_eudora_set = _registerPort (592, ENetworkProtocol.TCP, "eudora-set", "Eudora Set");
+  public static final INetworkPort UDP_592_eudora_set = _registerPort (592, ENetworkProtocol.UDP, "eudora-set", "Eudora Set");
+  public static final INetworkPort TCP_593_http_rpc_epmap = _registerPort (593, ENetworkProtocol.TCP, "http-rpc-epmap", "HTTP RPC Ep Map");
+  public static final INetworkPort UDP_593_http_rpc_epmap = _registerPort (593, ENetworkProtocol.UDP, "http-rpc-epmap", "HTTP RPC Ep Map");
   public static final INetworkPort TCP_594_tpip = _registerPort (594, ENetworkProtocol.TCP, "tpip", "TPIP");
   public static final INetworkPort UDP_594_tpip = _registerPort (594, ENetworkProtocol.UDP, "tpip", "TPIP");
-  public static final INetworkPort TCP_595_cab_protocol = _registerPort (595,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "cab-protocol",
-                                                                         "CAB Protocol");
-  public static final INetworkPort UDP_595_cab_protocol = _registerPort (595,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "cab-protocol",
-                                                                         "CAB Protocol");
+  public static final INetworkPort TCP_595_cab_protocol = _registerPort (595, ENetworkProtocol.TCP, "cab-protocol", "CAB Protocol");
+  public static final INetworkPort UDP_595_cab_protocol = _registerPort (595, ENetworkProtocol.UDP, "cab-protocol", "CAB Protocol");
   public static final INetworkPort TCP_596_smsd = _registerPort (596, ENetworkProtocol.TCP, "smsd", "SMSD");
   public static final INetworkPort UDP_596_smsd = _registerPort (596, ENetworkProtocol.UDP, "smsd", "SMSD");
-  public static final INetworkPort TCP_597_ptcnameservice = _registerPort (597,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "ptcnameservice",
-                                                                           "PTC Name Service");
-  public static final INetworkPort UDP_597_ptcnameservice = _registerPort (597,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "ptcnameservice",
-                                                                           "PTC Name Service");
+  public static final INetworkPort TCP_597_ptcnameservice = _registerPort (597, ENetworkProtocol.TCP, "ptcnameservice", "PTC Name Service");
+  public static final INetworkPort UDP_597_ptcnameservice = _registerPort (597, ENetworkProtocol.UDP, "ptcnameservice", "PTC Name Service");
   public static final INetworkPort TCP_598_sco_websrvrmg3 = _registerPort (598,
                                                                            ENetworkProtocol.TCP,
                                                                            "sco-websrvrmg3",
@@ -2936,22 +1415,10 @@ public final class DefaultNetworkPorts
                                                                            ENetworkProtocol.UDP,
                                                                            "sco-websrvrmg3",
                                                                            "SCO Web Server Manager 3");
-  public static final INetworkPort TCP_599_acp = _registerPort (599,
-                                                                ENetworkProtocol.TCP,
-                                                                "acp",
-                                                                "Aeolon Core Protocol");
-  public static final INetworkPort UDP_599_acp = _registerPort (599,
-                                                                ENetworkProtocol.UDP,
-                                                                "acp",
-                                                                "Aeolon Core Protocol");
-  public static final INetworkPort TCP_600_ipcserver = _registerPort (600,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "ipcserver",
-                                                                      "Sun IPC server");
-  public static final INetworkPort UDP_600_ipcserver = _registerPort (600,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "ipcserver",
-                                                                      "Sun IPC server");
+  public static final INetworkPort TCP_599_acp = _registerPort (599, ENetworkProtocol.TCP, "acp", "Aeolon Core Protocol");
+  public static final INetworkPort UDP_599_acp = _registerPort (599, ENetworkProtocol.UDP, "acp", "Aeolon Core Protocol");
+  public static final INetworkPort TCP_600_ipcserver = _registerPort (600, ENetworkProtocol.TCP, "ipcserver", "Sun IPC server");
+  public static final INetworkPort UDP_600_ipcserver = _registerPort (600, ENetworkProtocol.UDP, "ipcserver", "Sun IPC server");
   public static final INetworkPort TCP_601_syslog_conn = _registerPort (601,
                                                                         ENetworkProtocol.TCP,
                                                                         "syslog-conn",
@@ -2960,34 +1427,16 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "syslog-conn",
                                                                         "Reliable Syslog Service");
-  public static final INetworkPort TCP_602_xmlrpc_beep = _registerPort (602,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "xmlrpc-beep",
-                                                                        "XML-RPC over BEEP");
-  public static final INetworkPort UDP_602_xmlrpc_beep = _registerPort (602,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "xmlrpc-beep",
-                                                                        "XML-RPC over BEEP");
+  public static final INetworkPort TCP_602_xmlrpc_beep = _registerPort (602, ENetworkProtocol.TCP, "xmlrpc-beep", "XML-RPC over BEEP");
+  public static final INetworkPort UDP_602_xmlrpc_beep = _registerPort (602, ENetworkProtocol.UDP, "xmlrpc-beep", "XML-RPC over BEEP");
   public static final INetworkPort TCP_603_idxp = _registerPort (603, ENetworkProtocol.TCP, "idxp", "IDXP");
   public static final INetworkPort UDP_603_idxp = _registerPort (603, ENetworkProtocol.UDP, "idxp", "IDXP");
   public static final INetworkPort TCP_604_tunnel = _registerPort (604, ENetworkProtocol.TCP, "tunnel", "TUNNEL");
   public static final INetworkPort UDP_604_tunnel = _registerPort (604, ENetworkProtocol.UDP, "tunnel", "TUNNEL");
-  public static final INetworkPort TCP_605_soap_beep = _registerPort (605,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "soap-beep",
-                                                                      "SOAP over BEEP");
-  public static final INetworkPort UDP_605_soap_beep = _registerPort (605,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "soap-beep",
-                                                                      "SOAP over BEEP");
-  public static final INetworkPort TCP_606_urm = _registerPort (606,
-                                                                ENetworkProtocol.TCP,
-                                                                "urm",
-                                                                "Cray Unified Resource Manager");
-  public static final INetworkPort UDP_606_urm = _registerPort (606,
-                                                                ENetworkProtocol.UDP,
-                                                                "urm",
-                                                                "Cray Unified Resource Manager");
+  public static final INetworkPort TCP_605_soap_beep = _registerPort (605, ENetworkProtocol.TCP, "soap-beep", "SOAP over BEEP");
+  public static final INetworkPort UDP_605_soap_beep = _registerPort (605, ENetworkProtocol.UDP, "soap-beep", "SOAP over BEEP");
+  public static final INetworkPort TCP_606_urm = _registerPort (606, ENetworkProtocol.TCP, "urm", "Cray Unified Resource Manager");
+  public static final INetworkPort UDP_606_urm = _registerPort (606, ENetworkProtocol.UDP, "urm", "Cray Unified Resource Manager");
   public static final INetworkPort TCP_607_nqs = _registerPort (607, ENetworkProtocol.TCP, "nqs", "nqs");
   public static final INetworkPort UDP_607_nqs = _registerPort (607, ENetworkProtocol.UDP, "nqs", "nqs");
   public static final INetworkPort TCP_608_sift_uft = _registerPort (608,
@@ -2998,40 +1447,16 @@ public final class DefaultNetworkPorts
                                                                      ENetworkProtocol.UDP,
                                                                      "sift-uft",
                                                                      "Sender-Initiated/Unsolicited File Transfer");
-  public static final INetworkPort TCP_609_npmp_trap = _registerPort (609,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "npmp-trap",
-                                                                      "npmp-trap");
-  public static final INetworkPort UDP_609_npmp_trap = _registerPort (609,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "npmp-trap",
-                                                                      "npmp-trap");
-  public static final INetworkPort TCP_610_npmp_local = _registerPort (610,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "npmp-local",
-                                                                       "npmp-local");
-  public static final INetworkPort UDP_610_npmp_local = _registerPort (610,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "npmp-local",
-                                                                       "npmp-local");
+  public static final INetworkPort TCP_609_npmp_trap = _registerPort (609, ENetworkProtocol.TCP, "npmp-trap", "npmp-trap");
+  public static final INetworkPort UDP_609_npmp_trap = _registerPort (609, ENetworkProtocol.UDP, "npmp-trap", "npmp-trap");
+  public static final INetworkPort TCP_610_npmp_local = _registerPort (610, ENetworkProtocol.TCP, "npmp-local", "npmp-local");
+  public static final INetworkPort UDP_610_npmp_local = _registerPort (610, ENetworkProtocol.UDP, "npmp-local", "npmp-local");
   public static final INetworkPort TCP_611_npmp_gui = _registerPort (611, ENetworkProtocol.TCP, "npmp-gui", "npmp-gui");
   public static final INetworkPort UDP_611_npmp_gui = _registerPort (611, ENetworkProtocol.UDP, "npmp-gui", "npmp-gui");
-  public static final INetworkPort TCP_612_hmmp_ind = _registerPort (612,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "hmmp-ind",
-                                                                     "HMMP Indication");
-  public static final INetworkPort UDP_612_hmmp_ind = _registerPort (612,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "hmmp-ind",
-                                                                     "HMMP Indication");
-  public static final INetworkPort TCP_613_hmmp_op = _registerPort (613,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "hmmp-op",
-                                                                    "HMMP Operation");
-  public static final INetworkPort UDP_613_hmmp_op = _registerPort (613,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "hmmp-op",
-                                                                    "HMMP Operation");
+  public static final INetworkPort TCP_612_hmmp_ind = _registerPort (612, ENetworkProtocol.TCP, "hmmp-ind", "HMMP Indication");
+  public static final INetworkPort UDP_612_hmmp_ind = _registerPort (612, ENetworkProtocol.UDP, "hmmp-ind", "HMMP Indication");
+  public static final INetworkPort TCP_613_hmmp_op = _registerPort (613, ENetworkProtocol.TCP, "hmmp-op", "HMMP Operation");
+  public static final INetworkPort UDP_613_hmmp_op = _registerPort (613, ENetworkProtocol.UDP, "hmmp-op", "HMMP Operation");
   public static final INetworkPort TCP_614_sshell = _registerPort (614, ENetworkProtocol.TCP, "sshell", "SSLshell");
   public static final INetworkPort UDP_614_sshell = _registerPort (614, ENetworkProtocol.UDP, "sshell", "SSLshell");
   public static final INetworkPort TCP_615_sco_inetmgr = _registerPort (615,
@@ -3060,14 +1485,8 @@ public final class DefaultNetworkPorts
                                                                       "SCO Desktop Administration Server");
   public static final INetworkPort TCP_618_dei_icda = _registerPort (618, ENetworkProtocol.TCP, "dei-icda", "DEI-ICDA");
   public static final INetworkPort UDP_618_dei_icda = _registerPort (618, ENetworkProtocol.UDP, "dei-icda", "DEI-ICDA");
-  public static final INetworkPort TCP_619_compaq_evm = _registerPort (619,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "compaq-evm",
-                                                                       "Compaq EVM");
-  public static final INetworkPort UDP_619_compaq_evm = _registerPort (619,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "compaq-evm",
-                                                                       "Compaq EVM");
+  public static final INetworkPort TCP_619_compaq_evm = _registerPort (619, ENetworkProtocol.TCP, "compaq-evm", "Compaq EVM");
+  public static final INetworkPort UDP_619_compaq_evm = _registerPort (619, ENetworkProtocol.UDP, "compaq-evm", "Compaq EVM");
   public static final INetworkPort TCP_620_sco_websrvrmgr = _registerPort (620,
                                                                            ENetworkProtocol.TCP,
                                                                            "sco-websrvrmgr",
@@ -3078,14 +1497,8 @@ public final class DefaultNetworkPorts
                                                                            "SCO WebServer Manager");
   public static final INetworkPort TCP_621_escp_ip = _registerPort (621, ENetworkProtocol.TCP, "escp-ip", "ESCP");
   public static final INetworkPort UDP_621_escp_ip = _registerPort (621, ENetworkProtocol.UDP, "escp-ip", "ESCP");
-  public static final INetworkPort TCP_622_collaborator = _registerPort (622,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "collaborator",
-                                                                         "Collaborator");
-  public static final INetworkPort UDP_622_collaborator = _registerPort (622,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "collaborator",
-                                                                         "Collaborator");
+  public static final INetworkPort TCP_622_collaborator = _registerPort (622, ENetworkProtocol.TCP, "collaborator", "Collaborator");
+  public static final INetworkPort UDP_622_collaborator = _registerPort (622, ENetworkProtocol.UDP, "collaborator", "Collaborator");
   public static final INetworkPort TCP_623_oob_ws_http = _registerPort (623,
                                                                         ENetworkProtocol.TCP,
                                                                         "oob-ws-http",
@@ -3094,46 +1507,22 @@ public final class DefaultNetworkPorts
                                                                      ENetworkProtocol.UDP,
                                                                      "asf-rmcp",
                                                                      "ASF Remote Management and Control Protocol");
-  public static final INetworkPort TCP_624_cryptoadmin = _registerPort (624,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "cryptoadmin",
-                                                                        "Crypto Admin");
-  public static final INetworkPort UDP_624_cryptoadmin = _registerPort (624,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "cryptoadmin",
-                                                                        "Crypto Admin");
+  public static final INetworkPort TCP_624_cryptoadmin = _registerPort (624, ENetworkProtocol.TCP, "cryptoadmin", "Crypto Admin");
+  public static final INetworkPort UDP_624_cryptoadmin = _registerPort (624, ENetworkProtocol.UDP, "cryptoadmin", "Crypto Admin");
   public static final INetworkPort TCP_625_dec_dlm = _registerPort (625, ENetworkProtocol.TCP, "dec_dlm", "DEC DLM");
   public static final INetworkPort UDP_625_dec_dlm = _registerPort (625, ENetworkProtocol.UDP, "dec_dlm", "DEC DLM");
   public static final INetworkPort TCP_626_asia = _registerPort (626, ENetworkProtocol.TCP, "asia", "ASIA");
   public static final INetworkPort UDP_626_asia = _registerPort (626, ENetworkProtocol.UDP, "asia", "ASIA");
-  public static final INetworkPort TCP_627_passgo_tivoli = _registerPort (627,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "passgo-tivoli",
-                                                                          "PassGo Tivoli");
-  public static final INetworkPort UDP_627_passgo_tivoli = _registerPort (627,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "passgo-tivoli",
-                                                                          "PassGo Tivoli");
+  public static final INetworkPort TCP_627_passgo_tivoli = _registerPort (627, ENetworkProtocol.TCP, "passgo-tivoli", "PassGo Tivoli");
+  public static final INetworkPort UDP_627_passgo_tivoli = _registerPort (627, ENetworkProtocol.UDP, "passgo-tivoli", "PassGo Tivoli");
   public static final INetworkPort TCP_628_qmqp = _registerPort (628, ENetworkProtocol.TCP, "qmqp", "QMQP");
   public static final INetworkPort UDP_628_qmqp = _registerPort (628, ENetworkProtocol.UDP, "qmqp", "QMQP");
-  public static final INetworkPort TCP_629__com_amp3 = _registerPort (629,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "3com-amp3",
-                                                                      "3Com AMP3");
-  public static final INetworkPort UDP_629__com_amp3 = _registerPort (629,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "3com-amp3",
-                                                                      "3Com AMP3");
+  public static final INetworkPort TCP_629__com_amp3 = _registerPort (629, ENetworkProtocol.TCP, "3com-amp3", "3Com AMP3");
+  public static final INetworkPort UDP_629__com_amp3 = _registerPort (629, ENetworkProtocol.UDP, "3com-amp3", "3Com AMP3");
   public static final INetworkPort TCP_630_rda = _registerPort (630, ENetworkProtocol.TCP, "rda", "RDA");
   public static final INetworkPort UDP_630_rda = _registerPort (630, ENetworkProtocol.UDP, "rda", "RDA");
-  public static final INetworkPort TCP_631_ipp = _registerPort (631,
-                                                                ENetworkProtocol.TCP,
-                                                                "ipp",
-                                                                "IPP (Internet Printing Protocol)");
-  public static final INetworkPort UDP_631_ipp = _registerPort (631,
-                                                                ENetworkProtocol.UDP,
-                                                                "ipp",
-                                                                "IPP (Internet Printing Protocol)");
+  public static final INetworkPort TCP_631_ipp = _registerPort (631, ENetworkProtocol.TCP, "ipp", "IPP (Internet Printing Protocol)");
+  public static final INetworkPort UDP_631_ipp = _registerPort (631, ENetworkProtocol.UDP, "ipp", "IPP (Internet Printing Protocol)");
   public static final INetworkPort TCP_631_ipps = _registerPort (631,
                                                                  ENetworkProtocol.TCP,
                                                                  "ipps",
@@ -3150,14 +1539,8 @@ public final class DefaultNetworkPorts
                                                                      "Service Status update (Sterling Software)");
   public static final INetworkPort TCP_634_ginad = _registerPort (634, ENetworkProtocol.TCP, "ginad", "ginad");
   public static final INetworkPort UDP_634_ginad = _registerPort (634, ENetworkProtocol.UDP, "ginad", "ginad");
-  public static final INetworkPort TCP_635_rlzdbase = _registerPort (635,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "rlzdbase",
-                                                                     "RLZ DBase");
-  public static final INetworkPort UDP_635_rlzdbase = _registerPort (635,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "rlzdbase",
-                                                                     "RLZ DBase");
+  public static final INetworkPort TCP_635_rlzdbase = _registerPort (635, ENetworkProtocol.TCP, "rlzdbase", "RLZ DBase");
+  public static final INetworkPort UDP_635_rlzdbase = _registerPort (635, ENetworkProtocol.UDP, "rlzdbase", "RLZ DBase");
   public static final INetworkPort TCP_636_ldaps = _registerPort (636,
                                                                   ENetworkProtocol.TCP,
                                                                   "ldaps",
@@ -3166,36 +1549,18 @@ public final class DefaultNetworkPorts
                                                                   ENetworkProtocol.UDP,
                                                                   "ldaps",
                                                                   "ldap protocol over TLS/SSL (was sldap)");
-  public static final INetworkPort TCP_637_lanserver = _registerPort (637,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "lanserver",
-                                                                      "lanserver");
-  public static final INetworkPort UDP_637_lanserver = _registerPort (637,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "lanserver",
-                                                                      "lanserver");
+  public static final INetworkPort TCP_637_lanserver = _registerPort (637, ENetworkProtocol.TCP, "lanserver", "lanserver");
+  public static final INetworkPort UDP_637_lanserver = _registerPort (637, ENetworkProtocol.UDP, "lanserver", "lanserver");
   public static final INetworkPort TCP_638_mcns_sec = _registerPort (638, ENetworkProtocol.TCP, "mcns-sec", "mcns-sec");
   public static final INetworkPort UDP_638_mcns_sec = _registerPort (638, ENetworkProtocol.UDP, "mcns-sec", "mcns-sec");
   public static final INetworkPort TCP_639_msdp = _registerPort (639, ENetworkProtocol.TCP, "msdp", "MSDP");
   public static final INetworkPort UDP_639_msdp = _registerPort (639, ENetworkProtocol.UDP, "msdp", "MSDP");
-  public static final INetworkPort TCP_640_entrust_sps = _registerPort (640,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "entrust-sps",
-                                                                        "entrust-sps");
-  public static final INetworkPort UDP_640_entrust_sps = _registerPort (640,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "entrust-sps",
-                                                                        "entrust-sps");
+  public static final INetworkPort TCP_640_entrust_sps = _registerPort (640, ENetworkProtocol.TCP, "entrust-sps", "entrust-sps");
+  public static final INetworkPort UDP_640_entrust_sps = _registerPort (640, ENetworkProtocol.UDP, "entrust-sps", "entrust-sps");
   public static final INetworkPort TCP_641_repcmd = _registerPort (641, ENetworkProtocol.TCP, "repcmd", "repcmd");
   public static final INetworkPort UDP_641_repcmd = _registerPort (641, ENetworkProtocol.UDP, "repcmd", "repcmd");
-  public static final INetworkPort TCP_642_esro_emsdp = _registerPort (642,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "esro-emsdp",
-                                                                       "ESRO-EMSDP V1.3");
-  public static final INetworkPort UDP_642_esro_emsdp = _registerPort (642,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "esro-emsdp",
-                                                                       "ESRO-EMSDP V1.3");
+  public static final INetworkPort TCP_642_esro_emsdp = _registerPort (642, ENetworkProtocol.TCP, "esro-emsdp", "ESRO-EMSDP V1.3");
+  public static final INetworkPort UDP_642_esro_emsdp = _registerPort (642, ENetworkProtocol.UDP, "esro-emsdp", "ESRO-EMSDP V1.3");
   public static final INetworkPort TCP_643_sanity = _registerPort (643, ENetworkProtocol.TCP, "sanity", "SANity");
   public static final INetworkPort UDP_643_sanity = _registerPort (643, ENetworkProtocol.UDP, "sanity", "SANity");
   public static final INetworkPort TCP_644_dwr = _registerPort (644, ENetworkProtocol.TCP, "dwr", "dwr");
@@ -3204,22 +1569,10 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_645_pssc = _registerPort (645, ENetworkProtocol.UDP, "pssc", "PSSC");
   public static final INetworkPort TCP_646_ldp = _registerPort (646, ENetworkProtocol.TCP, "ldp", "LDP");
   public static final INetworkPort UDP_646_ldp = _registerPort (646, ENetworkProtocol.UDP, "ldp", "LDP");
-  public static final INetworkPort TCP_647_dhcp_failover = _registerPort (647,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "dhcp-failover",
-                                                                          "DHCP Failover");
-  public static final INetworkPort UDP_647_dhcp_failover = _registerPort (647,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "dhcp-failover",
-                                                                          "DHCP Failover");
-  public static final INetworkPort TCP_648_rrp = _registerPort (648,
-                                                                ENetworkProtocol.TCP,
-                                                                "rrp",
-                                                                "Registry Registrar Protocol (RRP)");
-  public static final INetworkPort UDP_648_rrp = _registerPort (648,
-                                                                ENetworkProtocol.UDP,
-                                                                "rrp",
-                                                                "Registry Registrar Protocol (RRP)");
+  public static final INetworkPort TCP_647_dhcp_failover = _registerPort (647, ENetworkProtocol.TCP, "dhcp-failover", "DHCP Failover");
+  public static final INetworkPort UDP_647_dhcp_failover = _registerPort (647, ENetworkProtocol.UDP, "dhcp-failover", "DHCP Failover");
+  public static final INetworkPort TCP_648_rrp = _registerPort (648, ENetworkProtocol.TCP, "rrp", "Registry Registrar Protocol (RRP)");
+  public static final INetworkPort UDP_648_rrp = _registerPort (648, ENetworkProtocol.UDP, "rrp", "Registry Registrar Protocol (RRP)");
   public static final INetworkPort TCP_649_cadview_3d = _registerPort (649,
                                                                        ENetworkProtocol.TCP,
                                                                        "cadview-3d",
@@ -3232,14 +1585,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_650_obex = _registerPort (650, ENetworkProtocol.UDP, "obex", "OBEX");
   public static final INetworkPort TCP_651_ieee_mms = _registerPort (651, ENetworkProtocol.TCP, "ieee-mms", "IEEE MMS");
   public static final INetworkPort UDP_651_ieee_mms = _registerPort (651, ENetworkProtocol.UDP, "ieee-mms", "IEEE MMS");
-  public static final INetworkPort TCP_652_hello_port = _registerPort (652,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "hello-port",
-                                                                       "HELLO_PORT");
-  public static final INetworkPort UDP_652_hello_port = _registerPort (652,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "hello-port",
-                                                                       "HELLO_PORT");
+  public static final INetworkPort TCP_652_hello_port = _registerPort (652, ENetworkProtocol.TCP, "hello-port", "HELLO_PORT");
+  public static final INetworkPort UDP_652_hello_port = _registerPort (652, ENetworkProtocol.UDP, "hello-port", "HELLO_PORT");
   public static final INetworkPort TCP_653_repscmd = _registerPort (653, ENetworkProtocol.TCP, "repscmd", "RepCmd");
   public static final INetworkPort UDP_653_repscmd = _registerPort (653, ENetworkProtocol.UDP, "repscmd", "RepCmd");
   public static final INetworkPort TCP_654_aodv = _registerPort (654, ENetworkProtocol.TCP, "aodv", "AODV");
@@ -3264,14 +1611,8 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_661_hap = _registerPort (661, ENetworkProtocol.UDP, "hap", "HAP");
   public static final INetworkPort TCP_662_pftp = _registerPort (662, ENetworkProtocol.TCP, "pftp", "PFTP");
   public static final INetworkPort UDP_662_pftp = _registerPort (662, ENetworkProtocol.UDP, "pftp", "PFTP");
-  public static final INetworkPort TCP_663_purenoise = _registerPort (663,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "purenoise",
-                                                                      "PureNoise");
-  public static final INetworkPort UDP_663_purenoise = _registerPort (663,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "purenoise",
-                                                                      "PureNoise");
+  public static final INetworkPort TCP_663_purenoise = _registerPort (663, ENetworkProtocol.TCP, "purenoise", "PureNoise");
+  public static final INetworkPort UDP_663_purenoise = _registerPort (663, ENetworkProtocol.UDP, "purenoise", "PureNoise");
   public static final INetworkPort TCP_664_oob_ws_https = _registerPort (664,
                                                                          ENetworkProtocol.TCP,
                                                                          "oob-ws-https",
@@ -3296,30 +1637,12 @@ public final class DefaultNetworkPorts
                                                                      "campaign contribution disclosures - SDR Technologies");
   public static final INetworkPort TCP_668_mecomm = _registerPort (668, ENetworkProtocol.TCP, "mecomm", "MeComm");
   public static final INetworkPort UDP_668_mecomm = _registerPort (668, ENetworkProtocol.UDP, "mecomm", "MeComm");
-  public static final INetworkPort TCP_669_meregister = _registerPort (669,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "meregister",
-                                                                       "MeRegister");
-  public static final INetworkPort UDP_669_meregister = _registerPort (669,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "meregister",
-                                                                       "MeRegister");
-  public static final INetworkPort TCP_670_vacdsm_sws = _registerPort (670,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "vacdsm-sws",
-                                                                       "VACDSM-SWS");
-  public static final INetworkPort UDP_670_vacdsm_sws = _registerPort (670,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "vacdsm-sws",
-                                                                       "VACDSM-SWS");
-  public static final INetworkPort TCP_671_vacdsm_app = _registerPort (671,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "vacdsm-app",
-                                                                       "VACDSM-APP");
-  public static final INetworkPort UDP_671_vacdsm_app = _registerPort (671,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "vacdsm-app",
-                                                                       "VACDSM-APP");
+  public static final INetworkPort TCP_669_meregister = _registerPort (669, ENetworkProtocol.TCP, "meregister", "MeRegister");
+  public static final INetworkPort UDP_669_meregister = _registerPort (669, ENetworkProtocol.UDP, "meregister", "MeRegister");
+  public static final INetworkPort TCP_670_vacdsm_sws = _registerPort (670, ENetworkProtocol.TCP, "vacdsm-sws", "VACDSM-SWS");
+  public static final INetworkPort UDP_670_vacdsm_sws = _registerPort (670, ENetworkProtocol.UDP, "vacdsm-sws", "VACDSM-SWS");
+  public static final INetworkPort TCP_671_vacdsm_app = _registerPort (671, ENetworkProtocol.TCP, "vacdsm-app", "VACDSM-APP");
+  public static final INetworkPort UDP_671_vacdsm_app = _registerPort (671, ENetworkProtocol.UDP, "vacdsm-app", "VACDSM-APP");
   public static final INetworkPort TCP_672_vpps_qua = _registerPort (672, ENetworkProtocol.TCP, "vpps-qua", "VPPS-QUA");
   public static final INetworkPort UDP_672_vpps_qua = _registerPort (672, ENetworkProtocol.UDP, "vpps-qua", "VPPS-QUA");
   public static final INetworkPort TCP_673_cimplex = _registerPort (673, ENetworkProtocol.TCP, "cimplex", "CIMPLEX");
@@ -3330,66 +1653,24 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_675_dctp = _registerPort (675, ENetworkProtocol.UDP, "dctp", "DCTP");
   public static final INetworkPort TCP_676_vpps_via = _registerPort (676, ENetworkProtocol.TCP, "vpps-via", "VPPS Via");
   public static final INetworkPort UDP_676_vpps_via = _registerPort (676, ENetworkProtocol.UDP, "vpps-via", "VPPS Via");
-  public static final INetworkPort TCP_677_vpp = _registerPort (677,
-                                                                ENetworkProtocol.TCP,
-                                                                "vpp",
-                                                                "Virtual Presence Protocol");
-  public static final INetworkPort UDP_677_vpp = _registerPort (677,
-                                                                ENetworkProtocol.UDP,
-                                                                "vpp",
-                                                                "Virtual Presence Protocol");
-  public static final INetworkPort TCP_678_ggf_ncp = _registerPort (678,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "ggf-ncp",
-                                                                    "GNU Generation Foundation NCP");
-  public static final INetworkPort UDP_678_ggf_ncp = _registerPort (678,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "ggf-ncp",
-                                                                    "GNU Generation Foundation NCP");
+  public static final INetworkPort TCP_677_vpp = _registerPort (677, ENetworkProtocol.TCP, "vpp", "Virtual Presence Protocol");
+  public static final INetworkPort UDP_677_vpp = _registerPort (677, ENetworkProtocol.UDP, "vpp", "Virtual Presence Protocol");
+  public static final INetworkPort TCP_678_ggf_ncp = _registerPort (678, ENetworkProtocol.TCP, "ggf-ncp", "GNU Generation Foundation NCP");
+  public static final INetworkPort UDP_678_ggf_ncp = _registerPort (678, ENetworkProtocol.UDP, "ggf-ncp", "GNU Generation Foundation NCP");
   public static final INetworkPort TCP_679_mrm = _registerPort (679, ENetworkProtocol.TCP, "mrm", "MRM");
   public static final INetworkPort UDP_679_mrm = _registerPort (679, ENetworkProtocol.UDP, "mrm", "MRM");
-  public static final INetworkPort TCP_680_entrust_aaas = _registerPort (680,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "entrust-aaas",
-                                                                         "entrust-aaas");
-  public static final INetworkPort UDP_680_entrust_aaas = _registerPort (680,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "entrust-aaas",
-                                                                         "entrust-aaas");
-  public static final INetworkPort TCP_681_entrust_aams = _registerPort (681,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "entrust-aams",
-                                                                         "entrust-aams");
-  public static final INetworkPort UDP_681_entrust_aams = _registerPort (681,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "entrust-aams",
-                                                                         "entrust-aams");
+  public static final INetworkPort TCP_680_entrust_aaas = _registerPort (680, ENetworkProtocol.TCP, "entrust-aaas", "entrust-aaas");
+  public static final INetworkPort UDP_680_entrust_aaas = _registerPort (680, ENetworkProtocol.UDP, "entrust-aaas", "entrust-aaas");
+  public static final INetworkPort TCP_681_entrust_aams = _registerPort (681, ENetworkProtocol.TCP, "entrust-aams", "entrust-aams");
+  public static final INetworkPort UDP_681_entrust_aams = _registerPort (681, ENetworkProtocol.UDP, "entrust-aams", "entrust-aams");
   public static final INetworkPort TCP_682_xfr = _registerPort (682, ENetworkProtocol.TCP, "xfr", "XFR");
   public static final INetworkPort UDP_682_xfr = _registerPort (682, ENetworkProtocol.UDP, "xfr", "XFR");
-  public static final INetworkPort TCP_683_corba_iiop = _registerPort (683,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "corba-iiop",
-                                                                       "CORBA IIOP");
-  public static final INetworkPort UDP_683_corba_iiop = _registerPort (683,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "corba-iiop",
-                                                                       "CORBA IIOP");
-  public static final INetworkPort TCP_684_corba_iiop_ssl = _registerPort (684,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "corba-iiop-ssl",
-                                                                           "CORBA IIOP SSL");
-  public static final INetworkPort UDP_684_corba_iiop_ssl = _registerPort (684,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "corba-iiop-ssl",
-                                                                           "CORBA IIOP SSL");
-  public static final INetworkPort TCP_685_mdc_portmapper = _registerPort (685,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "mdc-portmapper",
-                                                                           "MDC Port Mapper");
-  public static final INetworkPort UDP_685_mdc_portmapper = _registerPort (685,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "mdc-portmapper",
-                                                                           "MDC Port Mapper");
+  public static final INetworkPort TCP_683_corba_iiop = _registerPort (683, ENetworkProtocol.TCP, "corba-iiop", "CORBA IIOP");
+  public static final INetworkPort UDP_683_corba_iiop = _registerPort (683, ENetworkProtocol.UDP, "corba-iiop", "CORBA IIOP");
+  public static final INetworkPort TCP_684_corba_iiop_ssl = _registerPort (684, ENetworkProtocol.TCP, "corba-iiop-ssl", "CORBA IIOP SSL");
+  public static final INetworkPort UDP_684_corba_iiop_ssl = _registerPort (684, ENetworkProtocol.UDP, "corba-iiop-ssl", "CORBA IIOP SSL");
+  public static final INetworkPort TCP_685_mdc_portmapper = _registerPort (685, ENetworkProtocol.TCP, "mdc-portmapper", "MDC Port Mapper");
+  public static final INetworkPort UDP_685_mdc_portmapper = _registerPort (685, ENetworkProtocol.UDP, "mdc-portmapper", "MDC Port Mapper");
   public static final INetworkPort TCP_686_hcp_wismar = _registerPort (686,
                                                                        ENetworkProtocol.TCP,
                                                                        "hcp-wismar",
@@ -3398,14 +1679,8 @@ public final class DefaultNetworkPorts
                                                                        ENetworkProtocol.UDP,
                                                                        "hcp-wismar",
                                                                        "Hardware Control Protocol Wismar");
-  public static final INetworkPort TCP_687_asipregistry = _registerPort (687,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "asipregistry",
-                                                                         "asipregistry");
-  public static final INetworkPort UDP_687_asipregistry = _registerPort (687,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "asipregistry",
-                                                                         "asipregistry");
+  public static final INetworkPort TCP_687_asipregistry = _registerPort (687, ENetworkProtocol.TCP, "asipregistry", "asipregistry");
+  public static final INetworkPort UDP_687_asipregistry = _registerPort (687, ENetworkProtocol.UDP, "asipregistry", "asipregistry");
   public static final INetworkPort TCP_688_realm_rusd = _registerPort (688,
                                                                        ENetworkProtocol.TCP,
                                                                        "realm-rusd",
@@ -3416,14 +1691,8 @@ public final class DefaultNetworkPorts
                                                                        "ApplianceWare managment protocol");
   public static final INetworkPort TCP_689_nmap = _registerPort (689, ENetworkProtocol.TCP, "nmap", "NMAP");
   public static final INetworkPort UDP_689_nmap = _registerPort (689, ENetworkProtocol.UDP, "nmap", "NMAP");
-  public static final INetworkPort TCP_690_vatp = _registerPort (690,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "vatp",
-                                                                 "Velneo Application Transfer Protocol");
-  public static final INetworkPort UDP_690_vatp = _registerPort (690,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "vatp",
-                                                                 "Velneo Application Transfer Protocol");
+  public static final INetworkPort TCP_690_vatp = _registerPort (690, ENetworkProtocol.TCP, "vatp", "Velneo Application Transfer Protocol");
+  public static final INetworkPort UDP_690_vatp = _registerPort (690, ENetworkProtocol.UDP, "vatp", "Velneo Application Transfer Protocol");
   public static final INetworkPort TCP_691_msexch_routing = _registerPort (691,
                                                                            ENetworkProtocol.TCP,
                                                                            "msexch-routing",
@@ -3432,96 +1701,36 @@ public final class DefaultNetworkPorts
                                                                            ENetworkProtocol.UDP,
                                                                            "msexch-routing",
                                                                            "MS Exchange Routing");
-  public static final INetworkPort TCP_692_hyperwave_isp = _registerPort (692,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "hyperwave-isp",
-                                                                          "Hyperwave-ISP");
-  public static final INetworkPort UDP_692_hyperwave_isp = _registerPort (692,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "hyperwave-isp",
-                                                                          "Hyperwave-ISP");
-  public static final INetworkPort TCP_693_connendp = _registerPort (693,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "connendp",
-                                                                     "almanid Connection Endpoint");
-  public static final INetworkPort UDP_693_connendp = _registerPort (693,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "connendp",
-                                                                     "almanid Connection Endpoint");
-  public static final INetworkPort TCP_694_ha_cluster = _registerPort (694,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "ha-cluster",
-                                                                       "ha-cluster");
-  public static final INetworkPort UDP_694_ha_cluster = _registerPort (694,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "ha-cluster",
-                                                                       "ha-cluster");
-  public static final INetworkPort TCP_695_ieee_mms_ssl = _registerPort (695,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "ieee-mms-ssl",
-                                                                         "IEEE-MMS-SSL");
-  public static final INetworkPort UDP_695_ieee_mms_ssl = _registerPort (695,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "ieee-mms-ssl",
-                                                                         "IEEE-MMS-SSL");
+  public static final INetworkPort TCP_692_hyperwave_isp = _registerPort (692, ENetworkProtocol.TCP, "hyperwave-isp", "Hyperwave-ISP");
+  public static final INetworkPort UDP_692_hyperwave_isp = _registerPort (692, ENetworkProtocol.UDP, "hyperwave-isp", "Hyperwave-ISP");
+  public static final INetworkPort TCP_693_connendp = _registerPort (693, ENetworkProtocol.TCP, "connendp", "almanid Connection Endpoint");
+  public static final INetworkPort UDP_693_connendp = _registerPort (693, ENetworkProtocol.UDP, "connendp", "almanid Connection Endpoint");
+  public static final INetworkPort TCP_694_ha_cluster = _registerPort (694, ENetworkProtocol.TCP, "ha-cluster", "ha-cluster");
+  public static final INetworkPort UDP_694_ha_cluster = _registerPort (694, ENetworkProtocol.UDP, "ha-cluster", "ha-cluster");
+  public static final INetworkPort TCP_695_ieee_mms_ssl = _registerPort (695, ENetworkProtocol.TCP, "ieee-mms-ssl", "IEEE-MMS-SSL");
+  public static final INetworkPort UDP_695_ieee_mms_ssl = _registerPort (695, ENetworkProtocol.UDP, "ieee-mms-ssl", "IEEE-MMS-SSL");
   public static final INetworkPort TCP_696_rushd = _registerPort (696, ENetworkProtocol.TCP, "rushd", "RUSHD");
   public static final INetworkPort UDP_696_rushd = _registerPort (696, ENetworkProtocol.UDP, "rushd", "RUSHD");
   public static final INetworkPort TCP_697_uuidgen = _registerPort (697, ENetworkProtocol.TCP, "uuidgen", "UUIDGEN");
   public static final INetworkPort UDP_697_uuidgen = _registerPort (697, ENetworkProtocol.UDP, "uuidgen", "UUIDGEN");
   public static final INetworkPort TCP_698_olsr = _registerPort (698, ENetworkProtocol.TCP, "olsr", "OLSR");
   public static final INetworkPort UDP_698_olsr = _registerPort (698, ENetworkProtocol.UDP, "olsr", "OLSR");
-  public static final INetworkPort TCP_699_accessnetwork = _registerPort (699,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "accessnetwork",
-                                                                          "Access Network");
-  public static final INetworkPort UDP_699_accessnetwork = _registerPort (699,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "accessnetwork",
-                                                                          "Access Network");
-  public static final INetworkPort TCP_700_epp = _registerPort (700,
-                                                                ENetworkProtocol.TCP,
-                                                                "epp",
-                                                                "Extensible Provisioning Protocol");
-  public static final INetworkPort UDP_700_epp = _registerPort (700,
-                                                                ENetworkProtocol.UDP,
-                                                                "epp",
-                                                                "Extensible Provisioning Protocol");
-  public static final INetworkPort TCP_701_lmp = _registerPort (701,
-                                                                ENetworkProtocol.TCP,
-                                                                "lmp",
-                                                                "Link Management Protocol (LMP)");
-  public static final INetworkPort UDP_701_lmp = _registerPort (701,
-                                                                ENetworkProtocol.UDP,
-                                                                "lmp",
-                                                                "Link Management Protocol (LMP)");
-  public static final INetworkPort TCP_702_iris_beep = _registerPort (702,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "iris-beep",
-                                                                      "IRIS over BEEP");
-  public static final INetworkPort UDP_702_iris_beep = _registerPort (702,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "iris-beep",
-                                                                      "IRIS over BEEP");
-  public static final INetworkPort TCP_704_elcsd = _registerPort (704,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "elcsd",
-                                                                  "errlog copy/server daemon");
-  public static final INetworkPort UDP_704_elcsd = _registerPort (704,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "elcsd",
-                                                                  "errlog copy/server daemon");
+  public static final INetworkPort TCP_699_accessnetwork = _registerPort (699, ENetworkProtocol.TCP, "accessnetwork", "Access Network");
+  public static final INetworkPort UDP_699_accessnetwork = _registerPort (699, ENetworkProtocol.UDP, "accessnetwork", "Access Network");
+  public static final INetworkPort TCP_700_epp = _registerPort (700, ENetworkProtocol.TCP, "epp", "Extensible Provisioning Protocol");
+  public static final INetworkPort UDP_700_epp = _registerPort (700, ENetworkProtocol.UDP, "epp", "Extensible Provisioning Protocol");
+  public static final INetworkPort TCP_701_lmp = _registerPort (701, ENetworkProtocol.TCP, "lmp", "Link Management Protocol (LMP)");
+  public static final INetworkPort UDP_701_lmp = _registerPort (701, ENetworkProtocol.UDP, "lmp", "Link Management Protocol (LMP)");
+  public static final INetworkPort TCP_702_iris_beep = _registerPort (702, ENetworkProtocol.TCP, "iris-beep", "IRIS over BEEP");
+  public static final INetworkPort UDP_702_iris_beep = _registerPort (702, ENetworkProtocol.UDP, "iris-beep", "IRIS over BEEP");
+  public static final INetworkPort TCP_704_elcsd = _registerPort (704, ENetworkProtocol.TCP, "elcsd", "errlog copy/server daemon");
+  public static final INetworkPort UDP_704_elcsd = _registerPort (704, ENetworkProtocol.UDP, "elcsd", "errlog copy/server daemon");
   public static final INetworkPort TCP_705_agentx = _registerPort (705, ENetworkProtocol.TCP, "agentx", "AgentX");
   public static final INetworkPort UDP_705_agentx = _registerPort (705, ENetworkProtocol.UDP, "agentx", "AgentX");
   public static final INetworkPort TCP_706_silc = _registerPort (706, ENetworkProtocol.TCP, "silc", "SILC");
   public static final INetworkPort UDP_706_silc = _registerPort (706, ENetworkProtocol.UDP, "silc", "SILC");
-  public static final INetworkPort TCP_707_borland_dsj = _registerPort (707,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "borland-dsj",
-                                                                        "Borland DSJ");
-  public static final INetworkPort UDP_707_borland_dsj = _registerPort (707,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "borland-dsj",
-                                                                        "Borland DSJ");
+  public static final INetworkPort TCP_707_borland_dsj = _registerPort (707, ENetworkProtocol.TCP, "borland-dsj", "Borland DSJ");
+  public static final INetworkPort UDP_707_borland_dsj = _registerPort (707, ENetworkProtocol.UDP, "borland-dsj", "Borland DSJ");
   public static final INetworkPort TCP_709_entrust_kmsh = _registerPort (709,
                                                                          ENetworkProtocol.TCP,
                                                                          "entrust-kmsh",
@@ -3538,32 +1747,14 @@ public final class DefaultNetworkPorts
                                                                         ENetworkProtocol.UDP,
                                                                         "entrust-ash",
                                                                         "Entrust Administration Service Handler");
-  public static final INetworkPort TCP_711_cisco_tdp = _registerPort (711,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "cisco-tdp",
-                                                                      "Cisco TDP");
-  public static final INetworkPort UDP_711_cisco_tdp = _registerPort (711,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "cisco-tdp",
-                                                                      "Cisco TDP");
+  public static final INetworkPort TCP_711_cisco_tdp = _registerPort (711, ENetworkProtocol.TCP, "cisco-tdp", "Cisco TDP");
+  public static final INetworkPort UDP_711_cisco_tdp = _registerPort (711, ENetworkProtocol.UDP, "cisco-tdp", "Cisco TDP");
   public static final INetworkPort TCP_712_tbrpf = _registerPort (712, ENetworkProtocol.TCP, "tbrpf", "TBRPF");
   public static final INetworkPort UDP_712_tbrpf = _registerPort (712, ENetworkProtocol.UDP, "tbrpf", "TBRPF");
-  public static final INetworkPort TCP_713_iris_xpc = _registerPort (713,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "iris-xpc",
-                                                                     "IRIS over XPC");
-  public static final INetworkPort UDP_713_iris_xpc = _registerPort (713,
-                                                                     ENetworkProtocol.UDP,
-                                                                     "iris-xpc",
-                                                                     "IRIS over XPC");
-  public static final INetworkPort TCP_714_iris_xpcs = _registerPort (714,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "iris-xpcs",
-                                                                      "IRIS over XPCS");
-  public static final INetworkPort UDP_714_iris_xpcs = _registerPort (714,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "iris-xpcs",
-                                                                      "IRIS over XPCS");
+  public static final INetworkPort TCP_713_iris_xpc = _registerPort (713, ENetworkProtocol.TCP, "iris-xpc", "IRIS over XPC");
+  public static final INetworkPort UDP_713_iris_xpc = _registerPort (713, ENetworkProtocol.UDP, "iris-xpc", "IRIS over XPC");
+  public static final INetworkPort TCP_714_iris_xpcs = _registerPort (714, ENetworkProtocol.TCP, "iris-xpcs", "IRIS over XPCS");
+  public static final INetworkPort UDP_714_iris_xpcs = _registerPort (714, ENetworkProtocol.UDP, "iris-xpcs", "IRIS over XPCS");
   public static final INetworkPort TCP_715_iris_lwz = _registerPort (715, ENetworkProtocol.TCP, "iris-lwz", "IRIS-LWZ");
   public static final INetworkPort UDP_715_iris_lwz = _registerPort (715, ENetworkProtocol.UDP, "iris-lwz", "IRIS-LWZ");
   public static final INetworkPort UDP_716_pana = _registerPort (716, ENetworkProtocol.UDP, "pana", "PANA Messages");
@@ -3593,30 +1784,12 @@ public final class DefaultNetworkPorts
                                                                        "IBM NetView DM/6000 receive/tcp");
   public static final INetworkPort TCP_741_netgw = _registerPort (741, ENetworkProtocol.TCP, "netgw", "netGW");
   public static final INetworkPort UDP_741_netgw = _registerPort (741, ENetworkProtocol.UDP, "netgw", "netGW");
-  public static final INetworkPort TCP_742_netrcs = _registerPort (742,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "netrcs",
-                                                                   "Network based Rev. Cont. Sys.");
-  public static final INetworkPort UDP_742_netrcs = _registerPort (742,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "netrcs",
-                                                                   "Network based Rev. Cont. Sys.");
-  public static final INetworkPort TCP_744_flexlm = _registerPort (744,
-                                                                   ENetworkProtocol.TCP,
-                                                                   "flexlm",
-                                                                   "Flexible License Manager");
-  public static final INetworkPort UDP_744_flexlm = _registerPort (744,
-                                                                   ENetworkProtocol.UDP,
-                                                                   "flexlm",
-                                                                   "Flexible License Manager");
-  public static final INetworkPort TCP_747_fujitsu_dev = _registerPort (747,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "fujitsu-dev",
-                                                                        "Fujitsu Device Control");
-  public static final INetworkPort UDP_747_fujitsu_dev = _registerPort (747,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "fujitsu-dev",
-                                                                        "Fujitsu Device Control");
+  public static final INetworkPort TCP_742_netrcs = _registerPort (742, ENetworkProtocol.TCP, "netrcs", "Network based Rev. Cont. Sys.");
+  public static final INetworkPort UDP_742_netrcs = _registerPort (742, ENetworkProtocol.UDP, "netrcs", "Network based Rev. Cont. Sys.");
+  public static final INetworkPort TCP_744_flexlm = _registerPort (744, ENetworkProtocol.TCP, "flexlm", "Flexible License Manager");
+  public static final INetworkPort UDP_744_flexlm = _registerPort (744, ENetworkProtocol.UDP, "flexlm", "Flexible License Manager");
+  public static final INetworkPort TCP_747_fujitsu_dev = _registerPort (747, ENetworkProtocol.TCP, "fujitsu-dev", "Fujitsu Device Control");
+  public static final INetworkPort UDP_747_fujitsu_dev = _registerPort (747, ENetworkProtocol.UDP, "fujitsu-dev", "Fujitsu Device Control");
   public static final INetworkPort TCP_748_ris_cm = _registerPort (748,
                                                                    ENetworkProtocol.TCP,
                                                                    "ris-cm",
@@ -3635,10 +1808,7 @@ public final class DefaultNetworkPorts
                                                                          "kerberos administration");
   public static final INetworkPort TCP_750_rfile = _registerPort (750, ENetworkProtocol.TCP, "rfile", "");
   public static final INetworkPort UDP_750_loadav = _registerPort (750, ENetworkProtocol.UDP, "loadav", "");
-  public static final INetworkPort UDP_750_kerberos_iv = _registerPort (750,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "kerberos-iv",
-                                                                        "kerberos version iv");
+  public static final INetworkPort UDP_750_kerberos_iv = _registerPort (750, ENetworkProtocol.UDP, "kerberos-iv", "kerberos version iv");
   public static final INetworkPort TCP_751_pump = _registerPort (751, ENetworkProtocol.TCP, "pump", "");
   public static final INetworkPort UDP_751_pump = _registerPort (751, ENetworkProtocol.UDP, "pump", "");
   public static final INetworkPort TCP_752_qrh = _registerPort (752, ENetworkProtocol.TCP, "qrh", "");
@@ -3678,20 +1848,11 @@ public final class DefaultNetworkPorts
   public static final INetworkPort TCP_774_rpasswd = _registerPort (774, ENetworkProtocol.TCP, "rpasswd", "");
   public static final INetworkPort UDP_774_acmaint_dbd = _registerPort (774, ENetworkProtocol.UDP, "acmaint_dbd", "");
   public static final INetworkPort TCP_775_entomb = _registerPort (775, ENetworkProtocol.TCP, "entomb", "");
-  public static final INetworkPort UDP_775_acmaint_transd = _registerPort (775,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "acmaint_transd",
-                                                                           "");
+  public static final INetworkPort UDP_775_acmaint_transd = _registerPort (775, ENetworkProtocol.UDP, "acmaint_transd", "");
   public static final INetworkPort TCP_776_wpages = _registerPort (776, ENetworkProtocol.TCP, "wpages", "");
   public static final INetworkPort UDP_776_wpages = _registerPort (776, ENetworkProtocol.UDP, "wpages", "");
-  public static final INetworkPort TCP_777_multiling_http = _registerPort (777,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "multiling-http",
-                                                                           "Multiling HTTP");
-  public static final INetworkPort UDP_777_multiling_http = _registerPort (777,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "multiling-http",
-                                                                           "Multiling HTTP");
+  public static final INetworkPort TCP_777_multiling_http = _registerPort (777, ENetworkProtocol.TCP, "multiling-http", "Multiling HTTP");
+  public static final INetworkPort UDP_777_multiling_http = _registerPort (777, ENetworkProtocol.UDP, "multiling-http", "Multiling HTTP");
   public static final INetworkPort TCP_780_wpgs = _registerPort (780, ENetworkProtocol.TCP, "wpgs", "");
   public static final INetworkPort UDP_780_wpgs = _registerPort (780, ENetworkProtocol.UDP, "wpgs", "");
   public static final INetworkPort TCP_800_mdbs_daemon = _registerPort (800, ENetworkProtocol.TCP, "mdbs_daemon", "");
@@ -3707,42 +1868,15 @@ public final class DefaultNetworkPorts
                                                                    "mbap-s",
                                                                    "Modbus Application Protocol Secure");
   public static final INetworkPort TCP_810_fcp_udp = _registerPort (810, ENetworkProtocol.TCP, "fcp-udp", "FCP");
-  public static final INetworkPort UDP_810_fcp_udp = _registerPort (810,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "fcp-udp",
-                                                                    "FCP Datagram");
-  public static final INetworkPort TCP_828_itm_mcell_s = _registerPort (828,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "itm-mcell-s",
-                                                                        "itm-mcell-s");
-  public static final INetworkPort UDP_828_itm_mcell_s = _registerPort (828,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "itm-mcell-s",
-                                                                        "itm-mcell-s");
-  public static final INetworkPort TCP_829_pkix_3_ca_ra = _registerPort (829,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "pkix-3-ca-ra",
-                                                                         "PKIX-3 CA/RA");
-  public static final INetworkPort UDP_829_pkix_3_ca_ra = _registerPort (829,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "pkix-3-ca-ra",
-                                                                         "PKIX-3 CA/RA");
-  public static final INetworkPort TCP_830_netconf_ssh = _registerPort (830,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "netconf-ssh",
-                                                                        "NETCONF over SSH");
-  public static final INetworkPort UDP_830_netconf_ssh = _registerPort (830,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "netconf-ssh",
-                                                                        "NETCONF over SSH");
-  public static final INetworkPort TCP_831_netconf_beep = _registerPort (831,
-                                                                         ENetworkProtocol.TCP,
-                                                                         "netconf-beep",
-                                                                         "NETCONF over BEEP");
-  public static final INetworkPort UDP_831_netconf_beep = _registerPort (831,
-                                                                         ENetworkProtocol.UDP,
-                                                                         "netconf-beep",
-                                                                         "NETCONF over BEEP");
+  public static final INetworkPort UDP_810_fcp_udp = _registerPort (810, ENetworkProtocol.UDP, "fcp-udp", "FCP Datagram");
+  public static final INetworkPort TCP_828_itm_mcell_s = _registerPort (828, ENetworkProtocol.TCP, "itm-mcell-s", "itm-mcell-s");
+  public static final INetworkPort UDP_828_itm_mcell_s = _registerPort (828, ENetworkProtocol.UDP, "itm-mcell-s", "itm-mcell-s");
+  public static final INetworkPort TCP_829_pkix_3_ca_ra = _registerPort (829, ENetworkProtocol.TCP, "pkix-3-ca-ra", "PKIX-3 CA/RA");
+  public static final INetworkPort UDP_829_pkix_3_ca_ra = _registerPort (829, ENetworkProtocol.UDP, "pkix-3-ca-ra", "PKIX-3 CA/RA");
+  public static final INetworkPort TCP_830_netconf_ssh = _registerPort (830, ENetworkProtocol.TCP, "netconf-ssh", "NETCONF over SSH");
+  public static final INetworkPort UDP_830_netconf_ssh = _registerPort (830, ENetworkProtocol.UDP, "netconf-ssh", "NETCONF over SSH");
+  public static final INetworkPort TCP_831_netconf_beep = _registerPort (831, ENetworkProtocol.TCP, "netconf-beep", "NETCONF over BEEP");
+  public static final INetworkPort UDP_831_netconf_beep = _registerPort (831, ENetworkProtocol.UDP, "netconf-beep", "NETCONF over BEEP");
   public static final INetworkPort TCP_832_netconfsoaphttp = _registerPort (832,
                                                                             ENetworkProtocol.TCP,
                                                                             "netconfsoaphttp",
@@ -3759,14 +1893,8 @@ public final class DefaultNetworkPorts
                                                                             ENetworkProtocol.UDP,
                                                                             "netconfsoapbeep",
                                                                             "NETCONF for SOAP over BEEP");
-  public static final INetworkPort TCP_847_dhcp_failover2 = _registerPort (847,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "dhcp-failover2",
-                                                                           "dhcp-failover 2");
-  public static final INetworkPort UDP_847_dhcp_failover2 = _registerPort (847,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "dhcp-failover2",
-                                                                           "dhcp-failover 2");
+  public static final INetworkPort TCP_847_dhcp_failover2 = _registerPort (847, ENetworkProtocol.TCP, "dhcp-failover2", "dhcp-failover 2");
+  public static final INetworkPort UDP_847_dhcp_failover2 = _registerPort (847, ENetworkProtocol.UDP, "dhcp-failover2", "dhcp-failover 2");
   public static final INetworkPort TCP_848_gdoi = _registerPort (848, ENetworkProtocol.TCP, "gdoi", "GDOI");
   public static final INetworkPort UDP_848_gdoi = _registerPort (848, ENetworkProtocol.UDP, "gdoi", "GDOI");
   public static final INetworkPort TCP_853_domain_s = _registerPort (853,
@@ -3787,14 +1915,8 @@ public final class DefaultNetworkPorts
                                                                  "Dynamic Link Exchange Protocol (DLEP)");
   public static final INetworkPort TCP_860_iscsi = _registerPort (860, ENetworkProtocol.TCP, "iscsi", "iSCSI");
   public static final INetworkPort UDP_860_iscsi = _registerPort (860, ENetworkProtocol.UDP, "iscsi", "iSCSI");
-  public static final INetworkPort TCP_861_owamp_control = _registerPort (861,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "owamp-control",
-                                                                          "OWAMP-Control");
-  public static final INetworkPort UDP_861_owamp_control = _registerPort (861,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "owamp-control",
-                                                                          "OWAMP-Control");
+  public static final INetworkPort TCP_861_owamp_control = _registerPort (861, ENetworkProtocol.TCP, "owamp-control", "OWAMP-Control");
+  public static final INetworkPort UDP_861_owamp_control = _registerPort (861, ENetworkProtocol.UDP, "owamp-control", "OWAMP-Control");
   public static final INetworkPort TCP_862_twamp_control = _registerPort (862,
                                                                           ENetworkProtocol.TCP,
                                                                           "twamp-control",
@@ -3821,34 +1943,13 @@ public final class DefaultNetworkPorts
                                                                            ENetworkProtocol.UDP,
                                                                            "iclcnet_svinfo",
                                                                            "ICL coNETion server info");
-  public static final INetworkPort TCP_888_accessbuilder = _registerPort (888,
-                                                                          ENetworkProtocol.TCP,
-                                                                          "accessbuilder",
-                                                                          "AccessBuilder");
-  public static final INetworkPort UDP_888_accessbuilder = _registerPort (888,
-                                                                          ENetworkProtocol.UDP,
-                                                                          "accessbuilder",
-                                                                          "AccessBuilder");
-  public static final INetworkPort TCP_888_cddbp = _registerPort (888,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "cddbp",
-                                                                  "CD Database Protocol");
-  public static final INetworkPort TCP_900_omginitialrefs = _registerPort (900,
-                                                                           ENetworkProtocol.TCP,
-                                                                           "omginitialrefs",
-                                                                           "OMG Initial Refs");
-  public static final INetworkPort UDP_900_omginitialrefs = _registerPort (900,
-                                                                           ENetworkProtocol.UDP,
-                                                                           "omginitialrefs",
-                                                                           "OMG Initial Refs");
-  public static final INetworkPort TCP_901_smpnameres = _registerPort (901,
-                                                                       ENetworkProtocol.TCP,
-                                                                       "smpnameres",
-                                                                       "SMPNAMERES");
-  public static final INetworkPort UDP_901_smpnameres = _registerPort (901,
-                                                                       ENetworkProtocol.UDP,
-                                                                       "smpnameres",
-                                                                       "SMPNAMERES");
+  public static final INetworkPort TCP_888_accessbuilder = _registerPort (888, ENetworkProtocol.TCP, "accessbuilder", "AccessBuilder");
+  public static final INetworkPort UDP_888_accessbuilder = _registerPort (888, ENetworkProtocol.UDP, "accessbuilder", "AccessBuilder");
+  public static final INetworkPort TCP_888_cddbp = _registerPort (888, ENetworkProtocol.TCP, "cddbp", "CD Database Protocol");
+  public static final INetworkPort TCP_900_omginitialrefs = _registerPort (900, ENetworkProtocol.TCP, "omginitialrefs", "OMG Initial Refs");
+  public static final INetworkPort UDP_900_omginitialrefs = _registerPort (900, ENetworkProtocol.UDP, "omginitialrefs", "OMG Initial Refs");
+  public static final INetworkPort TCP_901_smpnameres = _registerPort (901, ENetworkProtocol.TCP, "smpnameres", "SMPNAMERES");
+  public static final INetworkPort UDP_901_smpnameres = _registerPort (901, ENetworkProtocol.UDP, "smpnameres", "SMPNAMERES");
   public static final INetworkPort TCP_902_ideafarm_door = _registerPort (902,
                                                                           ENetworkProtocol.TCP,
                                                                           "ideafarm-door",
@@ -3873,22 +1974,10 @@ public final class DefaultNetworkPorts
                                                                  ENetworkProtocol.UDP,
                                                                  "kink",
                                                                  "Kerberized Internet Negotiation of Keys (KINK)");
-  public static final INetworkPort TCP_911_xact_backup = _registerPort (911,
-                                                                        ENetworkProtocol.TCP,
-                                                                        "xact-backup",
-                                                                        "xact-backup");
-  public static final INetworkPort UDP_911_xact_backup = _registerPort (911,
-                                                                        ENetworkProtocol.UDP,
-                                                                        "xact-backup",
-                                                                        "xact-backup");
-  public static final INetworkPort TCP_912_apex_mesh = _registerPort (912,
-                                                                      ENetworkProtocol.TCP,
-                                                                      "apex-mesh",
-                                                                      "APEX relay-relay service");
-  public static final INetworkPort UDP_912_apex_mesh = _registerPort (912,
-                                                                      ENetworkProtocol.UDP,
-                                                                      "apex-mesh",
-                                                                      "APEX relay-relay service");
+  public static final INetworkPort TCP_911_xact_backup = _registerPort (911, ENetworkProtocol.TCP, "xact-backup", "xact-backup");
+  public static final INetworkPort UDP_911_xact_backup = _registerPort (911, ENetworkProtocol.UDP, "xact-backup", "xact-backup");
+  public static final INetworkPort TCP_912_apex_mesh = _registerPort (912, ENetworkProtocol.TCP, "apex-mesh", "APEX relay-relay service");
+  public static final INetworkPort UDP_912_apex_mesh = _registerPort (912, ENetworkProtocol.UDP, "apex-mesh", "APEX relay-relay service");
   public static final INetworkPort TCP_913_apex_edge = _registerPort (913,
                                                                       ENetworkProtocol.TCP,
                                                                       "apex-edge",
@@ -3897,10 +1986,7 @@ public final class DefaultNetworkPorts
                                                                       ENetworkProtocol.UDP,
                                                                       "apex-edge",
                                                                       "APEX endpoint-relay service");
-  public static final INetworkPort TCP_953_rndc = _registerPort (953,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "rndc",
-                                                                 "BIND9 remote name daemon controller");
+  public static final INetworkPort TCP_953_rndc = _registerPort (953, ENetworkProtocol.TCP, "rndc", "BIND9 remote name daemon controller");
   public static final INetworkPort UDP_953 = _registerPort (953, ENetworkProtocol.UDP, "", "Reserved");
   public static final INetworkPort TCP_989_ftps_data = _registerPort (989,
                                                                       ENetworkProtocol.TCP,
@@ -3910,44 +1996,17 @@ public final class DefaultNetworkPorts
                                                                       ENetworkProtocol.UDP,
                                                                       "ftps-data",
                                                                       "ftp protocol, data, over TLS/SSL");
-  public static final INetworkPort TCP_990_ftps = _registerPort (990,
-                                                                 ENetworkProtocol.TCP,
-                                                                 "ftps",
-                                                                 "ftp protocol, control, over TLS/SSL");
-  public static final INetworkPort UDP_990_ftps = _registerPort (990,
-                                                                 ENetworkProtocol.UDP,
-                                                                 "ftps",
-                                                                 "ftp protocol, control, over TLS/SSL");
-  public static final INetworkPort TCP_991_nas = _registerPort (991,
-                                                                ENetworkProtocol.TCP,
-                                                                "nas",
-                                                                "Netnews Administration System");
-  public static final INetworkPort UDP_991_nas = _registerPort (991,
-                                                                ENetworkProtocol.UDP,
-                                                                "nas",
-                                                                "Netnews Administration System");
-  public static final INetworkPort TCP_992_telnets = _registerPort (992,
-                                                                    ENetworkProtocol.TCP,
-                                                                    "telnets",
-                                                                    "telnet protocol over TLS/SSL");
-  public static final INetworkPort UDP_992_telnets = _registerPort (992,
-                                                                    ENetworkProtocol.UDP,
-                                                                    "telnets",
-                                                                    "telnet protocol over TLS/SSL");
-  public static final INetworkPort TCP_993_imaps = _registerPort (993,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "imaps",
-                                                                  "IMAP over TLS protocol");
-  public static final INetworkPort UDP_993_imaps = _registerPort (993,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "imaps",
-                                                                  "imap4 protocol over TLS/SSL");
+  public static final INetworkPort TCP_990_ftps = _registerPort (990, ENetworkProtocol.TCP, "ftps", "ftp protocol, control, over TLS/SSL");
+  public static final INetworkPort UDP_990_ftps = _registerPort (990, ENetworkProtocol.UDP, "ftps", "ftp protocol, control, over TLS/SSL");
+  public static final INetworkPort TCP_991_nas = _registerPort (991, ENetworkProtocol.TCP, "nas", "Netnews Administration System");
+  public static final INetworkPort UDP_991_nas = _registerPort (991, ENetworkProtocol.UDP, "nas", "Netnews Administration System");
+  public static final INetworkPort TCP_992_telnets = _registerPort (992, ENetworkProtocol.TCP, "telnets", "telnet protocol over TLS/SSL");
+  public static final INetworkPort UDP_992_telnets = _registerPort (992, ENetworkProtocol.UDP, "telnets", "telnet protocol over TLS/SSL");
+  public static final INetworkPort TCP_993_imaps = _registerPort (993, ENetworkProtocol.TCP, "imaps", "IMAP over TLS protocol");
+  public static final INetworkPort UDP_993_imaps = _registerPort (993, ENetworkProtocol.UDP, "imaps", "imap4 protocol over TLS/SSL");
   public static final INetworkPort TCP_994 = _registerPort (994, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_994 = _registerPort (994, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort TCP_995_pop3s = _registerPort (995,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "pop3s",
-                                                                  "POP3 over TLS protocol");
+  public static final INetworkPort TCP_995_pop3s = _registerPort (995, ENetworkProtocol.TCP, "pop3s", "POP3 over TLS protocol");
   public static final INetworkPort UDP_995_pop3s = _registerPort (995,
                                                                   ENetworkProtocol.UDP,
                                                                   "pop3s",
@@ -3964,33 +2023,15 @@ public final class DefaultNetworkPorts
   public static final INetworkPort UDP_999_puprouter = _registerPort (999, ENetworkProtocol.UDP, "puprouter", "");
   public static final INetworkPort TCP_1000_cadlock2 = _registerPort (1000, ENetworkProtocol.TCP, "cadlock2", "");
   public static final INetworkPort UDP_1000_cadlock2 = _registerPort (1000, ENetworkProtocol.UDP, "cadlock2", "");
-  public static final INetworkPort TCP_1001_webpush = _registerPort (1001,
-                                                                     ENetworkProtocol.TCP,
-                                                                     "webpush",
-                                                                     "HTTP Web Push");
+  public static final INetworkPort TCP_1001_webpush = _registerPort (1001, ENetworkProtocol.TCP, "webpush", "HTTP Web Push");
   public static final INetworkPort UDP_1001 = _registerPort (1001, ENetworkProtocol.UDP, "", "Reserved");
-  public static final INetworkPort UDP_1008 = _registerPort (1008,
-                                                             ENetworkProtocol.UDP,
-                                                             "",
-                                                             "Possibly used by Sun Solaris????");
+  public static final INetworkPort UDP_1008 = _registerPort (1008, ENetworkProtocol.UDP, "", "Possibly used by Sun Solaris????");
   public static final INetworkPort TCP_1010_surf = _registerPort (1010, ENetworkProtocol.TCP, "surf", "surf");
   public static final INetworkPort UDP_1010_surf = _registerPort (1010, ENetworkProtocol.UDP, "surf", "surf");
-  public static final INetworkPort TCP_1021_exp1 = _registerPort (1021,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "exp1",
-                                                                  "RFC3692-style Experiment 1");
-  public static final INetworkPort UDP_1021_exp1 = _registerPort (1021,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "exp1",
-                                                                  "RFC3692-style Experiment 1");
-  public static final INetworkPort TCP_1022_exp2 = _registerPort (1022,
-                                                                  ENetworkProtocol.TCP,
-                                                                  "exp2",
-                                                                  "RFC3692-style Experiment 2");
-  public static final INetworkPort UDP_1022_exp2 = _registerPort (1022,
-                                                                  ENetworkProtocol.UDP,
-                                                                  "exp2",
-                                                                  "RFC3692-style Experiment 2");
+  public static final INetworkPort TCP_1021_exp1 = _registerPort (1021, ENetworkProtocol.TCP, "exp1", "RFC3692-style Experiment 1");
+  public static final INetworkPort UDP_1021_exp1 = _registerPort (1021, ENetworkProtocol.UDP, "exp1", "RFC3692-style Experiment 1");
+  public static final INetworkPort TCP_1022_exp2 = _registerPort (1022, ENetworkProtocol.TCP, "exp2", "RFC3692-style Experiment 2");
+  public static final INetworkPort UDP_1022_exp2 = _registerPort (1022, ENetworkProtocol.UDP, "exp2", "RFC3692-style Experiment 2");
   public static final INetworkPort TCP_1023 = _registerPort (1023, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_1023 = _registerPort (1023, ENetworkProtocol.UDP, "", "Reserved");
 

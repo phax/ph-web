@@ -76,11 +76,7 @@ public final class ServletContextPathHolder
       if (!s_sServletContextPath.equals (sServletContextPath))
       {
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Overwriting servlet context path '" +
-                        s_sServletContextPath +
-                        "' with '" +
-                        sServletContextPath +
-                        "'",
+          LOGGER.error ("Overwriting servlet context path '" + s_sServletContextPath + "' with '" + sServletContextPath + "'",
                         new IllegalStateException ("Just for tracking how this happens"));
         s_sServletContextPath = sServletContextPath;
       }
@@ -134,11 +130,7 @@ public final class ServletContextPathHolder
       if (!s_sCustomContextPath.equals (sCustomContextPath))
       {
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Overwriting custom servlet context path '" +
-                        s_sCustomContextPath +
-                        "' with '" +
-                        sCustomContextPath +
-                        "'",
+          LOGGER.error ("Overwriting custom servlet context path '" + s_sCustomContextPath + "' with '" + sCustomContextPath + "'",
                         new IllegalStateException ("Just for tracking how this happens"));
         s_sCustomContextPath = sCustomContextPath;
       }

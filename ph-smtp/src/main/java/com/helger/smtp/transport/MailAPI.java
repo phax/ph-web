@@ -176,8 +176,7 @@ public final class MailAPI
    * @return {@link ESuccess}.
    */
   @Nonnull
-  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings,
-                                    @Nonnull final IMutableEmailData aMailData)
+  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final IMutableEmailData aMailData)
   {
     final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <> (aMailData));
     return ESuccess.valueOf (nQueuedMails == 1);
@@ -338,8 +337,7 @@ public final class MailAPI
       if (!bWasQueued)
       {
         // Mail was not queued - put in failed mail queue
-        aSMTPQueue.getFailedMailQueue ()
-                  .add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
+        aSMTPQueue.getFailedMailQueue ().add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
       }
     }
     return nQueuedMails;

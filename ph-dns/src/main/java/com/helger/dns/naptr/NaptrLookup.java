@@ -212,13 +212,7 @@ public class NaptrLookup
         ret.add ((NAPTRRecord) aRecord);
 
       if (aIsEnabled.getAsBoolean ())
-        aLogger.accept ("  Returning " +
-                        ret.size () +
-                        " NAPTR record(s) for '" +
-                        sDomainName +
-                        "' after " +
-                        nLookupRuns +
-                        " lookups");
+        aLogger.accept ("  Returning " + ret.size () + " NAPTR record(s) for '" + sDomainName + "' after " + nLookupRuns + " lookups");
 
       return ret;
     }
@@ -233,9 +227,7 @@ public class NaptrLookup
                                 sDomainName +
                                 "'" +
                                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "");
-        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage,
-                                                                               aDuration,
-                                                                               m_aExecutionDurationWarn));
+        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage, aDuration, m_aExecutionDurationWarn));
       }
     }
   }

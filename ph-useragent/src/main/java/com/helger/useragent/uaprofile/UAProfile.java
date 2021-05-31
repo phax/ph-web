@@ -55,8 +55,7 @@ public class UAProfile
     m_aProfileDiffData = null;
   }
 
-  public UAProfile (@Nullable final List <String> aProfileUrls,
-                    @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
+  public UAProfile (@Nullable final List <String> aProfileUrls, @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
   {
     final int nUrls = CollectionHelper.getSize (aProfileUrls);
     final int nDiffs = CollectionHelper.getSize (aProfileDiffData);
@@ -107,8 +106,7 @@ public class UAProfile
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UAProfile rhs = (UAProfile) o;
-    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&
-           EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
+    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) && EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
   }
 
   @Override

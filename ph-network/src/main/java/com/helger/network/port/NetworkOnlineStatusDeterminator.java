@@ -183,9 +183,7 @@ public final class NetworkOnlineStatusDeterminator
     try
     {
       // Check all host names in parallel, if they are reachable
-      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com",
-                                                                        "www.facebook.com",
-                                                                        "www.microsoft.com");
+      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com", "www.facebook.com", "www.microsoft.com");
       final ExecutorService aES = Executors.newFixedThreadPool (aHostNames.size ());
       final AtomicInteger aReachable = new AtomicInteger (0);
       for (final String sHostName : aHostNames)

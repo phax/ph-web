@@ -42,8 +42,7 @@ public class MailTransportError
     this (aThrowable, null);
   }
 
-  public MailTransportError (@Nonnull final Throwable aThrowable,
-                             @Nullable final Iterable <? extends MailSendDetails> aDetails)
+  public MailTransportError (@Nonnull final Throwable aThrowable, @Nullable final Iterable <? extends MailSendDetails> aDetails)
   {
     m_aThrowable = ValueEnforcer.notNull (aThrowable, "Throwable");
     m_aDetails.addAll (aDetails);
@@ -69,8 +68,6 @@ public class MailTransportError
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Throwable", m_aThrowable)
-                                       .append ("Details", m_aDetails)
-                                       .getToString ();
+    return new ToStringGenerator (this).append ("Throwable", m_aThrowable).append ("Details", m_aDetails).getToString ();
   }
 }

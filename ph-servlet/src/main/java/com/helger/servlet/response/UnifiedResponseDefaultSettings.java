@@ -142,14 +142,11 @@ public final class UnifiedResponseDefaultSettings
    *        if enabled, this signals the UA that the HSTS Policy applies to this
    *        HSTS Host as well as any sub-domains of the host's domain name.
    */
-  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds,
-                                                 final boolean bIncludeSubdomains)
+  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
     setResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                        new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                                              (bIncludeSubdomains ? ";" +
-                                                                                    CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
-                                                                                  : ""));
+                                                              (bIncludeSubdomains ? ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
   }
 
   /**
@@ -192,9 +189,7 @@ public final class UnifiedResponseDefaultSettings
     }
     else
     {
-      final String sHeaderValue = eType.isURLRequired () ? eType.getID () +
-                                                           " " +
-                                                           aDomain.getAsStringWithEncodedParameters ()
+      final String sHeaderValue = eType.isURLRequired () ? eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ()
                                                          : eType.getID ();
       setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, sHeaderValue);
     }

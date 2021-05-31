@@ -72,8 +72,7 @@ public class CSP2SourceList
   public CSP2SourceList addScheme (@Nonnull @Nonempty final String sScheme)
   {
     ValueEnforcer.notEmpty (sScheme, "Scheme");
-    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"),
-                          () -> "Passed scheme '" + sScheme + "' is invalid!");
+    ValueEnforcer.isTrue (sScheme.length () > 1 && sScheme.endsWith (":"), () -> "Passed scheme '" + sScheme + "' is invalid!");
     m_aList.add (sScheme);
     return this;
   }
@@ -216,8 +215,7 @@ public class CSP2SourceList
    * @return this for chaining
    */
   @Nonnull
-  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo,
-                                 @Nonnull @Nonempty final byte [] aHashValue)
+  public CSP2SourceList addHash (@Nonnull final EMessageDigestAlgorithm eMDAlgo, @Nonnull @Nonempty final byte [] aHashValue)
   {
     ValueEnforcer.notEmpty (aHashValue, "HashValue");
     return addHash (eMDAlgo, Base64.safeEncodeBytes (aHashValue));

@@ -67,28 +67,28 @@ public class Tunnel
    */
   public Tunnel (@Nonnull @Nonempty final String sSpec)
   {
-    final String [] parts = StringHelper.getExplodedArray (':', sSpec, 4);
-    if (parts.length == 4)
+    final String [] aParts = StringHelper.getExplodedArray (':', sSpec, 4);
+    if (aParts.length == 4)
     {
-      m_sLocalAlias = parts[0];
-      m_nLocalPort = Integer.parseInt (parts[1]);
-      m_sDestinationHostname = parts[2];
-      m_nDestinationPort = Integer.parseInt (parts[3]);
+      m_sLocalAlias = aParts[0];
+      m_nLocalPort = Integer.parseInt (aParts[1]);
+      m_sDestinationHostname = aParts[2];
+      m_nDestinationPort = Integer.parseInt (aParts[3]);
     }
     else
-      if (parts.length == 3)
+      if (aParts.length == 3)
       {
-        m_nLocalPort = Integer.parseInt (parts[0]);
-        m_sDestinationHostname = parts[1];
-        m_nDestinationPort = Integer.parseInt (parts[2]);
+        m_nLocalPort = Integer.parseInt (aParts[0]);
+        m_sDestinationHostname = aParts[1];
+        m_nDestinationPort = Integer.parseInt (aParts[2]);
       }
       else
-        if (parts.length == 2)
+        if (aParts.length == 2)
         {
           // dynamically assigned port
           m_nLocalPort = 0;
-          m_sDestinationHostname = parts[0];
-          m_nDestinationPort = Integer.parseInt (parts[1]);
+          m_sDestinationHostname = aParts[0];
+          m_nDestinationPort = Integer.parseInt (aParts[1]);
         }
         else
           throw new IllegalStateException ("Failed to parse Tunnel spec '" + sSpec + "'");

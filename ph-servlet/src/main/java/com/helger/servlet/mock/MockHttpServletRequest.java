@@ -546,7 +546,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   public String [] getParameterValues (@Nonnull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return m_aParameters.getAllParamValues (sName).toArray (new String [0]);
+    return m_aParameters.getAllParamValues (sName).toArray (ArrayHelper.EMPTY_STRING_ARRAY);
   }
 
   @Nonnull

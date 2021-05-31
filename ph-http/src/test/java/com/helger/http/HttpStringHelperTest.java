@@ -21,6 +21,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.helger.commons.collection.ArrayHelper;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -230,7 +232,7 @@ public final class HttpStringHelperTest
   {
     assertFalse (HttpStringHelper.isToken ((String) null));
     assertFalse (HttpStringHelper.isToken ((char []) null));
-    assertFalse (HttpStringHelper.isToken (new char [0]));
+    assertFalse (HttpStringHelper.isToken (ArrayHelper.EMPTY_CHAR_ARRAY));
     assertFalse (HttpStringHelper.isToken (new char [10]));
     assertFalse (HttpStringHelper.isToken (""));
     assertFalse (HttpStringHelper.isToken (" "));
@@ -288,7 +290,7 @@ public final class HttpStringHelperTest
   {
     assertFalse (HttpStringHelper.isComment ((String) null));
     assertFalse (HttpStringHelper.isComment ((char []) null));
-    assertFalse (HttpStringHelper.isComment (new char [0]));
+    assertFalse (HttpStringHelper.isComment (ArrayHelper.EMPTY_CHAR_ARRAY));
     assertFalse (HttpStringHelper.isComment (new char [10]));
     assertFalse (HttpStringHelper.isComment (""));
     assertFalse (HttpStringHelper.isComment (" "));
@@ -325,7 +327,7 @@ public final class HttpStringHelperTest
   {
     assertFalse (HttpStringHelper.isQuotedText ((String) null));
     assertFalse (HttpStringHelper.isQuotedText ((char []) null));
-    assertFalse (HttpStringHelper.isQuotedText (new char [0]));
+    assertFalse (HttpStringHelper.isQuotedText (ArrayHelper.EMPTY_CHAR_ARRAY));
     assertFalse (HttpStringHelper.isQuotedText (new char [10]));
     assertFalse (HttpStringHelper.isQuotedText (""));
     assertFalse (HttpStringHelper.isQuotedText (" "));
@@ -344,7 +346,7 @@ public final class HttpStringHelperTest
   {
     assertFalse (HttpStringHelper.isQuotedTextContent ((String) null));
     assertFalse (HttpStringHelper.isQuotedTextContent ((char []) null));
-    assertTrue (HttpStringHelper.isQuotedTextContent (new char [0]));
+    assertTrue (HttpStringHelper.isQuotedTextContent (ArrayHelper.EMPTY_CHAR_ARRAY));
     assertFalse (HttpStringHelper.isQuotedTextContent (new char [10]));
     assertTrue (HttpStringHelper.isQuotedTextContent (""));
     assertTrue (HttpStringHelper.isQuotedTextContent (" "));

@@ -21,6 +21,8 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import com.helger.commons.collection.ArrayHelper;
+
 /**
  * Test class for class {@link TLSConfigurationMode}.
  *
@@ -31,7 +33,7 @@ public final class TLSConfigurationModeTest
   @Test
   public void testNoCipherSuite ()
   {
-    final TLSConfigurationMode e = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12 }, new String [0]);
+    final TLSConfigurationMode e = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12 }, ArrayHelper.EMPTY_STRING_ARRAY);
     assertEquals (1, e.getAllTLSVersions ().size ());
     assertEquals (1, e.getAllTLSVersionIDs ().size ());
     assertEquals (1, e.getAllTLSVersionIDsAsArray ().length);

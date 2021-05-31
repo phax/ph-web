@@ -269,11 +269,7 @@ public final class UAProfileDatabase
                   else
                   {
                     if (LOGGER.isWarnEnabled ())
-                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" +
-                                   sDiffDigest +
-                                   "' from token '" +
-                                   sToken +
-                                   "'");
+                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" + sDiffDigest + "' from token '" + sToken + "'");
                   }
                 }
                 else

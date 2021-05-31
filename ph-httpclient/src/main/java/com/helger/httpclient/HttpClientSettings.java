@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.ICloneable;
@@ -62,7 +63,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
                                                                                                                      ETLSVersion.TLS_11,
                                                                                                                      ETLSVersion.TLS_10 },
-                                                                                                new String [0]);
+                                                                                                ArrayHelper.EMPTY_STRING_ARRAY);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;

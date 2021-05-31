@@ -68,8 +68,7 @@ public class UAProfileDiff
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
-                                                               EMessageDigestAlgorithm.MD5)
+      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8), EMessageDigestAlgorithm.MD5)
                                                       .bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
         if (LOGGER.isWarnEnabled ())

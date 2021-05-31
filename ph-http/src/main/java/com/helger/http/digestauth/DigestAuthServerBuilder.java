@@ -262,8 +262,7 @@ public class DigestAuthServerBuilder
     ret.append (" realm=").append (HttpStringHelper.getQuotedTextString (m_sRealm));
     if (m_aDomains.isNotEmpty ())
     {
-      ret.append (", domain=")
-         .append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
+      ret.append (", domain=").append (HttpStringHelper.getQuotedTextString (StringHelper.getImploded (' ', m_aDomains)));
     }
     // Nonce is required
     ret.append (", nonce=").append (HttpStringHelper.getQuotedTextString (m_sNonce));

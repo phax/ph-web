@@ -314,16 +314,16 @@ public class TunnelConnectionManager implements Closeable
           builder = sessionFactory.newSessionFactoryBuilder ().setProxy (new SshProxy (sessionFactory));
 
         // start with [username@]hostname[:port]
-        final String [] userAtHost = StringHelper.getExplodedArray ('@', part, 2);
+        final String [] aUserAtHost = StringHelper.getExplodedArray ('@', part, 2);
         String hostname = null;
-        if (userAtHost.length == 2)
+        if (aUserAtHost.length == 2)
         {
-          builder.setUsername (userAtHost[0]);
-          hostname = userAtHost[1];
+          builder.setUsername (aUserAtHost[0]);
+          hostname = aUserAtHost[1];
         }
         else
         {
-          hostname = userAtHost[0];
+          hostname = aUserAtHost[0];
         }
 
         // left with hostname[:port]

@@ -362,13 +362,11 @@ public final class RequestHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest,
-                                                    final boolean bUseEncodedPath)
+  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest, final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
-                                               : getRequestURIDecoded (aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -427,8 +425,7 @@ public final class RequestHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest,
-                                             final boolean bUseEncodedPath)
+  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest, final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -651,9 +648,7 @@ public final class RequestHelper
 
   @Nonnull
   @Nonempty
-  public static StringBuilder getFullServerName (@Nullable final String sScheme,
-                                                 @Nullable final String sServerName,
-                                                 final int nServerPort)
+  public static StringBuilder getFullServerName (@Nullable final String sScheme, @Nullable final String sServerName, final int nServerPort)
   {
     // Reconstruct URL
     final StringBuilder aSB = new StringBuilder ();
@@ -735,8 +730,7 @@ public final class RequestHelper
    * @since 9.1.6
    */
   @Nullable
-  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest,
-                                                    @Nullable final EHttpMethod eDefault)
+  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final EHttpMethod eDefault)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 

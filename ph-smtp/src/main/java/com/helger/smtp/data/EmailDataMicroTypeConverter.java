@@ -56,8 +56,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
   private static final String ELEMENT_CUSTOM = "custom";
   private static final String ATTR_ID = "id";
 
-  private static void _writeEmailAddress (@Nonnull final IMicroElement eParent,
-                                          @Nonnull final IEmailAddress aEmailAddress)
+  private static void _writeEmailAddress (@Nonnull final IMicroElement eParent, @Nonnull final IEmailAddress aEmailAddress)
   {
     eParent.setAttribute (ATTR_ADDRESS, aEmailAddress.getAddress ());
     if (aEmailAddress.getPersonal () != null)
@@ -92,13 +91,9 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     if (aEmailData.getBody () != null)
       eEmailData.appendElement (sNamespaceURI, ELEMENT_BODY).appendText (aEmailData.getBody ());
 
-    eEmailData.appendChild (MicroTypeConverter.convertToMicroElement (aEmailData.getAttachments (),
-                                                                      sNamespaceURI,
-                                                                      ELEMENT_ATTACHMENTS));
+    eEmailData.appendChild (MicroTypeConverter.convertToMicroElement (aEmailData.getAttachments (), sNamespaceURI, ELEMENT_ATTACHMENTS));
 
-    for (final Map.Entry <String, String> aEntry : aEmailData.attrs ()
-                                                             .getSortedByKey (Comparator.naturalOrder ())
-                                                             .entrySet ())
+    for (final Map.Entry <String, String> aEntry : aEmailData.attrs ().getSortedByKey (Comparator.naturalOrder ()).entrySet ())
     {
       final IMicroElement eCustom = eEmailData.appendElement (sNamespaceURI, ELEMENT_CUSTOM);
       eCustom.setAttribute (ATTR_ID, aEntry.getKey ());
@@ -139,8 +134,7 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     for (final IMicroElement eBcc : eEmailData.getAllChildElements (ELEMENT_BCC))
       aEmailData.bcc ().add (_readEmailAddress (eBcc));
 
-    final LocalDateTime aSentDateTime = eEmailData.getAttributeValueWithConversion (ATTR_SENTDATETIME,
-                                                                                    LocalDateTime.class);
+    final LocalDateTime aSentDateTime = eEmailData.getAttributeValueWithConversion (ATTR_SENTDATETIME, LocalDateTime.class);
     if (aSentDateTime != null)
       aEmailData.setSentDateTime (aSentDateTime);
     else

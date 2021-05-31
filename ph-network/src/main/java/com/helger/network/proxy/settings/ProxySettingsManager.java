@@ -139,9 +139,7 @@ public final class ProxySettingsManager
   }
 
   @Nonnull
-  public static EHandled onConnectionFailed (@Nonnull final URI aURI,
-                                             @Nonnull final SocketAddress aAddr,
-                                             @Nonnull final IOException ex)
+  public static EHandled onConnectionFailed (@Nonnull final URI aURI, @Nonnull final SocketAddress aAddr, @Nonnull final IOException ex)
   {
     final String sProtocol = aURI.getScheme ();
     final String sHostName = aURI.getHost ();

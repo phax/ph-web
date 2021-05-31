@@ -220,10 +220,7 @@ public class MultipartStream
    *        any.
    * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
-  public MultipartStream (final InputStream aIS,
-                          final byte [] aBoundary,
-                          final int nBufSize,
-                          final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final MultipartProgressNotifier aNotifier)
   {
     m_aIS = aIS;
     m_nBufSize = nBufSize;
@@ -428,8 +425,7 @@ public class MultipartStream
         aBAOS.write (b);
       }
 
-      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding,
-                                                                               SystemHelper.getSystemCharset ());
+      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding, SystemHelper.getSystemCharset ());
       return aBAOS.getAsString (aCharsetToUse);
     }
   }

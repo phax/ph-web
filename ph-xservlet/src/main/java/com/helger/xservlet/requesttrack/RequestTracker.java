@@ -85,11 +85,11 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   private final RequestTrackingManager m_aRequestTrackingMgr = new RequestTrackingManager ();
   private final ScheduledExecutorService m_aExecSvc;
 
-  private final class RequestTrackerMonitor implements Runnable
+  private final class LongRunningRequestMonitor implements Runnable
   {
     private final IGlobalWebScope m_aGlobalScope;
 
-    public RequestTrackerMonitor ()
+    public LongRunningRequestMonitor ()
     {
       // Remember once here
       m_aGlobalScope = WebScopeManager.getGlobalScope ();
@@ -125,9 +125,19 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
                                                                                               .daemon (true)
                                                                                               .build ());
 
-    // Start the monitoring thread to check every 2 seconds
-    m_aExecSvc.scheduleAtFixedRate (new RequestTrackerMonitor (), 0, 2, TimeUnit.SECONDS);
-    LOGGER.info ("RequestTrackerMonitor was installed successfully.");
+    if (RequestTrackerSettings.isLongRunningRequestsCheckEnabled ())
+    {
+      final long nIntervalMilliseconds = RequestTrackerSettings.getLongRunningRequestCheckIntervalMilliseconds ();
+
+      // Start the monitoring thread to check every n milliseconds
+      m_aExecSvc.scheduleAtFixedRate (new LongRunningRequestMonitor (), 0, nIntervalMilliseconds, TimeUnit.MILLISECONDS);
+      LOGGER.info ("LongRunningRequestMonitor was installed successfully at an interval of " + nIntervalMilliseconds + " milliseconds.");
+    }
+    else
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("LongRunningRequestMonitor is disabled.");
+    }
   }
 
   @Override
@@ -172,8 +182,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param aRequestScope
    *        The request scope itself.
    */
-  public static void addRequest (@Nonnull @Nonempty final String sRequestID,
-                                 @Nonnull final IRequestWebScope aRequestScope)
+  public static void addRequest (@Nonnull @Nonempty final String sRequestID, @Nonnull final IRequestWebScope aRequestScope)
   {
     getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, CB_PARALLEL_RUNNING);
   }

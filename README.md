@@ -59,10 +59,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.6.1 - work in progress
+* v9.6.1 - 2021-05-31
     * Updated to ph-commons 10.1
     * Updated to Jakarta Mail 1.6.7
     * Usage of HTTP "keep-alive" can now be configured via the `IHttpClientSettings`
+    * Created class `RequestTrackerSettings` to improve request tracking configuration
 * v9.6.0 - 2021-03-22
     * Updated to ph-commons 10
 * v9.5.3 - 2021-03-03

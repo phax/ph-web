@@ -27,8 +27,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.callback.CallbackList;
 import com.helger.commons.callback.ICallbackList;
@@ -47,22 +45,18 @@ import com.helger.web.scope.IRequestWebScope;
 @ThreadSafe
 public final class RequestTrackingManager
 {
-  public static final boolean DEFAULT_LONG_RUNNING_CHECK_ENABLED = true;
-  public static final long DEFAULT_NOTIFICATION_MILLISECONDS = 30 * CGlobal.MILLISECONDS_PER_SECOND;
-  public static final boolean DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED = true;
-  public static final int DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER = 60;
+  @Deprecated
+  public static final boolean DEFAULT_LONG_RUNNING_CHECK_ENABLED = RequestTrackerSettings.DEFAULT_LONG_RUNNING_CHECK_ENABLED;
+  @Deprecated
+  public static final long DEFAULT_NOTIFICATION_MILLISECONDS = RequestTrackerSettings.DEFAULT_LONG_RUNNING_NOTIFICATION_MILLISECONDS;
+  @Deprecated
+  public static final boolean DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED = RequestTrackerSettings.DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED;
+  @Deprecated
+  public static final int DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER = RequestTrackerSettings.DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestTrackingManager.class);
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("m_aRWLock")
-  private boolean m_bLongRunningCheckEnabled = DEFAULT_LONG_RUNNING_CHECK_ENABLED;
-  @GuardedBy ("m_aRWLock")
-  private long m_nLongRunningMilliSeconds = DEFAULT_NOTIFICATION_MILLISECONDS;
-  @GuardedBy ("m_aRWLock")
-  private boolean m_bParallelRunningRequestCheckEnabled = DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED;
-  @GuardedBy ("m_aRWLock")
-  private int m_nParallelRunningRequestBarrier = DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER;
   @GuardedBy ("m_aRWLock")
   private boolean m_bParallelRunningRequestsAboveLimit = false;
   // Must be ordered!
@@ -72,57 +66,61 @@ public final class RequestTrackingManager
   public RequestTrackingManager ()
   {}
 
+  @Deprecated
   public boolean isLongRunningCheckEnabled ()
   {
-    return m_aRWLock.readLockedBoolean ( () -> m_bLongRunningCheckEnabled);
+    return RequestTrackerSettings.isLongRunningRequestsCheckEnabled ();
   }
 
   @Nonnull
+  @Deprecated
   public RequestTrackingManager setLongRunningCheckEnabled (final boolean bLongRunningCheckEnabled)
   {
-    m_aRWLock.writeLockedBoolean ( () -> m_bLongRunningCheckEnabled = bLongRunningCheckEnabled);
+    RequestTrackerSettings.setLongRunningRequestsCheckEnabled (bLongRunningCheckEnabled);
     return this;
   }
 
   @Nonnegative
+  @Deprecated
   public long getNotificationMilliseconds ()
   {
-    return m_aRWLock.readLockedLong ( () -> m_nLongRunningMilliSeconds);
+    return RequestTrackerSettings.getLongRunningRequestWarnDurationMillis ();
   }
 
   @Nonnull
+  @Deprecated
   public RequestTrackingManager setNotificationMilliseconds (@Nonnegative final long nLongRunningMilliSeconds)
   {
-    ValueEnforcer.isGT0 (nLongRunningMilliSeconds, "LongRunningMilliSeconds");
-
-    m_aRWLock.writeLockedLong ( () -> m_nLongRunningMilliSeconds = nLongRunningMilliSeconds);
+    RequestTrackerSettings.setLongRunningRequestWarnDurationMillis (nLongRunningMilliSeconds);
     return this;
   }
 
+  @Deprecated
   public boolean isParallelRunningRequestCheckEnabled ()
   {
-    return m_aRWLock.readLockedBoolean ( () -> m_bParallelRunningRequestCheckEnabled);
+    return RequestTrackerSettings.isParallelRunningRequestsCheckEnabled ();
   }
 
   @Nonnull
+  @Deprecated
   public RequestTrackingManager setParallelRunningRequestCheckEnabled (final boolean bParallelRunningRequestCheckEnabled)
   {
-    m_aRWLock.writeLockedBoolean ( () -> m_bParallelRunningRequestCheckEnabled = bParallelRunningRequestCheckEnabled);
+    RequestTrackerSettings.setParallelRunningRequestsCheckEnabled (bParallelRunningRequestCheckEnabled);
     return this;
   }
 
   @Nonnegative
+  @Deprecated
   public int getParallelRunningRequestBarrier ()
   {
-    return m_aRWLock.readLockedInt ( () -> m_nParallelRunningRequestBarrier);
+    return RequestTrackerSettings.getParallelRunningRequestBarrier ();
   }
 
   @Nonnull
+  @Deprecated
   public RequestTrackingManager setParallelRunningRequestBarrier (@Nonnegative final int nParallelRunningRequestBarrier)
   {
-    ValueEnforcer.isGT0 (nParallelRunningRequestBarrier, "ParallelRunningRequestBarrier");
-
-    m_aRWLock.writeLockedInt ( () -> m_nParallelRunningRequestBarrier = nParallelRunningRequestBarrier);
+    RequestTrackerSettings.setParallelRunningRequestBarrier (nParallelRunningRequestBarrier);
     return this;
   }
 
@@ -146,7 +144,9 @@ public final class RequestTrackingManager
         if (LOGGER.isErrorEnabled ())
           LOGGER.error ("Request ID '" + sRequestID + "' is already registered! Old TR: " + aOldTR + "; New TR: " + aTR);
       }
-      if (m_bParallelRunningRequestCheckEnabled && m_aOpenRequests.size () >= m_nParallelRunningRequestBarrier)
+
+      if (RequestTrackerSettings.isParallelRunningRequestsCheckEnabled () &&
+          m_aOpenRequests.size () >= RequestTrackerSettings.getParallelRunningRequestBarrier ())
       {
         // Grab directly here to avoid another locked section
         bNotifyOnParallelRequests = true;
@@ -186,9 +186,9 @@ public final class RequestTrackingManager
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Removed request with ID '" + sRequestID + "'");
       }
-      if (m_bParallelRunningRequestCheckEnabled &&
+      if (RequestTrackerSettings.isParallelRunningRequestsCheckEnabled () &&
           m_bParallelRunningRequestsAboveLimit &&
-          m_aOpenRequests.size () < m_nParallelRunningRequestBarrier)
+          m_aOpenRequests.size () < RequestTrackerSettings.getParallelRunningRequestBarrier ())
       {
         // Back to normal!
         m_bParallelRunningRequestsAboveLimit = false;
@@ -215,13 +215,13 @@ public final class RequestTrackingManager
       try
       {
         // Check only if they are enabled!
-        if (m_bLongRunningCheckEnabled)
+        if (RequestTrackerSettings.isLongRunningRequestsCheckEnabled ())
         {
           if (LOGGER.isDebugEnabled ())
             LOGGER.debug ("Checking for long running requests");
 
           // Grab in read lock!
-          final long nNotificationMS = m_nLongRunningMilliSeconds;
+          final long nNotificationMS = RequestTrackerSettings.getLongRunningRequestWarnDurationMillis ();
 
           // Iterate all running requests
           final Iterator <Map.Entry <String, TrackedRequest>> it = m_aOpenRequests.entrySet ().iterator ();

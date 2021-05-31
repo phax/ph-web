@@ -178,4 +178,11 @@ public interface IHttpClientSettings
    * @since 9.1.9
    */
   boolean isFollowRedirects ();
+
+  /**
+   * @return <code>true</code> if the HTTP Connection "Keep-Alive" should be
+   *         used, <code>false</code> if not.
+   * @since 9.6.1
+   */
+  boolean isUseKeepAlive ();
 }

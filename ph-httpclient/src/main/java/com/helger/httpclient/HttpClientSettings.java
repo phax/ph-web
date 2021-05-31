@@ -71,6 +71,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
+  public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientSettings.class);
 
@@ -89,6 +90,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private int m_nSocketTimeoutMS = DEFAULT_SOCKET_TIMEOUT_MS;
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
+  private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
 
   /**
    * Default constructor.
@@ -133,6 +135,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setSocketTimeoutMS (aSource.getSocketTimeoutMS ());
     setUserAgent (aSource.getUserAgent ());
     setFollowRedirects (aSource.isFollowRedirects ());
+    setUseKeepAlive (aSource.isUseKeepAlive ());
     return this;
   }
 
@@ -530,6 +533,25 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public final HttpClientSettings setFollowRedirects (final boolean bFollowRedirects)
   {
     m_bFollowRedirects = bFollowRedirects;
+    return this;
+  }
+
+  public final boolean isUseKeepAlive ()
+  {
+    return m_bUseKeepAlive;
+  }
+
+  /**
+   * Enable or disable if use of the HTTP Connection "Keep-alive".
+   *
+   * @param bUseKeepAlive
+   *        <code>true</code> to use keep-alive, <code>false</code> if not.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setUseKeepAlive (final boolean bUseKeepAlive)
+  {
+    m_bUseKeepAlive = bUseKeepAlive;
     return this;
   }
 

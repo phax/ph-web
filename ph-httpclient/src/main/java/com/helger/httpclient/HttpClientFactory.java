@@ -51,6 +51,7 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLInitializationException;
+import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultClientConnectionReuseStrategy;
@@ -245,7 +246,9 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nullable
   public ConnectionReuseStrategy createConnectionReuseStrategy ()
   {
-    return DefaultClientConnectionReuseStrategy.INSTANCE;
+    if (m_aSettings.isUseKeepAlive ())
+      return DefaultClientConnectionReuseStrategy.INSTANCE;
+    return NoConnectionReuseStrategy.INSTANCE;
   }
 
   @Nonnull

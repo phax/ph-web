@@ -131,7 +131,11 @@ public class NaptrResolver
        * ; The service-parms are considered case-insensitive.
        */
       if ("U".equalsIgnoreCase (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Found a matching U-NAPTR record: " + aRecord);
         aMatchingRecords.add (aRecord);
+      }
     }
 
     if (aMatchingRecords.isEmpty ())

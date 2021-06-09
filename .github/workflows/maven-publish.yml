@@ -23,7 +23,7 @@ name: Maven deploy Snapshots
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:

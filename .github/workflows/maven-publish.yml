@@ -18,15 +18,15 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java#apache-maven-with-a-settings-path
 
-name: Maven Package
+name: Maven deploy Snapshots
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -35,13 +35,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+    - name: Publish to the Maven Central Repository
+      run: mvn --batch-mode deploy
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.SONATYPE_TOKEN }}

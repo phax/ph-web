@@ -373,6 +373,10 @@ public abstract class AbstractXServlet extends HttpServlet
       String sTargetURL = ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ();
       if (ServletSettings.isEncodeURLs ())
         sTargetURL = aHttpResponse.encodeRedirectURL (sTargetURL);
+
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Sending redirect to '" + sTargetURL + "'");
+
       aHttpResponse.addHeader (CHttpHeader.LOCATION, sTargetURL);
     }
     catch (final Exception ex)

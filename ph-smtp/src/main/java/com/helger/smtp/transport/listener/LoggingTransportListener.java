@@ -20,6 +20,9 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +36,6 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.transport.MailSendDetails;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 /**
  * An implementation of {@link IEmailDataTransportListener} that logs stuff to a
@@ -126,6 +125,6 @@ public class LoggingTransportListener implements IEmailDataTransportListener
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).getToString ();
+    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel).getToString ();
   }
 }

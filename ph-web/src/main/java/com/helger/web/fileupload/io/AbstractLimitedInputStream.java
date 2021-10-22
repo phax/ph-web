@@ -16,7 +16,6 @@
  */
 package com.helger.web.fileupload.io;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,13 +23,14 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.io.stream.WrappedInputStream;
 import com.helger.commons.state.ICloseable;
 
 /**
  * An input stream, which limits its data size. This stream is used, if the
  * content length is unknown.
  */
-public abstract class AbstractLimitedInputStream extends FilterInputStream implements ICloseable
+public abstract class AbstractLimitedInputStream extends WrappedInputStream implements ICloseable
 {
   /**
    * The maximum size of an item, in bytes.

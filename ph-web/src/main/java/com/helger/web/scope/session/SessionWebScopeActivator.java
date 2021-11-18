@@ -19,6 +19,7 @@ package com.helger.web.scope.session;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -44,7 +45,7 @@ import com.helger.web.scope.mgr.WebScopeManager;
  *
  * @author Philip Helger
  */
-public final class SessionWebScopeActivator implements HttpSessionActivationListener, ISessionWebScopeDontPassivate
+public final class SessionWebScopeActivator implements HttpSessionActivationListener, ISessionWebScopeDontPassivate, Serializable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScopeActivator.class);
 

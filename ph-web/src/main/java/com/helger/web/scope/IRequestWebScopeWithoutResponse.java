@@ -472,24 +472,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   }
 
   /**
-   * Returns the session ID specified by the client. This may not be the same as
-   * the ID of the current valid session for this request. If the client did not
-   * specify a session ID, this method returns <code>null</code>.
-   *
-   * @return a <code>String</code> specifying the session ID, or
-   *         <code>null</code> if the request did not specify a session ID
-   * @see #isRequestedSessionIdValid
-   * @deprecated Since 9.6.2; This method should only be used by Application
-   *             Servers to verify. Will be removed in the next major version
-   */
-  @Nullable
-  @Deprecated
-  default String getRequestedSessionId ()
-  {
-    return getRequest ().getRequestedSessionId ();
-  }
-
-  /**
    * Get the request URI without an eventually appended session
    * (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
@@ -669,7 +651,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return <code>true</code> if this request has an id for a valid session in
    *         the current session context; <code>false</code> otherwise
-   * @see #getRequestedSessionId
    * @see #getSession
    */
   default boolean isRequestedSessionIdValid ()

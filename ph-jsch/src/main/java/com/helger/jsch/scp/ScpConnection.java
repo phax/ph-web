@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Stack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +28,9 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.NonBlockingStack;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.ChannelExec;
@@ -48,28 +49,31 @@ public class ScpConnection implements Closeable
   private static final Logger LOGGER = LoggerFactory.getLogger (ScpConnection.class);
 
   private final ChannelExec m_aChannel;
-  private final Stack <ICurrentEntry> m_aEntryStack;
+  private final NonBlockingStack <ICurrentEntry> m_aEntryStack = new NonBlockingStack <> ();
   private final InputStream m_aIS;
   private final OutputStream m_aOS;
   private final Session m_aSession;
 
-  public ScpConnection (final ISessionFactory sessionFactory,
+  public ScpConnection (@Nonnull final ISessionFactory aSessionFactory,
                         final String path,
-                        final EScpMode scpMode,
-                        final ECopyMode copyMode) throws JSchException, IOException
+                        @Nonnull final EScpMode eScpMode,
+                        final ECopyMode eCopyMode) throws JSchException, IOException
   {
-    m_aSession = sessionFactory.newSession ();
+    ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
+    ValueEnforcer.notNull (eScpMode, "ScpMode");
+
+    m_aSession = aSessionFactory.newSession ();
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("connecting session");
     m_aSession.connect ();
 
-    final String command = _getCommand (scpMode, copyMode, path);
+    final String sCommand = _getCommand (eScpMode, eCopyMode, path);
     m_aChannel = (ChannelExec) m_aSession.openChannel ("exec");
 
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("setting exec command to '" + command + "'");
-    m_aChannel.setCommand (command);
+      LOGGER.debug ("setting exec command to '" + sCommand + "'");
+    m_aChannel.setCommand (sCommand);
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("connecting channel");
@@ -78,39 +82,33 @@ public class ScpConnection implements Closeable
     m_aOS = m_aChannel.getOutputStream ();
     m_aIS = m_aChannel.getInputStream ();
 
-    if (scpMode == EScpMode.FROM)
-    {
+    if (eScpMode == EScpMode.FROM)
       _writeAck ();
-    }
     else
-      if (scpMode == EScpMode.TO)
-      {
+      if (eScpMode == EScpMode.TO)
         _checkAck ();
-      }
-
-    m_aEntryStack = new Stack <> ();
   }
 
   @Nonnull
   @Nonempty
-  private static String _getCommand (final EScpMode scpMode, final ECopyMode copyMode, final String path)
+  private static String _getCommand (@Nonnull final EScpMode eScpMode, @Nullable final ECopyMode eCopyMode, @Nonnull final String sPath)
   {
-    final StringBuilder command;
-    switch (scpMode)
+    final StringBuilder aSB;
+    switch (eScpMode)
     {
       case TO:
-        command = new StringBuilder ("scp -tq");
+        aSB = new StringBuilder ("scp -tq");
         break;
       case FROM:
-        command = new StringBuilder ("scp -fq");
+        aSB = new StringBuilder ("scp -fq");
         break;
       default:
         throw new IllegalStateException ();
     }
 
-    if (copyMode == ECopyMode.RECURSIVE)
-      command.append ('r');
-    return command.append (' ').append (path).toString ();
+    if (eCopyMode == ECopyMode.RECURSIVE)
+      aSB.append ('r');
+    return aSB.append (' ').append (sPath).toString ();
   }
 
   /**
@@ -135,14 +133,14 @@ public class ScpConnection implements Closeable
 
     if (b == 1 || b == 2)
     {
-      final StringBuilder sb = new StringBuilder ();
+      final StringBuilder aSB = new StringBuilder ();
       int c;
       while ((c = m_aIS.read ()) != '\n')
       {
-        sb.append ((char) c);
+        aSB.append ((char) c);
       }
       if (b == 1 || b == 2)
-        throw new IOException (sb.toString ());
+        throw new IOException (aSB.toString ());
     }
 
     return b;
@@ -150,7 +148,7 @@ public class ScpConnection implements Closeable
 
   public void close () throws IOException
   {
-    IOException toThrow = null;
+    IOException aToThrow = null;
     try
     {
       while (!m_aEntryStack.isEmpty ())
@@ -160,7 +158,7 @@ public class ScpConnection implements Closeable
     }
     catch (final IOException e)
     {
-      toThrow = e;
+      aToThrow = e;
     }
 
     StreamHelper.close (m_aOS);
@@ -177,10 +175,8 @@ public class ScpConnection implements Closeable
       m_aSession.disconnect ();
     }
 
-    if (toThrow != null)
-    {
-      throw toThrow;
-    }
+    if (aToThrow != null)
+      throw aToThrow;
   }
 
   public void closeEntry () throws IOException
@@ -193,8 +189,8 @@ public class ScpConnection implements Closeable
   {
     if (m_aEntryStack.isEmpty ())
       return null;
-    final ICurrentEntry currentEntry = m_aEntryStack.peek ();
-    return (currentEntry instanceof InputStream) ? (InputStream) currentEntry : null;
+    final ICurrentEntry aEntry = m_aEntryStack.peek ();
+    return aEntry instanceof InputStream ? (InputStream) aEntry : null;
   }
 
   @Nullable
@@ -202,8 +198,8 @@ public class ScpConnection implements Closeable
   {
     if (m_aEntryStack.isEmpty ())
       return null;
-    final ICurrentEntry currentEntry = m_aEntryStack.peek ();
-    return (currentEntry instanceof OutputStream) ? (OutputStream) currentEntry : null;
+    final ICurrentEntry aEntry = m_aEntryStack.peek ();
+    return aEntry instanceof OutputStream ? (OutputStream) aEntry : null;
   }
 
   @Nullable
@@ -224,9 +220,7 @@ public class ScpConnection implements Closeable
         final boolean isDirectory = m_aEntryStack.peek ().isDirectoryEntry ();
         closeEntry ();
         if (isDirectory)
-        {
           break;
-        }
       }
     }
     else
@@ -307,9 +301,9 @@ public class ScpConnection implements Closeable
     putNextEntry (ScpEntry.newFile (name, size));
   }
 
-  public void putNextEntry (final ScpEntry entry) throws IOException
+  public void putNextEntry (@Nonnull final ScpEntry aEntry) throws IOException
   {
-    if (entry.isEndOfDirectory ())
+    if (aEntry.isEndOfDirectory ())
     {
       while (!m_aEntryStack.isEmpty ())
       {
@@ -331,16 +325,17 @@ public class ScpConnection implements Closeable
         }
       }
 
-    if (entry.isDirectory ())
+    if (aEntry.isDirectory ())
     {
-      m_aEntryStack.push (new OutputDirectoryEntry (entry));
+      m_aEntryStack.push (new OutputDirectoryEntry (aEntry));
     }
     else
     {
-      m_aEntryStack.push (new EntryOutputStream (entry));
+      m_aEntryStack.push (new EntryOutputStream (aEntry));
     }
   }
 
+  @Nonnull
   private String _readMessageSegment () throws IOException
   {
     final byte [] buffer = new byte [1024];
@@ -381,9 +376,9 @@ public class ScpConnection implements Closeable
 
   private interface ICurrentEntry
   {
-    public void complete () throws IOException;
+    void complete () throws IOException;
 
-    public boolean isDirectoryEntry ();
+    boolean isDirectoryEntry ();
   }
 
   private class InputDirectoryEntry implements ICurrentEntry
@@ -430,11 +425,11 @@ public class ScpConnection implements Closeable
 
     public EntryInputStream (final ScpEntry entry) throws IOException
     {
-      this.m_aEntry = entry;
-      this.m_nIOCount = 0L;
+      m_aEntry = entry;
+      m_nIOCount = 0L;
 
       _writeAck ();
-      this.m_bClosed = false;
+      m_bClosed = false;
     }
 
     @Override
@@ -448,7 +443,7 @@ public class ScpConnection implements Closeable
         }
         _writeAck ();
         _checkAck ();
-        this.m_bClosed = true;
+        m_bClosed = true;
       }
     }
 
@@ -492,11 +487,11 @@ public class ScpConnection implements Closeable
 
     public EntryOutputStream (final ScpEntry entry) throws IOException
     {
-      this.m_aEntry = entry;
-      this.m_nIOCount = 0L;
+      m_aEntry = entry;
+      m_nIOCount = 0L;
 
       _writeMessage ("C" + entry.getMode () + " " + entry.getSize () + " " + entry.getName () + "\n");
-      this.m_bClosed = false;
+      m_bClosed = false;
     }
 
     @Override
@@ -507,7 +502,7 @@ public class ScpConnection implements Closeable
         if (!_isComplete ())
           throw new IOException ("stream not finished (" + m_nIOCount + "!=" + m_aEntry.getSize () + ")");
         _writeMessage ((byte) 0);
-        this.m_bClosed = true;
+        m_bClosed = true;
       }
     }
 

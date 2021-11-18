@@ -34,8 +34,8 @@ public class ForcedRedirectException extends RuntimeException
   public static final String DEFAULT_MENU_ITEM_ID = "$default$";
 
   private final String m_sSourceMenuItemID;
-  private final ISimpleURL m_aRedirectTargetURL;
-  private final Object m_aContent;
+  private final transient ISimpleURL m_aRedirectTargetURL;
+  private final transient Object m_aContent;
 
   /**
    * Constructor

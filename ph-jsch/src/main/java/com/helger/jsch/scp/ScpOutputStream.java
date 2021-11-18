@@ -19,6 +19,8 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +41,12 @@ public class ScpOutputStream extends OutputStream
   private final ScpConnection m_aConnection;
   private OutputStream m_aOS;
 
-  public ScpOutputStream (final ISessionFactory sessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
-                                                                                                             IOException
+  public ScpOutputStream (@Nonnull final ISessionFactory aSessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
+                                                                                                                       IOException
   {
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Opening ScpOutputStream to " + sessionFactory.getAsString () + " " + path);
-    m_aConnection = new ScpConnection (sessionFactory, path, EScpMode.TO, copyMode);
+      LOGGER.debug ("Opening ScpOutputStream to " + aSessionFactory.getAsString () + " " + path);
+    m_aConnection = new ScpConnection (aSessionFactory, path, EScpMode.TO, copyMode);
   }
 
   @Override
@@ -74,9 +76,9 @@ public class ScpOutputStream extends OutputStream
     m_aOS = m_aConnection.getCurrentOuputStream ();
   }
 
-  public void putNextEntry (final ScpEntry entry) throws IOException
+  public void putNextEntry (@Nonnull final ScpEntry aEntry) throws IOException
   {
-    m_aConnection.putNextEntry (entry);
+    m_aConnection.putNextEntry (aEntry);
     m_aOS = m_aConnection.getCurrentOuputStream ();
   }
 

@@ -22,7 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
@@ -33,16 +35,14 @@ public class ScpFile
   private final String [] m_aPath;
   private final ISessionFactory m_aSessionFactory;
 
-  public ScpFile (final ISessionFactory sessionFactory, final String... path)
+  public ScpFile (@Nonnull final ISessionFactory aSessionFactory, @Nonnull final EDestinationOS eOS, final String... aPath)
   {
-    this (sessionFactory, EDestinationOS.UNIX, path);
-  }
+    ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
+    ValueEnforcer.notNull (eOS, "OS");
 
-  public ScpFile (final ISessionFactory sessionFactory, final EDestinationOS os, final String... path)
-  {
-    m_aSessionFactory = sessionFactory;
-    m_eOS = os;
-    m_aPath = path;
+    m_aSessionFactory = aSessionFactory;
+    m_eOS = eOS;
+    m_aPath = aPath;
   }
 
   public void copyFrom (final File file) throws IOException, JSchException
@@ -50,7 +50,7 @@ public class ScpFile
     copyFrom (file, null);
   }
 
-  public void copyFrom (final File file, final String mode) throws IOException, JSchException
+  public void copyFrom (@Nonnull final File file, @Nullable final String mode) throws IOException, JSchException
   {
     try (final FileInputStream from = new FileInputStream (file);
          final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ()) : getOutputStream (file.length (), mode))
@@ -130,7 +130,7 @@ public class ScpFile
     return _getOutputStream (ScpEntry.newFile (getFilename (), size));
   }
 
-  public ScpFileOutputStream getOutputStream (final long size, final String mode) throws JSchException, IOException
+  public ScpFileOutputStream getOutputStream (final long size, @Nullable final String mode) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size, mode));
   }
@@ -148,5 +148,11 @@ public class ScpFile
   String getPath ()
   {
     return m_eOS.joinPath (m_aPath);
+  }
+
+  @Nonnull
+  public static ScpFile forUnix (@Nonnull final ISessionFactory aSessionFactory, final String... aPath)
+  {
+    return new ScpFile (aSessionFactory, EDestinationOS.UNIX, aPath);
   }
 }

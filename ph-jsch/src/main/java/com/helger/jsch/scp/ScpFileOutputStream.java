@@ -19,6 +19,8 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
 
@@ -26,10 +28,11 @@ public class ScpFileOutputStream extends OutputStream
 {
   private final ScpOutputStream m_aOS;
 
-  ScpFileOutputStream (final ISessionFactory sessionFactory, final String directory, final ScpEntry scpEntry) throws JSchException,
-                                                                                                              IOException
+  ScpFileOutputStream (@Nonnull final ISessionFactory aSessionFactory,
+                       final String directory,
+                       final ScpEntry scpEntry) throws JSchException, IOException
   {
-    m_aOS = new ScpOutputStream (sessionFactory, directory, ECopyMode.FILE_ONLY);
+    m_aOS = new ScpOutputStream (aSessionFactory, directory, ECopyMode.FILE_ONLY);
     m_aOS.putNextEntry (scpEntry);
   }
 

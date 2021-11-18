@@ -56,7 +56,7 @@ public final class ScpFileTest extends AbstractScpTestBase
   {
     rootDir = UUID.randomUUID ().toString ();
 
-    dir = new File (filesystemPath, rootDir);
+    dir = new File (s_sFileSystemPath, rootDir);
     assertTrue (dir.mkdirs ());
     LOGGER.info ((dir.exists () ? "succesfully created" : "failed to create") + " dir " + dir);
     filename = UUID.randomUUID ().toString () + ".txt";
@@ -71,7 +71,7 @@ public final class ScpFileTest extends AbstractScpTestBase
     try
     {
       SimpleFileIO.writeFile (file, expected, StandardCharsets.UTF_8);
-      final ScpFile to = new ScpFile (sessionFactory, scpPath, rootDir, toFilename);
+      final ScpFile to = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, toFilename);
       to.copyFrom (file);
       final String actual = SimpleFileIO.getFileAsString (toFile, StandardCharsets.UTF_8);
       assertEquals (expected, actual);
@@ -95,7 +95,7 @@ public final class ScpFileTest extends AbstractScpTestBase
     try
     {
       SimpleFileIO.writeFile (fromFile, expected, StandardCharsets.UTF_8);
-      final ScpFile from = new ScpFile (sessionFactory, scpPath, rootDir, fromFilename);
+      final ScpFile from = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, fromFilename);
       from.copyTo (file);
       final String actual = SimpleFileIO.getFileAsString (file, StandardCharsets.UTF_8);
       assertEquals (expected, actual);
@@ -119,8 +119,8 @@ public final class ScpFileTest extends AbstractScpTestBase
     try
     {
       SimpleFileIO.writeFile (fromFile, expected, StandardCharsets.UTF_8);
-      final ScpFile from = new ScpFile (sessionFactory, scpPath, rootDir, fromFilename);
-      final ScpFile to = new ScpFile (sessionFactory, scpPath, rootDir, filename);
+      final ScpFile from = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, fromFilename);
+      final ScpFile to = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, filename);
       from.copyTo (to);
       final String actual = SimpleFileIO.getFileAsString (file, StandardCharsets.UTF_8);
       assertEquals (expected, actual);
@@ -142,7 +142,7 @@ public final class ScpFileTest extends AbstractScpTestBase
     try
     {
       SimpleFileIO.writeFile (file, expected, StandardCharsets.UTF_8);
-      final ScpFile scpFile = new ScpFile (sessionFactory, scpPath, rootDir, filename);
+      final ScpFile scpFile = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, filename);
       try (ScpFileInputStream scpFileInputStream = scpFile.getInputStream ())
       {
         final String actual = StreamHelper.getAllBytesAsString (scpFileInputStream, StandardCharsets.UTF_8);
@@ -162,7 +162,7 @@ public final class ScpFileTest extends AbstractScpTestBase
   {
     try
     {
-      final ScpFile scpFile = new ScpFile (sessionFactory, scpPath, rootDir, filename);
+      final ScpFile scpFile = ScpFile.forUnix (s_aSessionFactory, s_sScpPath, rootDir, filename);
       try (ScpFileOutputStream outputStream = scpFile.getOutputStream (expected.length ()))
       {
         StreamHelper.writeStream (outputStream, expected, StandardCharsets.UTF_8);

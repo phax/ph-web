@@ -21,9 +21,9 @@ public enum EDestinationOS
   UNIX ('/'),
   WINDOWS ('\\');
 
-  private char m_cSep;
+  private final char m_cSep;
 
-  private EDestinationOS (final char separator)
+  EDestinationOS (final char separator)
   {
     m_cSep = separator;
   }

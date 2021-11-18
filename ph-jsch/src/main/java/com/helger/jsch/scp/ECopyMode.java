@@ -16,6 +16,11 @@
  */
 package com.helger.jsch.scp;
 
+/**
+ * SCP copy mode.
+ *
+ * @author Philip Helger
+ */
 public enum ECopyMode
 {
   FILE_ONLY,

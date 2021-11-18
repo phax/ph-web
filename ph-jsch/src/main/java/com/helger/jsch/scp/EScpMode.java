@@ -16,6 +16,11 @@
  */
 package com.helger.jsch.scp;
 
+/**
+ * SCP Mode
+ *
+ * @author Philip Helger
+ */
 public enum EScpMode
 {
   TO,

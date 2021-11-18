@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
 
@@ -53,7 +54,7 @@ public class ScpEntry
     return mode;
   }
 
-  private ScpEntry (final String name, final long size, final String mode, final EType type) throws IOException
+  private ScpEntry (final String name, final long size, @Nullable final String mode, final EType type) throws IOException
   {
     m_sName = name;
     m_nSize = size;
@@ -61,6 +62,7 @@ public class ScpEntry
     m_eType = type;
   }
 
+  @Nullable
   public String getMode ()
   {
     return m_sMode;
@@ -115,7 +117,7 @@ public class ScpEntry
   }
 
   @Nonnull
-  public static ScpEntry newDirectory (final String name, final String mode) throws IOException
+  public static ScpEntry newDirectory (final String name, @Nullable final String mode) throws IOException
   {
     return new ScpEntry (name, 0L, mode, EType.DIRECTORY);
   }
@@ -133,7 +135,7 @@ public class ScpEntry
   }
 
   @Nonnull
-  public static ScpEntry newFile (final String name, final long size, final String mode) throws IOException
+  public static ScpEntry newFile (final String name, final long size, @Nullable final String mode) throws IOException
   {
     return new ScpEntry (name, size, mode, EType.FILE);
   }

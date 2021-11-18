@@ -34,10 +34,10 @@ abstract class AbstractScpTestBase
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractScpTestBase.class);
 
-  protected static ISessionFactory sessionFactory;
-  protected static NonBlockingProperties properties;
-  protected static String scpPath;
-  protected static String filesystemPath;
+  protected static ISessionFactory s_aSessionFactory;
+  protected static NonBlockingProperties s_aProperties;
+  protected static String s_sScpPath;
+  protected static String s_sFileSystemPath;
 
   @BeforeClass
   public static void initializeClass ()
@@ -45,23 +45,23 @@ abstract class AbstractScpTestBase
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new NonBlockingProperties ();
-      properties.load (inputStream);
+      s_aProperties = new NonBlockingProperties ();
+      s_aProperties.load (inputStream);
     }
     catch (final IOException e)
     {
       LOGGER.warn ("cant find properties file (tests will be skipped): " + e.getMessage ());
-      properties = null;
+      s_aProperties = null;
       return;
     }
 
-    final String knownHosts = properties.getProperty ("ssh.knownHosts");
-    final String privateKey = properties.getProperty ("ssh.privateKey");
-    scpPath = properties.getProperty ("scp.out.test.scpPath");
-    filesystemPath = properties.getProperty ("scp.out.test.filesystemPath");
-    final String username = properties.getProperty ("scp.out.test.username");
+    final String knownHosts = s_aProperties.getProperty ("ssh.knownHosts");
+    final String privateKey = s_aProperties.getProperty ("ssh.privateKey");
+    s_sScpPath = s_aProperties.getProperty ("scp.out.test.scpPath");
+    s_sFileSystemPath = s_aProperties.getProperty ("scp.out.test.filesystemPath");
+    final String username = s_aProperties.getProperty ("scp.out.test.username");
     final String hostname = "localhost";
-    final int port = Integer.parseInt (properties.getProperty ("scp.out.test.port"));
+    final int port = Integer.parseInt (s_aProperties.getProperty ("scp.out.test.port"));
 
     final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
     try
@@ -73,13 +73,13 @@ abstract class AbstractScpTestBase
     {
       Assume.assumeNoException (e);
     }
-    sessionFactory = defaultSessionFactory;
+    s_aSessionFactory = defaultSessionFactory;
   }
 
   @Before
   public void beforeTest ()
   {
     // skip tests if properties not set
-    Assume.assumeNotNull (properties);
+    Assume.assumeNotNull (s_aProperties);
   }
 }

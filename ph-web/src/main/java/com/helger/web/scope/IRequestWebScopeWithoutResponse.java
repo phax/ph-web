@@ -479,8 +479,11 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>String</code> specifying the session ID, or
    *         <code>null</code> if the request did not specify a session ID
    * @see #isRequestedSessionIdValid
+   * @deprecated Since 9.6.2; This method should only be used by Application
+   *             Servers to verify. Will be removed in the next major version
    */
   @Nullable
+  @Deprecated
   default String getRequestedSessionId ()
   {
     return getRequest ().getRequestedSessionId ();

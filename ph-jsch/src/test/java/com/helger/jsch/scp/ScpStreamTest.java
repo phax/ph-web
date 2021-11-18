@@ -79,7 +79,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
     dir1Name = UUID.randomUUID ().toString ();
     dir2Name = "dir";
 
-    dir1 = new File (filesystemPath, dir1Name);
+    dir1 = new File (s_sFileSystemPath, dir1Name);
     dir2 = new File (dir1, dir2Name);
     assertTrue (dir2.mkdirs ());
     LOGGER.info ((dir2.exists () ? "succesfully" : "failed to") + " created dir " + dir2);
@@ -93,11 +93,11 @@ public final class ScpStreamTest extends AbstractScpTestBase
 
     try
     {
-      session = sessionFactory.newSession ();
+      session = s_aSessionFactory.newSession ();
     }
     catch (final Exception e)
     {
-      LOGGER.error ("failed to initialize session from factory " + sessionFactory.getAsString (), e);
+      LOGGER.error ("failed to initialize session from factory " + s_aSessionFactory.getAsString (), e);
       fail (e.getMessage ());
     }
   }
@@ -131,7 +131,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
     SimpleFileIO.writeFile (file2, expected2, StandardCharsets.UTF_8);
     SimpleFileIO.writeFile (file3, expected3, StandardCharsets.UTF_8);
 
-    try (ScpInputStream inputStream = new ScpInputStream (sessionFactory, joinPath (scpPath, dir1Name, "*"), ECopyMode.RECURSIVE))
+    try (ScpInputStream inputStream = new ScpInputStream (s_aSessionFactory, joinPath (s_sScpPath, dir1Name, "*"), ECopyMode.RECURSIVE))
     {
       final Map <String, String> fileNameToContents = new HashMap <> ();
       final List <String> dirs = new ArrayList <> ();
@@ -171,7 +171,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
   @Test
   public void testOutputStream ()
   {
-    try (final ScpOutputStream outputStream = new ScpOutputStream (sessionFactory, joinPath (scpPath, dir1Name), ECopyMode.RECURSIVE))
+    try (final ScpOutputStream outputStream = new ScpOutputStream (s_aSessionFactory, joinPath (s_sScpPath, dir1Name), ECopyMode.RECURSIVE))
     {
       outputStream.putNextEntry (file1Name, expected1.length ());
       outputStream.write (expected1.getBytes (StandardCharsets.UTF_8));

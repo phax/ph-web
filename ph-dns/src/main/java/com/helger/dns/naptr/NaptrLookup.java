@@ -204,7 +204,7 @@ public class NaptrLookup
         // Wrong domain name
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("Error looking up '" + sDomainName + "': " + aLookup.getErrorString ());
-        return null;
+        return new CommonsArrayList <> ();
       }
 
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();

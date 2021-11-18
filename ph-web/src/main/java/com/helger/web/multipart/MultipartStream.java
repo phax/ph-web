@@ -150,7 +150,7 @@ public class MultipartStream
   /**
    * The input stream from which data is read.
    */
-  private final transient InputStream m_aIS;
+  private final InputStream m_aIS;
 
   /**
    * The length of the boundary token plus the leading <code>CRLF--</code>.

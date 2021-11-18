@@ -37,7 +37,7 @@ import com.helger.commons.string.ToStringGenerator;
  */
 public class InputStreamProviderDataSource implements IExtendedDataSource
 {
-  private final transient IHasInputStream m_aISP;
+  private final IHasInputStream m_aISP;
   private int m_nISAcquired = 0;
   private final String m_sName;
   private final String m_sContentType;

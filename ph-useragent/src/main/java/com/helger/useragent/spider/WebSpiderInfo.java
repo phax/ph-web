@@ -44,42 +44,48 @@ public class WebSpiderInfo implements IHasID <String>
   }
 
   @Nonnull
-  public String getID ()
+  public final String getID ()
   {
     return m_sID;
   }
 
-  void setName (@Nullable final String sName)
-  {
-    m_sName = sName;
-  }
-
   @Nullable
-  public String getName ()
+  public final String getName ()
   {
     return m_sName;
   }
 
-  void setType (@Nullable final EWebSpiderType eType)
+  @Nonnull
+  final WebSpiderInfo setName (@Nullable final String sName)
   {
-    m_eType = eType;
+    m_sName = sName;
+    return this;
   }
 
   @Nullable
-  public EWebSpiderType getType ()
+  public final EWebSpiderType getType ()
   {
     return m_eType;
   }
 
-  void setInfo (@Nullable final String sInfo)
+  @Nonnull
+  final WebSpiderInfo setType (@Nullable final EWebSpiderType eType)
   {
-    m_sInfo = sInfo;
+    m_eType = eType;
+    return this;
   }
 
   @Nullable
-  public String getInfo ()
+  public final String getInfo ()
   {
     return m_sInfo;
+  }
+
+  @Nonnull
+  final WebSpiderInfo setInfo (@Nullable final String sInfo)
+  {
+    m_sInfo = sInfo;
+    return this;
   }
 
   @Override

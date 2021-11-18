@@ -53,7 +53,7 @@ public class EmailData implements IMutableEmailData
   private LocalDateTime m_aSentDateTime;
   private String m_sSubject;
   private String m_sBody;
-  private transient IMutableEmailAttachmentList m_aAttachments;
+  private IMutableEmailAttachmentList m_aAttachments;
   private final StringMap m_aCustomAttrs = new StringMap ();
 
   public EmailData (@Nonnull final EEmailType eEmailType)

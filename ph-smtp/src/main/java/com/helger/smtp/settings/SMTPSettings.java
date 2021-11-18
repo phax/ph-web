@@ -16,9 +16,6 @@
  */
 package com.helger.smtp.settings;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
@@ -28,9 +25,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.lang.ICloneable;
-import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
@@ -50,40 +45,12 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   private int m_nPort;
   private String m_sUserName;
   private String m_sPassword;
-  private transient Charset m_aCharset;
+  private Charset m_aCharset;
   private boolean m_bSSLEnabled;
   private boolean m_bSTARTTLSEnabled;
   private long m_nConnectionTimeoutMilliSecs;
   private long m_nTimeoutMilliSecs;
   private boolean m_bDebugSMTP;
-
-  private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
-  {
-    StreamHelper.writeSafeUTF (aOOS, m_sHostName);
-    aOOS.writeInt (m_nPort);
-    StreamHelper.writeSafeUTF (aOOS, m_sUserName);
-    StreamHelper.writeSafeUTF (aOOS, m_sPassword);
-    SerializationConverter.writeConvertedObject (m_aCharset, aOOS);
-    aOOS.writeBoolean (m_bSSLEnabled);
-    aOOS.writeBoolean (m_bSTARTTLSEnabled);
-    aOOS.writeLong (m_nConnectionTimeoutMilliSecs);
-    aOOS.writeLong (m_nTimeoutMilliSecs);
-    aOOS.writeBoolean (m_bDebugSMTP);
-  }
-
-  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException
-  {
-    m_sHostName = StreamHelper.readSafeUTF (aOIS);
-    m_nPort = aOIS.readInt ();
-    m_sUserName = StreamHelper.readSafeUTF (aOIS);
-    m_sPassword = StreamHelper.readSafeUTF (aOIS);
-    m_aCharset = SerializationConverter.readConvertedObject (aOIS, Charset.class);
-    m_bSSLEnabled = aOIS.readBoolean ();
-    m_bSTARTTLSEnabled = aOIS.readBoolean ();
-    m_nConnectionTimeoutMilliSecs = aOIS.readLong ();
-    m_nTimeoutMilliSecs = aOIS.readLong ();
-    m_bDebugSMTP = aOIS.readBoolean ();
-  }
 
   /**
    * Constructor which copies settings from another object

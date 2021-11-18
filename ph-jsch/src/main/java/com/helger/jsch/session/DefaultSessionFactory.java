@@ -77,7 +77,7 @@ public class DefaultSessionFactory implements ISessionFactory
   private String m_sUsername;
 
   // Status vars
-  private transient File m_aDotSshDir;
+  private File m_aDotSshDir;
 
   /**
    * Creates a default DefaultSessionFactory.

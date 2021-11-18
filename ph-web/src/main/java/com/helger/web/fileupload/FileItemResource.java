@@ -47,7 +47,7 @@ public class FileItemResource implements IReadableResource
 
   private final IFileItem m_aFileItem;
   // Status vars
-  private transient int m_nHashCode = IHashCodeGenerator.ILLEGAL_HASHCODE;
+  private int m_nHashCode = IHashCodeGenerator.ILLEGAL_HASHCODE;
 
   public FileItemResource (@Nonnull final IFileItem aFileItem)
   {

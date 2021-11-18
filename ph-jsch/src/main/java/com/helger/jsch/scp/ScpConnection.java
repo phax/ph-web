@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -452,9 +453,9 @@ public class ScpConnection implements Closeable
       close ();
     }
 
-    private void _increment ()
+    private void _increment (@Nonnegative final int nCount)
     {
-      m_nIOCount++;
+      m_nIOCount += nCount;
     }
 
     private boolean _isComplete ()
@@ -471,11 +472,21 @@ public class ScpConnection implements Closeable
     public int read () throws IOException
     {
       if (_isComplete ())
-      {
         return -1;
-      }
-      _increment ();
+
+      _increment (1);
       return m_aIS.read ();
+    }
+
+    @Override
+    public int read (final byte [] aBuf, final int nOfs, final int nLen) throws IOException
+    {
+      if (_isComplete ())
+        return -1;
+
+      final int nBytesRead = m_aIS.read (aBuf, nOfs, nLen);
+      _increment (nBytesRead);
+      return nBytesRead;
     }
   }
 
@@ -511,11 +522,11 @@ public class ScpConnection implements Closeable
       close ();
     }
 
-    private void _increment () throws IOException
+    private void _increment (@Nonnegative final int n) throws IOException
     {
       if (_isComplete ())
         throw new IOException ("too many bytes written for file " + m_aEntry.getName ());
-      m_nIOCount++;
+      m_nIOCount += n;
     }
 
     private boolean _isComplete ()
@@ -531,8 +542,15 @@ public class ScpConnection implements Closeable
     @Override
     public void write (final int b) throws IOException
     {
-      _increment ();
+      _increment (1);
       m_aOS.write (b);
+    }
+
+    @Override
+    public void write (final byte [] aBuf, final int nOfs, final int nLen) throws IOException
+    {
+      _increment (nLen);
+      m_aOS.write (aBuf, nOfs, nLen);
     }
   }
 }

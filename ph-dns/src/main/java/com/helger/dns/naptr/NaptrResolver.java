@@ -72,7 +72,7 @@ public class NaptrResolver
   @Nonnull
   public static Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
   {
-    return x -> sServiceName.equalsIgnoreCase (x);
+    return sServiceName::equalsIgnoreCase;
   }
 
   // NaptrRegex is e.g. <code>!^.*$!http://test-infra.peppol.at!</code>

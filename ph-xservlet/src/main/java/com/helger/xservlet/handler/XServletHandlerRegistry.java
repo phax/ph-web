@@ -180,10 +180,10 @@ public class XServletHandlerRegistry
 
   @Nonnull
   @ReturnsMutableCopy
-  public EnumSet <EHttpMethod> getAllowedHTTPMethods ()
+  public Set <EHttpMethod> getAllowedHTTPMethods ()
   {
     // Return all methods for which handlers are registered
-    final EnumSet <EHttpMethod> ret = EnumSet.copyOf (m_aHandlers.keySet ());
+    final Set <EHttpMethod> ret = EnumSet.copyOf (m_aHandlers.keySet ());
     if (!ret.contains (EHttpMethod.GET))
     {
       // If GET is not supported, HEAD is also not supported

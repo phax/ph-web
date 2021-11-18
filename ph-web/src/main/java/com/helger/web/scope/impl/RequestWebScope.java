@@ -78,7 +78,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * @since 9.0.6
    */
   @FunctionalInterface
-  public static interface IParamValueCleanser
+  public interface IParamValueCleanser
   {
     /**
      * Get the cleaned value of a parameter value.
@@ -104,8 +104,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   private static IParamValueCleanser s_aParamValueCleanser = (n, i, v) -> getWithoutForbiddenCharsAndNormalized (v);
 
   private final LocalDateTime m_aCreationDT;
-  protected final transient HttpServletRequest m_aHttpRequest;
-  protected final transient HttpServletResponse m_aHttpResponse;
+  protected final HttpServletRequest m_aHttpRequest;
+  protected final HttpServletResponse m_aHttpResponse;
   private HttpHeaderMap m_aHeaders;
   private final ParamContainer m_aParams = new ParamContainer ();
   private IRequestParamMap m_aRequestParamMap;

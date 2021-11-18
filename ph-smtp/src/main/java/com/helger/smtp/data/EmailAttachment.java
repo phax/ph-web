@@ -16,9 +16,6 @@
  */
 package com.helger.smtp.data;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 
 import javax.activation.FileTypeMap;
@@ -30,9 +27,7 @@ import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.io.streamprovider.ByteArrayInputStreamProvider;
-import com.helger.commons.serialize.convert.SerializationConverter;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
@@ -44,11 +39,11 @@ public class EmailAttachment implements IEmailAttachment
 {
   public static final EEmailAttachmentDisposition DEFAULT_DISPOSITION = EEmailAttachmentDisposition.ATTACHMENT;
 
-  private String m_sFilename;
-  private IHasInputStream m_aInputStreamProvider;
-  private Charset m_aCharset;
-  private String m_sContentType;
-  private EEmailAttachmentDisposition m_eDisposition;
+  private final String m_sFilename;
+  private final IHasInputStream m_aInputStreamProvider;
+  private final Charset m_aCharset;
+  private final String m_sContentType;
+  private final EEmailAttachmentDisposition m_eDisposition;
 
   public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final byte [] aContent)
   {
@@ -108,24 +103,6 @@ public class EmailAttachment implements IEmailAttachment
     m_aCharset = aCharset;
     m_sContentType = sContentType;
     m_eDisposition = ValueEnforcer.notNull (eDisposition, "Disposition");
-  }
-
-  private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
-  {
-    StreamHelper.writeSafeUTF (aOOS, m_sFilename);
-    aOOS.writeObject (m_aInputStreamProvider);
-    SerializationConverter.writeConvertedObject (m_aCharset, aOOS);
-    StreamHelper.writeSafeUTF (aOOS, m_sContentType);
-    aOOS.writeObject (m_eDisposition);
-  }
-
-  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
-  {
-    m_sFilename = StreamHelper.readSafeUTF (aOIS);
-    m_aInputStreamProvider = (IHasInputStream) aOIS.readObject ();
-    m_aCharset = SerializationConverter.readConvertedObject (aOIS, Charset.class);
-    m_sContentType = StreamHelper.readSafeUTF (aOIS);
-    m_eDisposition = (EEmailAttachmentDisposition) aOIS.readObject ();
   }
 
   @Nonnull

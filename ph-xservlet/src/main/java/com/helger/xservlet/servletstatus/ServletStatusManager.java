@@ -181,7 +181,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    * @return <code>true</code> if the passed servlet class is contained in the
    *         {@link ServletContext}.
    */
-  public boolean isServletRegistered (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public static boolean isServletRegistered (@Nonnull final Class <? extends GenericServlet> aServletClass)
   {
     final String sClassName = ValueEnforcer.notNull (aServletClass, "ServletClass").getName ();
 

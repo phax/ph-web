@@ -155,12 +155,12 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * Output stream for this item.
    */
-  private transient DeferredFileOutputStream m_aDFOS;
+  private DeferredFileOutputStream m_aDFOS;
 
   /**
    * The temporary file to use.
    */
-  private transient File m_aTempFile;
+  private File m_aTempFile;
 
   /**
    * File to allow for serialization of the content of this item.

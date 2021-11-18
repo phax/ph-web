@@ -23,10 +23,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -35,7 +33,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.CommonsHashSet;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.io.stream.NonBlockingBufferedReader;
 import com.helger.commons.io.stream.StreamHelper;
@@ -252,26 +252,26 @@ public class TunnelConnectionManager implements Closeable
    * <code>drteeth.muppets.com</code>.
    * </p>
    *
-   * @param pathAndSpecList
+   * @param aPathAndSpecList
    *        A list of path and spec entries
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnections (final Iterable <String> pathAndSpecList) throws JSchException
+  public void setTunnelConnections (@Nonnull final Iterable <String> aPathAndSpecList) throws JSchException
   {
-    final Map <String, Set <Tunnel>> tunnelMap = new HashMap <> ();
-    for (final String pathAndSpecString : pathAndSpecList)
+    final Map <String, ICommonsSet <Tunnel>> aMap = new HashMap <> ();
+    for (final String sItem : aPathAndSpecList)
     {
-      final String [] pathAndSpec = StringHelper.getExplodedArray ('|', pathAndSpecString.trim (), 2);
-      tunnelMap.computeIfAbsent (pathAndSpec[0], k -> new HashSet <> ()).add (new Tunnel (pathAndSpec[1]));
+      final String [] aPathAndSpec = StringHelper.getExplodedArray ('|', sItem.trim (), 2);
+      aMap.computeIfAbsent (aPathAndSpec[0], k -> new CommonsHashSet <> ()).add (new Tunnel (aPathAndSpec[1]));
     }
 
     m_aTunnelConnections = new CommonsArrayList <> ();
     final SessionFactoryCache sessionFactoryCache = new SessionFactoryCache (m_aBaseSessionFactory);
-    for (final String path : tunnelMap.keySet ())
+    for (final Map.Entry <String, ICommonsSet <Tunnel>> aEntry : aMap.entrySet ())
     {
-      m_aTunnelConnections.add (new TunnelConnection (sessionFactoryCache.getSessionFactory (path),
-                                                      new CommonsArrayList <> (tunnelMap.get (path))));
+      final String path = aEntry.getKey ();
+      m_aTunnelConnections.add (new TunnelConnection (sessionFactoryCache.getSessionFactory (path), aEntry.getValue ().getCopyAsList ()));
     }
   }
 
@@ -293,19 +293,16 @@ public class TunnelConnectionManager implements Closeable
     public ISessionFactory getSessionFactory (final String path) throws JSchException
     {
       ISessionFactory sessionFactory = null;
-      String key = null;
+      final StringBuilder key = new StringBuilder ();
       for (final String part : StringHelper.getExploded ("->", path))
       {
-        if (key == null)
-          key = part;
-        else
-          key += "->" + part;
+        if (key.length () > 0)
+          key.append ("->");
+        key.append (part);
 
-        if (sessionFactoryByPath.containsKey (key))
-        {
-          sessionFactory = sessionFactoryByPath.get (key);
-          continue;
-        }
+        final String sKey = key.toString ();
+        if (sessionFactoryByPath.containsKey (sKey))
+          return sessionFactoryByPath.get (sKey);
 
         final AbstractSessionFactoryBuilder builder;
         if (sessionFactory == null)
@@ -315,19 +312,19 @@ public class TunnelConnectionManager implements Closeable
 
         // start with [username@]hostname[:port]
         final String [] aUserAtHost = StringHelper.getExplodedArray ('@', part, 2);
-        String hostname = null;
+        final String sHostname;
         if (aUserAtHost.length == 2)
         {
           builder.setUsername (aUserAtHost[0]);
-          hostname = aUserAtHost[1];
+          sHostname = aUserAtHost[1];
         }
         else
         {
-          hostname = aUserAtHost[0];
+          sHostname = aUserAtHost[0];
         }
 
         // left with hostname[:port]
-        final String [] hostColonPort = StringHelper.getExplodedArray (':', hostname, 2);
+        final String [] hostColonPort = StringHelper.getExplodedArray (':', sHostname, 2);
         builder.setHostname (hostColonPort[0]);
         if (hostColonPort.length == 2)
         {

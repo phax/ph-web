@@ -112,12 +112,7 @@ public final class WebSpiderManager
     for (final String sSpider : aList)
     {
       final String sID = _getUnifiedID (sSpider);
-      if (!m_aMap.containsKey (sID))
-      {
-        final WebSpiderInfo aSpider = new WebSpiderInfo (sID);
-        aSpider.setName (sSpider);
-        m_aMap.put (sID, aSpider);
-      }
+      m_aMap.computeIfAbsent (sID, k -> new WebSpiderInfo (k).setName (sSpider));
     }
   }
 

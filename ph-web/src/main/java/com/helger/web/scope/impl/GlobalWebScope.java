@@ -43,7 +43,7 @@ import com.helger.web.scope.IGlobalWebScope;
 public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
   private final LocalDateTime m_aCreationDT;
-  private final transient ServletContext m_aSC;
+  private final ServletContext m_aSC;
 
   @Nonnull
   @Nonempty

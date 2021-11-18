@@ -46,7 +46,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
   private final LocalDateTime m_aCreationDT;
   // Do not serialize the session
-  private final transient HttpSession m_aHttpSession;
+  private final HttpSession m_aHttpSession;
 
   public SessionWebScope (@Nonnull final HttpSession aHttpSession)
   {

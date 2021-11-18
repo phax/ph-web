@@ -41,7 +41,7 @@ public class SessionManager implements AutoCloseable
 
   private final ISessionFactory m_aSessionFactory;
   // Status vars
-  private transient Session m_aSession;
+  private Session m_aSession;
 
   /**
    * Creates a SessionManager for the supplied <code>sessionFactory</code>.

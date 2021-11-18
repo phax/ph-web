@@ -24,6 +24,9 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
@@ -31,6 +34,8 @@ import com.jcraft.jsch.JSchException;
 
 public class ScpFile
 {
+  private static final Logger LOGGER = LoggerFactory.getLogger (ScpFile.class);
+
   private final EDestinationOS m_eOS;
   private final String [] m_aPath;
   private final ISessionFactory m_aSessionFactory;
@@ -75,24 +80,24 @@ public class ScpFile
       final int otherPerm = Character.getNumericValue (mode.charAt (3));
       if ((userPerm & 1) == 1)
       {
-        if ((otherPerm & 1) == 1)
-          file.setExecutable (true, false);
-        else
-          file.setExecutable (true, true);
+        final boolean bOwnerOnly = (otherPerm & 1) != 1;
+        final boolean bSuccess = file.setExecutable (true, bOwnerOnly);
+        if (!bSuccess)
+          LOGGER.debug ("Failed to call setExecutable(true, " + bOwnerOnly + ") on " + file);
       }
       if ((userPerm & 2) == 2)
       {
-        if ((otherPerm & 2) == 2)
-          file.setWritable (true, false);
-        else
-          file.setWritable (true, true);
+        final boolean bOwnerOnly = (otherPerm & 2) != 2;
+        final boolean bSuccess = file.setWritable (true, bOwnerOnly);
+        if (!bSuccess)
+          LOGGER.debug ("Failed to call setWritable(true, " + bOwnerOnly + ") on " + file);
       }
       if ((userPerm & 4) == 4)
       {
-        if ((otherPerm & 4) == 4)
-          file.setReadable (true, false);
-        else
-          file.setReadable (true, true);
+        final boolean bOwnerOnly = (otherPerm & 4) != 4;
+        final boolean bSuccess = file.setReadable (true, bOwnerOnly);
+        if (!bSuccess)
+          LOGGER.debug ("Failed to call setReadable(true, " + bOwnerOnly + ") on " + file);
       }
 
       try (final FileOutputStream to = new FileOutputStream (file))

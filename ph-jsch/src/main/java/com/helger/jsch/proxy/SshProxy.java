@@ -39,7 +39,6 @@ public class SshProxy implements Proxy, AutoCloseable
 
   private final ISessionFactory m_aSessionFactory;
   private final Session m_aSession;
-  private Channel m_aChannel;
   private InputStream m_aIS;
   private OutputStream m_aOS;
 
@@ -55,17 +54,16 @@ public class SshProxy implements Proxy, AutoCloseable
       m_aSession.disconnect ();
   }
 
-  public void connect (final SocketFactory socketFactory, final String host, final int port, final int timeout) throws Exception
+  public void connect (final SocketFactory socketFactory, final String host, final int port, final int nTimeoutMS) throws Exception
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("connecting session");
     m_aSession.connect ();
 
-    m_aChannel = m_aSession.getStreamForwarder (host, port);
-    m_aIS = m_aChannel.getInputStream ();
-    m_aOS = m_aChannel.getOutputStream ();
-
-    m_aChannel.connect (timeout);
+    final Channel aChannel = m_aSession.getStreamForwarder (host, port);
+    m_aIS = aChannel.getInputStream ();
+    m_aOS = aChannel.getOutputStream ();
+    aChannel.connect (nTimeoutMS);
   }
 
   public InputStream getInputStream ()

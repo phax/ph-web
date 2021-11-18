@@ -88,7 +88,7 @@ public final class MailAPI
                                                                                     Integer.MAX_VALUE,
                                                                                     60L,
                                                                                     TimeUnit.SECONDS,
-                                                                                    new SynchronousQueue <Runnable> (),
+                                                                                    new SynchronousQueue <> (),
                                                                                     THREAD_FACTORY);
   @GuardedBy ("RW_LOCK")
   private static FailedMailQueue s_aFailedMailQueue = new FailedMailQueue ();

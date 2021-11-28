@@ -27,10 +27,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.entity.ContentType;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.string.StringHelper;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.json.IJson;
@@ -45,7 +47,8 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerJson.class);
 
-  private final boolean m_bDebugMode;
+  private boolean m_bDebugMode;
+  private Charset m_aFallbackCharset = HTTP.DEF_CONTENT_CHARSET;
 
   public ResponseHandlerJson ()
   {
@@ -54,7 +57,7 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
 
   public ResponseHandlerJson (final boolean bDebugMode)
   {
-    m_bDebugMode = bDebugMode;
+    setDebugMode (bDebugMode);
   }
 
   /**
@@ -67,6 +70,50 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
     return m_bDebugMode;
   }
 
+  /**
+   * Enable or disable debug mode on demand.
+   *
+   * @param bDebugMode
+   *        <code>true</code> to enable debug mode, <code>false</code> to
+   *        disable it.
+   * @return this for chaining
+   * @since 9.6.3
+   */
+  @Nonnull
+  public final ResponseHandlerJson setDebugMode (final boolean bDebugMode)
+  {
+    m_bDebugMode = bDebugMode;
+    return this;
+  }
+
+  /**
+   * @return The fallback charset to be used, in case no charset can be
+   *         determined from the content. By default this is the HTTP default
+   *         charset. Never <code>null</code>.
+   * @since 9.6.3
+   */
+  @Nonnull
+  public final Charset getFallbackCharset ()
+  {
+    return m_aFallbackCharset;
+  }
+
+  /**
+   * Set the fallback charset to be used, if the payload has no charset.
+   *
+   * @param aFallbackCharset
+   *        The fallback charset to be used. May not be <code>null</code>.
+   * @return this for chaining
+   * @since 9.6.3
+   */
+  @Nonnull
+  public final ResponseHandlerJson setFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  {
+    ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
+    m_aFallbackCharset = aFallbackCharset;
+    return this;
+  }
+
   @Nullable
   public IJson handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
   {
@@ -75,7 +122,7 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
       throw new ClientProtocolException ("Response contains no content");
 
     final ContentType aContentType = ContentType.getOrDefault (aEntity);
-    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aFallbackCharset);
 
     if (m_bDebugMode)
     {

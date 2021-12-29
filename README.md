@@ -1,6 +1,5 @@
 # ph-web
 
-[![Build Status](https://travis-ci.com/phax/ph-web.svg?branch=master)](https://travis-ci.com/phax/ph-web)
 [![javadoc](https://javadoc.io/badge2/com.helger.web/ph-web/javadoc.svg)](https://javadoc.io/doc/com.helger.web/ph-web)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.helger.web/ph-web-parent-pom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.helger.web/ph-web-parent-pom) 
 

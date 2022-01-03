@@ -238,6 +238,8 @@ public class UnifiedResponse
     {
       final StringBuilder aSB = new StringBuilder ();
       aSB.append ("  Request Headers: " + m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+      if (m_aCookies != null && m_aCookies.isNotEmpty ())
+        aSB.append ("  Request Cookies: " + m_aCookies.getSortedByKey (Comparator.naturalOrder ()));
       if (m_aResponseHeaderMap.isNotEmpty ())
         aSB.append ("\n  Response Headers: " + m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
 

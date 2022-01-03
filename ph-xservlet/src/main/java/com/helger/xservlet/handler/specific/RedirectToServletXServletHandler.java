@@ -17,6 +17,7 @@
 package com.helger.xservlet.handler.specific;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +67,31 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
     return m_sServletPath;
   }
 
-  public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                             @Nonnull final UnifiedResponse aUnifiedResponse) throws Exception
+  /**
+   * Get the redirect URL to be used.
+   *
+   * @param aRequestScope
+   *        The current request scope to be used. Never <code>null</code>.
+   * @return The target URL to redirect to. If it is relative, the application
+   *         server is responsible for making it absolute.
+   * @since 9.6.3
+   */
+  @Nonnull
+  @OverridingMethodsMustInvokeSuper
+  protected String getRedirectURL (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
   {
     String sRedirectURL = aRequestScope.getContextPath () + m_sServletPath;
 
     final String sQueryString = aRequestScope.getQueryString ();
     if (StringHelper.hasText (sQueryString))
       sRedirectURL += "?" + sQueryString;
+    return sRedirectURL;
+  }
+
+  public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
+                             @Nonnull final UnifiedResponse aUnifiedResponse) throws Exception
+  {
+    final String sRedirectURL = getRedirectURL (aRequestScope);
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Sending redirect to '" + sRedirectURL + "'");

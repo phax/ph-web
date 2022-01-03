@@ -906,8 +906,18 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
+    if (sRedirectTargetUrl.startsWith ("/"))
+      logWarn ("The redirect target URL '" + sRedirectTargetUrl + "' seems to be relative.");
+
     if (isRedirectDefined ())
-      logInfo ("Overwriting redirect target URL '" + m_sRedirectTargetUrl + "' with '" + sRedirectTargetUrl + "'");
+      logInfo ("Overwriting redirect target URL '" +
+               m_sRedirectTargetUrl +
+               "' with '" +
+               sRedirectTargetUrl +
+               "' and mode " +
+               m_eRedirectMode +
+               " with " +
+               eRedirectMode);
     m_sRedirectTargetUrl = sRedirectTargetUrl;
     m_eRedirectMode = eRedirectMode;
     return this;

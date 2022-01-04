@@ -951,10 +951,8 @@ public class UnifiedResponse
                m_sRedirectTargetUrl +
                "' with '" +
                sRedirectTargetUrl +
-               "' and mode " +
-               m_eRedirectMode +
-               " with " +
-               eRedirectMode);
+               "'" +
+               (m_eRedirectMode == eRedirectMode ? "" : " and mode " + m_eRedirectMode + " with " + eRedirectMode));
     m_sRedirectTargetUrl = sRedirectTargetUrl;
     m_eRedirectMode = eRedirectMode;
     return this;

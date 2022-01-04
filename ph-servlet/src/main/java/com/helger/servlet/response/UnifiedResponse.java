@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnegative;
@@ -104,6 +105,7 @@ public class UnifiedResponse
 
   private static final Logger LOGGER = LoggerFactory.getLogger (UnifiedResponse.class);
   private static final AtomicInteger RESPONSE_NUM = new AtomicInteger (0);
+  private static final AtomicBoolean SILENT_MODE = new AtomicBoolean (GlobalDebug.DEFAULT_SILENT_MODE);
 
   // Input fields set from request
   private final EHttpVersion m_eHttpVersion;
@@ -172,6 +174,16 @@ public class UnifiedResponse
    */
   private CharsetEncoder m_aContentDispositionEncoder;
 
+  public static boolean isSilentMode ()
+  {
+    return SILENT_MODE.get ();
+  }
+
+  public static boolean setSilentMode (final boolean bSilentMode)
+  {
+    return SILENT_MODE.getAndSet (bSilentMode);
+  }
+
   @Nonnull
   @ReturnsMutableCopy
   private static ICommonsOrderedMap <String, Cookie> _createCookieMap ()
@@ -235,18 +247,22 @@ public class UnifiedResponse
 
   protected final void showRequestInfo ()
   {
-    if (!m_bAlreadyEmittedRequestHeaders)
+    if (!isSilentMode ())
     {
-      final StringBuilder aSB = new StringBuilder ();
-      aSB.append ("  Request Headers: " + m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
-      if (m_aCookies != null && m_aCookies.isNotEmpty ())
-        aSB.append ("  Request Cookies: " + m_aCookies.getSortedByKey (Comparator.naturalOrder ()));
-      if (m_aResponseHeaderMap.isNotEmpty ())
-        aSB.append ("\n  Response Headers: " + m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+      // Emit only once per response
+      if (!m_bAlreadyEmittedRequestHeaders)
+      {
+        final StringBuilder aSB = new StringBuilder ();
+        aSB.append ("  Request Headers: " + m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+        if (m_aCookies != null && m_aCookies.isNotEmpty ())
+          aSB.append ("  Request Cookies: " + m_aCookies.getSortedByKey (Comparator.naturalOrder ()));
+        if (m_aResponseHeaderMap.isNotEmpty ())
+          aSB.append ("\n  Response Headers: " + m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
 
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn (aSB.toString ());
-      m_bAlreadyEmittedRequestHeaders = true;
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn (aSB.toString ());
+        m_bAlreadyEmittedRequestHeaders = true;
+      }
     }
   }
 

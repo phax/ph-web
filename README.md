@@ -61,7 +61,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 * v9.6.3 - work in progress
     * Updated to Apache httpcore 4.4.15
     * Updated to dnsjava 3.4.3
-    * Class `ResponseHandlerJson` now has a configurable fallback charset.
+    * Class `ResponseHandlerJson` now has a configurable fallback charset
+    * Class `UnifiedResponse` now supports silent mode
 * v9.6.2 - 2021-11-24
     * Updated to dnsjava 3.4.2
 * v9.6.1 - 2021-05-31

@@ -1579,6 +1579,9 @@ public class UnifiedResponse
       else
         sRealTargetURL = m_sRedirectTargetUrl;
 
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Response is a redirect to '" + sRealTargetURL + "' using mode " + m_eRedirectMode);
+
       switch (m_eRedirectMode)
       {
         case DEFAULT:

@@ -58,7 +58,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.6.3 - work in progress
+* v9.6.3 - 2022-01-04
     * Updated to Apache httpcore 4.4.15
     * Updated to dnsjava 3.4.3
     * Class `ResponseHandlerJson` now has a configurable fallback charset

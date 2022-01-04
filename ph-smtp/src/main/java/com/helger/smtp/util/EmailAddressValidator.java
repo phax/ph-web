@@ -39,8 +39,10 @@ import com.helger.commons.email.EmailAddressHelper;
 @ThreadSafe
 public final class EmailAddressValidator
 {
+  public static final boolean DEFAULT_PERFORM_MX_RECORD_CHECK = false;
+
   private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidator.class);
-  private static final AtomicBoolean PERFORM_MX_RECORD_CHECK = new AtomicBoolean (false);
+  private static final AtomicBoolean PERFORM_MX_RECORD_CHECK = new AtomicBoolean (DEFAULT_PERFORM_MX_RECORD_CHECK);
 
   @PresentForCodeCoverage
   private static final EmailAddressValidator INSTANCE = new EmailAddressValidator ();

@@ -79,6 +79,36 @@ import com.helger.useragent.uaprofile.UAProfileDatabase;
 @Immutable
 public final class RequestHelper
 {
+  private static final class UAProfileHeaderProviderHttpServletRequest implements IUAProfileHeaderProvider
+  {
+    private final HttpServletRequest m_aHttpRequest;
+
+    public UAProfileHeaderProviderHttpServletRequest (@Nonnull final HttpServletRequest aHttpRequest)
+    {
+      m_aHttpRequest = aHttpRequest;
+    }
+
+    @Nonnull
+    @ReturnsMutableCopy
+    public ICommonsList <String> getAllHeaderNames ()
+    {
+      return new CommonsArrayList <> (m_aHttpRequest.getHeaderNames ());
+    }
+
+    @Nonnull
+    @ReturnsMutableCopy
+    public ICommonsList <String> getHeaders (@Nullable final String sName)
+    {
+      return new CommonsArrayList <> (m_aHttpRequest.getHeaders (sName));
+    }
+
+    @Nullable
+    public String getHeaderValue (@Nullable final String sHeader)
+    {
+      return m_aHttpRequest.getHeader (sHeader);
+    }
+  }
+
   public static final String SERVLET_ATTR_SSL_CIPHER_SUITE = "javax.servlet.request.cipher_suite";
   public static final String SERVLET_ATTR_SSL_KEY_SIZE = "javax.servlet.request.key_size";
   public static final String SERVLET_ATTR_CLIENT_CERTIFICATE = "javax.servlet.request.X509Certificate";
@@ -1145,27 +1175,7 @@ public final class RequestHelper
     if (aUAProfile == null)
     {
       // Extract HTTP header from request
-      aUAProfile = UAProfileDatabase.getParsedUAProfile (new IUAProfileHeaderProvider ()
-      {
-        @Nonnull
-        @ReturnsMutableCopy
-        public ICommonsList <String> getAllHeaderNames ()
-        {
-          return new CommonsArrayList <> (aHttpRequest.getHeaderNames ());
-        }
-
-        @Nonnull
-        @ReturnsMutableCopy
-        public ICommonsList <String> getHeaders (final String sName)
-        {
-          return new CommonsArrayList <> (aHttpRequest.getHeaders (sName));
-        }
-
-        public String getHeaderValue (final String sHeader)
-        {
-          return aHttpRequest.getHeader (sHeader);
-        }
-      });
+      aUAProfile = UAProfileDatabase.getParsedUAProfile (new UAProfileHeaderProviderHttpServletRequest (aHttpRequest));
       ServletHelper.setRequestAttribute (aHttpRequest, UAProfile.class.getName (), aUAProfile);
     }
     return aUAProfile;

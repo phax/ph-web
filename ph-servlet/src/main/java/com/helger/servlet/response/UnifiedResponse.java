@@ -64,6 +64,7 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.URLHelper;
+import com.helger.commons.url.URLProtocolRegistry;
 import com.helger.http.AcceptCharsetList;
 import com.helger.http.AcceptMimeTypeList;
 import com.helger.http.CacheControlBuilder;
@@ -902,13 +903,31 @@ public class UnifiedResponse
     return setRedirect (sRedirectTargetUrl, ERedirectMode.DEFAULT);
   }
 
+  private static boolean _isRelative (@Nonnull final String sURL)
+  {
+    if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sURL))
+    {
+      // Protocol is present
+      return false;
+    }
+
+    if (sURL.startsWith ("//"))
+    {
+      // Special shortcut to stay in the current protocol - usually followed by
+      // server name etc.
+      return false;
+    }
+
+    return true;
+  }
+
   @Nonnull
   public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl, @Nonnull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
-    if (sRedirectTargetUrl.startsWith ("/"))
+    if (_isRelative (sRedirectTargetUrl))
       logWarn ("The redirect target URL '" + sRedirectTargetUrl + "' seems to be relative.");
 
     if (isRedirectDefined ())

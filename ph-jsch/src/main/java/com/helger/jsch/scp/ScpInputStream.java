@@ -36,12 +36,13 @@ public class ScpInputStream extends InputStream
   private final ScpConnection m_aConnection;
   private InputStream m_aIS;
 
-  public ScpInputStream (@Nonnull final ISessionFactory aSessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
-                                                                                                                      IOException
+  public ScpInputStream (@Nonnull final ISessionFactory aSessionFactory,
+                         final String sPath,
+                         @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpInputStream");
-    m_aConnection = new ScpConnection (aSessionFactory, path, EScpMode.FROM, copyMode);
+    m_aConnection = new ScpConnection (aSessionFactory, sPath, EScpMode.FROM, eCopyMode);
   }
 
   @Override

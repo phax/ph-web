@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.WillNotClose;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +56,12 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * Creates a new CommandRunner that will use a {@link SessionManager} that
    * wraps the supplied <code>sessionFactory</code>.
    *
-   * @param sessionFactory
+   * @param aSessionFactory
    *        The factory used to create a session manager
    */
-  public CommandRunner (@Nonnull final ISessionFactory sessionFactory)
+  public CommandRunner (@Nonnull final ISessionFactory aSessionFactory)
   {
-    m_aSessionManager = new SessionManager (sessionFactory);
+    m_aSessionManager = new SessionManager (aSessionFactory);
   }
 
   /**
@@ -102,38 +103,41 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * @throws IOException
    *         If unable to read the result data
    */
+  @Nonnull
   public ExecuteResult execute (final String command) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("executing " + command + " on " + m_aSessionManager.getAsString ());
 
-    final Session session = m_aSessionManager.getSession ();
+    final Session aSession = m_aSessionManager.getSession ();
 
     // Using the synchronized BAOS is okay here
-    final ByteArrayOutputStream stdErr = new ByteArrayOutputStream ();
-    final ByteArrayOutputStream stdOut = new ByteArrayOutputStream ();
-    int exitCode;
-    ChannelExecWrapper channel = null;
-    try
+    try (final ByteArrayOutputStream stdErr = new ByteArrayOutputStream ();
+         final ByteArrayOutputStream stdOut = new ByteArrayOutputStream ())
     {
-      channel = new ChannelExecWrapper (session, command, null, stdOut, stdErr);
-    }
-    finally
-    {
-      // Wait until the execution finished
-      exitCode = channel.close ();
-    }
+      int nExitCode;
+      ChannelExecWrapper aChannel = null;
+      try
+      {
+        aChannel = new ChannelExecWrapper (aSession, command, null, stdOut, stdErr);
+      }
+      finally
+      {
+        // Wait until the execution finished
+        nExitCode = aChannel.close ();
+      }
 
-    return new ExecuteResult (exitCode,
-                              new String (stdOut.toByteArray (), StandardCharsets.UTF_8),
-                              new String (stdErr.toByteArray (), StandardCharsets.UTF_8));
+      return new ExecuteResult (nExitCode,
+                                new String (stdOut.toByteArray (), StandardCharsets.UTF_8),
+                                new String (stdErr.toByteArray (), StandardCharsets.UTF_8));
+    }
   }
 
   /**
    * Executes <code>command</code> and returns an execution wrapper that
    * provides safe access to and management of the underlying streams of data.
    *
-   * @param command
+   * @param sCommand
    *        The command to execute
    * @return An execution wrapper that allows you to process the streams
    * @throws JSchException
@@ -142,11 +146,11 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    *         If unable to read the result data
    */
   @Nonnull
-  public ChannelExecWrapper open (final String command) throws JSchException, IOException
+  public ChannelExecWrapper open (final String sCommand) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("executing '" + command + "' on " + m_aSessionManager.getAsString ());
-    return new ChannelExecWrapper (m_aSessionManager.getSession (), command, null, null, null);
+      LOGGER.debug ("executing '" + sCommand + "' on " + m_aSessionManager.getAsString ());
+    return new ChannelExecWrapper (m_aSessionManager.getSession (), sCommand, null, null, null);
   }
 
   /**
@@ -158,7 +162,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * </ul>
    * The text will be UTF-8 decoded byte data written by the command.
    */
-  public class ExecuteResult
+  public static class ExecuteResult
   {
     private final int m_nExitCode;
     private final String m_sStderr;
@@ -213,7 +217,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * itself, which will return the the exit code from the execution of the
    * command.
    */
-  public class ChannelExecWrapper
+  public static class ChannelExecWrapper
   {
     private final String m_sCommand;
     private final ChannelExec m_aChannel;
@@ -224,30 +228,30 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     private OutputStream m_aStdIn;
     private InputStream m_aStdOut;
 
-    public ChannelExecWrapper (@Nonnull final Session session,
-                               @Nonnull final String command,
-                               @Nullable final InputStream stdIn,
-                               @Nullable final OutputStream stdOut,
-                               @Nullable final OutputStream stdErr) throws JSchException
+    public ChannelExecWrapper (@Nonnull final Session aSession,
+                               @Nonnull final String sCommand,
+                               @Nullable final InputStream aStdIn,
+                               @Nullable final OutputStream aStdOut,
+                               @Nullable final OutputStream aStdErr) throws JSchException
     {
-      m_sCommand = command;
-      m_aChannel = (ChannelExec) session.openChannel ("exec");
-      if (stdIn != null)
+      m_sCommand = sCommand;
+      m_aChannel = (ChannelExec) aSession.openChannel ("exec");
+      if (aStdIn != null)
       {
-        m_aPassedInStdIn = stdIn;
-        m_aChannel.setInputStream (stdIn);
+        m_aPassedInStdIn = aStdIn;
+        m_aChannel.setInputStream (aStdIn);
       }
-      if (stdOut != null)
+      if (aStdOut != null)
       {
-        m_aPassedInStdOut = stdOut;
-        m_aChannel.setOutputStream (stdOut);
+        m_aPassedInStdOut = aStdOut;
+        m_aChannel.setOutputStream (aStdOut);
       }
-      if (stdErr != null)
+      if (aStdErr != null)
       {
-        m_aPassedInStdErr = stdErr;
-        m_aChannel.setErrStream (stdErr);
+        m_aPassedInStdErr = aStdErr;
+        m_aChannel.setErrStream (aStdErr);
       }
-      m_aChannel.setCommand (command);
+      m_aChannel.setCommand (sCommand);
       m_aChannel.connect ();
     }
 
@@ -259,7 +263,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      */
     public int close ()
     {
-      int exitCode = -2;
+      int nExitCode = -2;
       if (m_aChannel != null)
       {
         try
@@ -281,7 +285,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
               LOGGER.trace ("waiting for exit " + (i++));
             ThreadHelper.sleep (50);
           }
-          exitCode = m_aChannel.getExitStatus ();
+          nExitCode = m_aChannel.getExitStatus ();
         }
         finally
         {
@@ -290,8 +294,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
         }
       }
       if (LOGGER.isDebugEnabled ())
-        LOGGER.debug ("'" + m_sCommand + "' exit " + exitCode);
-      return exitCode;
+        LOGGER.debug ("'" + m_sCommand + "' exit " + nExitCode);
+      return nExitCode;
     }
 
     /**
@@ -303,6 +307,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to read from the stream
      */
+    @Nonnull
+    @WillNotClose
     public InputStream getErrStream () throws IOException
     {
       if (m_aStdErr == null)
@@ -319,6 +325,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to read from the stream
      */
+    @Nonnull
+    @WillNotClose
     public InputStream getInputStream () throws IOException
     {
       if (m_aStdOut == null)
@@ -335,6 +343,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to write to the stream
      */
+    @Nonnull
+    @WillNotClose
     public OutputStream getOutputStream () throws IOException
     {
       if (m_aStdIn == null)

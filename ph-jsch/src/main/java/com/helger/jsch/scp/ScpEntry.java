@@ -44,22 +44,22 @@ public class ScpEntry
 
   @Nonnull
   @Nonempty
-  private static String _standardizeMode (final String mode) throws IOException
+  private static String _standardizeMode (@Nonnull final String sMode) throws IOException
   {
-    if (!MODE_PATTERN.matcher (mode).matches ())
-      throw new IOException ("invalid file mode " + mode);
+    if (!MODE_PATTERN.matcher (sMode).matches ())
+      throw new IOException ("invalid file mode '" + sMode + "'");
 
-    if (mode.length () == 3)
-      return "0" + mode;
-    return mode;
+    if (sMode.length () == 3)
+      return "0" + sMode;
+    return sMode;
   }
 
-  private ScpEntry (final String name, final long size, @Nullable final String mode, final EType type) throws IOException
+  private ScpEntry (@Nullable final String sName, final long nSize, @Nullable final String sMode, final EType eType) throws IOException
   {
-    m_sName = name;
-    m_nSize = size;
-    m_sMode = type == EType.END_OF_DIRECTORY ? null : _standardizeMode (mode);
-    m_eType = type;
+    m_sName = sName;
+    m_nSize = nSize;
+    m_sMode = eType == EType.END_OF_DIRECTORY ? null : _standardizeMode (sMode);
+    m_eType = eType;
   }
 
   @Nullable
@@ -111,15 +111,15 @@ public class ScpEntry
   }
 
   @Nonnull
-  public static ScpEntry newDirectory (final String name) throws IOException
+  public static ScpEntry newDirectory (final String sName) throws IOException
   {
-    return newDirectory (name, DEFAULT_DIRECTORY_MODE);
+    return newDirectory (sName, DEFAULT_DIRECTORY_MODE);
   }
 
   @Nonnull
-  public static ScpEntry newDirectory (final String name, @Nullable final String mode) throws IOException
+  public static ScpEntry newDirectory (final String sName, @Nullable final String sMode) throws IOException
   {
-    return new ScpEntry (name, 0L, mode, EType.DIRECTORY);
+    return new ScpEntry (sName, 0L, sMode, EType.DIRECTORY);
   }
 
   @Nonnull
@@ -129,14 +129,14 @@ public class ScpEntry
   }
 
   @Nonnull
-  public static ScpEntry newFile (final String name, final long size) throws IOException
+  public static ScpEntry newFile (final String sName, final long nSize) throws IOException
   {
-    return newFile (name, size, DEFAULT_FILE_MODE);
+    return newFile (sName, nSize, DEFAULT_FILE_MODE);
   }
 
   @Nonnull
-  public static ScpEntry newFile (final String name, final long size, @Nullable final String mode) throws IOException
+  public static ScpEntry newFile (final String sName, final long nSize, @Nullable final String sMode) throws IOException
   {
-    return new ScpEntry (name, size, mode, EType.FILE);
+    return new ScpEntry (sName, nSize, sMode, EType.FILE);
   }
 }

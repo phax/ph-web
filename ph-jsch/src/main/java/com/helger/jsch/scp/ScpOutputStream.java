@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,12 +42,13 @@ public class ScpOutputStream extends OutputStream
   private final ScpConnection m_aConnection;
   private OutputStream m_aOS;
 
-  public ScpOutputStream (@Nonnull final ISessionFactory aSessionFactory, final String path, final ECopyMode copyMode) throws JSchException,
-                                                                                                                       IOException
+  public ScpOutputStream (@Nonnull final ISessionFactory aSessionFactory,
+                          final String sPath,
+                          @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Opening ScpOutputStream to " + aSessionFactory.getAsString () + " " + path);
-    m_aConnection = new ScpConnection (aSessionFactory, path, EScpMode.TO, copyMode);
+      LOGGER.debug ("Opening ScpOutputStream to " + aSessionFactory.getAsString () + " " + sPath);
+    m_aConnection = new ScpConnection (aSessionFactory, sPath, EScpMode.TO, eCopyMode);
   }
 
   @Override

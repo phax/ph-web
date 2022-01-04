@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +43,10 @@ public class SshProxy implements Proxy, AutoCloseable
   private InputStream m_aIS;
   private OutputStream m_aOS;
 
-  public SshProxy (@Nonnull final ISessionFactory sessionFactory) throws JSchException
+  public SshProxy (@Nonnull final ISessionFactory aSessionFactory) throws JSchException
   {
-    m_aSessionFactory = sessionFactory;
-    m_aSession = sessionFactory.newSession ();
+    m_aSessionFactory = aSessionFactory;
+    m_aSession = aSessionFactory.newSession ();
   }
 
   public void close ()
@@ -54,13 +55,13 @@ public class SshProxy implements Proxy, AutoCloseable
       m_aSession.disconnect ();
   }
 
-  public void connect (final SocketFactory socketFactory, final String host, final int port, final int nTimeoutMS) throws Exception
+  public void connect (final SocketFactory aSocketFactory, final String sHost, final int nPort, final int nTimeoutMS) throws Exception
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("connecting session");
     m_aSession.connect ();
 
-    final Channel aChannel = m_aSession.getStreamForwarder (host, port);
+    final Channel aChannel = m_aSession.getStreamForwarder (sHost, nPort);
     m_aIS = aChannel.getInputStream ();
     m_aOS = aChannel.getOutputStream ();
     aChannel.connect (nTimeoutMS);
@@ -76,6 +77,7 @@ public class SshProxy implements Proxy, AutoCloseable
     return m_aOS;
   }
 
+  @Nullable
   public Socket getSocket ()
   {
     return null;

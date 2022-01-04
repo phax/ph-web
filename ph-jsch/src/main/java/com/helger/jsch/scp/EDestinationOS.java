@@ -16,6 +16,9 @@
  */
 package com.helger.jsch.scp;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 public enum EDestinationOS
 {
   UNIX ('/'),
@@ -28,20 +31,22 @@ public enum EDestinationOS
     m_cSep = separator;
   }
 
-  public String joinPath (final String [] parts)
+  @Nonnull
+  public String joinPath (@Nonnull final String [] aParts)
   {
-    return joinPath (parts, 0, parts.length);
+    return joinPath (aParts, 0, aParts.length);
   }
 
-  public String joinPath (final String [] parts, final int start, final int count)
+  @Nonnull
+  public String joinPath (@Nonnull final String [] aParts, @Nonnegative final int nOfs, @Nonnegative final int nLen)
   {
-    final StringBuilder builder = new StringBuilder ();
-    for (int i = start, end = start + count; i < end; i++)
+    final StringBuilder aSB = new StringBuilder ();
+    for (int i = nOfs, end = nOfs + nLen; i < end; i++)
     {
-      if (i > start)
-        builder.append (m_cSep);
-      builder.append (parts[i]);
+      if (i > nOfs)
+        aSB.append (m_cSep);
+      aSB.append (aParts[i]);
     }
-    return builder.toString ();
+    return aSB.toString ();
   }
 }

@@ -50,7 +50,7 @@ public class ScpFile
     m_aPath = aPath;
   }
 
-  public void copyFrom (final File file) throws IOException, JSchException
+  public void copyFrom (@Nonnull final File file) throws IOException, JSchException
   {
     copyFrom (file, null);
   }
@@ -107,39 +107,44 @@ public class ScpFile
     }
   }
 
-  public void copyTo (final ScpFile file) throws JSchException, IOException
+  public void copyTo (@Nonnull final ScpFile aFile) throws JSchException, IOException
   {
-    try (final ScpFileInputStream from = getInputStream ())
+    try (final ScpFileInputStream aFromIS = getInputStream ())
     {
-      final String mode = from.getMode ();
-      final long size = from.getSize ();
-      try (final ScpFileOutputStream to = file.getOutputStream (size, mode))
+      final String sMode = aFromIS.getMode ();
+      final long nSize = aFromIS.getSize ();
+      try (final ScpFileOutputStream aToOS = aFile.getOutputStream (nSize, sMode))
       {
-        StreamHelper.copyInputStreamToOutputStream (from, to);
+        StreamHelper.copyInputStreamToOutputStream (aFromIS, aToOS);
       }
     }
   }
 
+  @Nonnull
   public ScpFileInputStream getInputStream () throws JSchException, IOException
   {
     return new ScpFileInputStream (m_aSessionFactory, getPath ());
   }
 
+  @Nonnull
   private ScpFileOutputStream _getOutputStream (final ScpEntry scpEntry) throws JSchException, IOException
   {
     return new ScpFileOutputStream (m_aSessionFactory, getDirectory (), scpEntry);
   }
 
+  @Nonnull
   public ScpFileOutputStream getOutputStream (final long size) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size));
   }
 
+  @Nonnull
   public ScpFileOutputStream getOutputStream (final long size, @Nullable final String mode) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size, mode));
   }
 
+  @Nonnull
   String getDirectory ()
   {
     return m_eOS.joinPath (m_aPath, 0, m_aPath.length - 1);
@@ -150,6 +155,7 @@ public class ScpFile
     return m_aPath[m_aPath.length - 1];
   }
 
+  @Nonnull
   String getPath ()
   {
     return m_eOS.joinPath (m_aPath);

@@ -29,11 +29,11 @@ public class ScpFileOutputStream extends OutputStream
   private final ScpOutputStream m_aOS;
 
   ScpFileOutputStream (@Nonnull final ISessionFactory aSessionFactory,
-                       final String directory,
-                       final ScpEntry scpEntry) throws JSchException, IOException
+                       final String sDirectory,
+                       final ScpEntry aScpEntry) throws JSchException, IOException
   {
-    m_aOS = new ScpOutputStream (aSessionFactory, directory, ECopyMode.FILE_ONLY);
-    m_aOS.putNextEntry (scpEntry);
+    m_aOS = new ScpOutputStream (aSessionFactory, sDirectory, ECopyMode.FILE_ONLY);
+    m_aOS.putNextEntry (aScpEntry);
   }
 
   @Override

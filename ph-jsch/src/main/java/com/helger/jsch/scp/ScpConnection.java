@@ -56,9 +56,9 @@ public class ScpConnection implements Closeable
   private final Session m_aSession;
 
   public ScpConnection (@Nonnull final ISessionFactory aSessionFactory,
-                        final String path,
+                        final String sPath,
                         @Nonnull final EScpMode eScpMode,
-                        final ECopyMode eCopyMode) throws JSchException, IOException
+                        @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
     ValueEnforcer.notNull (eScpMode, "ScpMode");
@@ -69,7 +69,7 @@ public class ScpConnection implements Closeable
       LOGGER.debug ("connecting session");
     m_aSession.connect ();
 
-    final String sCommand = _getCommand (eScpMode, eCopyMode, path);
+    final String sCommand = _getCommand (eScpMode, eCopyMode, sPath);
     m_aChannel = (ChannelExec) m_aSession.openChannel ("exec");
 
     if (LOGGER.isDebugEnabled ())
@@ -214,6 +214,7 @@ public class ScpConnection implements Closeable
     final ScpEntry entry = _parseMessage ();
     if (entry == null)
       return null;
+
     if (entry.isEndOfDirectory ())
     {
       while (!m_aEntryStack.isEmpty ())
@@ -249,6 +250,7 @@ public class ScpConnection implements Closeable
    *         null when no more messages are available.
    * @throws IOException
    */
+  @Nullable
   private ScpEntry _parseMessage () throws IOException
   {
     final int ack = _checkAck ();

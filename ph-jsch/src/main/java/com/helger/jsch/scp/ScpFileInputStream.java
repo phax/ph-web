@@ -34,11 +34,11 @@ public class ScpFileInputStream extends InputStream
   private final ScpInputStream m_aIS;
   private final ScpEntry m_aScpEntry;
 
-  ScpFileInputStream (@Nonnull final ISessionFactory aSessionFactory, final String path) throws JSchException, IOException
+  ScpFileInputStream (@Nonnull final ISessionFactory aSessionFactory, final String sPath) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Opening ScpInputStream to " + aSessionFactory.getAsString () + " " + path);
-    m_aIS = new ScpInputStream (aSessionFactory, path, ECopyMode.FILE_ONLY);
+      LOGGER.debug ("Opening ScpInputStream to " + aSessionFactory.getAsString () + " " + sPath);
+    m_aIS = new ScpInputStream (aSessionFactory, sPath, ECopyMode.FILE_ONLY);
     m_aScpEntry = m_aIS.getNextEntry ();
   }
 

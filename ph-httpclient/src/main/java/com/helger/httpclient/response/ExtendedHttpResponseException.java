@@ -31,6 +31,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
@@ -151,26 +152,39 @@ public class ExtendedHttpResponseException extends HttpResponseException
     return m_aResponseBody == null ? null : new String (m_aResponseBody, aCharset);
   }
 
+  @Nonnull
+  @Nonempty
+  public String getMessagePartStatusLine ()
+  {
+    return m_aStatusLine.getReasonPhrase () + " [" + m_aStatusLine.getStatusCode () + ']';
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getMessagePartHeaders ()
+  {
+    final StringBuilder aSB = new StringBuilder ();
+    final Header [] aHeaders = m_aHttpResponse.getAllHeaders ();
+    aSB.append ("All ").append (aHeaders.length).append (" headers returned");
+    for (final Header aHeader : aHeaders)
+      aSB.append ("\n  ").append (aHeader.getName ()).append ('=').append (aHeader.getValue ());
+    return aSB.toString ();
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getMessagePartResponseBody ()
+  {
+    if (m_aResponseBody != null)
+      return "Response Body (in " + m_aResponseCharset.name () + "):\n" + getResponseBodyAsString (m_aResponseCharset);
+    return "No Response Body present!";
+  }
+
   @Override
   @Nonnull
   public String getMessage ()
   {
-    final StringBuilder aSB = new StringBuilder ();
-    aSB.append (m_aStatusLine.getReasonPhrase ()).append (" [").append (m_aStatusLine.getStatusCode ()).append (']');
-
-    final Header [] aHeaders = m_aHttpResponse.getAllHeaders ();
-    aSB.append ("\nAll ").append (aHeaders.length).append (" headers returned");
-    for (final Header aHeader : aHeaders)
-      aSB.append ("\n  ").append (aHeader.getName ()).append ('=').append (aHeader.getValue ());
-
-    if (m_aResponseBody != null)
-    {
-      aSB.append ("\nResponse Body (in ").append (getResponseCharset ().name ()).append ("):\n").append (getResponseBodyAsString ());
-    }
-    else
-      aSB.append ("\nNo Response Body present!");
-
-    return aSB.toString ();
+    return getMessagePartStatusLine () + '\n' + getMessagePartHeaders () + '\n' + getMessagePartResponseBody ();
   }
 
   @Nonnull

@@ -30,7 +30,17 @@ import com.helger.commons.email.EmailAddressHelper;
 public final class EmailAddressValidatorTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidatorTest.class);
-  private static final String [] VALID = new String [] { "ph@helger.com" };
+  // "aa@bb" or "aa.bb@cc" are valid according to the spec, but not correctly
+  // handled by the RegEx
+  private static final String [] VALID = new String [] { "ph@helger.com",
+                                                         "tim.tester@test.com",
+                                                         "tim-tester@test.com",
+                                                         "tim.tester@test.sub.com",
+                                                         "tim-tester@test.sub.com",
+                                                         "tim.tester@test.sub.sub.sub.sub.sub.sub.com",
+                                                         "tim-tester@test.sub.sub.sub.sub.sub.sub.com",
+                                                         "a.b@c.d",
+                                                         "abc@bcd.def" };
   private static final String [] INVALID = new String [] { "ph@helger", "karin@gmx-net" };
 
   @Test

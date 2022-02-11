@@ -91,7 +91,7 @@ public class UnifiedResponse
   /** By default content is not allowed on redirect */
   public static final boolean DEFAULT_ALLOW_CONTENT_ON_REDIRECT = false;
   /** By default content is not allowed for status codes */
-  public static final boolean DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE = false;
+  public static final boolean DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE = true;
   /** Default content disposition type is Attachment */
   public static final EContentDispositionType DEFAULT_CONTENT_DISPOSITION_TYPE = EContentDispositionType.ATTACHMENT;
   /**

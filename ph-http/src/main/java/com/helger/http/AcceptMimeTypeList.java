@@ -28,7 +28,8 @@ import com.helger.commons.mime.MimeTypeParser;
 import com.helger.commons.mime.MimeTypeParserException;
 
 /**
- * Represents a list of Accept HTTP header values
+ * Represents a list of "Accept" HTTP header values, created e.g. by the
+ * {@link AcceptMimeTypeHandler}.
  *
  * @author Philip Helger
  */
@@ -174,6 +175,37 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
       return false;
     final QValue aQuality = qvalueMap ().get (aMimeType);
     return aQuality != null && aQuality.isAboveMinimumQuality ();
+  }
+
+  /**
+   * Pick the preferred mime type of the provided list of mime types.
+   *
+   * @param aMimeTypes
+   *        The MIME type array to be used. May be <code>null</code>.
+   * @return <code>null</code> if no matching MIME type was found.
+   * @since 9.6.4
+   * @see #getQValueOfMimeType(IMimeType)
+   */
+  @Nullable
+  public IMimeType getPreferredMimeType (@Nonnull final IMimeType... aMimeTypes)
+  {
+    IMimeType ret = null;
+    QValue qret = null;
+    if (aMimeTypes != null)
+      for (final IMimeType aMimeType : aMimeTypes)
+      {
+        final QValue q = getQValueOfMimeType (aMimeType);
+
+        // Only consider values that have a value above 0
+        if (q.isAboveMinimumQuality ())
+          if (qret == null || q.compareTo (qret) > 0)
+          {
+            // We found a better one
+            ret = aMimeType;
+            qret = q;
+          }
+      }
+    return ret;
   }
 
   @Override

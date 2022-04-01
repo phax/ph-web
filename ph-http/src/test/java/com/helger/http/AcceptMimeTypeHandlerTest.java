@@ -19,11 +19,14 @@ package com.helger.http;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.mime.CMimeType;
+import com.helger.commons.mime.EMimeContentType;
 import com.helger.commons.mime.MimeTypeParserException;
 
 /**
@@ -125,15 +128,173 @@ public final class AcceptMimeTypeHandlerTest
   @Test
   public void testGetAsHttpHeaderValue () throws MimeTypeParserException
   {
-    final AcceptMimeTypeList c = new AcceptMimeTypeList ();
-    c.addMimeType ("text/xml", 1);
-    c.addMimeType ("application/xml", 1);
-    c.addMimeType ("application/json", 0.9);
-    c.addMimeType ("*", 0);
-    final String s = c.getAsHttpHeaderValue ();
+    final AcceptMimeTypeList aList1 = new AcceptMimeTypeList ();
+    aList1.addMimeType ("text/xml", 1);
+    aList1.addMimeType ("application/xml", 1);
+    aList1.addMimeType ("application/json", 0.9);
+    aList1.addMimeType ("*", 0);
+    final String s = aList1.getAsHttpHeaderValue ();
     assertEquals ("text/xml; q=1.0, application/xml; q=1.0, application/json; q=0.9, */*; q=0.0", s);
-    final AcceptMimeTypeList c2 = AcceptMimeTypeHandler.getAcceptMimeTypes (s);
-    assertNotNull (c2);
-    assertEquals (c, c2);
+    final AcceptMimeTypeList aList2 = AcceptMimeTypeHandler.getAcceptMimeTypes (s);
+    assertNotNull (aList2);
+    assertEquals (aList1, aList2);
+  }
+
+  @Test
+  public void testGetPreferredOneWithDefault ()
+  {
+    final AcceptMimeTypeList aList = new AcceptMimeTypeList ();
+    aList.addMimeType (CMimeType.APPLICATION_XML, 1);
+    aList.addMimeType (CMimeType.APPLICATION_JSON, 0.9);
+    aList.addMimeType (AcceptMimeTypeHandler.ANY_MIMETYPE, 0.1);
+
+    // Straight forward cases
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON, CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_GZIP, aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP));
+    assertNull (aList.getPreferredMimeType ());
+
+    // Straight forward cases - reverse array order
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_XML));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP, CMimeType.APPLICATION_JSON));
+    assertEquals (CMimeType.APPLICATION_JSON, aList.getPreferredMimeType (CMimeType.APPLICATION_JSON));
+
+    // Multi of the same
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_GZIP,
+                                              CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_GZIP,
+                                              CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_GZIP,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP, CMimeType.APPLICATION_GZIP));
+  }
+
+  @Test
+  public void testGetPreferredOneWithDefaultButMinimum ()
+  {
+    final AcceptMimeTypeList aList = new AcceptMimeTypeList ();
+    aList.addMimeType (CMimeType.APPLICATION_XML, 1);
+    aList.addMimeType (CMimeType.APPLICATION_JSON, 0.9);
+    aList.addMimeType (AcceptMimeTypeHandler.ANY_MIMETYPE, 0);
+
+    // Straight forward cases
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON, CMimeType.APPLICATION_GZIP));
+    assertNull (aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP));
+    assertNull (aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP, CMimeType.TEXT_CSS, CMimeType.AUDIO_MP3));
+    assertNull (aList.getPreferredMimeType ());
+
+    // Straight forward cases - reverse array order
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_XML));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP, CMimeType.APPLICATION_JSON));
+    assertEquals (CMimeType.APPLICATION_JSON, aList.getPreferredMimeType (CMimeType.APPLICATION_JSON));
+  }
+
+  @Test
+  public void testGetPreferredOneWithSpecificDefault ()
+  {
+    final AcceptMimeTypeList aList = new AcceptMimeTypeList ();
+    aList.addMimeType (CMimeType.APPLICATION_XML, 1);
+    aList.addMimeType (CMimeType.APPLICATION_JSON, 0.9);
+    aList.addMimeType (EMimeContentType.AUDIO.buildMimeType ("*"), 0.1);
+
+    // Straight forward cases
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.AUDIO_MP3));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON, CMimeType.AUDIO_MP3));
+    assertEquals (CMimeType.AUDIO_MP3, aList.getPreferredMimeType (CMimeType.AUDIO_MP3));
+    assertNull (aList.getPreferredMimeType ());
+
+    // Straight forward cases - reverse array order
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.AUDIO_MP3,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_XML));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.AUDIO_MP3, CMimeType.APPLICATION_JSON));
+    assertEquals (CMimeType.APPLICATION_JSON, aList.getPreferredMimeType (CMimeType.APPLICATION_JSON));
+  }
+
+  @Test
+  public void testGetPreferredOneNoDefault ()
+  {
+    final AcceptMimeTypeList aList = new AcceptMimeTypeList ();
+    aList.addMimeType (CMimeType.APPLICATION_XML, 1);
+    aList.addMimeType (CMimeType.APPLICATION_JSON, 0.9);
+
+    // Straight forward cases
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_GZIP));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON, CMimeType.APPLICATION_GZIP));
+    assertNull (aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP));
+    assertNull (aList.getPreferredMimeType ());
+
+    // Straight forward cases - reverse array order
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.APPLICATION_XML));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_GZIP, CMimeType.APPLICATION_JSON));
+    assertEquals (CMimeType.APPLICATION_JSON, aList.getPreferredMimeType (CMimeType.APPLICATION_JSON));
+    assertNull (aList.getPreferredMimeType ());
+  }
+
+  @Test
+  public void testGetPreferredOneComplex ()
+  {
+    final AcceptMimeTypeList aList = new AcceptMimeTypeList ();
+    aList.addMimeType (CMimeType.APPLICATION_XML, 1);
+    aList.addMimeType (CMimeType.APPLICATION_JSON, 0.9);
+    aList.addMimeType (EMimeContentType.IMAGE.buildMimeType ("*"), 0.3);
+    aList.addMimeType (EMimeContentType.AUDIO.buildMimeType ("*"), 0.2);
+    aList.addMimeType (AcceptMimeTypeHandler.ANY_MIMETYPE, 0.1);
+
+    // Straight forward cases
+    assertEquals (CMimeType.APPLICATION_XML,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_XML,
+                                              CMimeType.APPLICATION_JSON,
+                                              CMimeType.IMAGE_GIF,
+                                              CMimeType.AUDIO_MP3,
+                                              CMimeType.TEXT_CSS));
+    assertEquals (CMimeType.APPLICATION_JSON,
+                  aList.getPreferredMimeType (CMimeType.APPLICATION_JSON,
+                                              CMimeType.IMAGE_GIF,
+                                              CMimeType.AUDIO_MP3,
+                                              CMimeType.TEXT_CSS));
+    assertEquals (CMimeType.IMAGE_GIF,
+                  aList.getPreferredMimeType (CMimeType.IMAGE_GIF, CMimeType.AUDIO_MP3, CMimeType.TEXT_CSS));
+    assertEquals (CMimeType.AUDIO_MP3, aList.getPreferredMimeType (CMimeType.AUDIO_MP3, CMimeType.TEXT_CSS));
+    assertEquals (CMimeType.TEXT_CSS, aList.getPreferredMimeType (CMimeType.TEXT_CSS));
+    assertNull (aList.getPreferredMimeType ());
   }
 }

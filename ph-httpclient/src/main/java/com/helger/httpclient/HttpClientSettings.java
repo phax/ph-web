@@ -68,7 +68,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
   public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
-  public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 1_000;
+  public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
   public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;

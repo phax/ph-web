@@ -105,6 +105,17 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
+   * @return The underlying HTTP client settings. Never <code>null</code>.
+   *         Changes to the returned object impact this HTTP client factory.
+   * @since 9.6.4
+   */
+  @Nonnull
+  public final HttpClientSettings httpClientSettings ()
+  {
+    return m_aSettings;
+  }
+
+  /**
    * Create the scheme to port resolver.
    *
    * @return Never <code>null</code>.

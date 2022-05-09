@@ -58,11 +58,13 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.6.4 - work in progress
+* v9.6.4 - 2022-05-09
     * Updated to dnsjava 3.5.0
     * The default value of `UnifiedResponse.allowContentOnStatusCode` is now `true`
     * Added the method `AcceptMimeTypeList.getPreferredMimeType`
     * Added the method `HttpClientFactory.httpClientSettings`
+    * Extended the `ExtendedHttpResponseException` API
+    * Fixed potential NPE in `RequestHelper.getRequestURIEncoded`
 * v9.6.3 - 2022-01-04
     * Updated to Apache httpcore 4.4.15
     * Updated to dnsjava 3.4.3

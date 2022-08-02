@@ -581,6 +581,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("SocketTimeoutMS", m_nSocketTimeoutMS)
                                        .append ("UserAgent", m_sUserAgent)
                                        .append ("FollowRedirects", m_bFollowRedirects)
+                                       .append ("UseKeepAlive", m_bUseKeepAlive)
                                        .getToString ();
   }
 }

@@ -20,7 +20,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,6 +34,7 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.regex.RegExHelper;
 import com.helger.commons.string.StringHelper;
@@ -42,7 +45,7 @@ import com.helger.commons.string.ToStringGenerator;
  *
  * @author Philip Helger
  */
-@NotThreadSafe
+@ThreadSafe
 public class MockServletPool
 {
   /**
@@ -50,6 +53,7 @@ public class MockServletPool
    *
    * @author Philip Helger
    */
+  @Immutable
   private static final class ServletItem
   {
     private final Servlet m_aServlet;
@@ -107,14 +111,20 @@ public class MockServletPool
     @Override
     public String toString ()
     {
-      return new ToStringGenerator (this).append ("servlet", m_aServlet).append ("servletPath", m_sServletPath).getToString ();
+      return new ToStringGenerator (this).append ("Servlet", m_aServlet)
+                                         .append ("ServletPath", m_sServletPath)
+                                         .append ("ServletPathRegEx", m_sServletPathRegEx)
+                                         .getToString ();
     }
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger (MockServletPool.class);
 
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   private final MockServletContext m_aSC;
+  @GuardedBy ("m_aRWLock")
   private final ICommonsList <ServletItem> m_aServlets = new CommonsArrayList <> ();
+  @GuardedBy ("m_aRWLock")
   private boolean m_bInvalidated = false;
 
   public MockServletPool (@Nonnull final MockServletContext aSC)
@@ -164,37 +174,45 @@ public class MockServletPool
     ValueEnforcer.notNull (aServletClass, "ServletClass");
     ValueEnforcer.notEmpty (sServletPath, "ServletPath");
 
-    for (final ServletItem aItem : m_aServlets)
-    {
-      // Check path uniqueness
-      if (aItem.getServletPath ().equals (sServletPath))
-        throw new IllegalArgumentException ("Another servlet with the path '" + sServletPath + "' is already registered: " + aItem);
-      // Check name uniqueness
-      if (aItem.getServletName ().equals (sServletName))
-        throw new IllegalArgumentException ("Another servlet with the name '" + sServletName + "' is already registered: " + aItem);
-    }
+    m_aRWLock.writeLocked ( () -> {
+      for (final ServletItem aItem : m_aServlets)
+      {
+        // Check path uniqueness
+        if (aItem.getServletPath ().equals (sServletPath))
+          throw new IllegalArgumentException ("Another servlet with the path '" +
+                                              sServletPath +
+                                              "' is already registered: " +
+                                              aItem);
+        // Check name uniqueness
+        if (aItem.getServletName ().equals (sServletName))
+          throw new IllegalArgumentException ("Another servlet with the name '" +
+                                              sServletName +
+                                              "' is already registered: " +
+                                              aItem);
+      }
 
-    // Instantiate servlet
-    final Servlet aServlet = GenericReflection.newInstance (aServletClass);
-    if (aServlet == null)
-      throw new IllegalArgumentException ("Failed to instantiate servlet class " + aServletClass);
+      // Instantiate servlet
+      final Servlet aServlet = GenericReflection.newInstance (aServletClass);
+      if (aServlet == null)
+        throw new IllegalArgumentException ("Failed to instantiate servlet class " + aServletClass);
 
-    final ServletConfig aServletConfig = m_aSC.createServletConfig (sServletName, aServletInitParams);
-    try
-    {
-      aServlet.init (aServletConfig);
-    }
-    catch (final ServletException ex)
-    {
-      throw new IllegalStateException ("Failed to init servlet " +
-                                       aServlet +
-                                       " with configuration  " +
-                                       aServletConfig +
-                                       " for path '" +
-                                       sServletPath +
-                                       "'");
-    }
-    m_aServlets.add (new ServletItem (aServlet, sServletPath));
+      final ServletConfig aServletConfig = m_aSC.createServletConfig (sServletName, aServletInitParams);
+      try
+      {
+        aServlet.init (aServletConfig);
+      }
+      catch (final ServletException ex)
+      {
+        throw new IllegalStateException ("Failed to init servlet " +
+                                         aServlet +
+                                         " with configuration  " +
+                                         aServletConfig +
+                                         " for path '" +
+                                         sServletPath +
+                                         "'");
+      }
+      m_aServlets.add (new ServletItem (aServlet, sServletPath));
+    });
   }
 
   /**
@@ -209,16 +227,18 @@ public class MockServletPool
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
-    final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
-    if (StringHelper.hasText (sPath))
-      m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
-    final int nMatchingItems = aMatchingItems.size ();
-    if (nMatchingItems == 0)
-      return null;
-    if (nMatchingItems > 1)
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
-    return aMatchingItems.getFirst ().getServlet ();
+    return m_aRWLock.readLockedGet ( () -> {
+      final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
+      if (StringHelper.hasText (sPath))
+        m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
+      final int nMatchingItems = aMatchingItems.size ();
+      if (nMatchingItems == 0)
+        return null;
+      if (nMatchingItems > 1)
+        if (LOGGER.isWarnEnabled ())
+          LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
+      return aMatchingItems.getFirst ().getServlet ();
+    });
   }
 
   /**
@@ -227,22 +247,24 @@ public class MockServletPool
    */
   public void invalidate ()
   {
-    if (m_bInvalidated)
-      throw new IllegalArgumentException ("Servlet pool already invalidated!");
-    m_bInvalidated = true;
+    m_aRWLock.writeLocked ( () -> {
+      if (m_bInvalidated)
+        throw new IllegalArgumentException ("Servlet pool already invalidated!");
+      m_bInvalidated = true;
 
-    // Destroy all servlets
-    for (final ServletItem aServletItem : m_aServlets)
-      try
-      {
-        aServletItem.getServlet ().destroy ();
-      }
-      catch (final Exception ex)
-      {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to destroy servlet " + aServletItem, ex);
-      }
+      // Destroy all servlets
+      for (final ServletItem aServletItem : m_aServlets)
+        try
+        {
+          aServletItem.getServlet ().destroy ();
+        }
+        catch (final Exception ex)
+        {
+          if (LOGGER.isErrorEnabled ())
+            LOGGER.error ("Failed to destroy servlet " + aServletItem, ex);
+        }
 
-    m_aServlets.clear ();
+      m_aServlets.clear ();
+    });
   }
 }

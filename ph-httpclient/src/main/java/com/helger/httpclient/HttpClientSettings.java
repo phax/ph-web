@@ -26,8 +26,10 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +47,6 @@ import com.helger.commons.ws.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.http.tls.TLSConfigurationMode;
-import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
  * All the easily configurable settings for an {@link HttpClientFactory}
@@ -67,10 +68,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
-  public static final ERetryMode DEFAULT_RETRY_MODE = ERetryMode.RETRY_IDEMPOTENT_ONLY;
-  public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5_000;
-  public static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5_000;
-  public static final int DEFAULT_SOCKET_TIMEOUT_MS = 10_000;
+  public static final TimeValue DEFAULT_RETRY_INTERVAL = TimeValue.ofSeconds (1);
+  public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
+  public static final Timeout DEFAULT_CONNECTION_TIMEOUT = Timeout.ofSeconds (5);
+  public static final Timeout DEFAULT_SOCKET_TIMEOUT = Timeout.ofSeconds (10);
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
 
@@ -85,10 +86,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private Credentials m_aProxyCredentials;
   private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
   private int m_nRetryCount = DEFAULT_RETRIES;
-  private ERetryMode m_eRetryMode = DEFAULT_RETRY_MODE;
-  private int m_nConnectionRequestTimeoutMS = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
-  private int m_nConnectionTimeoutMS = DEFAULT_CONNECTION_TIMEOUT_MS;
-  private int m_nSocketTimeoutMS = DEFAULT_SOCKET_TIMEOUT_MS;
+  private TimeValue m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
+  private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
+  private Timeout m_aConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+  private Timeout m_aSocketTimeout = DEFAULT_SOCKET_TIMEOUT;
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
@@ -130,10 +131,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setProxyCredentials (aSource.getProxyCredentials ());
     nonProxyHosts ().setAll (aSource.nonProxyHosts ());
     setRetryCount (aSource.getRetryCount ());
-    setRetryMode (aSource.getRetryMode ());
-    setConnectionRequestTimeoutMS (aSource.getConnectionRequestTimeoutMS ());
-    setConnectionTimeoutMS (aSource.getConnectionTimeoutMS ());
-    setSocketTimeoutMS (aSource.getSocketTimeoutMS ());
+    setRetryInterval (aSource.getRetryInterval ());
+    setConnectionRequestTimeout (aSource.getConnectionRequestTimeout ());
+    setConnectionTimeout (aSource.getConnectionTimeout ());
+    setSocketTimeout (aSource.getSocketTimeout ());
     setUserAgent (aSource.getUserAgent ());
     setFollowRedirects (aSource.isFollowRedirects ());
     setUseKeepAlive (aSource.isUseKeepAlive ());
@@ -341,7 +342,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @param aProxyCredentials
    *        The proxy server credentials to be used. May be <code>null</code>.
    *        They are only used if a proxy host is present! Usually they are of
-   *        type {@link org.apache.http.auth.UsernamePasswordCredentials}.
+   *        type
+   *        {@link org.apache.hc.client5.http.auth.UsernamePasswordCredentials}.
    * @return this for chaining
    * @see #setProxyHost(HttpHost)
    */
@@ -410,88 +412,87 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
-  /**
-   * @return The retry-mode. Never <code>null</code>. The default is
-   *         {@link #DEFAULT_RETRY_MODE}.
-   */
   @Nonnull
-  public final ERetryMode getRetryMode ()
+  public final TimeValue getRetryInterval ()
   {
-    return m_eRetryMode;
+    return m_aRetryInterval;
   }
 
   /**
-   * Set the retry mode to use.
+   * Set the retry interval to use.
    *
-   * @param eRetryMode
-   *        Retry mode to use. Must not be <code>null</code>.
+   * @param aRetryInterval
+   *        Retry interval to use. Must not be <code>null</code>.
    * @return this for chaining
    */
   @Nonnull
-  public final HttpClientSettings setRetryMode (@Nonnull final ERetryMode eRetryMode)
+  public final HttpClientSettings setRetryInterval (@Nonnull final TimeValue aRetryInterval)
   {
-    ValueEnforcer.notNull (eRetryMode, "RetryMode");
-    m_eRetryMode = eRetryMode;
+    ValueEnforcer.notNull (aRetryInterval, "RetryInterval");
+    m_aRetryInterval = aRetryInterval;
     return this;
   }
 
-  public final int getConnectionRequestTimeoutMS ()
+  @Nonnull
+  public final Timeout getConnectionRequestTimeout ()
   {
-    return m_nConnectionRequestTimeoutMS;
+    return m_aConnectionRequestTimeout;
   }
 
   /**
-   * Set the connection request timeout in milliseconds to use.
+   * Set the connection request timeout to use.
    *
-   * @param nConnectionRequestTimeoutMS
-   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
-   *        0 mean "system default".
+   * @param aConnectionRequestTimeout
+   *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
   @Nonnull
-  public final HttpClientSettings setConnectionRequestTimeoutMS (final int nConnectionRequestTimeoutMS)
+  public final HttpClientSettings setConnectionRequestTimeout (@Nonnull final Timeout aConnectionRequestTimeout)
   {
-    m_nConnectionRequestTimeoutMS = nConnectionRequestTimeoutMS;
+    ValueEnforcer.notNull (aConnectionRequestTimeout, "ConnectionRequestTimeout");
+    m_aConnectionRequestTimeout = aConnectionRequestTimeout;
     return this;
   }
 
-  public final int getConnectionTimeoutMS ()
+  @Nonnull
+  public final Timeout getConnectionTimeout ()
   {
-    return m_nConnectionTimeoutMS;
+    return m_aConnectionTimeout;
   }
 
   /**
-   * Set the connection timeout in milliseconds to use.
+   * Set the connection timeout to use.
    *
-   * @param nConnectionTimeoutMS
-   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
-   *        0 mean "system default".
+   * @param aConnectionTimeout
+   *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
   @Nonnull
-  public final HttpClientSettings setConnectionTimeoutMS (final int nConnectionTimeoutMS)
+  public final HttpClientSettings setConnectionTimeout (@Nonnull final Timeout aConnectionTimeout)
   {
-    m_nConnectionTimeoutMS = nConnectionTimeoutMS;
+    ValueEnforcer.notNull (aConnectionTimeout, "ConnectionTimeout");
+    m_aConnectionTimeout = aConnectionTimeout;
     return this;
   }
 
-  public final int getSocketTimeoutMS ()
+  @Nonnull
+  public final Timeout getSocketTimeout ()
   {
-    return m_nSocketTimeoutMS;
+    return m_aSocketTimeout;
   }
 
   /**
-   * Set the read/socket/request timeout in milliseconds to use.
+   * Set the read/socket/request timeout to use.
    *
-   * @param nSocketTimeoutMS
-   *        Timeout in milliseconds. The value 0 means "indefinite". Values &lt;
-   *        0 mean "system default".
+   * @param aSocketTimeout
+   *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
   @Nonnull
-  public final HttpClientSettings setSocketTimeoutMS (final int nSocketTimeoutMS)
+  public final HttpClientSettings setSocketTimeout (@Nonnull final Timeout aSocketTimeout)
   {
-    m_nSocketTimeoutMS = nSocketTimeoutMS;
+    ValueEnforcer.notNull (aSocketTimeout, "SocketTimeout");
+    m_aSocketTimeout = aSocketTimeout;
     return this;
   }
 
@@ -575,10 +576,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("ProxyCredentials", m_aProxyCredentials)
                                        .append ("NonProxyHosts", m_aNonProxyHosts)
                                        .append ("RetryCount", m_nRetryCount)
-                                       .append ("RetryMode", m_eRetryMode)
-                                       .append ("ConnectionRequestTimeoutMS", m_nConnectionRequestTimeoutMS)
-                                       .append ("ConnectionTimeoutMS", m_nConnectionTimeoutMS)
-                                       .append ("SocketTimeoutMS", m_nSocketTimeoutMS)
+                                       .append ("RetryInterval", m_aRetryInterval)
+                                       .append ("ConnectionRequestTimeout", m_aConnectionRequestTimeout)
+                                       .append ("ConnectionTimeout", m_aConnectionTimeout)
+                                       .append ("SocketTimeout", m_aSocketTimeout)
                                        .append ("UserAgent", m_sUserAgent)
                                        .append ("FollowRedirects", m_bFollowRedirects)
                                        .append ("UseKeepAlive", m_bUseKeepAlive)

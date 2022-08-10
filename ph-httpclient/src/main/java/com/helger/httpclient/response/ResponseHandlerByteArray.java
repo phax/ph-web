@@ -21,20 +21,20 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 /**
  * Convert a valid HTTP response to a byte array.
  *
  * @author Philip Helger
  */
-public class ResponseHandlerByteArray implements ResponseHandler <byte []>
+public class ResponseHandlerByteArray implements HttpClientResponseHandler <byte []>
 {
   @Nullable
-  public byte [] handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public byte [] handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

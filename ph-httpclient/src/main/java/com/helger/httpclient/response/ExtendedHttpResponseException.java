@@ -22,13 +22,14 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.StatusLine;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -164,7 +165,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   public String getMessagePartHeaders ()
   {
     final StringBuilder aSB = new StringBuilder ();
-    final Header [] aHeaders = m_aHttpResponse.getAllHeaders ();
+    final Header [] aHeaders = m_aHttpResponse.getHeaders ();
     aSB.append ("All ").append (aHeaders.length).append (" headers returned");
     for (final Header aHeader : aHeaders)
       aSB.append ("\n  ").append (aHeader.getName ()).append ('=').append (aHeader.getValue ());
@@ -188,9 +189,10 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   @Nonnull
-  public static ExtendedHttpResponseException create (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public static ExtendedHttpResponseException create (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
-    return create (aHttpResponse.getStatusLine (), aHttpResponse, aHttpResponse.getEntity ());
+    final StatusLine aStatusLine = new StatusLine (aHttpResponse);
+    return create (aStatusLine, aHttpResponse, aHttpResponse.getEntity ());
   }
 
   @Nonnull
@@ -198,9 +200,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
                                                       @Nonnull final HttpResponse aHttpResponse,
                                                       @Nonnull final HttpEntity aEntity) throws IOException
   {
-    ContentType aContentType = ContentType.get (aEntity);
-    if (aContentType == null)
-      aContentType = ContentType.DEFAULT_TEXT;
+    final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
 
     // Default to ISO-8859-1 internally
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);

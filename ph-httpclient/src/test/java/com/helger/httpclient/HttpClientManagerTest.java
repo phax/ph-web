@@ -19,7 +19,7 @@ package com.helger.httpclient;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import org.apache.http.client.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

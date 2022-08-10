@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.http.conn.DnsResolver;
+import org.apache.hc.client5.http.DnsResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ARecord;
@@ -164,5 +164,15 @@ public class NonCachingDnsResolver implements DnsResolver
   public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
   {
     return resolveExt (sHost, null);
+  }
+
+  @Nonnull
+  public String resolveCanonicalHostname (@Nonnull final String sHost) throws UnknownHostException
+  {
+    final InetAddress [] aResolvedAddresses = resolve (sHost);
+    if (aResolvedAddresses.length > 0)
+      return aResolvedAddresses[0].getCanonicalHostName ();
+
+    return sHost;
   }
 }

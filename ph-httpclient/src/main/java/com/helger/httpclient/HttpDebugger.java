@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.HttpResponseException;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,14 +61,14 @@ public final class HttpDebugger
    * @param aHttpContext
    *        The special HTTP content for this call. May be <code>null</code>.
    */
-  public static void beforeRequest (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext)
+  public static void beforeRequest (@Nonnull final ClassicHttpRequest aRequest, @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Before HTTP call: " +
                      aRequest.getMethod () +
                      " " +
-                     aRequest.getURI () +
+                     aRequest.getRequestUri () +
                      (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 
@@ -85,7 +85,7 @@ public final class HttpDebugger
    *        The caught exception. May be <code>null</code>.
    * @since 8.8.2
    */
-  public static void afterRequest (@Nonnull final HttpUriRequest aRequest,
+  public static void afterRequest (@Nonnull final ClassicHttpRequest aRequest,
                                    @Nullable final Object aResponse,
                                    @Nullable final Throwable aCaughtException)
   {

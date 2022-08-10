@@ -24,15 +24,15 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.ClientProtocolException;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.string.StringHelper;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
@@ -42,7 +42,7 @@ import com.helger.xml.microdom.serialize.MicroReader;
  *
  * @author Philip Helger
  */
-public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
+public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicroDocument>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerMicroDom.class);
 
@@ -69,19 +69,19 @@ public class ResponseHandlerMicroDom implements ResponseHandler <IMicroDocument>
   }
 
   @Nullable
-  public IMicroDocument handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public IMicroDocument handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
 
-    final ContentType aContentType = ContentType.getOrDefault (aEntity);
+    final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     if (m_bDebugMode)
     {
       // Read all in String
-      final String sXML = EntityUtils.toString (aEntity, aCharset);
+      final String sXML = StringHelper.trim (HttpClientHelper.entityToString (aEntity, aCharset));
 
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Got XML: <" + sXML + ">");

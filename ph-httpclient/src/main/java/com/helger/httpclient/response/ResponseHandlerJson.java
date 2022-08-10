@@ -22,13 +22,11 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.ClientProtocolException;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +41,12 @@ import com.helger.json.serialize.JsonReader;
  *
  * @author Philip Helger
  */
-public class ResponseHandlerJson implements ResponseHandler <IJson>
+public class ResponseHandlerJson implements HttpClientResponseHandler <IJson>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerJson.class);
 
   private boolean m_bDebugMode;
-  private Charset m_aFallbackCharset = HTTP.DEF_CONTENT_CHARSET;
+  private Charset m_aFallbackCharset = HttpClientHelper.DEF_CONTENT_CHARSET;
 
   public ResponseHandlerJson ()
   {
@@ -115,19 +113,19 @@ public class ResponseHandlerJson implements ResponseHandler <IJson>
   }
 
   @Nullable
-  public IJson handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public IJson handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
 
-    final ContentType aContentType = ContentType.getOrDefault (aEntity);
+    final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
     final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aFallbackCharset);
 
     if (m_bDebugMode)
     {
       // Read all in String
-      final String sJson = StringHelper.trim (EntityUtils.toString (aEntity, aCharset));
+      final String sJson = StringHelper.trim (HttpClientHelper.entityToString (aEntity, aCharset));
 
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Got JSON: <" + sJson + ">");

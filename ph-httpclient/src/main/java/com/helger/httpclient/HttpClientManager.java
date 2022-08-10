@@ -21,11 +21,13 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.protocol.HttpContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.StreamHelper;
@@ -90,7 +92,7 @@ public class HttpClientManager implements AutoCloseable
   @Nonnull
   public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
   {
-    return execute (aRequest, (HttpContext) null);
+    return execute (aRequest, (HttpClientContext) null);
   }
 
   /**
@@ -108,7 +110,8 @@ public class HttpClientManager implements AutoCloseable
    *         If this manager was already closed!
    */
   @Nonnull
-  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest, @Nullable final HttpContext aHttpContext) throws IOException
+  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
+                                        @Nullable final HttpClientContext aHttpContext) throws IOException
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
@@ -150,9 +153,10 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
-  public <T> T execute (@Nonnull final HttpUriRequest aRequest, @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
+                        @Nonnull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
-    return execute (aRequest, (HttpContext) null, aResponseHandler);
+    return execute (aRequest, (HttpClientContext) null, aResponseHandler);
   }
 
   /**
@@ -177,9 +181,9 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
-  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
+  public <T> T execute (@Nonnull final ClassicHttpRequest aRequest,
                         @Nullable final HttpContext aHttpContext,
-                        @Nonnull final ResponseHandler <T> aResponseHandler) throws IOException
+                        @Nonnull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
@@ -187,7 +191,7 @@ public class HttpClientManager implements AutoCloseable
     Throwable aCaughtException = null;
     try
     {
-      ret = m_aHttpClient.execute (aRequest, aResponseHandler, aHttpContext);
+      ret = m_aHttpClient.execute (aRequest, aHttpContext, aResponseHandler);
       return ret;
     }
     catch (final IOException ex)

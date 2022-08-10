@@ -125,6 +125,12 @@ public class HttpProxyConfig implements IProxyConfig
     return m_sPassword;
   }
 
+  @Nullable
+  public final char [] getPasswordAsCharArray ()
+  {
+    return m_sPassword == null ? null : m_sPassword.toCharArray ();
+  }
+
   @Nonnull
   @ReturnsMutableCopy
   public final ICommonsList <String> getNonProxyHosts ()

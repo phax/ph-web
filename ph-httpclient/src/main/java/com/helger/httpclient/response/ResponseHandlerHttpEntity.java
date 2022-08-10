@@ -21,10 +21,10 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ResponseHandler;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.message.StatusLine;
 
 import com.helger.commons.http.CHttp;
 
@@ -35,7 +35,7 @@ import com.helger.commons.http.CHttp;
  * @author Philip Helger
  * @since 8.7.2
  */
-public class ResponseHandlerHttpEntity implements ResponseHandler <HttpEntity>
+public class ResponseHandlerHttpEntity implements HttpClientResponseHandler <HttpEntity>
 {
   /** The global default instance. */
   public static final ResponseHandlerHttpEntity INSTANCE = new ResponseHandlerHttpEntity ();
@@ -44,9 +44,9 @@ public class ResponseHandlerHttpEntity implements ResponseHandler <HttpEntity>
   {}
 
   @Nullable
-  public HttpEntity handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public HttpEntity handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
-    final StatusLine aStatusLine = aHttpResponse.getStatusLine ();
+    final StatusLine aStatusLine = new StatusLine (aHttpResponse);
     final HttpEntity aEntity = aHttpResponse.getEntity ();
     // >= 300
     if (aStatusLine.getStatusCode () >= CHttp.HTTP_MULTIPLE_CHOICES)

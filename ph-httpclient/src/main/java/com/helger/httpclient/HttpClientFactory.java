@@ -16,9 +16,6 @@
  */
 package com.helger.httpclient;
 
-import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,50 +23,44 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.ConnectionReuseStrategy;
-import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.protocol.RequestAcceptEncoding;
-import org.apache.http.client.protocol.RequestAddCookies;
-import org.apache.http.client.protocol.ResponseContentEncoding;
-import org.apache.http.config.ConnectionConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.DnsResolver;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.SchemePortResolver;
-import org.apache.http.conn.routing.HttpRoutePlanner;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLInitializationException;
-import org.apache.http.impl.NoConnectionReuseStrategy;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultClientConnectionReuseStrategy;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
-import org.apache.http.impl.conn.DefaultRoutePlanner;
-import org.apache.http.impl.conn.DefaultSchemePortResolver;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.conn.SystemDefaultDnsResolver;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.DnsResolver;
+import org.apache.hc.client5.http.HttpRequestRetryStrategy;
+import org.apache.hc.client5.http.SchemePortResolver;
+import org.apache.hc.client5.http.SystemDefaultDnsResolver;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.cookie.StandardCookieSpec;
+import org.apache.hc.client5.http.impl.DefaultClientConnectionReuseStrategy;
+import org.apache.hc.client5.http.impl.DefaultSchemePortResolver;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
+import org.apache.hc.client5.http.impl.routing.DefaultRoutePlanner;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.protocol.RequestAddCookies;
+import org.apache.hc.client5.http.routing.HttpRoutePlanner;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.HttpsSupport;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ConnectionReuseStrategy;
+import org.apache.hc.core5.http.HttpException;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.ssl.SSLInitializationException;
+import org.apache.hc.core5.util.TimeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
-import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
@@ -146,7 +137,7 @@ public class HttpClientFactory implements IHttpClientProvider
         // Custom hostname verifier preferred
         HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
         if (aHostnameVerifier == null)
-          aHostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier ();
+          aHostnameVerifier = HttpsSupport.getDefaultHostnameVerifier ();
 
         if (LOGGER.isDebugEnabled ())
         {
@@ -198,17 +189,14 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The connection builder used by the
+   * @return The socket configuration builder used by the
    *         {@link PoolingHttpClientConnectionManager} to create the default
-   *         connection configuration.
+   *         socket configuration.
    */
   @Nonnull
-  public ConnectionConfig.Builder createConnectionConfigBuilder ()
+  public SocketConfig.Builder createSocketConfigBuilder ()
   {
-    return ConnectionConfig.custom ()
-                           .setMalformedInputAction (CodingErrorAction.IGNORE)
-                           .setUnmappableInputAction (CodingErrorAction.IGNORE)
-                           .setCharset (StandardCharsets.UTF_8);
+    return SocketConfig.custom ();
   }
 
   /**
@@ -216,9 +204,9 @@ public class HttpClientFactory implements IHttpClientProvider
    *         {@link PoolingHttpClientConnectionManager}.
    */
   @Nonnull
-  public ConnectionConfig createConnectionConfig ()
+  public SocketConfig createSocketConfig ()
   {
-    return createConnectionConfigBuilder ().build ();
+    return createSocketConfigBuilder ().build ();
   }
 
   /**
@@ -237,19 +225,17 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nonnull
   public HttpClientConnectionManager createConnectionManager (@Nonnull final LayeredConnectionSocketFactory aSSLFactory)
   {
-    final Registry <ConnectionSocketFactory> aConSocketRegistry = RegistryBuilder.<ConnectionSocketFactory> create ()
-                                                                                 .register ("http",
-                                                                                            PlainConnectionSocketFactory.getSocketFactory ())
-                                                                                 .register ("https", aSSLFactory)
-                                                                                 .build ();
     final DnsResolver aDNSResolver = createDNSResolver ();
-    final PoolingHttpClientConnectionManager aConnMgr = new PoolingHttpClientConnectionManager (aConSocketRegistry, aDNSResolver);
+    final PoolingHttpClientConnectionManager aConnMgr = PoolingHttpClientConnectionManagerBuilder.create ()
+                                                                                                 .setSSLSocketFactory (aSSLFactory)
+                                                                                                 .setDnsResolver (aDNSResolver)
+                                                                                                 .build ();
     aConnMgr.setDefaultMaxPerRoute (100);
     aConnMgr.setMaxTotal (200);
-    aConnMgr.setValidateAfterInactivity (1000);
+    aConnMgr.setValidateAfterInactivity (TimeValue.ofSeconds (1));
 
-    final ConnectionConfig aConnectionConfig = createConnectionConfig ();
-    aConnMgr.setDefaultConnectionConfig (aConnectionConfig);
+    final SocketConfig aSocketConfig = createSocketConfig ();
+    aConnMgr.setDefaultSocketConfig (aSocketConfig);
 
     return aConnMgr;
   }
@@ -259,17 +245,19 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     if (m_aSettings.isUseKeepAlive ())
       return DefaultClientConnectionReuseStrategy.INSTANCE;
-    return NoConnectionReuseStrategy.INSTANCE;
+
+    // No connection reuse
+    return (request, response, context) -> false;
   }
 
   @Nonnull
   public RequestConfig.Builder createRequestConfigBuilder ()
   {
     return RequestConfig.custom ()
-                        .setCookieSpec (CookieSpecs.DEFAULT)
-                        .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeoutMS ())
-                        .setConnectTimeout (m_aSettings.getConnectionTimeoutMS ())
-                        .setSocketTimeout (m_aSettings.getSocketTimeoutMS ())
+                        .setCookieSpec (StandardCookieSpec.STRICT)
+                        .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeout ())
+                        .setConnectTimeout (m_aSettings.getConnectionTimeout ())
+                        .setResponseTimeout (m_aSettings.getSocketTimeout ())
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (m_aSettings.isFollowRedirects ());
   }
@@ -287,7 +275,7 @@ public class HttpClientFactory implements IHttpClientProvider
     final Credentials aProxyCredentials = m_aSettings.getProxyCredentials ();
     if (aProxyHost != null && aProxyCredentials != null)
     {
-      final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+      final BasicCredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
       aCredentialsProvider.setCredentials (new AuthScope (aProxyHost), aProxyCredentials);
       return aCredentialsProvider;
     }
@@ -295,9 +283,9 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  public HttpRequestRetryHandler createRequestRetryHandler (@Nonnegative final int nMaxRetries, @Nonnull final ERetryMode eRetryMode)
+  public HttpRequestRetryStrategy createRequestRetryStrategy (@Nonnegative final int nMaxRetries, @Nonnull final TimeValue aRetryInterval)
   {
-    return new HttpClientRetryHandler (nMaxRetries, eRetryMode);
+    return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval);
   }
 
   @Nonnull
@@ -332,9 +320,7 @@ public class HttpClientFactory implements IHttpClientProvider
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
-                                             @Nonnull final HttpRequest aRequest,
-                                             @Nonnull final HttpContext aContext) throws HttpException
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext) throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
             if (aNonProxyHosts.contains (sHostname))
@@ -350,34 +336,30 @@ public class HttpClientFactory implements IHttpClientProvider
       }
     }
 
-    final HttpClientBuilder aHCB = HttpClients.custom ()
-                                              .setSchemePortResolver (aSchemePortResolver)
-                                              .setConnectionManager (aConnMgr)
-                                              .setDefaultRequestConfig (aRequestConfig)
-                                              .setDefaultCredentialsProvider (aCredentialsProvider)
-                                              .setRoutePlanner (aRoutePlanner)
-                                              .setConnectionReuseStrategy (aConnectionReuseStrategy);
+    final HttpClientBuilder ret = HttpClients.custom ()
+                                             .setSchemePortResolver (aSchemePortResolver)
+                                             .setConnectionManager (aConnMgr)
+                                             .setDefaultRequestConfig (aRequestConfig)
+                                             .setDefaultCredentialsProvider (aCredentialsProvider)
+                                             .setRoutePlanner (aRoutePlanner)
+                                             .setConnectionReuseStrategy (aConnectionReuseStrategy);
 
-    // Allow gzip,compress
-    aHCB.addInterceptorLast (new RequestAcceptEncoding ());
     // Add cookies
-    aHCB.addInterceptorLast (new RequestAddCookies ());
-    // Un-gzip or uncompress
-    aHCB.addInterceptorLast (new ResponseContentEncoding ());
+    ret.addRequestInterceptorLast (new RequestAddCookies ());
 
     // Enable usage of Java networking system properties
     if (m_aSettings.isUseSystemProperties ())
-      aHCB.useSystemProperties ();
+      ret.useSystemProperties ();
 
     // Set retry handler (if needed)
     if (m_aSettings.hasRetries ())
-      aHCB.setRetryHandler (createRequestRetryHandler (m_aSettings.getRetryCount (), m_aSettings.getRetryMode ()));
+      ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (), m_aSettings.getRetryInterval ()));
 
     // Set user agent (if any)
     if (m_aSettings.hasUserAgent ())
-      aHCB.setUserAgent (m_aSettings.getUserAgent ());
+      ret.setUserAgent (m_aSettings.getUserAgent ());
 
-    return aHCB;
+    return ret;
   }
 
   @Nonnull

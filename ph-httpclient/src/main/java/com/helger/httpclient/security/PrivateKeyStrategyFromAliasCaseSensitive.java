@@ -16,14 +16,14 @@
  */
 package com.helger.httpclient.security;
 
-import java.net.Socket;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLParameters;
 
-import org.apache.http.ssl.PrivateKeyDetails;
-import org.apache.http.ssl.PrivateKeyStrategy;
+import org.apache.hc.core5.ssl.PrivateKeyDetails;
+import org.apache.hc.core5.ssl.PrivateKeyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,10 +59,10 @@ public class PrivateKeyStrategyFromAliasCaseSensitive implements PrivateKeyStrat
   }
 
   @Nullable
-  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases, @Nullable final Socket aSocket)
+  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases, @Nullable final SSLParameters aSSLParameters)
   {
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("chooseAlias(" + aAliases + ", " + aSocket + ")");
+      LOGGER.debug ("chooseAlias(" + aAliases + ", " + aSSLParameters + ")");
 
     for (final String sCurAlias : aAliases.keySet ())
     {

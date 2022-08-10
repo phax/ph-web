@@ -23,11 +23,10 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.httpclient.HttpClientHelper;
@@ -39,7 +38,7 @@ import com.helger.httpclient.HttpClientHelper;
  *
  * @author Philip Helger
  */
-public class ResponseHandlerString implements ResponseHandler <String>
+public class ResponseHandlerString implements HttpClientResponseHandler <String>
 {
   private final ContentType m_aDefault;
   private Consumer <Charset> m_aCharsetConsumer;
@@ -91,16 +90,14 @@ public class ResponseHandlerString implements ResponseHandler <String>
   }
 
   @Nullable
-  public String handleResponse (@Nonnull final HttpResponse aHttpResponse) throws IOException
+  public String handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     // Convert to entity
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
 
-    ContentType aContentType = ContentType.get (aEntity);
-    if (aContentType == null)
-      aContentType = m_aDefault;
+    final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity, m_aDefault);
 
     // Get the charset from the content type or the default charset
     final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aDefault.getCharset ());
@@ -109,6 +106,6 @@ public class ResponseHandlerString implements ResponseHandler <String>
     if (m_aCharsetConsumer != null)
       m_aCharsetConsumer.accept (aCharset);
 
-    return EntityUtils.toString (aEntity, aCharset);
+    return HttpClientHelper.entityToString (aEntity, aCharset);
   }
 }

@@ -16,39 +16,43 @@
  */
 package com.helger.httpclient;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpTrace;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpHead;
+import org.apache.hc.client5.http.classic.methods.HttpOptions;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpTrace;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.util.Args;
+import org.apache.hc.core5.util.ByteArrayBuffer;
 
+import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.codec.URLCodec;
 import com.helger.commons.http.EHttpMethod;
@@ -68,18 +72,21 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class HttpClientHelper
 {
+  public static final Charset DEF_CONTENT_CHARSET = StandardCharsets.ISO_8859_1;
+  public static final Charset DEF_PROTOCOL_CHARSET = StandardCharsets.US_ASCII;
+
   private HttpClientHelper ()
   {}
 
   @Nonnull
-  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final ISimpleURL aSimpleURL)
+  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final ISimpleURL aSimpleURL)
   {
     final String sURI = aSimpleURL.getAsStringWithEncodedParameters ();
     return createRequest (eHTTPMethod, sURI);
   }
 
   @Nonnull
-  public static HttpRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final String sURI)
+  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final String sURI)
   {
     switch (eHTTPMethod)
     {
@@ -116,7 +123,7 @@ public final class HttpClientHelper
   @Nonnull
   public static Charset getCharset (@Nonnull final ContentType aContentType)
   {
-    return getCharset (aContentType, HTTP.DEF_CONTENT_CHARSET);
+    return getCharset (aContentType, DEF_CONTENT_CHARSET);
   }
 
   @Nullable
@@ -152,7 +159,7 @@ public final class HttpClientHelper
   public static Credentials createCredentials (@Nullable final HttpProxyConfig aProxyConfig)
   {
     if (aProxyConfig != null && aProxyConfig.hasUserNameOrPassword ())
-      return new UsernamePasswordCredentials (aProxyConfig.getUserName (), aProxyConfig.getPassword ());
+      return new UsernamePasswordCredentials (aProxyConfig.getUserName (), aProxyConfig.getPasswordAsCharArray ());
     return null;
   }
 
@@ -171,7 +178,7 @@ public final class HttpClientHelper
       ret.setRequestConfig (RequestConfig.custom ().setProxy (aProxy).build ());
       if (aProxyCredentials != null)
       {
-        final CredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
+        final BasicCredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
         aCredentialsProvider.setCredentials (new AuthScope (aProxy), aProxyCredentials);
         ret.setCredentialsProvider (aCredentialsProvider);
       }
@@ -180,15 +187,19 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap)
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap, @Nonnull final ContentType aContentType)
   {
-    return createParameterEntity (aMap, StandardCharsets.UTF_8);
+    return createParameterEntity (aMap, aContentType, StandardCharsets.UTF_8);
   }
 
   @Nullable
-  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap, @Nonnull final Charset aCharset)
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
+                                                  @Nonnull final ContentType aContentType,
+                                                  @Nonnull final Charset aCharset)
   {
+    ValueEnforcer.notNull (aContentType, "ContentType");
     ValueEnforcer.notNull (aCharset, "Charset");
+
     if (aMap == null || aMap.isEmpty ())
       return null;
 
@@ -215,7 +226,62 @@ public final class HttpClientHelper
           aURLCodec.encode (sValue.getBytes (aCharset), aBAOS);
         }
       }
-      return new InputStreamEntity (aBAOS.getAsInputStream ());
+      return new InputStreamEntity (aBAOS.getAsInputStream (), aContentType);
     }
+  }
+
+  @Nullable
+  public static ContentType getContentType (@Nullable final HttpEntity aEntity) throws UnsupportedCharsetException
+  {
+    if (aEntity == null)
+      return null;
+
+    return ContentType.parse (aEntity.getContentType ());
+  }
+
+  @Nullable
+  public static ContentType getContentTypeOrDefault (@Nullable final HttpEntity aEntity) throws UnsupportedCharsetException
+  {
+    return getContentTypeOrDefault (aEntity, ContentType.DEFAULT_TEXT);
+  }
+
+  @Nullable
+  public static ContentType getContentTypeOrDefault (@Nullable final HttpEntity aEntity,
+                                                     @Nullable final ContentType aDefault) throws UnsupportedCharsetException
+  {
+    final ContentType ret = getContentType (aEntity);
+    return ret != null ? ret : aDefault;
+  }
+
+  @Nullable
+  public static byte [] entitiyToByteArray (@Nonnull final HttpEntity aEntity) throws IOException
+  {
+    ValueEnforcer.notNull (aEntity, "HttpEntity");
+
+    try (final InputStream aIS = aEntity.getContent ())
+    {
+      if (aIS == null)
+        return null;
+
+      int nContentLength = (int) Args.checkContentLength (aEntity);
+      if (nContentLength < 0)
+        nContentLength = 4 * CGlobal.BYTES_PER_KILOBYTE;
+
+      final ByteArrayBuffer aBuffer = new ByteArrayBuffer (nContentLength);
+      final byte [] aBuf = new byte [nContentLength];
+      int nBytesRead;
+      while ((nBytesRead = aIS.read (aBuf)) != -1)
+      {
+        aBuffer.append (aBuf, 0, nBytesRead);
+      }
+      return aBuffer.toByteArray ();
+    }
+  }
+
+  @Nullable
+  public static String entityToString (@Nonnull final HttpEntity aEntity, @Nonnull final Charset aCharset) throws IOException
+  {
+    final byte [] ret = entitiyToByteArray (aEntity);
+    return ret == null ? null : new String (ret, aCharset);
   }
 }

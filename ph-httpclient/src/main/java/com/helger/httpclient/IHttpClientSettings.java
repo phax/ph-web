@@ -22,14 +22,15 @@ import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.ICommonsSet;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.tls.ITLSConfigurationMode;
-import com.helger.httpclient.HttpClientRetryHandler.ERetryMode;
 
 /**
  * Read-only interface for {@link HttpClientSettings}
@@ -132,28 +133,32 @@ public interface IHttpClientSettings
   }
 
   /**
-   * @return The retry-mode. Never <code>null</code>.
+   * @return The retry interval (the duration after which a retry is performed).
+   *         Never <code>null</code>.
    */
   @Nonnull
-  ERetryMode getRetryMode ();
+  TimeValue getRetryInterval ();
 
   /**
    * @return The connection request timeout in milliseconds. A value of 0 means
-   *         "indefinite". Values &lt; 0 means "system default".
+   *         "indefinite". Never <code>null</code>.
    */
-  int getConnectionRequestTimeoutMS ();
+  @Nonnull
+  Timeout getConnectionRequestTimeout ();
 
   /**
    * @return The connection timeout in milliseconds. A value of 0 means
-   *         "indefinite". Values &lt; 0 means "system default".
+   *         "indefinite". Never <code>null</code>.
    */
-  int getConnectionTimeoutMS ();
+  @Nonnull
+  Timeout getConnectionTimeout ();
 
   /**
    * @return The read/request/socket timeout in milliseconds. A value of 0 means
-   *         "indefinite". Values &lt; 0 means "system default".
+   *         "indefinite". Never <code>null</code>.
    */
-  int getSocketTimeoutMS ();
+  @Nonnull
+  Timeout getSocketTimeout ();
 
   /**
    * @return The user agent header to be send. May be <code>null</code>.

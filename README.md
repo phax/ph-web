@@ -58,8 +58,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.6.5 - work in progress
+* v9.7.0 - work in progress
     * Updated to dnsjava 3.5.1
+    * Updated to Apache HttpClient v5 - backwards incompatible change
     * Made `MockServletContext` and `MockServletPool` thread-safe. See https://github.com/phax/phase4/issues/92
 * v9.6.4 - 2022-05-09
     * Updated to dnsjava 3.5.0

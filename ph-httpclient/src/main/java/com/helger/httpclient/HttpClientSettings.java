@@ -90,7 +90,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
-  private Timeout m_aSocketTimeout = DEFAULT_SOCKET_TIMEOUT;
+  private Timeout m_aResponseTimeout = DEFAULT_SOCKET_TIMEOUT;
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
@@ -135,7 +135,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setRetryInterval (aSource.getRetryInterval ());
     setConnectionRequestTimeout (aSource.getConnectionRequestTimeout ());
     setConnectionTimeout (aSource.getConnectionTimeout ());
-    setSocketTimeout (aSource.getSocketTimeout ());
+    setResponseTimeout (aSource.getResponseTimeout ());
     setUserAgent (aSource.getUserAgent ());
     setFollowRedirects (aSource.isFollowRedirects ());
     setUseKeepAlive (aSource.isUseKeepAlive ());
@@ -483,23 +483,23 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   @Nonnull
-  public final Timeout getSocketTimeout ()
+  public final Timeout getResponseTimeout ()
   {
-    return m_aSocketTimeout;
+    return m_aResponseTimeout;
   }
 
   /**
    * Set the read/socket/request timeout to use.
    *
-   * @param aSocketTimeout
+   * @param aResponseTimeout
    *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
   @Nonnull
-  public final HttpClientSettings setSocketTimeout (@Nonnull final Timeout aSocketTimeout)
+  public final HttpClientSettings setResponseTimeout (@Nonnull final Timeout aResponseTimeout)
   {
-    ValueEnforcer.notNull (aSocketTimeout, "SocketTimeout");
-    m_aSocketTimeout = aSocketTimeout;
+    ValueEnforcer.notNull (aResponseTimeout, "SocketTimeout");
+    m_aResponseTimeout = aResponseTimeout;
     return this;
   }
 
@@ -586,7 +586,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("RetryInterval", m_aRetryInterval)
                                        .append ("ConnectionRequestTimeout", m_aConnectionRequestTimeout)
                                        .append ("ConnectionTimeout", m_aConnectionTimeout)
-                                       .append ("SocketTimeout", m_aSocketTimeout)
+                                       .append ("ResponseTimeout", m_aResponseTimeout)
                                        .append ("UserAgent", m_sUserAgent)
                                        .append ("FollowRedirects", m_bFollowRedirects)
                                        .append ("UseKeepAlive", m_bUseKeepAlive)

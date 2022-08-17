@@ -258,7 +258,7 @@ public class HttpClientFactory implements IHttpClientProvider
                         .setCookieSpec (StandardCookieSpec.STRICT)
                         .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeout ())
                         .setConnectTimeout (m_aSettings.getConnectionTimeout ())
-                        .setResponseTimeout (m_aSettings.getSocketTimeout ())
+                        .setResponseTimeout (m_aSettings.getResponseTimeout ())
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (m_aSettings.isFollowRedirects ());
   }

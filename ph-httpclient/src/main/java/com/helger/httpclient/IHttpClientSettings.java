@@ -148,18 +148,23 @@ public interface IHttpClientSettings
   Timeout getConnectionRequestTimeout ();
 
   /**
-   * @return The connection timeout in milliseconds. A value of 0 means
-   *         "indefinite". Never <code>null</code>.
+   * @return The connection timeout. Never <code>null</code>.
    */
   @Nonnull
   Timeout getConnectionTimeout ();
 
   /**
-   * @return The read/request/socket timeout in milliseconds. A value of 0 means
-   *         "indefinite". Never <code>null</code>.
+   * @return The response/read/request/socket timeout. Never <code>null</code>.
    */
   @Nonnull
-  Timeout getSocketTimeout ();
+  Timeout getResponseTimeout ();
+
+  @Deprecated
+  @Nonnull
+  default Timeout getSocketTimeout ()
+  {
+    return getResponseTimeout ();
+  }
 
   /**
    * @return The user agent header to be send. May be <code>null</code>.

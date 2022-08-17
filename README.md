@@ -58,7 +58,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.7.1 - work in progress
+* v9.7.1 - 2022-08-17
     * Changed in `HttpClientSettings` from `*ConnectionTimout` to `*ConnectTimeout` to be consistent
     * Added `(set|is)RetryAlways` in `HttpClientSettings` to allow to retry idempotent requests as well
 * v9.7.0 - 2022-08-17

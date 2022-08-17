@@ -70,6 +70,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
+  public static final boolean DEFAULT_RETRY_ALWAYS = false;
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_CONNECT_TIMEOUT = Timeout.ofSeconds (5);
   @Deprecated
@@ -92,6 +93,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
   private int m_nRetryCount = DEFAULT_RETRIES;
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
+  private boolean m_bRetryAlways = DEFAULT_RETRY_ALWAYS;
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
   private Timeout m_aResponseTimeout = DEFAULT_RESPONSE_TIMEOUT;
@@ -137,6 +139,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     nonProxyHosts ().setAll (aSource.nonProxyHosts ());
     setRetryCount (aSource.getRetryCount ());
     setRetryInterval (aSource.getRetryInterval ());
+    setRetryAlways (aSource.isRetryAlways ());
     setConnectionRequestTimeout (aSource.getConnectionRequestTimeout ());
     setConnectTimeout (aSource.getConnectTimeout ());
     setResponseTimeout (aSource.getResponseTimeout ());
@@ -444,6 +447,27 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
+  public final boolean isRetryAlways ()
+  {
+    return m_bRetryAlways;
+  }
+
+  /**
+   * Enable or disable to retry always. By default non-idempotent requests are
+   * not retried.
+   *
+   * @param bRetryAlways
+   *        <code>true</code> to retry always
+   * @return this for chaining
+   * @since 9.7.1
+   */
+  @Nonnull
+  public final HttpClientSettings setRetryAlways (final boolean bRetryAlways)
+  {
+    m_bRetryAlways = bRetryAlways;
+    return this;
+  }
+
   @Nonnull
   public final Timeout getConnectionRequestTimeout ()
   {
@@ -603,6 +627,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("NonProxyHosts", m_aNonProxyHosts)
                                        .append ("RetryCount", m_nRetryCount)
                                        .append ("RetryInterval", m_aRetryInterval)
+                                       .append ("RetryAlways", m_bRetryAlways)
                                        .append ("ConnectionRequestTimeout", m_aConnectionRequestTimeout)
                                        .append ("ConnectionTimeout", m_aConnectTimeout)
                                        .append ("ResponseTimeout", m_aResponseTimeout)

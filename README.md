@@ -60,6 +60,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v9.7.1 - work in progress
     * Changed in `HttpClientSettings` from `*ConnectionTimout` to `*ConnectTimeout` to be consistent
+    * Added `(set|is)RetryAlways` in `HttpClientSettings` to allow to retry idempotent requests as well
 * v9.7.0 - 2022-08-17
     * Updated to dnsjava 3.5.1
     * Updated to Apache HttpClient v5 - backwards incompatible change

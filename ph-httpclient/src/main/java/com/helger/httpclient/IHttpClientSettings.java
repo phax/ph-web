@@ -141,6 +141,13 @@ public interface IHttpClientSettings
   Duration getRetryInterval ();
 
   /**
+   * @return <code>true</code> if retries should also be performed for
+   *         non-idempotent requests.
+   * @since 9.7.1
+   */
+  boolean isRetryAlways ();
+
+  /**
    * @return The connection request timeout in milliseconds. A value of 0 means
    *         "indefinite". Never <code>null</code>.
    */

@@ -20,6 +20,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import org.apache.hc.client5.http.impl.DefaultHttpRequestRetryStrategy;
+import org.apache.hc.core5.http.HttpRequest;
 import org.apache.hc.core5.util.TimeValue;
 
 import com.helger.commons.ValueEnforcer;
@@ -34,14 +35,18 @@ public class HttpClientRetryStrategy extends DefaultHttpRequestRetryStrategy
 {
   private final int m_nMaxRetries;
   private final TimeValue m_aRetryInterval;
+  private final boolean m_bRetryAlways;
 
-  public HttpClientRetryStrategy (@Nonnegative final int nMaxRetries, @Nonnull final TimeValue aRetryInterval)
+  public HttpClientRetryStrategy (@Nonnegative final int nMaxRetries,
+                                  @Nonnull final TimeValue aRetryInterval,
+                                  final boolean bRetryAlways)
   {
     super (nMaxRetries, aRetryInterval);
     ValueEnforcer.isGE0 (nMaxRetries, "MaxRetries");
     ValueEnforcer.notNull (aRetryInterval, "RetryInterval");
     m_nMaxRetries = nMaxRetries;
     m_aRetryInterval = aRetryInterval;
+    m_bRetryAlways = bRetryAlways;
   }
 
   @Nonnegative
@@ -57,8 +62,20 @@ public class HttpClientRetryStrategy extends DefaultHttpRequestRetryStrategy
   }
 
   @Override
+  protected boolean handleAsIdempotent (final HttpRequest request)
+  {
+    if (m_bRetryAlways)
+      return true;
+
+    return super.handleAsIdempotent (request);
+  }
+
+  @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("MaxRetries", m_nMaxRetries).append ("RetryInterval", m_aRetryInterval).getToString ();
+    return new ToStringGenerator (this).append ("MaxRetries", m_nMaxRetries)
+                                       .append ("RetryInterval", m_aRetryInterval)
+                                       .append ("RetryAlways", m_bRetryAlways)
+                                       .getToString ();
   }
 }

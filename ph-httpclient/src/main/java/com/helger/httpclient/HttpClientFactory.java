@@ -285,9 +285,10 @@ public class HttpClientFactory implements IHttpClientProvider
 
   @Nullable
   public HttpRequestRetryStrategy createRequestRetryStrategy (@Nonnegative final int nMaxRetries,
-                                                              @Nonnull final TimeValue aRetryInterval)
+                                                              @Nonnull final TimeValue aRetryInterval,
+                                                              final boolean bRetryAlways)
   {
-    return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval);
+    return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval, bRetryAlways);
   }
 
   @Nonnull
@@ -357,7 +358,8 @@ public class HttpClientFactory implements IHttpClientProvider
     // Set retry handler (if needed)
     if (m_aSettings.hasRetries ())
       ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
-                                                        m_aSettings.getRetryIntervalAsTimeValue ()));
+                                                        m_aSettings.getRetryIntervalAsTimeValue (),
+                                                        m_aSettings.isRetryAlways ()));
 
     // Set user agent (if any)
     if (m_aSettings.hasUserAgent ())

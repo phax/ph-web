@@ -16,6 +16,8 @@
  */
 package com.helger.httpclient;
 
+import java.time.Duration;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,7 +26,6 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
-import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
 
 import com.helger.commons.annotation.ReturnsMutableObject;
@@ -137,7 +138,7 @@ public interface IHttpClientSettings
    *         Never <code>null</code>.
    */
   @Nonnull
-  TimeValue getRetryInterval ();
+  Duration getRetryInterval ();
 
   /**
    * @return The connection request timeout in milliseconds. A value of 0 means

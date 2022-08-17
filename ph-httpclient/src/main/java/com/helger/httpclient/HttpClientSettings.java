@@ -17,6 +17,7 @@
 package com.helger.httpclient;
 
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -68,7 +69,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRIES = 0;
-  public static final TimeValue DEFAULT_RETRY_INTERVAL = TimeValue.ofSeconds (1);
+  public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_CONNECTION_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_SOCKET_TIMEOUT = Timeout.ofSeconds (10);
@@ -86,7 +87,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private Credentials m_aProxyCredentials;
   private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
   private int m_nRetryCount = DEFAULT_RETRIES;
-  private TimeValue m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
+  private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
   private Timeout m_aSocketTimeout = DEFAULT_SOCKET_TIMEOUT;
@@ -413,9 +414,15 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   @Nonnull
-  public final TimeValue getRetryInterval ()
+  public final Duration getRetryInterval ()
   {
     return m_aRetryInterval;
+  }
+
+  @Nonnull
+  public final TimeValue getRetryIntervalAsTimeValue ()
+  {
+    return TimeValue.ofMilliseconds (m_aRetryInterval.toMillis ());
   }
 
   /**
@@ -426,7 +433,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return this for chaining
    */
   @Nonnull
-  public final HttpClientSettings setRetryInterval (@Nonnull final TimeValue aRetryInterval)
+  public final HttpClientSettings setRetryInterval (@Nonnull final Duration aRetryInterval)
   {
     ValueEnforcer.notNull (aRetryInterval, "RetryInterval");
     m_aRetryInterval = aRetryInterval;

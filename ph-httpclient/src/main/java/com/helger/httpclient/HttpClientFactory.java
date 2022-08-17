@@ -155,7 +155,8 @@ public class HttpClientFactory implements IHttpClientProvider
     catch (final SSLInitializationException ex)
     {
       // Fall through
-      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory", ex);
+      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
+                   ex);
     }
 
     if (aSSLFactory == null)
@@ -283,7 +284,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  public HttpRequestRetryStrategy createRequestRetryStrategy (@Nonnegative final int nMaxRetries, @Nonnull final TimeValue aRetryInterval)
+  public HttpRequestRetryStrategy createRequestRetryStrategy (@Nonnegative final int nMaxRetries,
+                                                              @Nonnull final TimeValue aRetryInterval)
   {
     return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval);
   }
@@ -320,7 +322,8 @@ public class HttpClientFactory implements IHttpClientProvider
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext) throws HttpException
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
+                                             @Nonnull final HttpContext aContext) throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
             if (aNonProxyHosts.contains (sHostname))
@@ -353,7 +356,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
     // Set retry handler (if needed)
     if (m_aSettings.hasRetries ())
-      ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (), m_aSettings.getRetryInterval ()));
+      ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
+                                                        m_aSettings.getRetryIntervalAsTimeValue ()));
 
     // Set user agent (if any)
     if (m_aSettings.hasUserAgent ())

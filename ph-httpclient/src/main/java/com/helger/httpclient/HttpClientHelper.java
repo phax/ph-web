@@ -17,7 +17,6 @@
 package com.helger.httpclient;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.Charset;
@@ -47,12 +46,10 @@ import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
-import org.apache.hc.core5.util.Args;
-import org.apache.hc.core5.util.ByteArrayBuffer;
 
-import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.codec.URLCodec;
 import com.helger.commons.http.EHttpMethod;
@@ -79,7 +76,8 @@ public final class HttpClientHelper
   {}
 
   @Nonnull
-  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final ISimpleURL aSimpleURL)
+  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
+                                                  @Nonnull final ISimpleURL aSimpleURL)
   {
     final String sURI = aSimpleURL.getAsStringWithEncodedParameters ();
     return createRequest (eHTTPMethod, sURI);
@@ -170,7 +168,8 @@ public final class HttpClientHelper
   }
 
   @Nonnull
-  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy, @Nullable final Credentials aProxyCredentials)
+  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
+                                               @Nullable final Credentials aProxyCredentials)
   {
     final HttpClientContext ret = HttpClientContext.create ();
     if (aProxy != null)
@@ -187,7 +186,8 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap, @Nonnull final ContentType aContentType)
+  public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
+                                                  @Nonnull final ContentType aContentType)
   {
     return createParameterEntity (aMap, aContentType, StandardCharsets.UTF_8);
   }
@@ -254,34 +254,18 @@ public final class HttpClientHelper
   }
 
   @Nullable
+  @Deprecated
   public static byte [] entitiyToByteArray (@Nonnull final HttpEntity aEntity) throws IOException
   {
     ValueEnforcer.notNull (aEntity, "HttpEntity");
-
-    try (final InputStream aIS = aEntity.getContent ())
-    {
-      if (aIS == null)
-        return null;
-
-      int nContentLength = (int) Args.checkContentLength (aEntity);
-      if (nContentLength < 0)
-        nContentLength = 4 * CGlobal.BYTES_PER_KILOBYTE;
-
-      final ByteArrayBuffer aBuffer = new ByteArrayBuffer (nContentLength);
-      final byte [] aBuf = new byte [nContentLength];
-      int nBytesRead;
-      while ((nBytesRead = aIS.read (aBuf)) != -1)
-      {
-        aBuffer.append (aBuf, 0, nBytesRead);
-      }
-      return aBuffer.toByteArray ();
-    }
+    return EntityUtils.toByteArray (aEntity);
   }
 
   @Nullable
-  public static String entityToString (@Nonnull final HttpEntity aEntity, @Nonnull final Charset aCharset) throws IOException
+  public static String entityToString (@Nonnull final HttpEntity aEntity,
+                                       @Nonnull final Charset aCharset) throws IOException
   {
-    final byte [] ret = entitiyToByteArray (aEntity);
+    final byte [] ret = EntityUtils.toByteArray (aEntity);
     return ret == null ? null : new String (ret, aCharset);
   }
 }

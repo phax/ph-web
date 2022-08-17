@@ -72,7 +72,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_CONNECTION_TIMEOUT = Timeout.ofSeconds (5);
-  public static final Timeout DEFAULT_SOCKET_TIMEOUT = Timeout.ofSeconds (10);
+  public static final Timeout DEFAULT_RESPONSE_TIMEOUT = Timeout.ofSeconds (10);
+  @Deprecated
+  public static final Timeout DEFAULT_SOCKET_TIMEOUT = DEFAULT_RESPONSE_TIMEOUT;
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
 
@@ -90,7 +92,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
-  private Timeout m_aResponseTimeout = DEFAULT_SOCKET_TIMEOUT;
+  private Timeout m_aResponseTimeout = DEFAULT_RESPONSE_TIMEOUT;
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;

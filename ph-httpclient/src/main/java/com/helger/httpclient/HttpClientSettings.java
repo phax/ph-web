@@ -71,7 +71,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final int DEFAULT_RETRIES = 0;
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
-  public static final Timeout DEFAULT_CONNECTION_TIMEOUT = Timeout.ofSeconds (5);
+  public static final Timeout DEFAULT_CONNECT_TIMEOUT = Timeout.ofSeconds (5);
+  @Deprecated
+  public static final Timeout DEFAULT_CONNECTION_TIMEOUT = DEFAULT_CONNECT_TIMEOUT;
   public static final Timeout DEFAULT_RESPONSE_TIMEOUT = Timeout.ofSeconds (10);
   @Deprecated
   public static final Timeout DEFAULT_SOCKET_TIMEOUT = DEFAULT_RESPONSE_TIMEOUT;
@@ -91,7 +93,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private int m_nRetryCount = DEFAULT_RETRIES;
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
-  private Timeout m_aConnectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+  private Timeout m_aConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
   private Timeout m_aResponseTimeout = DEFAULT_RESPONSE_TIMEOUT;
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
@@ -136,7 +138,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setRetryCount (aSource.getRetryCount ());
     setRetryInterval (aSource.getRetryInterval ());
     setConnectionRequestTimeout (aSource.getConnectionRequestTimeout ());
-    setConnectionTimeout (aSource.getConnectionTimeout ());
+    setConnectTimeout (aSource.getConnectTimeout ());
     setResponseTimeout (aSource.getResponseTimeout ());
     setUserAgent (aSource.getUserAgent ());
     setFollowRedirects (aSource.isFollowRedirects ());
@@ -464,24 +466,39 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   @Nonnull
-  public final Timeout getConnectionTimeout ()
+  public final Timeout getConnectTimeout ()
   {
-    return m_aConnectionTimeout;
+    return m_aConnectTimeout;
   }
 
   /**
-   * Set the connection timeout to use.
+   * Set the connect timeout to use.
    *
-   * @param aConnectionTimeout
+   * @param aConnectTimeout
    *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
   @Nonnull
-  public final HttpClientSettings setConnectionTimeout (@Nonnull final Timeout aConnectionTimeout)
+  public final HttpClientSettings setConnectTimeout (@Nonnull final Timeout aConnectTimeout)
   {
-    ValueEnforcer.notNull (aConnectionTimeout, "ConnectionTimeout");
-    m_aConnectionTimeout = aConnectionTimeout;
+    ValueEnforcer.notNull (aConnectTimeout, "ConnectTimeout");
+    m_aConnectTimeout = aConnectTimeout;
     return this;
+  }
+
+  /**
+   * Set the connect timeout to use.
+   *
+   * @param aConnectTimeout
+   *        Timeout to be used. May not be <code>null</code>.
+   * @return this for chaining.
+   * @deprecated Since v9.7.1. Use {@link #setConnectTimeout(Timeout)} instead.
+   */
+  @Nonnull
+  @Deprecated
+  public final HttpClientSettings setConnectionTimeout (@Nonnull final Timeout aConnectTimeout)
+  {
+    return setConnectTimeout (aConnectTimeout);
   }
 
   @Nonnull
@@ -587,7 +604,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("RetryCount", m_nRetryCount)
                                        .append ("RetryInterval", m_aRetryInterval)
                                        .append ("ConnectionRequestTimeout", m_aConnectionRequestTimeout)
-                                       .append ("ConnectionTimeout", m_aConnectionTimeout)
+                                       .append ("ConnectionTimeout", m_aConnectTimeout)
                                        .append ("ResponseTimeout", m_aResponseTimeout)
                                        .append ("UserAgent", m_sUserAgent)
                                        .append ("FollowRedirects", m_bFollowRedirects)

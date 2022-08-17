@@ -148,10 +148,21 @@ public interface IHttpClientSettings
   Timeout getConnectionRequestTimeout ();
 
   /**
-   * @return The connection timeout. Never <code>null</code>.
+   * @return The connect timeout. Never <code>null</code>.
    */
   @Nonnull
-  Timeout getConnectionTimeout ();
+  Timeout getConnectTimeout ();
+
+  /**
+   * @return The connect timeout. Never <code>null</code>.
+   * @deprecated Since 9.7.1
+   */
+  @Nonnull
+  @Deprecated
+  default Timeout getConnectionTimeout ()
+  {
+    return getConnectTimeout ();
+  }
 
   /**
    * @return The response/read/request/socket timeout. Never <code>null</code>.

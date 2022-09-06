@@ -34,20 +34,20 @@ import com.helger.commons.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_httpclient implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule HTTP_CORE = new ThirdPartyModule ("Apache HttpCore",
+  public static final IThirdPartyModule HTTP_CORE = new ThirdPartyModule ("Apache HttpComponents Core",
                                                                           "Apache",
                                                                           ELicense.APACHE2,
-                                                                          new Version (4, 4, 15),
-                                                                          "http://hc.apache.org/");
-  public static final IThirdPartyModule HTTP_COMPONENTS = new ThirdPartyModule ("Apache HttpComponents",
-                                                                                "Apache",
-                                                                                ELicense.APACHE2,
-                                                                                new Version (4, 5, 13),
-                                                                                "http://hc.apache.org/");
+                                                                          new Version (5, 1, 4),
+                                                                          "https://hc.apache.org/");
+  public static final IThirdPartyModule HTTP_CLIENT = new ThirdPartyModule ("Apache HttpComponents Client",
+                                                                            "Apache",
+                                                                            ELicense.APACHE2,
+                                                                            new Version (5, 1, 3),
+                                                                            "https://hc.apache.org/");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()
   {
-    return new IThirdPartyModule [] { HTTP_CORE, HTTP_COMPONENTS };
+    return new IThirdPartyModule [] { HTTP_CORE, HTTP_CLIENT };
   }
 }

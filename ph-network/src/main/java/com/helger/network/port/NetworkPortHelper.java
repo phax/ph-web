@@ -82,7 +82,8 @@ public final class NetworkPortHelper
   }
 
   /**
-   * Check the status of a remote port.
+   * Check the status of a remote port. <br>
+   * NOTE: this function does currently not support proxy servers
    *
    * @param sHostName
    *        Hostname or IP address to check.

@@ -25,7 +25,8 @@ import com.helger.servlet.mock.MockServletRequestListener;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * This mock listeners is responsible for creating
+ * This mock listeners is responsible for creating and destroying the Request
+ * Scopes correctly.
  *
  * @author Philip Helger
  */

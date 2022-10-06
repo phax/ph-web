@@ -41,6 +41,7 @@ import com.helger.httpclient.HttpClientHelper;
 public class ResponseHandlerString implements HttpClientResponseHandler <String>
 {
   private final ContentType m_aDefault;
+  private Charset m_aFallbackCharset;
   private Consumer <Charset> m_aCharsetConsumer;
 
   public ResponseHandlerString ()
@@ -54,6 +55,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
     ValueEnforcer.notNull (aDefault, "Default");
     ValueEnforcer.notNull (aDefault.getCharset (), "DefaultContentType.Charset");
     m_aDefault = aDefault;
+    m_aFallbackCharset = aDefault.getCharset ();
   }
 
   @Nonnull
@@ -66,6 +68,34 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   public final Charset getDefaultCharset ()
   {
     return m_aDefault.getCharset ();
+  }
+
+  /**
+   * @return The fallback charset to be used, in case no charset can be
+   *         determined from the content. By default this is the HTTP default
+   *         charset. Never <code>null</code>.
+   * @since 9.7.2
+   */
+  @Nonnull
+  public final Charset getFallbackCharset ()
+  {
+    return m_aFallbackCharset;
+  }
+
+  /**
+   * Set the fallback charset to be used, if the payload has no charset.
+   *
+   * @param aFallbackCharset
+   *        The fallback charset to be used. May not be <code>null</code>.
+   * @return this for chaining
+   * @since 9.7.2
+   */
+  @Nonnull
+  public final ResponseHandlerString setFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  {
+    ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
+    m_aFallbackCharset = aFallbackCharset;
+    return this;
   }
 
   @Nullable
@@ -100,7 +130,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
     final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity, m_aDefault);
 
     // Get the charset from the content type or the default charset
-    final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aDefault.getCharset ());
+    final Charset aCharset = HttpClientHelper.getCharset (aContentType, m_aFallbackCharset);
 
     // Get the default charset to be used
     if (m_aCharsetConsumer != null)

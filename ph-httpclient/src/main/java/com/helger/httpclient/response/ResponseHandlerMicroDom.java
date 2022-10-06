@@ -17,9 +17,8 @@
 package com.helger.httpclient.response;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -75,16 +74,17 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
     if (aEntity == null)
       throw new ClientProtocolException ("Response contains no content");
 
-    final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
-    final Charset aCharset = HttpClientHelper.getCharset (aContentType);
-
     if (m_bDebugMode)
     {
+      final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
+      // Assume UTF-8 as default for XML
+      final Charset aCharset = HttpClientHelper.getCharset (aContentType, StandardCharsets.UTF_8);
+
       // Read all in String
       final String sXML = StringHelper.trim (HttpClientHelper.entityToString (aEntity, aCharset));
 
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Got XML: <" + sXML + ">");
+        LOGGER.info ("Got XML in [" + aCharset + "]: <" + sXML + ">");
 
       final IMicroDocument ret = MicroReader.readMicroXML (sXML);
       if (ret == null)
@@ -93,7 +93,6 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
     }
 
     // Read via reader to avoid duplication in memory
-    final Reader aReader = new InputStreamReader (aEntity.getContent (), aCharset);
-    return MicroReader.readMicroXML (aReader);
+    return MicroReader.readMicroXML (aEntity.getContent ());
   }
 }

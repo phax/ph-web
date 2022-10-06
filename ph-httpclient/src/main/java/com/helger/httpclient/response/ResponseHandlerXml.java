@@ -83,7 +83,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
       final String sXML = HttpClientHelper.entityToString (aEntity, aCharset);
 
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Got XML: <" + sXML + ">");
+        LOGGER.info ("Got XML in [" + aCharset + "]: <" + sXML + ">");
 
       final Document ret = DOMReader.readXMLDOM (sXML);
       if (ret == null)

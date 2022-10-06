@@ -39,6 +39,7 @@ public class ResponseHandlerByteArray implements HttpClientResponseHandler <byte
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)
       return null;
+
     return EntityUtils.toByteArray (aEntity);
   }
 }

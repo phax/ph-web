@@ -60,6 +60,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v9.7.2 - work in progress
     * The class `ResponseHandlerXml` no longer uses ISO-8859-1 as the default charset if none was specified
+    * The class `ResponseHandlerMicroDom` no longer uses ISO-8859-1 as the default charset if none was specified
+    * The class `ResponseHandlerString` no has the possibility for a fallback charset
 * v9.7.1 - 2022-08-17
     * Changed in `HttpClientSettings` from `*ConnectionTimout` to `*ConnectTimeout` to be consistent
     * Added `(set|is)RetryAlways` in `HttpClientSettings` to allow to retry idempotent requests as well

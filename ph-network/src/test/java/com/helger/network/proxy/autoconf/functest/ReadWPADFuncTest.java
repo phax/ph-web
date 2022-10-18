@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 
 import javax.script.ScriptException;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.helger.commons.io.resource.ClassPathResource;
@@ -36,12 +37,14 @@ import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest
 {
-  public static String getProxyAutoConfigFunction (final IReadableResource aRes, final Charset aCharset) throws IOException
+  public static String getProxyAutoConfigFunction (final IReadableResource aRes,
+                                                   final Charset aCharset) throws IOException
   {
     final InputStream aIS = aRes.getInputStream ();
     if (aIS != null)
     {
-      try (final NonBlockingBufferedReader aReader = new NonBlockingBufferedReader (new InputStreamReader (aIS, aCharset)))
+      try (final NonBlockingBufferedReader aReader = new NonBlockingBufferedReader (new InputStreamReader (aIS,
+                                                                                                           aCharset)))
       {
         String sLine;
         final StringBuilder aAutoConfigScript = new StringBuilder ();
@@ -56,6 +59,8 @@ public final class ReadWPADFuncTest
   @Test
   public void testReadWPAD () throws IOException, ScriptException
   {
+    Assume.assumeTrue (ProxyAutoConfigHelper.isNashornScriptEngineAvailable ());
+
     // Works for Intercent-ER
     final String sAutoProxyConfig = false ? getProxyAutoConfigFunction (new URLResource ("http://wpad.ente.regione.emr.it/wpad.dat"),
                                                                         StandardCharsets.ISO_8859_1)
@@ -71,9 +76,12 @@ public final class ReadWPADFuncTest
   @Test
   public void testReadWPADExamples () throws IOException, ScriptException
   {
+    Assume.assumeTrue (ProxyAutoConfigHelper.isNashornScriptEngineAvailable ());
+
     for (final String sFile : new String [] { "wpad01.dat", "wpad02.dat", "wpad03.dat" })
     {
-      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" + sFile),
+      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" +
+                                                                                         sFile),
                                                                   StandardCharsets.ISO_8859_1);
       assertNotNull (sFile + " failed", sAutoProxyConfig);
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sAutoProxyConfig);

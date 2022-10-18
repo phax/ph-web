@@ -59,22 +59,31 @@ public final class ProxyAutoConfigHelper
 
   static
   {
-    try
-    {
-      final StopWatch aSW = StopWatch.createdStarted ();
-      SCRIPT_ENGINE.eval ("var dnsResolve = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolve(hostName); }");
-      SCRIPT_ENGINE.eval ("var dnsResolveEx = function(hostName){ return " + DNSResolver.class.getName () + ".dnsResolveEx(hostName); }");
-      SCRIPT_ENGINE.eval ("var myIpAddress = function(){ return " + DNSResolver.class.getName () + ".getMyIpAddress(); }");
-      SCRIPT_ENGINE.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
-      final long nMS = aSW.stopAndGetMillis ();
-      if (nMS > 100)
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
-    }
-    catch (final ScriptException ex)
-    {
-      throw new InitializationException ("Failed to init ProxyAutoConfig (PAC) Nashorn script!", ex);
-    }
+    if (SCRIPT_ENGINE == null)
+      LOGGER.warn ("Failed to create Nashorn ScriptEngine");
+    else
+      try
+      {
+        final StopWatch aSW = StopWatch.createdStarted ();
+        SCRIPT_ENGINE.eval ("var dnsResolve = function(hostName){ return " +
+                            DNSResolver.class.getName () +
+                            ".dnsResolve(hostName); }");
+        SCRIPT_ENGINE.eval ("var dnsResolveEx = function(hostName){ return " +
+                            DNSResolver.class.getName () +
+                            ".dnsResolveEx(hostName); }");
+        SCRIPT_ENGINE.eval ("var myIpAddress = function(){ return " +
+                            DNSResolver.class.getName () +
+                            ".getMyIpAddress(); }");
+        SCRIPT_ENGINE.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
+        final long nMS = aSW.stopAndGetMillis ();
+        if (nMS > 100)
+          if (LOGGER.isInfoEnabled ())
+            LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
+      }
+      catch (final ScriptException ex)
+      {
+        throw new InitializationException ("Failed to init ProxyAutoConfig (PAC) Nashorn script!", ex);
+      }
   }
 
   private final IReadableResource m_aPACRes;
@@ -84,20 +93,33 @@ public final class ProxyAutoConfigHelper
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
-    SCRIPT_ENGINE.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
+    if (SCRIPT_ENGINE != null)
+      SCRIPT_ENGINE.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
   }
 
   public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException
   {
     m_aPACRes = null;
     m_sPACCode = ValueEnforcer.notNull (sPACCode, "PACCode");
-    SCRIPT_ENGINE.eval (m_sPACCode);
+    if (SCRIPT_ENGINE != null)
+      SCRIPT_ENGINE.eval (m_sPACCode);
+  }
+
+  public static boolean isNashornScriptEngineAvailable ()
+  {
+    return SCRIPT_ENGINE != null;
   }
 
   // Cannot be static, because it needs the evaluation in the constructor
   @Nullable
   public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
   {
+    if (SCRIPT_ENGINE == null)
+    {
+      LOGGER.warn ("Because no Nashorn ScriptEngine could be created, no proxy can be found");
+      return null;
+    }
+
     // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
     // PAC file!
     final Object aResult = SCRIPT_ENGINE.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
@@ -122,7 +144,8 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL,
+                                                           @Nonnull final String sHost) throws ScriptException
   {
     final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
@@ -169,7 +192,8 @@ public final class ProxyAutoConfigHelper
                   {
                     final String sProxyHost = aParts[0];
                     final String sProxyPort = aParts[1];
-                    final int nProxyPort = StringParser.parseInt (sProxyPort, SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
+                    final int nProxyPort = StringParser.parseInt (sProxyPort,
+                                                                  SocksProxyConfig.DEFAULT_SOCKS_PROXY_PORT);
                     ret.add (new ProxySettings (Proxy.Type.SOCKS, sProxyHost, nProxyPort));
                     bError = false;
                   }

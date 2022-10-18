@@ -26,6 +26,7 @@ import java.net.Proxy;
 import javax.annotation.Nonnull;
 import javax.script.ScriptException;
 
+import org.junit.Assume;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,8 @@ public final class ProxyAutoConfigHelperTest
   @Test
   public void testGetProxyListForURL () throws ScriptException
   {
+    Assume.assumeTrue (ProxyAutoConfigHelper.isNashornScriptEngineAvailable ());
+
     for (final String sFile : PAC_FILES)
     {
       LOGGER.info ("Reading " + sFile);
@@ -81,6 +84,8 @@ public final class ProxyAutoConfigHelperTest
   @Test
   public void testExplicit () throws ScriptException
   {
+    Assume.assumeTrue (ProxyAutoConfigHelper.isNashornScriptEngineAvailable ());
+
     assertEquals (new ProxySettings (Proxy.Type.HTTP, "1.2.3.4", 8080), _getResolved ("return 'PROXY 1.2.3.4:8080';"));
     assertEquals (ProxySettings.createNoProxySettings (),
                   _getResolved ("return isInNetEx('127.0.0.1', '127.0.0.0/16') ? 'DIRECT' : 'PROXY 1.2.3.4:8080';"));

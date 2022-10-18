@@ -39,7 +39,9 @@ public class SessionManager implements AutoCloseable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionManager.class);
 
-  private final ISessionFactory m_aSessionFactory;
+  private final ISessionProvider m_aSessionProvider;
+  private final String m_sSessionDisplayName;
+
   // Status vars
   private Session m_aSession;
 
@@ -48,32 +50,42 @@ public class SessionManager implements AutoCloseable
    *
    * @param aSessionFactory
    *        The session factory
+   * @param sSessionDisplayName
+   *        The session display name for logging etc.
    */
-  public SessionManager (@Nonnull final ISessionFactory aSessionFactory)
+  public SessionManager (@Nonnull final ISessionProvider aSessionFactory, @Nonnull final String sSessionDisplayName)
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
-    m_aSessionFactory = aSessionFactory;
+    ValueEnforcer.notNull (sSessionDisplayName, "SessionDisplayName");
+    m_aSessionProvider = aSessionFactory;
+    m_sSessionDisplayName = sSessionDisplayName;
   }
 
   /**
    * @return the session factory used by this manager. Never <code>null</code>.
    */
   @Nonnull
-  public ISessionFactory getSessionFactory ()
+  public final ISessionProvider getSessionFactory ()
   {
-    return m_aSessionFactory;
+    return m_aSessionProvider;
   }
 
   @Override
   public void close () throws IOException
   {
-    if (m_aSession != null && m_aSession.isConnected ())
-      m_aSession.disconnect ();
-    m_aSession = null;
+    if (m_aSession != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Disconnecting JSCH session now");
+      if (m_aSession.isConnected ())
+        m_aSession.disconnect ();
+      m_aSession = null;
+    }
   }
 
   /**
-   * Returns a connected session.
+   * Returns a connected session. Gets or creates from the underlying session
+   * factory
    *
    * @return A connected session
    * @throws JSchException
@@ -85,11 +97,16 @@ public class SessionManager implements AutoCloseable
     if (m_aSession == null || !m_aSession.isConnected ())
     {
       if (LOGGER.isDebugEnabled ())
-        LOGGER.debug ("getting new session from factory session");
-      m_aSession = m_aSessionFactory.newSession ();
-      if (LOGGER.isDebugEnabled ())
-        LOGGER.debug ("connecting session");
-      m_aSession.connect ();
+        LOGGER.debug ("Getting new JSCH session from session factory");
+      m_aSession = m_aSessionProvider.createSession ();
+
+      // Avoid double connect
+      if (!m_aSession.isConnected ())
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Explicitly connecting JSCH session");
+        m_aSession.connect ();
+      }
     }
     return m_aSession;
   }
@@ -98,12 +115,20 @@ public class SessionManager implements AutoCloseable
   @Nonempty
   public String getAsString ()
   {
-    return m_aSessionFactory.getAsString ();
+    return m_sSessionDisplayName;
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("SessionFactory", m_aSessionFactory).getToString ();
+    return new ToStringGenerator (this).append ("SessionFactory", m_aSessionProvider)
+                                       .append ("SessionDisplayName", m_sSessionDisplayName)
+                                       .getToString ();
+  }
+
+  @Nonnull
+  public static SessionManager create (@Nonnull final ISessionFactory aFactory)
+  {
+    return new SessionManager (aFactory, aFactory.getAsString ());
   }
 }

@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.jsch.session.ISessionFactory;
+import com.helger.jsch.session.ISessionProvider;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Proxy;
@@ -38,15 +38,15 @@ public class SshProxy implements Proxy, AutoCloseable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SshProxy.class);
 
-  private final ISessionFactory m_aSessionFactory;
+  private final ISessionProvider m_aSessionProvider;
   private final Session m_aSession;
   private InputStream m_aIS;
   private OutputStream m_aOS;
 
-  public SshProxy (@Nonnull final ISessionFactory aSessionFactory) throws JSchException
+  public SshProxy (@Nonnull final ISessionProvider aSessionProvider) throws JSchException
   {
-    m_aSessionFactory = aSessionFactory;
-    m_aSession = aSessionFactory.newSession ();
+    m_aSessionProvider = aSessionProvider;
+    m_aSession = aSessionProvider.createSession ();
   }
 
   public void close ()
@@ -55,11 +55,17 @@ public class SshProxy implements Proxy, AutoCloseable
       m_aSession.disconnect ();
   }
 
-  public void connect (final SocketFactory aSocketFactory, final String sHost, final int nPort, final int nTimeoutMS) throws Exception
+  public void connect (final SocketFactory aSocketFactory,
+                       final String sHost,
+                       final int nPort,
+                       final int nTimeoutMS) throws Exception
   {
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("connecting session");
-    m_aSession.connect ();
+    if (!m_aSession.isConnected ())
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("connecting session");
+      m_aSession.connect ();
+    }
 
     final Channel aChannel = m_aSession.getStreamForwarder (sHost, nPort);
     m_aIS = aChannel.getInputStream ();
@@ -86,6 +92,6 @@ public class SshProxy implements Proxy, AutoCloseable
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("SessionFactory", m_aSessionFactory.getAsString ()).getToString ();
+    return new ToStringGenerator (this).append ("SessionFactory", m_aSessionProvider).getToString ();
   }
 }

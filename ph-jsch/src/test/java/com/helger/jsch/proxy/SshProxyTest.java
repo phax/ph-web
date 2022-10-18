@@ -49,7 +49,7 @@ public final class SshProxyTest
   private static String hostname;
   private static int port;
 
-  private final String expected = "there is absolutely no chance this is gonna work!";
+  private static final String EXPECTD = "there is absolutely no chance this is gonna work!";
 
   @BeforeClass
   public static void initializeClass ()
@@ -100,17 +100,17 @@ public final class SshProxyTest
       final ISessionFactory destinationSessionFactory = sessionFactory.newSessionFactoryBuilder ()
                                                                       .setProxy (new SshProxy (proxySessionFactory))
                                                                       .build ();
-      session = destinationSessionFactory.newSession ();
-
-      session.connect ();
+      session = destinationSessionFactory.createSession ();
+      if (!session.isConnected ())
+        session.connect ();
 
       channel = session.openChannel ("exec");
-      ((ChannelExec) channel).setCommand ("echo " + expected);
+      ((ChannelExec) channel).setCommand ("echo " + EXPECTD);
       final InputStream inputStream = channel.getInputStream ();
       channel.connect ();
 
       // echo adds \n
-      assertEquals (expected + "\n", StreamHelper.getAllBytesAsString (inputStream, StandardCharsets.UTF_8));
+      assertEquals (EXPECTD + "\n", StreamHelper.getAllBytesAsString (inputStream, StandardCharsets.UTF_8));
     }
     catch (final Exception e)
     {
@@ -120,13 +120,9 @@ public final class SshProxyTest
     finally
     {
       if (channel != null && channel.isConnected ())
-      {
         channel.disconnect ();
-      }
       if (session != null && session.isConnected ())
-      {
         session.disconnect ();
-      }
     }
   }
 }

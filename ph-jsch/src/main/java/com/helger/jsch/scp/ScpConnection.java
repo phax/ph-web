@@ -63,11 +63,13 @@ public class ScpConnection implements Closeable
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
     ValueEnforcer.notNull (eScpMode, "ScpMode");
 
-    m_aSession = aSessionFactory.newSession ();
-
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("connecting session");
-    m_aSession.connect ();
+    m_aSession = aSessionFactory.createSession ();
+    if (!m_aSession.isConnected ())
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("connecting session");
+      m_aSession.connect ();
+    }
 
     final String sCommand = _getCommand (eScpMode, eCopyMode, sPath);
     m_aChannel = (ChannelExec) m_aSession.openChannel ("exec");
@@ -92,7 +94,9 @@ public class ScpConnection implements Closeable
 
   @Nonnull
   @Nonempty
-  private static String _getCommand (@Nonnull final EScpMode eScpMode, @Nullable final ECopyMode eCopyMode, @Nonnull final String sPath)
+  private static String _getCommand (@Nonnull final EScpMode eScpMode,
+                                     @Nullable final ECopyMode eCopyMode,
+                                     @Nonnull final String sPath)
   {
     final StringBuilder aSB;
     switch (eScpMode)

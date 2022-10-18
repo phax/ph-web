@@ -173,33 +173,35 @@ public class TunnelConnection implements Closeable
     if (isOpen ())
       return;
 
-    m_aSession = m_aSessionFactory.newSession ();
-
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("connecting session");
-    m_aSession.connect ();
-
-    for (final Tunnel tunnel : m_aTunnels)
+    m_aSession = m_aSessionFactory.createSession ();
+    if (!m_aSession.isConnected ())
     {
-      int assignedPort = 0;
-      if (tunnel.getLocalAlias () == null)
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Connecting JSCH session");
+      m_aSession.connect ();
+    }
+
+    for (final Tunnel aTunnel : m_aTunnels)
+    {
+      int nAssignedPort = 0;
+      if (aTunnel.getLocalAlias () == null)
       {
-        assignedPort = m_aSession.setPortForwardingL (tunnel.getLocalPort (),
-                                                      tunnel.getDestinationHostname (),
-                                                      tunnel.getDestinationPort ());
+        nAssignedPort = m_aSession.setPortForwardingL (aTunnel.getLocalPort (),
+                                                       aTunnel.getDestinationHostname (),
+                                                       aTunnel.getDestinationPort ());
       }
       else
       {
-        assignedPort = m_aSession.setPortForwardingL (tunnel.getLocalAlias (),
-                                                      tunnel.getLocalPort (),
-                                                      tunnel.getDestinationHostname (),
-                                                      tunnel.getDestinationPort ());
+        nAssignedPort = m_aSession.setPortForwardingL (aTunnel.getLocalAlias (),
+                                                       aTunnel.getLocalPort (),
+                                                       aTunnel.getDestinationHostname (),
+                                                       aTunnel.getDestinationPort ());
       }
-      tunnel.setAssignedLocalPort (assignedPort);
+      aTunnel.setAssignedLocalPort (nAssignedPort);
       if (LOGGER.isDebugEnabled ())
-        LOGGER.debug ("added tunnel " + getAsString ());
+        LOGGER.debug ("Added SSH tunnel " + getAsString ());
     }
-    LOGGER.info ("forwarding " + getAsString ());
+    LOGGER.info ("Forwarding " + getAsString ());
   }
 
   /**
@@ -219,9 +221,9 @@ public class TunnelConnection implements Closeable
   @Nonempty
   public String getAsString ()
   {
-    final StringBuilder builder = new StringBuilder (m_aSessionFactory.getAsString ());
+    final StringBuilder ret = new StringBuilder (m_aSessionFactory.getAsString ());
     for (final Tunnel tunnel : m_aTunnels)
-      builder.append (" -L ").append (tunnel);
-    return builder.toString ();
+      ret.append (" -L ").append (tunnel);
+    return ret.toString ();
   }
 }

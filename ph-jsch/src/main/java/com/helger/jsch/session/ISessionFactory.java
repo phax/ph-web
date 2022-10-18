@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.annotation.Nonempty;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
@@ -30,7 +29,7 @@ import com.jcraft.jsch.UserInfo;
  * configuration. Also supports creation of other SessionFactory instances that
  * are initialized from the same configuration and can be modified as necessary.
  */
-public interface ISessionFactory
+public interface ISessionFactory extends ISessionProvider
 {
   int SSH_PORT = 22;
 
@@ -62,15 +61,6 @@ public interface ISessionFactory
   UserInfo getUserInfo ();
 
   /**
-   * @return a new session using the configured properties.
-   * @throws JSchException
-   *         If <code>username</code> or <code>hostname</code> are invalid
-   * @see com.jcraft.jsch.JSch#getSession(String, String, int)
-   */
-  @Nonnull
-  Session newSession () throws JSchException;
-
-  /**
    * Returns a builder for another session factory pre-initialized with the
    * configuration for this session factory.
    *
@@ -84,7 +74,12 @@ public interface ISessionFactory
   default String getAsString ()
   {
     final Proxy aProxy = getProxy ();
-    return (aProxy == null ? "" : aProxy.toString () + " ") + "ssh://" + getUsername () + "@" + getHostname () + ":" + getPort ();
+    return (aProxy == null ? "" : aProxy.toString () + " ") +
+           "ssh://" +
+           getUsername () +
+           "@" +
+           getHostname () +
+           ":" +
+           getPort ();
   }
-
 }

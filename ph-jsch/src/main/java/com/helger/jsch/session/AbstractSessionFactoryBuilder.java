@@ -54,86 +54,86 @@ public abstract class AbstractSessionFactoryBuilder
   /**
    * Replaces the current config with <code>config</code>
    *
-   * @param config
+   * @param aConfig
    *        The new config
    * @return This builder
    * @see com.helger.jsch.session.DefaultSessionFactory#setConfig(ICommonsMap)
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setConfig (@Nullable final ICommonsMap <String, String> config)
+  public AbstractSessionFactoryBuilder setConfig (@Nullable final ICommonsMap <String, String> aConfig)
   {
-    m_aConfig = config;
+    m_aConfig = aConfig;
     return this;
   }
 
   /**
    * Replaces the current hostname with <code>hostname</code>
    *
-   * @param hostname
+   * @param sHostname
    *        The new hostname
    * @return This builder
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setHostname (@Nullable final String hostname)
+  public AbstractSessionFactoryBuilder setHostname (@Nullable final String sHostname)
   {
-    m_sHostname = hostname;
+    m_sHostname = sHostname;
     return this;
   }
 
   /**
    * Replaces the current port with <code>port</code>
    *
-   * @param port
+   * @param nPort
    *        The new port
    * @return This builder
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setPort (final int port)
+  public AbstractSessionFactoryBuilder setPort (final int nPort)
   {
-    m_nPort = port;
+    m_nPort = nPort;
     return this;
   }
 
   /**
    * Replaces the current proxy with <code>proxy</code>
    *
-   * @param proxy
+   * @param aProxy
    *        The new proxy
    * @return This builder
    * @see com.helger.jsch.session.DefaultSessionFactory#setProxy(Proxy)
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setProxy (@Nullable final Proxy proxy)
+  public AbstractSessionFactoryBuilder setProxy (@Nullable final Proxy aProxy)
   {
-    m_aProxy = proxy;
+    m_aProxy = aProxy;
     return this;
   }
 
   /**
    * Replaces the current username with <code>username</code>
    *
-   * @param username
+   * @param sUsername
    *        The new username
    * @return This builder
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setUsername (@Nullable final String username)
+  public AbstractSessionFactoryBuilder setUsername (@Nullable final String sUsername)
   {
-    m_sUsername = username;
+    m_sUsername = sUsername;
     return this;
   }
 
   /**
    * Replaces the current userInfo with <code>userInfo</code>
    *
-   * @param userInfo
+   * @param aUserInfo
    *        The new userInfo
    * @return This builder
    */
   @Nonnull
-  public AbstractSessionFactoryBuilder setUserInfo (@Nullable final UserInfo userInfo)
+  public AbstractSessionFactoryBuilder setUserInfo (@Nullable final UserInfo aUserInfo)
   {
-    m_aUserInfo = userInfo;
+    m_aUserInfo = aUserInfo;
     return this;
   }
 

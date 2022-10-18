@@ -452,7 +452,7 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   @Override
-  public Session newSession () throws JSchException
+  public Session createSession () throws JSchException
   {
     final Session session = m_aJSch.getSession (m_sUsername, m_sHostname, m_nPort);
     if (m_aConfig != null)

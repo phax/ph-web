@@ -46,42 +46,42 @@ public class SftpRunner implements AutoCloseable
    * Creates a new SftpRunner that will use a {@link SessionManager} that wraps
    * the supplied <code>sessionFactory</code>.
    *
-   * @param sessionFactory
+   * @param aSessionFactory
    *        The factory used to create a session manager
    */
-  public SftpRunner (@Nonnull final ISessionFactory sessionFactory)
+  public SftpRunner (@Nonnull final ISessionFactory aSessionFactory)
   {
-    m_aSessionManager = new SessionManager (sessionFactory);
+    m_aSessionManager = SessionManager.create (aSessionFactory);
   }
 
   /**
    * Executes the <code>sftp</code> callback providing it an open
-   * {@link ChannelSftp}. Sftp callback implementations should <i>NOT</i> close
+   * {@link ChannelSftp}. SFTP callback implementations should <i>NOT</i> close
    * the channel.
    *
-   * @param sftp
-   *        A callback
+   * @param aSftp
+   *        A callback to invoke with the {@link ChannelSftp}
    * @throws JSchException
    *         If ssh execution fails
    * @throws IOException
    *         If unable to read the result data
    */
-  public void execute (@Nonnull final ISftp sftp) throws JSchException, IOException
+  public void execute (@Nonnull final ISftp aSftp) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("executing sftp command on " + m_aSessionManager.getAsString ());
 
-    ChannelSftp channelSftp = null;
+    ChannelSftp aChannelSftp = null;
     try
     {
-      channelSftp = (ChannelSftp) m_aSessionManager.getSession ().openChannel (CHANNEL_SFTP);
-      channelSftp.connect ();
-      sftp.run (channelSftp);
+      aChannelSftp = (ChannelSftp) m_aSessionManager.getSession ().openChannel (CHANNEL_SFTP);
+      aChannelSftp.connect ();
+      aSftp.run (aChannelSftp);
     }
     finally
     {
-      if (channelSftp != null)
-        channelSftp.disconnect ();
+      if (aChannelSftp != null)
+        aChannelSftp.disconnect ();
     }
   }
 

@@ -71,7 +71,7 @@ public final class ConnectionTest
     incorrectPassword = correctPassword + ".";
   }
 
-  private ISessionFactory getKeyboardInteractiveAuthenticatingSessionFactory (final String password)
+  private ISessionFactory _getKeyboardInteractiveAuthenticatingSessionFactory (final String password)
   {
     final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
     defaultSessionFactory.setConfig ("PreferredAuthentications", "keyboard-interactive");
@@ -87,13 +87,14 @@ public final class ConnectionTest
     return defaultSessionFactory;
   }
 
-  private void testKeyboardInteractiveConnectionWithPassword (final String password) throws Exception
+  private void _testKeyboardInteractiveConnectionWithPassword (final String password) throws Exception
   {
     Session session = null;
     try
     {
-      session = getKeyboardInteractiveAuthenticatingSessionFactory (password).newSession ();
-      session.connect ();
+      session = _getKeyboardInteractiveAuthenticatingSessionFactory (password).createSession ();
+      if (!session.isConnected ())
+        session.connect ();
     }
     finally
     {
@@ -104,13 +105,14 @@ public final class ConnectionTest
     }
   }
 
-  private void testPasswordConnectionWithPassword (final String password) throws Exception
+  private void _testPasswordConnectionWithPassword (final String password) throws Exception
   {
     Session session = null;
     try
     {
-      session = _getPasswordAuthenticatingSessionFactory (password).newSession ();
-      session.connect ();
+      session = _getPasswordAuthenticatingSessionFactory (password).createSession ();
+      if (!session.isConnected ())
+        session.connect ();
     }
     finally
     {
@@ -129,7 +131,7 @@ public final class ConnectionTest
     Assume.assumeNotNull (username, correctPassword);
     try
     {
-      testKeyboardInteractiveConnectionWithPassword (correctPassword);
+      _testKeyboardInteractiveConnectionWithPassword (correctPassword);
     }
     catch (final Exception e)
     {
@@ -145,7 +147,7 @@ public final class ConnectionTest
     Assume.assumeNotNull (username, incorrectPassword);
     try
     {
-      testKeyboardInteractiveConnectionWithPassword (incorrectPassword);
+      _testKeyboardInteractiveConnectionWithPassword (incorrectPassword);
     }
     catch (final JSchException e)
     {
@@ -163,7 +165,7 @@ public final class ConnectionTest
     Assume.assumeNotNull (username, correctPassword);
     try
     {
-      testPasswordConnectionWithPassword (correctPassword);
+      _testPasswordConnectionWithPassword (correctPassword);
     }
     catch (final Exception e)
     {
@@ -177,7 +179,7 @@ public final class ConnectionTest
     Assume.assumeNotNull (username, incorrectPassword);
     try
     {
-      testPasswordConnectionWithPassword (incorrectPassword);
+      _testPasswordConnectionWithPassword (incorrectPassword);
     }
     catch (final JSchException e)
     {

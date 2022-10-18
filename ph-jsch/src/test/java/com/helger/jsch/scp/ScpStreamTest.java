@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.io.file.FileOperationManager;
 import com.helger.commons.io.file.SimpleFileIO;
 import com.helger.commons.io.stream.StreamHelper;
+import com.helger.commons.string.StringHelper;
 import com.jcraft.jsch.Session;
 
 public final class ScpStreamTest extends AbstractScpTestBase
@@ -93,7 +96,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
 
     try
     {
-      session = s_aSessionFactory.newSession ();
+      session = s_aSessionFactory.createSession ();
     }
     catch (final Exception e)
     {
@@ -102,26 +105,18 @@ public final class ScpStreamTest extends AbstractScpTestBase
     }
   }
 
-  private String joinPath (final List <String> dirs, final String file)
+  private static String _joinPath (final List <String> dirs, final String file)
   {
     final int fileIndex = dirs.size ();
     final String [] parts = dirs.toArray (new String [fileIndex + 1]);
     parts[fileIndex] = file;
-    return joinPath (parts);
+    return _joinPath (parts);
   }
 
-  private String joinPath (final String... parts)
+  @Nonnull
+  private static String _joinPath (final String... parts)
   {
-    final StringBuilder builder = new StringBuilder ();
-    for (int i = 0; i < parts.length; i++)
-    {
-      if (i > 0)
-      {
-        builder.append ("/");
-      }
-      builder.append (parts[i]);
-    }
-    return builder.toString ();
+    return StringHelper.imploder ().source (parts).separator ('/').build ();
   }
 
   @Test
@@ -131,7 +126,9 @@ public final class ScpStreamTest extends AbstractScpTestBase
     SimpleFileIO.writeFile (file2, expected2, StandardCharsets.UTF_8);
     SimpleFileIO.writeFile (file3, expected3, StandardCharsets.UTF_8);
 
-    try (ScpInputStream inputStream = new ScpInputStream (s_aSessionFactory, joinPath (s_sScpPath, dir1Name, "*"), ECopyMode.RECURSIVE))
+    try (ScpInputStream inputStream = new ScpInputStream (s_aSessionFactory,
+                                                          _joinPath (s_sScpPath, dir1Name, "*"),
+                                                          ECopyMode.RECURSIVE))
     {
       final Map <String, String> fileNameToContents = new HashMap <> ();
       final List <String> dirs = new ArrayList <> ();
@@ -151,14 +148,14 @@ public final class ScpStreamTest extends AbstractScpTestBase
           }
         if (entry.isFile ())
         {
-          final String path = joinPath (dirs, entry.getName ());
+          final String path = _joinPath (dirs, entry.getName ());
           final String data = StreamHelper.getAllBytesAsString (inputStream, StandardCharsets.UTF_8);
           fileNameToContents.put (path, data);
         }
       }
 
       Assert.assertEquals (expected1, fileNameToContents.get (file1Name));
-      Assert.assertEquals (expected2, fileNameToContents.get (joinPath (dir2Name, file2Name)));
+      Assert.assertEquals (expected2, fileNameToContents.get (_joinPath (dir2Name, file2Name)));
       Assert.assertEquals (expected3, fileNameToContents.get (file3Name));
     }
     catch (final Exception e)
@@ -171,7 +168,9 @@ public final class ScpStreamTest extends AbstractScpTestBase
   @Test
   public void testOutputStream ()
   {
-    try (final ScpOutputStream outputStream = new ScpOutputStream (s_aSessionFactory, joinPath (s_sScpPath, dir1Name), ECopyMode.RECURSIVE))
+    try (final ScpOutputStream outputStream = new ScpOutputStream (s_aSessionFactory,
+                                                                   _joinPath (s_sScpPath, dir1Name),
+                                                                   ECopyMode.RECURSIVE))
     {
       outputStream.putNextEntry (file1Name, expected1.length ());
       outputStream.write (expected1.getBytes (StandardCharsets.UTF_8));

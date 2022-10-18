@@ -61,7 +61,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    */
   public CommandRunner (@Nonnull final ISessionFactory aSessionFactory)
   {
-    m_aSessionManager = new SessionManager (aSessionFactory);
+    m_aSessionManager = SessionManager.create (aSessionFactory);
   }
 
   /**
@@ -84,7 +84,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
   @ReturnsMutableCopy
   public CommandRunner getClone ()
   {
-    return new CommandRunner (m_aSessionManager.getSessionFactory ());
+    // Ensured via the constructor of this class that it is a ISessionFactory
+    return new CommandRunner ((ISessionFactory) m_aSessionManager.getSessionFactory ());
   }
 
   /**
@@ -113,7 +114,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
 
     // Using the synchronized BAOS is okay here
     try (final ByteArrayOutputStream stdErr = new ByteArrayOutputStream ();
-         final ByteArrayOutputStream stdOut = new ByteArrayOutputStream ())
+        final ByteArrayOutputStream stdOut = new ByteArrayOutputStream ())
     {
       int nExitCode;
       ChannelExecWrapper aChannel = null;

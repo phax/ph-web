@@ -61,14 +61,13 @@ public final class HttpDebugger
    * @param aHttpContext
    *        The special HTTP content for this call. May be <code>null</code>.
    */
-  public static void beforeRequest (@Nonnull final ClassicHttpRequest aRequest, @Nullable final HttpContext aHttpContext)
+  public static void beforeRequest (@Nonnull final ClassicHttpRequest aRequest,
+                                    @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Before HTTP call: " +
-                     aRequest.getMethod () +
-                     " " +
-                     aRequest.getRequestUri () +
+                     aRequest.toString () +
                      (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 

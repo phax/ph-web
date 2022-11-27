@@ -161,13 +161,35 @@ public final class HttpClientHelper
     return null;
   }
 
+  /**
+   * Create a new {@link HttpContext} for the provided proxy without credentials
+   *
+   * @param aProxy
+   *        The proxy to be used
+   * @return The created {@link HttpContext} and never <code>null</code>.
+   * @deprecated In v9.7.3 because HttpClient 5.2 deprecated setting proxy by
+   *             {@link HttpContext}
+   */
   @Nonnull
+  @Deprecated
   public static HttpContext createHttpContext (@Nullable final HttpHost aProxy)
   {
     return createHttpContext (aProxy, (Credentials) null);
   }
 
+  /**
+   * Create a new {@link HttpContext} for the provided proxy without credentials
+   *
+   * @param aProxy
+   *        The proxy to be used
+   * @param aProxyCredentials
+   *        Optional proxy credentials to be used
+   * @return The created {@link HttpContext} and never <code>null</code>.
+   * @deprecated In v9.7.3 because HttpClient 5.2 deprecated setting proxy by
+   *             {@link HttpContext}
+   */
   @Nonnull
+  @Deprecated
   public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
                                                @Nullable final Credentials aProxyCredentials)
   {

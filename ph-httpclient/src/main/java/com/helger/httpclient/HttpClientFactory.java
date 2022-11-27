@@ -30,6 +30,7 @@ import org.apache.hc.client5.http.SystemDefaultDnsResolver;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.impl.DefaultClientConnectionReuseStrategy;
@@ -227,13 +228,14 @@ public class HttpClientFactory implements IHttpClientProvider
   public HttpClientConnectionManager createConnectionManager (@Nonnull final LayeredConnectionSocketFactory aSSLFactory)
   {
     final DnsResolver aDNSResolver = createDNSResolver ();
+    final ConnectionConfig aConnectionConfig = createConnectionConfig ();
     final PoolingHttpClientConnectionManager aConnMgr = PoolingHttpClientConnectionManagerBuilder.create ()
                                                                                                  .setSSLSocketFactory (aSSLFactory)
                                                                                                  .setDnsResolver (aDNSResolver)
+                                                                                                 .setDefaultConnectionConfig (aConnectionConfig)
                                                                                                  .build ();
     aConnMgr.setDefaultMaxPerRoute (100);
     aConnMgr.setMaxTotal (200);
-    aConnMgr.setValidateAfterInactivity (TimeValue.ofSeconds (1));
 
     final SocketConfig aSocketConfig = createSocketConfig ();
     aConnMgr.setDefaultSocketConfig (aSocketConfig);
@@ -252,12 +254,23 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nonnull
+  public ConnectionConfig.Builder createConnectionConfigBuilder ()
+  {
+    return ConnectionConfig.custom ().setConnectTimeout (m_aSettings.getConnectTimeout ());
+  }
+
+  @Nonnull
+  public ConnectionConfig createConnectionConfig ()
+  {
+    return createConnectionConfigBuilder ().build ();
+  }
+
+  @Nonnull
   public RequestConfig.Builder createRequestConfigBuilder ()
   {
     return RequestConfig.custom ()
                         .setCookieSpec (StandardCookieSpec.STRICT)
                         .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeout ())
-                        .setConnectTimeout (m_aSettings.getConnectTimeout ())
                         .setResponseTimeout (m_aSettings.getResponseTimeout ())
                         .setCircularRedirectsAllowed (false)
                         .setRedirectsEnabled (m_aSettings.isFollowRedirects ());

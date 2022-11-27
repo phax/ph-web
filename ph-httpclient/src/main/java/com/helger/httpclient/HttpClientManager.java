@@ -108,8 +108,11 @@ public class HttpClientManager implements AutoCloseable
    *         In case of error
    * @throws IllegalStateException
    *         If this manager was already closed!
+   * @deprecated Since 9.7.3 because HttpClient 5.2 deprecated the underlying
+   *             execute method
    */
   @Nonnull
+  @Deprecated
   public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
                                         @Nullable final HttpClientContext aHttpContext) throws IOException
   {

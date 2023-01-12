@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +29,8 @@ import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
+
+import jakarta.activation.DataSource;
 
 /**
  * <p>
@@ -230,4 +231,14 @@ public interface IFileItem extends DataSource, IHasInputStream
    *        <code>false</code> if it represents an uploaded file.
    */
   void setFormField (boolean bIsFormField);
+
+  /**
+   * This method is called after the request processing is finalized. The user
+   * of this class must make sure that it is called. This method is a
+   * replacement of the finalize method that was previously present, but
+   * deprecated since Java 9.
+   *
+   * @since 10.0.0
+   */
+  void onEndOfRequest ();
 }

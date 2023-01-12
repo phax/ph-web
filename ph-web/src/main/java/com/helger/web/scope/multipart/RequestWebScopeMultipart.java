@@ -35,7 +35,8 @@ public class RequestWebScopeMultipart extends RequestWebScope
 {
   private boolean m_bParsedMultipart = false;
 
-  public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
+  public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest,
+                                   @Nonnull final HttpServletResponse aHttpResponse)
   {
     super (aHttpRequest, aHttpResponse);
   }
@@ -46,6 +47,7 @@ public class RequestWebScopeMultipart extends RequestWebScope
   {
     // Parse as multipart if the Content-Type matches, and add each item into
     // params()
+    // This may create temporary files via DiskFileItem
     final EChange ret = RequestMultipartHelper.handleMultipartFormData (m_aHttpRequest, params ()::putIn);
     m_bParsedMultipart = ret.isChanged ();
     return ret;
@@ -78,6 +80,8 @@ public class RequestWebScopeMultipart extends RequestWebScope
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("ParsedMultipart", m_bParsedMultipart).getToString ();
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("ParsedMultipart", m_bParsedMultipart)
+                            .getToString ();
   }
 }

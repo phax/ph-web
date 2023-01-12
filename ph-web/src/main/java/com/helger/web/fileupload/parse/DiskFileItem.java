@@ -103,7 +103,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * UID used in unique file name generation.
    */
-  private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (), ':', '_'), '-', '_');
+  private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (),
+                                                                                      ':',
+                                                                                      '_'),
+                                                             '-',
+                                                             '_');
 
   /**
    * Counter used in unique identifier generation.
@@ -208,11 +212,14 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_nSizeThreshold = ValueEnforcer.isGT0 (nSizeThreshold, "SizeThreshold");
     m_aTempDir = aRepository != null ? aRepository : new File (SystemProperties.getTmpDir ());
     if (!FileHelper.existsDir (m_aTempDir))
-      throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads is not existing: " +
+                                          m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canRead ())
-      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be read: " +
+                                          m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canWrite ())
-      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " + m_aTempDir.getAbsolutePath ());
+      throw new IllegalArgumentException ("The tempory directory for file uploads cannot be written: " +
+                                          m_aTempDir.getAbsolutePath ());
   }
 
   /**
@@ -348,7 +355,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String getCharSet ()
   {
     // Parameter parser can handle null input
-    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (getContentType (), ';');
+    final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                       .parse (getContentType (), ';');
     return aParams.get ("charset");
   }
 
@@ -621,21 +629,17 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   }
 
   /**
-   * Removes the file contents from the temporary storage.
+   * Removes the file contents from the temporary storage. This was previously
+   * handled in a <code>finalize</code> method.
    *
-   * @throws Throwable
-   *         as declared by super.finalize()
+   * @since v10.0.0
    */
-  @Override
-  protected void finalize () throws Throwable
+  public void onEndOfRequest ()
   {
-    try
+    if (m_aDFOS != null)
     {
+      LOGGER.info ("Deleting temporary DiskFileItem " + m_aDFOS.getFile ());
       FileOperations.deleteFileIfExisting (m_aDFOS.getFile ());
-    }
-    finally
-    {
-      super.finalize ();
     }
   }
 

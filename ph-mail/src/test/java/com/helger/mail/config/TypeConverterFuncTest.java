@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.typeconvert.TypeConverter;
 
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * Test {@link TypeConverter} registrations.

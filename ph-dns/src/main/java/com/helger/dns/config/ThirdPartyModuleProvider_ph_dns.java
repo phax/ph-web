@@ -37,7 +37,7 @@ public final class ThirdPartyModuleProvider_ph_dns implements IThirdPartyModuleP
   public static final IThirdPartyModule DNSJAVA = new ThirdPartyModule ("dnsjava",
                                                                         "Brian Wellington",
                                                                         ELicense.BSD,
-                                                                        new Version (3, 5, 1),
+                                                                        new Version (3, 5, 2),
                                                                         "https://github.com/dnsjava/dnsjava");
 
   @Nullable

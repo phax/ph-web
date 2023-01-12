@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.mail.event.ConnectionListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +40,7 @@ import com.helger.commons.system.SystemProperties;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.mail.event.ConnectionListener;
 
 /**
  * Global settings for the mail transport.

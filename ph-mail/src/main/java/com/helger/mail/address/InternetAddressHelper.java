@@ -22,14 +22,15 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.email.EmailAddress;
 import com.helger.commons.email.IEmailAddress;
+
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * This class handles a single email address. It is split into an address part
@@ -71,7 +72,8 @@ public final class InternetAddressHelper
 
   @Nonnull
   public static InternetAddress getAsInternetAddress (@Nonnull final IEmailAddress aAddress,
-                                                      @Nullable final String sCharset) throws UnsupportedEncodingException, AddressException
+                                                      @Nullable final String sCharset) throws UnsupportedEncodingException,
+                                                                                       AddressException
   {
     return getAsInternetAddress (aAddress.getAddress (), aAddress.getPersonal (), sCharset);
   }
@@ -79,7 +81,8 @@ public final class InternetAddressHelper
   @Nonnull
   public static InternetAddress getAsInternetAddress (@Nonnull final String sAddress,
                                                       @Nullable final String sPersonal,
-                                                      @Nullable final String sCharset) throws UnsupportedEncodingException, AddressException
+                                                      @Nullable final String sCharset) throws UnsupportedEncodingException,
+                                                                                       AddressException
   {
     final InternetAddress ret = new InternetAddress (sAddress, sPersonal, sCharset);
     ret.validate ();
@@ -108,6 +111,7 @@ public final class InternetAddressHelper
   @Nullable
   public static EmailAddress getAsEmailAddress (@Nullable final InternetAddress aInternetAddress)
   {
-    return aInternetAddress == null ? null : new EmailAddress (aInternetAddress.getAddress (), aInternetAddress.getPersonal ());
+    return aInternetAddress == null ? null : new EmailAddress (aInternetAddress.getAddress (),
+                                                               aInternetAddress.getPersonal ());
   }
 }

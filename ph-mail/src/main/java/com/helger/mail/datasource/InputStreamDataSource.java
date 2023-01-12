@@ -19,7 +19,6 @@ package com.helger.mail.datasource;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +29,8 @@ import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.io.IHasInputStream;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.activation.DataSource;
 
 /**
  * A special {@link DataSource} implementation based on data from
@@ -53,7 +54,9 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     this (aIS, sName, (String) null, DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, final boolean bReadMultiple)
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                final boolean bReadMultiple)
   {
     this (aIS, sName, (String) null, bReadMultiple);
   }
@@ -66,12 +69,16 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), bReadMultiple);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, @Nullable final IMimeType aContentType)
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                @Nullable final IMimeType aContentType)
   {
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName, @Nullable final String sContentType)
+  public InputStreamDataSource (@Nonnull final InputStream aIS,
+                                @Nonnull final String sName,
+                                @Nullable final String sContentType)
   {
     this (aIS, sName, sContentType, DEFAULT_READ_MULTIPLE);
   }

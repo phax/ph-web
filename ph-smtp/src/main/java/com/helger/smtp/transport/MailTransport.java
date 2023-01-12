@@ -27,14 +27,6 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.mail.Address;
-import javax.mail.AuthenticationFailedException;
-import javax.mail.MessagingException;
-import javax.mail.SendFailedException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.event.ConnectionListener;
-import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +57,15 @@ import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.sun.mail.smtp.SMTPAddressSucceededException;
+
+import jakarta.mail.Address;
+import jakarta.mail.AuthenticationFailedException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.SendFailedException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.event.ConnectionListener;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * The wrapper around the main javax.mail transport
@@ -160,13 +161,15 @@ public final class MailTransport
       {
         ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_CLASS.getPropertyName (bSMTPS),
                  com.sun.mail.util.MailSSLSocketFactory.class.getName ());
-        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS), Integer.toString (aSettings.getPort ()));
+        ret.put (ESMTPTransportProperty.SSL_SOCKETFACTORY_PORT.getPropertyName (bSMTPS),
+                 Integer.toString (aSettings.getPort ()));
       }
 
     // Set connection timeout
     final long nConnectionTimeoutMilliSecs = aSettings.getConnectionTimeoutMilliSecs ();
     if (nConnectionTimeoutMilliSecs > 0)
-      ret.put (ESMTPTransportProperty.CONNECTIONTIMEOUT.getPropertyName (bSMTPS), Long.toString (nConnectionTimeoutMilliSecs));
+      ret.put (ESMTPTransportProperty.CONNECTIONTIMEOUT.getPropertyName (bSMTPS),
+               Long.toString (nConnectionTimeoutMilliSecs));
 
     // Set socket timeout
     final long nTimeoutMilliSecs = aSettings.getTimeoutMilliSecs ();
@@ -303,8 +306,10 @@ public final class MailTransport
              * was sent, the valid address to which the message was not sent and
              * the invalid addresses
              */
-            final ICommonsSet <String> aValidSent = new CommonsHashSet <> (ex.getValidSentAddresses (), Address::toString);
-            final ICommonsSet <String> aValidUnsent = new CommonsHashSet <> (ex.getValidUnsentAddresses (), Address::toString);
+            final ICommonsSet <String> aValidSent = new CommonsHashSet <> (ex.getValidSentAddresses (),
+                                                                           Address::toString);
+            final ICommonsSet <String> aValidUnsent = new CommonsHashSet <> (ex.getValidUnsentAddresses (),
+                                                                             Address::toString);
             final ICommonsSet <String> aInvalid = new CommonsHashSet <> (ex.getInvalidAddresses (), Address::toString);
 
             final ICommonsList <MailSendDetails> aDetails = new CommonsArrayList <> ();
@@ -319,7 +324,8 @@ public final class MailTransport
                                                    ssfe.getAddress ().toString (),
                                                    ssfe.getCommand (),
                                                    ssfe.getMessage ().trim (),
-                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (), ESMTPErrorCode.FALLBACK)));
+                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
+                                                                                      ESMTPErrorCode.FALLBACK)));
               }
               else
                 if (ex2 instanceof SMTPAddressSucceededException)
@@ -329,7 +335,8 @@ public final class MailTransport
                                                      ssfe.getAddress ().toString (),
                                                      ssfe.getCommand (),
                                                      ssfe.getMessage ().trim (),
-                                                     ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (), ESMTPErrorCode.FALLBACK)));
+                                                     ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
+                                                                                        ESMTPErrorCode.FALLBACK)));
                 }
 
               bex = (MessagingException) ex2;
@@ -422,7 +429,8 @@ public final class MailTransport
       catch (final MessagingException ex)
       {
         if (WebExceptionHelper.isServerNotReachableConnection (ex.getCause ()))
-          aExceptionToBeRemembered = new MailSendException ("Failed to connect to mail server: " + ex.getCause ().getMessage ());
+          aExceptionToBeRemembered = new MailSendException ("Failed to connect to mail server: " +
+                                                            ex.getCause ().getMessage ());
         else
           aExceptionToBeRemembered = new MailSendException ("Mail server connection failed", ex);
       }

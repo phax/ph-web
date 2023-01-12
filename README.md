@@ -58,8 +58,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v9.7.3 - work in progress
-    * Updated to http-client v5.2
+* v10.0.0 - work in progress
+    * Using Java 11 as the baseline
+    * Updated to ph-commons 11
+    * Updated to Apache HttpClient v5.2.x
+    * Updated to dnsjava 3.5.2
 * v9.7.2 - 2022-10-18
     * The class `ResponseHandlerXml` no longer uses ISO-8859-1 as the default charset if none was specified
     * The class `ResponseHandlerMicroDom` no longer uses ISO-8859-1 as the default charset if none was specified

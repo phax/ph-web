@@ -64,6 +64,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
     * Updated to Jakarta Mail 2.0.1
     * Updated to Apache HttpClient v5.2.x
     * Updated to dnsjava 3.5.2
+    * Deprecated `IHttpClientSettings.isUseSystemProperties`
+    * Removed all deprecated methods
 * v9.7.2 - 2022-10-18
     * The class `ResponseHandlerXml` no longer uses ISO-8859-1 as the default charset if none was specified
     * The class `ResponseHandlerMicroDom` no longer uses ISO-8859-1 as the default charset if none was specified

@@ -46,7 +46,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
   private final AtomicBoolean m_aStopImmediately = new AtomicBoolean (DEFAULT_STOP_IMMEDIATLY);
 
   @UsedViaReflection
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public ScopedMailAPI ()
   {}
 
@@ -102,7 +102,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    *         number of {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
-  public int queueMails (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
+  public int queueMails (@Nonnull final ISMTPSettings aSMTPSettings,
+                         @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
   {
     return MailAPI.queueMails (aSMTPSettings, aMailDataList);
   }

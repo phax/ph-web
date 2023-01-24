@@ -304,6 +304,7 @@ public class HttpClientFactory implements IHttpClientProvider
     return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval, bRetryAlways);
   }
 
+  @SuppressWarnings ("removal")
   @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {

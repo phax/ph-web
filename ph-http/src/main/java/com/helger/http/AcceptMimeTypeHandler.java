@@ -101,20 +101,4 @@ public final class AcceptMimeTypeHandler
     }
     return ret;
   }
-
-  /**
-   * RFC 2616 enabled MIME type parser
-   *
-   * @param sMimeType
-   *        MIME type to parse
-   * @return <code>null</code> if parsing failed.
-   * @deprecated Since 9.3.1 - use
-   *             {@link MimeTypeParser#safeParseMimeType(String)} instead.
-   */
-  @Nullable
-  @Deprecated
-  public static IMimeType safeParseMimeType (@Nullable final String sMimeType)
-  {
-    return MimeTypeParser.safeParseMimeType (sMimeType);
-  }
 }

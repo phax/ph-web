@@ -422,13 +422,13 @@ public class MockHttpServletResponse implements HttpServletResponse
     return sUrl;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public String encodeUrl (@Nullable final String sUrl)
   {
     return encodeURL (sUrl);
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public String encodeRedirectUrl (@Nullable final String sUrl)
   {
     return encodeRedirectURL (sUrl);
@@ -517,7 +517,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     m_nStatus = nStatus;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public void setStatus (final int nStatus, @Nullable final String sErrorMessage)
   {
     m_nStatus = nStatus;

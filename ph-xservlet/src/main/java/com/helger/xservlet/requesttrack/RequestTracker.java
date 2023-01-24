@@ -116,7 +116,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
     }
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UsedViaReflection
   public RequestTracker ()
   {
@@ -130,8 +130,13 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
       final long nIntervalMilliseconds = RequestTrackerSettings.getLongRunningRequestCheckIntervalMilliseconds ();
 
       // Start the monitoring thread to check every n milliseconds
-      m_aExecSvc.scheduleAtFixedRate (new LongRunningRequestMonitor (), 0, nIntervalMilliseconds, TimeUnit.MILLISECONDS);
-      LOGGER.info ("LongRunningRequestMonitor was installed successfully at an interval of " + nIntervalMilliseconds + " milliseconds.");
+      m_aExecSvc.scheduleAtFixedRate (new LongRunningRequestMonitor (),
+                                      0,
+                                      nIntervalMilliseconds,
+                                      TimeUnit.MILLISECONDS);
+      LOGGER.info ("LongRunningRequestMonitor was installed successfully at an interval of " +
+                   nIntervalMilliseconds +
+                   " milliseconds.");
     }
     else
     {
@@ -182,7 +187,8 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param aRequestScope
    *        The request scope itself.
    */
-  public static void addRequest (@Nonnull @Nonempty final String sRequestID, @Nonnull final IRequestWebScope aRequestScope)
+  public static void addRequest (@Nonnull @Nonempty final String sRequestID,
+                                 @Nonnull final IRequestWebScope aRequestScope)
   {
     getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, CB_PARALLEL_RUNNING);
   }

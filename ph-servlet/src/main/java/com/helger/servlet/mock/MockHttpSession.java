@@ -141,7 +141,7 @@ public class MockHttpSession implements HttpSession
     return m_nMaxInactiveInterval;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UnsupportedOperation
   public HttpSessionContext getSessionContext ()
   {
@@ -155,7 +155,7 @@ public class MockHttpSession implements HttpSession
     return m_aAttributes.get (sName);
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public Object getValue (@Nonnull final String sName)
   {
     return getAttribute (sName);
@@ -167,7 +167,7 @@ public class MockHttpSession implements HttpSession
     return IteratorHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @Nonnull
   public String [] getValueNames ()
   {
@@ -190,7 +190,7 @@ public class MockHttpSession implements HttpSession
     }
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public void putValue (@Nonnull final String sName, @Nullable final Object aValue)
   {
     setAttribute (sName, aValue);
@@ -205,7 +205,7 @@ public class MockHttpSession implements HttpSession
       ((HttpSessionBindingListener) aValue).valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public void removeValue (@Nonnull final String sName)
   {
     removeAttribute (sName);
@@ -262,7 +262,8 @@ public class MockHttpSession implements HttpSession
                                        .append ("maxInactiveInterval", m_nMaxInactiveInterval)
                                        .append ("lastAccessedTime", m_nLastAccessedTime)
                                        .appendIfNotNull ("servletContext",
-                                                         m_aServletContext == null ? null : m_aServletContext.getServerInfo ())
+                                                         m_aServletContext == null ? null
+                                                                                   : m_aServletContext.getServerInfo ())
                                        .append ("attributes", m_aAttributes)
                                        .append ("isInvalidated", m_bInvalidated)
                                        .append ("isNew", m_bIsNew)

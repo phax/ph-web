@@ -37,17 +37,4 @@ public interface ISessionProvider
    */
   @Nonnull
   Session createSession () throws JSchException;
-
-  /**
-   * @return a new session using the configured properties.
-   * @throws JSchException
-   *         If <code>username</code> or <code>hostname</code> are invalid
-   * @see com.jcraft.jsch.JSch#getSession(String, String, int)
-   */
-  @Nonnull
-  @Deprecated
-  default Session newSession () throws JSchException
-  {
-    return createSession ();
-  }
 }

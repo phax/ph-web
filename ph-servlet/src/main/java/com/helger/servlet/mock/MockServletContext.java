@@ -244,7 +244,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @UnsupportedOperation
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public ICommonsSet <String> getResourcePaths (final String sPath)
   {
     throw new UnsupportedOperationException ();
@@ -279,26 +279,26 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nullable
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public RequestDispatcher getNamedDispatcher (@Nullable final String sPath)
   {
     return null;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public Servlet getServlet (@Nullable final String sName)
   {
     return null;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @Nonnull
   public Enumeration <Servlet> getServlets ()
   {
     return new EmptyEnumeration <> ();
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @Nonnull
   public Enumeration <String> getServletNames ()
   {
@@ -310,7 +310,7 @@ public class MockServletContext implements IServletContext310To400Migration
     LOGGER.info (sMessage);
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public void log (@Nullable final Exception ex, @Nullable final String sMessage)
   {
     LOGGER.info (sMessage, ex);

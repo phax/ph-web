@@ -45,14 +45,17 @@ import com.helger.web.scope.mgr.WebScopeManager;
  *
  * @author Philip Helger
  */
-public final class SessionWebScopeActivator implements HttpSessionActivationListener, ISessionWebScopeDontPassivate, Serializable
+public final class SessionWebScopeActivator implements
+                                            HttpSessionActivationListener,
+                                            ISessionWebScopeDontPassivate,
+                                            Serializable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SessionWebScopeActivator.class);
 
   private ISessionWebScope m_aSessionWebScope;
   private ICommonsMap <String, Object> m_aAttrs;
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @DevelopersNote ("For reading only")
   public SessionWebScopeActivator ()
   {}
@@ -105,7 +108,10 @@ public final class SessionWebScopeActivator implements HttpSessionActivationList
 
     if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
       if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Read info on session scope: " + m_aAttrs.size () + " attrs of class " + ClassHelper.getClassLocalName (this),
+        LOGGER.info ("Read info on session scope: " +
+                     m_aAttrs.size () +
+                     " attrs of class " +
+                     ClassHelper.getClassLocalName (this),
                      ScopeHelper.getDebugStackTrace ());
   }
 
@@ -135,7 +141,9 @@ public final class SessionWebScopeActivator implements HttpSessionActivationList
     final HttpSession aHttpSession = aEvent.getSession ();
 
     // Create a new session web scope
-    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
+    final ISessionWebScope aSessionWebScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
+                                                                                               true,
+                                                                                               true);
 
     // Restore the read values into the scope
     if (m_aAttrs != null)

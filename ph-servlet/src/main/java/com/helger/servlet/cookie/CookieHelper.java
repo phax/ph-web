@@ -76,37 +76,10 @@ public final class CookieHelper
     return null;
   }
 
-  public static boolean containsCookie (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final String sCookieName)
+  public static boolean containsCookie (@Nonnull final HttpServletRequest aHttpRequest,
+                                        @Nonnull final String sCookieName)
   {
     return getCookie (aHttpRequest, sCookieName) != null;
-  }
-
-  /**
-   * Create a cookie that is bound on a certain path within the local web
-   * server.
-   *
-   * @param sName
-   *        The cookie name.
-   * @param sValue
-   *        The cookie value.
-   * @param sPath
-   *        The path the cookie is valid for.
-   * @param bExpireWhenBrowserIsClosed
-   *        <code>true</code> if this is a browser session cookie
-   * @return The created cookie object.
-   * @deprecated Since 9.3.2; Use
-   *             {@link #createCookie(String, String, String, boolean, boolean)}
-   *             instead
-   */
-  @Nonnull
-  @Deprecated
-  public static Cookie createCookie (@Nonnull final String sName,
-                                     @Nullable final String sValue,
-                                     final String sPath,
-                                     final boolean bExpireWhenBrowserIsClosed)
-  {
-    // false as default
-    return createCookie (sName, sValue, sPath, bExpireWhenBrowserIsClosed, false);
   }
 
   /**
@@ -154,31 +127,6 @@ public final class CookieHelper
    *        The cookie value.
    * @param bExpireWhenBrowserIsClosed
    *        <code>true</code> if this is a browser session cookie
-   * @return The created cookie object.
-   * @deprecated Since 9.3.2; Use
-   *             {@link #createContextCookie(String, String, boolean, boolean)}
-   *             instead
-   */
-  @Deprecated
-  @Nonnull
-  public static Cookie createContextCookie (@Nonnull final String sName,
-                                            @Nullable final String sValue,
-                                            final boolean bExpireWhenBrowserIsClosed)
-  {
-    // false as default
-    return createContextCookie (sName, sValue, bExpireWhenBrowserIsClosed, false);
-  }
-
-  /**
-   * Create a cookie that is bound to the servlet context path within the local
-   * web server.
-   *
-   * @param sName
-   *        The cookie name.
-   * @param sValue
-   *        The cookie value.
-   * @param bExpireWhenBrowserIsClosed
-   *        <code>true</code> if this is a browser session cookie
    * @param bSecure
    *        <code>true</code> to send the cookie from the browser to the server
    *        only when using a secure protocol (e.g. https)
@@ -193,7 +141,11 @@ public final class CookieHelper
   {
     // Always use the context path from the global scope!
     final String sContextPath = ServletContextPathHolder.getContextPath ();
-    return createCookie (sName, sValue, StringHelper.hasText (sContextPath) ? sContextPath : "/", bExpireWhenBrowserIsClosed, bSecure);
+    return createCookie (sName,
+                         sValue,
+                         StringHelper.hasText (sContextPath) ? sContextPath : "/",
+                         bExpireWhenBrowserIsClosed,
+                         bSecure);
   }
 
   /**

@@ -33,7 +33,7 @@ public final class MockRequestWebSingletonWithScopeCtor extends AbstractRequestW
   private int i = 0;
   private final IScope m_aScope;
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UsedViaReflection
   public MockRequestWebSingletonWithScopeCtor (@Nonnull final IScope aScope)
   {

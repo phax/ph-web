@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
@@ -40,15 +39,11 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpTrace;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
-import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
-import org.apache.hc.core5.http.protocol.HttpContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.codec.URLCodec;
@@ -161,52 +156,6 @@ public final class HttpClientHelper
     return null;
   }
 
-  /**
-   * Create a new {@link HttpContext} for the provided proxy without credentials
-   *
-   * @param aProxy
-   *        The proxy to be used
-   * @return The created {@link HttpContext} and never <code>null</code>.
-   * @deprecated In v9.7.3 because HttpClient 5.2 deprecated setting proxy by
-   *             {@link HttpContext}
-   */
-  @Nonnull
-  @Deprecated
-  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy)
-  {
-    return createHttpContext (aProxy, (Credentials) null);
-  }
-
-  /**
-   * Create a new {@link HttpContext} for the provided proxy without credentials
-   *
-   * @param aProxy
-   *        The proxy to be used
-   * @param aProxyCredentials
-   *        Optional proxy credentials to be used
-   * @return The created {@link HttpContext} and never <code>null</code>.
-   * @deprecated In v9.7.3 because HttpClient 5.2 deprecated setting proxy by
-   *             {@link HttpContext}
-   */
-  @Nonnull
-  @Deprecated
-  public static HttpContext createHttpContext (@Nullable final HttpHost aProxy,
-                                               @Nullable final Credentials aProxyCredentials)
-  {
-    final HttpClientContext ret = HttpClientContext.create ();
-    if (aProxy != null)
-    {
-      ret.setRequestConfig (RequestConfig.custom ().setProxy (aProxy).build ());
-      if (aProxyCredentials != null)
-      {
-        final BasicCredentialsProvider aCredentialsProvider = new BasicCredentialsProvider ();
-        aCredentialsProvider.setCredentials (new AuthScope (aProxy), aProxyCredentials);
-        ret.setCredentialsProvider (aCredentialsProvider);
-      }
-    }
-    return ret;
-  }
-
   @Nullable
   public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
                                                   @Nonnull final ContentType aContentType)
@@ -273,14 +222,6 @@ public final class HttpClientHelper
   {
     final ContentType ret = getContentType (aEntity);
     return ret != null ? ret : aDefault;
-  }
-
-  @Nullable
-  @Deprecated
-  public static byte [] entitiyToByteArray (@Nonnull final HttpEntity aEntity) throws IOException
-  {
-    ValueEnforcer.notNull (aEntity, "HttpEntity");
-    return EntityUtils.toByteArray (aEntity);
   }
 
   @Nullable

@@ -30,7 +30,7 @@ public final class MockRequestWebSingleton extends AbstractRequestWebSingleton
 {
   private int i = 0;
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UsedViaReflection
   public MockRequestWebSingleton ()
   {}

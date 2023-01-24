@@ -725,7 +725,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
     return new MockRequestDispatcher (sPath);
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public String getRealPath (@Nonnull final String sPath)
   {
     return getServletContext ().getRealPath (sPath);
@@ -846,14 +846,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   @UnsupportedOperation
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public long getDateHeader (@Nullable final String sName)
   {
     throw new UnsupportedOperationException ();
   }
 
   @UnsupportedOperation
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public int getIntHeader (@Nullable final String sName)
   {
     throw new UnsupportedOperationException ();
@@ -1122,7 +1122,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
     return m_bRequestedSessionIDFromURL;
   }
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public boolean isRequestedSessionIdFromUrl ()
   {
     return isRequestedSessionIdFromURL ();

@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
@@ -75,65 +74,6 @@ public class HttpClientManager implements AutoCloseable
   {
     if (isClosed ())
       throw new IllegalStateException ("This HttpClientManager was already closed!");
-  }
-
-  /**
-   * Execute the provided request without any special context. Caller is
-   * responsible for consuming the response correctly!
-   *
-   * @param aRequest
-   *        The request to be executed. May not be <code>null</code>.
-   * @return The response to be evaluated. Never <code>null</code>.
-   * @throws IOException
-   *         In case of error
-   * @throws IllegalStateException
-   *         If this manager was already closed!
-   */
-  @Nonnull
-  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest) throws IOException
-  {
-    return execute (aRequest, (HttpClientContext) null);
-  }
-
-  /**
-   * Execute the provided request with an optional special context. Caller is
-   * responsible for consuming the response correctly!
-   *
-   * @param aRequest
-   *        The request to be executed. May not be <code>null</code>.
-   * @param aHttpContext
-   *        The optional context to be used. May be <code>null</code> to
-   * @return The response to be evaluated. Never <code>null</code>.
-   * @throws IOException
-   *         In case of error
-   * @throws IllegalStateException
-   *         If this manager was already closed!
-   * @deprecated Since 9.7.3 because HttpClient 5.2 deprecated the underlying
-   *             execute method
-   */
-  @Nonnull
-  @Deprecated
-  public CloseableHttpResponse execute (@Nonnull final HttpUriRequest aRequest,
-                                        @Nullable final HttpClientContext aHttpContext) throws IOException
-  {
-    checkIfClosed ();
-    HttpDebugger.beforeRequest (aRequest, aHttpContext);
-    CloseableHttpResponse ret = null;
-    Throwable aCaughtException = null;
-    try
-    {
-      ret = m_aHttpClient.execute (aRequest, aHttpContext);
-      return ret;
-    }
-    catch (final IOException ex)
-    {
-      aCaughtException = ex;
-      throw ex;
-    }
-    finally
-    {
-      HttpDebugger.afterRequest (aRequest, ret, aCaughtException);
-    }
   }
 
   /**

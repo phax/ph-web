@@ -68,6 +68,7 @@ public interface IHttpClientSettings
    * @return <code>true</code> if system properties for HTTP client should be
    *         used, <code>false</code> if not. Default is <code>false</code>.
    */
+  @Deprecated (since = "10.0.0", forRemoval = true)
   boolean isUseSystemProperties ();
 
   /**
@@ -161,28 +162,10 @@ public interface IHttpClientSettings
   Timeout getConnectTimeout ();
 
   /**
-   * @return The connect timeout. Never <code>null</code>.
-   * @deprecated Since 9.7.1
-   */
-  @Nonnull
-  @Deprecated
-  default Timeout getConnectionTimeout ()
-  {
-    return getConnectTimeout ();
-  }
-
-  /**
    * @return The response/read/request/socket timeout. Never <code>null</code>.
    */
   @Nonnull
   Timeout getResponseTimeout ();
-
-  @Deprecated
-  @Nonnull
-  default Timeout getSocketTimeout ()
-  {
-    return getResponseTimeout ();
-  }
 
   /**
    * @return The user agent header to be send. May be <code>null</code>.

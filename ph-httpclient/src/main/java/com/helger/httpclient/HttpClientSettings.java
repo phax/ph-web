@@ -59,10 +59,11 @@ import com.helger.http.tls.TLSConfigurationMode;
 public class HttpClientSettings implements IHttpClientSettings, ICloneable <HttpClientSettings>
 {
   /**
-   * Default configuration modes uses TLS 1.2, 1.1 or 1.0 and no specific cipher
-   * suites
+   * Default configuration modes uses TLS 1.3, TLS 1.2, 1.1 or 1.0 and no
+   * specific cipher suites
    */
-  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_12,
+  public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_13,
+                                                                                                                     ETLSVersion.TLS_12,
                                                                                                                      ETLSVersion.TLS_11,
                                                                                                                      ETLSVersion.TLS_10 },
                                                                                                 ArrayHelper.EMPTY_STRING_ARRAY);
@@ -73,11 +74,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_RETRY_ALWAYS = false;
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_CONNECT_TIMEOUT = Timeout.ofSeconds (5);
-  @Deprecated
-  public static final Timeout DEFAULT_CONNECTION_TIMEOUT = DEFAULT_CONNECT_TIMEOUT;
   public static final Timeout DEFAULT_RESPONSE_TIMEOUT = Timeout.ofSeconds (10);
-  @Deprecated
-  public static final Timeout DEFAULT_SOCKET_TIMEOUT = DEFAULT_RESPONSE_TIMEOUT;
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
 
@@ -125,6 +122,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The source settings to copy from. May not be <code>null</code>.
    * @return this for chaining.
    */
+  @SuppressWarnings ("removal")
   @Nonnull
   public final HttpClientSettings setAllFrom (@Nonnull final IHttpClientSettings aSource)
   {
@@ -153,6 +151,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return <code>true</code> if system properties for HTTP client should be
    *         used, <code>false</code> if not. Default is <code>false</code>.
    */
+  @Deprecated (since = "10.0.0", forRemoval = true)
   public final boolean isUseSystemProperties ()
   {
     return m_bUseSystemProperties;
@@ -167,6 +166,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return this for chaining
    */
   @Nonnull
+  @Deprecated (since = "10.0.0", forRemoval = true)
   public final HttpClientSettings setUseSystemProperties (final boolean bUseSystemProperties)
   {
     m_bUseSystemProperties = bUseSystemProperties;
@@ -508,21 +508,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     ValueEnforcer.notNull (aConnectTimeout, "ConnectTimeout");
     m_aConnectTimeout = aConnectTimeout;
     return this;
-  }
-
-  /**
-   * Set the connect timeout to use.
-   *
-   * @param aConnectTimeout
-   *        Timeout to be used. May not be <code>null</code>.
-   * @return this for chaining.
-   * @deprecated Since v9.7.1. Use {@link #setConnectTimeout(Timeout)} instead.
-   */
-  @Nonnull
-  @Deprecated
-  public final HttpClientSettings setConnectionTimeout (@Nonnull final Timeout aConnectTimeout)
-  {
-    return setConnectTimeout (aConnectTimeout);
   }
 
   @Nonnull

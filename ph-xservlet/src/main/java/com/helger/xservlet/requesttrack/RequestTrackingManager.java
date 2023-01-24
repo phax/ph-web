@@ -16,10 +16,8 @@
  */
 package com.helger.xservlet.requesttrack;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
@@ -45,15 +43,6 @@ import com.helger.web.scope.IRequestWebScope;
 @ThreadSafe
 public final class RequestTrackingManager
 {
-  @Deprecated
-  public static final boolean DEFAULT_LONG_RUNNING_CHECK_ENABLED = RequestTrackerSettings.DEFAULT_LONG_RUNNING_CHECK_ENABLED;
-  @Deprecated
-  public static final long DEFAULT_NOTIFICATION_MILLISECONDS = RequestTrackerSettings.DEFAULT_LONG_RUNNING_NOTIFICATION_MILLISECONDS;
-  @Deprecated
-  public static final boolean DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED = RequestTrackerSettings.DEFAULT_PARALLEL_RUNNING_REQUESTS_CHECK_ENABLED;
-  @Deprecated
-  public static final int DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER = RequestTrackerSettings.DEFAULT_PARALLEL_RUNNING_REQUESTS_BARRIER;
-
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestTrackingManager.class);
 
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
@@ -65,64 +54,6 @@ public final class RequestTrackingManager
 
   public RequestTrackingManager ()
   {}
-
-  @Deprecated
-  public boolean isLongRunningCheckEnabled ()
-  {
-    return RequestTrackerSettings.isLongRunningRequestsCheckEnabled ();
-  }
-
-  @Nonnull
-  @Deprecated
-  public RequestTrackingManager setLongRunningCheckEnabled (final boolean bLongRunningCheckEnabled)
-  {
-    RequestTrackerSettings.setLongRunningRequestsCheckEnabled (bLongRunningCheckEnabled);
-    return this;
-  }
-
-  @Nonnegative
-  @Deprecated
-  public long getNotificationMilliseconds ()
-  {
-    return RequestTrackerSettings.getLongRunningRequestWarnDurationMillis ();
-  }
-
-  @Nonnull
-  @Deprecated
-  public RequestTrackingManager setNotificationMilliseconds (@Nonnegative final long nLongRunningMilliSeconds)
-  {
-    RequestTrackerSettings.setLongRunningRequestWarnDurationMillis (nLongRunningMilliSeconds);
-    return this;
-  }
-
-  @Deprecated
-  public boolean isParallelRunningRequestCheckEnabled ()
-  {
-    return RequestTrackerSettings.isParallelRunningRequestsCheckEnabled ();
-  }
-
-  @Nonnull
-  @Deprecated
-  public RequestTrackingManager setParallelRunningRequestCheckEnabled (final boolean bParallelRunningRequestCheckEnabled)
-  {
-    RequestTrackerSettings.setParallelRunningRequestsCheckEnabled (bParallelRunningRequestCheckEnabled);
-    return this;
-  }
-
-  @Nonnegative
-  @Deprecated
-  public int getParallelRunningRequestBarrier ()
-  {
-    return RequestTrackerSettings.getParallelRunningRequestBarrier ();
-  }
-
-  @Nonnull
-  @Deprecated
-  public RequestTrackingManager setParallelRunningRequestBarrier (@Nonnegative final int nParallelRunningRequestBarrier)
-  {
-    RequestTrackerSettings.setParallelRunningRequestBarrier (nParallelRunningRequestBarrier);
-    return this;
-  }
 
   public void addRequest (@Nonnull @Nonempty final String sRequestID,
                           @Nonnull final IRequestWebScope aRequestScope,
@@ -142,7 +73,12 @@ public final class RequestTrackingManager
       {
         // Should never happen
         if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Request ID '" + sRequestID + "' is already registered! Old TR: " + aOldTR + "; New TR: " + aTR);
+          LOGGER.error ("Request ID '" +
+                        sRequestID +
+                        "' is already registered! Old TR: " +
+                        aOldTR +
+                        "; New TR: " +
+                        aTR);
       }
 
       if (RequestTrackerSettings.isParallelRunningRequestsCheckEnabled () &&
@@ -223,11 +159,8 @@ public final class RequestTrackingManager
           // Grab in read lock!
           final long nNotificationMS = RequestTrackerSettings.getLongRunningRequestWarnDurationMillis ();
 
-          // Iterate all running requests
-          final Iterator <Map.Entry <String, TrackedRequest>> it = m_aOpenRequests.entrySet ().iterator ();
-          while (it.hasNext ())
+          for (final Entry <String, TrackedRequest> aItem : m_aOpenRequests.entrySet ())
           {
-            final Map.Entry <String, TrackedRequest> aItem = it.next ();
             final long nRunningMilliseconds = aItem.getValue ().getRunningMilliseconds ();
             if (nRunningMilliseconds > nNotificationMS)
             {

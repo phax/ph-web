@@ -78,6 +78,11 @@
       <artifactId>ph-json</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.helger.commons</groupId>
+      <artifactId>ph-config</artifactId>
+      <optional>true</optional>
+    </dependency>
     
     <dependency>
       <groupId>dnsjava</groupId>

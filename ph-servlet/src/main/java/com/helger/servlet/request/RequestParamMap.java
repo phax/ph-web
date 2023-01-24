@@ -364,7 +364,7 @@ public class RequestParamMap implements IRequestParamMap
    */
   @Nonnull
   @Nonempty
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public static String getFieldName (@Nonnull @Nonempty final String sBaseName)
   {
     ValueEnforcer.notEmpty (sBaseName, "BaseName");

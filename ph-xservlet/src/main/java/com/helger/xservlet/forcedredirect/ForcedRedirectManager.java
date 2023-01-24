@@ -53,7 +53,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @GuardedBy ("m_aRWLock")
   private final ICommonsMap <String, Object> m_aMap = new CommonsHashMap <> ();
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UsedViaReflection
   public ForcedRedirectManager ()
   {}

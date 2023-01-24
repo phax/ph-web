@@ -33,7 +33,7 @@ public final class MockSessionWebSingletonWithScopeCtor extends AbstractSessionW
   private int i = 0;
   private final IScope m_aScope;
 
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @UsedViaReflection
   public MockSessionWebSingletonWithScopeCtor (@Nonnull final IScope aScope)
   {

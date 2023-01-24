@@ -43,7 +43,7 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
   private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
 
   @UsedViaReflection
-  @Deprecated
+  @Deprecated (forRemoval = false)
   public GlobalDiskFileItemFactory ()
   {}
 

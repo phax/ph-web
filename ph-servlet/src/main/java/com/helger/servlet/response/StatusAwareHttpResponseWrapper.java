@@ -54,7 +54,7 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   }
 
   @Override
-  @Deprecated
+  @Deprecated (forRemoval = false)
   @OverridingMethodsMustInvokeSuper
   public void setStatus (final int sc, final String sm)
   {

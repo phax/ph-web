@@ -44,7 +44,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ResponseHandlerXml.class);
 
-  private final boolean m_bDebugMode;
+  private boolean m_bDebugMode;
 
   public ResponseHandlerXml ()
   {
@@ -64,6 +64,22 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
   public final boolean isDebugMode ()
   {
     return m_bDebugMode;
+  }
+
+  /**
+   * Enable or disable debug mode on demand.
+   *
+   * @param bDebugMode
+   *        <code>true</code> to enable debug mode, <code>false</code> to
+   *        disable it.
+   * @return this for chaining
+   * @since 10.0.0
+   */
+  @Nonnull
+  public final ResponseHandlerXml setDebugMode (final boolean bDebugMode)
+  {
+    m_bDebugMode = bDebugMode;
+    return this;
   }
 
   @Nullable

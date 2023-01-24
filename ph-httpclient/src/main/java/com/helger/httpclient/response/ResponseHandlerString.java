@@ -29,6 +29,7 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.mime.IMimeType;
 import com.helger.httpclient.HttpClientHelper;
 
 /**
@@ -44,10 +45,16 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   private Charset m_aFallbackCharset;
   private Consumer <Charset> m_aCharsetConsumer;
 
+  @Deprecated (since = "10.0.0", forRemoval = true)
   public ResponseHandlerString ()
   {
     // text/plain with ISO-8859-1
     this (ContentType.DEFAULT_TEXT);
+  }
+
+  public ResponseHandlerString (@Nonnull final IMimeType aMimeType, @Nonnull final Charset aCharset)
+  {
+    this (ContentType.create (aMimeType.getAsString (), aCharset));
   }
 
   public ResponseHandlerString (@Nonnull final ContentType aDefault)
@@ -74,6 +81,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
    * @return The fallback charset to be used, in case no charset can be
    *         determined from the content. By default this is the HTTP default
    *         charset. Never <code>null</code>.
+   * @see #setFallbackCharset(Charset)
    * @since 9.7.2
    */
   @Nonnull
@@ -83,7 +91,8 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   }
 
   /**
-   * Set the fallback charset to be used, if the payload has no charset.
+   * Set the fallback charset to be used, if the payload has no charset. By
+   * default the fallback charset is the charset of the Content Type.
    *
    * @param aFallbackCharset
    *        The fallback charset to be used. May not be <code>null</code>.

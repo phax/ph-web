@@ -1,5 +1,6 @@
 package com.helger.httpclient;
 
+import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.function.ObjIntConsumer;
 
@@ -158,13 +159,19 @@ public class HttpClientSettingsConfig
       return _findBoolean ("http.dnsclientcache.use", bDefault, "http.useDNSClientCache");
     }
 
+    @Nonnull
+    public ETriState isHttpProxyEnabled ()
+    {
+      return _findBoolean ("http.proxy.enabled", false);
+    }
+
     /**
      * @return The HttpProxy host to be used. May be <code>null</code>.
      */
     @Nullable
     public String getHttpProxyHost ()
     {
-      return _findString ("http.proxy.host", "http.proxyHost");
+      return _findString ("http.proxy.host", "http.proxyHost", "http.proxy.address");
     }
 
     /**
@@ -238,7 +245,7 @@ public class HttpClientSettingsConfig
     @Nullable
     public String getNonProxyHosts ()
     {
-      return _findString ("http.proxy.nonProxyHosts", "http.nonProxyHosts");
+      return _findString ("http.proxy.nonProxyHosts", "http.nonProxyHosts", "http.proxy.non-proxy");
     }
 
     @CheckForSigned
@@ -282,21 +289,21 @@ public class HttpClientSettingsConfig
     }
 
     @Nullable
-    private Timeout _findTimeout (@Nonnull final String sPrefix)
+    private Timeout _findTimeout (@Nonnull final String sPrefix, @Nullable final String... aLocalSubKeys)
     {
-      final long nMillis = _findLong (sPrefix + ".millis", -1);
+      final long nMillis = _findLong (sPrefix + ".millis", -1, aLocalSubKeys);
       if (nMillis > 0)
         return Timeout.ofMilliseconds (nMillis);
 
-      final long nSeconds = _findLong (sPrefix + ".seconds", -1);
+      final long nSeconds = _findLong (sPrefix + ".seconds", -1, aLocalSubKeys);
       if (nSeconds > 0)
         return Timeout.ofSeconds (nSeconds);
 
-      final long nMinutes = _findLong (sPrefix + ".minutes", -1);
+      final long nMinutes = _findLong (sPrefix + ".minutes", -1, aLocalSubKeys);
       if (nMinutes > 0)
         return Timeout.ofMinutes (nMinutes);
 
-      final long nHours = _findLong (sPrefix + ".hours", -1);
+      final long nHours = _findLong (sPrefix + ".hours", -1, aLocalSubKeys);
       if (nHours > 0)
         return Timeout.ofHours (nHours);
 
@@ -312,13 +319,13 @@ public class HttpClientSettingsConfig
     @Nullable
     public Timeout getConnectTimeout ()
     {
-      return _findTimeout ("http.timeout.connect");
+      return _findTimeout ("http.timeout.connect", "http.connection-timeout");
     }
 
     @Nullable
     public Timeout getResponseTimeout ()
     {
-      return _findTimeout ("http.timeout.response");
+      return _findTimeout ("http.timeout.response", "http.read-timeout");
     }
 
     @Nullable
@@ -337,6 +344,24 @@ public class HttpClientSettingsConfig
     public ETriState getUseKeepAlive (final boolean bDefault)
     {
       return _findBoolean ("http.keep-alive", bDefault);
+    }
+
+    @Nonnull
+    public ETriState getDisableTlsChecks (final boolean bDefault)
+    {
+      return _findBoolean ("http.tls.checks.disabled", bDefault);
+    }
+
+    @Nonnull
+    public ETriState getDisableHostnameCheck (final boolean bDefault)
+    {
+      return _findBoolean ("http.tls.hostname-check.disabled", bDefault);
+    }
+
+    @Nonnull
+    public ETriState getDisableCertificateCheck (final boolean bDefault)
+    {
+      return _findBoolean ("http.tls.certificate-check.disabled", bDefault);
     }
   }
 
@@ -386,70 +411,163 @@ public class HttpClientSettingsConfig
       // Use existing value as fallback to avoid changing to default
       final ETriState eUseDNSClientCache = aHCC.getUseDNSClientCache (aHCS.isUseDNSClientCache ());
       if (eUseDNSClientCache.isDefined ())
-        aHCS.setUseDNSClientCache (eUseDNSClientCache.getAsBooleanValue ());
+      {
+        final boolean b = eUseDNSClientCache.getAsBooleanValue ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.useDNSClientCache(" + b + ")");
+        aHCS.setUseDNSClientCache (b);
+      }
     }
 
     // Proxy stuff
     {
       final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
       if (aProxyHost != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
         aHCS.setProxyHost (aProxyHost);
+      }
 
       final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
       if (aProxyCredentials != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
         aHCS.setProxyCredentials (aProxyCredentials);
+      }
 
       final String sNonProxyHosts = aHCC.getNonProxyHosts ();
       if (StringHelper.hasText (sNonProxyHosts))
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
         aHCS.setNonProxyHostsFromPipeString (sNonProxyHosts);
+      }
     }
 
     // Retry
     {
       final int nRetryCount = aHCC.getRetryCount ();
       if (nRetryCount >= 0)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.retryCount(" + nRetryCount + ")");
         aHCS.setRetryCount (nRetryCount);
+      }
 
       final Duration aRetryInterval = aHCC.getRetryInterval ();
       if (aRetryInterval != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.retryInterval(" + aRetryInterval + ")");
         aHCS.setRetryInterval (aRetryInterval);
+      }
 
       // Use existing value as fallback to avoid changing to default
       final ETriState eRetryAlways = aHCC.getRetryAlways (aHCS.isRetryAlways ());
       if (eRetryAlways.isDefined ())
-        aHCS.setRetryAlways (eRetryAlways.getAsBooleanValue ());
+      {
+        final boolean b = eRetryAlways.getAsBooleanValue ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.retryAlways(" + b + ")");
+        aHCS.setRetryAlways (b);
+      }
     }
 
     // Timeouts
     {
       final Timeout aConnectionRequestTimeout = aHCC.getConnectionRequestTimeout ();
       if (aConnectionRequestTimeout != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.connectionRequestTimeout(" +
+                        aConnectionRequestTimeout +
+                        ")");
         aHCS.setConnectionRequestTimeout (aConnectionRequestTimeout);
+      }
 
       final Timeout aConnectTimeout = aHCC.getConnectTimeout ();
       if (aConnectTimeout != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.connectTimeout(" + aConnectTimeout + ")");
         aHCS.setConnectTimeout (aConnectTimeout);
+      }
 
       final Timeout aResponseTimeout = aHCC.getResponseTimeout ();
       if (aResponseTimeout != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.responseTimeout(" + aResponseTimeout + ")");
         aHCS.setResponseTimeout (aResponseTimeout);
+      }
     }
 
     // Other stuff
     {
       final String sUserAgent = aHCC.getUserAgent ();
       if (StringHelper.hasText (sUserAgent))
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.userAgent(" + sUserAgent + ")");
         aHCS.setUserAgent (sUserAgent);
+      }
 
       // Use existing value as fallback to avoid changing to default
       final ETriState eFollowRedirects = aHCC.getFollowRedirects (aHCS.isFollowRedirects ());
       if (eFollowRedirects.isDefined ())
-        aHCS.setFollowRedirects (eFollowRedirects.getAsBooleanValue ());
+      {
+        final boolean b = eFollowRedirects.getAsBooleanValue ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.followRedirects(" + b + ")");
+        aHCS.setFollowRedirects (b);
+      }
 
       // Use existing value as fallback to avoid changing to default
       final ETriState eKeepAlive = aHCC.getUseKeepAlive (aHCS.isUseKeepAlive ());
       if (eKeepAlive.isDefined ())
-        aHCS.setUseKeepAlive (eKeepAlive.getAsBooleanValue ());
+      {
+        final boolean b = eKeepAlive.getAsBooleanValue ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.keepAlive(" + b + ")");
+        aHCS.setUseKeepAlive (b);
+      }
+    }
+
+    // TLS stuff
+    {
+      final boolean bDefaultDisableTLS = false;
+
+      // The global property
+      final ETriState eDisableTLSChecks = aHCC.getDisableTlsChecks (bDefaultDisableTLS);
+
+      final ETriState eDisableHostnameCheck = aHCC.getDisableHostnameCheck (bDefaultDisableTLS);
+      if (eDisableHostnameCheck.getAsBooleanValue (bDefaultDisableTLS) ||
+          eDisableTLSChecks.getAsBooleanValue (bDefaultDisableTLS))
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.setHostnameVerifierVerifyAll()");
+        aHCS.setHostnameVerifierVerifyAll ();
+        LOGGER.warn ("Disabled the hostname check for SSL/TLS connections. This may be a security risk.");
+      }
+
+      final ETriState eDisableCertificateCheck = aHCC.getDisableCertificateCheck (bDefaultDisableTLS);
+      if (eDisableCertificateCheck.getAsBooleanValue (bDefaultDisableTLS) ||
+          eDisableTLSChecks.getAsBooleanValue (bDefaultDisableTLS))
+      {
+        try
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Setting configured HttpClientSettings.setSSLContextTrustAll()");
+          aHCS.setSSLContextTrustAll ();
+          LOGGER.warn ("Disabled the certificate check for SSL/TLS connections. This may be a security risk.");
+        }
+        catch (final GeneralSecurityException ex)
+        {
+          throw new IllegalStateException ("Failed to set SSL Context for TLS connection", ex);
+        }
+      }
     }
   }
 }

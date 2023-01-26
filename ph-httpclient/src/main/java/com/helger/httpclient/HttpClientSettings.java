@@ -69,7 +69,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                                                                                 ArrayHelper.EMPTY_STRING_ARRAY);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
-  public static final int DEFAULT_RETRIES = 0;
+  public static final int DEFAULT_RETRY_COUNT = 0;
+  @Deprecated (since = "10.0.0", forRemoval = true)
+  public static final int DEFAULT_RETRIES = DEFAULT_RETRY_COUNT;
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final boolean DEFAULT_RETRY_ALWAYS = false;
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
@@ -82,18 +84,23 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
 
   private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
+
   private SSLContext m_aSSLContext;
   private ITLSConfigurationMode m_aTLSConfigurationMode;
   private HostnameVerifier m_aHostnameVerifier;
+
   private HttpHost m_aProxyHost;
   private Credentials m_aProxyCredentials;
   private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
-  private int m_nRetryCount = DEFAULT_RETRIES;
+
+  private int m_nRetryCount = DEFAULT_RETRY_COUNT;
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private boolean m_bRetryAlways = DEFAULT_RETRY_ALWAYS;
+
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
   private Timeout m_aResponseTimeout = DEFAULT_RESPONSE_TIMEOUT;
+
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
@@ -229,7 +236,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
 
   /**
    * Attention: INSECURE METHOD!<br>
-   * Set the a special SSL Context that does not expect any specific server
+   * Set the a special TLS/SSL Context that does not expect any specific server
    * certificate. To be totally loose, you should also set a hostname verifier
    * that accepts all host names.
    *
@@ -374,7 +381,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * All non-proxy hosts from a piped string as in
+   * Add all non-proxy hosts from a piped string as in
    * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
    * pipe, and the values are trimmed.
    *
@@ -394,6 +401,28 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
           m_aNonProxyHosts.add (sTrimmedHost);
       });
     return this;
+  }
+
+  /**
+   * Set all non-proxy hosts from a piped string as in
+   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
+   * pipe, and the values are trimmed.<br>
+   * This is a shortcut for first clearing the list and then calling
+   * {@link #addNonProxyHostsFromPipeString(String)}
+   *
+   * @param sDefinition
+   *        The definition string. May be <code>null</code> or empty or invalid.
+   *        Every non-empty trimmed text between pipes is interpreted as a host
+   *        name.
+   * @return this for chaining
+   * @see #addNonProxyHostsFromPipeString(String)
+   * @since 10.0.0
+   */
+  @Nonnull
+  public final HttpClientSettings setNonProxyHostsFromPipeString (@Nullable final String sDefinition)
+  {
+    m_aNonProxyHosts.clear ();
+    return addNonProxyHostsFromPipeString (sDefinition);
   }
 
   /**

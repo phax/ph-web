@@ -58,7 +58,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v10.0.0 - work in progress
+* v10.0.0 - 2023-02-01
     * Using Java 11 as the baseline
     * Updated to ph-commons 11
     * Updated to Jakarta Mail 2.0.1

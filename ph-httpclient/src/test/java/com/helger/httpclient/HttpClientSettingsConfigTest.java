@@ -55,8 +55,8 @@ public final class HttpClientSettingsConfigTest
     aMap.put ("test9.http.retry.interval.hours", "2");
     aMap.put ("test9.http.useragent", "super");
     aMap.put ("test9.http.tls.checks.disabled", "false");
-    aMap.put ("test10.http.tls.hostname-check.disabled", "false");
-    aMap.put ("test10.http.tls.certificate-check.disabled", "false");
+    aMap.put ("test9.http.tls.hostname-check.disabled", "false");
+    aMap.put ("test9.http.tls.certificate-check.disabled", "false");
 
     return new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
   }

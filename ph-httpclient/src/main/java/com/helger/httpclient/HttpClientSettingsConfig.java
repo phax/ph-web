@@ -2,6 +2,7 @@ package com.helger.httpclient;
 
 import java.security.GeneralSecurityException;
 import java.time.Duration;
+import java.util.function.Function;
 import java.util.function.ObjIntConsumer;
 
 import javax.annotation.CheckForSigned;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.state.ETriState;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.typeconvert.TypeConverter;
@@ -35,21 +39,15 @@ public class HttpClientSettingsConfig
   public static final class HttpClientConfig
   {
     private final IConfigWithFallback m_aConfig;
-    private final String m_sConfigPrefix;
-    private final boolean m_bAllowFallbackToGlobalScope;
+    private final ICommonsOrderedSet <String> m_aConfigPrefixes;
 
     public HttpClientConfig (@Nonnull final IConfigWithFallback aConfig,
-                             @Nonnull final String sConfigPrefix,
-                             final boolean bAllowFallbackToGlobalScope)
+                             @Nonnull @Nonempty final ICommonsOrderedSet <String> aConfigPrefixes)
     {
       ValueEnforcer.notNull (aConfig, "Config");
-      ValueEnforcer.notNull (sConfigPrefix, "ConfigPrefix");
-      ValueEnforcer.isTrue ( () -> sConfigPrefix.isEmpty () || sConfigPrefix.endsWith ("."), "ConfigPrefix is invalid");
+      ValueEnforcer.notEmptyNoNullValue (aConfigPrefixes, "Prefixes");
       m_aConfig = aConfig;
-      m_sConfigPrefix = sConfigPrefix;
-      // Fallback only if desired and a config prefix is present. Otherwise that
-      // makes no sense
-      m_bAllowFallbackToGlobalScope = bAllowFallbackToGlobalScope && sConfigPrefix.length () > 0;
+      m_aConfigPrefixes = aConfigPrefixes;
     }
 
     // TODO replace with ArrayHelper method in ph-commons 11.0.2
@@ -64,29 +62,34 @@ public class HttpClientSettingsConfig
       }
     }
 
+    @Nonnull
+    private static String [] _copyAndMap (@Nonnull final String [] aArray,
+                                          @Nonnull final Function <String, String> aFun)
+    {
+      final String [] ret = new String [aArray.length];
+      _forEach (aArray, (val, idx) -> ret[idx] = aFun.apply (ret[idx]));
+      return ret;
+    }
+
     @Nullable
     private String _findString (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
     {
-      String ret;
-      if (aLocalSubKeys.length == 0)
-        ret = m_aConfig.getAsString (m_sConfigPrefix + sLocalKey);
-      else
+      for (final String sConfigPrefix : m_aConfigPrefixes)
       {
-        // Add configPrefix to all values
-        final String [] aRealSubKeys = new String [aLocalSubKeys.length];
-        _forEach (aLocalSubKeys, (val, idx) -> aRealSubKeys[idx] = m_sConfigPrefix + val);
-        ret = m_aConfig.getAsStringOrFallback (m_sConfigPrefix + sLocalKey, aRealSubKeys);
-      }
-
-      if (ret == null && m_bAllowFallbackToGlobalScope)
-      {
+        final String ret;
         if (aLocalSubKeys.length == 0)
-          ret = m_aConfig.getAsString (sLocalKey);
+          ret = m_aConfig.getAsString (sConfigPrefix + sLocalKey);
         else
-          ret = m_aConfig.getAsStringOrFallback (sLocalKey, aLocalSubKeys);
+        {
+          // Add configPrefix to all values
+          final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
+          ret = m_aConfig.getAsStringOrFallback (sConfigPrefix + sLocalKey, aRealSubKeys);
+        }
+        if (ret != null)
+          return ret;
       }
 
-      return ret;
+      return null;
     }
 
     @Nonnull
@@ -104,26 +107,35 @@ public class HttpClientSettingsConfig
     @CheckForSigned
     private int _findInt (@Nonnull final String sLocalKey, final int nDefault, @Nullable final String... aLocalSubKeys)
     {
-      int ret;
-      if (aLocalSubKeys.length == 0)
-        ret = m_aConfig.getAsInt (m_sConfigPrefix + sLocalKey, nDefault);
-      else
+      for (final String sConfigPrefix : m_aConfigPrefixes)
       {
-        // Add configPrefix to all values
-        final String [] aRealSubKeys = new String [aLocalSubKeys.length];
-        _forEach (aLocalSubKeys, (x, i) -> aRealSubKeys[i] = m_sConfigPrefix + x);
-        ret = m_aConfig.getAsIntOrFallback (m_sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
-      }
-
-      if (ret == nDefault && m_bAllowFallbackToGlobalScope)
-      {
+        final int ret;
         if (aLocalSubKeys.length == 0)
-          ret = m_aConfig.getAsInt (sLocalKey, nDefault);
+          ret = m_aConfig.getAsInt (sConfigPrefix + sLocalKey, nDefault);
         else
-          ret = m_aConfig.getAsIntOrFallback (sLocalKey, nDefault, nDefault, aLocalSubKeys);
+        {
+          // Add configPrefix to all values
+          final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
+          ret = m_aConfig.getAsIntOrFallback (sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
+        }
+        if (ret != nDefault)
+          return ret;
       }
+      return nDefault;
+    }
 
-      return ret;
+    @CheckForSigned
+    private long _findSingleLong (@Nonnull final String sConfigPrefix,
+                                  @Nonnull final String sLocalKey,
+                                  final long nDefault,
+                                  @Nullable final String... aLocalSubKeys)
+    {
+      if (aLocalSubKeys.length == 0)
+        return m_aConfig.getAsLong (sConfigPrefix + sLocalKey, nDefault);
+
+      // Add configPrefix to all values
+      final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
+      return m_aConfig.getAsLongOrFallback (sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
     }
 
     @CheckForSigned
@@ -131,26 +143,13 @@ public class HttpClientSettingsConfig
                             final long nDefault,
                             @Nullable final String... aLocalSubKeys)
     {
-      long ret;
-      if (aLocalSubKeys.length == 0)
-        ret = m_aConfig.getAsLong (m_sConfigPrefix + sLocalKey, nDefault);
-      else
+      for (final String sConfigPrefix : m_aConfigPrefixes)
       {
-        // Add configPrefix to all values
-        final String [] aRealSubKeys = new String [aLocalSubKeys.length];
-        _forEach (aLocalSubKeys, (x, i) -> aRealSubKeys[i] = m_sConfigPrefix + x);
-        ret = m_aConfig.getAsLongOrFallback (m_sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
+        final long ret = _findSingleLong (sConfigPrefix, sLocalKey, nDefault, aLocalSubKeys);
+        if (ret != nDefault)
+          return ret;
       }
-
-      if (ret == nDefault && m_bAllowFallbackToGlobalScope)
-      {
-        if (aLocalSubKeys.length == 0)
-          ret = m_aConfig.getAsLong (sLocalKey, nDefault);
-        else
-          ret = m_aConfig.getAsLongOrFallback (sLocalKey, nDefault, nDefault, aLocalSubKeys);
-      }
-
-      return ret;
+      return nDefault;
     }
 
     @Nonnull
@@ -160,9 +159,9 @@ public class HttpClientSettingsConfig
     }
 
     @Nonnull
-    public ETriState isHttpProxyEnabled ()
+    public ETriState getHttpProxyEnabled (final boolean bDefault)
     {
-      return _findBoolean ("http.proxy.enabled", false);
+      return _findBoolean ("http.proxy.enabled", bDefault);
     }
 
     /**
@@ -255,6 +254,42 @@ public class HttpClientSettingsConfig
       return _findInt ("http.retry.count", -1);
     }
 
+    @Nullable
+    private Duration _findDuration (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
+    {
+      for (final String sConfigPrefix : m_aConfigPrefixes)
+      {
+        final long nMillis = _findSingleLong (sConfigPrefix,
+                                              sLocalKey + ".millis",
+                                              -1,
+                                              _copyAndMap (aLocalSubKeys, x -> x + ".millis"));
+        if (nMillis > 0)
+          return Duration.ofMillis (nMillis);
+
+        final long nSeconds = _findSingleLong (sConfigPrefix,
+                                               sLocalKey + ".seconds",
+                                               -1,
+                                               _copyAndMap (aLocalSubKeys, x -> x + ".seconds"));
+        if (nSeconds > 0)
+          return Duration.ofSeconds (nSeconds);
+
+        final long nMinutes = _findSingleLong (sConfigPrefix,
+                                               sLocalKey + ".minutes",
+                                               -1,
+                                               _copyAndMap (aLocalSubKeys, x -> x + ".minutes"));
+        if (nMinutes > 0)
+          return Duration.ofMinutes (nMinutes);
+
+        final long nHours = _findSingleLong (sConfigPrefix,
+                                             sLocalKey + ".hours",
+                                             -1,
+                                             _copyAndMap (aLocalSubKeys, x -> x + ".hours"));
+        if (nHours > 0)
+          return Duration.ofHours (nHours);
+      }
+      return null;
+    }
+
     /**
      * @return The interval in which a retry should happen. Only relevant is
      *         retry count &gt; 0.
@@ -263,23 +298,7 @@ public class HttpClientSettingsConfig
     @Nullable
     public Duration getRetryInterval ()
     {
-      final long nMillis = _findLong ("http.retry.interval.millis", -1);
-      if (nMillis > 0)
-        return Duration.ofMillis (nMillis);
-
-      final long nSeconds = _findLong ("http.retry.interval.seconds", -1);
-      if (nSeconds > 0)
-        return Duration.ofSeconds (nSeconds);
-
-      final long nMinutes = _findLong ("http.retry.interval.minutes", -1);
-      if (nMinutes > 0)
-        return Duration.ofMinutes (nMinutes);
-
-      final long nHours = _findLong ("http.retry.interval.hours", -1);
-      if (nHours > 0)
-        return Duration.ofHours (nHours);
-
-      return null;
+      return _findDuration ("http.retry.interval");
     }
 
     @Nonnull
@@ -291,23 +310,8 @@ public class HttpClientSettingsConfig
     @Nullable
     private Timeout _findTimeout (@Nonnull final String sPrefix, @Nullable final String... aLocalSubKeys)
     {
-      final long nMillis = _findLong (sPrefix + ".millis", -1, aLocalSubKeys);
-      if (nMillis > 0)
-        return Timeout.ofMilliseconds (nMillis);
-
-      final long nSeconds = _findLong (sPrefix + ".seconds", -1, aLocalSubKeys);
-      if (nSeconds > 0)
-        return Timeout.ofSeconds (nSeconds);
-
-      final long nMinutes = _findLong (sPrefix + ".minutes", -1, aLocalSubKeys);
-      if (nMinutes > 0)
-        return Timeout.ofMinutes (nMinutes);
-
-      final long nHours = _findLong (sPrefix + ".hours", -1, aLocalSubKeys);
-      if (nHours > 0)
-        return Timeout.ofHours (nHours);
-
-      return null;
+      final Duration aDuration = _findDuration (sPrefix, aLocalSubKeys);
+      return aDuration == null ? null : Timeout.of (aDuration);
     }
 
     @Nullable
@@ -365,6 +369,9 @@ public class HttpClientSettingsConfig
     }
   }
 
+  private HttpClientSettingsConfig ()
+  {}
+
   /**
    * Assign all settings of {@link HttpClientSettings} from configuration
    * values. This includes:
@@ -378,33 +385,31 @@ public class HttpClientSettingsConfig
    * @param aConfig
    *        The {@link IConfig} object to used as the source of the values. May
    *        not be <code>null</code>.
-   * @param sPrefix
-   *        The configuration prefix to be used. If this value is not empty, it
-   *        will be used as the constant prefix.
-   * @param bAllowFallbackToGlobalScope
-   *        if <code>true</code> and a prefix is given,
+   * @param aPrefixes
+   *        The configuration prefixes to be used. If this value may neither be
+   *        <code>null</code> nor empty, it will be used as the constant prefix.
    */
   public static final void assignConfigValues (@Nonnull final HttpClientSettings aHCS,
                                                @Nonnull final IConfigWithFallback aConfig,
-                                               @Nonnull final String sPrefix,
-                                               final boolean bAllowFallbackToGlobalScope)
+                                               @Nonnull @Nonempty final String... aPrefixes)
   {
     ValueEnforcer.notNull (aHCS, "HttpClientSettings");
     ValueEnforcer.notNull (aConfig, "Config");
-    ValueEnforcer.notNull (sPrefix, "Prefix");
+    ValueEnforcer.notEmptyNoNullValue (aPrefixes, "Prefixes");
 
     // Either empty or ending with a string
-    final String sRealConfigPrefix = sPrefix.isEmpty () ? "" : sPrefix.endsWith (".") ? sPrefix : sPrefix + ".";
+    final ICommonsOrderedSet <String> aRealPrefixes = new CommonsLinkedHashSet <> (aPrefixes,
+                                                                                   x -> x.isEmpty () ||
+                                                                                        x.endsWith (".") ? x : x + ".");
     if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Using prefix '" + sRealConfigPrefix + "' to configure HTTP client settings");
-    if (sRealConfigPrefix.isEmpty ())
+      LOGGER.debug ("Using prefixes '" + aRealPrefixes + "' to configure HTTP client settings");
+    if (aRealPrefixes.isEmpty ())
     {
-      LOGGER.warn ("Configuring HTTP client settings with generic configuration");
-      if (bAllowFallbackToGlobalScope)
-        LOGGER.error ("The fallback to the global scope makes no sense, if the base configuration is already global");
+      LOGGER.warn ("No configuration prefixes provided to configure HTTP client settings. Nothing happens");
+      return;
     }
 
-    final HttpClientConfig aHCC = new HttpClientConfig (aConfig, sRealConfigPrefix, bAllowFallbackToGlobalScope);
+    final HttpClientConfig aHCC = new HttpClientConfig (aConfig, aRealPrefixes);
 
     // DNS stuff
     {
@@ -421,28 +426,33 @@ public class HttpClientSettingsConfig
 
     // Proxy stuff
     {
-      final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
-      if (aProxyHost != null)
+      final boolean bDefaultProxyEnabled = false;
+      final ETriState eProxyEnabled = aHCC.getHttpProxyEnabled (bDefaultProxyEnabled);
+      if (eProxyEnabled.isDefined () && eProxyEnabled.getAsBooleanValue ())
       {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
-        aHCS.setProxyHost (aProxyHost);
-      }
+        final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
+        if (aProxyHost != null)
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
+          aHCS.setProxyHost (aProxyHost);
+        }
 
-      final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
-      if (aProxyCredentials != null)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
-        aHCS.setProxyCredentials (aProxyCredentials);
-      }
+        final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
+        if (aProxyCredentials != null)
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
+          aHCS.setProxyCredentials (aProxyCredentials);
+        }
 
-      final String sNonProxyHosts = aHCC.getNonProxyHosts ();
-      if (StringHelper.hasText (sNonProxyHosts))
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
-        aHCS.setNonProxyHostsFromPipeString (sNonProxyHosts);
+        final String sNonProxyHosts = aHCC.getNonProxyHosts ();
+        if (StringHelper.hasText (sNonProxyHosts))
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
+          aHCS.setNonProxyHostsFromPipeString (sNonProxyHosts);
+        }
       }
     }
 
@@ -543,8 +553,8 @@ public class HttpClientSettingsConfig
       final ETriState eDisableTLSChecks = aHCC.getDisableTlsChecks (bDefaultDisableTLS);
 
       final ETriState eDisableHostnameCheck = aHCC.getDisableHostnameCheck (bDefaultDisableTLS);
-      if (eDisableHostnameCheck.getAsBooleanValue (bDefaultDisableTLS) ||
-          eDisableTLSChecks.getAsBooleanValue (bDefaultDisableTLS))
+      if ((eDisableHostnameCheck.isDefined () && eDisableHostnameCheck.getAsBooleanValue ()) ||
+          (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
       {
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Setting configured HttpClientSettings.setHostnameVerifierVerifyAll()");
@@ -553,8 +563,8 @@ public class HttpClientSettingsConfig
       }
 
       final ETriState eDisableCertificateCheck = aHCC.getDisableCertificateCheck (bDefaultDisableTLS);
-      if (eDisableCertificateCheck.getAsBooleanValue (bDefaultDisableTLS) ||
-          eDisableTLSChecks.getAsBooleanValue (bDefaultDisableTLS))
+      if ((eDisableCertificateCheck.isDefined () && eDisableCertificateCheck.getAsBooleanValue ()) ||
+          (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
       {
         try
         {

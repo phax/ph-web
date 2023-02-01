@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.core5.http.ContentType;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,8 @@ public final class HttpClientManagerTest
   {
     try (final HttpClientManager aHC = new HttpClientManager ())
     {
-      final String sResponse = aHC.execute (new HttpGet ("http://www.orf.at"), new ResponseHandlerString ());
+      final String sResponse = aHC.execute (new HttpGet ("http://www.orf.at"),
+                                            new ResponseHandlerString (ContentType.TEXT_HTML));
       LOGGER.info ("Got HTTP response with " + sResponse.length () + " chars");
     }
   }
@@ -52,7 +54,7 @@ public final class HttpClientManagerTest
     try (final HttpClientManager aHC = new HttpClientManager ())
     {
       final Wrapper <Charset> aWCS = new Wrapper <> ();
-      final ResponseHandlerString aRH = new ResponseHandlerString ().setCharsetConsumer (aWCS::set);
+      final ResponseHandlerString aRH = new ResponseHandlerString (ContentType.TEXT_HTML).setCharsetConsumer (aWCS::set);
       final String sResponse = aHC.execute (new HttpGet ("http://www.orf.at"), aRH);
       LOGGER.info ("Got HTTP response with " + sResponse.length () + " chars, using charset " + aWCS.get ());
     }

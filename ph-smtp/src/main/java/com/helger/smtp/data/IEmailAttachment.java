@@ -88,7 +88,7 @@ public interface IEmailAttachment extends IHasInputStream
   EEmailAttachmentDisposition getDisposition ();
 
   /**
-   * @return The attachment as a {@link javax.activation.DataSource}.
+   * @return The attachment as a {@link jakarta.activation.DataSource}.
    */
   @Nonnull
   IEmailAttachmentDataSource getAsDataSource ();

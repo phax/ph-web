@@ -28,9 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
-import org.eclipse.angus.mail.smtp.SMTPAddressSucceededException;
-import org.eclipse.angus.mail.util.MailSSLSocketFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +55,9 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.settings.ISMTPSettings;
+import com.sun.mail.smtp.SMTPAddressFailedException;
+import com.sun.mail.smtp.SMTPAddressSucceededException;
+import com.sun.mail.util.MailSSLSocketFactory;
 
 import jakarta.mail.Address;
 import jakarta.mail.AuthenticationFailedException;

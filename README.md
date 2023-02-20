@@ -58,10 +58,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v10.0.2 - 2023-02-20
-    * Updated to use [Eclipse Angus](https://eclipse-ee4j.github.io/angus-mail/) for Activation and Mail
+* v10.0.2 - work in progress
 * v10.0.1 - 2023-02-05
-    * Using Servlet API 4.0.1 as the baseline: JakartaEE 8, Java 11+, Apache Tomcat v9.x, Jetty 10.0.x 
+    * Using Servlet API 4.0.1 as the baseline: JakartaEE 8, Java 11+, Apache Tomcat v9.x, Jetty 10.0.x
+    * Using Jakarta Mail 2.0.1 (because Bouncycastle is not yet available for Eclipse Angus) 
 * v10.0.0 - 2023-02-01
     * Using Java 11 as the baseline
     * Updated to ph-commons 11

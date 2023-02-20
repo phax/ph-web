@@ -50,10 +50,9 @@ package com.helger.smtp.samples;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.eclipse.angus.mail.imap.IMAPFolder;
-
 import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
+import com.sun.mail.imap.IMAPFolder;
 
 import jakarta.mail.Folder;
 import jakarta.mail.FolderClosedException;
@@ -68,7 +67,6 @@ import jakarta.mail.event.MessageCountEvent;
 
 public class MainMonitor
 {
-
   public static void main (final String argv[])
   {
     if (argv.length != 5)

@@ -53,11 +53,12 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 
+import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
+import org.eclipse.angus.mail.smtp.SMTPAddressSucceededException;
+import org.eclipse.angus.mail.smtp.SMTPSendFailedException;
+import org.eclipse.angus.mail.smtp.SMTPTransport;
+
 import com.helger.commons.lang.priviledged.IPrivilegedAction;
-import com.sun.mail.smtp.SMTPAddressFailedException;
-import com.sun.mail.smtp.SMTPAddressSucceededException;
-import com.sun.mail.smtp.SMTPSendFailedException;
-import com.sun.mail.smtp.SMTPTransport;
 
 import jakarta.mail.Folder;
 import jakarta.mail.Message;

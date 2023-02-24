@@ -33,6 +33,7 @@ import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -183,7 +184,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   {
     if (!m_bClosed)
     {
-      final Object aIncluded = m_aHttpRequest.getAttribute ("javax.servlet.include.request_uri");
+      final Object aIncluded = m_aHttpRequest.getAttribute (RequestDispatcher.INCLUDE_REQUEST_URI);
       if (aIncluded != null)
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
@@ -311,7 +312,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public final void write (@Nonnull final byte [] aBytes,
+                           @Nonnegative final int nOfs,
+                           @Nonnegative final int nLen) throws IOException
   {
     _prepareToWrite (nLen);
     m_aOS.write (aBytes, nOfs, nLen);

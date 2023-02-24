@@ -60,6 +60,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v10.1.0 - 2023-02-24
     * Using Servlet API 5.0.0 as the baseline: JakartaEE 9, Java 11+, Apache Tomcat v10.0.x, Jetty 11.x
+    * Using Eclipse Angus 2.0.1 for mailing
     * Switched all namespaces from `javax.servlet` to `jakarta.servlet`
 * v10.0.1 - 2023-02-05
     * Using Servlet API 4.0.1 as the baseline: JakartaEE 8, Java 11+, Apache Tomcat v9.x, Jetty 10.x

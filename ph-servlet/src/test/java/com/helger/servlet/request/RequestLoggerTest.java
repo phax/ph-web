@@ -18,12 +18,12 @@ package com.helger.servlet.request;
 
 import static org.junit.Assert.assertNotNull;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Test class for class {@link RequestLogger}.

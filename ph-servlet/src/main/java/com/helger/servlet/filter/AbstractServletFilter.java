@@ -18,12 +18,13 @@ package com.helger.servlet.filter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
 
 /**
  * An abstract {@link Filter} implementation that performs nothing by default

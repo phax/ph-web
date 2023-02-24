@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +40,8 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * This is the entry point for request time monitoring. It keeps a central

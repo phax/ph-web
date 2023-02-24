@@ -16,8 +16,8 @@
  */
 package com.helger.servlet.io;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
 
 /**
  * Abstract base class for Servlet 3.1 {@link ServletInputStream}

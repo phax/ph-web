@@ -19,10 +19,11 @@ package com.helger.web.fileupload;
 import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 final class MockHttpServletRequestFactory
 {

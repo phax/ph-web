@@ -16,7 +16,7 @@
  */
 package com.helger.servlet.spec;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * Dummy interface with all ServletContext default methods for new methods in

@@ -18,13 +18,13 @@ package com.helger.web.fileupload.parse;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Base class for deriving test cases.

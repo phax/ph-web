@@ -17,13 +17,14 @@
 package com.helger.web.scope.multipart;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.web.scope.impl.RequestWebScope;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * The default request web scope that also tries to parse multi part requests if

@@ -18,13 +18,14 @@ package com.helger.web.scope.mock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpSession;
 
 import org.junit.Rule;
 
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
 import com.helger.servlet.mock.MockServletPool;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Base class for JUnit tests where the initialization of the scopes happens

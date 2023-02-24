@@ -19,15 +19,16 @@ package com.helger.web.servlets.scope;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.state.EContinue;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Abstract HTTP servlet filter implementation using the correct scope handling.

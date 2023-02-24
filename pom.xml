@@ -89,6 +89,7 @@
         <artifactId>jsch</artifactId>
         <version>0.1.55</version>
       </dependency>
+      <!--
       <dependency>
         <groupId>com.sun.activation</groupId>
         <artifactId>jakarta.activation</artifactId>
@@ -99,7 +100,7 @@
         <artifactId>jakarta.mail</artifactId>
         <version>2.0.1</version>
       </dependency>
-      <!--
+      -->      
       <dependency>
         <groupId>org.eclipse.angus</groupId>
         <artifactId>angus-activation</artifactId>
@@ -110,7 +111,6 @@
         <artifactId>angus-mail</artifactId>
         <version>2.0.1</version>
       </dependency>
-      -->      
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5</artifactId>
@@ -126,10 +126,17 @@
         <artifactId>commons-codec</artifactId>
         <version>1.15</version>
       </dependency>
+      <!--
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>4.0.1</version>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>5.0.0</version>
       </dependency>
 
       <dependency>

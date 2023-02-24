@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +43,8 @@ import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.progress.IProgressListener;
 import com.helger.web.progress.ProgressListenerProvider;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public final class RequestMultipartHelper
 {

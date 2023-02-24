@@ -22,12 +22,13 @@ import java.util.zip.DeflaterOutputStream;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public final class DeflateResponse extends AbstractCompressedResponseWrapper
 {

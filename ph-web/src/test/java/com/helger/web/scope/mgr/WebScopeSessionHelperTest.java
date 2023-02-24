@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -35,6 +34,8 @@ import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Test class for class {@link WebScopeSessionHelper}.

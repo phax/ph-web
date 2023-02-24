@@ -39,7 +39,7 @@ import jakarta.activation.DataSource;
  * <p>
  * After retrieving an instance of this class from a
  * {@link com.helger.web.fileupload.parse.FileUpload FileUpload} instance (see
- * {@link com.helger.web.fileupload.servlet.ServletFileUpload#parseRequest(javax.servlet.http.HttpServletRequest)}
+ * {@link com.helger.web.fileupload.servlet.ServletFileUpload#parseRequest(jakarta.servlet.http.HttpServletRequest)}
  * ), you may either request all contents of the file at once using
  * {@link #directGet()} or request an {@link java.io.InputStream InputStream}
  * with {@link #getInputStream()} and process the file without attempting to

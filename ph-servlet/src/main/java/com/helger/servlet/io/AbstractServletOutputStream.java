@@ -16,8 +16,8 @@
  */
 package com.helger.servlet.io;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
 
 /**
  * Abstract base class for Servlet 3.1 {@link ServletOutputStream}

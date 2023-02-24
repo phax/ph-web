@@ -16,9 +16,9 @@
  */
 package com.helger.servlet.spec;
 
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
-import javax.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.ServletRegistration.Dynamic;
 
 /**
  * Dummy interface with all ServletContext default methods for new methods in
@@ -56,7 +56,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default Dynamic addJspFile (final String sServletName, final String sJspFile)
@@ -75,7 +75,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default int getSessionTimeout ()
@@ -95,7 +95,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setSessionTimeout (final int nSessionTimeout)
@@ -117,7 +117,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default String getRequestCharacterEncoding ()
@@ -137,7 +137,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setRequestCharacterEncoding (final String sEncoding)
@@ -159,7 +159,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default String getResponseCharacterEncoding ()
@@ -179,7 +179,7 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    *         {@link ServletContextListener#contextInitialized} method of a
    *         {@link ServletContextListener} that was neither declared in
    *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link javax.servlet.annotation.WebListener}
+   *         annotated with {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setResponseCharacterEncoding (final String sEncoding)

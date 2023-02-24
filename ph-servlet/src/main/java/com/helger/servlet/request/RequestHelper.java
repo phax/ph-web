@@ -25,7 +25,6 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +70,8 @@ import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
 import com.helger.useragent.uaprofile.UAProfile;
 import com.helger.useragent.uaprofile.UAProfileDatabase;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * Misc. helper method on {@link HttpServletRequest} objects.
  *
@@ -109,9 +110,9 @@ public final class RequestHelper
     }
   }
 
-  public static final String SERVLET_ATTR_SSL_CIPHER_SUITE = "javax.servlet.request.cipher_suite";
-  public static final String SERVLET_ATTR_SSL_KEY_SIZE = "javax.servlet.request.key_size";
-  public static final String SERVLET_ATTR_CLIENT_CERTIFICATE = "javax.servlet.request.X509Certificate";
+  public static final String SERVLET_ATTR_SSL_CIPHER_SUITE = "jakarta.servlet.request.cipher_suite";
+  public static final String SERVLET_ATTR_SSL_KEY_SIZE = "jakarta.servlet.request.key_size";
+  public static final String SERVLET_ATTR_CLIENT_CERTIFICATE = "jakarta.servlet.request.X509Certificate";
 
   /**
    * Content-disposition value for form data.
@@ -392,11 +393,13 @@ public final class RequestHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest, final boolean bUseEncodedPath)
+  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest,
+                                                    final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
+                                               : getRequestURIDecoded (aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -455,7 +458,8 @@ public final class RequestHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest, final boolean bUseEncodedPath)
+  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest,
+                                             final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -477,7 +481,7 @@ public final class RequestHelper
    * This method returns the percent decoded parameters
    * <p>
    * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
    * reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>
@@ -512,7 +516,7 @@ public final class RequestHelper
    * This method returns the percent encoded parameters "as is"
    * <p>
    * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
    * reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>
@@ -678,7 +682,9 @@ public final class RequestHelper
 
   @Nonnull
   @Nonempty
-  public static StringBuilder getFullServerName (@Nullable final String sScheme, @Nullable final String sServerName, final int nServerPort)
+  public static StringBuilder getFullServerName (@Nullable final String sScheme,
+                                                 @Nullable final String sServerName,
+                                                 final int nServerPort)
   {
     // Reconstruct URL
     final StringBuilder aSB = new StringBuilder ();
@@ -760,7 +766,8 @@ public final class RequestHelper
    * @since 9.1.6
    */
   @Nullable
-  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final EHttpMethod eDefault)
+  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest,
+                                                    @Nullable final EHttpMethod eDefault)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 

@@ -25,8 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 
 import com.helger.commons.collection.impl.ICommonsList;
@@ -37,6 +35,8 @@ import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Unit test for items with varying sizes.

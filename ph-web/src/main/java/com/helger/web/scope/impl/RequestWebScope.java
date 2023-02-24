@@ -24,8 +24,6 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +53,9 @@ import com.helger.servlet.request.RequestParamMap;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * A request web scopes that does not parse multipart requests.

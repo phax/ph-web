@@ -31,21 +31,6 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +69,22 @@ import com.helger.http.EHttpVersion;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.servlet.spec.IServletRequest300To310Migration;
+
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletRequestEvent;
+import jakarta.servlet.ServletRequestListener;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
 
 /**
  * Mock implementation of {@link HttpServletRequest}.
@@ -92,7 +92,7 @@ import com.helger.servlet.spec.IServletRequest300To310Migration;
  * @author Philip Helger
  */
 @NotThreadSafe
-public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, IServletRequest300To310Migration
+public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
   public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
   public static final String DEFAULT_PROTOCOL = EHttpVersion.HTTP_11.getName ();

@@ -20,11 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletInputStream;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
+
+import jakarta.servlet.ServletInputStream;
 
 /**
  * A {@link ServletInputStream} for testing based on a predefined byte array or

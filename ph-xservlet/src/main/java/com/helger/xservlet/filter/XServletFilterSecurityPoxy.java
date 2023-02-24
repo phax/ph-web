@@ -19,8 +19,6 @@ package com.helger.xservlet.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +28,9 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.request.RequestLogger;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Avoid Httpoxy attack using the 'Proxy' HTTP header

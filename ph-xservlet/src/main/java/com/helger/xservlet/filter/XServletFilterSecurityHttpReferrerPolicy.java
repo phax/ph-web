@@ -17,8 +17,6 @@
 package com.helger.xservlet.filter;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.http.CHttpHeader;
@@ -26,6 +24,9 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.EHttpVersion;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Always set the correct "Referrer-Policy" header.

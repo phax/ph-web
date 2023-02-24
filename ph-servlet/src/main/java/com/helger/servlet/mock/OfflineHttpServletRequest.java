@@ -18,9 +18,10 @@ package com.helger.servlet.mock;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.servlet.ServletContext;
 
 import com.helger.servlet.annotation.IsOffline;
+
+import jakarta.servlet.ServletContext;
 
 /**
  * A special {@link MockHttpServletRequest} that throws

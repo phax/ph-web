@@ -18,8 +18,6 @@ package com.helger.xservlet.filter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -29,6 +27,9 @@ import com.helger.commons.state.EContinue;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.EXFrameOptionType;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Avoid Clickjacking attack using the 'X-Frame-Options' HTTP header.

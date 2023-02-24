@@ -17,9 +17,10 @@
 package com.helger.web.scope;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletContext;
 
 import com.helger.scope.IGlobalScope;
+
+import jakarta.servlet.ServletContext;
 
 /**
  * Interface for a global web scope.

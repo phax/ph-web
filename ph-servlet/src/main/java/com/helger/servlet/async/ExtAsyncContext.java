@@ -18,13 +18,14 @@ package com.helger.servlet.async;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.AsyncContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
+
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Extended {@link AsyncContext} type.

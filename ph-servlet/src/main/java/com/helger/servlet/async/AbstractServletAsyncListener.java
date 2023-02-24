@@ -20,10 +20,11 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
 
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.servlet.AsyncEvent;
+import jakarta.servlet.AsyncListener;
 
 /**
  * An empty implementation of {@link AsyncListener}.

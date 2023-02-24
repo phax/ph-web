@@ -23,17 +23,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.AsyncContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.string.StringHelper;
+
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Very basic servlet API helper
@@ -159,7 +160,8 @@ public final class ServletHelper
    * @since 9.1.10
    */
   @Nonnull
-  public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest, @Nullable final String sFallback)
+  public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest,
+                                              @Nullable final String sFallback)
   {
     String ret = null;
     if (aHttpRequest != null)
@@ -390,7 +392,8 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final Charset aCharset)
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+                                                  @Nullable final Charset aCharset)
   {
     setRequestCharacterEncoding (aHttpRequest, aCharset != null ? aCharset.name () : null);
   }
@@ -404,7 +407,8 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest, @Nullable final String sCharset)
+  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+                                                  @Nullable final String sCharset)
   {
     if (StringHelper.hasText (sCharset))
       try

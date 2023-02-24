@@ -16,7 +16,7 @@
  */
 package com.helger.servlet.spec;
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 /**
  * Dummy interface with all ServletRequest default methods for new methods in

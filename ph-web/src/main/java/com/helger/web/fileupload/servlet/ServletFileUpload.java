@@ -19,7 +19,6 @@ package com.helger.web.fileupload.servlet;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.impl.ICommonsList;
@@ -28,6 +27,8 @@ import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.FileUpload;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>

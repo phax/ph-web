@@ -21,8 +21,6 @@ import java.util.Enumeration;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +30,9 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.iterate.EmptyEnumeration;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.state.EChange;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * HTTP session utilities.

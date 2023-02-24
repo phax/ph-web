@@ -30,8 +30,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
@@ -50,6 +48,9 @@ import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.multipart.MultipartMalformedStreamException;
+
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Unit test for items with varying sizes.

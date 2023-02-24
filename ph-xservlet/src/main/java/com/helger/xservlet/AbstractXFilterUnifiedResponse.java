@@ -19,9 +19,6 @@ package com.helger.xservlet;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.http.EHttpMethod;
@@ -31,6 +28,10 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Abstract XFilter implementation using {@link UnifiedResponse} objects.

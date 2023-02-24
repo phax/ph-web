@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.ServletContext;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -30,6 +29,8 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.GlobalScope;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.web.scope.IGlobalWebScope;
+
+import jakarta.servlet.ServletContext;
 
 /**
  * Implementation of the {@link IGlobalWebScope} interface for web applications.

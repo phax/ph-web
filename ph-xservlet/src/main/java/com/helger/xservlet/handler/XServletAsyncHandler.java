@@ -19,9 +19,6 @@ package com.helger.xservlet.handler;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +36,10 @@ import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.xservlet.AbstractXServlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * A special {@link IXServletHandler} that allows to run requests

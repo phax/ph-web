@@ -20,11 +20,12 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.AsyncEvent;
+import jakarta.servlet.AsyncListener;
 
 /**
  * A logging implementation of {@link AsyncListener}.

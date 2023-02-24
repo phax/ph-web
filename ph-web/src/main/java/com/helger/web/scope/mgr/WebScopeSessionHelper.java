@@ -21,7 +21,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,8 @@ import com.helger.commons.state.EChange;
 import com.helger.scope.IScopeRenewalAware;
 import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionWebScope;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Some utility methods to handle complex actions in session scopes.

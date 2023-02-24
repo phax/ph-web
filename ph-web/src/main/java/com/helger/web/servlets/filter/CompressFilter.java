@@ -20,10 +20,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
@@ -38,6 +34,11 @@ import com.helger.servlet.response.gzip.AbstractCompressedResponseWrapper;
 import com.helger.servlet.response.gzip.CompressFilterSettings;
 import com.helger.servlet.response.gzip.DeflateResponse;
 import com.helger.servlet.response.gzip.GZIPResponse;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * This is a generic filter that first tries to find whether "GZip" is

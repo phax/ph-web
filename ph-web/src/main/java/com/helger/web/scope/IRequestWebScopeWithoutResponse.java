@@ -22,9 +22,6 @@ import java.security.Principal;
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
@@ -43,6 +40,10 @@ import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.useragent.IUserAgent;
 import com.helger.useragent.browser.BrowserInfo;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Interface for a single web request scope object that does not offer access to
@@ -546,7 +547,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * This method returns the percent decoded parameters
    * <p>
    * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
    * reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>
@@ -574,7 +575,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * This method returns the percent encoded parameters "as is"
    * <p>
    * If this request has been forwarded using
-   * {@link javax.servlet.RequestDispatcher#forward}, the server path in the
+   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
    * reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>

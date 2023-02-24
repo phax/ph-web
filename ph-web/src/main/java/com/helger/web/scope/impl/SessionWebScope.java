@@ -22,7 +22,6 @@ import java.util.Enumeration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +31,8 @@ import com.helger.commons.state.EContinue;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.SessionScope;
 import com.helger.web.scope.ISessionWebScope;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Default implementation of the {@link ISessionWebScope} interface. It is

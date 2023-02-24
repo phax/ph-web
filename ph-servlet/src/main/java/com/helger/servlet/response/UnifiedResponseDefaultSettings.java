@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.http.Cookie;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
@@ -37,6 +36,8 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.http.CacheControlBuilder;
 import com.helger.http.EHttpReferrerPolicy;
+
+import jakarta.servlet.http.Cookie;
 
 /**
  * This class encapsulates default settings to be applied to all

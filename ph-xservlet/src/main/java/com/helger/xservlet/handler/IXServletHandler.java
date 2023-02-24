@@ -19,13 +19,14 @@ package com.helger.xservlet.handler;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.commons.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Handler for a single HTTP method in an XServlet.

@@ -19,9 +19,10 @@ package com.helger.xservlet.filter;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
 
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.servlet.ServletException;
 
 /**
  * High-level filter for a single XServlet. It has methods for before and after.

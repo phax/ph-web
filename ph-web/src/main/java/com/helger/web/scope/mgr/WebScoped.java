@@ -17,12 +17,13 @@
 package com.helger.web.scope.mgr;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Auto closable wrapper around

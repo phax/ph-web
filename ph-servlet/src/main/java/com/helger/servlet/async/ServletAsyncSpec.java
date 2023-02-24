@@ -20,8 +20,6 @@ import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import javax.servlet.AsyncContext;
-import javax.servlet.AsyncListener;
 
 import com.helger.commons.CGlobal;
 import com.helger.commons.ValueEnforcer;
@@ -31,6 +29,9 @@ import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.functional.Predicates;
 import com.helger.commons.string.ToStringGenerator;
+
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.AsyncListener;
 
 /**
  * This class encapsulates all the parameters necessary to handle asynchronous

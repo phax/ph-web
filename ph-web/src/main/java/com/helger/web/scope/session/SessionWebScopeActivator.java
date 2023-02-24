@@ -23,9 +23,6 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +35,10 @@ import com.helger.commons.lang.ClassHelper;
 import com.helger.scope.ScopeHelper;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionActivationListener;
+import jakarta.servlet.http.HttpSessionEvent;
 
 /**
  * This class is responsible for passivating and activating session web scopes.

@@ -17,9 +17,10 @@
 package com.helger.xservlet.handler;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletException;
 
 import com.helger.commons.collection.impl.ICommonsMap;
+
+import jakarta.servlet.ServletException;
 
 /**
  * Base interface for regular and simpler handler

@@ -17,9 +17,10 @@
 package com.helger.web.scope;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpSession;
 
 import com.helger.scope.ISessionScope;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Interface for a single session scope object.

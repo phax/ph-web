@@ -80,7 +80,7 @@ public final class ReadWPADFuncTest
 
     for (final String sFile : new String [] { "wpad01.dat", "wpad02.dat", "wpad03.dat" })
     {
-      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("proxyautoconf/datfiles/" +
+      final String sAutoProxyConfig = getProxyAutoConfigFunction (new ClassPathResource ("external/proxyautoconf/datfiles/" +
                                                                                          sFile),
                                                                   StandardCharsets.ISO_8859_1);
       assertNotNull (sFile + " failed", sAutoProxyConfig);

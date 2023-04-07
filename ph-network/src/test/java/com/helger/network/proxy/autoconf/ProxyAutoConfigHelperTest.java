@@ -63,7 +63,7 @@ public final class ProxyAutoConfigHelperTest
     for (final String sFile : PAC_FILES)
     {
       LOGGER.info ("Reading " + sFile);
-      final IReadableResource aRes = new ClassPathResource ("proxyautoconf/pacfiles/" + sFile);
+      final IReadableResource aRes = new ClassPathResource ("external/proxyautoconf/pacfiles/" + sFile);
       assertTrue (aRes.exists ());
       final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (aRes);
       final ICommonsList <IProxySettings> aPC = aPACHelper.getProxyListForURL (URLHelper.getAsURI ("http://www.orf.at/index.html"));

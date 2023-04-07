@@ -44,7 +44,7 @@ public class MainMapCipherSuites
   private static ICommonsMap <String, String> readMap ()
   {
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
-    final IMicroDocument aDoc = MicroReader.readMicroXML (new File ("src/test/resources/ciphersuites/mapping.xml"));
+    final IMicroDocument aDoc = MicroReader.readMicroXML (new File ("src/test/resources/external/ciphersuites/mapping.xml"));
     for (final IMicroElement e : aDoc.getDocumentElement ().getAllChildElements ())
       aMap.put (e.getAttributeValue ("openssl"), e.getAttributeValue ("iana"));
     return aMap;

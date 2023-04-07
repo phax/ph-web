@@ -43,7 +43,7 @@ public final class MainCreateCipherSuiteNameMapping
 
   public static void main (final String [] args)
   {
-    String s = SimpleFileIO.getFileAsString (new File ("src/test/resources/ciphersuites/Mapping OpenSSL cipher suite names to IANA names.html"),
+    String s = SimpleFileIO.getFileAsString (new File ("src/test/resources/external/ciphersuites/Mapping OpenSSL cipher suite names to IANA names.html"),
                                              StandardCharsets.UTF_8);
     s += "</html>";
     s = StringHelper.replaceAll (s, "<br>", "<br/>");
@@ -68,7 +68,7 @@ public final class MainCreateCipherSuiteNameMapping
         }
       }
     }
-    MicroWriter.writeToFile (aDst, new File ("src/test/resources/ciphersuites/mapping.xml"));
+    MicroWriter.writeToFile (aDst, new File ("src/test/resources/external/ciphersuites/mapping.xml"));
     LOGGER.info ("Wrote file");
   }
 }

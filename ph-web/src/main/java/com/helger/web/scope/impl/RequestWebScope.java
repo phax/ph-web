@@ -164,7 +164,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // done initialization
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Created request web scope '" +
                    super.getID () +
                    "' of class " +
@@ -358,7 +358,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       }
     }
     // done initialization
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Initialized request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                    ScopeHelper.getDebugStackTrace ());
   }
@@ -371,7 +371,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       if (o instanceof IFileItem)
         ((IFileItem) o).onEndOfRequest ();
 
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
                    ScopeHelper.getDebugStackTrace ());
   }

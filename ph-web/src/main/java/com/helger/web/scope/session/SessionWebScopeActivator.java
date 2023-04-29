@@ -87,7 +87,7 @@ public final class SessionWebScopeActivator implements
       }
       out.writeObject (aRelevantObjects);
     }
-    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle ())
       LOGGER.info ("Wrote info on session web scope '" +
                    m_aSessionWebScope.getID () +
                    "' of class " +
@@ -104,7 +104,7 @@ public final class SessionWebScopeActivator implements
     // Read session attributes
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
-    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle ())
       LOGGER.info ("Read info on session scope: " +
                    m_aAttrs.size () +
                    " attrs of class " +
@@ -123,7 +123,7 @@ public final class SessionWebScopeActivator implements
         if (aValue instanceof ISessionWebScopePassivationHandler)
           ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
 
-      if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
+      if (ScopeHelper.isDebugSessionScopeLifeCycle ())
         LOGGER.info ("Successfully passivated session web scope '" +
                      m_aSessionWebScope.getID () +
                      "' of class " +
@@ -156,7 +156,7 @@ public final class SessionWebScopeActivator implements
         if (aValue instanceof ISessionWebScopeActivationHandler)
           ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
     }
-    if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugSessionScopeLifeCycle ())
       LOGGER.info ("Successfully activated session web scope '" +
                    aSessionWebScope.getID () +
                    "' of class " +

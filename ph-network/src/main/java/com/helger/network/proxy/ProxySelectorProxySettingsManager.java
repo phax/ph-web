@@ -132,7 +132,9 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
    */
   @Nonnull
   @OverrideOnDemand
-  protected EHandled handleConnectFailed (@Nonnull final URI aURI, @Nonnull final SocketAddress aAddr, @Nonnull final IOException ex)
+  protected EHandled handleConnectFailed (@Nonnull final URI aURI,
+                                          @Nonnull final SocketAddress aAddr,
+                                          @Nonnull final IOException ex)
   {
     // Logging is done inside
     return ProxySettingsManager.onConnectionFailed (aURI, aAddr, ex);
@@ -145,8 +147,7 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     ValueEnforcer.notNull (aAddr, "SockerAddr");
     ValueEnforcer.notNull (ex, "Exception");
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Connection to '" + aURI + "' using proxy " + aAddr + " failed", ex);
+    LOGGER.info ("Connection to '" + aURI + "' using proxy " + aAddr + " failed", ex);
 
     if (handleConnectFailed (aURI, aAddr, ex).isUnhandled ())
     {
@@ -166,10 +167,11 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
     final ProxySelector aDefault = IPrivilegedAction.proxySelectorGetDefault ().invokeSafe ();
     if (!(aDefault instanceof ProxySelectorProxySettingsManager))
     {
-      IPrivilegedAction.proxySelectorSetDefault (new ProxySelectorProxySettingsManager (bUseOldAsFallback ? aDefault : null)).invokeSafe ();
+      IPrivilegedAction.proxySelectorSetDefault (new ProxySelectorProxySettingsManager (bUseOldAsFallback ? aDefault
+                                                                                                          : null))
+                       .invokeSafe ();
 
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Using ProxySelectorProxySettingsManager as the default ProxySelector");
+      LOGGER.info ("Using ProxySelectorProxySettingsManager as the default ProxySelector");
     }
   }
 }

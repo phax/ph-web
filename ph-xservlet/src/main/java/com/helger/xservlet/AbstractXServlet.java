@@ -334,7 +334,6 @@ public abstract class AbstractXServlet extends HttpServlet
         aHttpResponse.sendError (CHttp.HTTP_METHOD_NOT_ALLOWED);
       return;
     }
-
     // HTTP method is supported by this servlet implementation
     final ICommonsList <IXServletHighLevelFilter> aEffectiveFilters = new CommonsArrayList <> (2 +
                                                                                                m_aFilterHighLevelList.size ());
@@ -378,7 +377,6 @@ public abstract class AbstractXServlet extends HttpServlet
         // For HTTP 1.1 send 303
         aHttpResponse.setStatus (CHttp.HTTP_SEE_OTHER);
       }
-
       // Set the location header
       String sTargetURL = ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ();
       if (ServletSettings.isEncodeURLs ())
@@ -399,7 +397,6 @@ public abstract class AbstractXServlet extends HttpServlet
         // No handler handled it - propagate
         throw ex;
       }
-
       // One exception handled did it - no need to propagate
     }
     finally
@@ -412,8 +409,7 @@ public abstract class AbstractXServlet extends HttpServlet
         }
         catch (final Exception ex)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
+          LOGGER.error ("Exception in high-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
         }
     }
   }
@@ -496,7 +492,6 @@ public abstract class AbstractXServlet extends HttpServlet
                              aHttpRequest.getServerPort (),
                              ServletContextPathHolder.getContextPath ());
     }
-
     // Create a wrapper around the Servlet Response that saves the status code
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
@@ -533,10 +528,9 @@ public abstract class AbstractXServlet extends HttpServlet
         final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
         aFactory = m_aSettings.isMultipartEnabled () ? RequestWebScopeMultipart::new : RequestWebScope::new;
 
-        try (
-            final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
-                                                                                                     aHttpResponseWrapper,
-                                                                                                     aFactory))
+        try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
+                                                                                                      aHttpResponseWrapper,
+                                                                                                      aFactory))
         {
           final IRequestWebScope aRequestScope = aRequestScopeInitializer.getRequestScope ();
           aRequestScope.attrs ().putIn (REQUEST_ATTR_SCOPE_CREATED, aRequestScopeInitializer.isNew ());
@@ -594,8 +588,9 @@ public abstract class AbstractXServlet extends HttpServlet
 
   // Avoid overloading in sub classes
   @Override
-  public final void service (@Nonnull final ServletRequest req,
-                             @Nonnull final ServletResponse res) throws ServletException, IOException
+  public final void service (@Nonnull final ServletRequest req, @Nonnull final ServletResponse res)
+                                                                                                    throws ServletException,
+                                                                                                    IOException
   {
     super.service (req, res);
   }

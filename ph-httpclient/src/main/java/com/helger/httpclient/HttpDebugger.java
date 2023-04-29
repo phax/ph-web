@@ -65,10 +65,9 @@ public final class HttpDebugger
                                     @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Before HTTP call: " +
-                     aRequest.toString () +
-                     (aHttpContext != null ? " (with special HTTP context)" : ""));
+      LOGGER.info ("Before HTTP call: " +
+                   aRequest.toString () +
+                   (aHttpContext != null ? " (with special HTTP context)" : ""));
   }
 
   /**
@@ -89,15 +88,14 @@ public final class HttpDebugger
                                    @Nullable final Throwable aCaughtException)
   {
     if (isEnabled ())
-      if (LOGGER.isInfoEnabled ())
-      {
-        final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
-                                                                                             : null;
-        LOGGER.info ("After HTTP call: " +
-                     aRequest.getMethod () +
-                     (aResponse != null ? ". Response: " + aResponse : "") +
-                     (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
-                     aHex != null ? null : aCaughtException);
-      }
+    {
+      final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
+                                                                                           : null;
+      LOGGER.info ("After HTTP call: " +
+                   aRequest.getMethod () +
+                   (aResponse != null ? ". Response: " + aResponse : "") +
+                   (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
+                   aHex != null ? null : aCaughtException);
+    }
   }
 }

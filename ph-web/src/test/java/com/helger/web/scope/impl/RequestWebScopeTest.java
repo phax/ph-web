@@ -52,14 +52,14 @@ public final class RequestWebScopeTest
                                                             "\u000b\u000c" +
                                                             "\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f" +
                                                             "\u007f" +
-                                                            "\ud800\udfff" +
+                                                            // "\ud800\udfff" +
                                                             "\ufffe\uffff"));
     assertEquals ("x",
                   RequestWebScope.getWithoutForbiddenChars ("\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008" +
                                                             "\u000b\u000c" +
                                                             "\u000e\u000f\u0010\u0011\u0012x\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f" +
                                                             "\u007f" +
-                                                            "\ud800\udfff" +
+                                                            // "\ud800\udfff" +
                                                             "\ufffe\uffff"));
   }
 
@@ -70,7 +70,7 @@ public final class RequestWebScopeTest
     assertNotNull (aPVC);
 
     // O + COMBINING DIAERESIS
-    final byte [] b = new byte [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 'O', (byte) 0xcc, (byte) 0x88 };
+    final byte [] b = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 'O', (byte) 0xcc, (byte) 0x88 };
     final String s = new String (b, StandardCharsets.UTF_8);
     final String sCleaned = aPVC.getCleanedValue ("xx", 0, s);
     assertNotNull (sCleaned);

@@ -79,8 +79,7 @@ public final class WebSpiderManager
       final String sType = MicroHelper.getChildTextContent (eSpider, "type");
       final EWebSpiderType eType = EWebSpiderType.getFromIDOrNull (sType);
       if (sType != null && eType == null)
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Unknown web spider type '" + sType + "'");
+        LOGGER.warn ("Unknown web spider type '" + sType + "'");
 
       aSpider.setType (eType);
       aSpider.setInfo (MicroHelper.getChildTextContent (eSpider, "info"));

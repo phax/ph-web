@@ -71,32 +71,27 @@ public final class HttpBasicAuth
     final String [] aElements = RegExHelper.getSplitToArray (sRealHeader, "\\s+", 2);
     if (aElements.length != 2)
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("String is not Basic Auth: " + sRealHeader);
+      LOGGER.error ("String is not Basic Auth: " + sRealHeader);
       return null;
     }
-
     if (!aElements[0].equals (HEADER_VALUE_PREFIX_BASIC))
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("String does not start with 'Basic': " + sRealHeader);
+      LOGGER.error ("String does not start with 'Basic': " + sRealHeader);
       return null;
     }
-
     // Apply Base64 decoding
     final String sEncodedCredentials = aElements[1];
     final String sUsernamePassword = Base64.safeDecodeAsString (sEncodedCredentials, CHARSET);
     if (sUsernamePassword == null)
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
+      LOGGER.error ("Illegal Base64 encoded value '" + sEncodedCredentials + "'");
       return null;
     }
-
     // Do we have a username/password separator?
     final int nIndex = sUsernamePassword.indexOf (USERNAME_PASSWORD_SEPARATOR);
     if (nIndex >= 0)
-      return new BasicAuthClientCredentials (sUsernamePassword.substring (0, nIndex), sUsernamePassword.substring (nIndex + 1));
+      return new BasicAuthClientCredentials (sUsernamePassword.substring (0, nIndex),
+                                             sUsernamePassword.substring (nIndex + 1));
     return new BasicAuthClientCredentials (sUsernamePassword);
   }
 

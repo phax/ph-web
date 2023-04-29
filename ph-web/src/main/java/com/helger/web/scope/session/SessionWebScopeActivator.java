@@ -76,7 +76,6 @@ public final class SessionWebScopeActivator implements
   {
     if (m_aSessionWebScope == null)
       throw new IllegalStateException ("No SessionWebScope is present!");
-
     {
       // Determine all attributes to be passivated
       final ICommonsMap <String, Object> aRelevantObjects = new CommonsHashMap <> ();
@@ -88,14 +87,12 @@ public final class SessionWebScopeActivator implements
       }
       out.writeObject (aRelevantObjects);
     }
-
     if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Wrote info on session web scope '" +
-                     m_aSessionWebScope.getID () +
-                     "' of class " +
-                     ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Wrote info on session web scope '" +
+                   m_aSessionWebScope.getID () +
+                   "' of class " +
+                   ClassHelper.getClassLocalName (this),
+                   ScopeHelper.getDebugStackTrace ());
   }
 
   @SuppressWarnings ("unchecked")
@@ -108,12 +105,11 @@ public final class SessionWebScopeActivator implements
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();
 
     if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Read info on session scope: " +
-                     m_aAttrs.size () +
-                     " attrs of class " +
-                     ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Read info on session scope: " +
+                   m_aAttrs.size () +
+                   " attrs of class " +
+                   ClassHelper.getClassLocalName (this),
+                   ScopeHelper.getDebugStackTrace ());
   }
 
   public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
@@ -128,12 +124,11 @@ public final class SessionWebScopeActivator implements
           ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
 
       if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("Successfully passivated session web scope '" +
-                       m_aSessionWebScope.getID () +
-                       "' of class " +
-                       ClassHelper.getClassLocalName (this),
-                       ScopeHelper.getDebugStackTrace ());
+        LOGGER.info ("Successfully passivated session web scope '" +
+                     m_aSessionWebScope.getID () +
+                     "' of class " +
+                     ClassHelper.getClassLocalName (this),
+                     ScopeHelper.getDebugStackTrace ());
     }
   }
 
@@ -152,7 +147,6 @@ public final class SessionWebScopeActivator implements
       aSessionWebScope.attrs ().putAllIn (m_aAttrs);
       m_aAttrs.clear ();
     }
-
     // Remember for later passivation
     m_aSessionWebScope = aSessionWebScope;
 
@@ -162,13 +156,11 @@ public final class SessionWebScopeActivator implements
         if (aValue instanceof ISessionWebScopeActivationHandler)
           ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
     }
-
     if (ScopeHelper.isDebugSessionScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Successfully activated session web scope '" +
-                     aSessionWebScope.getID () +
-                     "' of class " +
-                     ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Successfully activated session web scope '" +
+                   aSessionWebScope.getID () +
+                   "' of class " +
+                   ClassHelper.getClassLocalName (this),
+                   ScopeHelper.getDebugStackTrace ());
   }
 }

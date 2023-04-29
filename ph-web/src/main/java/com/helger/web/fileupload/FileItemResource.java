@@ -85,16 +85,14 @@ public class FileItemResource implements IReadableResource
   @Nullable
   public URL getAsURL ()
   {
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Cannot convert an IFileItem to a URL: " + toString ());
+    LOGGER.warn ("Cannot convert an IFileItem to a URL: " + toString ());
     return null;
   }
 
   @Nullable
   public File getAsFile ()
   {
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Cannot convert an IFileItem to a File: " + toString ());
+    LOGGER.warn ("Cannot convert an IFileItem to a File: " + toString ());
     return null;
   }
 

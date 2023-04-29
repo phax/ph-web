@@ -53,8 +53,7 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   {
     IPrivilegedAction.authenticatorSetDefault (INSTANCE).invokeSafe ();
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Using AuthenticatorProxySettingsManager as the default Authenticator");
+    LOGGER.info ("Using AuthenticatorProxySettingsManager as the default Authenticator");
   }
 
   /**

@@ -167,8 +167,7 @@ public class MockServletContext implements IServletContext310To400Migration
       {
         if (isReThrowListenerException ())
           throw ex;
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to call contextInitialized on " + aListener, ex);
+        LOGGER.error ("Failed to call contextInitialized on " + aListener, ex);
       }
   }
 
@@ -453,11 +452,9 @@ public class MockServletContext implements IServletContext310To400Migration
     final Servlet aServlet = m_aServletPool.getServletOfPath (sServletPath);
     if (aServlet == null)
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Found no servlet matching '" + sServletPath + "'");
+      LOGGER.error ("Found no servlet matching '" + sServletPath + "'");
       return null;
     }
-
     // Main invocation
     final MockHttpServletResponse ret = new MockHttpServletResponse ();
     try
@@ -492,8 +489,7 @@ public class MockServletContext implements IServletContext310To400Migration
         {
           if (isReThrowListenerException ())
             throw ex;
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Failed to call contextDestroyed on " + aListener, ex);
+          LOGGER.error ("Failed to call contextDestroyed on " + aListener, ex);
         }
 
       m_aAttributes.clear ();

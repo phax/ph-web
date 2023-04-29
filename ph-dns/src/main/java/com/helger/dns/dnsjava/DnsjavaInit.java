@@ -75,8 +75,8 @@ public final class DnsjavaInit
     // Add the custom ones as the last resort
     aConfigProviders.add (CustomServerConfigProvider.createFromInetAddressList (aCustomDNSServers));
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Overwriting dnsjava default ResolverConfiguration. Adding the following custom DNS servers: " + aCustomDNSServers);
+    LOGGER.info ("Overwriting dnsjava default ResolverConfiguration. Adding the following custom DNS servers: " +
+                 aCustomDNSServers);
 
     // And set the globally
     ResolverConfig.setConfigProviders (aConfigProviders);
@@ -87,8 +87,7 @@ public final class DnsjavaInit
     // Default ones
     final ICommonsList <ResolverConfigProvider> aConfigProviders = getDefaultResolverConfigProviders ();
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Setting dnsjava default ResolverConfiguration.");
+    LOGGER.info ("Setting dnsjava default ResolverConfiguration.");
 
     // And set the globally
     ResolverConfig.setConfigProviders (aConfigProviders);

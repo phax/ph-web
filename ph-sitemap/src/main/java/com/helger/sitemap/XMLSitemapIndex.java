@@ -129,7 +129,6 @@ public class XMLSitemapIndex
           aNewURLSet.addURL (aCurrentURL);
         }
       }
-
       // Append last URL - always contains something!
       m_aURLSets.add (aNewURLSet);
     }
@@ -191,12 +190,14 @@ public class XMLSitemapIndex
 
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
-      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC).appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
+      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
+              .appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
       {
-        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD).appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
+        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
+                .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
       }
       ++nIndex;
     }
@@ -244,18 +245,16 @@ public class XMLSitemapIndex
       LOGGER.warn ("No URL sets contained - not doing anything!");
       return ESuccess.FAILURE;
     }
-
     final IXMLWriterSettings aXWS = getXMLWriterSettings ();
 
     // Write base file
-    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath), new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME), aXWS)
-                   .isFailure ())
+    if (MicroWriter.writeToFile (getAsDocument (sFullContextPath),
+                                 new File (aBaseDir, CXMLSitemap.SITEMAP_ENTRY_FILENAME),
+                                 aXWS).isFailure ())
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
+      LOGGER.error ("Failed to write " + CXMLSitemap.SITEMAP_ENTRY_FILENAME + " file!");
       return ESuccess.FAILURE;
     }
-
     // Write all URL sets
     int nIndex = 0;
     for (final XMLSitemapURLSet aURLSet : m_aURLSets)
@@ -265,13 +264,11 @@ public class XMLSitemapIndex
       final OutputStream aOS = _createOutputStream (aFile);
       if (MicroWriter.writeToStream (aURLSet.getAsDocument (), aOS, aXWS).isFailure ())
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to write single sitemap file " + aFile);
+        LOGGER.error ("Failed to write single sitemap file " + aFile);
         return ESuccess.FAILURE;
       }
       nIndex++;
     }
-
     return ESuccess.SUCCESS;
   }
 

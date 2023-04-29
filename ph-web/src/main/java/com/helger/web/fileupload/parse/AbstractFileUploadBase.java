@@ -261,7 +261,6 @@ public abstract class AbstractFileUploadBase
       final IFileItemFactory aFileItemFactory = getFileItemFactory ();
       if (aFileItemFactory == null)
         throw new IllegalStateException ("No FileItemFactory has been set.");
-
       while (aItemIter.hasNext ())
       {
         final IFileItemStream aFileItemStream = aItemIter.next ();
@@ -271,7 +270,8 @@ public abstract class AbstractFileUploadBase
                                                                  aFileItemStream.isFormField (),
                                                                  aFileItemStream.getNameUnchecked ());
         aItems.add (aFileItem);
-        try (final InputStream aIS = aFileItemStream.openStream (); final OutputStream aOS = aFileItem.getOutputStream ())
+        try (final InputStream aIS = aFileItemStream.openStream ();
+             final OutputStream aOS = aFileItem.getOutputStream ())
         {
           final byte [] aBuffer = new byte [8192];
           int nBytesRead;
@@ -287,7 +287,10 @@ public abstract class AbstractFileUploadBase
         }
         catch (final IOException ex)
         {
-          throw new IOFileUploadException ("Processing of " + RequestHelper.MULTIPART_FORM_DATA + " request failed. " + ex.getMessage (),
+          throw new IOFileUploadException ("Processing of " +
+                                           RequestHelper.MULTIPART_FORM_DATA +
+                                           " request failed. " +
+                                           ex.getMessage (),
                                            ex);
         }
         if (aFileItem instanceof IFileItemHeadersSupport)
@@ -321,8 +324,7 @@ public abstract class AbstractFileUploadBase
           catch (final Exception ex)
           {
             // ignore it
-            if (LOGGER.isErrorEnabled ())
-              LOGGER.error ("Failed to delete fileItem " + aFileItem, ex);
+            LOGGER.error ("Failed to delete fileItem " + aFileItem, ex);
           }
         }
       }
@@ -376,10 +378,12 @@ public abstract class AbstractFileUploadBase
     if (sContentDisposition != null)
     {
       final String sContentDispositionLC = sContentDisposition.toLowerCase (Locale.US);
-      if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) || sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
+      if (sContentDispositionLC.startsWith (RequestHelper.FORM_DATA) ||
+          sContentDispositionLC.startsWith (RequestHelper.ATTACHMENT))
       {
         // Parameter parser can handle null input
-        final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (sContentDisposition, ';');
+        final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                           .parse (sContentDisposition, ';');
         if (aParams.containsKey ("filename"))
         {
           sFilename = aParams.get ("filename");
@@ -427,7 +431,8 @@ public abstract class AbstractFileUploadBase
     if (sContentDisposition != null && sContentDisposition.toLowerCase (Locale.US).startsWith (RequestHelper.FORM_DATA))
     {
       // Parameter parser can handle null input
-      final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true).parse (sContentDisposition, ';');
+      final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
+                                                                         .parse (sContentDisposition, ';');
       sFieldName = aParams.get ("name");
       if (sFieldName != null)
         sFieldName = sFieldName.trim ();
@@ -535,8 +540,7 @@ public abstract class AbstractFileUploadBase
     if (nColonOffset == -1)
     {
       // This header line is malformed, skip it.
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Found malformed HTTP header line '" + sHeader + "'");
+      LOGGER.warn ("Found malformed HTTP header line '" + sHeader + "'");
       return;
     }
     final String sHeaderName = sHeader.substring (0, nColonOffset).trim ();
@@ -608,10 +612,8 @@ public abstract class AbstractFileUploadBase
                                                sContentType +
                                                "'");
       }
-
       InputStream aIS = aCtx.getInputStream ();
       final long nContentLength = aCtx.getContentLength ();
-
       if (m_nSizeMax >= 0)
       {
         if (nContentLength < 0)
@@ -647,7 +649,6 @@ public abstract class AbstractFileUploadBase
           }
         }
       }
-
       String sHeaderEncoding = m_sHeaderEncoding;
       if (sHeaderEncoding == null)
         sHeaderEncoding = aCtx.getCharacterEncoding ();
@@ -676,7 +677,6 @@ public abstract class AbstractFileUploadBase
     {
       if (m_bEOF)
         return false;
-
       if (m_aCurrentItem != null)
       {
         m_aCurrentItem.close ();
@@ -689,7 +689,6 @@ public abstract class AbstractFileUploadBase
           bNextPart = m_aMulti.skipPreamble ();
         else
           bNextPart = m_aMulti.readBoundary ();
-
         if (!bNextPart)
         {
           if (m_sCurrentFieldName == null)
@@ -705,14 +704,14 @@ public abstract class AbstractFileUploadBase
         }
         final IFileItemHeaders aFileItemHeaders = getParsedHeaders (m_aMulti.readHeaders ());
         final String sSubContentType = aFileItemHeaders.getHeaderContentType ();
-
         if (m_sCurrentFieldName == null)
         {
           // We're parsing the outer multipart
           final String sFieldName = getFieldName (aFileItemHeaders);
           if (sFieldName != null)
           {
-            if (sSubContentType != null && sSubContentType.toLowerCase (Locale.US).startsWith (RequestHelper.MULTIPART_MIXED))
+            if (sSubContentType != null &&
+                sSubContentType.toLowerCase (Locale.US).startsWith (RequestHelper.MULTIPART_MIXED))
             {
               m_sCurrentFieldName = sFieldName;
               // Multiple files associated with this field name

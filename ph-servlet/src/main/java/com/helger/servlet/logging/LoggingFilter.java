@@ -110,7 +110,6 @@ public class LoggingFilter extends AbstractHttpServletFilter
     {
       aLoggingRequest.setBody (sContent.substring (0, Math.min (sContent.length (), m_nMaxContentSize)));
     }
-
     return aLoggingRequest.getAsJson ().getAsJsonString ();
   }
 
@@ -130,7 +129,6 @@ public class LoggingFilter extends AbstractHttpServletFilter
     {
       aLoggingResponse.setBody (content.substring (0, Math.min (content.length (), m_nMaxContentSize)));
     }
-
     return aLoggingResponse.getAsJson ().getAsJsonString ();
   }
 
@@ -144,9 +142,10 @@ public class LoggingFilter extends AbstractHttpServletFilter
    * @return <code>true</code> to log, <code>false</code> to not log the request
    */
   @OverrideOnDemand
-  protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
+  protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                                  @Nonnull final HttpServletResponse aHttpResponse)
   {
-    boolean bLog = isGloballyEnabled () && m_aLogger.isInfoEnabled ();
+    boolean bLog = isGloballyEnabled ();
     if (bLog)
     {
       // Check for excluded path
@@ -171,13 +170,11 @@ public class LoggingFilter extends AbstractHttpServletFilter
       final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest);
       final LoggingHttpServletResponseWrapper aResponseWrapper = new LoggingHttpServletResponseWrapper (aHttpResponse);
 
-      if (m_aLogger.isInfoEnabled ())
-        m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
+      m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));
 
       aFilterChain.doFilter (aRequestWrapper, aResponseWrapper);
 
-      if (m_aLogger.isInfoEnabled ())
-        m_aLogger.info (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
+      m_aLogger.info (m_sResponsePrefix + getResponseDescription (aResponseWrapper));
 
       aResponseWrapper.writeContentTo (aHttpResponse.getOutputStream ());
     }

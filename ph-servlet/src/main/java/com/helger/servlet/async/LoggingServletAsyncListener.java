@@ -41,28 +41,24 @@ public class LoggingServletAsyncListener extends AbstractServletAsyncListener
   @Override
   public void onStartAsync (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("onStartAsync " + aAsyncEvent);
+    LOGGER.info ("onStartAsync " + aAsyncEvent);
   }
 
   @Override
   public void onComplete (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("onComplete " + aAsyncEvent);
+    LOGGER.info ("onComplete " + aAsyncEvent);
   }
 
   @Override
   public void onError (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (LOGGER.isErrorEnabled ())
-      LOGGER.error ("onError " + aAsyncEvent);
+    LOGGER.error ("onError " + aAsyncEvent);
   }
 
   @Override
   public void onTimeout (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
   {
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("onTimeout " + aAsyncEvent);
+    LOGGER.warn ("onTimeout " + aAsyncEvent);
   }
 }

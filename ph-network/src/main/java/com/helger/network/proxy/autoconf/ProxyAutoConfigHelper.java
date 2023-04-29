@@ -77,8 +77,7 @@ public final class ProxyAutoConfigHelper
         SCRIPT_ENGINE.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
         final long nMS = aSW.stopAndGetMillis ();
         if (nMS > 100)
-          if (LOGGER.isInfoEnabled ())
-            LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
+          LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
       }
       catch (final ScriptException ex)
       {
@@ -119,7 +118,6 @@ public final class ProxyAutoConfigHelper
       LOGGER.warn ("Because no Nashorn ScriptEngine could be created, no proxy can be found");
       return null;
     }
-
     // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
     // PAC file!
     final Object aResult = SCRIPT_ENGINE.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
@@ -144,8 +142,8 @@ public final class ProxyAutoConfigHelper
   }
 
   @Nonnull
-  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL,
-                                                           @Nonnull final String sHost) throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL, @Nonnull final String sHost)
+                                                                                                                    throws ScriptException
   {
     final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);
@@ -199,10 +197,8 @@ public final class ProxyAutoConfigHelper
                   }
                 }
               }
-
           if (bError)
-            if (LOGGER.isWarnEnabled ())
-              LOGGER.warn ("Found unknown proxy directive '" + sDirective + "'");
+            LOGGER.warn ("Found unknown proxy directive '" + sDirective + "'");
         }
       }
     }

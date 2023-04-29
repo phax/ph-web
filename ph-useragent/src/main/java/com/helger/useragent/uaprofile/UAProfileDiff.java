@@ -68,21 +68,18 @@ public class UAProfileDiff
     if (m_aMD5Digest != null)
     {
       // Verify MD5 digest
-      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8), EMessageDigestAlgorithm.MD5)
-                                                      .bytes ();
+      final byte [] aCalcedDigest = MessageDigestValue.create (sData.getBytes (StandardCharsets.UTF_8),
+                                                               EMessageDigestAlgorithm.MD5).bytes ();
       if (!Arrays.equals (m_aMD5Digest, aCalcedDigest))
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("MD5 digest mismatch of profile diff data! Expected '" +
-                       Base64.encodeBytes (aCalcedDigest) +
-                       "' but have '" +
-                       Base64.encodeBytes (m_aMD5Digest) +
-                       "'");
+        LOGGER.warn ("MD5 digest mismatch of profile diff data! Expected '" +
+                     Base64.encodeBytes (aCalcedDigest) +
+                     "' but have '" +
+                     Base64.encodeBytes (m_aMD5Digest) +
+                     "'");
     }
-
     m_aDocument = MicroReader.readMicroXML (sData);
     if (m_aDocument == null)
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Failed to parse profile diff data as XML '" + sData + "'");
+      LOGGER.warn ("Failed to parse profile diff data as XML '" + sData + "'");
   }
 
   @Nonnull

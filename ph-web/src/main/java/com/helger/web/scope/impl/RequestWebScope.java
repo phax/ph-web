@@ -34,6 +34,8 @@ import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.attr.AttributeContainerAny;
 import com.helger.commons.collection.attr.IAttributeContainerAny;
+import com.helger.commons.collection.impl.CommonsLinkedHashSet;
+import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.collection.iterate.EmptyEnumeration;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.datetime.PDTFactory;
@@ -41,6 +43,7 @@ import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.commons.lang.ClassHelper;
 import com.helger.commons.state.EChange;
+import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.scope.AbstractScope;
 import com.helger.scope.ScopeHelper;
@@ -162,12 +165,11 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Created request web scope '" +
-                     super.getID () +
-                     "' of class " +
-                     ClassHelper.getClassLocalName (RequestWebScope.class),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Created request web scope '" +
+                   super.getID () +
+                   "' of class " +
+                   ClassHelper.getClassLocalName (RequestWebScope.class),
+                   ScopeHelper.getDebugStackTrace ());
   }
 
   @Nonnull
@@ -207,7 +209,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
            (c >= 0xb && c <= 0xc) ||
            (c >= 0xe && c <= 0x1f) ||
            (c == 0x7f) ||
-           (c >= 0xd800 && c <= 0xdfff) ||
+           // Surrogate chars
+           // (c >= 0xd800 && c <= 0xdfff) ||
            (c >= 0xfffe && c <= 0xffff);
   }
 
@@ -229,20 +232,28 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final StringBuilder aCleanValue = new StringBuilder (s.length ());
     int nForbidden = 0;
 
+    final ICommonsOrderedSet <Character> aInvalidChars = new CommonsLinkedHashSet <> ();
     for (final char c : s.toCharArray ())
       if (isForbiddenParamValueChar (c))
+      {
         nForbidden++;
+        aInvalidChars.add (Character.valueOf (c));
+      }
       else
         aCleanValue.append (c);
-
     if (nForbidden == 0)
     {
       // Return "as-is"
       return s;
     }
-
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Removed " + nForbidden + " forbidden character(s) from a request parameter value!");
+    LOGGER.warn ("Removed " +
+                 nForbidden +
+                 " forbidden character(s) from a request parameter value! Invalid chars are: " +
+                 StringHelper.imploder ()
+                             .separator (", ")
+                             .source (aInvalidChars,
+                                      x -> "0x" + StringHelper.getHexStringLeadingZero (x.charValue (), 2))
+                             .build ());
 
     return aCleanValue.toString ();
   }
@@ -261,19 +272,16 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Nullable
   public static String getWithoutForbiddenCharsAndNormalized (@Nullable final String s)
   {
-    String sValue = s;
+    if (s == null)
+      return null;
 
     // Removed forbidden chars first
+    final String sValue = getWithoutForbiddenChars (s);
     if (sValue == null)
       return null;
-    sValue = getWithoutForbiddenChars (sValue);
 
     // than normalize
-    if (sValue == null)
-      return null;
-    sValue = Normalizer.normalize (sValue, Normalizer.Form.NFKC);
-
-    return sValue;
+    return Normalizer.normalize (sValue, Normalizer.Form.NFKC);
   }
 
   public final void initScope ()
@@ -285,11 +293,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     final IAttributeContainerAny <String> aAttrs = attrs ();
     if (aAttrs.getAndSetFlag (REQUEST_ATTR_SCOPE_INITED))
     {
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Scope was already inited: " + toString ());
+      LOGGER.warn ("Scope was already inited: " + toString ());
       return;
     }
-
     final IRequestParamContainer aParams = params ();
 
     // where some extra items (like file items) handled?
@@ -348,19 +354,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
           }
           aPreProcessedValues[i] = sValue;
         }
-
         aParams.putIn (sParamName, aPreProcessedValues);
       }
     }
-
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Initialized request web scope '" +
-                     getID () +
-                     "' of class " +
-                     ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Initialized request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+                   ScopeHelper.getDebugStackTrace ());
   }
 
   @Override
@@ -372,9 +372,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
         ((IFileItem) o).onEndOfRequest ();
 
     if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+      LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
+                   ScopeHelper.getDebugStackTrace ());
   }
 
   @Nonnull
@@ -423,7 +422,6 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       // for e.g. "abc.def"
       return true;
     }
-
     // true for e.g. "/path/paths/abc.def"
     // false for e.g. "/path/pa.th/def"
     return nLastDot > nLastSlash;

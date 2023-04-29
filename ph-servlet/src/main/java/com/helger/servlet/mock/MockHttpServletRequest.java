@@ -269,7 +269,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       for (final ServletRequestListener aListener : MockHttpListener.getAllServletRequestListeners ())
         aListener.requestDestroyed (aSRE);
     }
-
     close ();
     clearAttributes ();
   }
@@ -921,8 +920,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public MockHttpServletRequest setContextPath (@Nullable final String sContextPath)
   {
     if (StringHelper.hasText (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Illegal context path specified: '" + sContextPath + "'");
+      LOGGER.error ("Illegal context path specified: '" + sContextPath + "'");
     m_sContextPath = sContextPath;
     return this;
   }
@@ -1014,8 +1012,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public MockHttpServletRequest setServletPath (@Nullable final String sServletPath)
   {
     if (StringHelper.hasText (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
+      LOGGER.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
     m_sServletPath = sServletPath;
     return this;
   }
@@ -1240,7 +1237,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         {
           setContextPath ("");
         }
-
         // Servlet path
         final int nIndex = sPath.indexOf ('/', 1);
         if (nIndex >= 0)
@@ -1253,7 +1249,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
           setServletPath (sPath);
           sPath = "";
         }
-
         // Remaining is the path info:
         setPathInfo (sPath);
 
@@ -1267,7 +1262,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         return this;
       }
     }
-
     setScheme (null);
     setSecure (false);
     setServerName (null);

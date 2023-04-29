@@ -92,8 +92,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                              @Nonnull final UnifiedResponse aUnifiedResponse,
                              @Nonnull final Throwable t) throws IOException, ServletException
   {
-    if (LOGGER.isErrorEnabled ())
-      LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURLEncoded () + "'", t);
+    LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURLEncoded () + "'", t);
 
     // Invoke exception handler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())
@@ -133,7 +132,6 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         }
         m_aStatsModifiedIfModifiedSince.increment ();
       }
-
       // Get the If-Unmodified-Since date header
       final long nRequestIfUnmodifiedSince = aHttpRequest.getDateHeader (CHttpHeader.IF_UNMODIFIED_SINCE);
       if (nRequestIfUnmodifiedSince >= 0)
@@ -150,12 +148,10 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         }
         m_aStatsModifiedIfUnmodifiedSince.increment ();
       }
-
       // No If-Modified-Since request header present, set the Last-Modified
       // header for later reuse
       aUnifiedResponse.setLastModified (aLastModification);
     }
-
     // Handle the ETag
     final String sSupportedETag = m_aSimpleHandler.getSupportedETag (aRequestScope);
     if (StringHelper.hasText (sSupportedETag))
@@ -170,8 +166,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         final ICommonsList <String> aAllETags = RegExHelper.getSplitToList (sRequestETags, ",\\s+");
         if (aAllETags.isEmpty ())
         {
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("Empty ETag list found (" + sRequestETags + ")");
+          LOGGER.warn ("Empty ETag list found (" + sRequestETags + ")");
         }
         else
         {
@@ -189,7 +184,6 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         }
         m_aStatsModifiedIfNonMatch.increment ();
       }
-
       // Save the ETag for the response
       aUnifiedResponse.setETagIfApplicable (sSupportedETag);
     }
@@ -226,7 +220,6 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
           aUnifiedResponse.setStatus (HttpServletResponse.SC_NOT_MODIFIED);
           bExecute = false;
         }
-
       if (bExecute)
       {
         // On request begin
@@ -238,7 +231,6 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         {
           _onException (aRequestScope, aUnifiedResponse, ex);
         }
-
         Throwable aCaughtException = null;
         try
         {

@@ -87,8 +87,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
 
     final String sKey = aAttachment.getFilename ();
     if (m_aMap.containsKey (sKey))
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Overwriting email attachment with filename '" + sKey + "'");
+      LOGGER.warn ("Overwriting email attachment with filename '" + sKey + "'");
     m_aMap.put (sKey, aAttachment);
   }
 

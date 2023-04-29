@@ -71,11 +71,11 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
   }
 
   @Nullable
-  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases, @Nullable final SSLParameters aSSLParameters)
+  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases,
+                             @Nullable final SSLParameters aSSLParameters)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("chooseAlias(" + aAliases + ", " + aSSLParameters + ")");
-
     for (final String sCurAlias : aAliases.keySet ())
     {
       // Case insensitive alias handling
@@ -90,18 +90,19 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
         {
           // Case insensitive match
           if (m_bWarnOnCaseDifference)
-            if (LOGGER.isWarnEnabled ())
-              LOGGER.warn ("Chose the keystore alias '" +
-                           sCurAlias +
-                           "' but the configured alias '" +
-                           m_sExpectedAlias +
-                           "' has a different casing. It is recommended to adopt the expected alias accordingly.");
+            LOGGER.warn ("Chose the keystore alias '" +
+                         sCurAlias +
+                         "' but the configured alias '" +
+                         m_sExpectedAlias +
+                         "' has a different casing. It is recommended to adopt the expected alias accordingly.");
         }
         return sCurAlias;
       }
     }
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Found no certificate alias matching '" + m_sExpectedAlias + "' in the provided aliases " + aAliases.keySet ());
+    LOGGER.warn ("Found no certificate alias matching '" +
+                 m_sExpectedAlias +
+                 "' in the provided aliases " +
+                 aAliases.keySet ());
     return null;
   }
 }

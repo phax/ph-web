@@ -135,15 +135,12 @@ public class NaptrResolver
         aMatchingRecords.add (aRecord);
       }
     }
-
     if (aMatchingRecords.isEmpty ())
     {
       // No matching NAPTR present
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
+      LOGGER.warn ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
       return null;
     }
-
     // Sort by order than by preference according to RFC 2915
     aMatchingRecords.sort ( (x, y) -> {
       int ret = CompareHelper.compare (x.getOrder (), y.getOrder ());
@@ -168,13 +165,11 @@ public class NaptrResolver
         }
       }
     }
-
     // Weird - no regexp present
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("None of the matching DNS NAPTR records for '" +
-                   m_sDomainName +
-                   "' has a valid regular expression. Details: " +
-                   aMatchingRecords);
+    LOGGER.warn ("None of the matching DNS NAPTR records for '" +
+                 m_sDomainName +
+                 "' has a valid regular expression. Details: " +
+                 aMatchingRecords);
     return null;
   }
 

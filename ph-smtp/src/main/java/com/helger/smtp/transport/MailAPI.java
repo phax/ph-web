@@ -123,8 +123,7 @@ public final class MailAPI
         aMailQueue.setFailedMailQueue (aFailedMailQueue);
     });
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Set FailedMailQueue to " + aFailedMailQueue);
+    LOGGER.info ("Set FailedMailQueue to " + aFailedMailQueue);
   }
 
   @Nonnull
@@ -176,7 +175,8 @@ public final class MailAPI
    * @return {@link ESuccess}.
    */
   @Nonnull
-  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final IMutableEmailData aMailData)
+  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings,
+                                    @Nonnull final IMutableEmailData aMailData)
   {
     final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <> (aMailData));
     return ESuccess.valueOf (nQueuedMails == 1);
@@ -224,7 +224,6 @@ public final class MailAPI
     {
       RW_LOCK.writeLock ().unlock ();
     }
-
     int nQueuedMails = 0;
     final boolean bSendVendorOnlyMails = GlobalDebug.isDebugMode ();
 
@@ -236,28 +235,22 @@ public final class MailAPI
         LOGGER.error ("Mail data is null! Ignoring this item completely.");
         continue;
       }
-
       // queue the mail
       STATS_MAILS_QUEUED.increment ();
 
       // Do some consistency checks to ensure this particular email can be
       // send
       boolean bCanQueue = true;
-
       if (aEmailData.getFrom () == null)
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
+        LOGGER.error ("Mail data has no sender address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
-
       if (aEmailData.to ().isEmpty ())
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
+        LOGGER.error ("Mail data has no receiver address: " + aEmailData + " - not queuing!");
         bCanQueue = false;
       }
-
       if (bSendVendorOnlyMails)
       {
         // In the debug version we can *only* send to vendor addresses!
@@ -265,26 +258,23 @@ public final class MailAPI
             hasNonVendorEmailAddress (aEmailData.cc ()) ||
             hasNonVendorEmailAddress (aEmailData.bcc ()))
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Debug mode: ignoring mail TO '" +
-                          aEmailData.to () +
-                          "'" +
-                          (aEmailData.cc ().isNotEmpty () ? " and CC '" + aEmailData.cc () + "'" : "") +
-                          (aEmailData.bcc ().isNotEmpty () ? " and BCC '" + aEmailData.bcc () + "'" : "") +
-                          " because at least one address is not targeted to the vendor domain '" +
-                          VendorInfo.getVendorEmailSuffix () +
-                          "'");
+          LOGGER.error ("Debug mode: ignoring mail TO '" +
+                        aEmailData.to () +
+                        "'" +
+                        (aEmailData.cc ().isNotEmpty () ? " and CC '" + aEmailData.cc () + "'" : "") +
+                        (aEmailData.bcc ().isNotEmpty () ? " and BCC '" + aEmailData.bcc () + "'" : "") +
+                        " because at least one address is not targeted to the vendor domain '" +
+                        VendorInfo.getVendorEmailSuffix () +
+                        "'");
           bCanQueue = false;
         }
       }
-
       // Check if queue is already stopped
       if (aSMTPQueue.isStopped ())
       {
         LOGGER.error ("Queue is already stopped - not queuing!");
         bCanQueue = false;
       }
-
       boolean bWasQueued = false;
       Exception aException = null;
       if (bCanQueue)
@@ -292,26 +282,20 @@ public final class MailAPI
         // Check if a subject is present
         if (StringHelper.hasNoText (aEmailData.getSubject ()))
         {
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
+          LOGGER.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
           aEmailData.setSubject (DEFAULT_SUBJECT);
         }
-
         // Check if a body is present
         if (StringHelper.hasNoText (aEmailData.getBody ()))
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("Mail data has no body: " + aEmailData);
-
+          LOGGER.warn ("Mail data has no body: " + aEmailData);
         if (bSendVendorOnlyMails)
         {
           // Add special debug prefix
           if (!StringHelper.startsWith (aEmailData.getSubject (), DEBUG_SUBJECT_PREFIX))
             aEmailData.setSubject (DEBUG_SUBJECT_PREFIX + aEmailData.getSubject ());
 
-          if (LOGGER.isInfoEnabled ())
-            LOGGER.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
+          LOGGER.info ("Sending only-to-vendor mail in debug version:\n" + aSMTPSettings + "\n" + aEmailData);
         }
-
         // Uses UTC timezone!
         aEmailData.setSentDateTime (PDTFactory.getCurrentLocalDateTime ());
         try
@@ -333,11 +317,11 @@ public final class MailAPI
       {
         aException = new MailSendException ("Email cannot be queued because internal constraints are not fulfilled!");
       }
-
       if (!bWasQueued)
       {
         // Mail was not queued - put in failed mail queue
-        aSMTPQueue.getFailedMailQueue ().add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
+        aSMTPQueue.getFailedMailQueue ()
+                  .add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
       }
     }
     return nQueuedMails;
@@ -403,21 +387,19 @@ public final class MailAPI
       // Subtract 1 for the STOP_MESSAGE
       final int nQueueLength = _getTotalQueueLength () - 1;
       if (nQueues > 0 || nQueueLength > 0)
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("Stopping central mail queues: " +
-                       nQueues +
-                       " queue" +
-                       (nQueues == 1 ? "" : "s") +
-                       " with " +
-                       nQueueLength +
-                       " mail" +
-                       (nQueueLength == 1 ? "" : "s"));
+        LOGGER.info ("Stopping central mail queues: " +
+                     nQueues +
+                     " queue" +
+                     (nQueues == 1 ? "" : "s") +
+                     " with " +
+                     nQueueLength +
+                     " mail" +
+                     (nQueueLength == 1 ? "" : "s"));
     }
     finally
     {
       RW_LOCK.writeLock ().unlock ();
     }
-
     // Don't wait in a writeLock!
     try
     {

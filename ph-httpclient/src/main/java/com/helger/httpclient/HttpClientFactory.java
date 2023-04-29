@@ -344,8 +344,7 @@ public class HttpClientFactory implements IHttpClientProvider
             if (aNonProxyHosts.contains (sHostname))
             {
               // Return direct route
-              if (LOGGER.isInfoEnabled ())
-                LOGGER.info ("Not using proxy host for route to '" + sHostname + "'");
+              LOGGER.info ("Not using proxy host for route to '" + sHostname + "'");
               return null;
             }
             return aProxyHost;

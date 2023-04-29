@@ -54,16 +54,10 @@ public class QValue implements Comparable <QValue>
   public QValue (@Nonnegative final double dQuality)
   {
     if (dQuality < MIN_QUALITY)
-    {
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("QValue is too small: " + dQuality);
-    }
+      LOGGER.warn ("QValue is too small: " + dQuality);
     else
       if (dQuality > MAX_QUALITY)
-      {
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("QValue is too large: " + dQuality);
-      }
+        LOGGER.warn ("QValue is too large: " + dQuality);
     m_dQuality = getValueInRange (dQuality);
   }
 

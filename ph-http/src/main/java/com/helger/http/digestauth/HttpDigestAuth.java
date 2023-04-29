@@ -82,21 +82,16 @@ public final class HttpDigestAuth
     final String sRealHeader = StringHelper.trim (sAuthHeader);
     if (StringHelper.hasNoText (sRealHeader))
       return null;
-
     if (!sRealHeader.startsWith (HEADER_VALUE_PREFIX_DIGEST))
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("String does not start with '" + HEADER_VALUE_PREFIX_DIGEST + "'");
+      LOGGER.error ("String does not start with '" + HEADER_VALUE_PREFIX_DIGEST + "'");
       return null;
     }
-
     final char [] aChars = sRealHeader.toCharArray ();
     int nIndex = HEADER_VALUE_PREFIX_DIGEST.length ();
-
     if (nIndex >= aChars.length || !HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("No whitespace after '" + HEADER_VALUE_PREFIX_DIGEST + "'");
+      LOGGER.error ("No whitespace after '" + HEADER_VALUE_PREFIX_DIGEST + "'");
       return null;
     }
     nIndex++;
@@ -114,8 +109,7 @@ public final class HttpDigestAuth
         nIndex++;
       if (nStartIndex == nIndex)
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("No token and no whitespace found for auth-param name: '" + aChars[nIndex] + "'");
+        LOGGER.error ("No token and no whitespace found for auth-param name: '" + aChars[nIndex] + "'");
         return null;
       }
       final String sToken = sRealHeader.substring (nStartIndex, nIndex);
@@ -123,11 +117,9 @@ public final class HttpDigestAuth
       // Skip all spaces
       while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
-
       if (nIndex >= aChars.length || aChars[nIndex] != '=')
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("No separator char '=' found after '" + sToken + "'");
+        LOGGER.error ("No separator char '=' found after '" + sToken + "'");
         return null;
       }
       nIndex++;
@@ -135,14 +127,11 @@ public final class HttpDigestAuth
       // Skip all spaces
       while (nIndex < aChars.length && HttpStringHelper.isLinearWhitespaceChar (aChars[nIndex]))
         nIndex++;
-
       if (nIndex >= aChars.length)
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Found nothing after '=' of '" + sToken + "'");
+        LOGGER.error ("Found nothing after '=' of '" + sToken + "'");
         return null;
       }
-
       String sValue;
       if (aChars[nIndex] == HttpStringHelper.QUOTEDTEXT_BEGIN)
       {
@@ -153,14 +142,16 @@ public final class HttpDigestAuth
           nIndex++;
         if (nIndex >= aChars.length)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Unexpected EOF in quoted text for '" + sToken + "'");
+          LOGGER.error ("Unexpected EOF in quoted text for '" + sToken + "'");
           return null;
         }
         if (aChars[nIndex] != HttpStringHelper.QUOTEDTEXT_END)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Quoted string of token '" + sToken + "' is not terminated correctly: '" + aChars[nIndex] + "'");
+          LOGGER.error ("Quoted string of token '" +
+                        sToken +
+                        "' is not terminated correctly: '" +
+                        aChars[nIndex] +
+                        "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);
@@ -176,13 +167,15 @@ public final class HttpDigestAuth
           nIndex++;
         if (nStartIndex == nIndex)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("No token and no whitespace found for auth-param value of '" + sToken + "': '" + aChars[nIndex] + "'");
+          LOGGER.error ("No token and no whitespace found for auth-param value of '" +
+                        sToken +
+                        "': '" +
+                        aChars[nIndex] +
+                        "'");
           return null;
         }
         sValue = sRealHeader.substring (nStartIndex, nIndex);
       }
-
       // Remember key/value pair
       aParams.put (sToken, sValue);
 
@@ -196,24 +189,19 @@ public final class HttpDigestAuth
         // No more tokens - we're done
         break;
       }
-
       // If there is a comma, another parameter is expected
       if (aChars[nIndex] != ',')
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Illegal character after auth-param '" + sToken + "': '" + aChars[nIndex] + "'");
+        LOGGER.error ("Illegal character after auth-param '" + sToken + "': '" + aChars[nIndex] + "'");
         return null;
       }
       ++nIndex;
-
       if (nIndex >= aChars.length)
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Found nothing after continuation of auth-param '" + sToken + "'");
+        LOGGER.error ("Found nothing after continuation of auth-param '" + sToken + "'");
         return null;
       }
     }
-
     return aParams;
   }
 
@@ -269,8 +257,7 @@ public final class HttpDigestAuth
     final String sMessageQOP = aParams.remove ("qop");
     final String sNonceCount = aParams.remove ("nc");
     if (aParams.isNotEmpty ())
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Digest Auth contains unhandled parameters: " + aParams.toString ());
+      LOGGER.warn ("Digest Auth contains unhandled parameters: " + aParams.toString ());
 
     return new DigestAuthClientCredentials (sUserName,
                                             sRealm,
@@ -407,7 +394,6 @@ public final class HttpDigestAuth
         throw new IllegalArgumentException ("Algorithm requires client nonce!");
       sHA1 = _md5 (sHA1 + SEPARATOR + sServerNonce + SEPARATOR + sClientNonce);
     }
-
     // Create HA2
     // Method name must be upper-case!
     final String sHA2 = _md5 (eMethod.getName () + SEPARATOR + sDigestURI);
@@ -433,7 +419,6 @@ public final class HttpDigestAuth
                              SEPARATOR +
                              sHA2);
     }
-
     return new DigestAuthClientCredentials (sUserName,
                                             sRealm,
                                             sServerNonce,

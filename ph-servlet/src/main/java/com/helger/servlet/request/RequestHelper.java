@@ -398,8 +398,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
-                                               : getRequestURIDecoded (aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (
+                                                                                                             aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -407,7 +407,6 @@ public final class RequestHelper
         LOGGER.debug ("Having empty request URI '" + sRequestURI + "' from request " + aHttpRequest);
       return "/";
     }
-
     // Always use the context path
     final String sContextPath = ServletContextPathHolder.getContextPath ();
     if (StringHelper.hasNoText (sContextPath) || !sRequestURI.startsWith (sContextPath))
@@ -504,9 +503,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (),
-                              aHttpRequest.getServerName (),
-                              aHttpRequest.getServerPort ()).append (getRequestURIDecoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
+                                                                                                                      .append (getRequestURIDecoded (aHttpRequest));
   }
 
   /**
@@ -539,9 +537,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (),
-                              aHttpRequest.getServerName (),
-                              aHttpRequest.getServerPort ()).append (getRequestURIEncoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
+                                                                                                                      .append (getRequestURIEncoded (aHttpRequest));
   }
 
   /**
@@ -861,7 +858,6 @@ public final class RequestHelper
       // Missing support > 2GB!!!
       return aHttpRequest.getContentLength ();
     }
-
     final String sContentLength = aHttpRequest.getHeader (CHttpHeader.CONTENT_LENGTH);
     return StringParser.parseLong (sContentLength, -1L);
   }
@@ -879,20 +875,17 @@ public final class RequestHelper
       // No client certificates present
       return null;
     }
-
     // type check
     if (!aDstClass.isAssignableFrom (aValue.getClass ()))
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Request attribute " +
-                      sAttrName +
-                      " is not of type " +
-                      aDstClass.getName () +
-                      " but of type " +
-                      aValue.getClass ().getName ());
+      LOGGER.error ("Request attribute " +
+                    sAttrName +
+                    " is not of type " +
+                    aDstClass.getName () +
+                    " but of type " +
+                    aValue.getClass ().getName ());
       return null;
     }
-
     // Return the certificates
     return aDstClass.cast (aValue);
   }

@@ -103,10 +103,8 @@ public class NonCachingDnsResolver implements DnsResolver
     }
     catch (final TextParseException ex)
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Failed to parse host '" + sRealHost + "'", ex);
+      LOGGER.error ("Failed to parse host '" + sRealHost + "'", ex);
     }
-
     final InetAddress [] ret;
     if (aRecords == null || aRecords.length == 0)
     {
@@ -149,12 +147,14 @@ public class NonCachingDnsResolver implements DnsResolver
           else
           {
             if (LOGGER.isDebugEnabled ())
-              LOGGER.debug ("Unknown record type found for host '" + sRealHost + "': " + ClassHelper.getClassLocalName (aRecord));
+              LOGGER.debug ("Unknown record type found for host '" +
+                            sRealHost +
+                            "': " +
+                            ClassHelper.getClassLocalName (aRecord));
           }
       }
       ret = aAddrs.toArray (new InetAddress [aAddrs.size ()]);
     }
-
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Return for '" + sRealHost + "': " + Arrays.toString (ret));
     return ret;

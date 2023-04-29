@@ -110,8 +110,7 @@ public final class ServletHelper
     {
       // Happens in certain Tomcat versions (e.g. 7.0.42 with JDK 8):
       if (isLogExceptions ())
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", ex);
+        LOGGER.warn ("[ServletHelper] Failed to set attribute '" + sAttrName + "' in HTTP request", ex);
     }
   }
 
@@ -176,16 +175,13 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine context path of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine context path of HTTP request", ex);
       }
-
     if (ret == null)
     {
       // Fallback
       ret = sFallback;
     }
-
     return StringHelper.getNotNull (ret, "");
   }
 
@@ -217,8 +213,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine path info of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine path info of HTTP request", ex);
       }
     return ret == null ? "" : ret;
   }
@@ -253,8 +248,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine query string of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine query string of HTTP request", ex);
       }
     return ret;
   }
@@ -282,8 +276,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine request URI of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine request URI of HTTP request", ex);
       }
     return ret;
   }
@@ -309,8 +302,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine request URL of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine request URL of HTTP request", ex);
       }
     return ret != null ? ret : new StringBuffer ();
   }
@@ -343,8 +335,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine servlet path of HTTP request", ex);
       }
     return ret;
   }
@@ -377,8 +368,7 @@ public final class ServletHelper
       {
         // fall through
         if (isLogExceptions ())
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
+          LOGGER.warn ("[ServletHelper] Failed to determine cookies of HTTP request", ex);
       }
     return ret;
   }
@@ -417,8 +407,7 @@ public final class ServletHelper
       }
       catch (final UnsupportedEncodingException ex)
       {
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to set request character encoding to '" + sCharset + "'", ex);
+        LOGGER.error ("Failed to set request character encoding to '" + sCharset + "'", ex);
       }
   }
 

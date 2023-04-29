@@ -56,13 +56,11 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
     if (sPoxy != null)
     {
       // potentially malicious request - log and block
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("httpoxy request successfully blocked: " + aHttpRequest);
+      LOGGER.warn ("httpoxy request successfully blocked: " + aHttpRequest);
       RequestLogger.logRequestComplete (aHttpRequest);
       aHttpResponse.sendError (HttpServletResponse.SC_BAD_REQUEST);
       return EContinue.BREAK;
     }
-
     // Continue with request
     return EContinue.CONTINUE;
   }

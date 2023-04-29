@@ -96,8 +96,7 @@ public final class WebScopeManager
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
     SESSION_PASSIVATION_ALLOWED.set (bSessionPassivationAllowed);
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
+    LOGGER.info ("Session passivation is now " + (bSessionPassivationAllowed ? "enabled" : "disabled"));
 
     // For passivation to work, the session scopes may not be invalidated at the
     // end of the global scope!
@@ -174,8 +173,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
+      LOGGER.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
       return null;
     }
   }
@@ -270,18 +268,15 @@ public final class WebScopeManager
         // listeners for session events!
         // Or after an application server restart, if the cookie from the old
         // server is present and session passivation is not enabled
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Creating a new session web scope for ID '" +
-                       sSessionID +
-                       "' but there should already be one!" +
-                       " Check your HttpSessionListener implementation." +
-                       " Ignore this after a application server restart.");
+        LOGGER.warn ("Creating a new session web scope for ID '" +
+                     sSessionID +
+                     "' but there should already be one!" +
+                     " Check your HttpSessionListener implementation." +
+                     " Ignore this after a application server restart.");
       }
-
       // Create a new session scope
       aSessionWebScope = onSessionBegin (aHttpSession);
     }
-
     try
     {
       return (ISessionWebScope) aSessionWebScope;
@@ -409,14 +404,12 @@ public final class WebScopeManager
 
       // Ensure that session.invalidate can not be called recursively
       final boolean bCanInvalidateSession = RW_LOCK.writeLockedBoolean ( () -> SESSION_IN_INVALIDATION.add (sSessionID));
-
       if (bCanInvalidateSession)
       {
         try
         {
           aHttpSession.invalidate ();
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
+          LOGGER.warn ("Found no session scope but invalidated session '" + sSessionID + "' anyway");
         }
         catch (final IllegalStateException ex)
         {
@@ -460,8 +453,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
+      LOGGER.warn ("Request scope object is not a request web scope: " + aRequestScope, ex);
       return null;
     }
   }

@@ -78,11 +78,9 @@ public final class AcceptEncodingHandler
         final String sEncoding = aParts[0];
         if (StringHelper.hasNoText (sEncoding))
         {
-          if (LOGGER.isWarnEnabled ())
-            LOGGER.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
+          LOGGER.warn ("Accept-Encoding item '" + sItem + "' has no encoding!");
           continue;
         }
-
         // Default quality is 1
         double dQuality = QValue.MAX_QUALITY;
         if (aParts.length == 2)

@@ -128,13 +128,12 @@ public class NaptrLookup
     // Omit the final dot
     final String sDomainName = m_aDomainName.toString (true);
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Trying to look up NAPTR on '" +
-                   sDomainName +
-                   "'" +
-                   (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
-                   " using network mode " +
-                   m_eLookupMode);
+    LOGGER.info ("Trying to look up NAPTR on '" +
+                 sDomainName +
+                 "'" +
+                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
+                 " using network mode " +
+                 m_eLookupMode);
 
     final BooleanSupplier aIsEnabled = m_bDebugMode ? LOGGER::isInfoEnabled : LOGGER::isDebugEnabled;
     final Consumer <String> aLogger = m_bDebugMode ? LOGGER::info : LOGGER::debug;
@@ -154,7 +153,6 @@ public class NaptrLookup
       int nLookupRuns = 0;
       boolean bCanTryAgain = true;
       Record [] aRecords = null;
-
       if (m_eLookupMode.isUDP ())
       {
         if (aIsEnabled.getAsBoolean ())
@@ -173,11 +171,9 @@ public class NaptrLookup
           nLeft--;
           nLookupRuns++;
         } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
-
         if (aLookup.getResult () != Lookup.TRY_AGAIN)
           bCanTryAgain = false;
       }
-
       if (bCanTryAgain && m_eLookupMode.isTCP ())
       {
         if (aIsEnabled.getAsBoolean ())
@@ -198,21 +194,24 @@ public class NaptrLookup
           nLookupRuns++;
         } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
       }
-
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
         // Wrong domain name
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Error looking up '" + sDomainName + "': " + aLookup.getErrorString ());
+        LOGGER.warn ("Error looking up '" + sDomainName + "': " + aLookup.getErrorString ());
         return new CommonsArrayList <> ();
       }
-
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
       for (final Record aRecord : aRecords)
         ret.add ((NAPTRRecord) aRecord);
 
       if (aIsEnabled.getAsBoolean ())
-        aLogger.accept ("  Returning " + ret.size () + " NAPTR record(s) for '" + sDomainName + "' after " + nLookupRuns + " lookups");
+        aLogger.accept ("  Returning " +
+                        ret.size () +
+                        " NAPTR record(s) for '" +
+                        sDomainName +
+                        "' after " +
+                        nLookupRuns +
+                        " lookups");
 
       return ret;
     }
@@ -227,7 +226,9 @@ public class NaptrLookup
                                 sDomainName +
                                 "'" +
                                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "");
-        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage, aDuration, m_aExecutionDurationWarn));
+        m_aExecutionTimeExceededHandlers.forEach (x -> x.onLookupTimeExceeded (sMessage,
+                                                                               aDuration,
+                                                                               m_aExecutionDurationWarn));
       }
     }
   }

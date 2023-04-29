@@ -55,15 +55,15 @@ public class UAProfile
     m_aProfileDiffData = null;
   }
 
-  public UAProfile (@Nullable final List <String> aProfileUrls, @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
+  public UAProfile (@Nullable final List <String> aProfileUrls,
+                    @Nullable final Map <Integer, UAProfileDiff> aProfileDiffData)
   {
     final int nUrls = CollectionHelper.getSize (aProfileUrls);
     final int nDiffs = CollectionHelper.getSize (aProfileDiffData);
     if (nUrls == 0 && nDiffs == 0)
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
     if (nUrls > 1)
-      if (LOGGER.isWarnEnabled ())
-        LOGGER.warn ("Found more than one profile URL: " + aProfileUrls);
+      LOGGER.warn ("Found more than one profile URL: " + aProfileUrls);
     m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
     m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
   }
@@ -106,7 +106,8 @@ public class UAProfile
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UAProfile rhs = (UAProfile) o;
-    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) && EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
+    return EqualsHelper.equals (m_sProfileUrl, rhs.m_sProfileUrl) &&
+           EqualsHelper.equals (m_aProfileDiffData, rhs.m_aProfileDiffData);
   }
 
   @Override

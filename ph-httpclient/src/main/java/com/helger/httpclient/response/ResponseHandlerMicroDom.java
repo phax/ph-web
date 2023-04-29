@@ -99,8 +99,7 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
       // Read all in String
       final String sXML = StringHelper.trim (HttpClientHelper.entityToString (aEntity, aCharset));
 
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Got XML in [" + aCharset + "]: <" + sXML + ">");
+      LOGGER.info ("Got XML in [" + aCharset + "]: <" + sXML + ">");
 
       final IMicroDocument ret = MicroReader.readMicroXML (sXML);
       if (ret == null)

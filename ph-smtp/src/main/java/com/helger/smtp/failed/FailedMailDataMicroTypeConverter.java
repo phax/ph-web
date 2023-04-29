@@ -81,12 +81,15 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
                                                                        ELEMENT_SMTP_SETTINGS));
 
     // email data
-    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (), sNamespaceURI, ELEMENT_EMAIL_DATA));
+    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (),
+                                                                       sNamespaceURI,
+                                                                       ELEMENT_EMAIL_DATA));
 
     final MailTransportError aTransportError = aFailedMail.getTransportError ();
     if (aTransportError != null)
     {
-      eFailedMail.appendElement (sNamespaceURI, ELEMENT_ERROR_MSG).appendText (aTransportError.getThrowable ().getMessage ());
+      eFailedMail.appendElement (sNamespaceURI, ELEMENT_ERROR_MSG)
+                 .appendText (aTransportError.getThrowable ().getMessage ());
       for (final MailSendDetails aDetails : aTransportError.getAllDetails ())
       {
         eFailedMail.appendElement (sNamespaceURI, ELEMENT_DETAILS)
@@ -109,7 +112,6 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       LOGGER.error ("Failed to read ID");
       return null;
     }
-
     // Read error date/time
     final String sErrorDT = eFailedMail.getAttributeValue (ATTR_ERRORDT);
     if (sErrorDT == null)
@@ -122,11 +124,9 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       aErrorDT = TypeConverter.convert (sErrorDT, LocalDateTime.class);
     if (aErrorDT == null)
     {
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("Failed to parse error date '" + sErrorDT + "'");
+      LOGGER.error ("Failed to parse error date '" + sErrorDT + "'");
       return null;
     }
-
     // read original sent date/time
     final String sOriginalSentDT = eFailedMail.getAttributeValue (ATTR_ORIGINALSENT_DT);
     LocalDateTime aOriginalSentDT = null;
@@ -136,7 +136,6 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       if (aOriginalSentDT == null)
         aOriginalSentDT = TypeConverter.convert (sOriginalSentDT, LocalDateTime.class);
     }
-
     // SMTP settings
     final IMicroElement eSMTPSettings = eFailedMail.getFirstChildElement (ELEMENT_SMTP_SETTINGS);
     if (eSMTPSettings == null)
@@ -169,7 +168,6 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
       }
       aError = new MailTransportError (aException, aDetails);
     }
-
     return new FailedMailData (sID, aErrorDT, aSMTPSettings, aOriginalSentDT, aEmailData, aError);
   }
 }

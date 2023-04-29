@@ -158,7 +158,6 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
     }
     else
       bPerform = false;
-
     if (bPerform)
     {
       final String sOldRequestEncoding = aRequest.getCharacterEncoding ();
@@ -168,8 +167,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
         ServletHelper.setRequestCharacterEncoding (aRequest, m_sEncoding);
         if (aRequest.getCharacterEncoding () == null)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
+          LOGGER.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
         }
         else
           if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
@@ -178,15 +176,12 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
              * Request encoding should always be present (at least from
              * browsers)
              */
-            if (LOGGER.isInfoEnabled ())
-              LOGGER.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
+            LOGGER.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
           }
       }
     }
-
     // Next filter in the chain
     aChain.doFilter (aRequest, aResponse);
-
     if (bPerform)
     {
       // Maybe null e.g. for HTTP 304
@@ -202,8 +197,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
           aResponse.setCharacterEncoding (m_sEncoding);
           if (aResponse.getCharacterEncoding () == null)
           {
-            if (LOGGER.isErrorEnabled ())
-              LOGGER.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
+            LOGGER.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
           }
           else
             if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))

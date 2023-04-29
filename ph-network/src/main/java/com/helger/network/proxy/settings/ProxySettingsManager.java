@@ -67,8 +67,7 @@ public final class ProxySettingsManager
     ValueEnforcer.notNull (aProvider, "Provider");
     RW_LOCK.writeLocked ( () -> LIST.add (aProvider));
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Registered proxy settings provider " + aProvider);
+    LOGGER.info ("Registered proxy settings provider " + aProvider);
   }
 
   @Nonnull
@@ -79,8 +78,7 @@ public final class ProxySettingsManager
 
     final EChange eChange = RW_LOCK.writeLockedGet ( () -> LIST.removeObject (aProvider));
     if (eChange.isChanged ())
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Unregistered proxy settings provider " + aProvider);
+      LOGGER.info ("Unregistered proxy settings provider " + aProvider);
     return eChange;
   }
 
@@ -89,8 +87,7 @@ public final class ProxySettingsManager
   {
     final EChange eChange = RW_LOCK.writeLockedGet (LIST::removeAll);
     if (eChange.isChanged ())
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Removed all proxy settings provider");
+      LOGGER.info ("Removed all proxy settings provider");
     return eChange;
   }
 
@@ -139,7 +136,9 @@ public final class ProxySettingsManager
   }
 
   @Nonnull
-  public static EHandled onConnectionFailed (@Nonnull final URI aURI, @Nonnull final SocketAddress aAddr, @Nonnull final IOException ex)
+  public static EHandled onConnectionFailed (@Nonnull final URI aURI,
+                                             @Nonnull final SocketAddress aAddr,
+                                             @Nonnull final IOException ex)
   {
     final String sProtocol = aURI.getScheme ();
     final String sHostName = aURI.getHost ();

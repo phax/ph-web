@@ -78,13 +78,12 @@ public class ServletStatus
       // If it happens, it is an indicator that the Servlet startup failed.
       // In that case please check the logfiles (e.g.
       // "localhost.yyyy-mm-dd.log")
-      if (LOGGER.isErrorEnabled ())
-        LOGGER.error ("The new status " +
-                      eNewStatus +
-                      " is not a valid successor of the old status " +
-                      m_eCurrentStatus +
-                      " for " +
-                      m_sClassName);
+      LOGGER.error ("The new status " +
+                    eNewStatus +
+                    " is not a valid successor of the old status " +
+                    m_eCurrentStatus +
+                    " for " +
+                    m_sClassName);
     }
     m_eCurrentStatus = ValueEnforcer.notNull (eNewStatus, "NewStatus");
     m_aStatusChangeDates.put (eNewStatus, PDTFactory.getCurrentLocalDateTime ());

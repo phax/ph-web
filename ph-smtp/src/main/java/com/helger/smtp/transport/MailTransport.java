@@ -240,7 +240,6 @@ public final class MailTransport
     {
       final ICommonsList <IMutableEmailData> aRemainingMessages = new CommonsArrayList <> (aAllMessages);
       MailSendException aExceptionToBeRemembered = null;
-
       try (final Transport aTransport = m_aSession.getTransport (m_bSMTPS ? SMTPS_PROTOCOL : SMTP_PROTOCOL))
       {
         // Add global listeners (if present)
@@ -274,7 +273,6 @@ public final class MailTransport
 
             // This creates a new message ID (besides other things)
             aMimeMessage.saveChanges ();
-
             if (sMessageID != null)
             {
               // Preserve explicitly specified message id...
@@ -282,16 +280,15 @@ public final class MailTransport
             }
             aMimeMessage.setHeader (HEADER_X_MAILER, X_MAILER);
 
-            if (LOGGER.isInfoEnabled ())
-              LOGGER.info ("Delivering mail from " +
-                           Arrays.toString (aMimeMessage.getFrom ()) +
-                           " to " +
-                           Arrays.toString (aMimeMessage.getAllRecipients ()) +
-                           " with subject '" +
-                           aMimeMessage.getSubject () +
-                           "' and message ID '" +
-                           aMimeMessage.getMessageID () +
-                           "'");
+            LOGGER.info ("Delivering mail from " +
+                         Arrays.toString (aMimeMessage.getFrom ()) +
+                         " to " +
+                         Arrays.toString (aMimeMessage.getAllRecipients ()) +
+                         " with subject '" +
+                         aMimeMessage.getSubject () +
+                         "' and message ID '" +
+                         aMimeMessage.getMessageID () +
+                         "'");
 
             // Main transmit - always throws an exception
             aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
@@ -339,10 +336,8 @@ public final class MailTransport
                                                      ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
                                                                                         ESMTPErrorCode.FALLBACK)));
                 }
-
               bex = (MessagingException) ex2;
             }
-
             // Map addresses to details
             final ICommonsOrderedSet <MailSendDetails> aValidSentExt = new CommonsLinkedHashSet <> ();
             final ICommonsOrderedSet <MailSendDetails> aValidUnsentExt = new CommonsLinkedHashSet <> ();
@@ -358,7 +353,6 @@ public final class MailTransport
                 else
                   aInvalidExt.add (aFailure);
             }
-
             final EmailDataTransportEvent aEvent = new EmailDataTransportEvent (m_aSMTPSettings,
                                                                                 aEmailData,
                                                                                 aMimeMessage,

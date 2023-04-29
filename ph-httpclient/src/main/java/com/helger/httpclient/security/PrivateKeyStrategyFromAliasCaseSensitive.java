@@ -59,11 +59,11 @@ public class PrivateKeyStrategyFromAliasCaseSensitive implements PrivateKeyStrat
   }
 
   @Nullable
-  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases, @Nullable final SSLParameters aSSLParameters)
+  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases,
+                             @Nullable final SSLParameters aSSLParameters)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("chooseAlias(" + aAliases + ", " + aSSLParameters + ")");
-
     for (final String sCurAlias : aAliases.keySet ())
     {
       // Case sensitive alias handling
@@ -74,8 +74,10 @@ public class PrivateKeyStrategyFromAliasCaseSensitive implements PrivateKeyStrat
         return sCurAlias;
       }
     }
-    if (LOGGER.isWarnEnabled ())
-      LOGGER.warn ("Found no certificate alias matching '" + m_sExpectedAlias + "' in the provided aliases " + aAliases.keySet ());
+    LOGGER.warn ("Found no certificate alias matching '" +
+                 m_sExpectedAlias +
+                 "' in the provided aliases " +
+                 aAliases.keySet ());
     return null;
   }
 }

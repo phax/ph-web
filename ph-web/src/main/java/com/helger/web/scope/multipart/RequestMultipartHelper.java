@@ -67,8 +67,7 @@ public final class RequestMultipartHelper
     IFileItemFactoryProviderSPI aFIFP = ServiceLoaderHelper.getFirstSPIImplementation (IFileItemFactoryProviderSPI.class);
     if (aFIFP != null)
     {
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
+      LOGGER.info ("Using custom IFileItemFactoryProviderSPI " + aFIFP);
     }
     else
       aFIFP = GlobalDiskFileItemFactory::getInstance;
@@ -100,17 +99,14 @@ public final class RequestMultipartHelper
       // UnsupportedOperationExceptions
       return EChange.UNCHANGED;
     }
-
     if (!RequestHelper.isMultipartFormDataContent (aHttpRequest))
     {
       // It's not a multipart request
       return EChange.UNCHANGED;
     }
-
     // It is a multipart request!
     // Note: this handles only POST parameters!
     boolean bAddedFileUploadItems = false;
-
     try
     {
       // Setup the ServletFileUpload....
@@ -139,7 +135,6 @@ public final class RequestMultipartHelper
         else
           aFormFiles.computeIfAbsent (aFileItem.getFieldName (), k -> new CommonsArrayList <> ()).add (aFileItem);
       }
-
       // set all form fields
       for (final Map.Entry <String, ICommonsList <String>> aEntry : aFormFields.entrySet ())
       {
@@ -148,17 +143,16 @@ public final class RequestMultipartHelper
         final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, String.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
-
       // set all form files (potentially overwriting form fields with the same
       // name)
       for (final Map.Entry <String, ICommonsList <IFileItem>> aEntry : aFormFiles.entrySet ())
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues,
+                                                                                                 IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
-
       // Parsing complex file upload succeeded -> do not use standard scan for
       // parameters
       bAddedFileUploadItems = true;

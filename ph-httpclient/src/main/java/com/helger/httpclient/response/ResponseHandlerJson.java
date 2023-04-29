@@ -127,8 +127,7 @@ public class ResponseHandlerJson implements HttpClientResponseHandler <IJson>
       // Read all in String
       final String sJson = StringHelper.trim (HttpClientHelper.entityToString (aEntity, aCharset));
 
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("Got JSON in [" + aCharset + "]: <" + sJson + ">");
+      LOGGER.info ("Got JSON in [" + aCharset + "]: <" + sJson + ">");
 
       final IJson ret = JsonReader.readFromString (sJson);
       if (ret == null)

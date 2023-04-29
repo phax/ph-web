@@ -78,8 +78,7 @@ public final class AcceptMimeTypeHandler
         {
           if (aMimeType.hasAnyParameters ())
           {
-            if (LOGGER.isWarnEnabled ())
-              LOGGER.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
+            LOGGER.warn ("Ignoring all contained MIME type parameter from '" + sMimeType + "'!");
             aMimeType = aMimeType.getCopyWithoutParameters ();
           }
           ret.addMimeType (aMimeType, dQuality);
@@ -93,8 +92,7 @@ public final class AcceptMimeTypeHandler
             // ignored
             if (!"xml/xml".equals (sMimeType))
             {
-              if (LOGGER.isWarnEnabled ())
-                LOGGER.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
+              LOGGER.warn ("Failed to parse Mime type '" + sMimeType + "' as part of '" + sAcceptMimeTypes + "'!");
             }
           }
       }

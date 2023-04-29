@@ -72,7 +72,6 @@ public class MockServletPool
         // registered for "/test/*" can be found with the servlet path "/test".
         sPathToUse = sPath.substring (0, sPath.length () - 2);
       }
-
       // Convert wildcard to regex
       return StringHelper.replaceAll (sPathToUse, "*", ".*");
     }
@@ -191,7 +190,6 @@ public class MockServletPool
                                               "' is already registered: " +
                                               aItem);
       }
-
       // Instantiate servlet
       final Servlet aServlet = GenericReflection.newInstance (aServletClass);
       if (aServlet == null)
@@ -236,8 +234,7 @@ public class MockServletPool
       if (nMatchingItems == 0)
         return null;
       if (nMatchingItems > 1)
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
+        LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
       return aMatchingItems.getFirst ().getServlet ();
     });
   }
@@ -261,8 +258,7 @@ public class MockServletPool
         }
         catch (final Exception ex)
         {
-          if (LOGGER.isErrorEnabled ())
-            LOGGER.error ("Failed to destroy servlet " + aServletItem, ex);
+          LOGGER.error ("Failed to destroy servlet " + aServletItem, ex);
         }
 
       m_aServlets.clear ();

@@ -83,7 +83,8 @@ public final class XMLSitemapProvider
   }
 
   @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory, @Nonnull @Nonempty final String sFullContextPath)
+  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
+                                             @Nonnull @Nonempty final String sFullContextPath)
   {
     return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP, sFullContextPath);
   }
@@ -102,8 +103,7 @@ public final class XMLSitemapProvider
     if (PROVIDERS.isEmpty ())
       return ESuccess.SUCCESS;
 
-    if (LOGGER.isInfoEnabled ())
-      LOGGER.info ("Writing XML sitemap files for " + PROVIDERS.size () + " providers");
+    LOGGER.info ("Writing XML sitemap files for " + PROVIDERS.size () + " providers");
 
     // Start creating the index
     final XMLSitemapIndex aIndex = new XMLSitemapIndex (bUseGZip);
@@ -112,26 +112,22 @@ public final class XMLSitemapProvider
       final XMLSitemapURLSet aURLSet = aSPI.createURLSet ();
       if (aURLSet == null)
       {
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("SPI implementation " + aSPI + " returned a null sitemap URL set!");
+        LOGGER.warn ("SPI implementation " + aSPI + " returned a null sitemap URL set!");
         continue;
       }
       if (aURLSet.getURLCount () > 0)
         aIndex.addURLSet (aURLSet);
       else
       {
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("SPI implementation " + aSPI + " returned an empty URL set!");
+        LOGGER.info ("SPI implementation " + aSPI + " returned an empty URL set!");
       }
     }
-
     // Did we get any URL set back?
     if (aIndex.getURLSetCount () == 0)
     {
       LOGGER.error ("No SPI implementation did deliver a valid URL set -> not doing anything!");
       return ESuccess.FAILURE;
     }
-
     // Main write to disk action
     return aIndex.writeToDisk (aTargetDirectory, sFullContextPath);
   }

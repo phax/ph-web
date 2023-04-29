@@ -121,8 +121,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
       try
       {
         final int nMessages = aMessages.size ();
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("Sending " + nMessages + " mail message" + (nMessages == 1 ? "" : "s") + "!");
+        LOGGER.info ("Sending " + nMessages + " mail message" + (nMessages == 1 ? "" : "s") + "!");
 
         // send messages
         final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = m_aTransport.send (aMessages);
@@ -134,8 +133,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
       catch (final Exception ex)
       {
         // No message specific error, but a settings specific error
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Generic error sending mail: " + ex.getMessage (), ex.getCause ());
+        LOGGER.error ("Generic error sending mail: " + ex.getMessage (), ex.getCause ());
 
         // mark all mails as failed even though some may have been re-send
         // already
@@ -169,11 +167,9 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
         for (final Object aLeftOver : aLeftOvers)
           m_aFailedMailQueue.add (new FailedMailData (aSMTPSettings, (IMutableEmailData) aLeftOver));
 
-        if (LOGGER.isInfoEnabled ())
-          LOGGER.info ("Put " + aLeftOvers + " unsent mails into the failed mail queue because of immediate stop.");
+        LOGGER.info ("Put " + aLeftOvers + " unsent mails into the failed mail queue because of immediate stop.");
       }
     }
-
     // Regular stop
     return super.stopQueuingNewObjects ();
   }

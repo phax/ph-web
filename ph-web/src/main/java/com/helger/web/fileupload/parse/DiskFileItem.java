@@ -105,9 +105,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    */
   private static final String UID = StringHelper.replaceAll (StringHelper.replaceAll (UUID.randomUUID ().toString (),
                                                                                       ':',
-                                                                                      '_'),
-                                                             '-',
-                                                             '_');
+                                                                                      '_'), '-', '_');
 
   /**
    * Counter used in unique identifier generation.
@@ -242,7 +240,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       m_aCachedContent = null;
       m_aDFOSFile = m_aDFOS.getFile ();
     }
-
     // write out values
     aOS.defaultWriteObject ();
   }
@@ -261,7 +258,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     // read values
     aOIS.defaultReadObject ();
-
     try (final OutputStream aOS = getOutputStream ())
     {
       if (m_aCachedContent != null)
@@ -276,7 +272,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
         m_aDFOSFile = null;
       }
     }
-
     m_aCachedContent = null;
   }
 
@@ -329,7 +324,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       _ensureCachedContentIsPresent ();
       return new NonBlockingByteArrayInputStream (m_aCachedContent);
     }
-
     return FileHelper.getInputStream (m_aDFOS.getFile ());
   }
 
@@ -377,8 +371,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
     if (!EqualsHelper.equals (sSecureName, m_sFilename))
-      if (LOGGER.isInfoEnabled ())
-        LOGGER.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
+      LOGGER.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
     return sSecureName;
   }
 
@@ -428,7 +421,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       _ensureCachedContentIsPresent ();
       return m_aCachedContent;
     }
-
     return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
@@ -441,7 +433,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       _ensureCachedContentIsPresent ();
       return ArrayHelper.getCopy (m_aCachedContent);
     }
-
     return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
@@ -511,7 +502,6 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       // Copying needed
       return FileOperations.copyFile (aOutputFile, aDstFile);
     }
-
     // For whatever reason we cannot write the file to disk.
     throw new FileUploadException ("Cannot write uploaded file to: " + aDstFile.getAbsolutePath ());
   }
@@ -531,8 +521,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     {
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
     }
   }
 

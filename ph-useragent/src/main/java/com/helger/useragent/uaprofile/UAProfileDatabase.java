@@ -126,7 +126,6 @@ public final class UAProfileDatabase
       if (aProfileDiffs.isEmpty ())
         aProfileDiffs = aHeaderProvider.getHeaders (CHttpHeader.WAP_PROFILE_DIFF);
     }
-
     // Parse the diffs
     final ICommonsMap <Integer, String> aProfileDiffData = new CommonsHashMap <> ();
     for (String sProfileDiff : aProfileDiffs)
@@ -137,24 +136,20 @@ public final class UAProfileDatabase
       final int nSemicolonIndex = sProfileDiff.indexOf (';');
       if (nSemicolonIndex == -1)
       {
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
+        LOGGER.warn ("Failed to find ';' in profile diff header value '" + sProfileDiff + "'!");
         continue;
       }
       final String sProfileDiffIndex = sProfileDiff.substring (0, nSemicolonIndex);
       final int nIndex = StringParser.parseInt (sProfileDiffIndex, CGlobal.ILLEGAL_UINT);
       if (nIndex == CGlobal.ILLEGAL_UINT)
       {
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
+        LOGGER.warn ("Failed to convert UAProf difference index '" + sProfileDiffIndex + "' to a number!");
         continue;
       }
-
       // Cut the leading number
       sProfileDiff = sProfileDiff.substring (nSemicolonIndex + 1).trim ();
       aProfileDiffData.put (Integer.valueOf (nIndex), sProfileDiff);
     }
-
     if (aProfileDiffData.isEmpty () && sExtNSValue != null)
     {
       // Scan for CCPP profile diff data
@@ -177,8 +172,7 @@ public final class UAProfileDatabase
           }
           else
           {
-            if (LOGGER.isWarnEnabled ())
-              LOGGER.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
+            LOGGER.warn ("Failed to extract numerical number from header name '" + sHeaderName + "'");
           }
         }
       }
@@ -213,19 +207,16 @@ public final class UAProfileDatabase
             {
               aProfiles = aHeaderProvider.getHeaders (sExtNSValue + "-Profile");
               if (aProfiles.isEmpty ())
-                if (LOGGER.isWarnEnabled ())
-                  LOGGER.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
+                LOGGER.warn ("Found CCPP header namespace '" + sExtNSValue + "' but found no profile header!");
             }
             else
             {
-              if (LOGGER.isWarnEnabled ())
-                LOGGER.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
+              LOGGER.warn ("Failed to extract namespace value from CCPP header '" + sExt + "'");
             }
           }
         }
       }
     }
-
     // Parse profile headers
     final ICommonsList <String> aProfileData = new CommonsArrayList <> ();
     final ICommonsMap <Integer, byte []> aProfileDiffDigests = new CommonsHashMap <> ();
@@ -262,26 +253,26 @@ public final class UAProfileDatabase
                       aProfileDiffDigests.put (Integer.valueOf (nDiffIndex), aDigest);
                     else
                     {
-                      if (LOGGER.isWarnEnabled ())
-                        LOGGER.warn ("Decoded Base64 profile diff digest has an illegal length of " + aDigest.length);
+                      LOGGER.warn ("Decoded Base64 profile diff digest has an illegal length of " + aDigest.length);
                     }
                   }
                   else
                   {
-                    if (LOGGER.isWarnEnabled ())
-                      LOGGER.warn ("Failed to decode Base64 profile diff digest '" + sDiffDigest + "' from token '" + sToken + "'");
+                    LOGGER.warn ("Failed to decode Base64 profile diff digest '" +
+                                 sDiffDigest +
+                                 "' from token '" +
+                                 sToken +
+                                 "'");
                   }
                 }
                 else
                 {
-                  if (LOGGER.isWarnEnabled ())
-                    LOGGER.warn ("Found no diff digest in token '" + sToken + "'");
+                  LOGGER.warn ("Found no diff digest in token '" + sToken + "'");
                 }
               }
               else
               {
-                if (LOGGER.isWarnEnabled ())
-                  LOGGER.warn ("Failed to parse profile diff index from '" + sToken + "'");
+                LOGGER.warn ("Failed to parse profile diff index from '" + sToken + "'");
               }
             }
             else
@@ -291,21 +282,18 @@ public final class UAProfileDatabase
                 aProfileData.add (sToken);
               else
               {
-                if (LOGGER.isErrorEnabled ())
-                  LOGGER.error ("Failed to convert profile token '" + sToken + "' to a URL!");
+                LOGGER.error ("Failed to convert profile token '" + sToken + "' to a URL!");
               }
             }
           }
         }
       }
     }
-
     if (aProfileData.isEmpty () && aProfileDiffDigests.isEmpty ())
     {
       // No UAProfile found -> no need to look for differences
       return null;
     }
-
     // Read diffs
     final ICommonsMap <Integer, String> aProfileDiffData = _getProfileDiffData (aHeaderProvider, sExtNSValue);
 
@@ -322,24 +310,19 @@ public final class UAProfileDatabase
       }
       else
       {
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Found profile diff data but no digest for index " + aIndex);
+        LOGGER.warn ("Found profile diff data but no digest for index " + aIndex);
       }
     }
-
     // Consistency check
     for (final Integer aIndex : aProfileDiffDigests.keySet ())
       if (!aProfileDiffData.containsKey (aIndex))
-        if (LOGGER.isWarnEnabled ())
-          LOGGER.warn ("Found profile diff digest but no data for index " + aIndex);
-
+        LOGGER.warn ("Found profile diff digest but no data for index " + aIndex);
     if (aProfileData.isEmpty () && aProfileDiffs.isEmpty ())
     {
       // This can happen if a diff digest was found, but the diff data is
       // missing!
       return null;
     }
-
     // And we're done
     return new UAProfile (aProfileData, aProfileDiffs);
   }
@@ -351,7 +334,6 @@ public final class UAProfileDatabase
     final UAProfile aUAProfile = getUAProfileFromRequest (aHeaderProvider);
     if (aUAProfile == null)
       return UAProfile.EMPTY;
-
     if (aUAProfile.isSet ())
     {
       final boolean bAdded = RW_LOCK.writeLockedBoolean ( () -> UNIQUE_UA_PROFILES.add (aUAProfile));

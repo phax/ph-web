@@ -49,8 +49,7 @@ public class AsyncServletRunnerDefault implements IAsyncServletRunner
       if (o1 != null && o2 != null)
         aRunnable.run ();
       else
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Original request (" + o1 + ") or original response (" + o2 + ") are invalid!");
+        LOGGER.error ("Original request (" + o1 + ") or original response (" + o2 + ") are invalid!");
     };
     // Important to use "start" and to not use a custom ExecutorService, as this
     // "start" method assigns all the necessary variables etc.

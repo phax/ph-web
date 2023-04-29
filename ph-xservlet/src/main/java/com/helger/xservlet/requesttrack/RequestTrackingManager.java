@@ -72,15 +72,8 @@ public final class RequestTrackingManager
       if (aOldTR != null && aOldTR.getRequestScope () != aRequestScope)
       {
         // Should never happen
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Request ID '" +
-                        sRequestID +
-                        "' is already registered! Old TR: " +
-                        aOldTR +
-                        "; New TR: " +
-                        aTR);
+        LOGGER.error ("Request ID '" + sRequestID + "' is already registered! Old TR: " + aOldTR + "; New TR: " + aTR);
       }
-
       if (RequestTrackerSettings.isParallelRunningRequestsCheckEnabled () &&
           m_aOpenRequests.size () >= RequestTrackerSettings.getParallelRunningRequestBarrier ())
       {
@@ -95,7 +88,6 @@ public final class RequestTrackingManager
     {
       m_aRWLock.writeLock ().unlock ();
     }
-
     if (bNotifyOnParallelRequests)
     {
       // Invoke callbacks "above limit"
@@ -114,8 +106,7 @@ public final class RequestTrackingManager
       if (m_aOpenRequests.remove (sRequestID) == null)
       {
         // Should never happen
-        if (LOGGER.isErrorEnabled ())
-          LOGGER.error ("Failed to remove internal request with ID '" + sRequestID + "'");
+        LOGGER.error ("Failed to remove internal request with ID '" + sRequestID + "'");
       }
       else
       {
@@ -135,7 +126,6 @@ public final class RequestTrackingManager
     {
       m_aRWLock.writeLock ().unlock ();
     }
-
     if (bNowBelowLimit)
     {
       // Invoke callbacks "below limit again"

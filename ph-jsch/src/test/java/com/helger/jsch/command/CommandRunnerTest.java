@@ -38,11 +38,10 @@ import com.jcraft.jsch.JSchException;
 public final class CommandRunnerTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SshProxyTest.class);
+  private static final String EXPECTED = "there is absolutely no chance this is gonna work!";
 
-  private static ISessionFactory sessionFactory;
-  private static NonBlockingProperties properties;
-
-  private static final String expected = "there is absolutely no chance this is gonna work!";
+  private static ISessionFactory s_aSessionFactory;
+  private static NonBlockingProperties s_aProperties;
 
   @BeforeClass
   public static void initializeClass ()
@@ -50,21 +49,20 @@ public final class CommandRunnerTest
     try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
     {
       Assume.assumeNotNull (inputStream);
-      properties = new NonBlockingProperties ();
-      properties.load (inputStream);
+      s_aProperties = new NonBlockingProperties ();
+      s_aProperties.load (inputStream);
     }
     catch (final IOException e)
     {
       LOGGER.warn ("cant find properties file (tests will be skipped)", e);
-      properties = null;
+      s_aProperties = null;
       return;
     }
-
-    final String knownHosts = properties.getProperty ("ssh.knownHosts");
-    final String privateKey = properties.getProperty ("ssh.privateKey");
-    final String username = properties.getProperty ("scp.out.test.username");
+    final String knownHosts = s_aProperties.getProperty ("ssh.knownHosts");
+    final String privateKey = s_aProperties.getProperty ("ssh.privateKey");
+    final String username = s_aProperties.getProperty ("scp.out.test.username");
     final String hostname = "localhost";
-    final int port = Integer.parseInt (properties.getProperty ("scp.out.test.port"));
+    final int port = Integer.parseInt (s_aProperties.getProperty ("scp.out.test.port"));
 
     final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
     try
@@ -76,33 +74,33 @@ public final class CommandRunnerTest
     {
       Assume.assumeNoException (e);
     }
-    sessionFactory = defaultSessionFactory;
+    s_aSessionFactory = defaultSessionFactory;
   }
 
   @Test
   public void testCommandRunner ()
   {
-    try (CommandRunner commandRunner = new CommandRunner (sessionFactory))
+    try (CommandRunner commandRunner = new CommandRunner (s_aSessionFactory))
     {
       LOGGER.info ("run a command");
-      ExecuteResult result = commandRunner.execute ("echo " + expected);
+      ExecuteResult result = commandRunner.execute ("echo " + EXPECTED);
       assertEquals (0, result.getExitCode ());
-      assertEquals (expected + "\n", result.getStdout ());
+      assertEquals (EXPECTED + "\n", result.getStdout ());
       assertEquals ("", result.getStderr ());
 
       // test automatic reconnect...
       commandRunner.close ();
 
       LOGGER.info ("now try a second command");
-      result = commandRunner.execute ("echo second " + expected);
+      result = commandRunner.execute ("echo second " + EXPECTED);
       assertEquals (0, result.getExitCode ());
-      assertEquals ("second " + expected + "\n", result.getStdout ());
+      assertEquals ("second " + EXPECTED + "\n", result.getStdout ());
       assertEquals ("", result.getStderr ());
 
       LOGGER.info ("and a third command");
-      result = commandRunner.execute ("echo third " + expected);
+      result = commandRunner.execute ("echo third " + EXPECTED);
       assertEquals (0, result.getExitCode ());
-      assertEquals ("third " + expected + "\n", result.getStdout ());
+      assertEquals ("third " + EXPECTED + "\n", result.getStdout ());
       assertEquals ("", result.getStderr ());
 
       LOGGER.info ("wow, they all worked");
@@ -118,12 +116,12 @@ public final class CommandRunnerTest
   @Test
   public void testSlowCommand ()
   {
-    try (final CommandRunner commandRunner = new CommandRunner (sessionFactory))
+    try (final CommandRunner commandRunner = new CommandRunner (s_aSessionFactory))
     {
       LOGGER.info ("run a command");
-      final ExecuteResult result = commandRunner.execute ("sleep 3;echo " + expected);
+      final ExecuteResult result = commandRunner.execute ("sleep 3;echo " + EXPECTED);
       assertEquals (0, result.getExitCode ());
-      assertEquals (expected + "\n", result.getStdout ());
+      assertEquals (EXPECTED + "\n", result.getStdout ());
       assertEquals ("", result.getStderr ());
 
       // test automatic reconnect...
@@ -142,7 +140,7 @@ public final class CommandRunnerTest
   @Test
   public void testDetectOs ()
   {
-    try (final CommandRunner commandRunner = new CommandRunner (sessionFactory))
+    try (final CommandRunner commandRunner = new CommandRunner (s_aSessionFactory))
     {
       LOGGER.info ("run a command");
       ExecuteResult result = commandRunner.execute ("ver");

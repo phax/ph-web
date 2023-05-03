@@ -951,7 +951,8 @@ public class UnifiedResponse
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
 
     if (_isRelative (sRedirectTargetUrl))
-      logWarn ("The redirect target URL '" + sRedirectTargetUrl + "' seems to be relative.");
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("The redirect target URL '" + sRedirectTargetUrl + "' seems to be relative.");
 
     if (isRedirectDefined ())
       logInfo ("Overwriting redirect target URL '" +
@@ -1468,7 +1469,7 @@ public class UnifiedResponse
         final InputStream aContentIS = m_aContentISP.getInputStream ();
         if (aContentIS == null)
         {
-          LOGGER.error ("Failed to open input stream from " + m_aContentISP);
+          logError ("Failed to open input stream from " + m_aContentISP);
 
           // Handle it gracefully with a 404 and not with a 500
           aHttpResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);
@@ -1578,14 +1579,18 @@ public class UnifiedResponse
         catch (final IllegalArgumentException ex)
         {
           // Happens e.g. if "http://server/../" is requested
-          LOGGER.warn ("Failed to encode redirect target URL '" + m_sRedirectTargetUrl + "': " + ex.getMessage ());
+          logWarn ("Failed to encode redirect target URL '" + m_sRedirectTargetUrl + "': " + ex.getMessage ());
           sRealTargetURL = m_sRedirectTargetUrl;
         }
       }
       else
+      {
         sRealTargetURL = m_sRedirectTargetUrl;
+      }
+
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Response is a redirect to '" + sRealTargetURL + "' using mode " + m_eRedirectMode);
+
       switch (m_eRedirectMode)
       {
         case DEFAULT:
@@ -1611,6 +1616,7 @@ public class UnifiedResponse
       if (!m_bAllowContentOnRedirect)
         return;
     }
+
     if (bHasStatusCode)
     {
       if (bIsRedirect)
@@ -1628,11 +1634,14 @@ public class UnifiedResponse
         if (hasContent ())
           logWarn ("Ignoring provided content because a status code is specified!");
       }
+
       if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
           !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
+      {
         logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
                  CHttpHeader.WWW_AUTHENTICATE +
                  " HTTP response header is set!");
+      }
 
       // Content may be present so, sendError is not an option here!
       if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContentArray == null)

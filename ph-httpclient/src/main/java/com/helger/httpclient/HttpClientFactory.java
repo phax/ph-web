@@ -120,7 +120,7 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  public LayeredConnectionSocketFactory createSSLFactory ()
+  protected LayeredConnectionSocketFactory createCustomSSLFactory ()
   {
     LayeredConnectionSocketFactory aSSLFactory = null;
 
@@ -159,6 +159,13 @@ public class HttpClientFactory implements IHttpClientProvider
       LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
                    ex);
     }
+    return aSSLFactory;
+  }
+
+  @Nullable
+  public LayeredConnectionSocketFactory createSSLFactory ()
+  {
+    LayeredConnectionSocketFactory aSSLFactory = createCustomSSLFactory ();
 
     if (aSSLFactory == null)
     {
@@ -337,8 +344,8 @@ public class HttpClientFactory implements IHttpClientProvider
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
-                                             @Nonnull final HttpContext aContext) throws HttpException
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
+                                                                                                                   throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
             if (aNonProxyHosts.contains (sHostname))

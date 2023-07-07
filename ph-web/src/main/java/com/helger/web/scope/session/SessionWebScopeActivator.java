@@ -92,7 +92,7 @@ public final class SessionWebScopeActivator implements
                    m_aSessionWebScope.getID () +
                    "' of class " +
                    ClassHelper.getClassLocalName (this),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 
   @SuppressWarnings ("unchecked")
@@ -109,7 +109,7 @@ public final class SessionWebScopeActivator implements
                    m_aAttrs.size () +
                    " attrs of class " +
                    ClassHelper.getClassLocalName (this),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 
   public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
@@ -128,7 +128,7 @@ public final class SessionWebScopeActivator implements
                      m_aSessionWebScope.getID () +
                      "' of class " +
                      ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+                     ScopeHelper.getDebugException ());
     }
   }
 
@@ -161,6 +161,6 @@ public final class SessionWebScopeActivator implements
                    aSessionWebScope.getID () +
                    "' of class " +
                    ClassHelper.getClassLocalName (this),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 }

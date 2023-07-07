@@ -169,7 +169,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
                    super.getID () +
                    "' of class " +
                    ClassHelper.getClassLocalName (RequestWebScope.class),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 
   @Nonnull
@@ -360,7 +360,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Initialized request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 
   @Override
@@ -373,7 +373,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
 
     if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                   ScopeHelper.getDebugStackTrace ());
+                   ScopeHelper.getDebugException ());
   }
 
   @Nonnull

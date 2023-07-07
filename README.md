@@ -58,6 +58,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.1.2 - work in progress
+    * Updated to ph-commons 11.0.5
 * v10.1.1 - 2023-04-29
     * Updated to ph-commons 11.0.4
     * Improved handling of Surrogate characters in request parameters

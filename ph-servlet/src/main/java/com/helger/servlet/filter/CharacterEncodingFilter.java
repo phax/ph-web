@@ -151,7 +151,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   {
     // Avoid double filtering
     boolean bPerform;
-    if (aRequest.getAttribute (REQUEST_ATTR) == null)
+    if (ServletHelper.getRequestAttributeAs (aRequest, REQUEST_ATTR) == null)
     {
       bPerform = true;
       ServletHelper.setRequestAttribute (aRequest, REQUEST_ATTR, Boolean.TRUE);

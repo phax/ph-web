@@ -49,7 +49,8 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class CompressFilter extends AbstractHttpServletFilter
 {
-  private static final String REQUEST_ATTR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL + CompressFilter.class.getName ();
+  private static final String REQUEST_ATTR = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
+                                             CompressFilter.class.getName ();
   private static final IMutableStatisticsHandlerCounter STATS_COUNTER = StatisticsManager.getCounterHandler (CompressFilter.class.getName () +
                                                                                                              "$none");
 
@@ -100,7 +101,8 @@ public class CompressFilter extends AbstractHttpServletFilter
                             @Nonnull final HttpServletResponse aHttpResponse,
                             @Nonnull final FilterChain aChain) throws IOException, ServletException
   {
-    if (CompressFilterSettings.isResponseCompressionEnabled () && aHttpRequest.getAttribute (REQUEST_ATTR) == null)
+    if (CompressFilterSettings.isResponseCompressionEnabled () &&
+        ServletHelper.getRequestAttribute (aHttpRequest, REQUEST_ATTR) == null)
     {
       ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, Boolean.TRUE);
 

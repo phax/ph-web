@@ -398,8 +398,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (
-                                                                                                             aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
+                                               : getRequestURIDecoded (aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -503,8 +503,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
-                                                                                                                      .append (getRequestURIDecoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (),
+                              aHttpRequest.getServerName (),
+                              aHttpRequest.getServerPort ()).append (getRequestURIDecoded (aHttpRequest));
   }
 
   /**
@@ -537,8 +538,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
-                                                                                                                      .append (getRequestURIEncoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (),
+                              aHttpRequest.getServerName (),
+                              aHttpRequest.getServerPort ()).append (getRequestURIEncoded (aHttpRequest));
   }
 
   /**
@@ -830,7 +832,8 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     // Check if a value is cached in the HTTP request
-    IRequestParamMap aValue = (IRequestParamMap) aHttpRequest.getAttribute (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP);
+    IRequestParamMap aValue = ServletHelper.getRequestAttributeAs (aHttpRequest,
+                                                                   SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP);
     if (aValue == null)
     {
       aValue = RequestParamMap.createFromRequest (aHttpRequest);
@@ -869,7 +872,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final Object aValue = aHttpRequest.getAttribute (sAttrName);
+    final Object aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, sAttrName);
     if (aValue == null)
     {
       // No client certificates present
@@ -998,7 +1001,7 @@ public final class RequestHelper
   public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
-    AcceptCharsetList aValue = (AcceptCharsetList) aHttpRequest.getAttribute (AcceptCharsetList.class.getName ());
+    AcceptCharsetList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptCharsetList.class.getName ());
     if (aValue == null)
     {
       final String sAcceptCharset = aHttpRequest.getHeader (CHttpHeader.ACCEPT_CHARSET);
@@ -1012,7 +1015,7 @@ public final class RequestHelper
   public static AcceptEncodingList getAcceptEncodings (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
-    AcceptEncodingList aValue = (AcceptEncodingList) aHttpRequest.getAttribute (AcceptEncodingList.class.getName ());
+    AcceptEncodingList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptEncodingList.class.getName ());
     if (aValue == null)
     {
       final String sAcceptEncoding = aHttpRequest.getHeader (CHttpHeader.ACCEPT_ENCODING);
@@ -1026,7 +1029,7 @@ public final class RequestHelper
   public static AcceptLanguageList getAcceptLanguages (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
-    AcceptLanguageList aValue = (AcceptLanguageList) aHttpRequest.getAttribute (AcceptLanguageList.class.getName ());
+    AcceptLanguageList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptLanguageList.class.getName ());
     if (aValue == null)
     {
       final String sAcceptLanguage = aHttpRequest.getHeader (CHttpHeader.ACCEPT_LANGUAGE);
@@ -1040,7 +1043,7 @@ public final class RequestHelper
   public static AcceptMimeTypeList getAcceptMimeTypes (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
-    AcceptMimeTypeList aValue = (AcceptMimeTypeList) aHttpRequest.getAttribute (AcceptMimeTypeList.class.getName ());
+    AcceptMimeTypeList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptMimeTypeList.class.getName ());
     if (aValue == null)
     {
       final String sAcceptMimeTypes = aHttpRequest.getHeader (CHttpHeader.ACCEPT);
@@ -1118,7 +1121,7 @@ public final class RequestHelper
   @Nullable
   public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    final Object aAttr = aHttpRequest.getAttribute (IUserAgent.class.getName ());
+    final Object aAttr = ServletHelper.getRequestAttribute (aHttpRequest, IUserAgent.class.getName ());
     try
     {
       IUserAgent aUserAgent = (IUserAgent) aAttr;
@@ -1171,7 +1174,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    UAProfile aUAProfile = (UAProfile) aHttpRequest.getAttribute (UAProfile.class.getName ());
+    UAProfile aUAProfile = ServletHelper.getRequestAttributeAs (aHttpRequest, UAProfile.class.getName ());
     if (aUAProfile == null)
     {
       // Extract HTTP header from request

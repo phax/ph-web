@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
 
@@ -180,7 +181,8 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   {
     if (!m_bClosed)
     {
-      final Object aIncluded = m_aHttpRequest.getAttribute (RequestDispatcher.INCLUDE_REQUEST_URI);
+      final Object aIncluded = ServletHelper.getRequestAttribute (m_aHttpRequest,
+                                                                  RequestDispatcher.INCLUDE_REQUEST_URI);
       if (aIncluded != null)
       {
         if (CompressFilterSettings.isDebugModeEnabled ())
@@ -303,8 +305,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes, @Nonnegative final int nOfs, @Nonnegative final int nLen)
-                                                                                                                    throws IOException
+  public final void write (@Nonnull final byte [] aBytes,
+                           @Nonnegative final int nOfs,
+                           @Nonnegative final int nLen) throws IOException
   {
     _prepareToWrite (nLen);
     m_aOS.write (aBytes, nOfs, nLen);

@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 
 import jakarta.servlet.AsyncContext;
@@ -114,6 +115,32 @@ public final class ServletHelper
     }
   }
 
+  @Nullable
+  public static Object getRequestAttribute (@Nonnull final ServletRequest aServletRequest,
+                                            @Nonnull final String sAttrName)
+  {
+    try
+    {
+      return aServletRequest.getAttribute (sAttrName);
+    }
+    catch (final Exception ex)
+    {
+      // Happens in certain Tomcat versions (e.g. 10.1 with JDK 17)
+      // "The request object has been recycled and is no longer associated with
+      // this facade"
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get attribute '" + sAttrName + "' from HTTP request", ex);
+      return null;
+    }
+  }
+
+  @Nullable
+  public static <T> T getRequestAttributeAs (@Nonnull final ServletRequest aServletRequest,
+                                             @Nonnull final String sAttrName)
+  {
+    return GenericReflection.uncheckedCast (getRequestAttribute (aServletRequest, sAttrName));
+  }
+
   /**
    * Work around an exception that can occur on Tomcat 8.0.20:
    *
@@ -167,7 +194,7 @@ public final class ServletHelper
       try
       {
         if (aHttpRequest.isAsyncSupported () && aHttpRequest.isAsyncStarted ())
-          ret = (String) aHttpRequest.getAttribute (AsyncContext.ASYNC_CONTEXT_PATH);
+          ret = ServletHelper.getRequestAttributeAs (aHttpRequest, AsyncContext.ASYNC_CONTEXT_PATH);
         else
           ret = aHttpRequest.getContextPath ();
       }
@@ -201,7 +228,7 @@ public final class ServletHelper
       {
         // They may return null!
         if (aHttpRequest.isAsyncSupported () && aHttpRequest.isAsyncStarted ())
-          ret = (String) aHttpRequest.getAttribute (AsyncContext.ASYNC_PATH_INFO);
+          ret = ServletHelper.getRequestAttributeAs (aHttpRequest, AsyncContext.ASYNC_PATH_INFO);
         else
           ret = aHttpRequest.getPathInfo ();
       }
@@ -240,7 +267,7 @@ public final class ServletHelper
       try
       {
         if (aHttpRequest.isAsyncSupported () && aHttpRequest.isAsyncStarted ())
-          ret = (String) aHttpRequest.getAttribute (AsyncContext.ASYNC_QUERY_STRING);
+          ret = ServletHelper.getRequestAttributeAs (aHttpRequest, AsyncContext.ASYNC_QUERY_STRING);
         else
           ret = aHttpRequest.getQueryString ();
       }
@@ -268,7 +295,7 @@ public final class ServletHelper
       try
       {
         if (aHttpRequest.isAsyncSupported () && aHttpRequest.isAsyncStarted ())
-          ret = (String) aHttpRequest.getAttribute (AsyncContext.ASYNC_REQUEST_URI);
+          ret = ServletHelper.getRequestAttributeAs (aHttpRequest, AsyncContext.ASYNC_REQUEST_URI);
         else
           ret = aHttpRequest.getRequestURI ();
       }
@@ -323,7 +350,7 @@ public final class ServletHelper
       try
       {
         if (aHttpRequest.isAsyncSupported () && aHttpRequest.isAsyncStarted ())
-          ret = (String) aHttpRequest.getAttribute (AsyncContext.ASYNC_SERVLET_PATH);
+          ret = ServletHelper.getRequestAttributeAs (aHttpRequest, AsyncContext.ASYNC_SERVLET_PATH);
         else
           ret = aHttpRequest.getServletPath ();
       }

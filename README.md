@@ -58,6 +58,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.1.3 - 2023-07-26
+    * Introduced `ServletHelper.getHeader` to work around a Tomcat error
 * v10.1.2 - 2023-07-24
     * Updated to ph-commons 11.0.5
     * Introduced `ServletHelper.getAttribute` to work around a Tomcat error

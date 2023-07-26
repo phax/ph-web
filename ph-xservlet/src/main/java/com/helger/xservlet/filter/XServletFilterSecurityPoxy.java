@@ -27,6 +27,7 @@ import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.state.EContinue;
 import com.helger.http.EHttpVersion;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestLogger;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
                                   @Nonnull final EHttpVersion eHttpVersion,
                                   @Nonnull final EHttpMethod eHttpMethod) throws IOException
   {
-    final String sPoxy = aHttpRequest.getHeader (CHttpHeader.PROXY);
+    final String sPoxy = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.PROXY);
     if (sPoxy != null)
     {
       // potentially malicious request - log and block

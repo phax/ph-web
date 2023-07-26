@@ -106,7 +106,7 @@ public final class RequestHelper
     @Nullable
     public String getHeaderValue (@Nullable final String sHeader)
     {
-      return m_aHttpRequest.getHeader (sHeader);
+      return ServletHelper.getRequestHeader (m_aHttpRequest, sHeader);
     }
   }
 
@@ -398,8 +398,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest)
-                                               : getRequestURIDecoded (aHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (
+                                                                                                             aHttpRequest);
     if (StringHelper.hasNoText (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -503,9 +503,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (),
-                              aHttpRequest.getServerName (),
-                              aHttpRequest.getServerPort ()).append (getRequestURIDecoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
+                                                                                                                      .append (getRequestURIDecoded (aHttpRequest));
   }
 
   /**
@@ -538,9 +537,8 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (),
-                              aHttpRequest.getServerName (),
-                              aHttpRequest.getServerPort ()).append (getRequestURIEncoded (aHttpRequest));
+    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
+                                                                                                                      .append (getRequestURIEncoded (aHttpRequest));
   }
 
   /**
@@ -721,7 +719,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return aHttpRequest.getHeader (CHttpHeader.REFERER);
+    return ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.REFERER);
   }
 
   /**
@@ -861,7 +859,7 @@ public final class RequestHelper
       // Missing support > 2GB!!!
       return aHttpRequest.getContentLength ();
     }
-    final String sContentLength = aHttpRequest.getHeader (CHttpHeader.CONTENT_LENGTH);
+    final String sContentLength = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.CONTENT_LENGTH);
     return StringParser.parseLong (sContentLength, -1L);
   }
 
@@ -1004,7 +1002,7 @@ public final class RequestHelper
     AcceptCharsetList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptCharsetList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptCharset = aHttpRequest.getHeader (CHttpHeader.ACCEPT_CHARSET);
+      final String sAcceptCharset = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_CHARSET);
       aValue = AcceptCharsetHandler.getAcceptCharsets (sAcceptCharset);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
     }
@@ -1018,7 +1016,7 @@ public final class RequestHelper
     AcceptEncodingList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptEncodingList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptEncoding = aHttpRequest.getHeader (CHttpHeader.ACCEPT_ENCODING);
+      final String sAcceptEncoding = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_ENCODING);
       aValue = AcceptEncodingHandler.getAcceptEncodings (sAcceptEncoding);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
     }
@@ -1032,7 +1030,7 @@ public final class RequestHelper
     AcceptLanguageList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptLanguageList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptLanguage = aHttpRequest.getHeader (CHttpHeader.ACCEPT_LANGUAGE);
+      final String sAcceptLanguage = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_LANGUAGE);
       aValue = AcceptLanguageHandler.getAcceptLanguages (sAcceptLanguage);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
     }
@@ -1046,7 +1044,7 @@ public final class RequestHelper
     AcceptMimeTypeList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptMimeTypeList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptMimeTypes = aHttpRequest.getHeader (CHttpHeader.ACCEPT);
+      final String sAcceptMimeTypes = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT);
       aValue = AcceptMimeTypeHandler.getAcceptMimeTypes (sAcceptMimeTypes);
       ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
     }
@@ -1067,7 +1065,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = aHttpRequest.getHeader (CHttpHeader.AUTHORIZATION);
+    final String sHeaderValue = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.AUTHORIZATION);
     return HttpBasicAuth.getBasicAuthClientCredentials (sHeaderValue);
   }
 
@@ -1085,7 +1083,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = aHttpRequest.getHeader (CHttpHeader.AUTHORIZATION);
+    final String sHeaderValue = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.AUTHORIZATION);
     return HttpDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
   }
 
@@ -1100,12 +1098,12 @@ public final class RequestHelper
   public static String getHttpUserAgentStringFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
   {
     // Use non-standard headers first
-    String sUserAgent = aHttpRequest.getHeader (CHttpHeader.UA);
+    String sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.UA);
     if (sUserAgent == null)
     {
-      sUserAgent = aHttpRequest.getHeader (CHttpHeader.X_DEVICE_USER_AGENT);
+      sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.X_DEVICE_USER_AGENT);
       if (sUserAgent == null)
-        sUserAgent = aHttpRequest.getHeader (CHttpHeader.USER_AGENT);
+        sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.USER_AGENT);
     }
     return sUserAgent;
   }

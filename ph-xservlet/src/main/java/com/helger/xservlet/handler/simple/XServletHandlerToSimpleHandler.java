@@ -36,6 +36,7 @@ import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
 import com.helger.commons.statistics.StatisticsManager;
 import com.helger.commons.string.StringHelper;
 import com.helger.http.EHttpVersion;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
@@ -159,7 +160,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
       m_aStatsHasETag.increment ();
 
       // get the request ETag
-      final String sRequestETags = aHttpRequest.getHeader (CHttpHeader.IF_NON_MATCH);
+      final String sRequestETags = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.IF_NON_MATCH);
       if (StringHelper.hasText (sRequestETags))
       {
         // Request header may contain several ETag values

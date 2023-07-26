@@ -141,6 +141,25 @@ public final class ServletHelper
     return GenericReflection.uncheckedCast (getRequestAttribute (aServletRequest, sAttrName));
   }
 
+  @Nullable
+  public static String getRequestHeader (@Nonnull final HttpServletRequest aServletRequest,
+                                         @Nonnull final String sHeaderName)
+  {
+    try
+    {
+      return aServletRequest.getHeader (sHeaderName);
+    }
+    catch (final Exception ex)
+    {
+      // Happens in certain Tomcat versions (e.g. 10.1 with JDK 17)
+      // "The request object has been recycled and is no longer associated with
+      // this facade"
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get header '" + sHeaderName + "' from HTTP request", ex);
+      return null;
+    }
+  }
+
   /**
    * Work around an exception that can occur on Tomcat 8.0.20:
    *

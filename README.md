@@ -1,7 +1,8 @@
 # ph-web
 
-[![javadoc](https://javadoc.io/badge2/com.helger.web/ph-web/javadoc.svg)](https://javadoc.io/doc/com.helger.web/ph-web)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.helger.web/ph-web-parent-pom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.helger.web/ph-web-parent-pom) 
+[![javadoc](https://javadoc.io/badge2/com.helger.web/ph-web/javadoc.svg)](https://javadoc.io/doc/com.helger.web/ph-web)
+[![CodeCov](https://codecov.io/gh/phax/ph-web/branch/master/graph/badge.svg)](https://codecov.io/gh/phax/ph-web)
 
 
 Java library with common web stuff. It contains the following sub-projects:
@@ -58,6 +59,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.1.4 - 2023-07-31
+    * Updated to ph-commons 11.1
 * v10.1.3 - 2023-07-26
     * Introduced `ServletHelper.getHeader` to work around a Tomcat error
 * v10.1.2 - 2023-07-24

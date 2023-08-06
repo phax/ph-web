@@ -118,11 +118,11 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
           try
           {
             // Create and setup the request
-            final MockHttpServletRequest aRequest = new MockHttpServletRequest (getServletContext ());
-            aRequest.setSessionID (sSessionID);
+            final MockHttpServletRequest aMockRequest = new MockHttpServletRequest (getServletContext ());
+            aMockRequest.setSessionID (sSessionID);
 
             // Create the session
-            final HttpSession aHttpSession = aRequest.getSession (true);
+            final HttpSession aHttpSession = aMockRequest.getSession (true);
             if (aHttpSession == null)
               throw new IllegalStateException ();
             final ISessionWebScope aSessionScope = WebScopeManager.getSessionScope (true);
@@ -154,7 +154,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             if (!(aNewSessionScope.attrs ().get ("x") instanceof MockScopeRenewalAware))
               throw new IllegalStateException ();
 
-            aRequest.invalidate ();
+            aMockRequest.invalidate ();
           }
           catch (final RuntimeException ex)
           {

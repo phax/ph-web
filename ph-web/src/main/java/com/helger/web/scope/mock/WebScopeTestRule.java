@@ -51,8 +51,8 @@ public class WebScopeTestRule extends ExternalResource
 
   private String m_sContextPath = MOCK_CONTEXT_PATH;
   private ICommonsMap <String, String> m_aServletContextInitParameters;
-  private MockServletContext m_aServletContext;
-  private MockHttpServletRequest m_aRequest;
+  private MockServletContext m_aMockServletContext;
+  private MockHttpServletRequest m_aMockRequest;
 
   public WebScopeTestRule ()
   {
@@ -147,12 +147,12 @@ public class WebScopeTestRule extends ExternalResource
     initListener ();
 
     // Start global scope -> triggers HTTP events
-    m_aServletContext = createMockServletContext (m_sContextPath, m_aServletContextInitParameters);
-    if (m_aServletContext == null)
+    m_aMockServletContext = createMockServletContext (m_sContextPath, m_aServletContextInitParameters);
+    if (m_aMockServletContext == null)
       throw new IllegalStateException ("Failed to created MockServletContext");
 
     // Start request scope -> triggers HTTP events
-    m_aRequest = createMockRequest (m_aServletContext);
+    m_aMockRequest = createMockRequest (m_aMockServletContext);
   }
 
   @Override
@@ -160,9 +160,9 @@ public class WebScopeTestRule extends ExternalResource
   @OverridingMethodsMustInvokeSuper
   public void after ()
   {
-    WebScopeAwareTestSetup.shutdownWebScopeTests (m_aRequest, m_aServletContext);
-    m_aRequest = null;
-    m_aServletContext = null;
+    WebScopeAwareTestSetup.shutdownWebScopeTests (m_aMockRequest, m_aMockServletContext);
+    m_aMockRequest = null;
+    m_aMockServletContext = null;
   }
 
   /**
@@ -172,7 +172,7 @@ public class WebScopeTestRule extends ExternalResource
   @Nullable
   public final MockServletContext getServletContext ()
   {
-    return m_aServletContext;
+    return m_aMockServletContext;
   }
 
   /**
@@ -182,7 +182,7 @@ public class WebScopeTestRule extends ExternalResource
   @Nullable
   public final MockServletPool getServletPool ()
   {
-    return m_aServletContext == null ? null : m_aServletContext.getServletPool ();
+    return m_aMockServletContext == null ? null : m_aMockServletContext.getServletPool ();
   }
 
   /**
@@ -192,7 +192,7 @@ public class WebScopeTestRule extends ExternalResource
   @Nullable
   public final MockHttpServletRequest getRequest ()
   {
-    return m_aRequest;
+    return m_aMockRequest;
   }
 
   /**
@@ -205,16 +205,16 @@ public class WebScopeTestRule extends ExternalResource
   @Nullable
   public final HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return m_aRequest == null ? null : m_aRequest.getSession (bCreateIfNotExisting);
+    return m_aMockRequest == null ? null : m_aMockRequest.getSession (bCreateIfNotExisting);
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).appendIfNotNull ("contextPath", m_sContextPath)
-                                       .appendIfNotNull ("servletContextInitParams", m_aServletContextInitParameters)
-                                       .append ("servletContext", m_aServletContext)
-                                       .appendIfNotNull ("request", m_aRequest)
+    return new ToStringGenerator (this).appendIfNotNull ("ContextPath", m_sContextPath)
+                                       .appendIfNotNull ("ServletContextInitParams", m_aServletContextInitParameters)
+                                       .append ("MockServletContext", m_aMockServletContext)
+                                       .appendIfNotNull ("MockRequest", m_aMockRequest)
                                        .getToString ();
   }
 }

@@ -30,6 +30,7 @@ import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.collection.iterate.EmptyEnumeration;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.state.EChange;
+import com.helger.servlet.ServletHelper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -115,7 +116,7 @@ public final class SessionHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     // Is there any existing session?
-    final HttpSession aSession = aHttpRequest.getSession (false);
+    final HttpSession aSession = ServletHelper.getRequestSession (aHttpRequest, false);
     if (aSession != null)
     {
       try
@@ -131,6 +132,6 @@ public final class SessionHelper
     }
 
     // Create the new session
-    return aHttpRequest.getSession (true);
+    return ServletHelper.getRequestSession (aHttpRequest, true);
   }
 }

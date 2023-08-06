@@ -17,7 +17,6 @@
 package com.helger.servlet.request;
 
 import java.security.cert.X509Certificate;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
@@ -33,13 +32,11 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
 import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.commons.url.SimpleURL;
 import com.helger.commons.url.URLData;
@@ -93,14 +90,14 @@ public final class RequestHelper
     @ReturnsMutableCopy
     public ICommonsList <String> getAllHeaderNames ()
     {
-      return new CommonsArrayList <> (m_aHttpRequest.getHeaderNames ());
+      return ServletHelper.getRequestHeaderNames (m_aHttpRequest);
     }
 
     @Nonnull
     @ReturnsMutableCopy
     public ICommonsList <String> getHeaders (@Nullable final String sName)
     {
-      return new CommonsArrayList <> (m_aHttpRequest.getHeaders (sName));
+      return ServletHelper.getRequestHeaders (m_aHttpRequest, sName);
     }
 
     @Nullable
@@ -503,8 +500,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
-                                                                                                                      .append (getRequestURIDecoded (aHttpRequest));
+    return getFullServerName (aHttpRequest).append (getRequestURIDecoded (aHttpRequest));
   }
 
   /**
@@ -537,8 +533,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ())
-                                                                                                                      .append (getRequestURIEncoded (aHttpRequest));
+    return getFullServerName (aHttpRequest).append (getRequestURIEncoded (aHttpRequest));
   }
 
   /**
@@ -674,7 +669,9 @@ public final class RequestHelper
   public static StringBuilder getFullServerName (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-    return getFullServerName (aHttpRequest.getScheme (), aHttpRequest.getServerName (), aHttpRequest.getServerPort ());
+    return getFullServerName (ServletHelper.getRequestScheme (aHttpRequest),
+                              ServletHelper.getRequestServerName (aHttpRequest),
+                              ServletHelper.getRequestServerPort (aHttpRequest));
   }
 
   @Nonnull
@@ -734,7 +731,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sProtocol = aHttpRequest.getProtocol ();
+    final String sProtocol = ServletHelper.getRequestProtocol (aHttpRequest);
     return EHttpVersion.getFromNameOrNull (sProtocol);
   }
 
@@ -768,7 +765,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sMethod = aHttpRequest.getMethod ();
+    final String sMethod = ServletHelper.getRequestMethod (aHttpRequest);
     final EHttpMethod ret = EHttpMethod.getFromNameOrNull (sMethod);
     if (ret != null)
       return ret;
@@ -793,17 +790,9 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (aConsumer, "Consumer");
 
-    final Enumeration <String> aHeaders = aHttpRequest.getHeaderNames ();
-    while (aHeaders.hasMoreElements ())
-    {
-      final String sName = aHeaders.nextElement ();
-      final Enumeration <String> eHeaderValues = aHttpRequest.getHeaders (sName);
-      while (eHeaderValues.hasMoreElements ())
-      {
-        final String sValue = eHeaderValues.nextElement ();
+    for (final String sName : ServletHelper.getRequestHeaderNames (aHttpRequest))
+      for (final String sValue : ServletHelper.getRequestHeaders (aHttpRequest, sName))
         aConsumer.accept (sName, sValue);
-      }
-    }
   }
 
   /**
@@ -854,13 +843,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    if (false)
-    {
-      // Missing support > 2GB!!!
-      return aHttpRequest.getContentLength ();
-    }
-    final String sContentLength = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.CONTENT_LENGTH);
-    return StringParser.parseLong (sContentLength, -1L);
+    return ServletHelper.getRequestContentLength (aHttpRequest);
   }
 
   @Nullable
@@ -960,7 +943,7 @@ public final class RequestHelper
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
-    return isMultipartContent (aHttpRequest.getContentType ());
+    return isMultipartContent (ServletHelper.getRequestContentType (aHttpRequest));
   }
 
   /**
@@ -992,7 +975,7 @@ public final class RequestHelper
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
-    return isMultipartFormDataContent (aHttpRequest.getContentType ());
+    return isMultipartFormDataContent (ServletHelper.getRequestContentType (aHttpRequest));
   }
 
   @Nonnull

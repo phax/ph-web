@@ -73,38 +73,47 @@ public final class RequestLogger
     }
     else
     {
-      ret.put ("AuthType", aHttpRequest.getAuthType ());
-      ret.put ("CharacterEncoding", aHttpRequest.getCharacterEncoding ());
-      ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
-      ret.put ("ContentType", aHttpRequest.getContentType ());
-      ret.put ("ContextPath", ServletHelper.getRequestContextPath (aHttpRequest));
-      ret.put ("ContextPath2", ServletContextPathHolder.getContextPathOrNull ());
-      ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
-      ret.put ("LocalName", aHttpRequest.getLocalName ());
-      ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
-      ret.put ("Method", aHttpRequest.getMethod ());
-      ret.put ("PathInfo", ServletHelper.getRequestPathInfo (aHttpRequest));
-      ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
-      ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
-      ret.put ("Protocol", aHttpRequest.getProtocol ());
-      ret.put ("QueryString", ServletHelper.getRequestQueryString (aHttpRequest));
-      ret.put ("RemoteAddr", aHttpRequest.getRemoteAddr ());
-      ret.put ("RemoteHost", aHttpRequest.getRemoteHost ());
-      ret.put ("RemotePort", Integer.toString (aHttpRequest.getRemotePort ()));
-      ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
-      ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
-      ret.put ("RequestURI", ServletHelper.getRequestRequestURI (aHttpRequest));
-      ret.put ("RequestURI2", RequestHelper.getRequestURIDecoded (aHttpRequest));
-      ret.put ("RequestURI3", RequestHelper.getRequestURIEncoded (aHttpRequest));
-      ret.put ("RequestURL", ServletHelper.getRequestRequestURL (aHttpRequest).toString ());
-      ret.put ("RequestURL2", RequestHelper.getRequestURLDecoded (aHttpRequest).toString ());
-      ret.put ("RequestURL3", RequestHelper.getRequestURLEncoded (aHttpRequest).toString ());
-      ret.put ("Scheme", aHttpRequest.getScheme ());
-      ret.put ("ServerName", aHttpRequest.getServerName ());
-      ret.put ("ServerPort", Integer.toString (aHttpRequest.getServerPort ()));
-      ret.put ("ServletPath", ServletHelper.getRequestServletPath (aHttpRequest));
+      try
+      {
+        ret.put ("AuthType", aHttpRequest.getAuthType ());
+        ret.put ("CharacterEncoding", aHttpRequest.getCharacterEncoding ());
+        ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
+        ret.put ("ContentType", aHttpRequest.getContentType ());
+        ret.put ("ContextPath", ServletHelper.getRequestContextPath (aHttpRequest));
+        ret.put ("ContextPath2", ServletContextPathHolder.getContextPathOrNull ());
+        ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
+        ret.put ("LocalName", aHttpRequest.getLocalName ());
+        ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
+        ret.put ("Method", ServletHelper.getRequestMethod (aHttpRequest));
+        ret.put ("PathInfo", ServletHelper.getRequestPathInfo (aHttpRequest));
+        ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
+        ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
+        ret.put ("Protocol", ServletHelper.getRequestProtocol (aHttpRequest));
+        ret.put ("QueryString", ServletHelper.getRequestQueryString (aHttpRequest));
+        ret.put ("RemoteAddr", aHttpRequest.getRemoteAddr ());
+        ret.put ("RemoteHost", aHttpRequest.getRemoteHost ());
+        ret.put ("RemotePort", Integer.toString (aHttpRequest.getRemotePort ()));
+        ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
+        ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
+        ret.put ("RequestURI", ServletHelper.getRequestRequestURI (aHttpRequest));
+        ret.put ("RequestURI2", RequestHelper.getRequestURIDecoded (aHttpRequest));
+        ret.put ("RequestURI3", RequestHelper.getRequestURIEncoded (aHttpRequest));
+        ret.put ("RequestURL", ServletHelper.getRequestRequestURL (aHttpRequest).toString ());
+        ret.put ("RequestURL2", RequestHelper.getRequestURLDecoded (aHttpRequest).toString ());
+        ret.put ("RequestURL3", RequestHelper.getRequestURLEncoded (aHttpRequest).toString ());
+        ret.put ("Scheme", ServletHelper.getRequestScheme (aHttpRequest));
+        ret.put ("ServerName", ServletHelper.getRequestServerName (aHttpRequest));
+        ret.put ("ServerPort", Integer.toString (ServletHelper.getRequestServerPort (aHttpRequest)));
+        ret.put ("ServletPath", ServletHelper.getRequestServletPath (aHttpRequest));
+      }
+      catch (final RuntimeException ex)
+      {
+        ret.put ("InternalErrorClass", ex.getClass ().getName ());
+        ret.put ("InternalErrorMessage", ex.getMessage ());
+      }
     }
-    final HttpSession aSession = aHttpRequest.getSession (false);
+
+    final HttpSession aSession = ServletHelper.getRequestSession (aHttpRequest, false);
     if (aSession != null)
       ret.put ("SessionID", aSession.getId ());
     return ret;
@@ -129,9 +138,16 @@ public final class RequestLogger
   public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
-    for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
-                                                                      .entrySet ())
-      ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
+    try
+    {
+      for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
+                                                                        .entrySet ())
+        ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
+    }
+    catch (final RuntimeException ex)
+    {
+      // Ignore
+    }
     return ret;
   }
 

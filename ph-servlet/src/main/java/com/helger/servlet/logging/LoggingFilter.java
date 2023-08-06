@@ -97,7 +97,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {
     final LoggingRequest aLoggingRequest = new LoggingRequest ();
     aLoggingRequest.setSender (aRequestWrapper.getLocalAddr ());
-    aLoggingRequest.setMethod (aRequestWrapper.getMethod ());
+    aLoggingRequest.setMethod (ServletHelper.getRequestMethod (aRequestWrapper));
     aLoggingRequest.setPath (ServletHelper.getRequestRequestURI (aRequestWrapper));
     aLoggingRequest.setParams (aRequestWrapper.isFormPost () ? null : aRequestWrapper.getParameters ());
     aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (aRequestWrapper));

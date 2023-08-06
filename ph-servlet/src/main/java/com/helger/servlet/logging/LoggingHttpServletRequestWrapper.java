@@ -41,6 +41,7 @@ import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.io.stream.StreamHelper;
 import com.helger.commons.mime.CMimeType;
 import com.helger.commons.string.StringHelper;
+import com.helger.servlet.ServletHelper;
 
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -195,7 +196,9 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   public boolean isFormPost ()
   {
     final String sContentType = getContentType ();
-    return sContentType != null && sContentType.contains (FORM_CONTENT_TYPE) && METHOD_POST.equalsIgnoreCase (getMethod ());
+    return sContentType != null &&
+           sContentType.contains (FORM_CONTENT_TYPE) &&
+           METHOD_POST.equalsIgnoreCase (ServletHelper.getRequestMethod (this));
   }
 
   private static class ParamNameEnumeration implements Enumeration <String>

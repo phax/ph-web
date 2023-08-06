@@ -347,7 +347,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    */
   default String getMethod ()
   {
-    return getRequest ().getMethod ();
+    return ServletHelper.getRequestMethod (getRequest ());
   }
 
   /**
@@ -641,7 +641,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return getRequest ().getSession (bCreateIfNotExisting);
+    return ServletHelper.getRequestSession (getRequest (), bCreateIfNotExisting);
   }
 
   /**

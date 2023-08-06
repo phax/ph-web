@@ -45,6 +45,7 @@ import com.helger.commons.string.ToStringGenerator;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
+import com.helger.servlet.ServletHelper;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.StaticServerInfo;
 import com.helger.servlet.http.CountingOnlyHttpServletResponse;
@@ -470,7 +471,7 @@ public abstract class AbstractXServlet extends HttpServlet
     m_aCounterRequestsPerVersionAccepted.increment (eHttpVersion.getName ());
 
     // Ensure a valid HTTP method is provided
-    final String sMethod = aHttpRequest.getMethod ();
+    final String sMethod = ServletHelper.getRequestMethod (aHttpRequest);
     final EHttpMethod eHttpMethod = EHttpMethod.getFromNameOrNull (sMethod);
     if (eHttpMethod == null)
     {

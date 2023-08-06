@@ -59,6 +59,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.1.5 - 2023-08-06
+    * Wrapped additional `HttpServletRequest` methods in `ServletHelper`
 * v10.1.4 - 2023-07-31
     * Updated to ph-commons 11.1
 * v10.1.3 - 2023-07-26

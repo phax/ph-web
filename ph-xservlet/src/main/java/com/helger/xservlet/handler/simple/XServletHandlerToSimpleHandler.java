@@ -118,7 +118,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
       m_aStatsHasLastModification.increment ();
 
       // Get the If-Modified-Since date header
-      final long nRequestIfModifiedSince = aHttpRequest.getDateHeader (CHttpHeader.IF_MODIFIED_SINCE);
+      final long nRequestIfModifiedSince = ServletHelper.getRequestDateHeader (aHttpRequest,
+                                                                               CHttpHeader.IF_MODIFIED_SINCE);
       if (nRequestIfModifiedSince >= 0)
       {
         final LocalDateTime aRequestIfModifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfModifiedSince);
@@ -134,7 +135,8 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         m_aStatsModifiedIfModifiedSince.increment ();
       }
       // Get the If-Unmodified-Since date header
-      final long nRequestIfUnmodifiedSince = aHttpRequest.getDateHeader (CHttpHeader.IF_UNMODIFIED_SINCE);
+      final long nRequestIfUnmodifiedSince = ServletHelper.getRequestDateHeader (aHttpRequest,
+                                                                                 CHttpHeader.IF_UNMODIFIED_SINCE);
       if (nRequestIfUnmodifiedSince >= 0)
       {
         final LocalDateTime aRequestIfUnmodifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfUnmodifiedSince);

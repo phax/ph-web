@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -28,6 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.annotation.PresentForCodeCoverage;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.lang.GenericReflection;
 import com.helger.commons.string.StringHelper;
 
@@ -36,6 +40,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Very basic servlet API helper
@@ -141,6 +146,45 @@ public final class ServletHelper
     return GenericReflection.uncheckedCast (getRequestAttribute (aServletRequest, sAttrName));
   }
 
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ICommonsList <String> getRequestHeaderNames (@Nonnull final HttpServletRequest aServletRequest)
+  {
+    try
+    {
+      return new CommonsArrayList <> (aServletRequest.getHeaderNames ());
+    }
+    catch (final Exception ex)
+    {
+      // Happens in certain Tomcat versions (e.g. 10.1 with JDK 17)
+      // "The request object has been recycled and is no longer associated with
+      // this facade"
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get header names from HTTP request", ex);
+      return new CommonsArrayList <> ();
+    }
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public static ICommonsList <String> getRequestHeaders (@Nonnull final HttpServletRequest aServletRequest,
+                                                         @Nonnull final String sHeaderName)
+  {
+    try
+    {
+      return new CommonsArrayList <> (aServletRequest.getHeaders (sHeaderName));
+    }
+    catch (final Exception ex)
+    {
+      // Happens in certain Tomcat versions (e.g. 10.1 with JDK 17)
+      // "The request object has been recycled and is no longer associated with
+      // this facade"
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get headers for '" + sHeaderName + "' from HTTP request", ex);
+      return new CommonsArrayList <> ();
+    }
+  }
+
   @Nullable
   public static String getRequestHeader (@Nonnull final HttpServletRequest aServletRequest,
                                          @Nonnull final String sHeaderName)
@@ -157,6 +201,25 @@ public final class ServletHelper
       if (isLogExceptions ())
         LOGGER.warn ("[ServletHelper] Failed to get header '" + sHeaderName + "' from HTTP request", ex);
       return null;
+    }
+  }
+
+  @CheckForSigned
+  public static long getRequestDateHeader (@Nonnull final HttpServletRequest aServletRequest,
+                                           @Nonnull final String sHeaderName)
+  {
+    try
+    {
+      return aServletRequest.getDateHeader (sHeaderName);
+    }
+    catch (final Exception ex)
+    {
+      // Happens in certain Tomcat versions (e.g. 10.1 with JDK 17)
+      // "The request object has been recycled and is no longer associated with
+      // this facade"
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get Date header '" + sHeaderName + "' from HTTP request", ex);
+      return -1;
     }
   }
 
@@ -479,5 +542,134 @@ public final class ServletHelper
       throw new IllegalStateException ("Failed to determine real path of ServletContext " + aSC);
     }
     return sPath;
+  }
+
+  @CheckForSigned
+  public static long getRequestContentLength (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      // Support > 2GB!!!
+      return aHttpRequest.getContentLengthLong ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine Content-Length of HTTP request", ex);
+      return -1;
+    }
+  }
+
+  @Nullable
+  public static String getRequestContentType (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getContentType ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine Content-Type of HTTP request", ex);
+      return null;
+    }
+  }
+
+  @Nullable
+  public static String getRequestMethod (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getMethod ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine Method of HTTP request", ex);
+      return null;
+    }
+  }
+
+  @Nullable
+  public static String getRequestProtocol (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getProtocol ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine Protocol of HTTP request", ex);
+      return null;
+    }
+  }
+
+  @Nullable
+  public static String getRequestScheme (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getScheme ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine Scheme of HTTP request", ex);
+      return null;
+    }
+  }
+
+  @Nullable
+  public static String getRequestServerName (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getServerName ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine ServerName of HTTP request", ex);
+      return null;
+    }
+  }
+
+  @CheckForSigned
+  public static int getRequestServerPort (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    try
+    {
+      return aHttpRequest.getServerPort ();
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to determine ServerPort of HTTP request", ex);
+      return -1;
+    }
+  }
+
+  @Nullable
+  public static HttpSession getRequestSession (@Nonnull final HttpServletRequest aHttpRequest, final boolean bCreate)
+  {
+    try
+    {
+      return aHttpRequest.getSession (bCreate);
+    }
+    catch (final Exception ex)
+    {
+      // fall through
+      if (isLogExceptions ())
+        LOGGER.warn ("[ServletHelper] Failed to get session (" + bCreate + ") of HTTP request", ex);
+      return null;
+    }
   }
 }

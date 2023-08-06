@@ -127,10 +127,10 @@ public class ExtAsyncContext
     return new ExtAsyncContext (aAsyncContext,
                                 eHttpVersion,
                                 eHttpMethod,
-                                aHttpRequest.getContextPath (),
-                                aHttpRequest.getPathInfo (),
-                                aHttpRequest.getQueryString (),
-                                aHttpRequest.getRequestURI (),
-                                aHttpRequest.getServletPath ());
+                                ServletHelper.getRequestContextPath (aHttpRequest),
+                                ServletHelper.getRequestPathInfo (aHttpRequest),
+                                ServletHelper.getRequestQueryString (aHttpRequest),
+                                ServletHelper.getRequestRequestURI (aHttpRequest),
+                                ServletHelper.getRequestServletPath (aHttpRequest));
   }
 }

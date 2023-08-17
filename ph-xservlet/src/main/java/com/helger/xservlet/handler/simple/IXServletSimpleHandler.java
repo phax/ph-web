@@ -131,7 +131,6 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *        Never <code>null</code>.
    */
   @OverrideOnDemand
-  @Nonnull
   default void onRequestBegin (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
   {}
 

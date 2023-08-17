@@ -128,7 +128,7 @@ public class AuthenticatorProxySettingsManager extends Authenticator
    */
   @Nullable
   public static PasswordAuthentication requestProxyPasswordAuthentication (@Nullable final String sHostName,
-                                                                           @Nullable final int nPort,
+                                                                           final int nPort,
                                                                            @Nullable final String sProtocol)
   {
     return requestPasswordAuthentication (sHostName,

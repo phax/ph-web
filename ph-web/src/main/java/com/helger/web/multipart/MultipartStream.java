@@ -220,7 +220,10 @@ public class MultipartStream
    *        any.
    * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
-  public MultipartStream (final InputStream aIS, final byte [] aBoundary, final int nBufSize, final MultipartProgressNotifier aNotifier)
+  public MultipartStream (final InputStream aIS,
+                          final byte [] aBoundary,
+                          final int nBufSize,
+                          final MultipartProgressNotifier aNotifier)
   {
     m_aIS = aIS;
     m_nBufSize = nBufSize;
@@ -394,6 +397,7 @@ public class MultipartStream
    * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    */
+  @Nonnull
   public String readHeaders () throws MultipartMalformedStreamException
   {
     // to support multi-byte characters
@@ -425,7 +429,8 @@ public class MultipartStream
         aBAOS.write (b);
       }
 
-      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding, SystemHelper.getSystemCharset ());
+      final Charset aCharsetToUse = CharsetHelper.getCharsetFromNameOrDefault (m_sHeaderEncoding,
+                                                                               SystemHelper.getSystemCharset ());
       return aBAOS.getAsString (aCharsetToUse);
     }
   }
@@ -556,21 +561,21 @@ public class MultipartStream
    */
   protected int findSeparator ()
   {
-    int first;
-    int match = 0;
-    final int maxpos = m_nTail - m_nBoundaryLength;
-    for (first = m_nHead; (first <= maxpos) && (match != m_nBoundaryLength); first++)
+    int nFirst;
+    int nMatch = 0;
+    final int nMaxPos = m_nTail - m_nBoundaryLength;
+    for (nFirst = m_nHead; nFirst <= nMaxPos && nMatch != m_nBoundaryLength; nFirst++)
     {
-      first = findByte (m_aBoundary[0], first);
-      if (first == -1 || (first > maxpos))
+      nFirst = findByte (m_aBoundary[0], nFirst);
+      if (nFirst == -1 || nFirst > nMaxPos)
         return -1;
 
-      for (match = 1; match < m_nBoundaryLength; match++)
-        if (m_aBuffer[first + match] != m_aBoundary[match])
+      for (nMatch = 1; nMatch < m_nBoundaryLength; nMatch++)
+        if (m_aBuffer[nFirst + nMatch] != m_aBoundary[nMatch])
           break;
     }
-    if (match == m_nBoundaryLength)
-      return first - 1;
+    if (nMatch == m_nBoundaryLength)
+      return nFirst - 1;
     return -1;
   }
 
@@ -817,7 +822,11 @@ public class MultipartStream
           // The last pad amount is left in the buffer.
           // Boundary can't be in there so signal an error
           // condition.
-          throw new MultipartMalformedStreamException ("Stream ended unexpectedly");
+          throw new MultipartMalformedStreamException ("Stream ended unexpectedly; Reading at ofs " +
+                                                       m_nTail +
+                                                       " for " +
+                                                       (m_nBufSize - m_nTail) +
+                                                       " bytes");
         }
         if (m_aNotifier != null)
           m_aNotifier.noteBytesRead (nBytesRead);

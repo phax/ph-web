@@ -113,9 +113,9 @@ public final class HttpClientSettingsConfigTest
 
     // Difference
     assertNull (aHCS.getProxyHost ());
-    // Difference
+    // Difference (because proxy is disabled)
     assertNull (aHCS.getProxyCredentials ());
-    // Difference
+    // Difference (because proxy is disabled)
     assertEquals (new CommonsLinkedHashSet <> (), aHCS.nonProxyHosts ());
 
     // Difference

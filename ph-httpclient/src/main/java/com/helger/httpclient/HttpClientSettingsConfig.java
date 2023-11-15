@@ -19,7 +19,6 @@ package com.helger.httpclient;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.function.Function;
-import java.util.function.ObjIntConsumer;
 
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
@@ -33,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.state.ETriState;
@@ -66,24 +66,12 @@ public class HttpClientSettingsConfig
       m_aConfigPrefixes = aConfigPrefixes;
     }
 
-    // TODO replace with ArrayHelper method in ph-commons 11.0.2
-    private static <ELEMENTTYPE> void _forEach (@Nonnull final ELEMENTTYPE [] aArray,
-                                                @Nonnull final ObjIntConsumer <? super ELEMENTTYPE> aConsumer)
-    {
-      int nIndex = 0;
-      for (final ELEMENTTYPE aElement : aArray)
-      {
-        aConsumer.accept (aElement, nIndex);
-        ++nIndex;
-      }
-    }
-
     @Nonnull
     private static String [] _copyAndMap (@Nonnull final String [] aArray,
                                           @Nonnull final Function <String, String> aFun)
     {
       final String [] ret = new String [aArray.length];
-      _forEach (aArray, (val, idx) -> ret[idx] = aFun.apply (ret[idx]));
+      ArrayHelper.forEach (aArray, (val, idx) -> ret[idx] = aFun.apply (val));
       return ret;
     }
 

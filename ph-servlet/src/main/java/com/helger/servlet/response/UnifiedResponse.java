@@ -300,12 +300,14 @@ public class UnifiedResponse
    * @return The browser info of the request. Never <code>null</code>.
    */
   @Nullable
+  @Deprecated (forRemoval = true, since = "10.1.6")
   public final BrowserInfo getRequestBrowserInfo ()
   {
     return m_aRequestBrowserInfo;
   }
 
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.1.6")
   public final UnifiedResponse setRequestBrowserInfo (@Nullable final BrowserInfo aRequestBrowserInfo)
   {
     m_aRequestBrowserInfo = aRequestBrowserInfo;

@@ -77,6 +77,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Immutable
 public final class RequestHelper
 {
+  @Deprecated (forRemoval = true, since = "10.1.6")
   private static final class UAProfileHeaderProviderHttpServletRequest implements IUAProfileHeaderProvider
   {
     private final HttpServletRequest m_aHttpRequest;
@@ -1100,6 +1101,7 @@ public final class RequestHelper
    *         case of an internal inconsistency.
    */
   @Nullable
+  @Deprecated (forRemoval = true, since = "10.1.6")
   public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
   {
     final Object aAttr = ServletHelper.getRequestAttribute (aHttpRequest, IUserAgent.class.getName ());
@@ -1151,6 +1153,7 @@ public final class RequestHelper
    * @return A non-<code>null</code> user agent object.
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.1.6")
   public static UAProfile getUAProfile (@Nonnull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");

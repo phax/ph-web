@@ -68,6 +68,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return A non-<code>null</code> user agent object.
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.1.6")
   default IUserAgent getUserAgent ()
   {
     return RequestHelper.getUserAgent (getRequest ());
@@ -78,6 +79,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         no known browser was detected.
    */
   @Nullable
+  @Deprecated (forRemoval = true, since = "10.1.6")
   default BrowserInfo getBrowserInfo ()
   {
     return getUserAgent ().getBrowserInfo ();

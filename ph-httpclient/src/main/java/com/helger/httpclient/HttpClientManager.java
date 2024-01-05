@@ -131,13 +131,13 @@ public class HttpClientManager implements AutoCloseable
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
     T ret = null;
-    Throwable aCaughtException = null;
+    Exception aCaughtException = null;
     try
     {
       ret = m_aHttpClient.execute (aRequest, aHttpContext, aResponseHandler);
       return ret;
     }
-    catch (final IOException ex)
+    catch (final RuntimeException | IOException ex)
     {
       aCaughtException = ex;
       throw ex;

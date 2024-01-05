@@ -16,6 +16,8 @@
  */
 package com.helger.httpclient;
 
+import java.io.IOException;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +27,7 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.hc.client5.http.DnsResolver;
 import org.apache.hc.client5.http.HttpRequestRetryStrategy;
+import org.apache.hc.client5.http.HttpRoute;
 import org.apache.hc.client5.http.SchemePortResolver;
 import org.apache.hc.client5.http.SystemDefaultDnsResolver;
 import org.apache.hc.client5.http.auth.AuthScope;
@@ -43,7 +46,9 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
 import org.apache.hc.client5.http.impl.routing.DefaultRoutePlanner;
+import org.apache.hc.client5.http.io.ConnectionEndpoint;
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.io.LeaseRequest;
 import org.apache.hc.client5.http.protocol.RequestAddCookies;
 import org.apache.hc.client5.http.routing.HttpRoutePlanner;
 import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
@@ -54,13 +59,16 @@ import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.io.CloseMode;
 import org.apache.hc.core5.ssl.SSLInitializationException;
 import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.collection.impl.ICommonsSet;
+import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.http.tls.ITLSConfigurationMode;
 
 /**
@@ -247,7 +255,61 @@ public class HttpClientFactory implements IHttpClientProvider
     final SocketConfig aSocketConfig = createSocketConfig ();
     aConnMgr.setDefaultSocketConfig (aSocketConfig);
 
-    return aConnMgr;
+    final HttpClientConnectionManager ret;
+    if (HttpDebugger.isEnabled ())
+    {
+      // Simply add a logging layer on top of aConnMgr
+      final String sPrefix = "HttpClientConnectionManager[" + GlobalIDFactory.getNewIntID () + "].";
+      ret = new HttpClientConnectionManager ()
+      {
+        public void close (final CloseMode closeMode)
+        {
+          LOGGER.info (sPrefix + "close(" + closeMode + ")");
+          aConnMgr.close (closeMode);
+        }
+
+        public void close () throws IOException
+        {
+          LOGGER.info (sPrefix + "close()");
+          aConnMgr.close ();
+        }
+
+        public LeaseRequest lease (final String id,
+                                   final HttpRoute route,
+                                   final Timeout requestTimeout,
+                                   final Object state)
+        {
+          LOGGER.info (sPrefix + "lease(" + id + ", " + route + ", " + requestTimeout + ", " + state + ")");
+          return aConnMgr.lease (id, route, state);
+        }
+
+        public void connect (final ConnectionEndpoint endpoint,
+                             final TimeValue connectTimeout,
+                             final HttpContext context) throws IOException
+        {
+          LOGGER.info (sPrefix + "connect(" + endpoint + ", " + connectTimeout + ", " + context + ")");
+          aConnMgr.connect (endpoint, connectTimeout, context);
+        }
+
+        public void upgrade (final ConnectionEndpoint endpoint, final HttpContext context) throws IOException
+        {
+          LOGGER.info (sPrefix + "upgrade(" + endpoint + ", " + context + ")");
+          aConnMgr.upgrade (endpoint, context);
+        }
+
+        public void release (final ConnectionEndpoint endpoint, final Object newState, final TimeValue validDuration)
+        {
+          LOGGER.info (sPrefix + "release(" + endpoint + ", " + newState + ", " + validDuration + ")");
+          aConnMgr.release (endpoint, newState, validDuration);
+        }
+      };
+    }
+    else
+    {
+      ret = aConnMgr;
+    }
+
+    return ret;
   }
 
   @Nullable
@@ -344,8 +406,8 @@ public class HttpClientFactory implements IHttpClientProvider
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
-                                                                                                                   throws HttpException
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
+                                             @Nonnull final HttpContext aContext) throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
             if (aNonProxyHosts.contains (sHostname))

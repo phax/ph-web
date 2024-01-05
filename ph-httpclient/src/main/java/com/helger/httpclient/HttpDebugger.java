@@ -89,13 +89,13 @@ public final class HttpDebugger
   {
     if (isEnabled ())
     {
-      final HttpResponseException aHex = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
-                                                                                           : null;
+      final HttpResponseException aHttpEx = aCaughtException instanceof HttpResponseException ? (HttpResponseException) aCaughtException
+                                                                                              : null;
       LOGGER.info ("After HTTP call: " +
                    aRequest.getMethod () +
-                   (aResponse != null ? ". Response: " + aResponse : "") +
-                   (aHex != null ? ". Status " + aHex.getStatusCode () : ""),
-                   aHex != null ? null : aCaughtException);
+                   (aResponse != null ? ". Response: " + aResponse : ". No response") +
+                   (aHttpEx != null ? ". Status: " + aHttpEx.getStatusCode () : ""),
+                   aHttpEx != null ? null : aCaughtException);
     }
   }
 }

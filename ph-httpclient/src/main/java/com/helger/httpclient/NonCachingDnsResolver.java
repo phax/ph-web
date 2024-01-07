@@ -64,7 +64,13 @@ public class NonCachingDnsResolver implements DnsResolver
   @Nonnull
   public static Lookup createDefaultLookup (@Nonnull final String sHost) throws TextParseException
   {
-    final Lookup aDNSLookup = new Lookup (sHost, Type.ANY);
+    return createDefaultLookup (sHost, Type.A);
+  }
+
+  @Nonnull
+  public static Lookup createDefaultLookup (@Nonnull final String sHost, final int nType) throws TextParseException
+  {
+    final Lookup aDNSLookup = new Lookup (sHost, nType);
     try
     {
       aDNSLookup.setResolver (new SimpleResolver ());

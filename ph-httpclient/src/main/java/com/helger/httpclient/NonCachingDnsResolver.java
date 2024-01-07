@@ -64,6 +64,9 @@ public class NonCachingDnsResolver implements DnsResolver
   @Nonnull
   public static Lookup createDefaultLookup (@Nonnull final String sHost) throws TextParseException
   {
+    // Until v10.1.6 Type.ANY was used - but that's not "all" - that's just
+    // "one" of them. See
+    // https://stackoverflow.com/questions/53286891/get-complete-zone-records-from-dns-dnsjava-doesnt-return-all-records
     return createDefaultLookup (sHost, Type.A);
   }
 

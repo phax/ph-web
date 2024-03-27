@@ -59,10 +59,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v10.1.8 - work in progress
+* v10.1.8 - 2024-03-27
     * Updated to ph-commons 11.1.5
     * Created Java 21 compatibility
-* v10.1.7 - 2023-01-07
+* v10.1.7 - 2024-01-07
     * Fixed the DNS query type in `NonCachingDnsResolver.createDefaultLookup()` to not use `ANY`
 * v10.1.6 - 2024-01-05
     * Updated to Apache HttpClient v5.3

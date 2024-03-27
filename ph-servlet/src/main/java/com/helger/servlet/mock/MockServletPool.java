@@ -235,7 +235,7 @@ public class MockServletPool
         return null;
       if (nMatchingItems > 1)
         LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
-      return aMatchingItems.getFirst ().getServlet ();
+      return aMatchingItems.getFirstOrNull ().getServlet ();
     });
   }
 

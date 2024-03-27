@@ -216,7 +216,8 @@ public final class StreamingFuncTest
 
   @Nonnull
   @ReturnsMutableCopy
-  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream,
+                                                       final int pLength) throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -260,7 +261,7 @@ public final class StreamingFuncTest
   private static byte [] _newShortRequest () throws IOException
   {
     try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
+        final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
       osw.write (_getHeader ("field"));
       osw.write ("123");
@@ -274,7 +275,7 @@ public final class StreamingFuncTest
   private static byte [] _newRequest () throws IOException
   {
     try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
+        final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
       int nAdd = 16;
       int nNum = 0;
@@ -350,7 +351,7 @@ public final class StreamingFuncTest
     assertEquals ("foo.exe", fileItemStream.getNameSecure ());
 
     final ICommonsList <IFileItem> fileItems = _parseUploadToList (aReqBytes);
-    final IFileItem fileItem = fileItems.getFirst ();
+    final IFileItem fileItem = fileItems.getFirstOrNull ();
     try
     {
       fileItem.getName ();

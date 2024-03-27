@@ -140,7 +140,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (String or String[])
         final ICommonsList <String> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, String.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull ()
+                                                   : ArrayHelper.newArray (aValues, String.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
       // set all form files (potentially overwriting form fields with the same
@@ -149,8 +150,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues,
-                                                                                                 IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull ()
+                                                   : ArrayHelper.newArray (aValues, IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
       // Parsing complex file upload succeeded -> do not use standard scan for

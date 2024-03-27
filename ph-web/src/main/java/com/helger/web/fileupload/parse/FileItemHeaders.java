@@ -67,7 +67,7 @@ public class FileItemHeaders implements IFileItemHeaders
     final String sNameLower = sName.toLowerCase (Locale.US);
 
     final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
-    return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
+    return aHeaderValueList == null ? null : aHeaderValueList.getFirstOrNull ();
   }
 
   @Nullable

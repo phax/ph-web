@@ -80,7 +80,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
 
   protected void removeLastURL ()
   {
-    final XMLSitemapURL aLastURL = m_aURLs.removeLast ();
+    final XMLSitemapURL aLastURL = m_aURLs.removeLastOrNull ();
     m_nOutputLength -= aLastURL.getOutputLength ();
 
     // In case the last URL was the one with the latest modification date, use

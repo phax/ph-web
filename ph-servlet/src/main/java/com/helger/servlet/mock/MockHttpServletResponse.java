@@ -378,7 +378,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   public String getHeader (@Nullable final String sName)
   {
     final ICommonsList <String> aSet = m_aHeaders.getAllHeaderValues (sName);
-    return aSet == null ? null : aSet.getFirst ();
+    return aSet == null ? null : aSet.getFirstOrNull ();
   }
 
   /**

@@ -696,7 +696,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Locale getLocale ()
   {
     // One element is added in ctor!
-    return m_aLocales.getFirst ();
+    return m_aLocales.getFirstOrNull ();
   }
 
   @Nonnull

@@ -59,7 +59,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v10.1.9 - work in progress
+* v10.1.9 - 2024-07-29
     * Updated to dnsjava 3.6.0 fixing CVE-2024-25638
 * v10.1.8 - 2024-03-27
     * Updated to ph-commons 11.1.5

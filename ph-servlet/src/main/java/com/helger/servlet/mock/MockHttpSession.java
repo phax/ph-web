@@ -47,6 +47,7 @@ import jakarta.servlet.http.HttpSessionListener;
  *
  * @author Philip Helger
  */
+@SuppressWarnings ("deprecation")
 @NotThreadSafe
 public class MockHttpSession implements HttpSession
 {
@@ -262,8 +263,8 @@ public class MockHttpSession implements HttpSession
                                        .append ("maxInactiveInterval", m_nMaxInactiveInterval)
                                        .append ("lastAccessedTime", m_nLastAccessedTime)
                                        .appendIfNotNull ("servletContext",
-                                                         m_aServletContext == null ? null : m_aServletContext
-                                                                                                             .getServerInfo ())
+                                                         m_aServletContext == null ? null
+                                                                                   : m_aServletContext.getServerInfo ())
                                        .append ("attributes", m_aAttributes)
                                        .append ("isInvalidated", m_bInvalidated)
                                        .append ("isNew", m_bIsNew)

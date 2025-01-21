@@ -59,6 +59,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.2.0 - 2025-01-21
+    * Updated to Apache HttpClient v5.4.x
+    * Replaced HttpClient `ConnectionSocketFactory` with `TlsSocketStrategy`
+    * Modified API of `HttpclientFactory` to use `TlsSocketStrategy`
 * v10.1.9 - 2024-07-29
     * Updated to dnsjava 3.6.0 fixing CVE-2024-25638
 * v10.1.8 - 2024-03-27

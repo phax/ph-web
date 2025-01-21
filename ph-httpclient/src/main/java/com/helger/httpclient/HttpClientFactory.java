@@ -51,15 +51,16 @@ import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.io.LeaseRequest;
 import org.apache.hc.client5.http.protocol.RequestAddCookies;
 import org.apache.hc.client5.http.routing.HttpRoutePlanner;
-import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
 import org.apache.hc.client5.http.ssl.HttpsSupport;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TlsSocketStrategy;
 import org.apache.hc.core5.http.ConnectionReuseStrategy;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.io.CloseMode;
+import org.apache.hc.core5.reactor.ssl.SSLBufferMode;
 import org.apache.hc.core5.ssl.SSLInitializationException;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
@@ -128,9 +129,9 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  protected LayeredConnectionSocketFactory createCustomSSLFactory ()
+  protected TlsSocketStrategy createCustomTlsSocketStrategy ()
   {
-    LayeredConnectionSocketFactory aSSLFactory = null;
+    TlsSocketStrategy ret = null;
 
     try
     {
@@ -155,34 +156,34 @@ public class HttpClientFactory implements IHttpClientProvider
           LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
         }
 
-        aSSLFactory = new SSLConnectionSocketFactory (aSSLContext,
-                                                      aTLSConfigMode.getAllTLSVersionIDsAsArray (),
-                                                      aTLSConfigMode.getAllCipherSuitesAsArray (),
-                                                      aHostnameVerifier);
+        ret = new DefaultClientTlsStrategy (aSSLContext,
+                                            aTLSConfigMode.getAllTLSVersionIDsAsArray (),
+                                            aTLSConfigMode.getAllCipherSuitesAsArray (),
+                                            SSLBufferMode.STATIC,
+                                            aHostnameVerifier);
       }
     }
     catch (final SSLInitializationException ex)
     {
       // Fall through
-      LOGGER.warn ("Failed to init custom SSLConnectionSocketFactory - falling back to default SSLConnectionSocketFactory",
-                   ex);
+      LOGGER.warn ("Failed to init custom TlsSocketStrategy - falling back to default TlsSocketStrategy", ex);
     }
-    return aSSLFactory;
+    return ret;
   }
 
   @Nullable
-  public LayeredConnectionSocketFactory createSSLFactory ()
+  public TlsSocketStrategy createTlsSocketStrategy ()
   {
-    LayeredConnectionSocketFactory aSSLFactory = createCustomSSLFactory ();
+    TlsSocketStrategy ret = createCustomTlsSocketStrategy ();
 
-    if (aSSLFactory == null)
+    if (ret == null)
     {
       // No custom SSL context present - use system defaults
       try
       {
         if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Trying SSLConnectionSocketFactory.getSystemSocketFactory ()");
-        aSSLFactory = SSLConnectionSocketFactory.getSystemSocketFactory ();
+          LOGGER.debug ("Trying DefaultClientTlsStrategy.createSystemDefault ()");
+        ret = DefaultClientTlsStrategy.createSystemDefault ();
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Using SSL socket factory with an SSL context based on system propertiesas described in JSSE Reference Guide.");
       }
@@ -191,10 +192,10 @@ public class HttpClientFactory implements IHttpClientProvider
         try
         {
           if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Trying SSLConnectionSocketFactory.getSocketFactory ()");
-          aSSLFactory = SSLConnectionSocketFactory.getSocketFactory ();
+            LOGGER.debug ("Trying DefaultClientTlsStrategy.createDefault ()");
+          ret = DefaultClientTlsStrategy.createDefault ();
           if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Using SSL socket factory with an SSL context based on the standard JSSEtrust material (cacerts file in the security properties directory).System properties are not taken into consideration.");
+            LOGGER.debug ("Using SSL socket factory with an SSL context based on the standard JSSE trust material (cacerts file in the security properties directory).System properties are not taken into consideration.");
         }
         catch (final SSLInitializationException ex2)
         {
@@ -202,7 +203,7 @@ public class HttpClientFactory implements IHttpClientProvider
         }
       }
     }
-    return aSSLFactory;
+    return ret;
   }
 
   /**
@@ -240,12 +241,12 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nonnull
-  public HttpClientConnectionManager createConnectionManager (@Nonnull final LayeredConnectionSocketFactory aSSLFactory)
+  public HttpClientConnectionManager createConnectionManager (@Nonnull final TlsSocketStrategy aTlsSocketFactory)
   {
     final DnsResolver aDNSResolver = createDNSResolver ();
     final ConnectionConfig aConnectionConfig = createConnectionConfig ();
     final PoolingHttpClientConnectionManager aConnMgr = PoolingHttpClientConnectionManagerBuilder.create ()
-                                                                                                 .setSSLSocketFactory (aSSLFactory)
+                                                                                                 .setTlsSocketStrategy (aTlsSocketFactory)
                                                                                                  .setDnsResolver (aDNSResolver)
                                                                                                  .setDefaultConnectionConfig (aConnectionConfig)
                                                                                                  .build ();
@@ -377,12 +378,12 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
-    final LayeredConnectionSocketFactory aSSLFactory = createSSLFactory ();
-    if (aSSLFactory == null)
-      throw new IllegalStateException ("Failed to create SSL SocketFactory");
+    final TlsSocketStrategy aTlsSocketStrategy = createTlsSocketStrategy ();
+    if (aTlsSocketStrategy == null)
+      throw new IllegalStateException ("Failed to create TlsSocketStrategy");
 
     final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
-    final HttpClientConnectionManager aConnMgr = createConnectionManager (aSSLFactory);
+    final HttpClientConnectionManager aConnMgr = createConnectionManager (aTlsSocketStrategy);
     final ConnectionReuseStrategy aConnectionReuseStrategy = createConnectionReuseStrategy ();
     final RequestConfig aRequestConfig = createRequestConfig ();
     final HttpHost aProxyHost = m_aSettings.getProxyHost ();

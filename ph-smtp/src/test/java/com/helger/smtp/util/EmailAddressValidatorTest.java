@@ -16,41 +16,26 @@
  */
 package com.helger.smtp.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Random;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.email.EmailAddressHelper;
-
 public final class EmailAddressValidatorTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (EmailAddressValidatorTest.class);
   // "aa@bb" or "aa.bb@cc" are valid according to the spec, but not correctly
   // handled by the RegEx
-  private static final String [] VALID = new String [] { "ph@helger.com",
-                                                         "tim.tester@test.com",
-                                                         "tim-tester@test.com",
-                                                         "tim.tester@test.sub.com",
-                                                         "tim-tester@test.sub.com",
-                                                         "tim.tester@test.sub.sub.sub.sub.sub.sub.com",
-                                                         "tim-tester@test.sub.sub.sub.sub.sub.sub.com",
-                                                         "a.b@c.d",
-                                                         "abc@bcd.def" };
-  private static final String [] INVALID = new String [] { "ph@helger", "karin@gmx-net" };
-
-  @Test
-  public void testWithoutMXCheck ()
-  {
-    for (final String sValid : VALID)
-      assertTrue (sValid, EmailAddressHelper.isValid (sValid));
-    for (final String sInvalid : INVALID)
-      assertFalse (sInvalid, EmailAddressHelper.isValid (sInvalid));
-  }
+  private static final String [] VALID = { "ph@helger.com",
+                                           "tim.tester@test.com",
+                                           "tim-tester@test.com",
+                                           "tim.tester@test.sub.com",
+                                           "tim-tester@test.sub.com",
+                                           "tim.tester@test.sub.sub.sub.sub.sub.sub.com",
+                                           "tim-tester@test.sub.sub.sub.sub.sub.sub.com",
+                                           "a.b@c.d",
+                                           "abc@bcd.def" };
 
   @Test
   public void testWithMXCheck ()

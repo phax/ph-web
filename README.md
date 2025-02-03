@@ -59,6 +59,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.3.0 - 2025-02-03
+    * Reversed the dependency between ph-servlet and ph-useragent (incompatible change)
+    * Removed the deprecated methods in `RequestHelper` and `IRequestWebScopeWithoutResponse` and `UnifiedResponse` related to the user agent
+    * Created new classes `UAProfileHeaderProviderHttpServletRequest` and `UAServletHelper`
 * v10.2.0 - 2025-01-21
     * Updated to Apache HttpClient v5.4.x
     * Replaced HttpClient `ConnectionSocketFactory` with `TlsSocketStrategy`

@@ -61,7 +61,6 @@ import com.helger.commons.mutable.MutableLong;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.url.URLHelper;
 import com.helger.commons.url.URLProtocolRegistry;
 import com.helger.http.AcceptCharsetList;
 import com.helger.http.AcceptMimeTypeList;
@@ -71,8 +70,6 @@ import com.helger.http.QValue;
 import com.helger.http.RFC5987Encoder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.useragent.browser.BrowserInfo;
-import com.helger.useragent.browser.EBrowserType;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.servlet.http.Cookie;
@@ -113,7 +110,6 @@ public class UnifiedResponse
   private final HttpServletRequest m_aHttpRequest;
   private final AcceptCharsetList m_aAcceptCharsetList;
   private final AcceptMimeTypeList m_aAcceptMimeTypeList;
-  private BrowserInfo m_aRequestBrowserInfo;
 
   // Settings
   /**
@@ -294,24 +290,6 @@ public class UnifiedResponse
   public final EHttpMethod getHttpMethod ()
   {
     return m_eHttpMethod;
-  }
-
-  /**
-   * @return The browser info of the request. Never <code>null</code>.
-   */
-  @Nullable
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  public final BrowserInfo getRequestBrowserInfo ()
-  {
-    return m_aRequestBrowserInfo;
-  }
-
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  public final UnifiedResponse setRequestBrowserInfo (@Nullable final BrowserInfo aRequestBrowserInfo)
-  {
-    m_aRequestBrowserInfo = aRequestBrowserInfo;
-    return this;
   }
 
   /**
@@ -1683,31 +1661,20 @@ public class UnifiedResponse
     if (m_sContentDispositionFilename != null)
     {
       final StringBuilder aSB = new StringBuilder ();
-      if (m_aRequestBrowserInfo != null &&
-          m_aRequestBrowserInfo.getBrowserType () == EBrowserType.IE &&
-          m_aRequestBrowserInfo.getVersion ().getMajor () <= 8)
-      {
-        // Special case for IE <= 8
-        final Charset aCharsetToUse = m_aCharset != null ? m_aCharset : StandardCharsets.UTF_8;
-        aSB.append (m_eContentDispositionType.getID ())
-           .append ("; filename=")
-           .append (URLHelper.urlEncode (m_sContentDispositionFilename, aCharsetToUse));
-      }
-      else
-      {
-        // Filename needs to be surrounded with double quotes (single quotes
-        // don't work).
-        aSB.append (m_eContentDispositionType.getID ())
-           .append ("; filename=\"")
-           .append (m_sContentDispositionFilename)
-           .append ('"');
 
-        // Check if we need an UTF-8 filename
-        // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788
-        final String sRFC5987Filename = RFC5987Encoder.getRFC5987EncodedUTF8 (m_sContentDispositionFilename);
-        if (!sRFC5987Filename.equals (m_sContentDispositionFilename))
-          aSB.append ("; filename*=UTF-8''").append (sRFC5987Filename);
-      }
+      // Filename needs to be surrounded with double quotes (single quotes
+      // don't work).
+      aSB.append (m_eContentDispositionType.getID ())
+         .append ("; filename=\"")
+         .append (m_sContentDispositionFilename)
+         .append ('"');
+
+      // Check if we need an UTF-8 filename
+      // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788
+      final String sRFC5987Filename = RFC5987Encoder.getRFC5987EncodedUTF8 (m_sContentDispositionFilename);
+      if (!sRFC5987Filename.equals (m_sContentDispositionFilename))
+        aSB.append ("; filename*=UTF-8''").append (sRFC5987Filename);
+
       aHttpResponse.setHeader (CHttpHeader.CONTENT_DISPOSITION, aSB.toString ());
       if (m_aMimeType == null)
       {

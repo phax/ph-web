@@ -32,7 +32,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.PresentForCodeCoverage;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.http.CHttpHeader;
 import com.helger.commons.http.EHttpMethod;
 import com.helger.commons.http.HttpHeaderMap;
@@ -59,13 +58,6 @@ import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
-import com.helger.useragent.IUserAgent;
-import com.helger.useragent.UserAgent;
-import com.helger.useragent.UserAgentDatabase;
-import com.helger.useragent.UserAgentElementList;
-import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
-import com.helger.useragent.uaprofile.UAProfile;
-import com.helger.useragent.uaprofile.UAProfileDatabase;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -77,37 +69,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @Immutable
 public final class RequestHelper
 {
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  private static final class UAProfileHeaderProviderHttpServletRequest implements IUAProfileHeaderProvider
-  {
-    private final HttpServletRequest m_aHttpRequest;
-
-    public UAProfileHeaderProviderHttpServletRequest (@Nonnull final HttpServletRequest aHttpRequest)
-    {
-      m_aHttpRequest = aHttpRequest;
-    }
-
-    @Nonnull
-    @ReturnsMutableCopy
-    public ICommonsList <String> getAllHeaderNames ()
-    {
-      return ServletHelper.getRequestHeaderNames (m_aHttpRequest);
-    }
-
-    @Nonnull
-    @ReturnsMutableCopy
-    public ICommonsList <String> getHeaders (@Nullable final String sName)
-    {
-      return ServletHelper.getRequestHeaders (m_aHttpRequest, sName);
-    }
-
-    @Nullable
-    public String getHeaderValue (@Nullable final String sHeader)
-    {
-      return ServletHelper.getRequestHeader (m_aHttpRequest, sHeader);
-    }
-  }
-
   public static final String SERVLET_ATTR_SSL_CIPHER_SUITE = "jakarta.servlet.request.cipher_suite";
   public static final String SERVLET_ATTR_SSL_KEY_SIZE = "jakarta.servlet.request.key_size";
   public static final String SERVLET_ATTR_CLIENT_CERTIFICATE = "jakarta.servlet.request.X509Certificate";
@@ -1090,82 +1051,6 @@ public final class RequestHelper
         sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.USER_AGENT);
     }
     return sUserAgent;
-  }
-
-  /**
-   * Get the user agent object from the given HTTP request.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object or <code>null</code> in
-   *         case of an internal inconsistency.
-   */
-  @Nullable
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    final Object aAttr = ServletHelper.getRequestAttribute (aHttpRequest, IUserAgent.class.getName ());
-    try
-    {
-      IUserAgent aUserAgent = (IUserAgent) aAttr;
-      if (aUserAgent == null)
-      {
-        // Extract HTTP header from request
-        final String sUserAgent = getHttpUserAgentStringFromRequest (aHttpRequest);
-        aUserAgent = UserAgentDatabase.getParsedUserAgent (sUserAgent);
-        if (aUserAgent == null)
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("No user agent was passed in the request!");
-          aUserAgent = new UserAgent ("", new UserAgentElementList ());
-        }
-        ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);
-      }
-      return aUserAgent;
-    }
-    catch (final ClassCastException ex)
-    {
-      /**
-       * Don't know why this happens:
-       *
-       * <pre>
-       * Thread[144][ajp-nio-127.0.0.1-8009-exec-8][RUNNABLE][5][main]
-      java.lang.ClassCastException: com.helger.useragent.UserAgent cannot be cast to com.helger.useragent.IUserAgent
-      1.: com.helger.servlet.request.RequestHelper.getUserAgent(RequestHelper.java:1215)
-      2.: com.helger.photon.core.interror.InternalErrorHandler.fillInternalErrorMetaData(InternalErrorHandler.java:354)
-      3.: com.helger.photon.core.interror.InternalErrorHandler._notifyVendor(InternalErrorHandler.java:496)
-       * </pre>
-       */
-      LOGGER.error ("ClassCastException whysoever.");
-      if (aAttr != null)
-        LOGGER.error ("  IUserAgent classloader=" + aAttr.getClass ().getClassLoader ().toString ());
-      if (aAttr != null)
-        LOGGER.error ("  UserAgent classloader=" + UserAgent.class.getClassLoader ().toString ());
-      return null;
-    }
-  }
-
-  /**
-   * Get the user agent object from the given HTTP request.
-   *
-   * @param aHttpRequest
-   *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object.
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  public static UAProfile getUAProfile (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-
-    UAProfile aUAProfile = ServletHelper.getRequestAttributeAs (aHttpRequest, UAProfile.class.getName ());
-    if (aUAProfile == null)
-    {
-      // Extract HTTP header from request
-      aUAProfile = UAProfileDatabase.getParsedUAProfile (new UAProfileHeaderProviderHttpServletRequest (aHttpRequest));
-      ServletHelper.setRequestAttribute (aHttpRequest, UAProfile.class.getName (), aUAProfile);
-    }
-    return aUAProfile;
   }
 
   /**

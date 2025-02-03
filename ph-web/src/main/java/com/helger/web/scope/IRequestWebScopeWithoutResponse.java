@@ -38,8 +38,6 @@ import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
-import com.helger.useragent.IUserAgent;
-import com.helger.useragent.browser.BrowserInfo;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,29 +59,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nonnull
   @ReturnsMutableObject
   HttpHeaderMap headers ();
-
-  /**
-   * Get the user agent object of this HTTP request.
-   *
-   * @return A non-<code>null</code> user agent object.
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  default IUserAgent getUserAgent ()
-  {
-    return RequestHelper.getUserAgent (getRequest ());
-  }
-
-  /**
-   * @return The information about the matching browser or <code>null</code> if
-   *         no known browser was detected.
-   */
-  @Nullable
-  @Deprecated (forRemoval = true, since = "10.1.6")
-  default BrowserInfo getBrowserInfo ()
-  {
-    return getUserAgent ().getBrowserInfo ();
-  }
 
   /**
    * @return The external URL parameters. Never <code>null</code>.

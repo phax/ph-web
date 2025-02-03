@@ -195,8 +195,8 @@
     <module>ph-dns</module>
     <module>ph-network</module>
     <module>ph-http</module>
-    <module>ph-useragent</module>
     <module>ph-servlet</module>
+    <module>ph-useragent</module>
     <module>ph-mail</module>
     <module>ph-smtp</module>
     <module>ph-httpclient</module>

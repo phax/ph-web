@@ -59,6 +59,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.3.1 - work in progress
+    * Added new classes `ResponseHandlerJsonObject` and `ResponseHandlerJsonArray`
 * v10.3.0 - 2025-02-03
     * Updated to dnsjava 3.6.3
     * Reversed the dependency between ph-servlet and ph-useragent (incompatible change)

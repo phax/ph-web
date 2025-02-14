@@ -16,26 +16,18 @@
  */
 package com.helger.httpclient.response;
 
-import java.util.function.Function;
-
-import com.helger.json.IJson;
+import com.helger.json.IJsonArray;
 
 /**
- * Convert a valid HTTP response to an {@link IJson} object.
+ * Convert a valid HTTP response to an {@link IJsonArray} object.
  *
  * @author Philip Helger
+ * @since 10.3.1
  */
-public class ResponseHandlerJson extends AbstractResponseHandlerJson <IJson, ResponseHandlerJson>
+public class ResponseHandlerJsonArray extends AbstractResponseHandlerJson <IJsonArray, ResponseHandlerJsonArray>
 {
-  public ResponseHandlerJson ()
+  public ResponseHandlerJsonArray ()
   {
-    this (false);
-  }
-
-  @Deprecated (forRemoval = true, since = "10.3.1")
-  public ResponseHandlerJson (final boolean bDebugMode)
-  {
-    super (Function.identity ());
-    setDebugMode (bDebugMode);
+    super (x -> x != null && x.isArray () ? x.getAsArray () : null);
   }
 }

@@ -46,7 +46,9 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
                                             IGenericImplTrait <IMPLTYPE>
 {
   public static final String KEYWORD_NONE = "'none'";
+  public static final String KEYWORD_REPORT_SAMPLE = "'report-sample'";
   public static final String KEYWORD_SELF = "'self'";
+  public static final String KEYWORD_STRICT_DYNAMIC = "'strict-dynamic'";
   public static final String KEYWORD_UNSAFE_INLINE = "'unsafe-inline'";
   public static final String KEYWORD_UNSAFE_EVAL = "'unsafe-eval'";
   public static final String NONCE_PREFIX = "'nonce-";
@@ -139,6 +141,22 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
   }
 
   /**
+   * If this expression is included in a directive controlling scripts or
+   * styles, and the directive causes the browser to block any inline scripts,
+   * inline styles, or event handler attributes, then the violation report that
+   * the browser generates will contain a sample property containing the first
+   * 40 characters of the blocked resource.
+   *
+   * @return this
+   */
+  @Nonnull
+  public IMPLTYPE addKeywordReportSample ()
+  {
+    m_aList.add (KEYWORD_REPORT_SAMPLE);
+    return thisAsT ();
+  }
+
+  /**
    * source expression 'self' represents the set of URIs which are in the same
    * origin as the protected resource
    *
@@ -152,6 +170,36 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
   }
 
   /**
+   * The 'strict-dynamic' keyword makes the trust conferred on a script by a
+   * nonce or a hash extend to scripts that this script dynamically loads, for
+   * example by creating new <script> tags using Document.createElement() and
+   * then inserting them into the document using Node.appendChild().
+   *
+   * @return this
+   */
+  @Nonnull
+  public IMPLTYPE addKeywordStrictDynamic ()
+  {
+    m_aList.add (KEYWORD_STRICT_DYNAMIC);
+    return thisAsT ();
+  }
+
+  /**
+   * By default, if a CSP contains a default-src or a script-src directive, then
+   * JavaScript functions which evaluate their arguments as JavaScript are
+   * disabled. This includes eval(), the code argument to setTimeout(), or the
+   * Function() constructor.
+   *
+   * @return this
+   */
+  @Nonnull
+  public IMPLTYPE addKeywordUnsafeEval ()
+  {
+    m_aList.add (KEYWORD_UNSAFE_EVAL);
+    return thisAsT ();
+  }
+
+  /**
    * source expression 'unsafe-inline' represents content supplied inline in the
    * resource itself
    *
@@ -161,13 +209,6 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
   public IMPLTYPE addKeywordUnsafeInline ()
   {
     m_aList.add (KEYWORD_UNSAFE_INLINE);
-    return thisAsT ();
-  }
-
-  @Nonnull
-  public IMPLTYPE addKeywordUnsafeEval ()
-  {
-    m_aList.add (KEYWORD_UNSAFE_EVAL);
     return thisAsT ();
   }
 

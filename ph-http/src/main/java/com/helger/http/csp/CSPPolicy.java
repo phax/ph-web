@@ -19,16 +19,15 @@ package com.helger.http.csp;
 import javax.annotation.concurrent.NotThreadSafe;
 
 /**
- * CSP 2.0 policy. It's a list of {@link CSP2Directive}.<br>
+ * CSP policy. It's a list of {@link CSPDirective}.<br>
  * See http://www.w3.org/TR/CSP2/
  *
  * @author Philip Helger
- * @deprecated Use {@link CSPPolicy} instead
+ * @since 10.3.1
  */
 @NotThreadSafe
-@Deprecated (forRemoval = true, since = "10.3.1")
-public class CSP2Policy extends CSPPolicy
+public class CSPPolicy extends AbstractCSPPolicy <CSPDirective>
 {
-  public CSP2Policy ()
+  public CSPPolicy ()
   {}
 }

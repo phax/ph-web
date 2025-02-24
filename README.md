@@ -61,6 +61,8 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v10.3.1 - work in progress
     * Added new classes `ResponseHandlerJsonObject` and `ResponseHandlerJsonArray`
+    * Deprecated classes `CSP2(Directive|Policy|SourceList)` in favour of `CSP(Directive|Policy|SourceList)` as CSV v3 stuff was integrated
+    * Added new predefined `CSPDirective` factory methods
 * v10.3.0 - 2025-02-03
     * Updated to dnsjava 3.6.3
     * Reversed the dependency between ph-servlet and ph-useragent (incompatible change)

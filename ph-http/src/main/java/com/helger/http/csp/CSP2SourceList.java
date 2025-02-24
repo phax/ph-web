@@ -27,5 +27,5 @@ import javax.annotation.concurrent.NotThreadSafe;
  */
 @NotThreadSafe
 @Deprecated (forRemoval = true, since = "10.3.1")
-public class CSP2SourceList extends CSPSourceList
+public class CSP2SourceList extends AbstractCSPSourceList <CSP2SourceList>
 {}

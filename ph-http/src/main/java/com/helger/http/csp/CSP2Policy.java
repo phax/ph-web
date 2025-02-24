@@ -27,7 +27,7 @@ import javax.annotation.concurrent.NotThreadSafe;
  */
 @NotThreadSafe
 @Deprecated (forRemoval = true, since = "10.3.1")
-public class CSP2Policy extends CSPPolicy
+public class CSP2Policy extends AbstractCSPPolicy <CSPDirective>
 {
   public CSP2Policy ()
   {}

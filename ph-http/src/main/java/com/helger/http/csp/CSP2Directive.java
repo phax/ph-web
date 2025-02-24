@@ -30,7 +30,7 @@ import com.helger.commons.annotation.Nonempty;
 @Deprecated (forRemoval = true, since = "10.3.1")
 public class CSP2Directive extends CSPDirective
 {
-  public CSP2Directive (@Nonnull @Nonempty final String sName, @Nullable final CSP2SourceList aValue)
+  public CSP2Directive (@Nonnull @Nonempty final String sName, @Nullable final AbstractCSPSourceList <?> aValue)
   {
     super (sName, aValue);
   }

@@ -68,7 +68,7 @@ public class CSPDirective implements ICSPDirective
     return true;
   }
 
-  public CSPDirective (@Nonnull @Nonempty final String sName, @Nullable final CSPSourceList aValue)
+  public CSPDirective (@Nonnull @Nonempty final String sName, @Nullable final AbstractCSPSourceList <?> aValue)
   {
     this (sName, aValue == null ? null : aValue.getAsString ());
   }
@@ -143,7 +143,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v2
    */
   @Nonnull
-  public static CSPDirective createChildSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createChildSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("child-src", aValue);
   }
@@ -158,7 +158,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createConnectSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createConnectSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("connect-src", aValue);
   }
@@ -173,7 +173,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createDefaultSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createDefaultSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("default-src", aValue);
   }
@@ -187,7 +187,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createFontSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createFontSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("font-src", aValue);
   }
@@ -201,7 +201,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v2
    */
   @Nonnull
-  public static CSPDirective createFormAction (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createFormAction (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("form-action", aValue);
   }
@@ -218,7 +218,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v2
    */
   @Nonnull
-  public static CSPDirective createFrameAncestors (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createFrameAncestors (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("frame-ancestors", aValue);
   }
@@ -234,7 +234,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1 and v10.3.1
    */
   @Nonnull
-  public static CSPDirective createFrameSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createFrameSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("frame-src", aValue);
   }
@@ -248,7 +248,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createImgSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createImgSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("img-src", aValue);
   }
@@ -263,7 +263,7 @@ public class CSPDirective implements ICSPDirective
    * @since 9.3.5
    */
   @Nonnull
-  public static CSPDirective createManifestSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createManifestSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("manifest-src", aValue);
   }
@@ -278,7 +278,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createMediaSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createMediaSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("media-src", aValue);
   }
@@ -293,7 +293,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createObjectSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createObjectSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("object-src", aValue);
   }
@@ -309,7 +309,7 @@ public class CSPDirective implements ICSPDirective
    */
   @Nonnull
   @Deprecated (forRemoval = true, since = "10.3.1")
-  public static CSPDirective createPrefetchSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createPrefetchSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("prefetch-src", aValue);
   }
@@ -371,7 +371,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createScriptSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createScriptSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("script-src", aValue);
   }
@@ -386,7 +386,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v3 and v10.3.1
    */
   @Nonnull
-  public static CSPDirective createScriptSrcAttr (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createScriptSrcAttr (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("script-src-attr", aValue);
   }
@@ -401,7 +401,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v3 and v10.3.1
    */
   @Nonnull
-  public static CSPDirective createScriptSrcElem (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createScriptSrcElem (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("script-src-elem", aValue);
   }
@@ -415,7 +415,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  public static CSPDirective createStyleSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createStyleSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("style-src", aValue);
   }
@@ -430,7 +430,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v3 and v10.3.1
    */
   @Nonnull
-  public static CSPDirective createStyleSrcAttr (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createStyleSrcAttr (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("style-src-attr", aValue);
   }
@@ -446,7 +446,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v3 and v10.3.1
    */
   @Nonnull
-  public static CSPDirective createStyleSrcElem (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createStyleSrcElem (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("style-src-elem", aValue);
   }
@@ -462,7 +462,7 @@ public class CSPDirective implements ICSPDirective
    * @since 9.3.5
    */
   @Nonnull
-  public static CSPDirective createWorkerSrc (@Nullable final CSPSourceList aValue)
+  public static CSPDirective createWorkerSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("worker-src", aValue);
   }

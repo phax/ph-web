@@ -317,7 +317,8 @@ public class CSPDirective implements ICSPDirective
   /**
    * The report-uri directive specifies a URI to which the user agent sends
    * reports about policy violation.<br>
-   * Deprecated in favour of {@link #createReportTo(String)}
+   * Deprecated in favour of {@link #createReportTo(String)} but browser support
+   * is not yet ideal.
    *
    * @param sValue
    *        Report URI
@@ -325,7 +326,6 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  @Deprecated (since = "10.4.0")
   public static CSPDirective createReportURI (@Nullable final String sValue)
   {
     return new CSPDirective ("report-uri", sValue);

@@ -20,10 +20,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 /**
  * CSP policy. It's a list of {@link CSPDirective}.<br>
- * See http://www.w3.org/TR/CSP2/
+ * See http://www.w3.org/TR/CSP2/ and https://www.w3.org/TR/CSP3/
  *
  * @author Philip Helger
- * @since 10.3.1
+ * @since 10.4.0
  */
 @NotThreadSafe
 public class CSPPolicy extends AbstractCSPPolicy <CSPDirective>

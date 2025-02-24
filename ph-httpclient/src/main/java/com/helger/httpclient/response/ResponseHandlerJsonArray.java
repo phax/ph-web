@@ -22,7 +22,7 @@ import com.helger.json.IJsonArray;
  * Convert a valid HTTP response to an {@link IJsonArray} object.
  *
  * @author Philip Helger
- * @since 10.3.1
+ * @since 10.4.0
  */
 public class ResponseHandlerJsonArray extends AbstractResponseHandlerJson <IJsonArray, ResponseHandlerJsonArray>
 {

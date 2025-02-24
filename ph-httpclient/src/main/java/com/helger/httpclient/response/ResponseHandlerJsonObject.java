@@ -22,7 +22,7 @@ import com.helger.json.IJsonObject;
  * Convert a valid HTTP response to an {@link IJsonObject} object.
  *
  * @author Philip Helger
- * @since 10.3.1
+ * @since 10.4.0
  */
 public class ResponseHandlerJsonObject extends AbstractResponseHandlerJson <IJsonObject, ResponseHandlerJsonObject>
 {

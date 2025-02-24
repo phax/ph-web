@@ -51,7 +51,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
     this (false);
   }
 
-  @Deprecated (forRemoval = true, since = "10.3.1")
+  @Deprecated (forRemoval = true, since = "10.4.0")
   public ResponseHandlerXml (final boolean bDebugMode)
   {
     setDebugMode (bDebugMode);

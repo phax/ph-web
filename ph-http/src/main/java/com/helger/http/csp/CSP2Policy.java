@@ -26,7 +26,7 @@ import javax.annotation.concurrent.NotThreadSafe;
  * @deprecated Use {@link CSPPolicy} instead
  */
 @NotThreadSafe
-@Deprecated (forRemoval = true, since = "10.3.1")
+@Deprecated (forRemoval = true, since = "10.4.0")
 public class CSP2Policy extends AbstractCSPPolicy <CSPDirective>
 {
   public CSP2Policy ()

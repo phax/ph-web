@@ -46,7 +46,7 @@ import com.helger.json.serialize.JsonReader;
  *        Return type
  * @param <IMPLTYPE>
  *        Implementation type
- * @since 10.3.1
+ * @since 10.4.0
  */
 public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE extends AbstractResponseHandlerJson <T, IMPLTYPE>>
                                                   implements

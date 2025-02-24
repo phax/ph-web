@@ -27,7 +27,7 @@ import com.helger.commons.annotation.Nonempty;
  * @author Philip Helger
  * @deprecated Use {@link CSPDirective} directly
  */
-@Deprecated (forRemoval = true, since = "10.3.1")
+@Deprecated (forRemoval = true, since = "10.4.0")
 public class CSP2Directive extends CSPDirective
 {
   public CSP2Directive (@Nonnull @Nonempty final String sName, @Nullable final AbstractCSPSourceList <?> aValue)

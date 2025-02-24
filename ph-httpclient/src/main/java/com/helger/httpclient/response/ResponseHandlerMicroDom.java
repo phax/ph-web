@@ -52,7 +52,7 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
     this (false);
   }
 
-  @Deprecated (forRemoval = true, since = "10.3.1")
+  @Deprecated (forRemoval = true, since = "10.4.0")
   public ResponseHandlerMicroDom (final boolean bDebugMode)
   {
     setDebugMode (bDebugMode);

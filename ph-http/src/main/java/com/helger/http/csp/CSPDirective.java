@@ -31,7 +31,7 @@ import com.helger.commons.text.util.ABNF;
  * A single CSP directive. It's a name-value-pair.
  *
  * @author Philip Helger
- * @since 10.3.1
+ * @since 10.4.0
  */
 public class CSPDirective implements ICSPDirective
 {
@@ -231,7 +231,7 @@ public class CSPDirective implements ICSPDirective
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSPDirective}
-   * @since CSP v1 and v10.3.1
+   * @since CSP v1 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createFrameSrc (@Nullable final AbstractCSPSourceList <?> aValue)
@@ -308,7 +308,7 @@ public class CSPDirective implements ICSPDirective
    * @since 9.3.5
    */
   @Nonnull
-  @Deprecated (forRemoval = true, since = "10.3.1")
+  @Deprecated (forRemoval = true, since = "10.4.0")
   public static CSPDirective createPrefetchSrc (@Nullable final AbstractCSPSourceList <?> aValue)
   {
     return new CSPDirective ("prefetch-src", aValue);
@@ -325,7 +325,7 @@ public class CSPDirective implements ICSPDirective
    * @since CSP v1
    */
   @Nonnull
-  @Deprecated (since = "10.3.1")
+  @Deprecated (since = "10.4.0")
   public static CSPDirective createReportURI (@Nullable final String sValue)
   {
     return new CSPDirective ("report-uri", sValue);
@@ -339,7 +339,7 @@ public class CSPDirective implements ICSPDirective
    * @param sValue
    *        Report endpoint according to Reporting-Endpoints response header
    * @return new directive
-   * @since CSP v3 and v10.3.1
+   * @since CSP v3 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createReportTo (@Nullable final String sValue)
@@ -383,7 +383,7 @@ public class CSPDirective implements ICSPDirective
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSPDirective}
-   * @since CSP v3 and v10.3.1
+   * @since CSP v3 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createScriptSrcAttr (@Nullable final AbstractCSPSourceList <?> aValue)
@@ -398,7 +398,7 @@ public class CSPDirective implements ICSPDirective
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSPDirective}
-   * @since CSP v3 and v10.3.1
+   * @since CSP v3 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createScriptSrcElem (@Nullable final AbstractCSPSourceList <?> aValue)
@@ -427,7 +427,7 @@ public class CSPDirective implements ICSPDirective
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSPDirective}
-   * @since CSP v3 and v10.3.1
+   * @since CSP v3 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createStyleSrcAttr (@Nullable final AbstractCSPSourceList <?> aValue)
@@ -443,7 +443,7 @@ public class CSPDirective implements ICSPDirective
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
    * @return New {@link CSPDirective}
-   * @since CSP v3 and v10.3.1
+   * @since CSP v3 and v10.4.0
    */
   @Nonnull
   public static CSPDirective createStyleSrcElem (@Nullable final AbstractCSPSourceList <?> aValue)

@@ -236,6 +236,8 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <source>8</source>
+          <verbose>false</verbose>
+          <additionalJOption>--allow-script-in-comments</additionalJOption>
         </configuration>
       </plugin> 
     </plugins>

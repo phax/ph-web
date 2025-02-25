@@ -164,7 +164,7 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The default-src is the default policy for loading content such as
+   * The "default-src" is the default policy for loading content such as
    * JavaScript, Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
    *
    * @param aValue
@@ -393,7 +393,7 @@ public class CSPDirective implements ICSPDirective
 
   /**
    * The HTTP Content-Security-Policy (CSP) "script-src-elem" directive
-   * specifies valid sources for JavaScript <script> elements.
+   * specifies valid sources for JavaScript &lt;script&gt; elements.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.

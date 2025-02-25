@@ -172,7 +172,7 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
   /**
    * The 'strict-dynamic' keyword makes the trust conferred on a script by a
    * nonce or a hash extend to scripts that this script dynamically loads, for
-   * example by creating new <script> tags using Document.createElement() and
+   * example by creating new &lt;script&gt; tags using Document.createElement() and
    * then inserting them into the document using Node.appendChild().
    *
    * @return this
@@ -187,8 +187,8 @@ public abstract class AbstractCSPSourceList <IMPLTYPE extends AbstractCSPSourceL
   /**
    * By default, if a CSP contains a default-src or a script-src directive, then
    * JavaScript functions which evaluate their arguments as JavaScript are
-   * disabled. This includes eval(), the code argument to setTimeout(), or the
-   * Function() constructor.
+   * disabled. This includes "eval()", the code argument to "setTimeout()", or the
+   * "Function()" constructor.
    *
    * @return this
    */

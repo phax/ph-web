@@ -59,7 +59,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-* v10.4.0 - work in progress
+* v10.4.0 - 2025-02-25
     * Added new classes `ResponseHandlerJsonObject` and `ResponseHandlerJsonArray`
     * Deprecated classes `CSP2(Directive|Policy|SourceList)` in favour of `CSP(Directive|Policy|SourceList)` as CSV v3 stuff was integrated
     * Added new predefined `CSPDirective` factory methods

@@ -53,10 +53,12 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
                                                   HttpClientResponseHandler <T>,
                                                   IGenericImplTrait <IMPLTYPE>
 {
+  public static final boolean DEFAULT_DEBUG_MODE = false;
+
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractResponseHandlerJson.class);
 
   private final Function <IJson, T> m_aMapper;
-  private boolean m_bDebugMode;
+  private boolean m_bDebugMode = DEFAULT_DEBUG_MODE;
   private Charset m_aFallbackCharset = HttpClientHelper.DEF_CONTENT_CHARSET;
 
   protected AbstractResponseHandlerJson (@Nonnull final Function <IJson, T> aMapper)
@@ -66,8 +68,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
   }
 
   /**
-   * @return <code>true</code> if debug mode is enabled, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if debug mode is enabled, <code>false</code> if not.
    * @since 8.8.2
    */
   public final boolean isDebugMode ()
@@ -79,8 +80,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
    * Enable or disable debug mode on demand.
    *
    * @param bDebugMode
-   *        <code>true</code> to enable debug mode, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable debug mode, <code>false</code> to disable it.
    * @return this for chaining
    * @since 9.6.3
    */
@@ -92,9 +92,8 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
   }
 
   /**
-   * @return The fallback charset to be used, in case no charset can be
-   *         determined from the content. By default this is the HTTP default
-   *         charset. Never <code>null</code>.
+   * @return The fallback charset to be used, in case no charset can be determined from the content.
+   *         By default this is the HTTP default charset. Never <code>null</code>.
    * @since 9.6.3
    */
   @Nonnull

@@ -37,9 +37,8 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.datetime.PDTFactory;
 
 /**
- * Global class to determine if the client is offline or not. The state is
- * cached for a configurable duration (by default 1 minute) and than
- * re-evaluated.
+ * Global class to determine if the client is offline or not. The state is cached for a configurable
+ * duration (by default 1 minute) and than re-evaluated.
  *
  * @author Philip Helger
  * @since 9.1.2
@@ -111,8 +110,8 @@ public final class NetworkOnlineStatusDeterminator
   }
 
   /**
-   * @return The last date time when the offline state was checked. May be
-   *         <code>null</code> if the check was not performed yet.
+   * @return The last date time when the offline state was checked. May be <code>null</code> if the
+   *         check was not performed yet.
    */
   @Nullable
   public static LocalDateTime getLastCheckDT ()
@@ -121,8 +120,8 @@ public final class NetworkOnlineStatusDeterminator
   }
 
   /**
-   * @return The current offline state from cache only. No update is performed.
-   *         Never <code>null</code>.
+   * @return The current offline state from cache only. No update is performed. Never
+   *         <code>null</code>.
    */
   @Nonnull
   public static ENetworkOnlineStatus getCachedNetworkStatus ()
@@ -131,8 +130,8 @@ public final class NetworkOnlineStatusDeterminator
   }
 
   /**
-   * Reset the cache status and therefore enforce an explicit lookup in the next
-   * call to {@link #getNetworkStatus()}.
+   * Reset the cache status and therefore enforce an explicit lookup in the next call to
+   * {@link #getNetworkStatus()}.
    */
   public static void resetCachedStatus ()
   {
@@ -183,13 +182,15 @@ public final class NetworkOnlineStatusDeterminator
     try
     {
       // Check all host names in parallel, if they are reachable
-      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com", "www.facebook.com", "www.microsoft.com");
+      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com",
+                                                                        "www.facebook.com",
+                                                                        "www.microsoft.com");
       final ExecutorService aES = Executors.newFixedThreadPool (aHostNames.size ());
       final AtomicInteger aReachable = new AtomicInteger (0);
       for (final String sHostName : aHostNames)
         aES.submit ( () -> {
           // Silent mode, configured timeout
-          if (NetworkPortHelper.checkPortOpen (sHostName, 80, s_nConnectionTimeout, true).isPortOpen ())
+          if (NetworkPortHelper.checkPortOpen (sHostName, 443, s_nConnectionTimeout, true).isPortOpen ())
             aReachable.incrementAndGet ();
         });
       ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (aES);

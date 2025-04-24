@@ -60,7 +60,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 * v10.4.2 - 2025-04-24
-    * Updated to Apache HttpClient v5.4.3 to fix CVE-2025-27820
+    * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
 * v10.4.1 - 2025-04-11
     * Added new class `HttpClientUrlDownloader`
 * v10.4.0 - 2025-02-25

@@ -85,7 +85,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
     dir1 = new File (s_sFileSystemPath, dir1Name);
     dir2 = new File (dir1, dir2Name);
     assertTrue (dir2.mkdirs ());
-    LOGGER.info ((dir2.exists () ? "succesfully" : "failed to") + " created dir " + dir2);
+    LOGGER.info ((dir2.exists () ? "successfully" : "failed to") + " created dir " + dir2);
 
     file1Name = "file1.txt";
     file1 = new File (dir1, file1Name);

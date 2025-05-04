@@ -58,7 +58,7 @@ public final class ScpFileTest extends AbstractScpTestBase
 
     dir = new File (s_sFileSystemPath, rootDir);
     assertTrue (dir.mkdirs ());
-    LOGGER.info ((dir.exists () ? "succesfully created" : "failed to create") + " dir " + dir);
+    LOGGER.info ((dir.exists () ? "successfully created" : "failed to create") + " dir " + dir);
     filename = UUID.randomUUID ().toString () + ".txt";
     file = new File (dir, filename);
   }

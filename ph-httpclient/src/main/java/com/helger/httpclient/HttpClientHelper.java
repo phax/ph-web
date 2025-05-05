@@ -53,15 +53,12 @@ import com.helger.commons.string.StringHelper;
 import com.helger.commons.url.ISimpleURL;
 import com.helger.network.proxy.config.HttpProxyConfig;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Some utility methods for creating and handling Apache httpclient objects.
  *
  * @author Philip Helger
  */
 @Immutable
-@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class HttpClientHelper
 {
   public static final Charset DEF_CONTENT_CHARSET = StandardCharsets.ISO_8859_1;
@@ -225,8 +222,8 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static String entityToString (@Nonnull final HttpEntity aEntity,
-                                       @Nonnull final Charset aCharset) throws IOException
+  public static String entityToString (@Nonnull final HttpEntity aEntity, @Nonnull final Charset aCharset)
+                                                                                                           throws IOException
   {
     final byte [] ret = EntityUtils.toByteArray (aEntity);
     return ret == null ? null : new String (ret, aCharset);

@@ -49,8 +49,7 @@ public class FileItemHeaders implements IFileItemHeaders
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
   /**
-   * Map of <code>String</code> keys to a <code>List</code> of
-   * <code>String</code> instances.
+   * Map of <code>String</code> keys to a <code>List</code> of <code>String</code> instances.
    */
   private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap <> ();
 
@@ -67,7 +66,7 @@ public class FileItemHeaders implements IFileItemHeaders
     final String sNameLower = sName.toLowerCase (Locale.US);
 
     final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
-    return aHeaderValueList == null ? null : aHeaderValueList.getFirst ();
+    return aHeaderValueList == null ? null : aHeaderValueList.getFirstOrNull ();
   }
 
   @Nullable

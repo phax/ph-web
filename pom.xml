@@ -22,11 +22,11 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.2</version>
   </parent>
   <groupId>com.helger.web</groupId>
   <artifactId>ph-web-parent-pom</artifactId>
-  <version>10.0.1</version>
+  <version>10.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ph-web-parent-pom</name>
   <description>Base POM to build the ph-web projects</description>
@@ -45,7 +45,7 @@
     <connection>scm:git:git@github.com:phax/ph-web.git</connection>
     <developerConnection>scm:git:git@github.com:phax/ph-web.git</developerConnection>
     <url>http://github.com/phax/ph-web</url>
-    <tag>ph-web-parent-pom-10.0.1</tag>
+    <tag>10.0</tag>
   </scm>
 
   <organization>
@@ -67,14 +67,14 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>11.0.1</version>
+        <version>11.2.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.schedule</groupId>
         <artifactId>ph-schedule-parent-pom</artifactId>
-        <version>5.0.0</version>
+        <version>5.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -82,7 +82,7 @@
       <dependency>
         <groupId>dnsjava</groupId>
         <artifactId>dnsjava</artifactId>
-        <version>3.5.2</version>
+        <version>3.6.3</version>
       </dependency>
       <dependency>
         <groupId>com.jcraft</groupId>
@@ -97,12 +97,12 @@
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5</artifactId>
-        <version>5.2.1</version>
+        <version>5.3.4</version>
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents.client5</groupId>
         <artifactId>httpclient5</artifactId>
-        <version>5.2.1</version>
+        <version>5.4.4</version>
       </dependency>
       <dependency>
         <groupId>com.sun.activation</groupId>
@@ -112,7 +112,7 @@
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.15</version>
+        <version>1.17.1</version>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>

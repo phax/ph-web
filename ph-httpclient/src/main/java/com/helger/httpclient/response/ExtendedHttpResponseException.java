@@ -38,11 +38,9 @@ import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.httpclient.HttpClientHelper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
- * A specialized version of {@link HttpResponseException} that has access to all
- * the fields in a structured way.
+ * A specialized version of {@link HttpResponseException} that has access to all the fields in a
+ * structured way.
  *
  * @author Philip Helger
  * @since 8.8.1
@@ -54,7 +52,6 @@ public class ExtendedHttpResponseException extends HttpResponseException
   private final byte [] m_aResponseBody;
   private final transient Charset m_aResponseCharset;
 
-  @SuppressFBWarnings ("EI_EXPOSE_REP2")
   public ExtendedHttpResponseException (@Nonnull final StatusLine aStatusLine,
                                         @Nonnull final HttpResponse aHttpResponse,
                                         @Nullable final byte [] aResponseBody,
@@ -79,9 +76,8 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   /**
-   * @return The HTTP response object that triggered the exception. May not be
-   *         <code>null</code>. May be used to determine the headers of the
-   *         response.
+   * @return The HTTP response object that triggered the exception. May not be <code>null</code>.
+   *         May be used to determine the headers of the response.
    */
   @Nonnull
   public final HttpResponse getHttpResponse ()
@@ -94,7 +90,6 @@ public class ExtendedHttpResponseException extends HttpResponseException
    */
   @Nullable
   @ReturnsMutableObject
-  @SuppressFBWarnings ("EI_EXPOSE_REP")
   public final byte [] directGetResponseBody ()
   {
     return m_aResponseBody;
@@ -111,8 +106,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   /**
-   * @return <code>true</code> if a response body is present, <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if a response body is present, <code>false</code> otherwise.
    */
   public final boolean hasResponseBody ()
   {
@@ -129,8 +123,8 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   /**
-   * @return The response body as a string in the response charset. May be
-   *         <code>null</code> if no response body is present.
+   * @return The response body as a string in the response charset. May be <code>null</code> if no
+   *         response body is present.
    * @see #getResponseBodyAsString(Charset)
    * @see #getResponseCharset()
    */

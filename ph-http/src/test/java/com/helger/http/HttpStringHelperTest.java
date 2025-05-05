@@ -23,8 +23,6 @@ import org.junit.Test;
 
 import com.helger.commons.collection.ArrayHelper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Test class for class {@link HttpStringHelper}.
  *
@@ -271,7 +269,9 @@ public final class HttpStringHelperTest
   {
     assertFalse (HttpStringHelper.isCommentChar (HttpStringHelper.MIN_INDEX - 1));
     for (int i = HttpStringHelper.MIN_INDEX; i <= HttpStringHelper.MAX_INDEX; ++i)
-      if ((!HttpStringHelper.isControlChar (i) && i != HttpStringHelper.COMMENT_BEGIN && i != HttpStringHelper.COMMENT_END) ||
+      if ((!HttpStringHelper.isControlChar (i) &&
+           i != HttpStringHelper.COMMENT_BEGIN &&
+           i != HttpStringHelper.COMMENT_END) ||
           HttpStringHelper.isCRChar (i) ||
           HttpStringHelper.isLFChar (i) ||
           HttpStringHelper.isTabChar (i) ||
@@ -306,12 +306,13 @@ public final class HttpStringHelperTest
   }
 
   @Test
-  @SuppressFBWarnings ("RpC_REPEATED_CONDITIONAL_TEST")
   public void testQuotedTextChar ()
   {
     assertFalse (HttpStringHelper.isQuotedTextChar (HttpStringHelper.MIN_INDEX - 1));
     for (int i = HttpStringHelper.MIN_INDEX; i <= HttpStringHelper.MAX_INDEX; ++i)
-      if ((!HttpStringHelper.isControlChar (i) && i != HttpStringHelper.QUOTEDTEXT_BEGIN && i != HttpStringHelper.QUOTEDTEXT_END) ||
+      if ((!HttpStringHelper.isControlChar (i) &&
+           i != HttpStringHelper.QUOTEDTEXT_BEGIN &&
+           i != HttpStringHelper.QUOTEDTEXT_END) ||
           HttpStringHelper.isCRChar (i) ||
           HttpStringHelper.isLFChar (i) ||
           HttpStringHelper.isTabChar (i) ||

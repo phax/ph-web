@@ -71,8 +71,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.spec.IServletContext310To400Migration;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Mock implementation of the {@link ServletContext} interface.
  *
@@ -100,9 +98,9 @@ public class MockServletContext implements IServletContext310To400Migration
   private boolean m_bInvalidated = false;
 
   /**
-   * @return <code>true</code> if runtime exceptions from context listeners
-   *         should be propagated to the outside or if they should be logged and
-   *         processing should continue. Default is <code>false</code>.
+   * @return <code>true</code> if runtime exceptions from context listeners should be propagated to
+   *         the outside or if they should be logged and processing should continue. Default is
+   *         <code>false</code>.
    */
   public static boolean isReThrowListenerException ()
   {
@@ -111,8 +109,7 @@ public class MockServletContext implements IServletContext310To400Migration
 
   /**
    * @param bReThrowListenerException
-   *        <code>true</code> to re-throw listener exceptions (on context inited
-   *        and destroyed)
+   *        <code>true</code> to re-throw listener exceptions (on context inited and destroyed)
    */
   public static void setReThrowListenerException (final boolean bReThrowListenerException)
   {
@@ -173,8 +170,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Build a full resource location for the given path, prepending the resource
-   * base path of this MockServletContext.
+   * Build a full resource location for the given path, prepending the resource base path of this
+   * MockServletContext.
    *
    * @param sPath
    *        the path as specified
@@ -322,7 +319,6 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nonnull
-  @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public String getRealPath (@Nonnull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
@@ -404,8 +400,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletConfig} object without servlet init
-   * parameters.
+   * Create a new {@link MockServletConfig} object without servlet init parameters.
    *
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
@@ -423,8 +418,7 @@ public class MockServletContext implements IServletContext310To400Migration
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
    * @param aServletInitParams
-   *        The map with all servlet init parameters. May be <code>null</code>
-   *        or empty.
+   *        The map with all servlet init parameters. May be <code>null</code> or empty.
    * @return A new {@link MockServletConfig} object for this servlet context.
    */
   @Nonnull
@@ -662,8 +656,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext}, using no base path and no context
-   * path. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext}, using no base path and no context path. The
+   * initialization listeners are triggered automatically.
    *
    * @return The created {@link MockServletContext}
    */
@@ -674,9 +668,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext}, using no base path and no context
-   * path using the provided initialization parameters. The initialization
-   * listeners are triggered automatically.
+   * Create a new {@link MockServletContext}, using no base path and no context path using the
+   * provided initialization parameters. The initialization listeners are triggered automatically.
    *
    * @param aInitParams
    *        The init parameter. May be <code>null</code>.
@@ -689,8 +682,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using no base path but the provided
-   * context path. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext} using no base path but the provided context path. The
+   * initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
@@ -703,8 +696,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using the provided context path and
-   * init parameters. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext} using the provided context path and init parameters.
+   * The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        Context path to use. May be <code>null</code>.
@@ -720,15 +713,13 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using the provided context path and
-   * resource base oath. The initialization listeners are triggered
-   * automatically.
+   * Create a new {@link MockServletContext} using the provided context path and resource base oath.
+   * The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash). May be
-   *        <code>null</code>.
+   *        the WAR root directory (should not end with a slash). May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull
@@ -744,13 +735,11 @@ public class MockServletContext implements IServletContext310To400Migration
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash). May be
-   *        <code>null</code>.
+   *        the WAR root directory (should not end with a slash). May be <code>null</code>.
    * @param aResourceLoader
    *        the IReadableResourceProvider to use. May be <code>null</code>.
    * @param aInitParams
-   *        Optional map with initialization parameters. May be
-   *        <code>null</code>.
+   *        Optional map with initialization parameters. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull

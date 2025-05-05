@@ -136,11 +136,10 @@ public class MockServletPool
    * Register a new servlet without servlet init parameters
    *
    * @param aServletClass
-   *        The class of the servlet to be registered. May not be
-   *        <code>null</code>.
+   *        The class of the servlet to be registered. May not be <code>null</code>.
    * @param sServletPath
-   *        The path where the servlet should listen to requests. May neither be
-   *        <code>null</code> nor empty.
+   *        The path where the servlet should listen to requests. May neither be <code>null</code>
+   *        nor empty.
    * @param sServletName
    *        The name of the servlet. May neither be <code>null</code> nor empty.
    */
@@ -155,16 +154,14 @@ public class MockServletPool
    * Register a new servlet
    *
    * @param aServletClass
-   *        The class of the servlet to be registered. May not be
-   *        <code>null</code>.
+   *        The class of the servlet to be registered. May not be <code>null</code>.
    * @param sServletPath
-   *        The path where the servlet should listen to requests. May neither be
-   *        <code>null</code> nor empty.
+   *        The path where the servlet should listen to requests. May neither be <code>null</code>
+   *        nor empty.
    * @param sServletName
    *        The name of the servlet. May neither be <code>null</code> nor empty.
    * @param aServletInitParams
-   *        An optional map of servlet init parameters. May be <code>null</code>
-   *        or empty.
+   *        An optional map of servlet init parameters. May be <code>null</code> or empty.
    */
   public void registerServlet (@Nonnull final Class <? extends Servlet> aServletClass,
                                @Nonnull @Nonempty final String sServletPath,
@@ -220,9 +217,8 @@ public class MockServletPool
    *
    * @param sPath
    *        The path, relative to the servlet context. May be <code>null</code>.
-   * @return <code>null</code> if no {@link Servlet} matching the specified path
-   *         was found. If more than one matching servlet was found, the first
-   *         one is returned.
+   * @return <code>null</code> if no {@link Servlet} matching the specified path was found. If more
+   *         than one matching servlet was found, the first one is returned.
    */
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
@@ -237,13 +233,13 @@ public class MockServletPool
       if (nMatchingItems > 1)
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn ("Found more than 1 servlet matching path '" + sPath + "' - using first one: " + aMatchingItems);
-      return aMatchingItems.getFirst ().getServlet ();
+      return aMatchingItems.getFirstOrNull ().getServlet ();
     });
   }
 
   /**
-   * Invalidate the servlet pool, by destroying all contained servlets. Also the
-   * list of registered servlets is cleared.
+   * Invalidate the servlet pool, by destroying all contained servlets. Also the list of registered
+   * servlets is cleared.
    */
   public void invalidate ()
   {

@@ -77,11 +77,9 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.useragent.browser.BrowserInfo;
 import com.helger.useragent.browser.EBrowserType;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
- * This class encapsulates all things required to build a HTTP response. It
- * offer warnings and consistency checks if something is missing.
+ * This class encapsulates all things required to build a HTTP response. It offer warnings and
+ * consistency checks if something is missing.
  *
  * @author Philip Helger
  */
@@ -117,14 +115,12 @@ public class UnifiedResponse
 
   // Settings
   /**
-   * Flag which determines whether content is allow, if a redirect is set. This
-   * is rarely used.
+   * Flag which determines whether content is allow, if a redirect is set. This is rarely used.
    */
   private boolean m_bAllowContentOnRedirect = DEFAULT_ALLOW_CONTENT_ON_REDIRECT;
 
   /**
-   * Flag which determines whether content is allow, if a status code is set.
-   * This is rarely used.
+   * Flag which determines whether content is allow, if a status code is set. This is rarely used.
    */
   private boolean m_bAllowContentOnStatusCode = DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE;
 
@@ -149,8 +145,7 @@ public class UnifiedResponse
 
   // Internal status members
   /**
-   * Unique internal ID for each response, so that error messages can be more
-   * easily aggregated.
+   * Unique internal ID for each response, so that error messages can be more easily aggregated.
    */
   private final int m_nResponseID = RESPONSE_NUM.incrementAndGet ();
 
@@ -160,8 +155,8 @@ public class UnifiedResponse
   private String m_sRequestURL;
 
   /**
-   * Just avoid emitting the request headers more than once, as they wont change
-   * from error to error.
+   * Just avoid emitting the request headers more than once, as they wont change from error to
+   * error.
    */
   private boolean m_bAlreadyEmittedRequestHeaders = false;
 
@@ -169,8 +164,8 @@ public class UnifiedResponse
   private final HttpHeaderMap m_aRequestHeaderMap;
 
   /**
-   * An optional encode to be used to determine if a content-disposition
-   * filename can be ISO-8859-1 encoded.
+   * An optional encode to be used to determine if a content-disposition filename can be ISO-8859-1
+   * encoded.
    */
   private CharsetEncoder m_aContentDispositionEncoder;
 
@@ -253,11 +248,13 @@ public class UnifiedResponse
       if (!m_bAlreadyEmittedRequestHeaders)
       {
         final StringBuilder aSB = new StringBuilder ();
-        aSB.append ("  Request Headers: " + m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+        aSB.append ("  Request Headers: " +
+                    m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
         if (m_aCookies != null && m_aCookies.isNotEmpty ())
           aSB.append ("  Request Cookies: " + m_aCookies.getSortedByKey (Comparator.naturalOrder ()));
         if (m_aResponseHeaderMap.isNotEmpty ())
-          aSB.append ("\n  Response Headers: " + m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+          aSB.append ("\n  Response Headers: " +
+                      m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
 
         if (LOGGER.isWarnEnabled ())
           LOGGER.warn (aSB.toString ());
@@ -315,8 +312,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if content is allowed even if a redirect is
-   *         present.
+   * @return <code>true</code> if content is allowed even if a redirect is present.
    */
   public final boolean isAllowContentOnRedirect ()
   {
@@ -331,8 +327,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if content is allowed even if a status code is
-   *         present.
+   * @return <code>true</code> if content is allowed even if a status code is present.
    */
   public final boolean isAllowContentOnStatusCode ()
   {
@@ -406,8 +401,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if a content was already set, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if a content was already set, <code>false</code> if not.
    */
   public final boolean hasContent ()
   {
@@ -444,12 +438,12 @@ public class UnifiedResponse
   }
 
   /**
-   * Set the response content. To return an empty response pass in a new empty
-   * array, but not <code>null</code>.
+   * Set the response content. To return an empty response pass in a new empty array, but not
+   * <code>null</code>.
    *
    * @param aContent
-   *        The content to be returned. Is <b>not</b> copied inside! May not be
-   *        <code>null</code> but maybe empty.
+   *        The content to be returned. Is <b>not</b> copied inside! May not be <code>null</code>
+   *        but maybe empty.
    * @return this
    */
   @Nonnull
@@ -460,22 +454,22 @@ public class UnifiedResponse
   }
 
   /**
-   * Set the response content. To return an empty response pass in a new empty
-   * array, but not <code>null</code>.
+   * Set the response content. To return an empty response pass in a new empty array, but not
+   * <code>null</code>.
    *
    * @param aContent
-   *        The content to be returned. Is <b>not</b> copied inside! May not be
-   *        <code>null</code> but maybe empty.
+   *        The content to be returned. Is <b>not</b> copied inside! May not be <code>null</code>
+   *        but maybe empty.
    * @param nOfs
    *        The content offset to start at. Must be &ge; 0.
    * @param nLen
-   *        The content length to use. Must be &ge; 0 and &le; than the content
-   *        length!
+   *        The content length to use. Must be &ge; 0 and &le; than the content length!
    * @return this
    */
   @Nonnull
-  @SuppressFBWarnings ("EI_EXPOSE_REP2")
-  public final UnifiedResponse setContent (@Nonnull final byte [] aContent, @Nonnegative final int nOfs, @Nonnegative final int nLen)
+  public final UnifiedResponse setContent (@Nonnull final byte [] aContent,
+                                           @Nonnegative final int nOfs,
+                                           @Nonnegative final int nLen)
   {
     ValueEnforcer.isArrayOfsLen (aContent, nOfs, nLen);
     if (hasContent ())
@@ -549,12 +543,11 @@ public class UnifiedResponse
   }
 
   /**
-   * Set an ETag for the response. The ETag must be a quoted value (being
-   * surrounded by double quotes).
+   * Set an ETag for the response. The ETag must be a quoted value (being surrounded by double
+   * quotes).
    *
    * @param sETag
-   *        The quoted ETag to be set. May neither be <code>null</code> nor
-   *        empty.
+   *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
   @Nonnull
@@ -572,13 +565,11 @@ public class UnifiedResponse
   }
 
   /**
-   * Set an ETag for the response if this is an HTTP/1.1 response. HTTP/1.0 does
-   * not support ETags. The ETag must be a quoted value (being surrounded by
-   * double quotes).
+   * Set an ETag for the response if this is an HTTP/1.1 response. HTTP/1.0 does not support ETags.
+   * The ETag must be a quoted value (being surrounded by double quotes).
    *
    * @param sETag
-   *        The quoted ETag to be set. May neither be <code>null</code> nor
-   *        empty.
+   *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
   @Nonnull
@@ -602,13 +593,12 @@ public class UnifiedResponse
   }
 
   /**
-   * Set the content disposition type (e.g. for PDF/Excel downloads). The
-   * default is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}. This value is only
-   * used if a content disposition filename is defined.
+   * Set the content disposition type (e.g. for PDF/Excel downloads). The default is
+   * {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}. This value is only used if a content disposition
+   * filename is defined.
    *
    * @param eContentDispositionType
-   *        The content disposition type to be used. May not be
-   *        <code>null</code>.
+   *        The content disposition type to be used. May not be <code>null</code>.
    * @return this
    * @see #setContentDispositionFilename(String)
    */
@@ -622,8 +612,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return The current content disposition type. Never <code>null</code>.
-   *         Default is {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}.
+   * @return The current content disposition type. Never <code>null</code>. Default is
+   *         {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}.
    */
   @Nonnull
   public final EContentDispositionType getContentDispositionType ()
@@ -635,8 +625,7 @@ public class UnifiedResponse
    * Set the content disposition filename for attachment download.
    *
    * @param sFilename
-   *        The filename for attachment download to use. May neither be
-   *        <code>null</code> nor empty.
+   *        The filename for attachment download to use. May neither be <code>null</code> nor empty.
    * @return this
    * @see #removeContentDispositionFilename()
    */
@@ -649,7 +638,11 @@ public class UnifiedResponse
     // -> Strip all paths and replace all invalid characters
     final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilename));
     if (!sFilename.equals (sFilenameToUse))
-      logWarn ("Content-Dispostion filename was internally modified from '" + sFilename + "' to '" + sFilenameToUse + "'");
+      logWarn ("Content-Dispostion filename was internally modified from '" +
+               sFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // Disabled because of the extended UTF-8 handling (RFC 5987)
     if (false)
@@ -663,7 +656,11 @@ public class UnifiedResponse
 
     // Are we overwriting?
     if (m_sContentDispositionFilename != null)
-      logInfo ("Overwriting Content-Dispostion filename from '" + m_sContentDispositionFilename + "' to '" + sFilenameToUse + "'");
+      logInfo ("Overwriting Content-Dispostion filename from '" +
+               m_sContentDispositionFilename +
+               "' to '" +
+               sFilenameToUse +
+               "'");
 
     // No URL encoding necessary.
     // Filename must be in ISO-8859-1
@@ -673,8 +670,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return The current content disposition filename. May be <code>null</code>
-   *         if not set.
+   * @return The current content disposition filename. May be <code>null</code> if not set.
    */
   @Nullable
   public final String getContentDispositionFilename ()
@@ -683,8 +679,8 @@ public class UnifiedResponse
   }
 
   /**
-   * Remove the current content disposition filename. This method can be called
-   * if a filename is set or not.
+   * Remove the current content disposition filename. This method can be called if a filename is set
+   * or not.
    *
    * @return this
    */
@@ -696,8 +692,8 @@ public class UnifiedResponse
   }
 
   /**
-   * Utility method for setting the MimeType application/force-download and set
-   * the respective content disposition filename.
+   * Utility method for setting the MimeType application/force-download and set the respective
+   * content disposition filename.
    *
    * @param sFilename
    *        The filename to be used.
@@ -825,19 +821,20 @@ public class UnifiedResponse
 
     if (m_eHttpVersion.is10 ())
     {
-      m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES, PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
+      m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES,
+                                          PDTFactory.getCurrentLocalDateTime ().plusSeconds (nSeconds));
     }
     else
     {
-      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true).setMaxAgeSeconds (nSeconds);
+      final CacheControlBuilder aCacheControlBuilder = new CacheControlBuilder ().setPublic (true)
+                                                                                 .setMaxAgeSeconds (nSeconds);
       setCacheControl (aCacheControlBuilder);
     }
     return this;
   }
 
   /**
-   * @return <code>true</code> if a status code is defined, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if a status code is defined, <code>false</code> if not.
    */
   public final boolean isStatusCodeDefined ()
   {
@@ -845,8 +842,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return The HTTP status code defined or {@link CGlobal#ILLEGAL_UINT} if
-   *         undefined.
+   * @return The HTTP status code defined or {@link CGlobal#ILLEGAL_UINT} if undefined.
    * @see #isStatusCodeDefined()
    */
   public final int getStatusCode ()
@@ -879,8 +875,8 @@ public class UnifiedResponse
    * Special handling for returning status code 401 UNAUTHORIZED.
    *
    * @param sAuthenticate
-   *        The string to be used for the {@link CHttpHeader#WWW_AUTHENTICATE}
-   *        response header. May be <code>null</code> or empty.
+   *        The string to be used for the {@link CHttpHeader#WWW_AUTHENTICATE} response header. May
+   *        be <code>null</code> or empty.
    * @return this
    */
   @Nonnull
@@ -906,7 +902,8 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl, @Nonnull final ERedirectMode eRedirectMode)
+  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl,
+                                            @Nonnull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
@@ -938,7 +935,8 @@ public class UnifiedResponse
   }
 
   @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl, @Nonnull final ERedirectMode eRedirectMode)
+  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl,
+                                            @Nonnull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
@@ -959,8 +957,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if warning on duplicated cookies is enabled,
-   *         <code>false</code> if it is disabled.
+   * @return <code>true</code> if warning on duplicated cookies is enabled, <code>false</code> if it
+   *         is disabled.
    * @since 6.0.5
    */
   public final boolean isWarnOnDuplicateCookies ()
@@ -972,8 +970,7 @@ public class UnifiedResponse
    * Enable or disable warning message on duplicated cookie names.
    *
    * @param bWarnOnDuplicateCookies
-   *        <code>true</code> to enable warnings, <code>false</code> to disable
-   *        them.
+   *        <code>true</code> to enable warnings, <code>false</code> to disable them.
    * @return this
    * @since 6.0.5
    */
@@ -1045,8 +1042,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return A copy of all contained cookies. Never <code>null</code> but maybe
-   *         empty.
+   * @return A copy of all contained cookies. Never <code>null</code> but maybe empty.
    * @since 6.0.5
    */
   @Nonnull
@@ -1057,8 +1053,7 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if HTTP header values will be unified,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if HTTP header values will be unified, <code>false</code> if not.
    * @see UnifiedResponseDefaultSettings#isHttpHeaderValuesUnified()
    * @since 9.1.4
    */
@@ -1083,8 +1078,8 @@ public class UnifiedResponse
   }
 
   /**
-   * @return <code>true</code> if HTTP header values will be unified and quoted
-   *         if necessary, <code>false</code> if not.
+   * @return <code>true</code> if HTTP header values will be unified and quoted if necessary,
+   *         <code>false</code> if not.
    * @see UnifiedResponseDefaultSettings#isHttpHeaderValuesQuoteIfNecessary()
    * @since 9.1.4
    */
@@ -1094,8 +1089,8 @@ public class UnifiedResponse
   }
 
   /**
-   * Enable or disable the automatic quoting of HTTP header values. This only
-   * takes effect, if the unification is enabled.
+   * Enable or disable the automatic quoting of HTTP header values. This only takes effect, if the
+   * unification is enabled.
    *
    * @param bHttpHeaderValuesQuoteIfNecessary
    *        <code>true</code> to enable it, <code>false</code> to disable it.
@@ -1111,14 +1106,12 @@ public class UnifiedResponse
   }
 
   /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
+   * When specifying <code>false</code>, this method uses a special response header to prevent
+   * certain browsers from MIME-sniffing a response away from the declared content-type. When
+   * passing <code>true</code>, that header is removed.
    *
    * @param bAllow
-   *        Whether or not sniffing should be allowed (default is
-   *        <code>true</code>).
+   *        Whether or not sniffing should be allowed (default is <code>true</code>).
    * @return this
    */
   @Nonnull
@@ -1132,16 +1125,14 @@ public class UnifiedResponse
   }
 
   /**
-   * This header enables the Cross-site scripting (XSS) filter built into most
-   * recent web browsers. It's usually enabled by default anyway, so the role of
-   * this header is to re-enable the filter for this particular website if it
-   * was disabled by the user. This header is supported in IE 8+, and in Chrome
-   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
-   * unknown if that version honored this header.
+   * This header enables the Cross-site scripting (XSS) filter built into most recent web browsers.
+   * It's usually enabled by default anyway, so the role of this header is to re-enable the filter
+   * for this particular website if it was disabled by the user. This header is supported in IE 8+,
+   * and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
+   * if that version honored this header.
    *
    * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable the header, <code>false</code> to disable it.
    * @return this
    * @since 6.0.5
    */
@@ -1156,18 +1147,16 @@ public class UnifiedResponse
   }
 
   /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
+   * When specifying <code>false</code>, this method uses a special response header to prevent
+   * certain browsers from MIME-sniffing a response away from the declared content-type. When
+   * passing <code>true</code>, that header is removed.
    *
    * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
+   *        number of seconds, after the reception of the STS header field, during which the UA
+   *        regards the host (from whom the message was received) as a Known HSTS Host.
    * @param bIncludeSubdomains
-   *        if enabled, this signals the UA that the HSTS Policy applies to this
-   *        HSTS Host as well as any sub-domains of the host's domain name.
+   *        if enabled, this signals the UA that the HSTS Policy applies to this HSTS Host as well
+   *        as any sub-domains of the host's domain name.
    * @return this
    */
   @Nonnull
@@ -1175,7 +1164,9 @@ public class UnifiedResponse
   {
     setCustomResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                              new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                                                    (bIncludeSubdomains ? ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+                                                                    (bIncludeSubdomains ? ";" +
+                                                                                          CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                        : ""));
     return this;
   }
 
@@ -1193,11 +1184,10 @@ public class UnifiedResponse
   }
 
   /**
-   * The X-Frame-Options HTTP response header can be used to indicate whether or
-   * not a browser should be allowed to render a page in a &lt;frame&gt;,
-   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
-   * attacks, by ensuring that their content is not embedded into other sites.
-   * Example:
+   * The X-Frame-Options HTTP response header can be used to indicate whether or not a browser
+   * should be allowed to render a page in a &lt;frame&gt;, &lt;iframe&gt; or &lt;object&gt; . Sites
+   * can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into
+   * other sites. Example:
    *
    * <pre>
    * X-Frame-Options: DENY
@@ -1208,20 +1198,21 @@ public class UnifiedResponse
    * @param eType
    *        The X-Frame-Options type to be set. May not be <code>null</code>.
    * @param aDomain
-   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
-   *        for the other cases.
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code> for the other cases.
    * @return this
    * @since 6.0.5
    */
   @Nonnull
-  public final UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public final UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType,
+                                                 @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
     if (eType.isURLRequired ())
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
+      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
+                               eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
     else
       setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;
@@ -1241,19 +1232,20 @@ public class UnifiedResponse
   }
 
   /**
-   * Adds a response header to the response according to the passed name and
-   * value. If an existing header with the same is present, the value is added
-   * to the list so that the header is emitted more than once.<br>
-   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * Adds a response header to the response according to the passed name and value. If an existing
+   * header with the same is present, the value is added to the list so that the header is emitted
+   * more than once.<br>
+   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse} directly offers.
+   * Use this method only in emergency and make sure you validate the header field and allowed
+   * value!
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void addCustomResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public final void addCustomResponseHeader (@Nonnull @Nonempty final String sName,
+                                             @Nonnull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1274,18 +1266,19 @@ public class UnifiedResponse
   }
 
   /**
-   * Sets a response header to the response according to the passed name and
-   * value. An existing header entry with the same name is overridden.<br>
-   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * Sets a response header to the response according to the passed name and value. An existing
+   * header entry with the same name is overridden.<br>
+   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse} directly offers.
+   * Use this method only in emergency and make sure you validate the header field and allowed
+   * value!
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void setCustomResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public final void setCustomResponseHeader (@Nonnull @Nonempty final String sName,
+                                             @Nonnull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1294,8 +1287,7 @@ public class UnifiedResponse
   }
 
   /**
-   * Set many custom headers at once. All existing headers are unconditionally
-   * removed.
+   * Set many custom headers at once. All existing headers are unconditionally removed.
    *
    * @param aOther
    *        The headers to be set. May be <code>null</code>.
@@ -1308,15 +1300,13 @@ public class UnifiedResponse
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.
-   * <br>
-   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse}
-   * directly offers. Use this method only in emergency and make sure you
-   * validate the header field and allowed value!
+   * Removes the response headers matching the passed name from the response. <br>
+   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponse} directly offers.
+   * Use this method only in emergency and make sure you validate the header field and allowed
+   * value!
    *
    * @param sName
-   *        Name of the header to be removed. May neither be <code>null</code>
-   *        nor empty.
+   *        Name of the header to be removed. May neither be <code>null</code> nor empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
   @Nonnull
@@ -1355,7 +1345,9 @@ public class UnifiedResponse
     if (m_aCacheControl != null)
     {
       if (!bIsHttp11)
-        logWarn ("Sending a Cache-Control header for HTTP version " + m_eHttpVersion + " may have no or limited effect!");
+        logWarn ("Sending a Cache-Control header for HTTP version " +
+                 m_eHttpVersion +
+                 " may have no or limited effect!");
 
       if (m_aCacheControl.isPrivate ())
       {
@@ -1415,7 +1407,8 @@ public class UnifiedResponse
     }
   }
 
-  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet) throws IOException
+  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet)
+                                                                                                                        throws IOException
   {
     if (m_aContentArray != null)
     {
@@ -1626,8 +1619,11 @@ public class UnifiedResponse
         if (hasContent ())
           logWarn ("Ignoring provided content because a status code is specified!");
       }
-      if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED && !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
-        logWarn ("Status code UNAUTHORIZED (401) is returned, but no " + CHttpHeader.WWW_AUTHENTICATE + " HTTP response header is set!");
+      if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
+          !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
+        logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
+                 CHttpHeader.WWW_AUTHENTICATE +
+                 " HTTP response header is set!");
 
       // Content may be present so, sendError is not an option here!
       if (m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST && m_aContentArray == null)
@@ -1686,7 +1682,10 @@ public class UnifiedResponse
       {
         // Filename needs to be surrounded with double quotes (single quotes
         // don't work).
-        aSB.append (m_eContentDispositionType.getID ()).append ("; filename=\"").append (m_sContentDispositionFilename).append ('"');
+        aSB.append (m_eContentDispositionType.getID ())
+           .append ("; filename=\"")
+           .append (m_sContentDispositionFilename)
+           .append ('"');
 
         // Check if we need an UTF-8 filename
         // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788
@@ -1749,7 +1748,9 @@ public class UnifiedResponse
     {
       final String sCharset = m_aCharset.name ();
       if (m_aMimeType == null)
-        logWarn ("If no MimeType present, the client cannot get notified about the character encoding '" + sCharset + "'");
+        logWarn ("If no MimeType present, the client cannot get notified about the character encoding '" +
+                 sCharset +
+                 "'");
 
       // Check with request charset
       final QValue aQuality = m_aAcceptCharsetList.getQValueOfCharset (sCharset);
@@ -1814,6 +1815,8 @@ public class UnifiedResponse
   @Nonnull
   public static UnifiedResponse createSimple (@Nonnull final HttpServletRequest aHttpRequest)
   {
-    return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest), RequestHelper.getHttpMethod (aHttpRequest), aHttpRequest);
+    return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest),
+                                RequestHelper.getHttpMethod (aHttpRequest),
+                                aHttpRequest);
   }
 }

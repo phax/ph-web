@@ -34,8 +34,6 @@ import com.helger.commons.io.file.FileHelper;
 import com.helger.commons.lang.ServiceLoaderHelper;
 import com.helger.commons.state.ESuccess;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * This class manages the implementations of {@link IXMLSitemapProviderSPI}.
  *
@@ -65,12 +63,11 @@ public final class XMLSitemapProvider
   }
 
   /**
-   * Create URL sets from every provider and invoke the provided consumer with
-   * it.
+   * Create URL sets from every provider and invoke the provided consumer with it.
    *
    * @param aConsumer
-   *        The consumer to be invoked. Must be able to handle <code>null</code>
-   *        and empty values. May itself not be <code>null</code>.
+   *        The consumer to be invoked. Must be able to handle <code>null</code> and empty values.
+   *        May itself not be <code>null</code>.
    */
   public static void forEachURLSet (@Nonnull final Consumer <? super XMLSitemapURLSet> aConsumer)
   {
@@ -83,13 +80,13 @@ public final class XMLSitemapProvider
   }
 
   @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory, @Nonnull @Nonempty final String sFullContextPath)
+  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
+                                             @Nonnull @Nonempty final String sFullContextPath)
   {
     return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP, sFullContextPath);
   }
 
   @Nonnull
-  @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
                                              final boolean bUseGZip,
                                              @Nonnull @Nonempty final String sFullContextPath)

@@ -58,6 +58,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+* v10.0.2 - 2025-05-05
+    * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
+    * Updated to dnsjava 3.6.3
+    * Updated to ph-commons 11.2.1 
 * v10.0.1 - 2023-02-05
     * Using Servlet API 4.0.1 as the baseline: JakartaEE 8, Java 11+, Apache Tomcat v9.x, Jetty 10.0.x 
 * v10.0.0 - 2023-02-01

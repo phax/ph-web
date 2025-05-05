@@ -39,7 +39,6 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.system.SystemProperties;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.mail.event.ConnectionListener;
 
 /**
@@ -99,8 +98,8 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return The maximum number of mails that are send out in one mail session.
-   *         Always &gt; 0 but &le; than {@link #getMaxMailQueueLength()}.
+   * @return The maximum number of mails that are send out in one mail session. Always &gt; 0 but
+   *         &le; than {@link #getMaxMailQueueLength()}.
    */
   @Nonnegative
   public static int getMaxMailSendCount ()
@@ -109,23 +108,27 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * Set mail queue settings. Changing these settings has no effect on existing
-   * mail queues!
+   * Set mail queue settings. Changing these settings has no effect on existing mail queues!
    *
    * @param nMaxMailQueueLen
    *        The maximum number of mails that can be queued. Must be &gt; 0.
    * @param nMaxMailSendCount
-   *        The maximum number of mails that are send out in one mail session.
-   *        Must be &gt; 0 but &le; than {@link #getMaxMailQueueLength()}.
+   *        The maximum number of mails that are send out in one mail session. Must be &gt; 0 but
+   *        &le; than {@link #getMaxMailQueueLength()}.
    * @return {@link EChange}.
    */
   @Nonnull
-  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen, @Nonnegative final int nMaxMailSendCount)
+  public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen,
+                                          @Nonnegative final int nMaxMailSendCount)
   {
     ValueEnforcer.isGT0 (nMaxMailQueueLen, "MaxMailQueueLen");
     ValueEnforcer.isGT0 (nMaxMailSendCount, "MaxMailSendCount");
     ValueEnforcer.isTrue (nMaxMailQueueLen >= nMaxMailSendCount,
-                          () -> "MaxMailQueueLen (" + nMaxMailQueueLen + ") must be >= than MaxMailSendCount (" + nMaxMailSendCount + ")");
+                          () -> "MaxMailQueueLen (" +
+                                nMaxMailQueueLen +
+                                ") must be >= than MaxMailSendCount (" +
+                                nMaxMailSendCount +
+                                ")");
 
     return RW_LOCK.writeLockedGet ( () -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)
@@ -200,9 +203,8 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * Set the connection timeout in milliseconds. Values &le; 0 are interpreted
-   * as indefinite timeout which is not recommended! Changing these settings has
-   * no effect on existing mail queues!
+   * Set the connection timeout in milliseconds. Values &le; 0 are interpreted as indefinite timeout
+   * which is not recommended! Changing these settings has no effect on existing mail queues!
    *
    * @param nMilliSecs
    *        The milliseconds timeout
@@ -233,9 +235,8 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * Set the socket timeout in milliseconds. Values &le; 0 are interpreted as
-   * indefinite timeout which is not recommended! Changing these settings has no
-   * effect on existing mail queues!
+   * Set the socket timeout in milliseconds. Values &le; 0 are interpreted as indefinite timeout
+   * which is not recommended! Changing these settings has no effect on existing mail queues!
    *
    * @param nMilliSecs
    *        The milliseconds timeout
@@ -255,8 +256,7 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> if SMTP debugging is active, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if SMTP debugging is active, <code>false</code> if not.
    * @since 1.0.1
    */
   public static boolean isDebugSMTP ()
@@ -266,8 +266,7 @@ public final class EmailGlobalSettings
 
   /**
    * @param bDebugSMTP
-   *        <code>true</code> to activate SMTP debugging, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to activate SMTP debugging, <code>false</code> to disable it.
    * @return {@link EChange}
    * @since 1.0.1
    */
@@ -325,8 +324,8 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> if at least one connection listener is present,
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if at least one connection listener is present, <code>false</code>
+   *         otherwise.
    * @since 1.1.0
    */
   public static boolean hasConnectionListeners ()
@@ -388,8 +387,8 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> if at least one transport listener is present,
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if at least one transport listener is present, <code>false</code>
+   *         otherwise.
    * @since 1.1.0
    */
   public static boolean hasEmailDataTransportListeners ()
@@ -412,10 +411,8 @@ public final class EmailGlobalSettings
    * Enable or disable javax.mail debugging. By default debugging is disabled.
    *
    * @param bDebug
-   *        <code>true</code> to enabled debugging, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enabled debugging, <code>false</code> to disable it.
    */
-  @SuppressFBWarnings ("LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE")
   public static void enableJavaxMailDebugging (final boolean bDebug)
   {
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
@@ -426,8 +423,7 @@ public final class EmailGlobalSettings
   }
 
   /**
-   * @return <code>true</code> if javax.mail debugging is enabled,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if javax.mail debugging is enabled, <code>false</code> if not.
    */
   public static boolean isJavaxMailDebuggingEnabled ()
   {

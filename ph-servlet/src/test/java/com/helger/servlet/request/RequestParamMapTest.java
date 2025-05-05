@@ -37,14 +37,11 @@ import com.helger.commons.mock.CommonsAssert;
 import com.helger.commons.mock.CommonsTestHelper;
 import com.helger.commons.string.StringHelper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Unit test class for class {@link RequestParamMap}.
  *
  * @author Philip Helger
  */
-@SuppressFBWarnings ("NP_NONNULL_PARAM_VIOLATION")
 public final class RequestParamMapTest
 {
   @Test

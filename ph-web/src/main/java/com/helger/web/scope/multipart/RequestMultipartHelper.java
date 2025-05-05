@@ -48,11 +48,9 @@ import com.helger.web.progress.ProgressListenerProvider;
 public final class RequestMultipartHelper
 {
   /**
-   * The maximum size of a single file (in bytes) that will be handled. May not
-   * be larger than 2 GB as browsers cannot handle more than 2GB. See e.g.
-   * http://www.motobit.com/help/ScptUtl/pa33.htm or
-   * https://bugzilla.mozilla.org/show_bug.cgi?id=215450 Extensive analysis:
-   * <a href=
+   * The maximum size of a single file (in bytes) that will be handled. May not be larger than 2 GB
+   * as browsers cannot handle more than 2GB. See e.g. http://www.motobit.com/help/ScptUtl/pa33.htm
+   * or https://bugzilla.mozilla.org/show_bug.cgi?id=215450 Extensive analysis: <a href=
    * "http://tomcat.10.n6.nabble.com/Problems-uploading-huge-files-gt-2GB-to-Tomcat-app-td4730850.html"
    * >here</a>
    */
@@ -78,15 +76,15 @@ public final class RequestMultipartHelper
   {}
 
   /**
-   * Parse the provided servlet request as multipart, if the Content-Type starts
-   * with <code>multipart/form-data</code>.
+   * Parse the provided servlet request as multipart, if the Content-Type starts with
+   * <code>multipart/form-data</code>.
    *
    * @param aHttpRequest
-   *        Source HTTP request from which multipart/form-data (aka file
-   *        uploads) should be extracted.
+   *        Source HTTP request from which multipart/form-data (aka file uploads) should be
+   *        extracted.
    * @param aConsumer
-   *        A consumer that takes either {@link IFileItem} or
-   *        {@link IFileItem}[] or {@link String} or {@link String}[].
+   *        A consumer that takes either {@link IFileItem} or {@link IFileItem}[] or {@link String}
+   *        or {@link String}[].
    * @return {@link EChange#CHANGED} if something was added
    */
   @Nonnull
@@ -144,7 +142,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (String or String[])
         final ICommonsList <String> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, String.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull () : ArrayHelper.newArray (aValues,
+                                                                                                       String.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
 
@@ -154,7 +153,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirst () : ArrayHelper.newArray (aValues, IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull () : ArrayHelper.newArray (aValues,
+                                                                                                       IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
 

@@ -215,7 +215,8 @@ public final class StreamingFuncTest
 
   @Nonnull
   @ReturnsMutableCopy
-  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength)
+                                                                                                     throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -349,7 +350,7 @@ public final class StreamingFuncTest
     assertEquals ("foo.exe", fileItemStream.getNameSecure ());
 
     final ICommonsList <IFileItem> fileItems = _parseUploadToList (aReqBytes);
-    final IFileItem fileItem = fileItems.getFirst ();
+    final IFileItem fileItem = fileItems.getFirstOrNull ();
     try
     {
       fileItem.getName ();

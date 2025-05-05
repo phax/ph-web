@@ -87,9 +87,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
      * @param sParamName
      *        The current parameter name. May not be <code>null</code>.
      * @param nParamIndex
-     *        The index of the value. If the parameter has multiple values this
-     *        is respective index. If there is only one value, this is always 0
-     *        (zero).
+     *        The index of the value. If the parameter has multiple values this is respective index.
+     *        If there is only one value, this is always 0 (zero).
      * @param sParamValue
      *        The value to be cleaned. May be <code>null</code>.
      * @return The cleaned value. May also be <code>null</code>.
@@ -113,9 +112,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   private IRequestParamMap m_aRequestParamMap;
 
   /**
-   * @return The current value cleanser function. May be <code>null</code>. By
-   *         default {@link #getWithoutForbiddenCharsAndNormalized(String)} is
-   *         invoked.
+   * @return The current value cleanser function. May be <code>null</code>. By default
+   *         {@link #getWithoutForbiddenCharsAndNormalized(String)} is invoked.
    * @since 9.0.6
    * @see #setParamValueCleanser(IParamValueCleanser)
    */
@@ -126,13 +124,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * Set the param value cleanser function that is applied on all parameter
-   * values. By default only
+   * Set the param value cleanser function that is applied on all parameter values. By default only
    * {@link #getWithoutForbiddenCharsAndNormalized(String)} is invoked.
    *
    * @param aParamValueCleanser
-   *        The function to be applied. May be <code>null</code>. The function
-   *        itself must be able to handle <code>null</code> values.
+   *        The function to be applied. May be <code>null</code>. The function itself must be able
+   *        to handle <code>null</code> values.
    * @since 9.0.6
    * @see #getParamValueCleanser()
    */
@@ -160,13 +157,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     // done initialization
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Created request web scope '" +
                      super.getID () +
                      "' of class " +
                      ClassHelper.getClassLocalName (RequestWebScope.class),
-                     ScopeHelper.getDebugStackTrace ());
+                     ScopeHelper.getDebugException ());
   }
 
   @Nonnull
@@ -178,10 +175,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   /**
    * Callback method to add special parameters.
    *
-   * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added,
-   *         existing attributes are kept and will not be overwritten with HTTP
-   *         servlet request parameters!
+   * @return {@link EChange#CHANGED} if some attributes were added, <code>false</code> if not. If
+   *         special attributes were added, existing attributes are kept and will not be overwritten
+   *         with HTTP servlet request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -247,8 +243,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * First normalize the input according to Unicode rules, so that "O 0xcc 0x88"
-   * (O with COMBINING DIAERESIS) becomes "Ö" (Capital O with umlaut).
+   * First normalize the input according to Unicode rules, so that "O 0xcc 0x88" (O with COMBINING
+   * DIAERESIS) becomes "Ö" (Capital O with umlaut).
    *
    * @param s
    *        Source string. May be <code>null</code>.
@@ -353,13 +349,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     }
 
     // done initialization
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Initialized request web scope '" +
                      getID () +
                      "' of class " +
                      ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+                     ScopeHelper.getDebugException ());
   }
 
   @Override
@@ -370,10 +366,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
       if (o instanceof IFileItem)
         ((IFileItem) o).onEndOfRequest ();
 
-    if (ScopeHelper.isDebugRequestScopeLifeCycle (LOGGER))
+    if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       if (LOGGER.isInfoEnabled ())
         LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),
-                     ScopeHelper.getDebugStackTrace ());
+                     ScopeHelper.getDebugException ());
   }
 
   @Nonnull
@@ -402,14 +398,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file
-   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
-   * last dot is after the last slash
+   * This is a heuristic method to determine whether a request is for a file (e.g. x.jsp) or for a
+   * servlet. This method return <code>true</code> if the last dot is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
-   * @return <code>true</code> if it is assumed that the request is file based,
-   *         <code>false</code> if it can be assumed to be a regular servlet.
+   * @return <code>true</code> if it is assumed that the request is file based, <code>false</code>
+   *         if it can be assumed to be a regular servlet.
    */
   public static boolean isFileBasedRequest (@Nonnull final String sServletPath)
   {
@@ -429,13 +424,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context
-   *         of the request. The context path always comes first in a request
-   *         URI. The path starts with a "/" character but does not end with a
-   *         "/" character. For servlets in the default (root) context, this
+   * @return Returns the portion of the request URI that indicates the context of the request. The
+   *         context path always comes first in a request URI. The path starts with a "/" character
+   *         but does not end with a "/" character. For servlets in the default (root) context, this
    *         method returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context.
-   *         Never with a trailing slash.
+   *         <code>/context</code> or an empty string for the root context. Never with a trailing
+   *         slash.
    * @see #getFullContextPath()
    */
   @Nonnull

@@ -40,11 +40,8 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
- * Abstract output stream switching
- * {@link javax.servlet.http.HttpServletResponseWrapper}
+ * Abstract output stream switching {@link javax.servlet.http.HttpServletResponseWrapper}
  *
  * @author Philip Helger
  */
@@ -358,7 +355,6 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
     return m_aCompressedOS;
   }
 
-  @SuppressFBWarnings ({ "DM_DEFAULT_ENCODING" })
   @Override
   @Nonnull
   public final PrintWriter getWriter () throws IOException

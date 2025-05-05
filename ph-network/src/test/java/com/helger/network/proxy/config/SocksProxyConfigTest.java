@@ -24,8 +24,6 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 /**
  * Test class for class {@link SocksProxyConfig}.
  *
@@ -57,7 +55,6 @@ public final class SocksProxyConfigTest
   }
 
   @Test
-  @SuppressFBWarnings ({ "NP_NONNULL_PARAM_VIOLATION", "TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED" })
   public void testInvalid ()
   {
     try

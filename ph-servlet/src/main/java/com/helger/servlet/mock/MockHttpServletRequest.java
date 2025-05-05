@@ -145,8 +145,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   private boolean m_bRequestedSessionIDFromURL = false;
 
   /**
-   * Create a new MockHttpServletRequest with a default
-   * {@link MockServletContext}.
+   * Create a new MockHttpServletRequest with a default {@link MockServletContext}.
    *
    * @see MockServletContext
    */
@@ -160,8 +159,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @see MockServletContext
    */
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext)
@@ -173,8 +172,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @param eMethod
    *        the request method (may be <code>null</code>)
    * @see MockServletContext
@@ -188,13 +187,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @param eMethod
    *        the request method (may be <code>null</code>)
    * @param bInvokeHttpListeners
-   *        if <code>true</code> than the HTTP request event listeners from
-   *        {@link MockHttpListener} are triggered
+   *        if <code>true</code> than the HTTP request event listeners from {@link MockHttpListener}
+   *        are triggered
    * @see #setMethod
    * @see MockServletContext
    */
@@ -222,9 +221,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * @return the ServletContext that this request is associated with. (Not
-   *         available in the standard HttpServletRequest interface for some
-   *         reason.). Never <code>null</code>.
+   * @return the ServletContext that this request is associated with. (Not available in the standard
+   *         HttpServletRequest interface for some reason.). Never <code>null</code>.
    */
   @Nonnull
   public final ServletContext getServletContext ()
@@ -251,8 +249,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Invalidate this request, clearing its state and invoking all HTTP event
-   * listener.
+   * Invalidate this request, clearing its state and invoking all HTTP event listener.
    *
    * @see #close()
    * @see #clearAttributes()
@@ -275,8 +272,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Check whether this request is still active (that is, not completed yet),
-   * throwing an IllegalStateException if not active anymore.
+   * Check whether this request is still active (that is, not completed yet), throwing an
+   * IllegalStateException if not active anymore.
    */
   protected void checkActive ()
   {
@@ -367,12 +364,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Note: do not change the content via {@link #setContent(byte[])}, while an
-   * input stream is open, because this may lead to indeterministic results!
+   * Note: do not change the content via {@link #setContent(byte[])}, while an input stream is open,
+   * because this may lead to indeterministic results!
    *
-   * @return <code>null</code> if no content is present. If non-
-   *         <code>null</code> the caller is responsible for closing the
-   *         {@link InputStream}.
+   * @return <code>null</code> if no content is present. If non- <code>null</code> the caller is
+   *         responsible for closing the {@link InputStream}.
    */
   @Nullable
   public ServletInputStream getInputStream ()
@@ -386,8 +382,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   /**
    * Set a single value for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, they will be replaced.
+   * If there are already one or more values registered for the given parameter name, they will be
+   * replaced.
    *
    * @param sName
    *        Parameter name
@@ -406,8 +402,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   /**
    * Set an array of values for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, they will be replaced.
+   * If there are already one or more values registered for the given parameter name, they will be
+   * replaced.
    *
    * @param sName
    *        Parameter name
@@ -424,9 +420,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Sets all provided parameters <em>replacing</em> any existing values for the
-   * provided parameter names. To add without replacing existing values, use
-   * {@link #addParameters(List)}.
+   * Sets all provided parameters <em>replacing</em> any existing values for the provided parameter
+   * names. To add without replacing existing values, use {@link #addParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map. May be <code>null</code>.
@@ -447,8 +442,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   /**
    * Add a single value for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, the given value will be added to the end of the list.
+   * If there are already one or more values registered for the given parameter name, the given
+   * value will be added to the end of the list.
    *
    * @param sName
    *        Parameter name
@@ -469,8 +464,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   /**
    * Add an array of values for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, the given values will be added to the end of the list.
+   * If there are already one or more values registered for the given parameter name, the given
+   * values will be added to the end of the list.
    *
    * @param sName
    *        Parameter name
@@ -486,8 +481,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Adds all provided parameters <em>without</em> replacing any existing
-   * values. To replace existing values, use {@link #setParameters(List)}.
+   * Adds all provided parameters <em>without</em> replacing any existing values. To replace
+   * existing values, use {@link #setParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map
@@ -697,7 +692,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   public Locale getLocale ()
   {
     // One element is added in ctor!
-    return m_aLocales.getFirst ();
+    return m_aLocales.getFirstOrNull ();
   }
 
   @Nonnull
@@ -810,15 +805,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   /**
    * Add a header entry for the given name.
    * <p>
-   * If there was no entry for that header name before, the value will be used
-   * as-is. In case of an existing entry, a String array will be created, adding
-   * the given value (more specifically, its toString representation) as further
-   * element.
+   * If there was no entry for that header name before, the value will be used as-is. In case of an
+   * existing entry, a String array will be created, adding the given value (more specifically, its
+   * toString representation) as further element.
    * <p>
-   * Multiple values can only be stored as list of Strings, following the
-   * Servlet spec (see <code>getHeaders</code> accessor). As alternative to
-   * repeated <code>addHeader</code> calls for individual elements, you can use
-   * a single call with an entire array or Collection of values as parameter.
+   * Multiple values can only be stored as list of Strings, following the Servlet spec (see
+   * <code>getHeaders</code> accessor). As alternative to repeated <code>addHeader</code> calls for
+   * individual elements, you can use a single call with an entire array or Collection of values as
+   * parameter.
    *
    * @param sName
    *        header name
@@ -1030,8 +1024,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
    * Define the session ID to be used when creating a new session
    *
    * @param sSessionID
-   *        The session ID to be used. If it is <code>null</code> a unique
-   *        session ID is generated.
+   *        The session ID to be used. If it is <code>null</code> a unique session ID is generated.
    * @return this
    */
   @Nonnull
@@ -1042,8 +1035,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * @return The session ID to use or <code>null</code> if a new session ID
-   *         should be generated!
+   * @return The session ID to use or <code>null</code> if a new session ID should be generated!
    */
   @Nullable
   public String getSessionID ()
@@ -1195,13 +1187,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale, I
   }
 
   /**
-   * Set all path related members to the value to be deduced from the request
-   * URI.
+   * Set all path related members to the value to be deduced from the request URI.
    *
    * @param sRequestURL
-   *        The request URL to parse and set correctly. If it is
-   *        <code>null</code> or empty, all methods are set to <code>null</code>
-   *        .
+   *        The request URL to parse and set correctly. If it is <code>null</code> or empty, all
+   *        methods are set to <code>null</code> .
    * @return this
    * @see #setScheme(String)
    * @see #setServerName(String)

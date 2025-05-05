@@ -354,8 +354,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   /**
    * Return the names of all specified headers as a Set of Strings.
    *
-   * @return the <code>Set</code> of header name <code>Strings</code>, or an
-   *         empty <code>Set</code> if none
+   * @return the <code>Set</code> of header name <code>Strings</code>, or an empty <code>Set</code>
+   *         if none
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -377,7 +377,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   public String getHeader (@Nullable final String sName)
   {
     final ICommonsList <String> aSet = m_aHeaders.getAllHeaderValues (sName);
-    return aSet == null ? null : aSet.getFirst ();
+    return aSet == null ? null : aSet.getFirstOrNull ();
   }
 
   /**
@@ -409,8 +409,7 @@ public class MockHttpServletResponse implements HttpServletResponse
 
   /**
    * The default implementation returns the given URL String as-is. Use
-   * {@link #setEncodeRedirectUrlSuffix(String)} to define a suffix to be
-   * appended.
+   * {@link #setEncodeRedirectUrlSuffix(String)} to define a suffix to be appended.
    *
    * @return the encoded URL
    */
@@ -581,8 +580,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   }
 
   /**
-   * Inner class that adapts the PrintWriter to mark the response as committed
-   * once the buffer size is exceeded.
+   * Inner class that adapts the PrintWriter to mark the response as committed once the buffer size
+   * is exceeded.
    */
   private class ResponsePrintWriter extends PrintWriter
   {

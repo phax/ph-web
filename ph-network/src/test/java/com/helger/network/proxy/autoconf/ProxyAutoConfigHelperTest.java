@@ -46,14 +46,14 @@ import com.helger.network.proxy.settings.ProxySettings;
 public final class ProxyAutoConfigHelperTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelperTest.class);
-  private static final String [] PAC_FILES = new String [] { "brz-proxy.pac",
-                                                             "wikipedia-pac.js",
-                                                             "returnproxy-complex.js",
-                                                             "returnproxy-simple-with-loadbalancing.js",
-                                                             "returnproxy-simple.js",
-                                                             "ente.regione.emr.it.js",
-                                                             "example1.js",
-                                                             "example2.js" };
+  private static final String [] PAC_FILES = { "brz-proxy.pac",
+                                               "wikipedia-pac.js",
+                                               "returnproxy-complex.js",
+                                               "returnproxy-simple-with-loadbalancing.js",
+                                               "returnproxy-simple.js",
+                                               "ente.regione.emr.it.js",
+                                               "example1.js",
+                                               "example2.js" };
 
   @Test
   public void testGetProxyListForURL () throws ScriptException
@@ -78,7 +78,7 @@ public final class ProxyAutoConfigHelperTest
   {
     final String sCode = "function FindProxyForURL(url, host) { " + sJS + " }";
     final ProxyAutoConfigHelper aPACHelper = new ProxyAutoConfigHelper (sCode);
-    return aPACHelper.getProxyListForURL ("any", "host").getFirst ();
+    return aPACHelper.getProxyListForURL ("any", "host").getFirstOrNull ();
   }
 
   @Test

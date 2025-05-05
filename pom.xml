@@ -36,21 +36,21 @@
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
   
   <scm>
-    <connection>scm:git:git@github.com:phax/ph-web.git</connection>
-    <developerConnection>scm:git:git@github.com:phax/ph-web.git</developerConnection>
-    <url>http://github.com/phax/ph-web</url>
+    <connection>scm:git:https://github.com/phax/ph-web.git</connection>
+    <developerConnection>scm:git:https://github.com/phax/ph-web.git</developerConnection>
+    <url>https://github.com/phax/ph-web</url>
     <tag>10.0</tag>
   </scm>
 
   <organization>
     <name>Philip Helger</name>
-    <url>http://www.helger.com</url>
+    <url>https://www.helger.com</url>
   </organization>
 
   <developers>
@@ -58,7 +58,7 @@
       <id>philip</id>
       <name>Philip Helger</name>
       <email>ph(at)helger.com</email>
-      <url>http://www.helger.com</url>
+      <url>https://www.helger.com</url>
     </developer>
   </developers>
   
@@ -112,7 +112,7 @@
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.17.1</version>
+        <version>1.18.0</version>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>

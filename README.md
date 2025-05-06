@@ -103,6 +103,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
     * Using Servlet API 5.0.0 as the baseline: JakartaEE 9, Java 11+, Apache Tomcat v10.0.x, Jetty 11.x
     * Using Eclipse Angus 2.0.1 for mailing
     * Switched all namespaces from `javax.servlet` to `jakarta.servlet`
+* v10.0.2 - 2025-05-05 [backport]
+    * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
+    * Updated to dnsjava 3.6.3
+    * Updated to ph-commons 11.2.1
 * v10.0.1 - 2023-02-05
     * Using Servlet API 4.0.1 as the baseline: JakartaEE 8, Java 11+, Apache Tomcat v9.x, Jetty 10.x
     * Using Jakarta Mail 2.0.1 (because Bouncycastle is not yet available for Eclipse Angus)

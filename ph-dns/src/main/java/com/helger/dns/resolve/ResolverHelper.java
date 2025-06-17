@@ -50,7 +50,7 @@ public final class ResolverHelper
   {
     defaultCustomizeResolver (aResolver);
     // Set the default retries
-    aResolver.setRetries (DNSConfig.getResolverRetries ());
+    aResolver.setRetries (DNSConfig.getResolverRetryCount ());
   }
 
   public static void forEachDefaultResolver (@Nonnull final Consumer <? super SimpleResolver> aConsumer)

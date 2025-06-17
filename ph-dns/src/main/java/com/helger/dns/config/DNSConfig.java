@@ -49,7 +49,13 @@ public final class DNSConfig
   public static final Duration DEFAULT_RESOLVER_TIMEOUT = Duration.ofSeconds (5);
 
   // Taken from ExtendedResolver.retries field
-  public static final int DEFAULT_RESOLVER_RETRIES = 3;
+  public static final int DEFAULT_RESOLVER_RETRY_COUNT = 3;
+  // Taken from ExtendedResolver.retries field
+  /**
+   * @deprecated Use {@link #DEFAULT_RESOLVER_RETRY_COUNT} instead
+   */
+  @Deprecated (forRemoval = true, since = "10.4.3")
+  public static final int DEFAULT_RESOLVER_RETRIES = DEFAULT_RESOLVER_RETRY_COUNT;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSConfig.class);
 
@@ -60,10 +66,9 @@ public final class DNSConfig
   {}
 
   /**
-   * Set special DNS client properties that have influence on the DNS client
-   * behavior. This method should be called as soon as possible on startup. In
-   * most cases it may be beneficiary if the respective system properties are
-   * provided as system properties on the commandline!
+   * Set special DNS client properties that have influence on the DNS client behavior. This method
+   * should be called as soon as possible on startup. In most cases it may be beneficiary if the
+   * respective system properties are provided as system properties on the commandline!
    *
    * @param nSeconds
    *        DNS client caching time in seconds.
@@ -96,9 +101,24 @@ public final class DNSConfig
     return DEFAULT_RESOLVER_TIMEOUT;
   }
 
+  /**
+   * @return The number of retries for the DNS resolver. Must be &ge; 0.
+   * @deprecated Use {@link #getResolverRetryCount()} instead
+   */
   @Nonnegative
+  @Deprecated (forRemoval = true, since = "10.4.3")
   public static int getResolverRetries ()
   {
-    return DEFAULT_RESOLVER_RETRIES;
+    return getResolverRetryCount ();
+  }
+
+  /**
+   * @return The number of retries for the DNS resolver. Must be &ge; 0.
+   * @since 10.4.3
+   */
+  @Nonnegative
+  public static int getResolverRetryCount ()
+  {
+    return DEFAULT_RESOLVER_RETRY_COUNT;
   }
 }

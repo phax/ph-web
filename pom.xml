@@ -26,7 +26,7 @@
   </parent>
   <groupId>com.helger.web</groupId>
   <artifactId>ph-web-parent-pom</artifactId>
-  <version>10.4.3-SNAPSHOT</version>
+  <version>10.4.3</version>
   <packaging>pom</packaging>
   <name>ph-web-parent-pom</name>
   <description>Base POM to build the ph-web projects</description>
@@ -45,7 +45,7 @@
     <connection>scm:git:https://github.com/phax/ph-web.git</connection>
     <developerConnection>scm:git:https://github.com/phax/ph-web.git</developerConnection>
     <url>https://github.com/phax/ph-web</url>
-    <tag>HEAD</tag>
+    <tag>ph-web-parent-pom-10.4.3</tag>
   </scm>
 
   <organization>

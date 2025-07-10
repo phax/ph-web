@@ -36,20 +36,19 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
 
 /**
- * A special request parameter container with support for file items etc. By
- * default only <code>String</code> and <code>String[]</code> entries are
- * present. If the request was parsed as a multipart request, it may also
- * container <code>IFileItem</code> or <code>IFileItem[]</code> entries.
+ * A special request parameter container with support for file items etc. By default only
+ * <code>String</code> and <code>String[]</code> entries are present. If the request was parsed as a
+ * multipart request, it may also container <code>IFileItem</code> or <code>IFileItem[]</code>
+ * entries.
  *
  * @author Philip Helger
  */
 public interface IRequestParamContainer extends IAttributeContainerAny <String>
 {
   /**
-   * @return A non-<code>null</code> but maybe empty map with all contained
-   *         {@link IFileItem} objects from file uploads. The key of the map is
-   *         the field name. Important: if the value is an array of
-   *         {@link IFileItem} it is not considered in the returned map!
+   * @return A non-<code>null</code> but maybe empty map with all contained {@link IFileItem}
+   *         objects from file uploads. The key of the map is the field name. Important: if the
+   *         value is an array of {@link IFileItem} it is not considered in the returned map!
    */
   @Nonnull
   default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
@@ -65,9 +64,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * @return A non-<code>null</code> but maybe empty map with all contained
-   *         {@link IFileItem} objects from file uploads. The key of the map is
-   *         the field name.
+   * @return A non-<code>null</code> but maybe empty map with all contained {@link IFileItem}
+   *         objects from file uploads. The key of the map is the field name.
    */
   @Nonnull
   default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
@@ -87,10 +85,9 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * @return A non-<code>null</code> but maybe empty list of all
-   *         {@link IFileItem} objects in the request. In comparison to
-   *         {@link #getAllUploadedFileItems()} this method also returns the
-   *         content of {@link IFileItem} arrays.
+   * @return A non-<code>null</code> but maybe empty list of all {@link IFileItem} objects in the
+   *         request. In comparison to {@link #getAllUploadedFileItems()} this method also returns
+   *         the content of {@link IFileItem} arrays.
    */
   @Nonnull
   default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
@@ -108,14 +105,14 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   }
 
   /**
-   * Get the request attribute denoted by the specified attribute name as an
-   * uploaded file item. In case the specified parameter is present but not a
-   * file item, the method returns <code>null</code>.
+   * Get the request attribute denoted by the specified attribute name as an uploaded file item. In
+   * case the specified parameter is present but not a file item, the method returns
+   * <code>null</code>.
    *
    * @param sAttrName
    *        The attribute name to resolved. May be <code>null</code>.
-   * @return <code>null</code> if no such attribute is present, or if the
-   *         attribute is not a file item.
+   * @return <code>null</code> if no such attribute is present, or if the attribute is not a file
+   *         item.
    */
   @Nullable
   default IFileItem getAsFileItem (@Nullable final String sAttrName)
@@ -130,8 +127,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    *        Request parameter name. May be <code>null</code>.
    * @param bDefaultValue
    *        the default value to be returned, if no request attribute is present
-   * @return <code>true</code> if the checkbox is checked, <code>false</code> if
-   *         it is not checked and the default value otherwise.
+   * @return <code>true</code> if the checkbox is checked, <code>false</code> if it is not checked
+   *         and the default value otherwise.
    */
   default boolean isCheckBoxChecked (@Nullable final String sFieldName, final boolean bDefaultValue)
   {
@@ -152,6 +149,40 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
 
     // Neither nor - default!
     return bDefaultValue;
+  }
+
+  /**
+   * Check if a request parameter with the given name is present or not. No specific value checks
+   * are performed.
+   *
+   * @param sFieldName
+   *        Request parameter name. May not be <code>null</code>.
+   * @return <code>true</code> if the checkbox is checked, <code>false</code> if it is not checked.
+   * @since 10.4.3
+   */
+  default boolean isCheckBoxCheckedNoHiddenField (@Nonnull final String sFieldName)
+  {
+    // Is the checked value present?
+    final String sRequestValue = getAsString (sFieldName);
+    return StringHelper.hasText (sRequestValue);
+  }
+
+  /**
+   * Check if a request parameter with the given name is present and has the expected value or not.
+   *
+   * @param sFieldName
+   *        Request parameter name. May not be <code>null</code>.
+   * @param sExpectedValue
+   *        The expected values. May not be <code>null</code>.
+   * @return <code>true</code> if the checkbox is checked, <code>false</code> if it is not checked.
+   * @since 10.4.3
+   */
+  default boolean isCheckBoxCheckedNoHiddenField (@Nullable final String sFieldName,
+                                                  @Nonnull final String sExpectedValue)
+  {
+    // Is the checked value present?
+    final String sRequestValue = getAsString (sFieldName);
+    return sRequestValue != null && sExpectedValue.equals (sRequestValue);
   }
 
   default boolean hasCheckBoxValue (@Nonnull @Nonempty final String sFieldName,
@@ -196,8 +227,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @param sFieldName
    *        The field name to query. May be <code>null</code>.
    * @param sDefault
-   *        The value to be returned if the retrieved value is <code>null</code>
-   *        .
+   *        The value to be returned if the retrieved value is <code>null</code> .
    * @return <code>null</code> if no such parameter name is present.
    * @since 9.0.2
    */

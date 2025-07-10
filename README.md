@@ -61,6 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 * v10.4.3 - work in progress
     * Updated to Apache HttpClient v5.5
+    * Added new default methods `IRequestParamContainer.isCheckBoxCheckedNoHiddenField`
 * v10.4.2 - 2025-04-24
     * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
 * v10.4.1 - 2025-04-11

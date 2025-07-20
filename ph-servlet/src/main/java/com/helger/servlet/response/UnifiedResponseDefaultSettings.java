@@ -40,8 +40,7 @@ import com.helger.http.EHttpReferrerPolicy;
 import jakarta.servlet.http.Cookie;
 
 /**
- * This class encapsulates default settings to be applied to all
- * {@link UnifiedResponse} objects.
+ * This class encapsulates default settings to be applied to all {@link UnifiedResponse} objects.
  *
  * @author Philip Helger
  * @since 6.0.5
@@ -88,14 +87,12 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * When specifying <code>false</code>, this method uses a special response
-   * header to prevent certain browsers from MIME-sniffing a response away from
-   * the declared content-type. When passing <code>true</code>, that header is
-   * removed.
+   * When specifying <code>false</code>, this method uses a special response header to prevent
+   * certain browsers from MIME-sniffing a response away from the declared content-type. When
+   * passing <code>true</code>, that header is removed.
    *
    * @param bAllow
-   *        Whether or not sniffing should be allowed (default is
-   *        <code>true</code>).
+   *        Whether or not sniffing should be allowed (default is <code>true</code>).
    */
   public static void setAllowMimeSniffing (final boolean bAllow)
   {
@@ -106,17 +103,16 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * This header enables the Cross-site scripting (XSS) filter built into most
-   * recent web browsers. It's usually enabled by default anyway, so the role of
-   * this header is to re-enable the filter for this particular website if it
-   * was disabled by the user. This header is supported in IE 8+, and in Chrome
-   * (not sure which versions). The anti-XSS filter was added in Chrome 4. Its
-   * unknown if that version honored this header.
+   * This header enables the Cross-site scripting (XSS) filter built into most recent web browsers.
+   * It's usually enabled by default anyway, so the role of this header is to re-enable the filter
+   * for this particular website if it was disabled by the user. This header is supported in IE 8+,
+   * and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
+   * if that version honored this header.
    *
    * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable the header, <code>false</code> to disable it.
    */
+  @Deprecated (forRemoval = true, since = "10.4.4")
   public static void setEnableXSSFilter (final boolean bEnable)
   {
     if (bEnable)
@@ -126,28 +122,28 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * HTTP Strict Transport Security (HSTS) is an opt-in security enhancement
-   * that is specified by a web application through the use of a special
-   * response header. Once a supported browser receives this header that browser
-   * will prevent any communications from being sent over HTTP to the specified
-   * domain and will instead send all communications over HTTPS. It also
-   * prevents HTTPS click through prompts on browsers. The specification has
-   * been released and published end of 2012 as RFC 6797 (HTTP Strict Transport
-   * Security (HSTS)) by the IETF.
+   * HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that is specified by a
+   * web application through the use of a special response header. Once a supported browser receives
+   * this header that browser will prevent any communications from being sent over HTTP to the
+   * specified domain and will instead send all communications over HTTPS. It also prevents HTTPS
+   * click through prompts on browsers. The specification has been released and published end of
+   * 2012 as RFC 6797 (HTTP Strict Transport Security (HSTS)) by the IETF.
    *
    * @param nMaxAgeSeconds
-   *        number of seconds, after the reception of the STS header field,
-   *        during which the UA regards the host (from whom the message was
-   *        received) as a Known HSTS Host.
+   *        number of seconds, after the reception of the STS header field, during which the UA
+   *        regards the host (from whom the message was received) as a Known HSTS Host.
    * @param bIncludeSubdomains
-   *        if enabled, this signals the UA that the HSTS Policy applies to this
-   *        HSTS Host as well as any sub-domains of the host's domain name.
+   *        if enabled, this signals the UA that the HSTS Policy applies to this HSTS Host as well
+   *        as any sub-domains of the host's domain name.
    */
-  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
+  public static void setStrictTransportSecurity (@Nonnegative final int nMaxAgeSeconds,
+                                                 final boolean bIncludeSubdomains)
   {
     setResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
                        new CacheControlBuilder ().setMaxAgeSeconds (nMaxAgeSeconds).getAsHTTPHeaderValue () +
-                                                              (bIncludeSubdomains ? ";" + CHttpHeader.VALUE_INCLUDE_SUBDOMAINS : ""));
+                                                              (bIncludeSubdomains ? ";" +
+                                                                                    CHttpHeader.VALUE_INCLUDE_SUBDOMAINS
+                                                                                  : ""));
   }
 
   /**
@@ -161,11 +157,10 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * The X-Frame-Options HTTP response header can be used to indicate whether or
-   * not a browser should be allowed to render a page in a &lt;frame&gt;,
-   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
-   * attacks, by ensuring that their content is not embedded into other sites.
-   * Example:
+   * The X-Frame-Options HTTP response header can be used to indicate whether or not a browser
+   * should be allowed to render a page in a &lt;frame&gt;, &lt;iframe&gt; or &lt;object&gt; . Sites
+   * can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into
+   * other sites. Example:
    *
    * <pre>
    * X-Frame-Options: DENY
@@ -176,8 +171,7 @@ public final class UnifiedResponseDefaultSettings
    * @param eType
    *        The X-Frame-Options type to be set. May not be <code>null</code>.
    * @param aDomain
-   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
-   *        for the other cases.
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code> for the other cases.
    */
   public static void setXFrameOptions (@Nullable final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
   {
@@ -190,8 +184,9 @@ public final class UnifiedResponseDefaultSettings
     }
     else
     {
-      final String sHeaderValue = eType.isURLRequired () ? eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ()
-                                                         : eType.getID ();
+      final String sHeaderValue = eType.isURLRequired () ? eType.getID () +
+                                                           " " +
+                                                           aDomain.getAsStringWithEncodedParameters () : eType.getID ();
       setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, sHeaderValue);
     }
   }
@@ -212,8 +207,8 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Sets a response header to the response according to the passed name and
-   * value. An existing header entry with the same name is overridden.
+   * Sets a response header to the response according to the passed name and value. An existing
+   * header entry with the same name is overridden.
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -229,9 +224,9 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Adds a response header to the response according to the passed name and
-   * value. If an existing header with the same is present, the value is added
-   * to the list so that the header is emitted more than once.
+   * Adds a response header to the response according to the passed name and value. If an existing
+   * header with the same is present, the value is added to the list so that the header is emitted
+   * more than once.
    *
    * @param sName
    *        Name of the header. May neither be <code>null</code> nor empty.
@@ -247,16 +242,13 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Removes the response headers matching the passed name from the response.
-   * <br>
-   * <b>ATTENTION:</b> You should only use the APIs that
-   * {@link UnifiedResponseDefaultSettings} directly offers. Use this method
-   * only in emergency and make sure you validate the header field and allowed
-   * value!
+   * Removes the response headers matching the passed name from the response. <br>
+   * <b>ATTENTION:</b> You should only use the APIs that {@link UnifiedResponseDefaultSettings}
+   * directly offers. Use this method only in emergency and make sure you validate the header field
+   * and allowed value!
    *
    * @param sName
-   *        Name of the header to be removed. May neither be <code>null</code>
-   *        nor empty.
+   *        Name of the header to be removed. May neither be <code>null</code> nor empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
   @Nonnull
@@ -287,8 +279,7 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * @return A copy of all contained cookies. Never <code>null</code> but maybe
-   *         empty.
+   * @return A copy of all contained cookies. Never <code>null</code> but maybe empty.
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -340,8 +331,7 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * @return <code>true</code> if HTTP header values will be unified,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if HTTP header values will be unified, <code>false</code> if not.
    * @see #DEFAULT_HTTP_HEADER_VALUES_UNIFIED
    * @since 9.1.4
    */
@@ -363,8 +353,8 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * @return <code>true</code> if HTTP header values will be unified and quoted
-   *         if necessary, <code>false</code> if not.
+   * @return <code>true</code> if HTTP header values will be unified and quoted if necessary,
+   *         <code>false</code> if not.
    * @see #DEFAULT_HTTP_HEADER_VALUES_QUOTE_IF_NECESSARY
    * @since 9.1.4
    */
@@ -374,8 +364,8 @@ public final class UnifiedResponseDefaultSettings
   }
 
   /**
-   * Enable or disable the automatic quoting of HTTP header values. This only
-   * takes effect, if the unification is enabled.
+   * Enable or disable the automatic quoting of HTTP header values. This only takes effect, if the
+   * unification is enabled.
    *
    * @param bHttpHeaderValuesQuoteIfNecessary
    *        <code>true</code> to enable it, <code>false</code> to disable it.

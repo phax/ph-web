@@ -73,8 +73,8 @@ import com.helger.commons.id.factory.GlobalIDFactory;
 import com.helger.http.tls.ITLSConfigurationMode;
 
 /**
- * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in
- * the {@link HttpClientManager}.
+ * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in the
+ * {@link HttpClientManager}.
  *
  * @author Philip Helger
  */
@@ -106,8 +106,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The underlying HTTP client settings. Never <code>null</code>.
-   *         Changes to the returned object impact this HTTP client factory.
+   * @return The underlying HTTP client settings. Never <code>null</code>. Changes to the returned
+   *         object impact this HTTP client factory.
    * @since 9.6.4
    */
   @Nonnull
@@ -207,9 +207,8 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The socket configuration builder used by the
-   *         {@link PoolingHttpClientConnectionManager} to create the default
-   *         socket configuration.
+   * @return The socket configuration builder used by the {@link PoolingHttpClientConnectionManager}
+   *         to create the default socket configuration.
    */
   @Nonnull
   public SocketConfig.Builder createSocketConfigBuilder ()
@@ -228,8 +227,7 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   /**
-   * @return The DNS resolver to be used for
-   *         {@link PoolingHttpClientConnectionManager}. May be
+   * @return The DNS resolver to be used for {@link PoolingHttpClientConnectionManager}. May be
    *         <code>null</code> to use the default.
    * @since 8.8.0
    */
@@ -343,7 +341,8 @@ public class HttpClientFactory implements IHttpClientProvider
                         .setConnectionRequestTimeout (m_aSettings.getConnectionRequestTimeout ())
                         .setResponseTimeout (m_aSettings.getResponseTimeout ())
                         .setCircularRedirectsAllowed (false)
-                        .setRedirectsEnabled (m_aSettings.isFollowRedirects ());
+                        .setRedirectsEnabled (m_aSettings.isFollowRedirects ())
+                        .setProtocolUpgradeEnabled (m_aSettings.isProtocolUpgradeEnabled ());
   }
 
   @Nonnull
@@ -407,8 +406,8 @@ public class HttpClientFactory implements IHttpClientProvider
         aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
         {
           @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget,
-                                             @Nonnull final HttpContext aContext) throws HttpException
+          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
+                                                                                                                   throws HttpException
           {
             final String sHostname = aTarget.getHostName ();
             if (aNonProxyHosts.contains (sHostname))

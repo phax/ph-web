@@ -65,15 +65,15 @@ public interface IHttpClientSettings
    * <li>http.agent</li>
    * </ul>
    *
-   * @return <code>true</code> if system properties for HTTP client should be
-   *         used, <code>false</code> if not. Default is <code>false</code>.
+   * @return <code>true</code> if system properties for HTTP client should be used,
+   *         <code>false</code> if not. Default is <code>false</code>.
    */
   @Deprecated (since = "10.0.0", forRemoval = true)
   boolean isUseSystemProperties ();
 
   /**
-   * @return <code>true</code> if DNS client caching is enabled (default),
-   *         <code>false</code> if it is disabled.
+   * @return <code>true</code> if DNS client caching is enabled (default), <code>false</code> if it
+   *         is disabled.
    */
   boolean isUseDNSClientCache ();
 
@@ -86,15 +86,14 @@ public interface IHttpClientSettings
   SSLContext getSSLContext ();
 
   /**
-   * @return The current hostname verifier to be used. Default to
-   *         <code>null</code>.
+   * @return The current hostname verifier to be used. Default to <code>null</code>.
    */
   @Nullable
   HostnameVerifier getHostnameVerifier ();
 
   /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to
-   *         use the default settings without specific cipher suites.
+   * @return The TLS configuration mode to be used. <code>null</code> means to use the default
+   *         settings without specific cipher suites.
    */
   @Nullable
   ITLSConfigurationMode getTLSConfigurationMode ();
@@ -112,8 +111,8 @@ public interface IHttpClientSettings
   Credentials getProxyCredentials ();
 
   /**
-   * @return The set of all host names and IP addresses for which no proxy
-   *         should be used. Never <code>null</code> and mutable.
+   * @return The set of all host names and IP addresses for which no proxy should be used. Never
+   *         <code>null</code> and mutable.
    */
   @Nonnull
   @ReturnsMutableObject
@@ -126,8 +125,7 @@ public interface IHttpClientSettings
   int getRetryCount ();
 
   /**
-   * @return <code>true</code> if retries are enabled, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if retries are enabled, <code>false</code> if not.
    */
   default boolean hasRetries ()
   {
@@ -135,22 +133,21 @@ public interface IHttpClientSettings
   }
 
   /**
-   * @return The retry interval (the duration after which a retry is performed).
-   *         Never <code>null</code>.
+   * @return The retry interval (the duration after which a retry is performed). Never
+   *         <code>null</code>.
    */
   @Nonnull
   Duration getRetryInterval ();
 
   /**
-   * @return <code>true</code> if retries should also be performed for
-   *         non-idempotent requests.
+   * @return <code>true</code> if retries should also be performed for non-idempotent requests.
    * @since 9.7.1
    */
   boolean isRetryAlways ();
 
   /**
-   * @return The connection request timeout in milliseconds. A value of 0 means
-   *         "indefinite". Never <code>null</code>.
+   * @return The connection request timeout in milliseconds. A value of 0 means "indefinite". Never
+   *         <code>null</code>.
    */
   @Nonnull
   Timeout getConnectionRequestTimeout ();
@@ -175,8 +172,7 @@ public interface IHttpClientSettings
   String getUserAgent ();
 
   /**
-   * @return <code>true</code> if a user agent is defined, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if a user agent is defined, <code>false</code> if not.
    * @since 9.1.9
    */
   default boolean hasUserAgent ()
@@ -185,16 +181,23 @@ public interface IHttpClientSettings
   }
 
   /**
-   * @return <code>true</code> if HTTP redirects (status codes 3xx) should be
-   *         followed, <code>false</code> if not.
+   * @return <code>true</code> if HTTP redirects (status codes 3xx) should be followed,
+   *         <code>false</code> if not.
    * @since 9.1.9
    */
   boolean isFollowRedirects ();
 
   /**
-   * @return <code>true</code> if the HTTP Connection "Keep-Alive" should be
-   *         used, <code>false</code> if not.
+   * @return <code>true</code> if the HTTP Connection "Keep-Alive" should be used,
+   *         <code>false</code> if not.
    * @since 9.6.1
    */
   boolean isUseKeepAlive ();
+
+  /**
+   * @return <code>true</code> if a protocol upgrade e.g. from http to https should be done
+   *         automatically or not. Since Apache HttpClient 5.4 this became the default.
+   * @since 10.4.4
+   */
+  boolean isProtocolUpgradeEnabled ();
 }

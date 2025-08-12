@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 v10.4.4 - work in progress
   * Deprecated `UnifiedResponse.setEnableXSSFilter` and `UnifiedResponseDefaultSettings.setEnableXSSFilter`
-  
+  * Added `HttpClientSettings.(is|set)ProtocolUpgradeEnabled` to configure the HTTP protocol upgrade from http to https
 * v10.4.3 - 2025-07-10
     * Updated to Apache HttpClient v5.5
     * Added new default methods `IRequestParamContainer.isCheckBoxCheckedNoHiddenField`

@@ -59,8 +59,7 @@ import com.helger.http.tls.TLSConfigurationMode;
 public class HttpClientSettings implements IHttpClientSettings, ICloneable <HttpClientSettings>
 {
   /**
-   * Default configuration modes uses TLS 1.3, TLS 1.2, 1.1 or 1.0 and no
-   * specific cipher suites
+   * Default configuration modes uses TLS 1.3, TLS 1.2, 1.1 or 1.0 and no specific cipher suites
    */
   public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_13,
                                                                                                                      ETLSVersion.TLS_12,
@@ -79,6 +78,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final Timeout DEFAULT_RESPONSE_TIMEOUT = Timeout.ofSeconds (10);
   public static final boolean DEFAULT_FOLLOW_REDIRECTS = true;
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
+  // Default from Apache HttpClient since v5.4
+  public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientSettings.class);
 
@@ -104,6 +105,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private String m_sUserAgent;
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
+  private boolean m_bProtocolUpgradeEnabled = DEFAULT_PROTOCOL_UPGRADE_ENABLED;
 
   /**
    * Default constructor.
@@ -151,12 +153,13 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setUserAgent (aSource.getUserAgent ());
     setFollowRedirects (aSource.isFollowRedirects ());
     setUseKeepAlive (aSource.isUseKeepAlive ());
+    setProtocolUpgradeEnabled (aSource.isProtocolUpgradeEnabled ());
     return this;
   }
 
   /**
-   * @return <code>true</code> if system properties for HTTP client should be
-   *         used, <code>false</code> if not. Default is <code>false</code>.
+   * @return <code>true</code> if system properties for HTTP client should be used,
+   *         <code>false</code> if not. Default is <code>false</code>.
    */
   @Deprecated (since = "10.0.0", forRemoval = true)
   public final boolean isUseSystemProperties ()
@@ -168,8 +171,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * Enable the usage of system properties in the HTTP client?
    *
    * @param bUseSystemProperties
-   *        <code>true</code> if system properties should be used,
-   *        <code>false</code> if not.
+   *        <code>true</code> if system properties should be used, <code>false</code> if not.
    * @return this for chaining
    */
   @Nonnull
@@ -186,8 +188,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return <code>true</code> if DNS client caching is enabled (default),
-   *         <code>false</code> if it is disabled.
+   * @return <code>true</code> if DNS client caching is enabled (default), <code>false</code> if it
+   *         is disabled.
    */
   public final boolean isUseDNSClientCache ()
   {
@@ -198,8 +200,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * Enable or disable DNS client caching. By default caching is enabled.
    *
    * @param bUseDNSClientCache
-   *        <code>true</code> to use DNS caching, <code>false</code> to disable
-   *        it.
+   *        <code>true</code> to use DNS caching, <code>false</code> to disable it.
    * @return this for chaining
    */
   @Nonnull
@@ -236,9 +237,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
 
   /**
    * Attention: INSECURE METHOD!<br>
-   * Set the a special TLS/SSL Context that does not expect any specific server
-   * certificate. To be totally loose, you should also set a hostname verifier
-   * that accepts all host names.
+   * Set the a special TLS/SSL Context that does not expect any specific server certificate. To be
+   * totally loose, you should also set a hostname verifier that accepts all host names.
    *
    * @return this for chaining
    * @throws GeneralSecurityException
@@ -253,8 +253,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return The current hostname verifier to be used. Default to
-   *         <code>null</code>.
+   * @return The current hostname verifier to be used. Default to <code>null</code>.
    */
   @Nullable
   public final HostnameVerifier getHostnameVerifier ()
@@ -289,8 +288,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return The TLS configuration mode to be used. <code>null</code> means to
-   *         use the default settings without specific cipher suites.
+   * @return The TLS configuration mode to be used. <code>null</code> means to use the default
+   *         settings without specific cipher suites.
    */
   @Nullable
   public final ITLSConfigurationMode getTLSConfigurationMode ()
@@ -302,8 +301,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * Set the TLS configuration mode to use.
    *
    * @param aTLSConfigurationMode
-   *        The configuration mode to use. <code>null</code> means use system
-   *        default.
+   *        The configuration mode to use. <code>null</code> means use system default.
    * @return this for chaining
    */
   @Nonnull
@@ -355,9 +353,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * Set proxy credentials.
    *
    * @param aProxyCredentials
-   *        The proxy server credentials to be used. May be <code>null</code>.
-   *        They are only used if a proxy host is present! Usually they are of
-   *        type
+   *        The proxy server credentials to be used. May be <code>null</code>. They are only used if
+   *        a proxy host is present! Usually they are of type
    *        {@link org.apache.hc.client5.http.auth.UsernamePasswordCredentials}.
    * @return this for chaining
    * @see #setProxyHost(HttpHost)
@@ -370,8 +367,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return The set of all host names and IP addresses for which no proxy
-   *         should be used. Never <code>null</code> and mutable.
+   * @return The set of all host names and IP addresses for which no proxy should be used. Never
+   *         <code>null</code> and mutable.
    */
   @Nonnull
   @ReturnsMutableObject
@@ -381,14 +378,12 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Add all non-proxy hosts from a piped string as in
-   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
-   * pipe, and the values are trimmed.
+   * Add all non-proxy hosts from a piped string as in <code>127.0.0.1 | localhost</code>. Every
+   * entry must be separated by a pipe, and the values are trimmed.
    *
    * @param sDefinition
-   *        The definition string. May be <code>null</code> or empty or invalid.
-   *        Every non-empty trimmed text between pipes is interpreted as a host
-   *        name.
+   *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
+   *        trimmed text between pipes is interpreted as a host name.
    * @return this for chaining
    */
   @Nonnull
@@ -404,16 +399,14 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Set all non-proxy hosts from a piped string as in
-   * <code>127.0.0.1 | localhost</code>. Every entry must be separated by a
-   * pipe, and the values are trimmed.<br>
+   * Set all non-proxy hosts from a piped string as in <code>127.0.0.1 | localhost</code>. Every
+   * entry must be separated by a pipe, and the values are trimmed.<br>
    * This is a shortcut for first clearing the list and then calling
    * {@link #addNonProxyHostsFromPipeString(String)}
    *
    * @param sDefinition
-   *        The definition string. May be <code>null</code> or empty or invalid.
-   *        Every non-empty trimmed text between pipes is interpreted as a host
-   *        name.
+   *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
+   *        trimmed text between pipes is interpreted as a host name.
    * @return this for chaining
    * @see #addNonProxyHostsFromPipeString(String)
    * @since 10.0.0
@@ -482,8 +475,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Enable or disable to retry always. By default non-idempotent requests are
-   * not retried.
+   * Enable or disable to retry always. By default non-idempotent requests are not retried.
    *
    * @param bRetryAlways
    *        <code>true</code> to retry always
@@ -567,8 +559,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Set the optional user agent to be used. This is "just" a special HTTP
-   * header.
+   * Set the optional user agent to be used. This is "just" a special HTTP header.
    *
    * @param sUserAgent
    *        The user agent to be used. May be <code>null</code>.
@@ -588,8 +579,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Enable or disable if HTTP redirects (HTTP status code 3xx) should be
-   * followed or not.
+   * Enable or disable if HTTP redirects (HTTP status code 3xx) should be followed or not.
    *
    * @param bFollowRedirects
    *        <code>true</code> to follow redirects, <code>false</code> if not.
@@ -621,6 +611,25 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
+  public final boolean isProtocolUpgradeEnabled ()
+  {
+    return m_bProtocolUpgradeEnabled;
+  }
+
+  /**
+   * Enable or disable if use of the HTTP Connection "Keep-alive".
+   *
+   * @param bProtocolUpgradeEnabled
+   *        <code>true</code> to enable protocol upgrade, <code>false</code> to disable it.
+   * @return this for chaining
+   */
+  @Nonnull
+  public final HttpClientSettings setProtocolUpgradeEnabled (final boolean bProtocolUpgradeEnabled)
+  {
+    m_bProtocolUpgradeEnabled = bProtocolUpgradeEnabled;
+    return this;
+  }
+
   @Nonnull
   @ReturnsMutableCopy
   public HttpClientSettings getClone ()
@@ -648,6 +657,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("UserAgent", m_sUserAgent)
                                        .append ("FollowRedirects", m_bFollowRedirects)
                                        .append ("UseKeepAlive", m_bUseKeepAlive)
+                                       .append ("ProtocolUpgradeEnabled", m_bProtocolUpgradeEnabled)
                                        .getToString ();
   }
 }

@@ -114,13 +114,13 @@ public class CSPDirective implements ICSPDirective
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("name", m_sName).appendIfNotNull ("value", m_sValue).getToString ();
+    return new ToStringGenerator (this).append ("Name", m_sName).appendIfNotNull ("Value", m_sValue).getToString ();
   }
 
   /**
-   * Restricts the URLs which can be used in a document's &lt;base&gt; element.
-   * If this value is absent, then any URI is allowed. If this directive is
-   * absent, the user agent will use the value in the &lt;base&gt; element.
+   * Restricts the URLs which can be used in a document's &lt;base&gt; element. If this value is
+   * absent, then any URI is allowed. If this directive is absent, the user agent will use the value
+   * in the &lt;base&gt; element.
    *
    * @param sValue
    *        value
@@ -134,8 +134,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Defines valid sources for web workers and nested browsing contexts loaded
-   * using elements such as &lt;frame&gt; and &lt;iframe&gt;
+   * Defines valid sources for web workers and nested browsing contexts loaded using elements such
+   * as &lt;frame&gt; and &lt;iframe&gt;
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -149,8 +149,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed
-   * the browser emulates a 400 HTTP status code.
+   * Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed the browser emulates
+   * a 400 HTTP status code.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -164,8 +164,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The "default-src" is the default policy for loading content such as
-   * JavaScript, Images, CSS, Fonts, AJAX requests, Frames, HTML5 Media.
+   * The "default-src" is the default policy for loading content such as JavaScript, Images, CSS,
+   * Fonts, AJAX requests, Frames, HTML5 Media.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -207,10 +207,9 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Defines valid sources for embedding the resource using &lt;frame&gt;
-   * &lt;iframe&gt; &lt;object&gt; &lt;embed&gt; &lt;applet&gt;. Setting this
-   * directive to <code>'none'</code> should be roughly equivalent to
-   * <code>X-Frame-Options: DENY</code>
+   * Defines valid sources for embedding the resource using &lt;frame&gt; &lt;iframe&gt;
+   * &lt;object&gt; &lt;embed&gt; &lt;applet&gt;. Setting this directive to <code>'none'</code>
+   * should be roughly equivalent to <code>X-Frame-Options: DENY</code>
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -224,9 +223,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The HTTP Content-Security-Policy (CSP) "frame-src" directive specifies
-   * valid sources for nested browsing contexts loading using elements such as
-   * &lt;frame&gt; and &lt;iframe&gt;.
+   * The HTTP Content-Security-Policy (CSP) "frame-src" directive specifies valid sources for nested
+   * browsing contexts loading using elements such as &lt;frame&gt; and &lt;iframe&gt;.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -269,8 +267,7 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Defines valid sources of audio and video, eg HTML5 &lt;audio&gt;,
-   * &lt;video&gt; elements.
+   * Defines valid sources of audio and video, eg HTML5 &lt;audio&gt;, &lt;video&gt; elements.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -284,8 +281,7 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Defines valid sources of plugins, eg &lt;object&gt;, &lt;embed&gt; or
-   * &lt;applet&gt;.
+   * Defines valid sources of plugins, eg &lt;object&gt;, &lt;embed&gt; or &lt;applet&gt;.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -315,10 +311,9 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The report-uri directive specifies a URI to which the user agent sends
-   * reports about policy violation.<br>
-   * Deprecated in favour of {@link #createReportTo(String)} but browser support
-   * is not yet ideal.
+   * The report-uri directive specifies a URI to which the user agent sends reports about policy
+   * violation.<br>
+   * Deprecated in favour of {@link #createReportTo(String)} but browser support is not yet ideal.
    *
    * @param sValue
    *        Report URI
@@ -332,9 +327,9 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The Content-Security-Policy "report-to" directive indicates the name of the
-   * endpoint that the browser should use for reporting CSP violations. This is
-   * not yet supported by Firefox as per 2025-02
+   * The Content-Security-Policy "report-to" directive indicates the name of the endpoint that the
+   * browser should use for reporting CSP violations. This is not yet supported by Firefox as per
+   * 2025-02
    *
    * @param sValue
    *        Report endpoint according to Reporting-Endpoints response header
@@ -348,8 +343,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The sandbox directive specifies an HTML sandbox policy that the user agent
-   * applies to the protected resource.
+   * The sandbox directive specifies an HTML sandbox policy that the user agent applies to the
+   * protected resource.
    *
    * @param sValue
    *        value
@@ -377,8 +372,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The HTTP Content-Security-Policy (CSP) "script-src-attr" directive
-   * specifies valid sources for JavaScript inline event handlers.
+   * The HTTP Content-Security-Policy (CSP) "script-src-attr" directive specifies valid sources for
+   * JavaScript inline event handlers.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -392,8 +387,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The HTTP Content-Security-Policy (CSP) "script-src-elem" directive
-   * specifies valid sources for JavaScript &lt;script&gt; elements.
+   * The HTTP Content-Security-Policy (CSP) "script-src-elem" directive specifies valid sources for
+   * JavaScript &lt;script&gt; elements.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -421,8 +416,8 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The HTTP Content-Security-Policy (CSP) "style-src-attr" directive specifies
-   * valid sources for inline styles applied to individual DOM elements.
+   * The HTTP Content-Security-Policy (CSP) "style-src-attr" directive specifies valid sources for
+   * inline styles applied to individual DOM elements.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -436,9 +431,9 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * The HTTP Content-Security-Policy (CSP) "style-src-elem" directive specifies
-   * valid sources for stylesheet <code>&lt;style&gt;</code> elements and
-   * <code>&lt;link&gt;</code> elements with <code>rel="stylesheet"</code>.
+   * The HTTP Content-Security-Policy (CSP) "style-src-elem" directive specifies valid sources for
+   * stylesheet <code>&lt;style&gt;</code> elements and <code>&lt;link&gt;</code> elements with
+   * <code>rel="stylesheet"</code>.
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.
@@ -452,8 +447,7 @@ public class CSPDirective implements ICSPDirective
   }
 
   /**
-   * Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.
-   * (draft).
+   * Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts. (draft).
    *
    * @param aValue
    *        Value list to use. May be be <code>null</code>.

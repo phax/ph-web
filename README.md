@@ -60,24 +60,31 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v10.4.4 - work in progress
-  * Deprecated `UnifiedResponse.setEnableXSSFilter` and `UnifiedResponseDefaultSettings.setEnableXSSFilter`
-  * Added `HttpClientSettings.(is|set)ProtocolUpgradeEnabled` to configure the HTTP protocol upgrade from http to https
-* v10.4.3 - 2025-07-10
-    * Updated to Apache HttpClient v5.5
-    * Added new default methods `IRequestParamContainer.isCheckBoxCheckedNoHiddenField`
-* v10.4.2 - 2025-04-24
-    * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
-* v10.4.1 - 2025-04-11
-    * Added new class `HttpClientUrlDownloader`
-* v10.4.0 - 2025-02-25
-    * Added new classes `ResponseHandlerJsonObject` and `ResponseHandlerJsonArray`
-    * Deprecated classes `CSP2(Directive|Policy|SourceList)` in favour of `CSP(Directive|Policy|SourceList)` as CSV v3 stuff was integrated
-    * Added new predefined `CSPDirective` factory methods
-* v10.3.0 - 2025-02-03
-    * Updated to dnsjava 3.6.3
-    * Reversed the dependency between ph-servlet and ph-useragent (incompatible change)
-    * Removed the deprecated methods in `RequestHelper` and `IRequestWebScopeWithoutResponse` and `UnifiedResponse` related to the user agent
-    * Created new classes `UAProfileHeaderProviderHttpServletRequest` and `UAServletHelper`
+* Deprecated `UnifiedResponse.setEnableXSSFilter` and `UnifiedResponseDefaultSettings.setEnableXSSFilter`
+* Added `HttpClientSettings.(is|set)ProtocolUpgradeEnabled` to configure the HTTP protocol upgrade from http to https
+* Added new classes `(I)HttpProxySettings` to extract the proxy settings
+
+v10.4.3 - 2025-07-10
+* Updated to Apache HttpClient v5.5
+* Added new default methods `IRequestParamContainer.isCheckBoxCheckedNoHiddenField`
+
+v10.4.2 - 2025-04-24
+* Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
+
+v10.4.1 - 2025-04-11
+* Added new class `HttpClientUrlDownloader`
+
+v10.4.0 - 2025-02-25
+* Added new classes `ResponseHandlerJsonObject` and `ResponseHandlerJsonArray`
+* Deprecated classes `CSP2(Directive|Policy|SourceList)` in favour of `CSP(Directive|Policy|SourceList)` as CSV v3 stuff was integrated
+* Added new predefined `CSPDirective` factory methods
+
+v10.3.0 - 2025-02-03
+* Updated to dnsjava 3.6.3
+* Reversed the dependency between ph-servlet and ph-useragent (incompatible change)
+* Removed the deprecated methods in `RequestHelper` and `IRequestWebScopeWithoutResponse` and `UnifiedResponse` related to the user agent
+* Created new classes `UAProfileHeaderProviderHttpServletRequest` and `UAServletHelper`
+
 * v10.2.0 - 2025-01-21
     * Updated to Apache HttpClient v5.4.x
     * Replaced HttpClient `ConnectionSocketFactory` with `TlsSocketStrategy`

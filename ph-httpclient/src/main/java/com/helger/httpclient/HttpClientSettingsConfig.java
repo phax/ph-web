@@ -42,8 +42,8 @@ import com.helger.config.IConfig;
 import com.helger.config.fallback.IConfigWithFallback;
 
 /**
- * A helper class to configure {@link HttpClientSettings} using {@link IConfig}
- * with standardized configuration property names.
+ * A helper class to configure {@link HttpClientSettings} using {@link IConfig} with standardized
+ * configuration property names.
  *
  * @author Philip Helger
  * @since 10.0.0
@@ -88,6 +88,27 @@ public class HttpClientSettingsConfig
           // Add configPrefix to all values
           final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
           ret = m_aConfig.getAsStringOrFallback (sConfigPrefix + sLocalKey, aRealSubKeys);
+        }
+        if (ret != null)
+          return ret;
+      }
+
+      return null;
+    }
+
+    @Nullable
+    private char [] _findCharArray (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
+    {
+      for (final String sConfigPrefix : m_aConfigPrefixes)
+      {
+        final char [] ret;
+        if (aLocalSubKeys.length == 0)
+          ret = m_aConfig.getAsCharArray (sConfigPrefix + sLocalKey);
+        else
+        {
+          // Add configPrefix to all values
+          final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
+          ret = m_aConfig.getAsCharArrayOrFallback (sConfigPrefix + sLocalKey, aRealSubKeys);
         }
         if (ret != null)
           return ret;
@@ -178,8 +199,7 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return The HTTP proxy port to be used, or <code>0</code> in case it is
-     *         not found.
+     * @return The HTTP proxy port to be used, or <code>0</code> in case it is not found.
      */
     @CheckForSigned
     public int getHttpProxyPort ()
@@ -188,9 +208,8 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return The HttpProxy object to be used. This is only
-     *         non-<code>null</code> if proxy host is non-<code>null</code> and
-     *         proxy port returns a value &gt; 0.
+     * @return The HttpProxy object to be used. This is only non-<code>null</code> if proxy host is
+     *         non-<code>null</code> and proxy port returns a value &gt; 0.
      * @see #getHttpProxyHost()
      * @see #getHttpProxyPort()
      */
@@ -216,17 +235,27 @@ public class HttpClientSettingsConfig
 
     /**
      * @return The HttpProxy password to be used. May be <code>null</code>.
+     * @deprecated Use {@link #getHttpProxyPasswordCharArray()} instead
      */
     @Nullable
+    @Deprecated (forRemoval = true, since = "10.4.4")
     public String getHttpProxyPassword ()
     {
       return _findString ("http.proxy.password", "http.proxyPassword");
     }
 
     /**
-     * @return The {@link UsernamePasswordCredentials} object to be used for
-     *         proxy server authentication or <code>null</code> if not username
-     *         and password are configured.
+     * @return The HttpProxy password to be used. May be <code>null</code>.
+     */
+    @Nullable
+    public char [] getHttpProxyPasswordCharArray ()
+    {
+      return _findCharArray ("http.proxy.password", "http.proxyPassword");
+    }
+
+    /**
+     * @return The {@link UsernamePasswordCredentials} object to be used for proxy server
+     *         authentication or <code>null</code> if not username and password are configured.
      * @see #getHttpProxyUsername()
      * @see #getHttpProxyPassword()
      */
@@ -234,16 +263,16 @@ public class HttpClientSettingsConfig
     public UsernamePasswordCredentials getHttpProxyCredentials ()
     {
       final String sProxyUsername = getHttpProxyUsername ();
-      final String sProxyPassword = getHttpProxyPassword ();
-      if (sProxyUsername != null && sProxyPassword != null)
-        return new UsernamePasswordCredentials (sProxyUsername, sProxyPassword.toCharArray ());
+      final char [] aProxyPassword = getHttpProxyPasswordCharArray ();
+      if (sProxyUsername != null && aProxyPassword != null)
+        return new UsernamePasswordCredentials (sProxyUsername, aProxyPassword);
 
       return null;
     }
 
     /**
-     * @return A pipe separated list of non-proxy hosts. E.g.
-     *         <code>localhost|127.0.0.1</code>. May be <code>null</code>.
+     * @return A pipe separated list of non-proxy hosts. E.g. <code>localhost|127.0.0.1</code>. May
+     *         be <code>null</code>.
      */
     @Nullable
     public String getNonProxyHosts ()
@@ -295,8 +324,7 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return The interval in which a retry should happen. Only relevant is
-     *         retry count &gt; 0.
+     * @return The interval in which a retry should happen. Only relevant is retry count &gt; 0.
      * @see #getRetryCount()
      */
     @Nullable
@@ -377,21 +405,19 @@ public class HttpClientSettingsConfig
   {}
 
   /**
-   * Assign all settings of {@link HttpClientSettings} from configuration
-   * values. This includes:
+   * Assign all settings of {@link HttpClientSettings} from configuration values. This includes:
    * <ul>
    * <li>http.useDNSClientCache - use the DNS client cache by default</li>
    * </ul>
    *
    * @param aHCS
-   *        The {@link HttpClientSettings} to be configured. May not be
-   *        <code>null</code>.
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
    * @param aConfig
-   *        The {@link IConfig} object to used as the source of the values. May
-   *        not be <code>null</code>.
+   *        The {@link IConfig} object to used as the source of the values. May not be
+   *        <code>null</code>.
    * @param aPrefixes
-   *        The configuration prefixes to be used. If this value may neither be
-   *        <code>null</code> nor empty, it will be used as the constant prefix.
+   *        The configuration prefixes to be used. If this value may neither be <code>null</code>
+   *        nor empty, it will be used as the constant prefix.
    */
   public static final void assignConfigValues (@Nonnull final HttpClientSettings aHCS,
                                                @Nonnull final IConfigWithFallback aConfig,
@@ -403,8 +429,10 @@ public class HttpClientSettingsConfig
 
     // Either empty or ending with a string
     final ICommonsOrderedSet <String> aRealPrefixes = new CommonsLinkedHashSet <> (aPrefixes,
-                                                                                   x -> x.isEmpty () ||
-                                                                                        x.endsWith (".") ? x : x + ".");
+                                                                                   x -> x.isEmpty () || x.endsWith (".")
+                                                                                                                         ? x
+                                                                                                                         : x +
+                                                                                                                           ".");
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Using prefixes '" + aRealPrefixes + "' to configure HTTP client settings");
     if (aRealPrefixes.isEmpty ())

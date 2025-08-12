@@ -38,10 +38,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
 import com.helger.commons.lang.ICloneable;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.commons.ws.HostnameVerifierVerifyAll;
 import com.helger.commons.ws.TrustManagerTrustAll;
@@ -90,9 +88,12 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private ITLSConfigurationMode m_aTLSConfigurationMode;
   private HostnameVerifier m_aHostnameVerifier;
 
-  private HttpHost m_aProxyHost;
-  private Credentials m_aProxyCredentials;
-  private final ICommonsOrderedSet <String> m_aNonProxyHosts = new CommonsLinkedHashSet <> ();
+  // A proxy for all URLs
+  private final HttpProxySettings m_aGeneralProxy = new HttpProxySettings ();
+  // A proxy only for "http" URLs
+  private final HttpProxySettings m_aHttpProxy = new HttpProxySettings ();
+  // A proxy only for "https" URLs
+  private final HttpProxySettings m_aHttpsProxy = new HttpProxySettings ();
 
   private int m_nRetryCount = DEFAULT_RETRY_COUNT;
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
@@ -179,10 +180,13 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public final HttpClientSettings setUseSystemProperties (final boolean bUseSystemProperties)
   {
     m_bUseSystemProperties = bUseSystemProperties;
-    if (bUseSystemProperties && m_aProxyHost != null)
+    if (bUseSystemProperties)
     {
-      LOGGER.warn ("Since the proxy properties should be used, the explicit Proxy host is removed.");
-      m_aProxyHost = null;
+      if (m_aGeneralProxy.hasProxyHost ())
+      {
+        LOGGER.warn ("Since the proxy properties should be used, the explicit Proxy host is removed.");
+        m_aGeneralProxy.setProxyHost (null);
+      }
     }
     return this;
   }
@@ -317,7 +321,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nullable
   public final HttpHost getProxyHost ()
   {
-    return m_aProxyHost;
+    return m_aGeneralProxy.getProxyHost ();
   }
 
   /**
@@ -331,7 +335,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nonnull
   public final HttpClientSettings setProxyHost (@Nullable final HttpHost aProxyHost)
   {
-    m_aProxyHost = aProxyHost;
+    m_aGeneralProxy.setProxyHost (aProxyHost);
     if (aProxyHost != null && m_bUseSystemProperties)
     {
       LOGGER.warn ("Since an explicit Proxy host for is defined, the usage of the system properties is disabled.");
@@ -346,7 +350,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nullable
   public final Credentials getProxyCredentials ()
   {
-    return m_aProxyCredentials;
+    return m_aGeneralProxy.getProxyCredentials ();
   }
 
   /**
@@ -362,7 +366,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nonnull
   public final HttpClientSettings setProxyCredentials (@Nullable final Credentials aProxyCredentials)
   {
-    m_aProxyCredentials = aProxyCredentials;
+    m_aGeneralProxy.setProxyCredentials (aProxyCredentials);
     return this;
   }
 
@@ -374,7 +378,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @ReturnsMutableObject
   public final ICommonsOrderedSet <String> nonProxyHosts ()
   {
-    return m_aNonProxyHosts;
+    return m_aGeneralProxy.nonProxyHosts ();
   }
 
   /**
@@ -389,12 +393,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nonnull
   public final HttpClientSettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
-    if (StringHelper.hasText (sDefinition))
-      StringHelper.explode ('|', sDefinition, sHost -> {
-        final String sTrimmedHost = sHost.trim ();
-        if (StringHelper.hasText (sTrimmedHost))
-          m_aNonProxyHosts.add (sTrimmedHost);
-      });
+    m_aGeneralProxy.addNonProxyHostsFromPipeString (sDefinition);
     return this;
   }
 
@@ -414,8 +413,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   @Nonnull
   public final HttpClientSettings setNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
-    m_aNonProxyHosts.clear ();
-    return addNonProxyHostsFromPipeString (sDefinition);
+    m_aGeneralProxy.setNonProxyHostsFromPipeString (sDefinition);
+    return this;
   }
 
   /**
@@ -645,9 +644,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("SSLContext", m_aSSLContext)
                                        .append ("TLSConfigurationMode", m_aTLSConfigurationMode)
                                        .append ("HostnameVerifier", m_aHostnameVerifier)
-                                       .append ("ProxyHost", m_aProxyHost)
-                                       .append ("ProxyCredentials", m_aProxyCredentials)
-                                       .append ("NonProxyHosts", m_aNonProxyHosts)
+                                       .append ("GeneralProxy", m_aGeneralProxy)
                                        .append ("RetryCount", m_nRetryCount)
                                        .append ("RetryInterval", m_aRetryInterval)
                                        .append ("RetryAlways", m_bRetryAlways)

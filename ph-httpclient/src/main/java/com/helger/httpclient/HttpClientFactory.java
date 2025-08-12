@@ -385,6 +385,103 @@ public class HttpClientFactory implements IHttpClientProvider
     return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval, bRetryAlways);
   }
 
+  @Nullable
+  public HttpRoutePlanner createRoutePlanner (@Nonnull final SchemePortResolver aSchemePortResolver)
+  {
+    final IHttpProxySettings aGeneralProxySettings = m_aSettings.getGeneralProxy ();
+    final IHttpProxySettings aHttpProxySettings = m_aSettings.getHttpProxy ();
+    final IHttpProxySettings aHttpsProxySettings = m_aSettings.getHttpsProxy ();
+
+    final boolean bGeneralProxy = aGeneralProxySettings.hasProxyHost ();
+    final boolean bHttpProxy = aHttpProxySettings.hasProxyHost ();
+    final boolean bHttpsProxy = aHttpsProxySettings.hasProxyHost ();
+    if (!bGeneralProxy && !bHttpProxy && !bHttpsProxy)
+      return null;
+
+    // If a route planner is used, the HttpClientBuilder MUST NOT use the
+    // proxy, because this would have precedence
+
+    if (bGeneralProxy && !bHttpProxy && !bHttpsProxy && aGeneralProxySettings.nonProxyHosts ().isEmpty ())
+    {
+      // Simplest version - proxy for all hosts
+      return new DefaultProxyRoutePlanner (aGeneralProxySettings.getProxyHost (), aSchemePortResolver);
+    }
+
+    // Some custom configuration is needed
+
+    // Determine the proxy settings per protocol
+    final IHttpProxySettings aEffectiveHttpProxySettings = bHttpProxy ? aHttpProxySettings : aGeneralProxySettings;
+    final IHttpProxySettings aEffectiveHttpsProxySettings = bHttpsProxy ? aHttpsProxySettings : aGeneralProxySettings;
+
+    // Clone set here to avoid concurrent modification
+    final ICommonsSet <String> aGeneralNonProxyHosts = aGeneralProxySettings.getAllNonProxyHosts ();
+    final ICommonsSet <String> aEffectiveHttpNonProxyHosts = aEffectiveHttpProxySettings.getAllNonProxyHosts ();
+    final ICommonsSet <String> aEffectiveHttpsNonProxyHosts = aEffectiveHttpsProxySettings.getAllNonProxyHosts ();
+
+    return new DefaultRoutePlanner (aSchemePortResolver)
+    {
+      @Override
+      protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
+                                                                                                               throws HttpException
+      {
+        final String sHostName = aTarget.getHostName ();
+
+        final IHttpProxySettings aEffectiveProxySettings;
+        final ICommonsSet <String> aEffectiveNonProxyHosts;
+
+        if (sHostName.startsWith ("http://"))
+        {
+          // Use settings specifically for the "http" protocol
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Choosing " + (bHttpProxy ? "specific" : "general") + " http proxy settings");
+
+          aEffectiveProxySettings = aEffectiveHttpProxySettings;
+          aEffectiveNonProxyHosts = aEffectiveHttpNonProxyHosts;
+        }
+        else
+          if (sHostName.startsWith ("https://"))
+          {
+            // Use settings specifically for the "https" protocol
+            if (LOGGER.isDebugEnabled ())
+              LOGGER.debug ("Choosing " + (bHttpsProxy ? "specific" : "general") + " https proxy settings");
+
+            aEffectiveProxySettings = aEffectiveHttpsProxySettings;
+            aEffectiveNonProxyHosts = aEffectiveHttpsNonProxyHosts;
+          }
+          else
+          {
+            // Use the general settings for any other protocol
+            if (LOGGER.isDebugEnabled ())
+              LOGGER.debug ("Choosing general proxy settings");
+
+            aEffectiveProxySettings = aGeneralProxySettings;
+            aEffectiveNonProxyHosts = aGeneralNonProxyHosts;
+          }
+
+        if (aEffectiveProxySettings.hasProxyHost ())
+        {
+          if (aEffectiveNonProxyHosts.contains (sHostName))
+          {
+            // Return direct route
+            LOGGER.info ("Not using proxy host for route to '" + sHostName + "'");
+            return null;
+          }
+
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Using proxy host " +
+                          aEffectiveProxySettings.getProxyHost () +
+                          " for route to '" +
+                          sHostName +
+                          "'");
+          return aEffectiveProxySettings.getProxyHost ();
+        }
+
+        // Proxy settings did not define a proxy host
+        return null;
+      }
+    };
+  }
+
   @SuppressWarnings ("removal")
   @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
@@ -398,106 +495,11 @@ public class HttpClientFactory implements IHttpClientProvider
     final ConnectionReuseStrategy aConnectionReuseStrategy = createConnectionReuseStrategy ();
     final RequestConfig aRequestConfig = createRequestConfig ();
 
-    // The credentials provider contains the Proxy server credentials
+    // The credentials provider contains the proxy credentials
     final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
 
-    HttpRoutePlanner aRoutePlanner = null;
-
-    final IHttpProxySettings aGeneralProxySettings = m_aSettings.getGeneralProxy ();
-    final IHttpProxySettings aHttpProxySettings = m_aSettings.getHttpProxy ();
-    final IHttpProxySettings aHttpsProxySettings = m_aSettings.getHttpsProxy ();
-
-    final boolean bGeneralProxy = aGeneralProxySettings.hasProxyHost ();
-    final boolean bHttpProxy = aHttpProxySettings.hasProxyHost ();
-    final boolean bHttpsProxy = aHttpsProxySettings.hasProxyHost ();
-    if (bGeneralProxy || bHttpProxy || bHttpsProxy)
-    {
-      // If a route planner is used, the HttpClientBuilder MUST NOT use the
-      // proxy, because this would have precedence
-
-      if (bGeneralProxy && !bHttpProxy && !bHttpsProxy && aGeneralProxySettings.nonProxyHosts ().isEmpty ())
-      {
-        // Simplest version - proxy for all hosts
-        aRoutePlanner = new DefaultProxyRoutePlanner (aGeneralProxySettings.getProxyHost (), aSchemePortResolver);
-      }
-      else
-      {
-        // Some custom configuration is needed
-
-        // Determine the proxy settings per protocol
-        final IHttpProxySettings aEffectiveHttpProxySettings = bHttpProxy ? aHttpProxySettings : aGeneralProxySettings;
-        final IHttpProxySettings aEffectiveHttpsProxySettings = bHttpsProxy ? aHttpsProxySettings
-                                                                            : aGeneralProxySettings;
-
-        // Clone set here to avoid concurrent modification
-        final ICommonsSet <String> aGeneralNonProxyHosts = aGeneralProxySettings.getAllNonProxyHosts ();
-        final ICommonsSet <String> aEffectiveHttpNonProxyHosts = aEffectiveHttpProxySettings.getAllNonProxyHosts ();
-        final ICommonsSet <String> aEffectiveHttpsNonProxyHosts = aEffectiveHttpsProxySettings.getAllNonProxyHosts ();
-
-        aRoutePlanner = new DefaultRoutePlanner (aSchemePortResolver)
-        {
-          @Override
-          protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
-                                                                                                                   throws HttpException
-          {
-            final String sHostName = aTarget.getHostName ();
-
-            final IHttpProxySettings aEffectiveProxySettings;
-            final ICommonsSet <String> aEffectiveNonProxyHosts;
-
-            if (sHostName.startsWith ("http://"))
-            {
-              // Use settings specifically for the "http" protocol
-              if (LOGGER.isDebugEnabled ())
-                LOGGER.debug ("Choosing " + (bHttpProxy ? "specific" : "general") + " http proxy settings");
-
-              aEffectiveProxySettings = aEffectiveHttpProxySettings;
-              aEffectiveNonProxyHosts = aEffectiveHttpNonProxyHosts;
-            }
-            else
-              if (sHostName.startsWith ("https://"))
-              {
-                // Use settings specifically for the "https" protocol
-                if (LOGGER.isDebugEnabled ())
-                  LOGGER.debug ("Choosing " + (bHttpsProxy ? "specific" : "general") + " https proxy settings");
-
-                aEffectiveProxySettings = aEffectiveHttpsProxySettings;
-                aEffectiveNonProxyHosts = aEffectiveHttpsNonProxyHosts;
-              }
-              else
-              {
-                // Use the general settings for any other protocol
-                if (LOGGER.isDebugEnabled ())
-                  LOGGER.debug ("Choosing general proxy settings");
-
-                aEffectiveProxySettings = aGeneralProxySettings;
-                aEffectiveNonProxyHosts = aGeneralNonProxyHosts;
-              }
-
-            if (aEffectiveProxySettings.hasProxyHost ())
-            {
-              if (aEffectiveNonProxyHosts.contains (sHostName))
-              {
-                // Return direct route
-                LOGGER.info ("Not using proxy host for route to '" + sHostName + "'");
-                return null;
-              }
-
-              if (LOGGER.isDebugEnabled ())
-                LOGGER.debug ("Using proxy host " +
-                              aEffectiveProxySettings.getProxyHost () +
-                              " for route to '" +
-                              sHostName +
-                              "'");
-              return aEffectiveProxySettings.getProxyHost ();
-            }
-
-            // Proxy settings did not define a proxy host
-            return null;
-          }
-        };
-      }
-    }
+    // The route planner considers the proxy host
+    final HttpRoutePlanner aRoutePlanner = createRoutePlanner (aSchemePortResolver);
 
     final HttpClientBuilder ret = HttpClients.custom ()
                                              .setSchemePortResolver (aSchemePortResolver)

@@ -12,6 +12,7 @@ import com.helger.commons.text.util.ABNF;
  * Helper class for RFC 7230
  *
  * @author Philip Helger
+ * @since 10.5.1
  */
 @Immutable
 public final class RFC7230Helper
@@ -55,7 +56,22 @@ public final class RFC7230Helper
     if (StringHelper.hasNoText (s))
       return false;
 
-    for (final char c : s.toCharArray ())
+    return isValidToken (s.toCharArray ());
+  }
+
+  /**
+   * Check if the provided char array is a valid token.
+   *
+   * @param a
+   *        Character array to check
+   * @return <code>true</code> if it is a valid token, <code>false</code> if not.
+   */
+  public static boolean isValidToken (@Nullable final char [] a)
+  {
+    if (a == null || a.length == 0)
+      return false;
+
+    for (final char c : a)
       if (!TOKEN_CHARS.get (c))
         return false;
     return true;

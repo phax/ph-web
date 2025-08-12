@@ -315,13 +315,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
-  /**
-   * @return The proxy host to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public final HttpHost getProxyHost ()
+  @Nonnull
+  public final HttpProxySettings getGeneralProxy ()
   {
-    return m_aGeneralProxy.getProxyHost ();
+    return m_aGeneralProxy;
   }
 
   /**
@@ -331,8 +328,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The proxy host to be used. May be <code>null</code>.
    * @return this for chaining
    * @see #setProxyCredentials(Credentials)
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.5.0")
   public final HttpClientSettings setProxyHost (@Nullable final HttpHost aProxyHost)
   {
     m_aGeneralProxy.setProxyHost (aProxyHost);
@@ -345,15 +344,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return The proxy server credentials to be used. May be <code>null</code>.
-   */
-  @Nullable
-  public final Credentials getProxyCredentials ()
-  {
-    return m_aGeneralProxy.getProxyCredentials ();
-  }
-
-  /**
    * Set proxy credentials.
    *
    * @param aProxyCredentials
@@ -362,8 +352,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        {@link org.apache.hc.client5.http.auth.UsernamePasswordCredentials}.
    * @return this for chaining
    * @see #setProxyHost(HttpHost)
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.5.0")
   public final HttpClientSettings setProxyCredentials (@Nullable final Credentials aProxyCredentials)
   {
     m_aGeneralProxy.setProxyCredentials (aProxyCredentials);
@@ -373,9 +365,11 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   /**
    * @return The set of all host names and IP addresses for which no proxy should be used. Never
    *         <code>null</code> and mutable.
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
   @ReturnsMutableObject
+  @Deprecated (forRemoval = true, since = "10.5.0")
   public final ICommonsOrderedSet <String> nonProxyHosts ()
   {
     return m_aGeneralProxy.nonProxyHosts ();
@@ -389,8 +383,10 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
    *        trimmed text between pipes is interpreted as a host name.
    * @return this for chaining
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.5.0")
   public final HttpClientSettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
     m_aGeneralProxy.addNonProxyHostsFromPipeString (sDefinition);
@@ -409,12 +405,26 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return this for chaining
    * @see #addNonProxyHostsFromPipeString(String)
    * @since 10.0.0
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
+  @Deprecated (forRemoval = true, since = "10.5.0")
   public final HttpClientSettings setNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
     m_aGeneralProxy.setNonProxyHostsFromPipeString (sDefinition);
     return this;
+  }
+
+  @Nonnull
+  public final HttpProxySettings getHttpProxy ()
+  {
+    return m_aHttpProxy;
+  }
+
+  @Nonnull
+  public final HttpProxySettings getHttpsProxy ()
+  {
+    return m_aHttpsProxy;
   }
 
   /**
@@ -645,6 +655,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("TLSConfigurationMode", m_aTLSConfigurationMode)
                                        .append ("HostnameVerifier", m_aHostnameVerifier)
                                        .append ("GeneralProxy", m_aGeneralProxy)
+                                       .append ("HttpProxy", m_aHttpProxy)
+                                       .append ("HttpsProxy", m_aHttpsProxy)
                                        .append ("RetryCount", m_nRetryCount)
                                        .append ("RetryInterval", m_aRetryInterval)
                                        .append ("RetryAlways", m_bRetryAlways)

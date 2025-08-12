@@ -36,7 +36,7 @@ import com.helger.commons.string.ToStringGenerator;
  * All the easily configurable settings for a single HTTP proxy server
  *
  * @author Philip Helger
- * @since 10.4.4
+ * @since 10.5.0
  */
 @NotThreadSafe
 public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpProxySettings>

@@ -238,7 +238,7 @@ public class HttpClientSettingsConfig
      * @deprecated Use {@link #getHttpProxyPasswordCharArray()} instead
      */
     @Nullable
-    @Deprecated (forRemoval = true, since = "10.4.4")
+    @Deprecated (forRemoval = true, since = "10.5.0")
     public String getHttpProxyPassword ()
     {
       return _findString ("http.proxy.password", "http.proxyPassword");
@@ -382,6 +382,20 @@ public class HttpClientSettingsConfig
       return _findBoolean ("http.keep-alive", bDefault);
     }
 
+    /**
+     * Get the configuration value on protocol upgrade is enabled or not.
+     *
+     * @param bDefault
+     *        The default value to be used.
+     * @return Never <code>null</code>.
+     * @since 10.5.0
+     */
+    @Nonnull
+    public ETriState getProtocolUpgradeEnabled (final boolean bDefault)
+    {
+      return _findBoolean ("http.protocol-upgrade.enabled", bDefault);
+    }
+
     @Nonnull
     public ETriState getDisableTlsChecks (final boolean bDefault)
     {
@@ -467,7 +481,7 @@ public class HttpClientSettingsConfig
         {
           if (LOGGER.isDebugEnabled ())
             LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
-          aHCS.setProxyHost (aProxyHost);
+          aHCS.getGeneralProxy ().setProxyHost (aProxyHost);
         }
 
         final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
@@ -475,7 +489,7 @@ public class HttpClientSettingsConfig
         {
           if (LOGGER.isDebugEnabled ())
             LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
-          aHCS.setProxyCredentials (aProxyCredentials);
+          aHCS.getGeneralProxy ().setProxyCredentials (aProxyCredentials);
         }
 
         final String sNonProxyHosts = aHCC.getNonProxyHosts ();
@@ -483,7 +497,7 @@ public class HttpClientSettingsConfig
         {
           if (LOGGER.isDebugEnabled ())
             LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
-          aHCS.setNonProxyHostsFromPipeString (sNonProxyHosts);
+          aHCS.getGeneralProxy ().setNonProxyHostsFromPipeString (sNonProxyHosts);
         }
       }
     }
@@ -574,6 +588,16 @@ public class HttpClientSettingsConfig
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Setting configured HttpClientSettings.keepAlive(" + b + ")");
         aHCS.setUseKeepAlive (b);
+      }
+
+      // Use existing value as fallback to avoid changing to default
+      final ETriState eProtocolUpgradeEnabled = aHCC.getProtocolUpgradeEnabled (aHCS.isProtocolUpgradeEnabled ());
+      if (eProtocolUpgradeEnabled.isDefined ())
+      {
+        final boolean b = eProtocolUpgradeEnabled.getAsBooleanValue ();
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.protocolUpgradeEnabled(" + b + ")");
+        aHCS.setProtocolUpgradeEnabled (b);
       }
     }
 

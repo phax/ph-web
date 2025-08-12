@@ -59,10 +59,13 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v10.4.4 - work in progress
+v10.5.0 - work in progress
 * Deprecated `UnifiedResponse.setEnableXSSFilter` and `UnifiedResponseDefaultSettings.setEnableXSSFilter`
 * Added `HttpClientSettings.(is|set)ProtocolUpgradeEnabled` to configure the HTTP protocol upgrade from http to https
 * Added new classes `(I)HttpProxySettings` to extract the proxy settings
+* Extended interface `IHttpClientSettings` with new methods `getGeneralProxy`, `getHttpProxy` and `getHttpsProxy`. See [#4](https://github.com/phax/ph-web/issues/4) - thx @TrinhNg 
+* Deprecated methods `IHttpClientSettings.getProxyHost()`, `.getProxyCredentials` and `.nonProxyHosts` in favour of the indirected ones via `getGeneralProxy()` 
+* Deprecated class `ETLSConfigurationMode_2018_10`
 
 v10.4.3 - 2025-07-10
 * Updated to Apache HttpClient v5.5

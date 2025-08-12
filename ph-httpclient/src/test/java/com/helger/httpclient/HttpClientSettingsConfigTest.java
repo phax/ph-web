@@ -84,9 +84,11 @@ public final class HttpClientSettingsConfigTest
     HttpClientSettingsConfig.assignConfigValues (aHCS, _createConfig (), "test10");
     assertTrue (aHCS.isUseDNSClientCache ());
 
-    assertNotNull (aHCS.getProxyHost ());
-    assertNotNull (aHCS.getProxyCredentials ());
-    assertEquals (new CommonsLinkedHashSet <> ("5.5.5.5", "6.6.6.6"), aHCS.nonProxyHosts ());
+    assertNotNull (aHCS.getGeneralProxy ());
+    assertNotNull (aHCS.getGeneralProxy ().getProxyHost ());
+    assertNotNull (aHCS.getGeneralProxy ().getProxyCredentials ());
+    assertEquals (new CommonsLinkedHashSet <> ("5.5.5.5", "6.6.6.6"), aHCS.getGeneralProxy ().nonProxyHosts ());
+    assertEquals (new CommonsLinkedHashSet <> ("5.5.5.5", "6.6.6.6"), aHCS.getGeneralProxy ().getAllNonProxyHosts ());
 
     assertEquals (3, aHCS.getRetryCount ());
     assertEquals (Duration.ofMillis (5432), aHCS.getRetryInterval ());
@@ -111,12 +113,15 @@ public final class HttpClientSettingsConfigTest
     HttpClientSettingsConfig.assignConfigValues (aHCS, _createConfig (), "test9", "test10");
     assertTrue (aHCS.isUseDNSClientCache ());
 
+    assertNotNull (aHCS.getGeneralProxy ());
     // Difference
-    assertNull (aHCS.getProxyHost ());
+    assertNull (aHCS.getGeneralProxy ().getProxyHost ());
     // Difference (because proxy is disabled)
-    assertNull (aHCS.getProxyCredentials ());
+    assertNull (aHCS.getGeneralProxy ().getProxyCredentials ());
     // Difference (because proxy is disabled)
-    assertEquals (new CommonsLinkedHashSet <> (), aHCS.nonProxyHosts ());
+    assertEquals (new CommonsLinkedHashSet <> (), aHCS.getGeneralProxy ().nonProxyHosts ());
+    // Difference (because proxy is disabled)
+    assertEquals (new CommonsLinkedHashSet <> (), aHCS.getGeneralProxy ().getAllNonProxyHosts ());
 
     // Difference
     assertEquals (4, aHCS.getRetryCount ());

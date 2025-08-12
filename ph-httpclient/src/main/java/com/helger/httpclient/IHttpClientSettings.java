@@ -99,24 +99,73 @@ public interface IHttpClientSettings
   ITLSConfigurationMode getTLSConfigurationMode ();
 
   /**
+   * @return The general HTTP proxy settings to be used. These settings apply to any protocol,
+   *         except they are overridden in the more specific "http" and "https" proxy settings.
+   *         Never <code>null</code>.
+   * @see #getHttpProxy()
+   * @see #getHttpsProxy()
+   * @since 10.5.0
+   */
+  @Nonnull
+  IHttpProxySettings getGeneralProxy ();
+
+  /**
    * @return The proxy host to be used. May be <code>null</code>.
+   * @see #getGeneralProxy()
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nullable
-  HttpHost getProxyHost ();
+  @Deprecated (forRemoval = true, since = "10.5.0")
+  default HttpHost getProxyHost ()
+  {
+    return getGeneralProxy ().getProxyHost ();
+  }
 
   /**
    * @return The proxy server credentials to be used. May be <code>null</code>.
+   * @see #getGeneralProxy()
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nullable
-  Credentials getProxyCredentials ();
+  @Deprecated (forRemoval = true, since = "10.5.0")
+  default Credentials getProxyCredentials ()
+  {
+    return getGeneralProxy ().getProxyCredentials ();
+  }
 
   /**
    * @return The set of all host names and IP addresses for which no proxy should be used. Never
    *         <code>null</code> and mutable.
+   * @see #getGeneralProxy()
+   * @deprecated Use the method through {@link #getGeneralProxy()} instead
    */
   @Nonnull
   @ReturnsMutableObject
-  ICommonsSet <String> nonProxyHosts ();
+  @Deprecated (forRemoval = true, since = "10.5.0")
+  default ICommonsSet <String> nonProxyHosts ()
+  {
+    return getGeneralProxy ().nonProxyHosts ();
+  }
+
+  /**
+   * @return The HTTP proxy settings to be used exclusively for the "http" protocol. Never
+   *         <code>null</code>.
+   * @see #getGeneralProxy()
+   * @see #getHttpsProxy()
+   * @since 10.5.0
+   */
+  @Nonnull
+  IHttpProxySettings getHttpProxy ();
+
+  /**
+   * @return The HTTP proxy settings to be used exclusively for the "https" protocol. Never
+   *         <code>null</code>.
+   * @see #getGeneralProxy()
+   * @see #getHttpProxy()
+   * @since 10.5.0
+   */
+  @Nonnull
+  IHttpProxySettings getHttpsProxy ();
 
   /**
    * @return The number of retries. Defaults to none.
@@ -197,7 +246,7 @@ public interface IHttpClientSettings
   /**
    * @return <code>true</code> if a protocol upgrade e.g. from http to https should be done
    *         automatically or not. Since Apache HttpClient 5.4 this became the default.
-   * @since 10.4.4
+   * @since 10.5.0
    */
   boolean isProtocolUpgradeEnabled ();
 }

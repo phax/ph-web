@@ -19,7 +19,6 @@ package com.helger.httpclient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -33,41 +32,14 @@ import com.helger.http.tls.ETLSConfigurationMode_2020_02;
 public final class HttpClientSettingsTest
 {
   @Test
-  public void testAddNonProxyHostsFromPipeString ()
-  {
-    final HttpClientSettings x = new HttpClientSettings ();
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString (null);
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString ("");
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString ("          ");
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString ("   |    ");
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString ("  |||||   ||  |||| |   |");
-    assertEquals (0, x.nonProxyHosts ().size ());
-    x.addNonProxyHostsFromPipeString (" 127.0.0.1 | localhost ");
-    assertEquals (2, x.nonProxyHosts ().size ());
-    assertTrue (x.nonProxyHosts ().contains ("127.0.0.1"));
-    assertTrue (x.nonProxyHosts ().contains ("localhost"));
-    x.addNonProxyHostsFromPipeString ("127.0.0.1|localhost");
-    assertEquals (2, x.nonProxyHosts ().size ());
-    assertTrue (x.nonProxyHosts ().contains ("127.0.0.1"));
-    assertTrue (x.nonProxyHosts ().contains ("localhost"));
-    x.addNonProxyHostsFromPipeString ("127.0.0.1|127.0.0.1|127.0.0.1|127.0.0.1|127.0.0.1|127.0.0.1|127.0.0.1|127.0.0.1|localhost");
-    assertEquals (2, x.nonProxyHosts ().size ());
-    assertTrue (x.nonProxyHosts ().contains ("127.0.0.1"));
-    assertTrue (x.nonProxyHosts ().contains ("localhost"));
-  }
-
-  @Test
   public void testClone ()
   {
     final HttpClientSettings x = new HttpClientSettings ();
     assertNotNull (x.getClone ());
+
     x.setTLSConfigurationMode (ETLSConfigurationMode_2020_02.MODERN);
     assertSame (ETLSConfigurationMode_2020_02.MODERN, x.getClone ().getTLSConfigurationMode ());
+
     x.setUserAgent ("bla");
     assertEquals ("bla", x.getClone ().getUserAgent ());
   }

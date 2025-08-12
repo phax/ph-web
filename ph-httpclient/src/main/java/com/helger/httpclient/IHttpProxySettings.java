@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.collection.impl.ICommonsSet;
 
@@ -29,7 +30,7 @@ import com.helger.commons.collection.impl.ICommonsSet;
  * Read-only interface for {@link HttpProxySettings}
  *
  * @author Philip Helger
- * @since 10.4.4
+ * @since 10.5.0
  */
 public interface IHttpProxySettings
 {
@@ -48,16 +49,35 @@ public interface IHttpProxySettings
   HttpHost getProxyHost ();
 
   /**
+   * @return <code>true</code> if proxy credentials are present, <code>false</code> if not.
+   */
+  default boolean hasProxyCredentials ()
+  {
+    return getProxyCredentials () != null;
+  }
+
+  /**
    * @return The proxy server credentials to be used. May be <code>null</code>.
    */
   @Nullable
   Credentials getProxyCredentials ();
 
   /**
-   * @return The set of all host names and IP addresses for which no proxy should be used. Never
-   *         <code>null</code> and mutable.
+   * @return The mutable original set of all host names and IP addresses for which no proxy should
+   *         be used. Never <code>null</code> and mutable.
    */
   @Nonnull
   @ReturnsMutableObject
   ICommonsSet <String> nonProxyHosts ();
+
+  /**
+   * @return A mutable copy of the set of all host names and IP addresses for which no proxy should
+   *         be used. Never <code>null</code>.
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  default ICommonsSet <String> getAllNonProxyHosts ()
+  {
+    return nonProxyHosts ().getClone ();
+  }
 }

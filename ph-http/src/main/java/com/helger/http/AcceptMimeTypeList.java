@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ChangeNextMajorRelease;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.mime.IMimeType;
 import com.helger.commons.mime.MimeTypeParser;
@@ -49,6 +50,7 @@ public class AcceptMimeTypeList extends AbstractQValueList <IMimeType>
   }
 
   // TODO 10.x make chainable
+  @ChangeNextMajorRelease ("Make chainable")
   public void addMimeType (@Nonnull final IMimeType aMimeType, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notNull (aMimeType, "MimeType");

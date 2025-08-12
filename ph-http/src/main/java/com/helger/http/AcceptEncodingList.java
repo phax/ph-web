@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ChangeNextMajorRelease;
 
 /**
  * Contains a list of Accept-Encoding values as specified by the HTTP header
@@ -44,6 +45,7 @@ public class AcceptEncodingList extends AbstractQValueList <String>
   }
 
   // TODO 10.x make chainable
+  @ChangeNextMajorRelease ("Make chainable")
   public void addEncoding (@Nonnull final String sEncoding, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sEncoding, "Encoding");

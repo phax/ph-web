@@ -23,6 +23,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ChangeNextMajorRelease;
 
 /**
  * Represents a list of Accept-Language values as specified in the HTTP header
@@ -41,6 +42,7 @@ public class AcceptLanguageList extends AbstractQValueList <String>
   }
 
   // TODO 10.x make chainable
+  @ChangeNextMajorRelease ("Make chainable")
   public void addLanguage (@Nonnull final String sLanguage, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sLanguage, "Language");

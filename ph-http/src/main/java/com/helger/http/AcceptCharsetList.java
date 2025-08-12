@@ -24,6 +24,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.annotation.ChangeNextMajorRelease;
 import com.helger.commons.annotation.Nonempty;
 
 /**
@@ -51,6 +52,7 @@ public class AcceptCharsetList extends AbstractQValueList <String>
   }
 
   // TODO 10.x make chainable
+  @ChangeNextMajorRelease ("Make chainable")
   public void addCharset (@Nonnull @Nonempty final String sCharset, @Nonnegative final double dQuality)
   {
     ValueEnforcer.notEmpty (sCharset, "Charset");

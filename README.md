@@ -60,7 +60,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v10.5.1 - 2025-08-12
-* Added new classes `HttpForwardedHeader` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`
+* Added new classes `HttpForwardedHeaderHop` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`
 
 v10.5.0 - 2025-08-12
 * Deprecated `UnifiedResponse.setEnableXSSFilter` and `UnifiedResponseDefaultSettings.setEnableXSSFilter`

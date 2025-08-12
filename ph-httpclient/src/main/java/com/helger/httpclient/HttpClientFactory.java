@@ -57,6 +57,7 @@ import org.apache.hc.client5.http.ssl.TlsSocketStrategy;
 import org.apache.hc.core5.http.ConnectionReuseStrategy;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.URIScheme;
 import org.apache.hc.core5.http.io.SocketConfig;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.io.CloseMode;
@@ -424,12 +425,13 @@ public class HttpClientFactory implements IHttpClientProvider
       protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
                                                                                                                throws HttpException
       {
+        final String sSchemeName = aTarget.getSchemeName ();
         final String sHostName = aTarget.getHostName ();
 
         final IHttpProxySettings aEffectiveProxySettings;
         final ICommonsSet <String> aEffectiveNonProxyHosts;
 
-        if (sHostName.startsWith ("http://"))
+        if (sSchemeName.equals (URIScheme.HTTP.getId ()))
         {
           // Use settings specifically for the "http" protocol
           if (LOGGER.isDebugEnabled ())
@@ -439,7 +441,7 @@ public class HttpClientFactory implements IHttpClientProvider
           aEffectiveNonProxyHosts = aEffectiveHttpNonProxyHosts;
         }
         else
-          if (sHostName.startsWith ("https://"))
+          if (sSchemeName.equals (URIScheme.HTTPS.getId ()))
           {
             // Use settings specifically for the "https" protocol
             if (LOGGER.isDebugEnabled ())
@@ -463,7 +465,9 @@ public class HttpClientFactory implements IHttpClientProvider
           if (aEffectiveNonProxyHosts.contains (sHostName))
           {
             // Return direct route
-            LOGGER.info ("Not using proxy host for route to '" + sHostName + "'");
+            LOGGER.info ("Not using proxy host for route to '" +
+                         sHostName +
+                         "' because it is in the non-proxy host list");
             return null;
           }
 

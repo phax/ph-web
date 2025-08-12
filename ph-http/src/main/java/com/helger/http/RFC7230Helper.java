@@ -45,6 +45,18 @@ public final class RFC7230Helper
   {}
 
   /**
+   * Check if the provided char is a valid token char.
+   *
+   * @param c
+   *        character to check
+   * @return <code>true</code> if it is a valid token, <code>false</code> if not.
+   */
+  public static boolean isValidTokenChar (final char c)
+  {
+    return TOKEN_CHARS.get (c);
+  }
+
+  /**
    * Check if the provided String is a valid token.
    *
    * @param s
@@ -72,8 +84,13 @@ public final class RFC7230Helper
       return false;
 
     for (final char c : a)
-      if (!TOKEN_CHARS.get (c))
+      if (!isValidTokenChar (c))
         return false;
     return true;
+  }
+
+  public static boolean isWhitespace (final char c)
+  {
+    return ABNF.isWSP (c);
   }
 }

@@ -76,9 +76,20 @@ public final class HttpForwardedHeaderParser
     @Nonnull
     String getErrorLocationDetails ()
     {
-      return "The problem is at index " + m_nPos + " of text '" + new String (m_aInput) + "'";
+      final char c = hasMore () ? getCurrentChar () : 0;
+      return "The problem is at index " +
+             m_nPos +
+             " (char '" +
+             c +
+             "' / " +
+             ((int) c) +
+             ") of text '" +
+             new String (m_aInput) +
+             "'";
     }
   }
+
+  public static final String HTTP_HEADER_FORWARDED = "Forwarded";
 
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpForwardedHeaderParser.class);
 

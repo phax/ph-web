@@ -42,6 +42,15 @@ public final class HttpForwardedHeaderParserTest
   }
 
   @Test
+  public void testValidSinglePairCaseInsensitive ()
+  {
+    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("FOR=192.168.1.1");
+    assertNotNull (aResult);
+    assertEquals (1, aResult.size ());
+    assertEquals ("192.168.1.1", aResult.getFor ());
+  }
+
+  @Test
   public void testValidMultiplePairs ()
   {
     final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;host=example.com;proto=https");
@@ -114,8 +123,8 @@ public final class HttpForwardedHeaderParserTest
     assertNotNull (aResult);
     assertEquals (3, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
-    assertEquals ("value123", aResult.getValue ("custom"));
-    assertEquals ("quoted value", aResult.getValue ("another"));
+    assertEquals ("value123", aResult.getFirstValue ("custom"));
+    assertEquals ("quoted value", aResult.getFirstValue ("another"));
   }
 
   @Test
@@ -242,7 +251,12 @@ public final class HttpForwardedHeaderParserTest
                                                   "for=\"192.168.1.1:8080\";host=\"example.com with spaces\"",
                                                   "for=\"192.168.1.1:8080\";host=example.com;proto=https",
                                                   "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https",
-                                                  "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https;custom1=value1" })
+                                                  "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https;custom1=value1",
+                                                  "for=\"_gazonk\"",
+                                                  "For=\"[2001:db8:cafe::17]:4711\"",
+                                                  "for=192.0.2.60;proto=http;by=203.0.113.43",
+                                                  "for=192.0.2.43; for=198.51.100.17",
+                                                  "for=192.0.2.43; for=\"[2001:db8:cafe::17]\"" })
     {
       // Parse
       final HttpForwardedHeader aParsed = HttpForwardedHeaderParser.parse (sOriginal);

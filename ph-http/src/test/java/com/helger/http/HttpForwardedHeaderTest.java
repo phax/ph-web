@@ -103,7 +103,7 @@ public final class HttpForwardedHeaderTest
 
     // IPv6 addresses in brackets should not be quoted
     aList.setFor ("[2001:db8::1]");
-    assertEquals ("for=[2001:db8::1]", aList.getAsString ());
+    assertEquals ("for=\"[2001:db8::1]\"", aList.getAsString ());
   }
 
   @Test
@@ -114,13 +114,13 @@ public final class HttpForwardedHeaderTest
     aList.setHost ("example.com");
 
     assertEquals (2, aList.size ());
-    assertEquals ("192.168.1.1", aList.removePair (HttpForwardedHeader.PARAM_FOR));
+    assertTrue (aList.removePair (HttpForwardedHeader.PARAM_FOR).isChanged ());
     assertEquals (1, aList.size ());
     assertFalse (aList.containsToken (HttpForwardedHeader.PARAM_FOR));
-    assertNull (aList.getValue (HttpForwardedHeader.PARAM_FOR));
+    assertNull (aList.getFirstValue (HttpForwardedHeader.PARAM_FOR));
 
     // Remove non-existing key
-    assertNull (aList.removePair ("nonexisting"));
+    assertTrue (aList.removePair ("nonexisting").isUnchanged ());
   }
 
   @Test
@@ -148,8 +148,8 @@ public final class HttpForwardedHeaderTest
     assertTrue (aList.getAllTokens ().contains (HttpForwardedHeader.PARAM_HOST));
 
     assertEquals (2, aList.getAllPairs ().size ());
-    assertEquals ("192.168.1.1", aList.getAllPairs ().get (HttpForwardedHeader.PARAM_FOR));
-    assertEquals ("example.com", aList.getAllPairs ().get (HttpForwardedHeader.PARAM_HOST));
+    assertEquals ("192.168.1.1", aList.getAllPairs ().get (HttpForwardedHeader.PARAM_FOR).getFirstOrNull ());
+    assertEquals ("example.com", aList.getAllPairs ().get (HttpForwardedHeader.PARAM_HOST).getFirstOrNull ());
   }
 
   @Test

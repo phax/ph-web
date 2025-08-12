@@ -16,6 +16,8 @@
  */
 package com.helger.http;
 
+import java.util.Locale;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -23,15 +25,17 @@ import javax.annotation.concurrent.NotThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.impl.CommonsArrayList;
 import com.helger.commons.collection.impl.CommonsLinkedHashMap;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.collection.impl.ICommonsOrderedMap;
 import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.string.StringHelper;
+import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 
 /**
  * This class contains the different value pairs for a single "Forwarded" header as defined in RFC
- * 7239.
+ * 7239. Each token may have multiple values.
  *
  * @author Philip Helger
  * @since 10.5.1
@@ -51,10 +55,16 @@ public class HttpForwardedHeader
   /** Standard "proto" parameter name as defined in RFC 7239 */
   public static final String PARAM_PROTO = "proto";
 
-  private final ICommonsOrderedMap <String, String> m_aPairs = new CommonsLinkedHashMap <> ();
+  private final ICommonsOrderedMap <String, ICommonsList <String>> m_aValues = new CommonsLinkedHashMap <> ();
 
   public HttpForwardedHeader ()
   {}
+
+  @Nonnull
+  private static String _getUnifiedToken (@Nonnull final String s)
+  {
+    return s.toLowerCase (Locale.ROOT);
+  }
 
   @Nonnull
   public HttpForwardedHeader addPair (@Nonnull @Nonempty final String sToken, @Nonnull final String sValue)
@@ -62,8 +72,24 @@ public class HttpForwardedHeader
     ValueEnforcer.notEmpty (sToken, "Token");
     ValueEnforcer.isTrue ( () -> RFC7230Helper.isValidToken (sToken), "Token is not valid according to RFC 7230");
     ValueEnforcer.notNull (sValue, "Value");
-    m_aPairs.put (sToken, sValue);
+    m_aValues.computeIfAbsent (_getUnifiedToken (sToken), k -> new CommonsArrayList <> ()).add (sValue);
     return this;
+  }
+
+  /**
+   * Get all values for the specified token.
+   *
+   * @param sToken
+   *        The token to get the value for. May not be <code>null</code> or empty.
+   * @return <code>null</code> if no such token is present.
+   */
+  @Nullable
+  @ReturnsMutableCopy
+  public ICommonsList <String> getValueList (@Nonnull @Nonempty final String sToken)
+  {
+    ValueEnforcer.notEmpty (sToken, "Token");
+    final ICommonsList <String> aValues = m_aValues.get (_getUnifiedToken (sToken));
+    return aValues == null ? null : aValues.getClone ();
   }
 
   /**
@@ -74,10 +100,11 @@ public class HttpForwardedHeader
    * @return <code>null</code> if no such token is present.
    */
   @Nullable
-  public String getValue (@Nonnull @Nonempty final String sToken)
+  public String getFirstValue (@Nonnull @Nonempty final String sToken)
   {
     ValueEnforcer.notEmpty (sToken, "Token");
-    return m_aPairs.get (sToken);
+    final ICommonsList <String> aValues = m_aValues.get (_getUnifiedToken (sToken));
+    return aValues == null ? null : aValues.getFirstOrNull ();
   }
 
   /**
@@ -90,7 +117,7 @@ public class HttpForwardedHeader
   public boolean containsToken (@Nonnull @Nonempty final String sToken)
   {
     ValueEnforcer.notEmpty (sToken, "Token");
-    return m_aPairs.containsKey (sToken);
+    return m_aValues.containsKey (_getUnifiedToken (sToken));
   }
 
   /**
@@ -98,14 +125,13 @@ public class HttpForwardedHeader
    *
    * @param sToken
    *        The token to remove. May not be <code>null</code> or empty.
-   * @return The previous value associated with the token, or <code>null</code> if no such token
-   *         existed.
+   * @return {@link EChange#CHANGED} if the value was removed, {@link EChange#UNCHANGED} otherwise.
    */
   @Nullable
-  public String removePair (@Nonnull @Nonempty final String sToken)
+  public EChange removePair (@Nonnull @Nonempty final String sToken)
   {
     ValueEnforcer.notEmpty (sToken, "Token");
-    return m_aPairs.remove (sToken);
+    return m_aValues.removeObject (_getUnifiedToken (sToken));
   }
 
   /**
@@ -117,7 +143,7 @@ public class HttpForwardedHeader
   @ReturnsMutableCopy
   public ICommonsOrderedSet <String> getAllTokens ()
   {
-    return m_aPairs.copyOfKeySet ();
+    return m_aValues.copyOfKeySet ();
   }
 
   /**
@@ -127,9 +153,9 @@ public class HttpForwardedHeader
    */
   @Nonnull
   @ReturnsMutableCopy
-  public ICommonsOrderedMap <String, String> getAllPairs ()
+  public ICommonsOrderedMap <String, ICommonsList <String>> getAllPairs ()
   {
-    return m_aPairs.getClone ();
+    return m_aValues.getClone ();
   }
 
   /**
@@ -140,7 +166,7 @@ public class HttpForwardedHeader
   @Nonnull
   public HttpForwardedHeader removeAll ()
   {
-    m_aPairs.clear ();
+    m_aValues.clear ();
     return this;
   }
 
@@ -151,7 +177,7 @@ public class HttpForwardedHeader
    */
   public boolean isEmpty ()
   {
-    return m_aPairs.isEmpty ();
+    return m_aValues.isEmpty ();
   }
 
   /**
@@ -161,7 +187,7 @@ public class HttpForwardedHeader
    */
   public boolean isNotEmpty ()
   {
-    return m_aPairs.isNotEmpty ();
+    return m_aValues.isNotEmpty ();
   }
 
   /**
@@ -171,7 +197,7 @@ public class HttpForwardedHeader
    */
   public int size ()
   {
-    return m_aPairs.size ();
+    return m_aValues.size ();
   }
 
   /**
@@ -196,7 +222,7 @@ public class HttpForwardedHeader
   @Nullable
   public String getFor ()
   {
-    return getValue (PARAM_FOR);
+    return getFirstValue (PARAM_FOR);
   }
 
   /**
@@ -221,7 +247,7 @@ public class HttpForwardedHeader
   @Nullable
   public String getHost ()
   {
-    return getValue (PARAM_HOST);
+    return getFirstValue (PARAM_HOST);
   }
 
   /**
@@ -246,7 +272,7 @@ public class HttpForwardedHeader
   @Nullable
   public String getBy ()
   {
-    return getValue (PARAM_BY);
+    return getFirstValue (PARAM_BY);
   }
 
   /**
@@ -271,7 +297,7 @@ public class HttpForwardedHeader
   @Nullable
   public String getProto ()
   {
-    return getValue (PARAM_PROTO);
+    return getFirstValue (PARAM_PROTO);
   }
 
   /**
@@ -284,13 +310,6 @@ public class HttpForwardedHeader
    */
   private static boolean _needsQuoting (@Nonnull final String sValue)
   {
-    if (StringHelper.hasNoText (sValue))
-      return true;
-
-    // Check if it's a valid IPv6 address in brackets (special case)
-    if (sValue.startsWith ("[") && sValue.endsWith ("]"))
-      return false;
-
     // Check if it's a valid token
     return !RFC7230Helper.isValidToken (sValue);
   }
@@ -304,39 +323,44 @@ public class HttpForwardedHeader
   @Nonnull
   public String getAsString ()
   {
-    if (m_aPairs.isEmpty ())
+    if (m_aValues.isEmpty ())
       return "";
 
     final StringBuilder aSB = new StringBuilder ();
     boolean bFirst = true;
-    for (final var aEntry : m_aPairs.entrySet ())
+    for (final var aEntry : m_aValues.entrySet ())
     {
-      if (bFirst)
-        bFirst = false;
-      else
-        aSB.append (';');
+      final String sToken = aEntry.getKey ();
 
-      aSB.append (aEntry.getKey ()).append ('=');
-
-      final String sValue = aEntry.getValue ();
-      // Quote the value if it contains special characters or is not a valid token
-      if (_needsQuoting (sValue))
+      // For all values
+      for (final String sValue : aEntry.getValue ())
       {
-        aSB.append ('"');
-        // Escape quotes and backslashes in the value
-        for (int i = 0; i < sValue.length (); i++)
+        if (bFirst)
+          bFirst = false;
+        else
+          aSB.append (';');
+
+        aSB.append (sToken).append ('=');
+
+        // Quote the value if it contains special characters or is not a valid token
+        if (_needsQuoting (sValue))
         {
-          final char c = sValue.charAt (i);
-          if (c == '"' || c == '\\')
-            aSB.append ('\\');
-          aSB.append (c);
+          aSB.append ('"');
+          // Escape quotes and backslashes in the value
+          for (int i = 0; i < sValue.length (); i++)
+          {
+            final char c = sValue.charAt (i);
+            if (c == '"' || c == '\\')
+              aSB.append ('\\');
+            aSB.append (c);
+          }
+          aSB.append ('"');
         }
-        aSB.append ('"');
-      }
-      else
-      {
-        // Append plain value
-        aSB.append (sValue);
+        else
+        {
+          // Append plain value
+          aSB.append (sValue);
+        }
       }
     }
     return aSB.toString ();
@@ -351,18 +375,18 @@ public class HttpForwardedHeader
       return false;
 
     final HttpForwardedHeader rhs = (HttpForwardedHeader) o;
-    return m_aPairs.equals (rhs.m_aPairs);
+    return m_aValues.equals (rhs.m_aValues);
   }
 
   @Override
   public int hashCode ()
   {
-    return getClass ().hashCode () * 31 + m_aPairs.hashCode ();
+    return getClass ().hashCode () * 31 + m_aValues.hashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Pairs", m_aPairs).getToString ();
+    return new ToStringGenerator (this).append ("Pairs", m_aValues).getToString ();
   }
 }

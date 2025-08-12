@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.string.StringHelper;
+import com.helger.commons.text.util.ABNF;
 
 /**
  * Parser for RFC 7239 compliant "Forwarded" header values. This class can parse a forwarded-element
@@ -86,7 +87,7 @@ public final class HttpForwardedHeaderParser
     while (aContext.hasMore ())
     {
       final char c = aContext.getCurrentChar ();
-      if (!RFC7230Helper.isWhitespace (c))
+      if (!ABNF.isWSP (c))
         break;
       aContext.advance ();
     }
@@ -163,6 +164,19 @@ public final class HttpForwardedHeaderParser
   }
 
   /**
+   * Check if a character is valid to be escaped inside a quoted string.
+   *
+   * @param c
+   *        The character to check.
+   * @return <code>true</code> if valid, <code>false</code> otherwise.
+   */
+  private static boolean _isValidEscapedChar (final char c)
+  {
+    // According to RFC 7230, only certain characters can be escaped
+    return ABNF.isWSP (c) || ABNF.isVChar (c);
+  }
+
+  /**
    * Parse a quoted-string according to RFC 7230.
    *
    * @param aContext
@@ -197,13 +211,12 @@ public final class HttpForwardedHeaderParser
           if (!aContext.hasMore ())
           {
             // Incomplete escape sequence
-            LOGGER.warn ("Found incomplete escape sequence in Forwarded header value parsing");
+            LOGGER.warn ("Found incomplete escape sequence in HTTP 'Forwarded' header value parsing");
             return null;
           }
 
           final char cEscaped = aContext.getCurrentChar ();
-          // According to RFC 7230, only certain characters can be escaped
-          if (cEscaped == '"' || cEscaped == '\\')
+          if (_isValidEscapedChar (cEscaped))
           {
             aSB.append (cEscaped);
             aContext.advance ();
@@ -211,6 +224,9 @@ public final class HttpForwardedHeaderParser
           else
           {
             // Invalid escape sequence
+            LOGGER.warn ("Found invalid character '" +
+                         (int) cEscaped +
+                         "' in escape sequence in HTTP 'Forwarded' header value parsing");
             return null;
           }
         }
@@ -223,7 +239,9 @@ public final class HttpForwardedHeaderParser
           else
           {
             // Invalid character in quoted string
-            LOGGER.warn ("Found invalid character in quoted string on Forwarded header value parsing");
+            LOGGER.warn ("Found invalid character '" +
+                         (int) c +
+                         "' in quoted string of HTTP 'Forwarded' header value parsing");
             return null;
           }
     }
@@ -264,7 +282,8 @@ public final class HttpForwardedHeaderParser
    *        The result list to add the pair to. May not be <code>null</code>.
    * @return <code>true</code> if parsing succeeded, <code>false</code> otherwise.
    */
-  private static boolean _parseOptionalPair (@Nonnull final ParseContext aContext, @Nonnull final HttpForwardedHeader aResult)
+  private static boolean _parseOptionalPair (@Nonnull final ParseContext aContext,
+                                             @Nonnull final HttpForwardedHeader aResult)
   {
     _skipWhitespace (aContext);
 
@@ -300,9 +319,15 @@ public final class HttpForwardedHeaderParser
       aResult.addPair (sToken, sValue);
       return true;
     }
-    catch (final Exception ex)
+    catch (final RuntimeException ex)
     {
       // Invalid token according to RFC 7230
+      LOGGER.error ("Failed to store HTTP 'Forwarded' pair '" +
+                    sToken +
+                    "' and '" +
+                    sValue +
+                    "'. Technical details: " +
+                    ex.getMessage ());
       return false;
     }
   }
@@ -318,22 +343,23 @@ public final class HttpForwardedHeaderParser
   @Nullable
   public static HttpForwardedHeader parse (@Nullable final String sForwardedElement)
   {
+    final HttpForwardedHeader aResult = new HttpForwardedHeader ();
+
     if (StringHelper.hasNoText (sForwardedElement))
     {
       // Empty string returns empty list
-      return new HttpForwardedHeader ();
+      return aResult;
+    }
+
+    final String sTrimmed = sForwardedElement.trim ();
+    if (sTrimmed.isEmpty ())
+    {
+      // Empty but valid
+      return aResult;
     }
 
     try
     {
-      final HttpForwardedHeader aResult = new HttpForwardedHeader ();
-      final String sTrimmed = sForwardedElement.trim ();
-      if (sTrimmed.isEmpty ())
-      {
-        // Empty but valid
-        return aResult;
-      }
-
       final ParseContext aContext = new ParseContext (sTrimmed);
 
       // Parse first pair (optional)
@@ -345,7 +371,14 @@ public final class HttpForwardedHeaderParser
       {
         _skipWhitespace (aContext);
         if (!_expectChar (aContext, ';'))
+        {
+          LOGGER.warn ("Expected a ';' as separator when parsing HTTP 'Forwarded' header value. The problem is at index " +
+                       aContext.m_nPos +
+                       " of source string '" +
+                       sTrimmed +
+                       "'");
           return null;
+        }
         _skipWhitespace (aContext);
 
         if (!_parseOptionalPair (aContext, aResult))
@@ -357,7 +390,7 @@ public final class HttpForwardedHeaderParser
     catch (final Exception ex)
     {
       // Any parsing error results in null return
-      LOGGER.error ("Failed to parse HTTP 'Forwarded' header value", ex);
+      LOGGER.error ("Failed to parse HTTP 'Forwarded' header value '" + sTrimmed + "'", ex);
       return null;
     }
   }

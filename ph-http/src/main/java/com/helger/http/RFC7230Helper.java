@@ -88,9 +88,4 @@ public final class RFC7230Helper
         return false;
     return true;
   }
-
-  public static boolean isWhitespace (final char c)
-  {
-    return ABNF.isWSP (c);
-  }
 }

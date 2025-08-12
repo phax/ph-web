@@ -79,14 +79,14 @@ public final class HttpForwardedHeaderParserTest
     assertEquals (2, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
     assertEquals ("example.com", aResult.getHost ());
-    
+
     // Test with whitespace around semicolons
     aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1 ; host=example.com");
     assertNotNull (aResult);
     assertEquals (2, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
     assertEquals ("example.com", aResult.getHost ());
-    
+
     // Test with leading/trailing whitespace
     aResult = HttpForwardedHeaderParser.parse ("  for=192.168.1.1;host=example.com  ");
     assertNotNull (aResult);
@@ -122,11 +122,11 @@ public final class HttpForwardedHeaderParserTest
     HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("");
     assertNotNull (aResult);
     assertTrue (aResult.isEmpty ());
-    
+
     aResult = HttpForwardedHeaderParser.parse ("   ");
     assertNotNull (aResult);
     assertTrue (aResult.isEmpty ());
-    
+
     assertNotNull (HttpForwardedHeaderParser.parse (null));
     assertTrue (HttpForwardedHeaderParser.parse (null).isEmpty ());
   }
@@ -188,13 +188,6 @@ public final class HttpForwardedHeaderParserTest
   }
 
   @Test
-  public void testInvalidEscapeSequence ()
-  {
-    assertNull (HttpForwardedHeaderParser.parse ("for=\"192.168.1.1\\n\""));
-    assertNull (HttpForwardedHeaderParser.parse ("for=\"test\\x\""));
-  }
-
-  @Test
   public void testInvalidQuotedStringCharacters ()
   {
     // Control characters are not allowed in quoted strings
@@ -227,7 +220,7 @@ public final class HttpForwardedHeaderParserTest
     assertEquals ("203.0.113.43", aResult.getBy ());
 
     // Another RFC example
-    aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.43, for=198.51.100.17".split(",")[0]);
+    aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.43, for=198.51.100.17".split (",")[0]);
     assertNotNull (aResult);
     assertEquals (1, aResult.size ());
     assertEquals ("192.0.2.43", aResult.getFor ());
@@ -246,10 +239,10 @@ public final class HttpForwardedHeaderParserTest
     final String sOriginal = "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https";
     final HttpForwardedHeader aParsed = HttpForwardedHeaderParser.parse (sOriginal);
     assertNotNull (aParsed);
-    
+
     final String sRecreated = aParsed.getAsString ();
     assertNotNull (sRecreated);
-    
+
     // Parse the recreated string to verify it's still valid
     final HttpForwardedHeader aReparsed = HttpForwardedHeaderParser.parse (sRecreated);
     assertNotNull (aReparsed);

@@ -27,7 +27,7 @@ import com.helger.commons.lang.EnumHelper;
 
 /**
  * TLS cipher suite configuration modes according to
- * https://wiki.mozilla.org/Security/Server_Side_TLS from 2020-02-20
+ * https://wiki.mozilla.org/Security/Server_Side_TLS from 2020-02-20. Still valid on 2025-08-12.
  * <p>
  * See the tool MainMapCipherSuites for the cipher suite name mapping
  *
@@ -37,33 +37,28 @@ import com.helger.commons.lang.EnumHelper;
 public enum ETLSConfigurationMode_2020_02 implements IHasID <String>, ITLSConfigurationMode
 {
   /**
-   * For services with clients that support TLS 1.3 and don't need backward
-   * compatibility, the Modern configuration provides an extremely high level of
-   * security.<br>
-   * This configuration is compatible with Firefox 63, Android 10.0, Chrome 70,
-   * Edge 75, NOT on Internet Explorer, Java 11, OpenSSL 1.1.1, Opera 57, Safari
-   * 12.1.
+   * For services with clients that support TLS 1.3 and don't need backward compatibility, the
+   * Modern configuration provides an extremely high level of security.<br>
+   * This configuration is compatible with Firefox 63, Android 10.0, Chrome 70, Edge 75, NOT on
+   * Internet Explorer, Java 11, OpenSSL 1.1.1, Opera 57, Safari 12.1.
    */
   MODERN ("modern",
           new ETLSVersion [] { ETLSVersion.TLS_13 },
           new String [] { "TLS_AES_128_GCM_SHA256", "TLS_AES_256_GCM_SHA384", "TLS_CHACHA20_POLY1305_SHA256" }),
   /**
-   * For services that don't need compatibility with legacy clients, such as
-   * Windows XP or old versions of OpenSSL. This is the recommended
-   * configuration for the vast majority of services, as it is highly secure and
-   * compatible with nearly every client released in the last five (or more)
-   * years.<br>
-   * This configuration is compatible with Firefox 27, Android 4.4.2, Chrome 31,
-   * Edge 12, Internet Explorer 11, Java 8u31, OpenSSL 1.0.1, Opera 20, Safari
-   * 9.
+   * For services that don't need compatibility with legacy clients, such as Windows XP or old
+   * versions of OpenSSL. This is the recommended configuration for the vast majority of services,
+   * as it is highly secure and compatible with nearly every client released in the last five (or
+   * more) years.<br>
+   * This configuration is compatible with Firefox 27, Android 4.4.2, Chrome 31, Edge 12, Internet
+   * Explorer 11, Java 8u31, OpenSSL 1.0.1, Opera 20, Safari 9.
    */
   INTERMEDIATE ("intermediate",
                 new ETLSVersion [] { ETLSVersion.TLS_13, ETLSVersion.TLS_12 },
                 new String [] { // TLS 1.3
                                 "TLS_AES_128_GCM_SHA256",
                                 "TLS_AES_256_GCM_SHA384",
-                                "TLS_CHACHA20_POLY1305_SHA256",
-                                // TLS 1.2
+                                "TLS_CHACHA20_POLY1305_SHA256", // TLS 1.2
                                 "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
                                 "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
                                 "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
@@ -73,18 +68,17 @@ public enum ETLSConfigurationMode_2020_02 implements IHasID <String>, ITLSConfig
                                 "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
                                 "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384" }),
   /**
-   * This configuration is compatible with a number of very old clients, and
-   * should be used only as a last resort. <br>
-   * This configuration is compatible with Firefox 1, Android 2.3, Chrome 1,
-   * Edge 12, Internet Explorer 8, Java 6, OpenSSL 0.9.8, Opera 5, Safari 1.
+   * This configuration is compatible with a number of very old clients, and should be used only as
+   * a last resort. <br>
+   * This configuration is compatible with Firefox 1, Android 2.3, Chrome 1, Edge 12, Internet
+   * Explorer 8, Java 6, OpenSSL 0.9.8, Opera 5, Safari 1.
    */
   OLD ("old",
        new ETLSVersion [] { ETLSVersion.TLS_13, ETLSVersion.TLS_12, ETLSVersion.TLS_11, ETLSVersion.TLS_10 },
        new String [] { // TLS 1.3
                        "TLS_AES_128_GCM_SHA256",
                        "TLS_AES_256_GCM_SHA384",
-                       "TLS_CHACHA20_POLY1305_SHA256",
-                       // TLS 1.0-1.2
+                       "TLS_CHACHA20_POLY1305_SHA256", // TLS 1.0-1.2
                        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
                        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
                        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",

@@ -33,14 +33,15 @@ import com.helger.commons.lang.EnumHelper;
  *
  * @author Philip Helger
  * @since 9.0.5
+ * @deprecated Use {@link ETLSConfigurationMode_2020_02} instead
  */
+@Deprecated (forRemoval = true, since = "10.5.0")
 public enum ETLSConfigurationMode_2018_10 implements IHasID <String>, ITLSConfigurationMode
 {
   /**
-   * For services that don't need backward compatibility, the parameters below
-   * provide a higher level of security. This configuration is compatible with
-   * Firefox 27, Chrome 30, IE 11 on Windows 7, Edge, Opera 17, Safari 9,
-   * Android 5.0, and Java 8.
+   * For services that don't need backward compatibility, the parameters below provide a higher
+   * level of security. This configuration is compatible with Firefox 27, Chrome 30, IE 11 on
+   * Windows 7, Edge, Opera 17, Safari 9, Android 5.0, and Java 8.
    */
   MODERN ("modern",
           new ETLSVersion [] { ETLSVersion.TLS_12 },
@@ -55,10 +56,9 @@ public enum ETLSConfigurationMode_2018_10 implements IHasID <String>, ITLSConfig
                           "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
                           "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256" }),
   /**
-   * For services that don't need compatibility with legacy clients (mostly
-   * WinXP), but still need to support a wide range of clients, this
-   * configuration is recommended. It is is compatible with Firefox 1, Chrome 1,
-   * IE 7, Opera 5 and Safari 1.
+   * For services that don't need compatibility with legacy clients (mostly WinXP), but still need
+   * to support a wide range of clients, this configuration is recommended. It is is compatible with
+   * Firefox 1, Chrome 1, IE 7, Opera 5 and Safari 1.
    */
   INTERMEDIATE ("intermediate",
                 new ETLSVersion [] { ETLSVersion.TLS_12, ETLSVersion.TLS_11, ETLSVersion.TLS_10 },
@@ -92,8 +92,8 @@ public enum ETLSConfigurationMode_2018_10 implements IHasID <String>, ITLSConfig
                                 "TLS_RSA_WITH_AES_256_CBC_SHA",
                                 "TLS_RSA_WITH_3DES_EDE_CBC_SHA" }),
   /**
-   * This is the old ciphersuite that works with all clients back to Windows
-   * XP/IE6. It should be used as a last resort only.
+   * This is the old ciphersuite that works with all clients back to Windows XP/IE6. It should be
+   * used as a last resort only.
    */
   OLD ("old",
        new ETLSVersion [] { ETLSVersion.TLS_12, ETLSVersion.TLS_11, ETLSVersion.TLS_10, ETLSVersion.SSL_V3 },

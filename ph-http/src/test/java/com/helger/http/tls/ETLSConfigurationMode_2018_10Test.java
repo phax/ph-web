@@ -31,6 +31,7 @@ import com.helger.commons.string.StringHelper;
  *
  * @author Philip Helger
  */
+@Deprecated (forRemoval = true, since = "10.5.0")
 public final class ETLSConfigurationMode_2018_10Test
 {
   @Test
@@ -50,7 +51,7 @@ public final class ETLSConfigurationMode_2018_10Test
       assertTrue (e.getAllTLSVersionIDsAsArray ().length > 0);
       assertEquals (e.getAllTLSVersionIDs ().size (), e.getAllTLSVersionIDsAsArray ().length);
     }
-    assertNull (ETLSConfigurationMode_2020_02.getFromIDOrNull ("bla"));
-    assertNull (ETLSConfigurationMode_2020_02.getFromIDOrNull (null));
+    assertNull (ETLSConfigurationMode_2018_10.getFromIDOrNull ("bla"));
+    assertNull (ETLSConfigurationMode_2018_10.getFromIDOrNull (null));
   }
 }

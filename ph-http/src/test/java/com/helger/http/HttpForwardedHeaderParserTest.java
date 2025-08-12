@@ -23,6 +23,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.helger.commons.mock.CommonsTestHelper;
+
 /**
  * Test class for {@link HttpForwardedHeaderParser}.
  *
@@ -236,19 +238,26 @@ public final class HttpForwardedHeaderParserTest
   public void testRoundTripConversion ()
   {
     // Test that parsing and then converting back to string works
-    final String sOriginal = "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https";
-    final HttpForwardedHeader aParsed = HttpForwardedHeaderParser.parse (sOriginal);
-    assertNotNull (aParsed);
+    for (final String sOriginal : new String [] { "for=\"192.168.1.1:8080\"",
+                                                  "for=\"192.168.1.1:8080\";host=\"example.com with spaces\"",
+                                                  "for=\"192.168.1.1:8080\";host=example.com;proto=https",
+                                                  "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https",
+                                                  "for=\"192.168.1.1:8080\";host=\"example.com with spaces\";proto=https;custom1=value1" })
+    {
+      // Parse
+      final HttpForwardedHeader aParsed = HttpForwardedHeaderParser.parse (sOriginal);
+      assertNotNull (aParsed);
 
-    final String sRecreated = aParsed.getAsString ();
-    assertNotNull (sRecreated);
+      // Format
+      final String sRecreated = aParsed.getAsString ();
+      assertNotNull (sRecreated);
 
-    // Parse the recreated string to verify it's still valid
-    final HttpForwardedHeader aReparsed = HttpForwardedHeaderParser.parse (sRecreated);
-    assertNotNull (aReparsed);
-    assertEquals (aParsed.size (), aReparsed.size ());
-    assertEquals (aParsed.getFor (), aReparsed.getFor ());
-    assertEquals (aParsed.getHost (), aReparsed.getHost ());
-    assertEquals (aParsed.getProto (), aReparsed.getProto ());
+      // Parse the recreated string to verify it's still valid
+      final HttpForwardedHeader aReparsed = HttpForwardedHeaderParser.parse (sRecreated);
+      assertNotNull (aReparsed);
+
+      // Check they are equal
+      CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aParsed, aReparsed);
+    }
   }
 }

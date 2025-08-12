@@ -36,45 +36,45 @@ public final class HttpForwardedHeaderHopTest
   @Test
   public void testBasicFunctionality ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    assertTrue (aList.isEmpty ());
-    assertFalse (aList.isNotEmpty ());
-    assertEquals (0, aList.size ());
-    assertEquals ("", aList.getAsString ());
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    assertTrue (aHop.isEmpty ());
+    assertFalse (aHop.isNotEmpty ());
+    assertEquals (0, aHop.size ());
+    assertEquals ("", aHop.getAsString ());
 
     // Add a basic pair
-    aList.setFor ("192.168.1.1");
-    assertFalse (aList.isEmpty ());
-    assertTrue (aList.isNotEmpty ());
-    assertEquals (1, aList.size ());
-    assertTrue (aList.containsToken (HttpForwardedHeaderHop.PARAM_FOR));
-    assertEquals ("192.168.1.1", aList.getFor ());
-    assertEquals ("for=192.168.1.1", aList.getAsString ());
+    aHop.setFor ("192.168.1.1");
+    assertFalse (aHop.isEmpty ());
+    assertTrue (aHop.isNotEmpty ());
+    assertEquals (1, aHop.size ());
+    assertTrue (aHop.containsFor ());
+    assertEquals ("192.168.1.1", aHop.getFor ());
+    assertEquals ("for=192.168.1.1", aHop.getAsString ());
   }
 
   @Test
   public void testStandardParameters ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
 
     // Test "for" parameter
-    aList.setFor ("192.168.1.1");
-    assertEquals ("192.168.1.1", aList.getFor ());
+    aHop.setFor ("192.168.1.1");
+    assertEquals ("192.168.1.1", aHop.getFor ());
 
     // Test "host" parameter
-    aList.setHost ("example.com");
-    assertEquals ("example.com", aList.getHost ());
+    aHop.setHost ("example.com");
+    assertEquals ("example.com", aHop.getHost ());
 
     // Test "by" parameter
-    aList.setBy ("proxy.example.com");
-    assertEquals ("proxy.example.com", aList.getBy ());
+    aHop.setBy ("proxy.example.com");
+    assertEquals ("proxy.example.com", aHop.getBy ());
 
     // Test "proto" parameter
-    aList.setProto ("https");
-    assertEquals ("https", aList.getProto ());
+    aHop.setProto ("https");
+    assertEquals ("https", aHop.getProto ());
 
     // Check string representation
-    final String sResult = aList.getAsString ();
+    final String sResult = aHop.getAsString ();
     assertTrue (sResult.contains ("for=192.168.1.1"));
     assertTrue (sResult.contains ("host=example.com"));
     assertTrue (sResult.contains ("by=proxy.example.com"));
@@ -84,13 +84,13 @@ public final class HttpForwardedHeaderHopTest
   @Test
   public void testQuotedValues ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
 
     // Add a value that needs quoting (contains colon which is not a valid token char)
-    aList.setFor ("192.168.1.1:8080");
-    aList.setHost ("example.com with spaces");
+    aHop.setFor ("192.168.1.1:8080");
+    aHop.setHost ("example.com with spaces");
 
-    final String sResult = aList.getAsString ();
+    final String sResult = aHop.getAsString ();
     // Colon is not a valid token character, so the IP:port should be quoted
     assertTrue (sResult.contains ("for=\"192.168.1.1:8080\""));
     assertTrue (sResult.contains ("host=\"example.com with spaces\""));
@@ -99,89 +99,89 @@ public final class HttpForwardedHeaderHopTest
   @Test
   public void testIPv6Address ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
 
     // IPv6 addresses in brackets should not be quoted
-    aList.setFor ("[2001:db8::1]");
-    assertEquals ("for=\"[2001:db8::1]\"", aList.getAsString ());
+    aHop.setFor ("[2001:db8::1]");
+    assertEquals ("for=\"[2001:db8::1]\"", aHop.getAsString ());
   }
 
   @Test
   public void testRemovePair ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.setFor ("192.168.1.1");
-    aList.setHost ("example.com");
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.setFor ("192.168.1.1");
+    aHop.setHost ("example.com");
 
-    assertEquals (2, aList.size ());
-    assertTrue (aList.removePair (HttpForwardedHeaderHop.PARAM_FOR).isChanged ());
-    assertEquals (1, aList.size ());
-    assertFalse (aList.containsToken (HttpForwardedHeaderHop.PARAM_FOR));
-    assertNull (aList.getFirstValue (HttpForwardedHeaderHop.PARAM_FOR));
+    assertEquals (2, aHop.size ());
+    assertTrue (aHop.removePair (HttpForwardedHeaderHop.PARAM_FOR).isChanged ());
+    assertEquals (1, aHop.size ());
+    assertFalse (aHop.containsFor ());
+    assertNull (aHop.getFor ());
 
     // Remove non-existing key
-    assertTrue (aList.removePair ("nonexisting").isUnchanged ());
+    assertTrue (aHop.removePair ("nonexisting").isUnchanged ());
   }
 
   @Test
   public void testRemoveAll ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.setFor ("192.168.1.1");
-    aList.setHost ("example.com");
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.setFor ("192.168.1.1");
+    aHop.setHost ("example.com");
 
-    assertEquals (2, aList.size ());
-    aList.removeAll ();
-    assertEquals (0, aList.size ());
-    assertTrue (aList.isEmpty ());
+    assertEquals (2, aHop.size ());
+    aHop.removeAll ();
+    assertEquals (0, aHop.size ());
+    assertTrue (aHop.isEmpty ());
   }
 
   @Test
   public void testGetAllTokensAndPairs ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.setFor ("192.168.1.1");
-    aList.setHost ("example.com");
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.setFor ("192.168.1.1");
+    aHop.setHost ("example.com");
 
-    assertEquals (2, aList.getAllTokens ().size ());
-    assertTrue (aList.getAllTokens ().contains (HttpForwardedHeaderHop.PARAM_FOR));
-    assertTrue (aList.getAllTokens ().contains (HttpForwardedHeaderHop.PARAM_HOST));
+    assertEquals (2, aHop.getAllTokens ().size ());
+    assertTrue (aHop.getAllTokens ().contains (HttpForwardedHeaderHop.PARAM_FOR));
+    assertTrue (aHop.getAllTokens ().contains (HttpForwardedHeaderHop.PARAM_HOST));
 
-    assertEquals (2, aList.getAllPairs ().size ());
-    assertEquals ("192.168.1.1", aList.getAllPairs ().get (HttpForwardedHeaderHop.PARAM_FOR));
-    assertEquals ("example.com", aList.getAllPairs ().get (HttpForwardedHeaderHop.PARAM_HOST));
+    assertEquals (2, aHop.getAllPairs ().size ());
+    assertEquals ("192.168.1.1", aHop.getAllPairs ().get (HttpForwardedHeaderHop.PARAM_FOR));
+    assertEquals ("example.com", aHop.getAllPairs ().get (HttpForwardedHeaderHop.PARAM_HOST));
   }
 
   @Test
   public void testToString ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.setProto ("https");
-    aList.setFor ("192.168.1.1");
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.setProto ("https");
+    aHop.setFor ("192.168.1.1");
 
-    assertNotNull (aList.toString ());
+    assertNotNull (aHop.toString ());
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testInvalidToken ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
     // This should fail because "for=" contains an invalid character
-    aList.addPair ("for=", "value");
+    aHop.addPair ("for=", "value");
   }
 
   @Test (expected = IllegalArgumentException.class)
   public void testEmptyToken ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.addPair ("", "value");
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.addPair ("", "value");
   }
 
   @Test (expected = NullPointerException.class)
   public void testNullValue ()
   {
-    final HttpForwardedHeaderHop aList = new HttpForwardedHeaderHop ();
-    aList.setFor (null);
+    final HttpForwardedHeaderHop aHop = new HttpForwardedHeaderHop ();
+    aHop.setFor (null);
   }
 
   @Test

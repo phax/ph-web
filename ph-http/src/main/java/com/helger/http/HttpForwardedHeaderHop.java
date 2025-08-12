@@ -112,6 +112,46 @@ public class HttpForwardedHeaderHop
   }
 
   /**
+   * Check if the "for" token is present.
+   *
+   * @return <code>true</code> if the token is present, <code>false</code> otherwise.
+   */
+  public boolean containsFor ()
+  {
+    return containsToken (PARAM_FOR);
+  }
+
+  /**
+   * Check if the "host" token is present.
+   *
+   * @return <code>true</code> if the token is present, <code>false</code> otherwise.
+   */
+  public boolean containsHost ()
+  {
+    return containsToken (PARAM_HOST);
+  }
+
+  /**
+   * Check if the "by" token is present.
+   *
+   * @return <code>true</code> if the token is present, <code>false</code> otherwise.
+   */
+  public boolean containsBy ()
+  {
+    return containsToken (PARAM_BY);
+  }
+
+  /**
+   * Check if the "proto" token is present.
+   *
+   * @return <code>true</code> if the token is present, <code>false</code> otherwise.
+   */
+  public boolean containsProto ()
+  {
+    return containsToken (PARAM_PROTO);
+  }
+
+  /**
    * Remove the specified token and its value.
    *
    * @param sToken

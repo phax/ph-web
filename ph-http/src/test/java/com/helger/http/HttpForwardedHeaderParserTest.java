@@ -220,7 +220,7 @@ public final class HttpForwardedHeaderParserTest
     assertEquals ("203.0.113.43", aResult.getBy ());
 
     // Another RFC example
-    aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.43, for=198.51.100.17".split (",")[0]);
+    aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.43");
     assertNotNull (aResult);
     assertEquals (1, aResult.size ());
     assertEquals ("192.0.2.43", aResult.getFor ());

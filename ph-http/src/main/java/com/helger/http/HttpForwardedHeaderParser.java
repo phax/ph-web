@@ -23,6 +23,7 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.util.ABNF;
 
@@ -44,6 +45,8 @@ public final class HttpForwardedHeaderParser
 {
   /**
    * Internal helper class for parsing context.
+   *
+   * @author Philip Helger
    */
   private static final class ParseContext
   {
@@ -68,6 +71,12 @@ public final class HttpForwardedHeaderParser
     void advance ()
     {
       m_nPos++;
+    }
+
+    @Nonnull
+    String getErrorLocationDetails ()
+    {
+      return "The problem is at index " + m_nPos + " of text '" + new String (m_aInput) + "'";
     }
   }
 
@@ -121,11 +130,14 @@ public final class HttpForwardedHeaderParser
 
     final String sToken = new String (aContext.m_aInput, nStart, aContext.m_nPos - nStart);
 
-    // Validate the complete token
-    if (!RFC7230Helper.isValidToken (sToken))
+    if (GlobalDebug.isDebugMode ())
     {
-      LOGGER.warn ("Found internal inconsistency parsing '" + sToken + "' as an RFC 7230 token");
-      return null;
+      // Validate the complete token again
+      if (!RFC7230Helper.isValidToken (sToken))
+      {
+        LOGGER.warn ("Found internal inconsistency parsing '" + sToken + "' as an RFC 7230 token");
+        return null;
+      }
     }
 
     return sToken;
@@ -150,20 +162,6 @@ public final class HttpForwardedHeaderParser
   }
 
   /**
-   * Check if a character is valid inside a quoted string.
-   *
-   * @param c
-   *        The character to check.
-   * @return <code>true</code> if valid, <code>false</code> otherwise.
-   */
-  private static boolean _isValidQuotedStringChar (final char c)
-  {
-    // Allow most printable ASCII characters except quote and backslash
-    // Control characters (0-31 and 127) are not allowed
-    return c >= 32 && c <= 126 && c != '"' && c != '\\';
-  }
-
-  /**
    * Check if a character is valid to be escaped inside a quoted string.
    *
    * @param c
@@ -177,6 +175,20 @@ public final class HttpForwardedHeaderParser
   }
 
   /**
+   * Check if a character is valid inside a quoted string.
+   *
+   * @param c
+   *        The character to check.
+   * @return <code>true</code> if valid, <code>false</code> otherwise.
+   */
+  private static boolean _isValidQuotedStringChar (final char c)
+  {
+    // Allow most printable ASCII characters except quote and backslash
+    // Control characters (0-31 and 127) are not allowed
+    return ABNF.isWSP (c) || (ABNF.isVChar (c) && !ABNF.isDQuote (c) && !RFC7230Helper.isBackslash (c));
+  }
+
+  /**
    * Parse a quoted-string according to RFC 7230.
    *
    * @param aContext
@@ -187,7 +199,7 @@ public final class HttpForwardedHeaderParser
   @Nullable
   private static String _parseQuotedString (@Nonnull final ParseContext aContext)
   {
-    if (!aContext.hasMore () || aContext.getCurrentChar () != '"')
+    if (!aContext.hasMore () || !ABNF.isDQuote (aContext.getCurrentChar ()))
       return null;
 
     // Skip opening quote
@@ -197,21 +209,22 @@ public final class HttpForwardedHeaderParser
     while (aContext.hasMore ())
     {
       final char c = aContext.getCurrentChar ();
-      if (c == '"')
+      if (ABNF.isDQuote (c))
       {
         // End of quoted string
         aContext.advance ();
         return aSB.toString ();
       }
       else
-        if (c == '\\')
+        if (RFC7230Helper.isBackslash (c))
         {
           // Escape sequence
           aContext.advance ();
           if (!aContext.hasMore ())
           {
             // Incomplete escape sequence
-            LOGGER.warn ("Found incomplete escape sequence in HTTP 'Forwarded' header value parsing");
+            LOGGER.warn ("Found incomplete escape sequence in HTTP 'Forwarded' header value parsing. " +
+                         aContext.getErrorLocationDetails ());
             return null;
           }
 
@@ -226,7 +239,8 @@ public final class HttpForwardedHeaderParser
             // Invalid escape sequence
             LOGGER.warn ("Found invalid character '" +
                          (int) cEscaped +
-                         "' in escape sequence in HTTP 'Forwarded' header value parsing");
+                         "' in escape sequence in HTTP 'Forwarded' header value parsing. " +
+                         aContext.getErrorLocationDetails ());
             return null;
           }
         }
@@ -241,7 +255,8 @@ public final class HttpForwardedHeaderParser
             // Invalid character in quoted string
             LOGGER.warn ("Found invalid character '" +
                          (int) c +
-                         "' in quoted string of HTTP 'Forwarded' header value parsing");
+                         "' in quoted string of HTTP 'Forwarded' header value parsing. " +
+                         aContext.getErrorLocationDetails ());
             return null;
           }
     }
@@ -264,7 +279,7 @@ public final class HttpForwardedHeaderParser
       return null;
 
     final char c = aContext.getCurrentChar ();
-    if (c == '"')
+    if (ABNF.isDQuote (c))
     {
       // Parse quoted-string
       return _parseQuotedString (aContext);
@@ -372,11 +387,8 @@ public final class HttpForwardedHeaderParser
         _skipWhitespace (aContext);
         if (!_expectChar (aContext, ';'))
         {
-          LOGGER.warn ("Expected a ';' as separator when parsing HTTP 'Forwarded' header value. The problem is at index " +
-                       aContext.m_nPos +
-                       " of source string '" +
-                       sTrimmed +
-                       "'");
+          LOGGER.warn ("Expected a ';' as separator when parsing HTTP 'Forwarded' header value. " +
+                       aContext.getErrorLocationDetails ());
           return null;
         }
         _skipWhitespace (aContext);

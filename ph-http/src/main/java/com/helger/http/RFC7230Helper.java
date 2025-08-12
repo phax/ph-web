@@ -88,4 +88,9 @@ public final class RFC7230Helper
         return false;
     return true;
   }
+
+  public static boolean isBackslash (final char c)
+  {
+    return c == '\\';
+  }
 }

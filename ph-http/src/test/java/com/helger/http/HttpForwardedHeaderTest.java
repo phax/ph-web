@@ -87,8 +87,8 @@ public final class HttpForwardedHeaderTest
     final HttpForwardedHeader aList = new HttpForwardedHeader ();
 
     // Add a value that needs quoting (contains colon which is not a valid token char)
-    aList.addPair (HttpForwardedHeader.PARAM_FOR, "192.168.1.1:8080");
-    aList.addPair (HttpForwardedHeader.PARAM_HOST, "example.com with spaces");
+    aList.setFor ("192.168.1.1:8080");
+    aList.setHost ("example.com with spaces");
 
     final String sResult = aList.getAsString ();
     // Colon is not a valid token character, so the IP:port should be quoted
@@ -110,8 +110,8 @@ public final class HttpForwardedHeaderTest
   public void testRemovePair ()
   {
     final HttpForwardedHeader aList = new HttpForwardedHeader ();
-    aList.addPair (HttpForwardedHeader.PARAM_FOR, "192.168.1.1");
-    aList.addPair (HttpForwardedHeader.PARAM_HOST, "example.com");
+    aList.setFor ("192.168.1.1");
+    aList.setHost ("example.com");
 
     assertEquals (2, aList.size ());
     assertEquals ("192.168.1.1", aList.removePair (HttpForwardedHeader.PARAM_FOR));
@@ -127,8 +127,8 @@ public final class HttpForwardedHeaderTest
   public void testRemoveAll ()
   {
     final HttpForwardedHeader aList = new HttpForwardedHeader ();
-    aList.addPair (HttpForwardedHeader.PARAM_FOR, "192.168.1.1");
-    aList.addPair (HttpForwardedHeader.PARAM_HOST, "example.com");
+    aList.setFor ("192.168.1.1");
+    aList.setHost ("example.com");
 
     assertEquals (2, aList.size ());
     aList.removeAll ();
@@ -140,8 +140,8 @@ public final class HttpForwardedHeaderTest
   public void testGetAllTokensAndPairs ()
   {
     final HttpForwardedHeader aList = new HttpForwardedHeader ();
-    aList.addPair (HttpForwardedHeader.PARAM_FOR, "192.168.1.1");
-    aList.addPair (HttpForwardedHeader.PARAM_HOST, "example.com");
+    aList.setFor ("192.168.1.1");
+    aList.setHost ("example.com");
 
     assertEquals (2, aList.getAllTokens ().size ());
     assertTrue (aList.getAllTokens ().contains (HttpForwardedHeader.PARAM_FOR));
@@ -181,7 +181,7 @@ public final class HttpForwardedHeaderTest
   public void testNullValue ()
   {
     final HttpForwardedHeader aList = new HttpForwardedHeader ();
-    aList.addPair (HttpForwardedHeader.PARAM_FOR, null);
+    aList.setFor (null);
   }
 
   @Test

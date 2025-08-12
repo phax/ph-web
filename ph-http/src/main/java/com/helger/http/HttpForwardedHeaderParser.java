@@ -23,19 +23,26 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.debug.GlobalDebug;
 import com.helger.commons.string.StringHelper;
 import com.helger.commons.text.util.ABNF;
 
 /**
  * Parser for RFC 7239 compliant "Forwarded" header values. This class can parse a forwarded-element
- * string into a {@link HttpForwardedHeaderHop}. The syntax according to RFC 7239 is:
+ * string into a {@link HttpForwardedHeaderHop} or multiple forwarded elements separated by commas
+ * into a list of {@link HttpForwardedHeaderHop} objects. The syntax according to RFC 7239 is:
  *
  * <pre>
+ * Forwarded         = 1#forwarded-element
  * forwarded-element = [ forwarded-pair ] *( ";" [ forwarded-pair ] )
  * forwarded-pair    = token "=" value
  * value             = token / quoted-string
  * </pre>
+ *
+ * Multiple forwarded elements are separated by commas to represent multiple hops.
  *
  * @author Philip Helger
  * @since 10.5.1
@@ -82,7 +89,7 @@ public final class HttpForwardedHeaderParser
              " (char '" +
              c +
              "' / " +
-             ((int) c) +
+             (int) c +
              ") of text '" +
              new String (m_aInput) +
              "'";
@@ -248,9 +255,9 @@ public final class HttpForwardedHeaderParser
           else
           {
             // Invalid escape sequence
-            LOGGER.warn ("Found invalid character '" +
+            LOGGER.warn ("Found invalid character (" +
                          (int) cEscaped +
-                         "' in escape sequence in HTTP 'Forwarded' header value parsing. " +
+                         ") in escape sequence in HTTP 'Forwarded' header value parsing. " +
                          aContext.getErrorLocationDetails ());
             return null;
           }
@@ -264,9 +271,9 @@ public final class HttpForwardedHeaderParser
           else
           {
             // Invalid character in quoted string
-            LOGGER.warn ("Found invalid character '" +
+            LOGGER.warn ("Found invalid character (" +
                          (int) c +
-                         "' in quoted string of HTTP 'Forwarded' header value parsing. " +
+                         ") in quoted string of HTTP 'Forwarded' header value parsing. " +
                          aContext.getErrorLocationDetails ());
             return null;
           }
@@ -299,6 +306,13 @@ public final class HttpForwardedHeaderParser
     return _parseToken (aContext);
   }
 
+  enum EPairParsingResult
+  {
+    SUCCESS,
+    ERROR,
+    EOI
+  }
+
   /**
    * Parse an optional forwarded-pair.
    *
@@ -308,34 +322,37 @@ public final class HttpForwardedHeaderParser
    *        The result list to add the pair to. May not be <code>null</code>.
    * @return <code>true</code> if parsing succeeded, <code>false</code> otherwise.
    */
-  private static boolean _parseOptionalPair (@Nonnull final ParseContext aContext,
-                                             @Nonnull final HttpForwardedHeaderHop aResult)
+  private static EPairParsingResult _parseOptionalPair (@Nonnull final ParseContext aContext,
+                                                        @Nonnull final HttpForwardedHeaderHop aResult)
   {
     _skipWhitespace (aContext);
 
     if (!aContext.hasMore ())
     {
       // Empty pair is allowed
-      return true;
+      return EPairParsingResult.EOI;
     }
 
     // Parse token
     final String sToken = _parseToken (aContext);
     if (sToken == null)
-      return false;
+    {
+      // It's e.g. an empty token (as in ";;")
+      return EPairParsingResult.EOI;
+    }
 
     _skipWhitespace (aContext);
 
     // Expect '='
     if (!_expectChar (aContext, '='))
-      return false;
+      return EPairParsingResult.ERROR;
 
     _skipWhitespace (aContext);
 
     // Parse value (token or quoted-string)
     final String sValue = _parseValue (aContext);
     if (sValue == null)
-      return false;
+      return EPairParsingResult.ERROR;
 
     _skipWhitespace (aContext);
 
@@ -343,7 +360,7 @@ public final class HttpForwardedHeaderParser
     try
     {
       aResult.addPair (sToken, sValue);
-      return true;
+      return EPairParsingResult.SUCCESS;
     }
     catch (final RuntimeException ex)
     {
@@ -354,7 +371,7 @@ public final class HttpForwardedHeaderParser
                     sValue +
                     "'. Technical details: " +
                     ex.getMessage ());
-      return false;
+      return EPairParsingResult.ERROR;
     }
   }
 
@@ -363,33 +380,32 @@ public final class HttpForwardedHeaderParser
    *
    * @param sForwardedElement
    *        The forwarded-element string to parse. May be <code>null</code>.
-   * @return A new {@link HttpForwardedHeaderHop} containing the parsed pairs, or <code>null</code> if
-   *         parsing failed or the input was invalid.
+   * @return A new {@link HttpForwardedHeaderHop} containing the parsed pairs, or <code>null</code>
+   *         if parsing failed or the input was invalid.
    */
   @Nullable
-  public static HttpForwardedHeaderHop parse (@Nullable final String sForwardedElement)
+  public static HttpForwardedHeaderHop parseSingleHop (@Nullable final String sForwardedElement)
   {
-    final HttpForwardedHeaderHop aResult = new HttpForwardedHeaderHop ();
-
+    final HttpForwardedHeaderHop ret = new HttpForwardedHeaderHop ();
     if (StringHelper.hasNoText (sForwardedElement))
     {
       // Empty string returns empty list
-      return aResult;
+      return ret;
     }
 
     final String sTrimmed = sForwardedElement.trim ();
     if (sTrimmed.isEmpty ())
     {
       // Empty but valid
-      return aResult;
+      return ret;
     }
 
     try
     {
       final ParseContext aContext = new ParseContext (sTrimmed);
 
-      // Parse first pair (optional)
-      if (!_parseOptionalPair (aContext, aResult))
+      // Parse first pair (mandatory)
+      if (_parseOptionalPair (aContext, ret) != EPairParsingResult.SUCCESS)
         return null;
 
       // Parse subsequent pairs preceded by semicolons
@@ -404,11 +420,12 @@ public final class HttpForwardedHeaderParser
         }
         _skipWhitespace (aContext);
 
-        if (!_parseOptionalPair (aContext, aResult))
+        // Any additional pair is optional - so no need to break
+        if (_parseOptionalPair (aContext, ret) == EPairParsingResult.ERROR)
           return null;
       }
 
-      return aResult;
+      return ret;
     }
     catch (final Exception ex)
     {
@@ -416,5 +433,155 @@ public final class HttpForwardedHeaderParser
       LOGGER.error ("Failed to parse HTTP 'Forwarded' header value '" + sTrimmed + "'", ex);
       return null;
     }
+  }
+
+  /**
+   * Split a forwarded header value into individual forwarded elements by commas, while respecting
+   * quoted strings that may contain commas.
+   *
+   * @param sHeaderValue
+   *        The header value to split. May not be <code>null</code>.
+   * @return A list of individual forwarded elements.
+   */
+  @Nonnull
+  private static ICommonsList <String> _splitForwardedHops (@Nonnull final String sHeaderValue)
+  {
+    final ICommonsList <String> ret = new CommonsArrayList <> ();
+
+    final ParseContext aContext = new ParseContext (sHeaderValue);
+    final StringBuilder aCurrentElement = new StringBuilder ();
+
+    while (aContext.hasMore ())
+    {
+      final char c = aContext.getCurrentChar ();
+
+      if (c == ',')
+      {
+        // Found a comma - end of current element
+        final String sElement = aCurrentElement.toString ().trim ();
+        if (sElement.length () > 0)
+        {
+          ret.add (sElement);
+        }
+        aCurrentElement.setLength (0);
+        aContext.advance ();
+      }
+      else
+        if (ABNF.isDQuote (c))
+        {
+          // Found a quote - need to consume the entire quoted string
+          aCurrentElement.append (c);
+          aContext.advance ();
+
+          while (aContext.hasMore ())
+          {
+            final char cQuoted = aContext.getCurrentChar ();
+            aCurrentElement.append (cQuoted);
+            aContext.advance ();
+
+            if (ABNF.isDQuote (cQuoted))
+            {
+              // End of quoted string
+              break;
+            }
+            else
+              if (RFC7230Helper.isBackslash (cQuoted) && aContext.hasMore ())
+              {
+                // Escape sequence - consume next character as well
+                final char cEscaped = aContext.getCurrentChar ();
+                aCurrentElement.append (cEscaped);
+                aContext.advance ();
+              }
+          }
+        }
+        else
+        {
+          // Regular character
+          aCurrentElement.append (c);
+          aContext.advance ();
+        }
+    }
+
+    // Add the last element
+    final String sLastElement = aCurrentElement.toString ().trim ();
+    if (sLastElement.length () > 0)
+      ret.add (sLastElement);
+
+    return ret;
+  }
+
+  /**
+   * Parse a complete Forwarded header value that may contain multiple forwarded elements separated
+   * by commas according to RFC 7239. Each forwarded element represents one hop in the request
+   * chain.
+   *
+   * @param sForwardedHeaderValue
+   *        The complete Forwarded header value to parse. May be <code>null</code>.
+   * @return A list of {@link HttpForwardedHeaderHop} objects representing each hop, or
+   *         <code>null</code> if parsing failed. An empty list is returned for empty but valid
+   *         input.
+   */
+  @Nullable
+  @ReturnsMutableCopy
+  public static ICommonsList <HttpForwardedHeaderHop> parseMultipleHops (@Nullable final String sForwardedHeaderValue)
+  {
+    final ICommonsList <HttpForwardedHeaderHop> ret = new CommonsArrayList <> ();
+    if (StringHelper.hasNoText (sForwardedHeaderValue))
+    {
+      // Empty string returns empty list
+      return ret;
+    }
+
+    final String sTrimmed = sForwardedHeaderValue.trim ();
+    if (sTrimmed.isEmpty ())
+    {
+      // Empty but valid
+      return ret;
+    }
+
+    try
+    {
+      // Split by commas to get individual forwarded elements
+      // Note: We need to be careful about commas inside quoted strings
+      final ICommonsList <String> aHops = _splitForwardedHops (sTrimmed);
+      for (final String sHop : aHops)
+      {
+        final HttpForwardedHeaderHop aParsedHop = parseSingleHop (sHop);
+        if (aParsedHop == null)
+        {
+          // Parsing failed for one element
+          LOGGER.warn ("Failed to parse single hop of HTTP 'Forwarded' header value: '" + sHop + "'");
+          return null;
+        }
+        if (aParsedHop.isNotEmpty ())
+          ret.add (aParsedHop);
+      }
+
+      return ret;
+    }
+    catch (final Exception ex)
+    {
+      // Any parsing error results in null return
+      LOGGER.error ("Failed to parse HTTP 'Forwarded' header value '" + sTrimmed + "'", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Parse a complete Forwarded header value that may contain multiple forwarded elements separated
+   * by commas according to RFC 7239. Each forwarded element represents one hop in the request
+   * chain. Return only the last (and most relevant hop)
+   *
+   * @param sForwardedHeaderValue
+   *        The complete Forwarded header value to parse. May be <code>null</code>.
+   * @return A {@link HttpForwardedHeaderHop} object representing the last hop, or <code>null</code>
+   *         if parsing failed.
+   */
+  @Nullable
+  @ReturnsMutableCopy
+  public static HttpForwardedHeaderHop parseAndGetLastHop (@Nullable final String sForwardedHeaderValue)
+  {
+    final var aHops = parseMultipleHops (sForwardedHeaderValue);
+    return aHops == null ? null : aHops.getLastOrNull ();
   }
 }

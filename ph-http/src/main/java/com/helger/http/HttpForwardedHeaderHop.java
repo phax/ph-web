@@ -22,6 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
@@ -54,6 +57,8 @@ public class HttpForwardedHeaderHop
   /** Standard "proto" parameter name as defined in RFC 7239 */
   public static final String PARAM_PROTO = "proto";
 
+  private static final Logger LOGGER = LoggerFactory.getLogger (HttpForwardedHeaderHop.class);
+
   private final ICommonsOrderedMap <String, String> m_aPairs = new CommonsLinkedHashMap <> ();
 
   public HttpForwardedHeaderHop ()
@@ -71,7 +76,11 @@ public class HttpForwardedHeaderHop
     ValueEnforcer.notEmpty (sToken, "Token");
     ValueEnforcer.isTrue ( () -> RFC7230Helper.isValidToken (sToken), "Token is not valid according to RFC 7230");
     ValueEnforcer.notNull (sValue, "Value");
-    m_aPairs.put (_getUnifiedToken (sToken), sValue);
+
+    final String sUnifiedToken = _getUnifiedToken (sToken);
+    if (m_aPairs.containsKey (sUnifiedToken))
+      LOGGER.warn ("Overwriting value of token '" + sUnifiedToken + "'");
+    m_aPairs.put (sUnifiedToken, sValue);
     return this;
   }
 

@@ -29,7 +29,7 @@ import com.helger.commons.text.util.ABNF;
 
 /**
  * Parser for RFC 7239 compliant "Forwarded" header values. This class can parse a forwarded-element
- * string into a {@link HttpForwardedHeader}. The syntax according to RFC 7239 is:
+ * string into a {@link HttpForwardedHeaderHop}. The syntax according to RFC 7239 is:
  *
  * <pre>
  * forwarded-element = [ forwarded-pair ] *( ";" [ forwarded-pair ] )
@@ -309,7 +309,7 @@ public final class HttpForwardedHeaderParser
    * @return <code>true</code> if parsing succeeded, <code>false</code> otherwise.
    */
   private static boolean _parseOptionalPair (@Nonnull final ParseContext aContext,
-                                             @Nonnull final HttpForwardedHeader aResult)
+                                             @Nonnull final HttpForwardedHeaderHop aResult)
   {
     _skipWhitespace (aContext);
 
@@ -363,13 +363,13 @@ public final class HttpForwardedHeaderParser
    *
    * @param sForwardedElement
    *        The forwarded-element string to parse. May be <code>null</code>.
-   * @return A new {@link HttpForwardedHeader} containing the parsed pairs, or <code>null</code> if
+   * @return A new {@link HttpForwardedHeaderHop} containing the parsed pairs, or <code>null</code> if
    *         parsing failed or the input was invalid.
    */
   @Nullable
-  public static HttpForwardedHeader parse (@Nullable final String sForwardedElement)
+  public static HttpForwardedHeaderHop parse (@Nullable final String sForwardedElement)
   {
-    final HttpForwardedHeader aResult = new HttpForwardedHeader ();
+    final HttpForwardedHeaderHop aResult = new HttpForwardedHeaderHop ();
 
     if (StringHelper.hasNoText (sForwardedElement))
     {

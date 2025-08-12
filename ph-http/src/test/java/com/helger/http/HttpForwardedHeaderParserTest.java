@@ -35,7 +35,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testValidSinglePair ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1");
     assertNotNull (aResult);
     assertEquals (1, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -44,7 +44,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testValidSinglePairCaseInsensitive ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("FOR=192.168.1.1");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("FOR=192.168.1.1");
     assertNotNull (aResult);
     assertEquals (1, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -53,7 +53,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testValidMultiplePairs ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;host=example.com;proto=https");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;host=example.com;proto=https");
     assertNotNull (aResult);
     assertEquals (3, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -64,7 +64,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testQuotedValues ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=\"192.168.1.1:8080\";host=\"example.com with spaces\"");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=\"192.168.1.1:8080\";host=\"example.com with spaces\"");
     assertNotNull (aResult);
     assertEquals (2, aResult.size ());
     assertEquals ("192.168.1.1:8080", aResult.getFor ());
@@ -74,7 +74,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testEscapedCharacters ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=\"test\\\"value\\\\\";host=\"simple\"");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=\"test\\\"value\\\\\";host=\"simple\"");
     assertNotNull (aResult);
     assertEquals (2, aResult.size ());
     assertEquals ("test\"value\\", aResult.getFor ());
@@ -85,7 +85,7 @@ public final class HttpForwardedHeaderParserTest
   public void testWhitespaceHandling ()
   {
     // Basic case without whitespace
-    HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;host=example.com");
+    HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;host=example.com");
     assertNotNull (aResult);
     assertEquals (2, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -109,7 +109,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testIPv6Address ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=\"[2001:db8::1]\";proto=https");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=\"[2001:db8::1]\";proto=https");
     assertNotNull (aResult);
     assertEquals (2, aResult.size ());
     assertEquals ("[2001:db8::1]", aResult.getFor ());
@@ -119,7 +119,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testCustomParameters ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;custom=value123;another=\"quoted value\"");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;custom=value123;another=\"quoted value\"");
     assertNotNull (aResult);
     assertEquals (3, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -130,7 +130,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testEmptyString ()
   {
-    HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("");
+    HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("");
     assertNotNull (aResult);
     assertTrue (aResult.isEmpty ());
 
@@ -154,7 +154,7 @@ public final class HttpForwardedHeaderParserTest
   @Test
   public void testTrailingSemicolon ()
   {
-    final HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;");
+    final HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.168.1.1;");
     assertNotNull (aResult);
     assertEquals (1, aResult.size ());
     assertEquals ("192.168.1.1", aResult.getFor ());
@@ -223,7 +223,7 @@ public final class HttpForwardedHeaderParserTest
   public void testRealWorldExamples ()
   {
     // Example from RFC 7239
-    HttpForwardedHeader aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.60;proto=http;by=203.0.113.43");
+    HttpForwardedHeaderHop aResult = HttpForwardedHeaderParser.parse ("for=192.0.2.60;proto=http;by=203.0.113.43");
     assertNotNull (aResult);
     assertEquals (3, aResult.size ());
     assertEquals ("192.0.2.60", aResult.getFor ());
@@ -259,7 +259,7 @@ public final class HttpForwardedHeaderParserTest
                                                   "for=192.0.2.43; for=\"[2001:db8:cafe::17]\"" })
     {
       // Parse
-      final HttpForwardedHeader aParsed = HttpForwardedHeaderParser.parse (sOriginal);
+      final HttpForwardedHeaderHop aParsed = HttpForwardedHeaderParser.parse (sOriginal);
       assertNotNull (aParsed);
 
       // Format
@@ -267,7 +267,7 @@ public final class HttpForwardedHeaderParserTest
       assertNotNull (sRecreated);
 
       // Parse the recreated string to verify it's still valid
-      final HttpForwardedHeader aReparsed = HttpForwardedHeaderParser.parse (sRecreated);
+      final HttpForwardedHeaderHop aReparsed = HttpForwardedHeaderParser.parse (sRecreated);
       assertNotNull (aReparsed);
 
       // Check they are equal

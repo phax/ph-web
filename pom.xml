@@ -227,6 +227,8 @@
             <exclude>**/MockHttpServletRequest.class</exclude>
             <exclude>**/MailTransport.class</exclude>
             <exclude>**/samples/*</exclude>
+            <!-- uses reflection -->
+            <exclude>**/HttpClientFactoryProxyRoutePlannerTest.class</exclude>
           </excludes>
         </configuration>
         <!-- local executions are ignored -->

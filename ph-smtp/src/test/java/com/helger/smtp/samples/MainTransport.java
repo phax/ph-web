@@ -68,17 +68,15 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 /**
- * transport is a simple program that creates a message, explicitly retrieves a
- * Transport from the session based on the type of the address (it's
- * InternetAddress, so SMTP will be used) and sends the message. usage:
- * <code>java transport <i>"toaddr1[, toaddr2]*"  from smtphost
+ * transport is a simple program that creates a message, explicitly retrieves a Transport from the
+ * session based on the type of the address (it's InternetAddress, so SMTP will be used) and sends
+ * the message. usage: <code>java transport <i>"toaddr1[, toaddr2]*"  from smtphost
  * true|false</i></code><br>
- * where <i>to</i> and <i>from</i> are the destination and origin email
- * addresses, respectively, and <i>smtphost</i> is the hostname of the machine
- * that has the smtp server running. The <i>to</i> addresses can be either a
- * single email address or a comma-separated list of email addresses in quotes,
- * i.e. "joe@machine, jane, max@server.com" The last parameter either turns on
- * or turns off debugging during sending.
+ * where <i>to</i> and <i>from</i> are the destination and origin email addresses, respectively, and
+ * <i>smtphost</i> is the hostname of the machine that has the smtp server running. The <i>to</i>
+ * addresses can be either a single email address or a comma-separated list of email addresses in
+ * quotes, i.e. "joe@machine, jane, max@server.com" The last parameter either turns on or turns off
+ * debugging during sending.
  *
  * @author Max Spivak
  */
@@ -141,7 +139,6 @@ public final class MainTransport implements ConnectionListener, TransportListene
   public MainTransport ()
   {}
 
-  @SuppressWarnings ("resource")
   public void go (final Session session, final InternetAddress [] toAddr, final InternetAddress from)
   {
     Transport trans = null;

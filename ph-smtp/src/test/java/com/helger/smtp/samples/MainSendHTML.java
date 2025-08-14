@@ -68,8 +68,8 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.util.ByteArrayDataSource;
 
 /**
- * Demo app that shows how to construct and send a single part html message.
- * Note that the same basic technique can be used to send data of any type.
+ * Demo app that shows how to construct and send a single part html message. Note that the same
+ * basic technique can be used to send data of any type.
  *
  * @author John Mani
  * @author Bill Shannon
@@ -77,7 +77,6 @@ import jakarta.mail.util.ByteArrayDataSource;
  */
 public class MainSendHTML
 {
-  @SuppressWarnings ("resource")
   public static void main (final String [] argv)
   {
     String to, subject = null, from = null, cc = null, bcc = null, url = null;

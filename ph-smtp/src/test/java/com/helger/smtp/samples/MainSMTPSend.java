@@ -73,9 +73,9 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
 /**
- * Demo app that shows how to construct and send an RFC822 (singlepart) message.
- * allow more than one recipient on the command line This is just a variant of
- * msgsend.java that demonstrates use of some SMTP-specific features.
+ * Demo app that shows how to construct and send an RFC822 (singlepart) message. allow more than one
+ * recipient on the command line This is just a variant of msgsend.java that demonstrates use of
+ * some SMTP-specific features.
  *
  * @author Max Spivak
  * @author Bill Shannon
@@ -83,17 +83,15 @@ import jakarta.mail.internet.MimeMultipart;
 public class MainSMTPSend
 {
   /*
-   * Example of how to extend the SMTPTransport class. This example illustrates
-   * how to issue the XACT command before the SMTPTransport issues the DATA
-   * command. public static class SMTPExtension extends SMTPTransport { public
-   * SMTPExtension(Session session, URLName url) { super(session, url); // to
-   * check that we're being used System.out.println("SMTPExtension: constructed"
-   * ); } protected synchronized OutputStream data() throws MessagingException {
-   * if (supportsExtension("XACCOUNTING")) issueCommand("XACT", 250); return
-   * super.data(); } }
+   * Example of how to extend the SMTPTransport class. This example illustrates how to issue the
+   * XACT command before the SMTPTransport issues the DATA command. public static class
+   * SMTPExtension extends SMTPTransport { public SMTPExtension(Session session, URLName url) {
+   * super(session, url); // to check that we're being used
+   * System.out.println("SMTPExtension: constructed" ); } protected synchronized OutputStream data()
+   * throws MessagingException { if (supportsExtension("XACCOUNTING")) issueCommand("XACT", 250);
+   * return super.data(); } }
    */
 
-  @SuppressWarnings ("resource")
   public static void main (final String [] argv)
   {
     String to, subject = null, from = null, cc = null, bcc = null, url = null;
@@ -252,11 +250,10 @@ public class MainSMTPSend
         props.put ("mail." + prot + ".auth", "true");
 
       /*
-       * Create a Provider representing our extended SMTP transport and set the
-       * property to use our provider. Provider p = new
-       * Provider(Provider.Type.TRANSPORT, prot, "smtpsend$SMTPExtension",
-       * "JavaMail demo", "no version"); props.put("mail." + prot + ".class",
-       * "smtpsend$SMTPExtension");
+       * Create a Provider representing our extended SMTP transport and set the property to use our
+       * provider. Provider p = new Provider(Provider.Type.TRANSPORT, prot,
+       * "smtpsend$SMTPExtension", "JavaMail demo", "no version"); props.put("mail." + prot +
+       * ".class", "smtpsend$SMTPExtension");
        */
 
       // Get a Session object
@@ -312,9 +309,9 @@ public class MainSMTPSend
 
       // send the thing off
       /*
-       * The simple way to send a message is this: Transport.send(msg); But
-       * we're going to use some SMTP-specific features for demonstration
-       * purposes so we need to manage the Transport object explicitly.
+       * The simple way to send a message is this: Transport.send(msg); But we're going to use some
+       * SMTP-specific features for demonstration purposes so we need to manage the Transport object
+       * explicitly.
        */
       try (final SMTPTransport t = (SMTPTransport) session.getTransport (prot))
       {
@@ -447,7 +444,7 @@ public class MainSMTPSend
   public static String collect (final BufferedReader in) throws IOException
   {
     String line;
-    final StringBuffer sb = new StringBuffer ();
+    final StringBuilder sb = new StringBuilder ();
     while ((line = in.readLine ()) != null)
     {
       sb.append (line);

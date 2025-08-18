@@ -22,33 +22,32 @@ import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.zip.GZIPOutputStream;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.datetime.PDTWebDateHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.io.file.FileHelper;
-import com.helger.commons.state.ESuccess;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.state.ESuccess;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.datetime.web.PDTWebDateHelper;
+import com.helger.io.file.FileHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.serialize.write.IXMLWriterSettings;
 
+import jakarta.annotation.Nonnull;
+
 /**
- * Contains a set of {@link XMLSitemapURLSet} objects. Necessary to group
- * multiple sitemaps when the number of URLs or the total size of a single URL
- * set is exceeded.
+ * Contains a set of {@link XMLSitemapURLSet} objects. Necessary to group multiple sitemaps when the
+ * number of URLs or the total size of a single URL set is exceeded.
  *
  * @author Philip Helger
  */
@@ -78,8 +77,7 @@ public class XMLSitemapIndex
    * Constructor
    *
    * @param bUseGZip
-   *        If <code>true</code> all contained URL sets are written to disk
-   *        using the GZip algorithm
+   *        If <code>true</code> all contained URL sets are written to disk using the GZip algorithm
    */
   public XMLSitemapIndex (final boolean bUseGZip)
   {
@@ -142,8 +140,7 @@ public class XMLSitemapIndex
    * @param nIndex
    *        The index to be used. Should be ge; 0.
    * @param bUseGZip
-   *        <code>true</code> if a ".gz" suffix should be appended,
-   *        <code>false</code> if not.
+   *        <code>true</code> if a ".gz" suffix should be appended, <code>false</code> if not.
    * @return The name of the sitemap file. Neither <code>null</code> nor empty.
    * @see #getSitemapFilename(int)
    */
@@ -182,22 +179,21 @@ public class XMLSitemapIndex
   {
     final String sNamespaceURL = CXMLSitemap.XML_NAMESPACE_0_9;
     final IMicroDocument ret = new MicroDocument ();
-    final IMicroElement eSitemapindex = ret.appendElement (sNamespaceURL, ELEMENT_SITEMAPINDEX);
+    final IMicroElement eSitemapindex = ret.addElementNS (sNamespaceURL, ELEMENT_SITEMAPINDEX);
     int nIndex = 0;
     for (final XMLSitemapURLSet aURLSet : m_aURLSets)
     {
-      final IMicroElement eSitemap = eSitemapindex.appendElement (sNamespaceURL, ELEMENT_SITEMAP);
+      final IMicroElement eSitemap = eSitemapindex.addElementNS (sNamespaceURL, ELEMENT_SITEMAP);
 
       // The location of the sub-sitemaps must be prefixed with the full server
       // and context path
-      eSitemap.appendElement (sNamespaceURL, ELEMENT_LOC)
-              .appendText (sFullContextPath + "/" + getSitemapFilename (nIndex));
+      eSitemap.addElementNS (sNamespaceURL, ELEMENT_LOC).addText (sFullContextPath + "/" + getSitemapFilename (nIndex));
 
       final LocalDateTime aLastModification = aURLSet.getLastModificationDateTime ();
       if (aLastModification != null)
       {
-        eSitemap.appendElement (sNamespaceURL, ELEMENT_LASTMOD)
-                .appendText (PDTWebDateHelper.getAsStringXSD (aLastModification));
+        eSitemap.addElementNS (sNamespaceURL, ELEMENT_LASTMOD)
+                .addText (PDTWebDateHelper.getAsStringXSD (aLastModification));
       }
       ++nIndex;
     }

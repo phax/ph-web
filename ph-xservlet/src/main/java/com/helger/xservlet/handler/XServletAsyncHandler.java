@@ -18,25 +18,24 @@ package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.attr.IAttributeContainerAny;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
 import com.helger.servlet.async.ServletAsyncSpec;
+import com.helger.typeconvert.collection.IAttributeContainerAny;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.xservlet.AbstractXServlet;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

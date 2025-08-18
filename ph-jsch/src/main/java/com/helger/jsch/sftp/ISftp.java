@@ -18,10 +18,10 @@ package com.helger.jsch.sftp;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A simple callback interface for working with <i>managed</i> sftp channels.

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.commons.id.IHasID;
+import com.helger.base.id.IHasID;
 
 /**
  * Test class for class {@link WebSpiderManager}.

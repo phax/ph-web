@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,11 +34,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.io.file.FileOperationManager;
-import com.helger.commons.io.file.SimpleFileIO;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.io.file.FileOperationManager;
+import com.helger.io.file.SimpleFileIO;
 import com.jcraft.jsch.Session;
+
+import jakarta.annotation.Nonnull;
 
 public final class ScpStreamTest extends AbstractScpTestBase
 {
@@ -116,7 +116,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
   @Nonnull
   private static String _joinPath (final String... parts)
   {
-    return StringHelper.imploder ().source (parts).separator ('/').build ();
+    return StringImplode.imploder ().source (parts).separator ('/').build ();
   }
 
   @Test

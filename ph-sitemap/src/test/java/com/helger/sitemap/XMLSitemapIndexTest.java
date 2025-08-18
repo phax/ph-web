@@ -23,17 +23,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-
 import org.junit.Test;
 
-import com.helger.commons.error.list.IErrorList;
-import com.helger.commons.io.file.FileHelper;
-import com.helger.commons.io.file.FileOperations;
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.url.SimpleURL;
+import com.helger.diagnostics.error.list.IErrorList;
+import com.helger.http.url.SimpleURL;
+import com.helger.io.file.FileHelper;
+import com.helger.io.file.FileOperations;
+import com.helger.io.resource.ClassPathResource;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Test class for class {@link XMLSitemapIndex}.

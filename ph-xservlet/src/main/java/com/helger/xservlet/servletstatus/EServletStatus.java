@@ -18,10 +18,10 @@ package com.helger.xservlet.servletstatus;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.text.display.IHasDisplayText;
 
-import com.helger.commons.text.display.IHasDisplayText;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Defines the different lifecycle status of a servlet.

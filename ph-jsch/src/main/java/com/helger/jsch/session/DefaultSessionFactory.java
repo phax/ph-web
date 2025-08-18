@@ -23,14 +23,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.jsch.JSchInit;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.IdentityRepository;
@@ -40,22 +38,21 @@ import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
+import jakarta.annotation.Nonnull;
+
 /**
- * The default implementation of {@link com.helger.jsch.session.ISessionFactory
- * SessionFactory}. This class provides sane defaults for all
- * <i>conventional</i> configuration including
+ * The default implementation of {@link com.helger.jsch.session.ISessionFactory SessionFactory}.
+ * This class provides sane defaults for all <i>conventional</i> configuration including
  * <ul>
  * <li><b>username</b>: System property <code>user.name</code></li>
  * <li><b>hostname</b>: localhost</li>
  * <li><b>port</b>: 22</li>
- * <li><b>.ssh directory:</b> System property <code>jsch.dotSsh</code>, or
- * system property <code>user.home</code> concatenated with
- * <code>"/.ssh"</code></li>
- * <li><b>known hosts:</b> System property <code>jsch.knownHosts.file</code> or,
- * .ssh directory concatenated with <code>"/known_hosts"</code>.</li>
- * <li><b>private keys:</b> First checks system property
- * <code>jsch.privateKey.files</code> split on <code>","</code>, otherwise, .ssh
- * directory concatenated with all 3 of <code>"/id_rsa"</code>,
+ * <li><b>.ssh directory:</b> System property <code>jsch.dotSsh</code>, or system property
+ * <code>user.home</code> concatenated with <code>"/.ssh"</code></li>
+ * <li><b>known hosts:</b> System property <code>jsch.knownHosts.file</code> or, .ssh directory
+ * concatenated with <code>"/known_hosts"</code>.</li>
+ * <li><b>private keys:</b> First checks system property <code>jsch.privateKey.files</code> split on
+ * <code>","</code>, otherwise, .ssh directory concatenated with all 3 of <code>"/id_rsa"</code>,
  * <code>"/id_dsa"</code>, and <code>"/id_ecdsa"</code> if they exist.</li>
  * </ul>
  */
@@ -136,7 +133,11 @@ public class DefaultSessionFactory implements ISessionFactory
       m_nPort = port;
   }
 
-  private DefaultSessionFactory (final JSch jsch, final String username, final String hostname, final int port, final Proxy proxy)
+  private DefaultSessionFactory (final JSch jsch,
+                                 final String username,
+                                 final String hostname,
+                                 final int port,
+                                 final Proxy proxy)
   {
     m_aJSch = jsch;
     m_sUsername = username;
@@ -167,13 +168,12 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Sets the configuration options for the sessions created by this factory.
-   * This method will replace the current SessionFactory <code>config</code>
-   * map. If you want to add, rather than replace, see
-   * {@link #setConfig(String, String)}. All of these options will be added one
-   * at a time using {@link com.jcraft.jsch.Session#setConfig(String, String)
-   * Session.setConfig(String, String)}. Details on the supported options can be
-   * found in the source for <code>com.jcraft.jsch.Session#applyConfig()</code>
+   * Sets the configuration options for the sessions created by this factory. This method will
+   * replace the current SessionFactory <code>config</code> map. If you want to add, rather than
+   * replace, see {@link #setConfig(String, String)}. All of these options will be added one at a
+   * time using {@link com.jcraft.jsch.Session#setConfig(String, String) Session.setConfig(String,
+   * String)}. Details on the supported options can be found in the source for
+   * <code>com.jcraft.jsch.Session#applyConfig()</code>
    *
    * @param config
    *        The configuration options
@@ -185,8 +185,8 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Adds a single configuration options for the sessions created by this
-   * factory. Details on the supported options can be found in the source for
+   * Adds a single configuration options for the sessions created by this factory. Details on the
+   * supported options can be found in the source for
    * <code>com.jcraft.jsch.Session#applyConfig()</code>
    *
    * @param key
@@ -221,11 +221,10 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Sets the {@code password} used to authenticate {@code username}. This mode
-   * of authentication is not recommended as it would keep the password in
-   * memory and if the application dies and writes a heap dump, it would be
-   * available. Using {@link Identity} would be better, or even using ssh agent
-   * support.
+   * Sets the {@code password} used to authenticate {@code username}. This mode of authentication is
+   * not recommended as it would keep the password in memory and if the application dies and writes
+   * a heap dump, it would be available. Using {@link Identity} would be better, or even using ssh
+   * agent support.
    *
    * @param password
    *        the password for {@code username}
@@ -293,15 +292,13 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Sets the {@code UserInfo} for use with {@code keyboard-interactive}
-   * authentication. This may be useful, however, setting the password with
-   * {@link #setPassword(String)} is likely sufficient.
+   * Sets the {@code UserInfo} for use with {@code keyboard-interactive} authentication. This may be
+   * useful, however, setting the password with {@link #setPassword(String)} is likely sufficient.
    *
    * @param userInfo
    *        User info
-   * @see <a href=
-   *      "http://www.jcraft.com/jsch/examples/UserAuthKI.java.html">Keyboard
-   *      Interactive Authentication Example</a>
+   * @see <a href= "http://www.jcraft.com/jsch/examples/UserAuthKI.java.html">Keyboard Interactive
+   *      Authentication Example</a>
    */
   public void setUserInfo (final UserInfo userInfo)
   {
@@ -331,7 +328,7 @@ public class DefaultSessionFactory implements ISessionFactory
     if (!identitiesSet)
     {
       final String privateKeyFilesString = System.getProperty (PROPERTY_JSCH_PRIVATE_KEY_FILES);
-      if (StringHelper.hasText (privateKeyFilesString))
+      if (StringHelper.isNotEmpty (privateKeyFilesString))
       {
         LOGGER.info ("Using local identities from " + PROPERTY_JSCH_PRIVATE_KEY_FILES + ": " + privateKeyFilesString);
         setIdentitiesFromPrivateKeys (StringHelper.getExploded (',', privateKeyFilesString));
@@ -352,10 +349,9 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Configures this factory to use a single identity authenticated by the
-   * supplied private key. The private key should be the path to a private key
-   * file in OpenSSH format. Clears out the current {@link IdentityRepository}
-   * before adding this key.
+   * Configures this factory to use a single identity authenticated by the supplied private key. The
+   * private key should be the path to a private key file in OpenSSH format. Clears out the current
+   * {@link IdentityRepository} before adding this key.
    *
    * @param privateKey
    *        Path to a private key file
@@ -369,10 +365,9 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Configures this factory to use a single identity authenticated by the
-   * supplied private key and pass phrase. The private key should be the path to
-   * a private key file in OpenSSH format. Clears out the current
-   * {@link IdentityRepository} before adding this key.
+   * Configures this factory to use a single identity authenticated by the supplied private key and
+   * pass phrase. The private key should be the path to a private key file in OpenSSH format. Clears
+   * out the current {@link IdentityRepository} before adding this key.
    *
    * @param privateKey
    *        Path to a private key file
@@ -388,10 +383,9 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Configures this factory to use a list of identities authenticated by the
-   * supplied private keys. The private keys should be the paths to a private
-   * key files in OpenSSH format. Clears out the current
-   * {@link IdentityRepository} before adding these keys.
+   * Configures this factory to use a list of identities authenticated by the supplied private keys.
+   * The private keys should be the paths to a private key files in OpenSSH format. Clears out the
+   * current {@link IdentityRepository} before adding these keys.
    *
    * @param privateKeys
    *        A list of paths to private key files
@@ -408,9 +402,9 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Sets the {@link IdentityRepository} for this factory. This will replace any
-   * current IdentityRepository, so you should be sure to call this before any
-   * of the <code>setIdentit(y|ies)Xxx</code> if you plan on using both.
+   * Sets the {@link IdentityRepository} for this factory. This will replace any current
+   * IdentityRepository, so you should be sure to call this before any of the
+   * <code>setIdentit(y|ies)Xxx</code> if you plan on using both.
    *
    * @param identityRepository
    *        The identity repository
@@ -422,9 +416,8 @@ public class DefaultSessionFactory implements ISessionFactory
   }
 
   /**
-   * Sets the known hosts from the stream. Mostly useful if you distribute your
-   * known_hosts in the jar for your application rather than allowing users to
-   * manage their own known hosts.
+   * Sets the known hosts from the stream. Mostly useful if you distribute your known_hosts in the
+   * jar for your application rather than allowing users to manage their own known hosts.
    *
    * @param knownHosts
    *        A stream of known hosts
@@ -474,12 +467,22 @@ public class DefaultSessionFactory implements ISessionFactory
   @Override
   public AbstractSessionFactoryBuilder newSessionFactoryBuilder ()
   {
-    return new AbstractSessionFactoryBuilder (m_aJSch, m_sUsername, m_sHostname, m_nPort, m_aProxy, m_aConfig, m_aUserInfo)
+    return new AbstractSessionFactoryBuilder (m_aJSch,
+                                              m_sUsername,
+                                              m_sHostname,
+                                              m_nPort,
+                                              m_aProxy,
+                                              m_aConfig,
+                                              m_aUserInfo)
     {
       @Override
       public ISessionFactory build ()
       {
-        final DefaultSessionFactory ret = new DefaultSessionFactory (m_aJsch, m_sUsername, m_sHostname, m_nPort, m_aProxy);
+        final DefaultSessionFactory ret = new DefaultSessionFactory (m_aJsch,
+                                                                     m_sUsername,
+                                                                     m_sHostname,
+                                                                     m_nPort,
+                                                                     m_aProxy);
         ret.m_aConfig = m_aConfig;
         ret.m_sPassword = m_sPassword;
         ret.m_aUserInfo = m_aUserInfo;

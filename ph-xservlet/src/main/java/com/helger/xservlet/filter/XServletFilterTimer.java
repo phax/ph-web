@@ -16,14 +16,14 @@
  */
 package com.helger.xservlet.filter;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.statistics.IMutableStatisticsHandlerKeyedTimer;
-import com.helger.commons.statistics.StatisticsManager;
-import com.helger.commons.timing.StopWatch;
+import com.helger.base.timing.StopWatch;
+import com.helger.http.EHttpMethod;
+import com.helger.statistics.api.IMutableStatisticsHandlerKeyedTimer;
+import com.helger.statistics.impl.StatisticsManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.AbstractXServlet;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A special filter that performs timing of servlet execution. Each servlet

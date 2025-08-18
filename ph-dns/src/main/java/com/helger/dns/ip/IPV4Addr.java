@@ -19,19 +19,19 @@ package com.helger.dns.ip;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.CGlobal;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.base.tostring.ToStringGenerator;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.string.ToStringGenerator;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Representation of a single IP V4 address.
@@ -84,7 +84,10 @@ public class IPV4Addr
    * @param n4
    *        fourth number
    */
-  public IPV4Addr (@Nonnegative final int n1, @Nonnegative final int n2, @Nonnegative final int n3, @Nonnegative final int n4)
+  public IPV4Addr (@Nonnegative final int n1,
+                   @Nonnegative final int n2,
+                   @Nonnegative final int n3,
+                   @Nonnegative final int n4)
   {
     m_nIP0 = _validatePart (n1);
     m_nIP1 = _validatePart (n2);
@@ -105,7 +108,10 @@ public class IPV4Addr
     // Values are guaranteed to be 0-255
     try
     {
-      return InetAddress.getByAddress (new byte [] { (byte) (n0 & 0xff), (byte) (n1 & 0xff), (byte) (n2 & 0xff), (byte) (n3 & 0xff) });
+      return InetAddress.getByAddress (new byte [] { (byte) (n0 & 0xff),
+                                                     (byte) (n1 & 0xff),
+                                                     (byte) (n2 & 0xff),
+                                                     (byte) (n3 & 0xff) });
     }
     catch (final UnknownHostException ex)
     {
@@ -174,8 +180,7 @@ public class IPV4Addr
   }
 
   /**
-   * Parse the provided IPv4 address from the text string (as e.g.
-   * "192.168.0.1").
+   * Parse the provided IPv4 address from the text string (as e.g. "192.168.0.1").
    *
    * @param sText
    *        The text to be parsed. May not be <code>null</code>.
@@ -190,6 +195,9 @@ public class IPV4Addr
     final String [] aParts = StringHelper.getExplodedArray ('.', sText);
     if (aParts.length != PARTS)
       throw new IllegalArgumentException ("Expected exactly " + PARTS + " parts");
-    return new IPV4Addr (_parsePart (aParts[0]), _parsePart (aParts[1]), _parsePart (aParts[2]), _parsePart (aParts[3]));
+    return new IPV4Addr (_parsePart (aParts[0]),
+                         _parsePart (aParts[1]),
+                         _parsePart (aParts[2]),
+                         _parsePart (aParts[3]));
   }
 }

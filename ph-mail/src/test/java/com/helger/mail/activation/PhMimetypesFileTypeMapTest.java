@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
-import javax.annotation.concurrent.Immutable;
-
 import org.junit.Test;
+
+import com.helger.annotation.concurrent.Immutable;
 
 /**
  * Test class for class {@link PhMimetypesFileTypeMap}.

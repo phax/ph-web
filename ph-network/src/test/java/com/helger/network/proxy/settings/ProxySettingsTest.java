@@ -30,7 +30,7 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.ArrayHelper;
+import com.helger.base.CGlobal;
 
 /**
  * Test class for class {@link ProxySettings}.
@@ -114,7 +114,7 @@ public final class ProxySettingsTest
     final PasswordAuthentication aPA = a.getAsPasswordAuthentication ();
     assertNotNull (aPA);
     assertEquals ("b", aPA.getUserName ());
-    assertArrayEquals (ArrayHelper.EMPTY_CHAR_ARRAY, aPA.getPassword ());
+    assertArrayEquals (CGlobal.EMPTY_CHAR_ARRAY, aPA.getPassword ());
   }
 
   @Test

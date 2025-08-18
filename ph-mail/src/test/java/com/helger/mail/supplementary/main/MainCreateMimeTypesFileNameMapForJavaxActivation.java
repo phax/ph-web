@@ -28,12 +28,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.commons.vendor.VendorInfo;
 import com.helger.xml.util.mime.MimeTypeInfo;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
@@ -83,7 +83,7 @@ public final class MainCreateMimeTypesFileNameMapForJavaxActivation
       // write MIME type mapping
       for (final Map.Entry <String, ICommonsOrderedSet <String>> aEntry : aMap.getSortedByKey (Comparator.naturalOrder ())
                                                                               .entrySet ())
-        w.write ("type=" + aEntry.getKey () + " exts=" + StringHelper.getImploded (',', aEntry.getValue ()) + "\n");
+        w.write ("type=" + aEntry.getKey () + " exts=" + StringImplode.getImploded (',', aEntry.getValue ()) + "\n");
 
       // done
       w.flush ();

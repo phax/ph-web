@@ -18,31 +18,30 @@ package com.helger.xservlet.filter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.http.CHttp;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.state.EContinue;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.debug.GlobalDebug;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EContinue;
+import com.helger.base.string.StringHelper;
+import com.helger.http.CHttp;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.http.header.HttpHeaderMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Handle special content related stuff that needs to be processed for every
- * servlet. Currently handled are:
+ * Handle special content related stuff that needs to be processed for every servlet. Currently
+ * handled are:
  * <ul>
  * <li>Request fallback charset</li>
  * <li>Response fallback charset</li>
@@ -62,8 +61,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   {}
 
   /**
-   * @return <code>true</code> if logging is disabled, <code>false</code> if it
-   *         is enabled.
+   * @return <code>true</code> if logging is disabled, <code>false</code> if it is enabled.
    * @since 9.1.7
    */
   public static boolean isSilentMode ()
@@ -75,8 +73,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    * Enable or disable certain regular log messages.
    *
    * @param bSilentMode
-   *        <code>true</code> to disable logging, <code>false</code> to enable
-   *        logging
+   *        <code>true</code> to disable logging, <code>false</code> to enable logging
    * @return The previous value of the silent mode.
    * @since 9.1.7
    */
@@ -143,7 +140,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                          final int nStatusCode,
                                          @Nonnull final EHttpMethod eHttpMethod)
   {
-    if (StringHelper.hasNoText (sCharacterEncoding) && _isContentExpected (nStatusCode))
+    if (StringHelper.isEmpty (sCharacterEncoding) && _isContentExpected (nStatusCode))
       if (!isSilentMode ())
         LOGGER.warn ("No character encoding on HTTP " +
                      nStatusCode +
@@ -170,7 +167,7 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
                                    final int nStatusCode,
                                    @Nonnull final EHttpMethod eHttpMethod)
   {
-    if (StringHelper.hasNoText (sContentType) && _isContentExpected (nStatusCode))
+    if (StringHelper.isEmpty (sContentType) && _isContentExpected (nStatusCode))
       if (!isSilentMode ())
         LOGGER.warn ("No content type on HTTP " +
                      nStatusCode +

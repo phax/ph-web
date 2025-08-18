@@ -16,12 +16,12 @@
  */
 package com.helger.smtp.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.state.EChange;
+import com.helger.base.state.IClearable;
 
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.state.EChange;
-import com.helger.commons.state.IClearable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * This interface represents attachments to be added to a mail message. Messages

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.string.StringHelper;
+import com.helger.base.string.StringHelper;
 
 /**
  * Test class for class {@link ENetworkProtocol}.
@@ -35,7 +35,7 @@ public final class ENetworkProtocolTest
   {
     for (final ENetworkProtocol e : ENetworkProtocol.values ())
     {
-      assertTrue (StringHelper.hasText (e.getID ()));
+      assertTrue (StringHelper.isNotEmpty (e.getID ()));
       assertSame (e, ENetworkProtocol.getFromIDOrNull (e.getID ()));
     }
   }

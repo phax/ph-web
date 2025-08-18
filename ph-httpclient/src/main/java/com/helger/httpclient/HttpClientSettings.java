@@ -19,10 +19,6 @@ package com.helger.httpclient;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -34,18 +30,23 @@ import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.lang.ICloneable;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.ws.HostnameVerifierVerifyAll;
-import com.helger.commons.ws.TrustManagerTrustAll;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.CGlobal;
+import com.helger.base.clone.ICloneable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.ICommonsOrderedSet;
+import com.helger.http.security.HostnameVerifierVerifyAll;
+import com.helger.http.security.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.http.tls.TLSConfigurationMode;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * All the easily configurable settings for an {@link HttpClientFactory}
@@ -63,7 +64,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                                                                                                      ETLSVersion.TLS_12,
                                                                                                                      ETLSVersion.TLS_11,
                                                                                                                      ETLSVersion.TLS_10 },
-                                                                                                ArrayHelper.EMPTY_STRING_ARRAY);
+                                                                                                CGlobal.EMPTY_STRING_ARRAY);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRY_COUNT = 0;

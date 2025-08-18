@@ -19,21 +19,22 @@ package com.helger.useragent.uaprofile;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.impl.CommonsTreeMap;
-import com.helger.commons.collection.impl.ICommonsSortedMap;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.CollectionFind;
+import com.helger.collection.CollectionHelper;
+import com.helger.collection.commons.CommonsTreeMap;
+import com.helger.collection.commons.ICommonsSortedMap;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * This class represents a single UA profile.
@@ -64,13 +65,13 @@ public class UAProfile
       throw new IllegalArgumentException ("Neither profile nor diff data found!");
     if (nUrls > 1)
       LOGGER.warn ("Found more than one profile URL: " + aProfileUrls);
-    m_sProfileUrl = CollectionHelper.getFirstElement (aProfileUrls);
+    m_sProfileUrl = CollectionFind.getFirstElement (aProfileUrls);
     m_aProfileDiffData = CollectionHelper.isEmpty (aProfileDiffData) ? null : new CommonsTreeMap <> (aProfileDiffData);
   }
 
   /**
-   * @return The best match UA profile URL to use. May be <code>null</code> if
-   *         only profile diffs are present.
+   * @return The best match UA profile URL to use. May be <code>null</code> if only profile diffs
+   *         are present.
    */
   @Nullable
   public String getProfileURL ()

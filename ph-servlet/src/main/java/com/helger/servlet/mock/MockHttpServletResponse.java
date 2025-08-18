@@ -23,32 +23,31 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.mime.IMimeType;
-import com.helger.commons.mime.MimeTypeHelper;
-import com.helger.commons.mime.MimeTypeParser;
-import com.helger.commons.mime.MimeTypeParserException;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.system.SystemHelper;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.base.system.SystemHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.mime.IMimeType;
+import com.helger.mime.MimeTypeHelper;
+import com.helger.mime.parse.MimeTypeParser;
+import com.helger.mime.parse.MimeTypeParserException;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.io.AbstractServletOutputStream;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -355,8 +354,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   /**
    * Return the names of all specified headers as a Set of Strings.
    *
-   * @return the <code>Set</code> of header name <code>Strings</code>, or an
-   *         empty <code>Set</code> if none
+   * @return the <code>Set</code> of header name <code>Strings</code>, or an empty <code>Set</code>
+   *         if none
    */
   @Nonnull
   @ReturnsMutableCopy
@@ -403,22 +402,21 @@ public class MockHttpServletResponse implements HttpServletResponse
   @Nullable
   public String encodeURL (@Nullable final String sUrl)
   {
-    if (StringHelper.hasText (m_sEncodeUrlSuffix))
+    if (StringHelper.isNotEmpty (m_sEncodeUrlSuffix))
       return StringHelper.getNotNull (sUrl) + m_sEncodeUrlSuffix;
     return sUrl;
   }
 
   /**
    * The default implementation returns the given URL String as-is. Use
-   * {@link #setEncodeRedirectUrlSuffix(String)} to define a suffix to be
-   * appended.
+   * {@link #setEncodeRedirectUrlSuffix(String)} to define a suffix to be appended.
    *
    * @return the encoded URL
    */
   @Nullable
   public String encodeRedirectURL (@Nullable final String sUrl)
   {
-    if (StringHelper.hasText (m_sEncodeRedirectUrlSuffix))
+    if (StringHelper.isNotEmpty (m_sEncodeRedirectUrlSuffix))
       return StringHelper.getNotNull (sUrl) + m_sEncodeRedirectUrlSuffix;
     return sUrl;
   }
@@ -582,8 +580,8 @@ public class MockHttpServletResponse implements HttpServletResponse
   }
 
   /**
-   * Inner class that adapts the PrintWriter to mark the response as committed
-   * once the buffer size is exceeded.
+   * Inner class that adapts the PrintWriter to mark the response as committed once the buffer size
+   * is exceeded.
    */
   private class ResponsePrintWriter extends PrintWriter
   {

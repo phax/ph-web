@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.error.list.IErrorList;
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.commons.url.SimpleURL;
+import com.helger.datetime.helper.PDTFactory;
+import com.helger.diagnostics.error.list.IErrorList;
+import com.helger.http.url.SimpleURL;
+import com.helger.io.resource.ClassPathResource;
+import com.helger.unittest.support.TestHelper;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 
@@ -45,7 +45,10 @@ public final class XMLSitemapURLSetTest
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir")));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"), PDTFactory.getCurrentLocalDateTime (), null, null));
+    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"),
+                                 PDTFactory.getCurrentLocalDateTime (),
+                                 null,
+                                 null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
     s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value&param2=value2"),
                                  PDTFactory.getCurrentLocalDateTime (),
@@ -121,8 +124,8 @@ public final class XMLSitemapURLSetTest
       s1.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
       s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
     }
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (s1, s2);
+    TestHelper.testDefaultImplementationWithEqualContentObject (s1, s2);
     s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (s1, s2);
+    TestHelper.testDefaultImplementationWithDifferentContentObject (s1, s2);
   }
 }

@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.helger.web</groupId>
     <artifactId>ph-web-parent-pom</artifactId>
-    <version>10.5.2-SNAPSHOT</version>
+    <version>11.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ph-web</artifactId>
@@ -75,7 +75,7 @@
       <artifactId>ph-scopes</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.helger.web</groupId>
+      <groupId>com.helger.commons</groupId>
       <artifactId>ph-http</artifactId>
     </dependency>
     <dependency>
@@ -104,17 +104,15 @@
       <artifactId>junit</artifactId>
       <optional>true</optional>
     </dependency>
-
-    <dependency>
-      <groupId>com.github.spotbugs</groupId>
-      <artifactId>spotbugs-annotations</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.helger.commons</groupId>
+      <artifactId>ph-unittest-support-ext</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

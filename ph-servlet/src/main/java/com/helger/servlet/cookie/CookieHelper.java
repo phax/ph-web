@@ -18,20 +18,19 @@ package com.helger.servlet.cookie;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.CGlobal;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -84,8 +83,7 @@ public final class CookieHelper
   }
 
   /**
-   * Create a cookie that is bound on a certain path within the local web
-   * server.
+   * Create a cookie that is bound on a certain path within the local web server.
    *
    * @param sName
    *        The cookie name.
@@ -96,8 +94,8 @@ public final class CookieHelper
    * @param bExpireWhenBrowserIsClosed
    *        <code>true</code> if this is a browser session cookie
    * @param bSecure
-   *        <code>true</code> to send the cookie from the browser to the server
-   *        only when using a secure protocol (e.g. https)
+   *        <code>true</code> to send the cookie from the browser to the server only when using a
+   *        secure protocol (e.g. https)
    * @return The created cookie object.
    * @since 9.3.2
    */
@@ -119,8 +117,7 @@ public final class CookieHelper
   }
 
   /**
-   * Create a cookie that is bound to the servlet context path within the local
-   * web server.
+   * Create a cookie that is bound to the servlet context path within the local web server.
    *
    * @param sName
    *        The cookie name.
@@ -129,8 +126,8 @@ public final class CookieHelper
    * @param bExpireWhenBrowserIsClosed
    *        <code>true</code> if this is a browser session cookie
    * @param bSecure
-   *        <code>true</code> to send the cookie from the browser to the server
-   *        only when using a secure protocol (e.g. https)
+   *        <code>true</code> to send the cookie from the browser to the server only when using a
+   *        secure protocol (e.g. https)
    * @return The created cookie object.
    * @since 9.3.2
    */
@@ -144,7 +141,7 @@ public final class CookieHelper
     final String sContextPath = ServletContextPathHolder.getContextPath ();
     return createCookie (sName,
                          sValue,
-                         StringHelper.hasText (sContextPath) ? sContextPath : "/",
+                         StringHelper.isNotEmpty (sContextPath) ? sContextPath : "/",
                          bExpireWhenBrowserIsClosed,
                          bSecure);
   }

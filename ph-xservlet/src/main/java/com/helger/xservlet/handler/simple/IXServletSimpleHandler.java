@@ -18,19 +18,18 @@ package com.helger.xservlet.handler.simple;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.state.EContinue;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.debug.GlobalDebug;
+import com.helger.base.state.EContinue;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.IXServletBasicHandler;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

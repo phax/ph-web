@@ -18,9 +18,9 @@ package com.helger.web.fileupload;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import com.helger.web.fileupload.exception.FileUploadException;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An iterator, as returned by

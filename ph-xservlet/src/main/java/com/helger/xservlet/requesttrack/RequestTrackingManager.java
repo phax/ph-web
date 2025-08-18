@@ -18,21 +18,21 @@ package com.helger.xservlet.requesttrack;
 
 import java.util.Map.Entry;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.callback.CallbackList;
-import com.helger.commons.callback.ICallbackList;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.callback.CallbackList;
+import com.helger.base.callback.ICallbackList;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * The request time manager manages all currently running requests.

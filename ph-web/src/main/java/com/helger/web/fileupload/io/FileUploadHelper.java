@@ -16,12 +16,12 @@
  */
 package com.helger.web.fileupload.io;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.string.StringReplace;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
+
+import jakarta.annotation.Nullable;
 
 /**
  * Utility class for working with streams.
@@ -36,10 +36,9 @@ public final class FileUploadHelper
   {}
 
   /**
-   * Checks, whether the given file name is valid in the sense, that it doesn't
-   * contain any NUL characters. If the file name is valid, it will be returned
-   * without any modifications. Otherwise, an {@link InvalidFileNameException}
-   * is raised.
+   * Checks, whether the given file name is valid in the sense, that it doesn't contain any NUL
+   * characters. If the file name is valid, it will be returned without any modifications.
+   * Otherwise, an {@link InvalidFileNameException} is raised.
    *
    * @param sFilename
    *        The file name to check
@@ -52,7 +51,8 @@ public final class FileUploadHelper
   {
     if (sFilename != null && sFilename.indexOf ('\u0000') != -1)
     {
-      throw new InvalidFileNameException (sFilename, "Invalid filename: " + StringHelper.replaceAll (sFilename, "\u0000", "\\0"));
+      throw new InvalidFileNameException (sFilename,
+                                          "Invalid filename: " + StringReplace.replaceAll (sFilename, "\u0000", "\\0"));
     }
     return sFilename;
   }

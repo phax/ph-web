@@ -16,9 +16,9 @@
  */
 package com.helger.smtp.data;
 
-import javax.annotation.Nonnull;
-
 import com.helger.mail.datasource.IExtendedDataSource;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * {@link IExtendedDataSource} extension for email attachments

@@ -16,12 +16,12 @@
  */
 package com.helger.web.scope.singleton;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.hashcode.HashCodeGenerator;
+import com.helger.annotation.style.UsedViaReflection;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.scope.IScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractSessionWebSingleton}

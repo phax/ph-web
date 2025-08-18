@@ -16,18 +16,17 @@
  */
 package com.helger.xservlet.filter;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.state.EContinue;
-import com.helger.commons.url.ISimpleURL;
+import com.helger.annotation.Nonempty;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EContinue;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.http.url.ISimpleURL;
 import com.helger.servlet.response.EXFrameOptionType;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

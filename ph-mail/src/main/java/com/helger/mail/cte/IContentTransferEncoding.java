@@ -16,10 +16,10 @@
  */
 package com.helger.mail.cte;
 
-import javax.annotation.Nonnull;
+import com.helger.base.codec.IByteArrayCodec;
+import com.helger.base.id.IHasID;
 
-import com.helger.commons.codec.IByteArrayCodec;
-import com.helger.commons.id.IHasID;
+import jakarta.annotation.Nonnull;
 
 /**
  * Base interface for a content transfer encoding. See

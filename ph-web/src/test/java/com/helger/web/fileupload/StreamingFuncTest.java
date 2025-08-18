@@ -29,15 +29,13 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
-import javax.annotation.Nonnull;
-
 import org.junit.Test;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.exception.mock.MockIOException;
-import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
+import com.helger.base.mock.exception.MockIOException;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.servlet.io.AbstractServletInputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.exception.FileUploadException;
@@ -49,6 +47,7 @@ import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.multipart.MultipartMalformedStreamException;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 

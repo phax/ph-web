@@ -23,41 +23,41 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ELockType;
-import com.helger.commons.annotation.MustBeLocked;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.concurrent.BasicThreadFactory;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.email.IEmailAddress;
-import com.helger.commons.state.EChange;
-import com.helger.commons.state.ESuccess;
-import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
-import com.helger.commons.statistics.StatisticsManager;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.ELockType;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.MustBeLocked;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.concurrent.BasicThreadFactory;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.debug.GlobalDebug;
+import com.helger.base.email.IEmailAddress;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EChange;
+import com.helger.base.state.ESuccess;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.commons.vendor.VendorInfo;
+import com.helger.datetime.helper.PDTFactory;
 import com.helger.smtp.EmailGlobalSettings;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
+import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
+import com.helger.statistics.impl.StatisticsManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * This class simplifies the task of sending an email. For a scope aware version
- * please see {@link com.helger.smtp.scope.ScopedMailAPI}.
+ * This class simplifies the task of sending an email. For a scope aware version please see
+ * {@link com.helger.smtp.scope.ScopedMailAPI}.
  *
  * @author Philip Helger
  */
@@ -79,10 +79,11 @@ public final class MailAPI
   @GuardedBy ("RW_LOCK")
   private static final ICommonsMap <ISMTPSettings, MailQueuePerSMTP> QUEUE_CACHE = new CommonsHashMap <> ();
   // Just to have custom named threads....
-  private static final ThreadFactory THREAD_FACTORY = new BasicThreadFactory.Builder ().namingPattern ("MailAPI-%d")
-                                                                                       .daemon (true)
-                                                                                       .priority (Thread.NORM_PRIORITY)
-                                                                                       .build ();
+  private static final ThreadFactory THREAD_FACTORY = BasicThreadFactory.builder ()
+                                                                        .namingPattern ("MailAPI-%d")
+                                                                        .daemon (true)
+                                                                        .priority (Thread.NORM_PRIORITY)
+                                                                        .build ();
   @GuardedBy ("RW_LOCK")
   private static final ExecutorService SENDER_THREAD_POOL = new ThreadPoolExecutor (0,
                                                                                     Integer.MAX_VALUE,
@@ -189,8 +190,8 @@ public final class MailAPI
    *        The SMTP settings to be used.
    * @param aMailDataList
    *        The mail messages to queue. May not be <code>null</code>.
-   * @return The number of queued emails. Always &ge; 0. Maximum value is the
-   *         number of {@link IMutableEmailData} objects in the argument.
+   * @return The number of queued emails. Always &ge; 0. Maximum value is the number of
+   *         {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
   public static int queueMails (@Nonnull final ISMTPSettings aSMTPSettings,
@@ -280,13 +281,13 @@ public final class MailAPI
       if (bCanQueue)
       {
         // Check if a subject is present
-        if (StringHelper.hasNoText (aEmailData.getSubject ()))
+        if (StringHelper.isEmpty (aEmailData.getSubject ()))
         {
           LOGGER.warn ("Mail data has no subject: " + aEmailData + " - defaulting to " + DEFAULT_SUBJECT);
           aEmailData.setSubject (DEFAULT_SUBJECT);
         }
         // Check if a body is present
-        if (StringHelper.hasNoText (aEmailData.getBody ()))
+        if (StringHelper.isEmpty (aEmailData.getBody ()))
           LOGGER.warn ("Mail data has no body: " + aEmailData);
         if (bSendVendorOnlyMails)
         {
@@ -345,8 +346,7 @@ public final class MailAPI
   }
 
   /**
-   * Stop taking new mails, and wait until all mails already in the queue are
-   * delivered.
+   * Stop taking new mails, and wait until all mails already in the queue are delivered.
    *
    * @return {@link EChange}
    */
@@ -357,13 +357,11 @@ public final class MailAPI
   }
 
   /**
-   * Stop taking new mails, and wait until all mails already in the queue are
-   * delivered.
+   * Stop taking new mails, and wait until all mails already in the queue are delivered.
    *
    * @param bStopImmediately
-   *        <code>true</code> if all mails currently in the queue should be
-   *        removed and put in the failed mail queue. Only the emails currently
-   *        in sending are continued to be sent out.
+   *        <code>true</code> if all mails currently in the queue should be removed and put in the
+   *        failed mail queue. Only the emails currently in sending are continued to be sent out.
    * @return {@link EChange}
    */
   @Nonnull

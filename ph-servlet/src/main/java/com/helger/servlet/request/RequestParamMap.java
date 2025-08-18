@@ -19,39 +19,36 @@ package com.helger.servlet.request;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringReplace;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.collection.commons.ICommonsOrderedSet;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * This class represents a nested map that is build from request parameters.
- * E.g. the parameter <code>struct[key]=value</code> results in a
- * <code>map{struct=map{key=value}}</code>.<br>
- * If another parameter <code>struct[key2]=value2</code> is added the resulting
- * map looks like this: <code>map{struct=map{key=value, key2=value2}}</code>.
- * Theses maps can indefinitely be nested.<br>
+ * This class represents a nested map that is build from request parameters. E.g. the parameter
+ * <code>struct[key]=value</code> results in a <code>map{struct=map{key=value}}</code>.<br>
+ * If another parameter <code>struct[key2]=value2</code> is added the resulting map looks like this:
+ * <code>map{struct=map{key=value, key2=value2}}</code>. Theses maps can indefinitely be nested.<br>
  * Having only <code>struct[key1][key2][key3]=value</code> results in
  * <code>map{struct=map{key1=map{key2=map{key3=value}}}}</code><br>
  * <br>
- * By default the separator chars are "[" and "]" but since this may be a
- * problem with JS expressions, {@link #setSeparators(char, char)} and
- * {@link #setSeparators(String, String)} offer the possibility to set different
- * separator separators that are not special.
+ * By default the separator chars are "[" and "]" but since this may be a problem with JS
+ * expressions, {@link #setSeparators(char, char)} and {@link #setSeparators(String, String)} offer
+ * the possibility to set different separator separators that are not special.
  *
  * @author Philip Helger
  */
@@ -73,8 +70,8 @@ public class RequestParamMap implements IRequestParamMap
   {}
 
   /**
-   * This constructor is private, because it does not call the
-   * {@link #put(String, Object)} method which does the main string parsing!
+   * This constructor is private, because it does not call the {@link #put(String, Object)} method
+   * which does the main string parsing!
    *
    * @param aMap
    *        The map to use. May not be <code>null</code>.
@@ -137,7 +134,7 @@ public class RequestParamMap implements IRequestParamMap
   {
     // replace everything just to have opening separators ("[") left and only
     // one closing separator ("]") at the end
-    String sRealPath = StringHelper.replaceAll (sPath, s_sClose + s_sOpen, s_sOpen);
+    String sRealPath = StringReplace.replaceAll (sPath, s_sClose + s_sOpen, s_sOpen);
     // Remove the remaining trailing closing separator
     sRealPath = StringHelper.trimEnd (sRealPath, s_sClose);
     // Remove any remaining opening closing separator because this indicates and
@@ -156,13 +153,11 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * Iterate the root map down to the map specified by the passed path except
-   * for the last element.
+   * Iterate the root map down to the map specified by the passed path except for the last element.
    *
    * @param aPath
    *        The path to iterate. May neither be <code>null</code> nor empty.
-   * @return The map. May be <code>null</code> if the path did not find such a
-   *         child.
+   * @return The map. May be <code>null</code> if the path did not find such a child.
    */
   @Nullable
   private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapExceptLast (@Nonnull @Nonempty final String... aPath)
@@ -356,8 +351,8 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * This method doesn't make sense but it should stay, so that it's easy to
-   * spot usage of this invalid method.
+   * This method doesn't make sense but it should stay, so that it's easy to spot usage of this
+   * invalid method.
    *
    * @param sBaseName
    *        Base name
@@ -439,8 +434,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * @return The open char. By default this is "[". Never <code>null</code> nor
-   *         empty.
+   * @return The open char. By default this is "[". Never <code>null</code> nor empty.
    * @see #DEFAULT_OPEN
    */
   @Nonnull
@@ -451,8 +445,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   /**
-   * @return The close char. By default this is "]". Never <code>null</code> nor
-   *         empty.
+   * @return The close char. By default this is "]". Never <code>null</code> nor empty.
    * @see #DEFAULT_CLOSE
    */
   @Nonnull

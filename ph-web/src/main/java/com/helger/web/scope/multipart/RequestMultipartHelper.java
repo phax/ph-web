@@ -19,20 +19,18 @@ package com.helger.web.scope.multipart;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.lang.ServiceLoaderHelper;
-import com.helger.commons.state.EChange;
+import com.helger.base.CGlobal;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.spi.ServiceLoaderHelper;
+import com.helger.base.state.EChange;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
@@ -44,6 +42,7 @@ import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.progress.IProgressListener;
 import com.helger.web.progress.ProgressListenerProvider;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 public final class RequestMultipartHelper

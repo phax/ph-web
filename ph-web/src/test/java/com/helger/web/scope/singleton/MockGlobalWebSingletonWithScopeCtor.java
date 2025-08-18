@@ -16,13 +16,11 @@
  */
 package com.helger.web.scope.singleton;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.UsedViaReflection;
+import com.helger.annotation.style.UsedViaReflection;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.scope.IScope;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractGlobalWebSingleton}
@@ -37,7 +35,6 @@ public final class MockGlobalWebSingletonWithScopeCtor extends AbstractGlobalWeb
 
   @Deprecated (forRemoval = false)
   @UsedViaReflection
-  @SuppressFBWarnings ("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public MockGlobalWebSingletonWithScopeCtor (@Nonnull final IScope aScope)
   {
     m_aScope = ValueEnforcer.notNull (aScope, "Scope");

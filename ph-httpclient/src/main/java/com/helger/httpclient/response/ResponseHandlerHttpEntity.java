@@ -18,15 +18,15 @@ package com.helger.httpclient.response;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.message.StatusLine;
 
-import com.helger.commons.http.CHttp;
+import com.helger.http.CHttp;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Base response handler that checks the status code and handles only status

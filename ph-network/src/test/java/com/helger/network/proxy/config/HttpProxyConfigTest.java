@@ -26,9 +26,7 @@ import java.net.Proxy;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.helger.collection.commons.CommonsArrayList;
 
 /**
  * Test class for class {@link HttpProxyConfig}.
@@ -59,7 +57,6 @@ public final class HttpProxyConfigTest
   }
 
   @Test
-  @SuppressFBWarnings ({ "NP_NONNULL_PARAM_VIOLATION", "TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED" })
   public void testInvalid ()
   {
     try

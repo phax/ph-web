@@ -50,8 +50,7 @@ package com.helger.smtp.samples;
 import java.util.Date;
 import java.util.Properties;
 
-import com.helger.commons.concurrent.ThreadHelper;
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
+import com.helger.base.concurrent.ThreadHelper;
 
 import jakarta.mail.Address;
 import jakarta.mail.Message;
@@ -87,7 +86,7 @@ public final class MainTransport implements ConnectionListener, TransportListene
 
   public static void main (final String [] args)
   {
-    final Properties props = IPrivilegedAction.systemGetProperties ().invokeSafe ();
+    final Properties props = System.getProperties ();
     // parse the arguments
     InternetAddress [] addrs = null;
     InternetAddress from;

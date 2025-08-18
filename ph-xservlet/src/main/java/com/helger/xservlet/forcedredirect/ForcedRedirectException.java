@@ -16,12 +16,12 @@
  */
 package com.helger.xservlet.forcedredirect;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.Nonempty;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.http.url.ISimpleURL;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.url.ISimpleURL;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * This is a hack to allow for easy POST/Redirect/GET pattern implementation.

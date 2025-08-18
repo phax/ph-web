@@ -18,9 +18,9 @@ package com.helger.dns.naptr;
 
 import java.time.Duration;
 
-import javax.annotation.Nonnull;
+import com.helger.base.callback.ICallback;
 
-import com.helger.commons.callback.ICallback;
+import jakarta.annotation.Nonnull;
 
 /**
  * Callback interface to be used to notify interested parties when a NAPTR

@@ -28,50 +28,47 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.mime.CMimeType;
-import com.helger.commons.mime.IMimeType;
-import com.helger.commons.mime.MimeTypeParser;
-import com.helger.commons.mutable.MutableLong;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.url.URLProtocolRegistry;
-import com.helger.http.AcceptCharsetList;
-import com.helger.http.AcceptMimeTypeList;
-import com.helger.http.CacheControlBuilder;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.CGlobal;
+import com.helger.base.codec.impl.RFC5987Codec;
+import com.helger.base.debug.GlobalDebug;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.numeric.mutable.MutableLong;
+import com.helger.base.state.EChange;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.datetime.helper.PDTFactory;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
-import com.helger.http.QValue;
-import com.helger.http.RFC5987Encoder;
+import com.helger.http.cache.CacheControlBuilder;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.http.header.QValue;
+import com.helger.http.header.specific.AcceptCharsetList;
+import com.helger.http.header.specific.AcceptMimeTypeList;
+import com.helger.http.url.ISimpleURL;
+import com.helger.http.url.URLProtocolRegistry;
+import com.helger.io.file.FilenameHelper;
+import com.helger.mime.CMimeType;
+import com.helger.mime.IMimeType;
+import com.helger.mime.parse.MimeTypeParser;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.RequestHelper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -394,7 +391,7 @@ public class UnifiedResponse
   @Nonnull
   public final UnifiedResponse setEmptyContent ()
   {
-    return setContent (ArrayHelper.EMPTY_BYTE_ARRAY, 0, 0);
+    return setContent (CGlobal.EMPTY_BYTE_ARRAY, 0, 0);
   }
 
   /**
@@ -445,7 +442,6 @@ public class UnifiedResponse
    * @return this
    */
   @Nonnull
-  @SuppressFBWarnings ("EI_EXPOSE_REP2")
   public final UnifiedResponse setContent (@Nonnull final byte [] aContent,
                                            @Nonnegative final int nOfs,
                                            @Nonnegative final int nLen)
@@ -859,7 +855,7 @@ public class UnifiedResponse
   public final UnifiedResponse setStatusUnauthorized (@Nullable final String sAuthenticate)
   {
     _setStatus (HttpServletResponse.SC_UNAUTHORIZED);
-    if (StringHelper.hasText (sAuthenticate))
+    if (StringHelper.isNotEmpty (sAuthenticate))
       m_aResponseHeaderMap.setHeader (CHttpHeader.WWW_AUTHENTICATE, sAuthenticate);
     return this;
   }
@@ -1625,7 +1621,7 @@ public class UnifiedResponse
     if (m_aCacheControl != null)
     {
       final String sCacheControlValue = m_aCacheControl.getAsHTTPHeaderValue ();
-      if (StringHelper.hasText (sCacheControlValue))
+      if (StringHelper.isNotEmpty (sCacheControlValue))
         aHttpResponse.setHeader (CHttpHeader.CACHE_CONTROL, sCacheControlValue);
       else
         logWarn ("An empty Cache-Control was provided!");
@@ -1643,7 +1639,7 @@ public class UnifiedResponse
 
       // Check if we need an UTF-8 filename
       // http://stackoverflow.com/questions/93551/how-to-encode-the-filename-parameter-of-content-disposition-header-in-http/6745788#6745788
-      final String sRFC5987Filename = RFC5987Encoder.getRFC5987EncodedUTF8 (m_sContentDispositionFilename);
+      final String sRFC5987Filename = RFC5987Codec.getRFC5987EncodedUTF8 (m_sContentDispositionFilename);
       if (!sRFC5987Filename.equals (m_sContentDispositionFilename))
         aSB.append ("; filename*=UTF-8''").append (sRFC5987Filename);
 

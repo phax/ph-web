@@ -18,25 +18,25 @@ package com.helger.servlet.mock;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.lang.GenericReflection;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.reflection.GenericReflection;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringReplace;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -73,7 +73,7 @@ public class MockServletPool
         sPathToUse = sPath.substring (0, sPath.length () - 2);
       }
       // Convert wildcard to regex
-      return StringHelper.replaceAll (sPathToUse, "*", ".*");
+      return StringReplace.replaceAll (sPathToUse, "*", ".*");
     }
 
     public ServletItem (@Nonnull final Servlet aServlet, @Nonnull @Nonempty final String sServletPath)
@@ -136,11 +136,10 @@ public class MockServletPool
    * Register a new servlet without servlet init parameters
    *
    * @param aServletClass
-   *        The class of the servlet to be registered. May not be
-   *        <code>null</code>.
+   *        The class of the servlet to be registered. May not be <code>null</code>.
    * @param sServletPath
-   *        The path where the servlet should listen to requests. May neither be
-   *        <code>null</code> nor empty.
+   *        The path where the servlet should listen to requests. May neither be <code>null</code>
+   *        nor empty.
    * @param sServletName
    *        The name of the servlet. May neither be <code>null</code> nor empty.
    */
@@ -155,16 +154,14 @@ public class MockServletPool
    * Register a new servlet
    *
    * @param aServletClass
-   *        The class of the servlet to be registered. May not be
-   *        <code>null</code>.
+   *        The class of the servlet to be registered. May not be <code>null</code>.
    * @param sServletPath
-   *        The path where the servlet should listen to requests. May neither be
-   *        <code>null</code> nor empty.
+   *        The path where the servlet should listen to requests. May neither be <code>null</code>
+   *        nor empty.
    * @param sServletName
    *        The name of the servlet. May neither be <code>null</code> nor empty.
    * @param aServletInitParams
-   *        An optional map of servlet init parameters. May be <code>null</code>
-   *        or empty.
+   *        An optional map of servlet init parameters. May be <code>null</code> or empty.
    */
   public void registerServlet (@Nonnull final Class <? extends Servlet> aServletClass,
                                @Nonnull @Nonempty final String sServletPath,
@@ -219,16 +216,15 @@ public class MockServletPool
    *
    * @param sPath
    *        The path, relative to the servlet context. May be <code>null</code>.
-   * @return <code>null</code> if no {@link Servlet} matching the specified path
-   *         was found. If more than one matching servlet was found, the first
-   *         one is returned.
+   * @return <code>null</code> if no {@link Servlet} matching the specified path was found. If more
+   *         than one matching servlet was found, the first one is returned.
    */
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
     return m_aRWLock.readLockedGet ( () -> {
       final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
-      if (StringHelper.hasText (sPath))
+      if (StringHelper.isNotEmpty (sPath))
         m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
       final int nMatchingItems = aMatchingItems.size ();
       if (nMatchingItems == 0)
@@ -240,8 +236,8 @@ public class MockServletPool
   }
 
   /**
-   * Invalidate the servlet pool, by destroying all contained servlets. Also the
-   * list of registered servlets is cleared.
+   * Invalidate the servlet pool, by destroying all contained servlets. Also the list of registered
+   * servlets is cleared.
    */
   public void invalidate ()
   {

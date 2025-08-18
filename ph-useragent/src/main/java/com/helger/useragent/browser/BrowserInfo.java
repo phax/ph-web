@@ -18,15 +18,15 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.base.version.Version;
+import com.helger.text.display.IHasDisplayText;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.text.display.IHasDisplayText;
-import com.helger.commons.version.Version;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Represents information about a certain browser.
@@ -77,7 +77,9 @@ public class BrowserInfo implements IHasDisplayText
   @OverrideOnDemand
   public String getDisplayText (@Nonnull final Locale aContentLocale)
   {
-    return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
+    return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) +
+                                            " " +
+                                            m_aVersion.getAsString ());
   }
 
   @Nonnull
@@ -91,6 +93,8 @@ public class BrowserInfo implements IHasDisplayText
   {
     if (isItNot ())
       return new ToStringGenerator (null).append ("isIt", "not").getToString ();
-    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType).appendIfNotNull ("version", m_aVersion).getToString ();
+    return new ToStringGenerator (null).appendIfNotNull ("type", m_eBrowserType)
+                                       .appendIfNotNull ("version", m_aVersion)
+                                       .getToString ();
   }
 }

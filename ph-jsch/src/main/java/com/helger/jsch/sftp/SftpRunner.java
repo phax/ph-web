@@ -18,8 +18,6 @@ package com.helger.jsch.sftp;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +25,8 @@ import com.helger.jsch.session.ISessionFactory;
 import com.helger.jsch.session.SessionManager;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Provides a convenience wrapper around an <code>sftp</code> channel. This

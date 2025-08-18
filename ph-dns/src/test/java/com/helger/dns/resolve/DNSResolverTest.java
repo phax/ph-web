@@ -21,12 +21,12 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.InetAddress;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public final class DNSResolverTest
 {

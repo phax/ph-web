@@ -23,8 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 
-import javax.annotation.Nonnull;
-
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.impl.DefaultSchemePortResolver;
 import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
@@ -34,6 +32,8 @@ import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.http.protocol.HttpCoreContext;
 import org.junit.Test;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Comprehensive test class for {@link HttpClientFactory} focusing on proxy route planner

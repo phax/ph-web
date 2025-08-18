@@ -21,16 +21,15 @@ import java.net.InetAddress;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * {@link Authenticator} implementation based in {@link ProxySettingsManager}.
@@ -46,13 +45,11 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   {}
 
   /**
-   * Set the {@link AuthenticatorProxySettingsManager} as the default
-   * {@link Authenticator}.
+   * Set the {@link AuthenticatorProxySettingsManager} as the default {@link Authenticator}.
    */
   public static void setAsDefault ()
   {
-    IPrivilegedAction.authenticatorSetDefault (INSTANCE).invokeSafe ();
-
+    Authenticator.setDefault (INSTANCE);
     LOGGER.info ("Using AuthenticatorProxySettingsManager as the default Authenticator");
   }
 
@@ -115,8 +112,8 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   }
 
   /**
-   * Shortcut method for requesting proxy password authentication. This method
-   * can also be used, if this class is NOT the default Authenticator.
+   * Shortcut method for requesting proxy password authentication. This method can also be used, if
+   * this class is NOT the default Authenticator.
    *
    * @param sHostName
    *        Hostname to query

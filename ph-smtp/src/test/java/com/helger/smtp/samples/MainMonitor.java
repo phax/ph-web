@@ -52,8 +52,7 @@ import java.util.Properties;
 
 import org.eclipse.angus.mail.imap.IMAPFolder;
 
-import com.helger.commons.concurrent.ThreadHelper;
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
+import com.helger.base.concurrent.ThreadHelper;
 
 import jakarta.mail.Folder;
 import jakarta.mail.FolderClosedException;
@@ -79,7 +78,7 @@ public class MainMonitor
 
     try
     {
-      final Properties props = IPrivilegedAction.systemGetProperties ().invokeSafe ();
+      final Properties props = System.getProperties ();
 
       // Get a Session object
       final Session session = Session.getInstance (props, null);

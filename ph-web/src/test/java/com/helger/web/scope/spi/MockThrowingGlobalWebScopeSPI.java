@@ -16,7 +16,7 @@
  */
 package com.helger.web.scope.spi;
 
-import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.annotation.style.IsSPIImplementation;
 import com.helger.scope.IGlobalScope;
 import com.helger.scope.spi.IGlobalScopeSPI;
 

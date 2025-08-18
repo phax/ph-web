@@ -19,15 +19,15 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.annotation.Nonnegative;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public class ScpInputStream extends InputStream
 {

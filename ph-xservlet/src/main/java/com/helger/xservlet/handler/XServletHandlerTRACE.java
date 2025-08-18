@@ -18,18 +18,17 @@ package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.http.CHttp;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.mime.EMimeContentType;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.http.CHttp;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.mime.EMimeContentType;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.scope.IRequestWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

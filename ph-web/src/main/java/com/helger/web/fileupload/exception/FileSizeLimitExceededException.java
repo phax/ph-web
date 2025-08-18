@@ -16,7 +16,7 @@
  */
 package com.helger.web.fileupload.exception;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Thrown to indicate that A files size exceeds the configured maximum.

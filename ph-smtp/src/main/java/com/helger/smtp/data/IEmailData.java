@@ -18,14 +18,14 @@ package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.email.IEmailAddress;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.typeconvert.collection.IStringMap;
 
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.attr.IStringMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.email.IEmailAddress;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Contains all possible fields for mail sending in a read-only fashion. If the

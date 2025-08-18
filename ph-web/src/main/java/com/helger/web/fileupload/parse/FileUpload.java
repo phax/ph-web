@@ -16,9 +16,9 @@
  */
 package com.helger.web.fileupload.parse;
 
-import javax.annotation.Nonnull;
-
 import com.helger.web.fileupload.IFileItemFactory;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>

@@ -18,20 +18,20 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.lang.ICloneable;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.clone.ICloneable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.state.EChange;
+import com.helger.base.string.StringHelper;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Writable implementation of the {@link ISMTPSettings} interface.
@@ -76,8 +76,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * Constructor with default port, and no authentication
    *
    * @param sHost
-   *        SMTP server name or IP address. May neither be <code>null</code> nor
-   *        empty.
+   *        SMTP server name or IP address. May neither be <code>null</code> nor empty.
    */
   public SMTPSettings (@Nonnull final String sHost)
   {
@@ -88,8 +87,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * Constructor
    *
    * @param sHostName
-   *        SMTP server name or IP address. May neither be <code>null</code> nor
-   *        empty.
+   *        SMTP server name or IP address. May neither be <code>null</code> nor empty.
    * @param nPort
    *        Port to use. May be <code>-1</code> for the default port.
    * @param sUserName
@@ -124,8 +122,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * Constructor
    *
    * @param sHostName
-   *        SMTP server name or IP address. May neither be <code>null</code> nor
-   *        empty.
+   *        SMTP server name or IP address. May neither be <code>null</code> nor empty.
    * @param nPort
    *        Port to use. May be <code>-1</code> for the default port.
    * @param sUserName
@@ -143,8 +140,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @param nTimeoutMilliSecs
    *        the socket timeout in milliseconds.
    * @param bDebugSMTP
-   *        <code>true</code> to enable SMTP debugging, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable SMTP debugging, <code>false</code> to disable it.
    */
   public SMTPSettings (@Nonnull final String sHostName,
                        final int nPort,
@@ -212,7 +208,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   @Nonnull
   public EChange setUserName (@Nullable final String sUserName)
   {
-    final String sRealUserName = StringHelper.hasNoText (sUserName) ? null : sUserName;
+    final String sRealUserName = StringHelper.isEmpty (sUserName) ? null : sUserName;
     if (EqualsHelper.equals (sRealUserName, m_sUserName))
       return EChange.UNCHANGED;
     m_sUserName = sRealUserName;
@@ -228,7 +224,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   @Nonnull
   public EChange setPassword (@Nullable final String sPassword)
   {
-    final String sRealPassword = StringHelper.hasNoText (sPassword) ? null : sPassword;
+    final String sRealPassword = StringHelper.isEmpty (sPassword) ? null : sPassword;
     if (EqualsHelper.equals (sRealPassword, m_sPassword))
       return EChange.UNCHANGED;
     m_sPassword = sRealPassword;
@@ -284,8 +280,8 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   }
 
   /**
-   * Set the connection timeout in milliseconds. Values &le; 0 are interpreted
-   * as indefinite timeout which is not recommended!
+   * Set the connection timeout in milliseconds. Values &le; 0 are interpreted as indefinite timeout
+   * which is not recommended!
    *
    * @param nMilliSecs
    *        The milliseconds timeout
@@ -306,8 +302,8 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   }
 
   /**
-   * Set the socket timeout in milliseconds. Values &le; 0 are interpreted as
-   * indefinite timeout which is not recommended!
+   * Set the socket timeout in milliseconds. Values &le; 0 are interpreted as indefinite timeout
+   * which is not recommended!
    *
    * @param nMilliSecs
    *        The milliseconds timeout
@@ -323,8 +319,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   }
 
   /**
-   * @return <code>true</code> if SMTP debugging is active, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if SMTP debugging is active, <code>false</code> if not.
    * @since 1.0.1
    */
   public boolean isDebugSMTP ()
@@ -334,8 +329,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 
   /**
    * @param bDebugSMTP
-   *        <code>true</code> to activate SMTP debugging, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to activate SMTP debugging, <code>false</code> to disable it.
    * @return {@link EChange}
    * @since 1.0.1
    */
@@ -350,7 +344,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
 
   public boolean areRequiredFieldsSet ()
   {
-    return StringHelper.hasText (m_sHostName);
+    return StringHelper.isNotEmpty (m_sHostName);
   }
 
   @Nonnull

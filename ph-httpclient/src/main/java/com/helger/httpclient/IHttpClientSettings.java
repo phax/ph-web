@@ -18,9 +18,6 @@ package com.helger.httpclient;
 
 import java.time.Duration;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
@@ -28,10 +25,14 @@ import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.util.Timeout;
 
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Read-only interface for {@link HttpClientSettings}
@@ -226,7 +227,7 @@ public interface IHttpClientSettings
    */
   default boolean hasUserAgent ()
   {
-    return StringHelper.hasText (getUserAgent ());
+    return StringHelper.isNotEmpty (getUserAgent ());
   }
 
   /**

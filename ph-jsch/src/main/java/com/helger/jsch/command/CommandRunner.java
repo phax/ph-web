@@ -22,22 +22,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.WillNotClose;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.concurrent.ThreadHelper;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.lang.ICloneable;
+import com.helger.annotation.WillNotClose;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.clone.ICloneable;
+import com.helger.base.concurrent.ThreadHelper;
+import com.helger.base.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.helger.jsch.session.SessionManager;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Provides a convenience wrapper around an <code>exec</code> channel. This

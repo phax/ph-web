@@ -26,7 +26,7 @@ import java.util.Comparator;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.helger.commons.string.StringHelper;
+import com.helger.base.string.StringHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
@@ -58,19 +58,19 @@ public final class DefaultNetworkPortsTest
   public void testExportIntoCodelist ()
   {
     final IMicroDocument aDoc = new MicroDocument ();
-    final IMicroElement ePorts = aDoc.appendElement ("ports");
+    final IMicroElement ePorts = aDoc.addElement ("ports");
     for (final INetworkPort aPort : DefaultNetworkPorts.getAllPorts ()
                                                        .getSorted (Comparator.comparingInt (NetworkPort::getPort)
                                                                              .thenComparing (Comparator.comparingInt (x -> x.getProtocol ()
                                                                                                                             .ordinal ()))
                                                                              .thenComparing (NetworkPort::getName)))
     {
-      final IMicroElement ePort = ePorts.appendElement ("defaultport");
+      final IMicroElement ePort = ePorts.addElement ("defaultport");
       ePort.setAttribute ("port", aPort.getPort ());
       ePort.setAttribute ("protocol", aPort.getProtocol ().getID ());
-      if (StringHelper.hasText (aPort.getName ()))
+      if (StringHelper.isNotEmpty (aPort.getName ()))
         ePort.setAttribute ("name", aPort.getName ());
-      if (StringHelper.hasText (aPort.getDescription ()))
+      if (StringHelper.isNotEmpty (aPort.getDescription ()))
         ePort.setAttribute ("desc", aPort.getDescription ());
     }
     MicroWriter.writeToFile (aDoc, new File ("src/main/resources/codelists/default-network-ports.xml"));

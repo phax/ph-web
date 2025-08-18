@@ -28,21 +28,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.CodingStyleguideUnaware;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.mime.CMimeType;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.style.CodingStyleguideUnaware;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.http.EHttpMethod;
+import com.helger.mime.CMimeType;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -151,7 +150,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
         sNormalizedContent = _getContentFromParameterMap (m_aParameterMap);
         m_aContent = sNormalizedContent.getBytes (_getCharset ());
       }
-      return StringHelper.hasNoText (sNormalizedContent) ? "[EMPTY]" : sNormalizedContent;
+      return StringHelper.isEmpty (sNormalizedContent) ? "[EMPTY]" : sNormalizedContent;
     }
     catch (final IOException e)
     {

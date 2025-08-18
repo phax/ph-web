@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.helger.commons.email.EmailAddress;
-import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.base.email.EmailAddress;
+import com.helger.typeconvert.impl.TypeConverter;
 
 import jakarta.mail.internet.InternetAddress;
 

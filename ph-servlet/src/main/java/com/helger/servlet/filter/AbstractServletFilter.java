@@ -16,12 +16,11 @@
  */
 package com.helger.servlet.filter;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.tostring.ToStringGenerator;
 
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;

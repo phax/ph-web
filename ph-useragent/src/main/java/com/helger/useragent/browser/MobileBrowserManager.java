@@ -18,18 +18,18 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.io.resource.ClassPathResource;
 import com.helger.xml.microdom.util.XMLListHandler;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 @Immutable
 public final class MobileBrowserManager
@@ -58,13 +58,14 @@ public final class MobileBrowserManager
     final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())
       throw new IllegalStateException ("Failed to read " + sPath);
+
     SET.addAllMapped (aList, MobileBrowserManager::_unify);
   }
 
   @Nullable
   public static String getFromUserAgent (@Nullable final String sFullUserAgent)
   {
-    if (StringHelper.hasNoText (sFullUserAgent))
+    if (StringHelper.isEmpty (sFullUserAgent))
       return null;
 
     final String sUnifiedUA = _unify (sFullUserAgent);

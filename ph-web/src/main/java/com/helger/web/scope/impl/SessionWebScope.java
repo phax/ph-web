@@ -20,23 +20,22 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.state.EContinue;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.state.EContinue;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.datetime.helper.PDTFactory;
 import com.helger.scope.SessionScope;
 import com.helger.web.scope.ISessionWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Default implementation of the {@link ISessionWebScope} interface. It is
- * serializable in general, but just don't do it :)
+ * Default implementation of the {@link ISessionWebScope} interface. It is serializable in general,
+ * but just don't do it :)
  *
  * @author Philip Helger
  */

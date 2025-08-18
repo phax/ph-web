@@ -23,11 +23,11 @@ import java.net.InetAddress;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.CommonsTestHelper;
+import com.helger.unittest.support.TestHelper;
 
 /**
  * Test class for class {@link IPV4Addr}.
- * 
+ *
  * @author Philip Helger
  */
 public final class IPV4AddrTest
@@ -42,6 +42,7 @@ public final class IPV4AddrTest
     assertNotNull (aIA);
 
     final IPV4Addr aAddr2 = new IPV4Addr (aIA);
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aAddr, aAddr2);
+    TestHelper.testDefaultImplementationWithEqualContentObject (aAddr, aAddr2);
+    TestHelper.testDefaultImplementationWithDifferentContentObject (aAddr, new IPV4Addr (1, 2, 3, 5));
   }
 }

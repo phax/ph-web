@@ -16,8 +16,9 @@
  */
 package com.helger.jsch.scp;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import com.helger.annotation.Nonnegative;
+
+import jakarta.annotation.Nonnull;
 
 public enum EDestinationOS
 {

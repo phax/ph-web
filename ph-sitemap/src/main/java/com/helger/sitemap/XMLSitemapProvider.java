@@ -17,24 +17,22 @@
 package com.helger.sitemap;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.Consumer;
-
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.io.file.FileHelper;
-import com.helger.commons.lang.ServiceLoaderHelper;
-import com.helger.commons.state.ESuccess;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.spi.ServiceLoaderHelper;
+import com.helger.base.state.ESuccess;
+import com.helger.io.file.FileHelper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 
 /**
  * This class manages the implementations of {@link IXMLSitemapProviderSPI}.
@@ -45,7 +43,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public final class XMLSitemapProvider
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (XMLSitemapProvider.class);
-  private static final ICommonsList <IXMLSitemapProviderSPI> PROVIDERS;
+  private static final List <IXMLSitemapProviderSPI> PROVIDERS;
 
   static
   {
@@ -65,12 +63,11 @@ public final class XMLSitemapProvider
   }
 
   /**
-   * Create URL sets from every provider and invoke the provided consumer with
-   * it.
+   * Create URL sets from every provider and invoke the provided consumer with it.
    *
    * @param aConsumer
-   *        The consumer to be invoked. Must be able to handle <code>null</code>
-   *        and empty values. May itself not be <code>null</code>.
+   *        The consumer to be invoked. Must be able to handle <code>null</code> and empty values.
+   *        May itself not be <code>null</code>.
    */
   public static void forEachURLSet (@Nonnull final Consumer <? super XMLSitemapURLSet> aConsumer)
   {
@@ -90,7 +87,6 @@ public final class XMLSitemapProvider
   }
 
   @Nonnull
-  @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
                                              final boolean bUseGZip,
                                              @Nonnull @Nonempty final String sFullContextPath)

@@ -16,8 +16,7 @@
  */
 package com.helger.servlet.async;
 
-import javax.annotation.Nonnull;
-
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

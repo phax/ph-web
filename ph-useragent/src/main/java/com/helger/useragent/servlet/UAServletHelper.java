@@ -16,14 +16,11 @@
  */
 package com.helger.useragent.servlet;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.useragent.IUserAgent;
@@ -33,6 +30,8 @@ import com.helger.useragent.UserAgentElementList;
 import com.helger.useragent.uaprofile.UAProfile;
 import com.helger.useragent.uaprofile.UAProfileDatabase;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**

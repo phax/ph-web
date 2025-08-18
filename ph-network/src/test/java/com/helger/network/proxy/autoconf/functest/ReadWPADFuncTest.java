@@ -29,10 +29,10 @@ import javax.script.ScriptException;
 import org.junit.Assume;
 import org.junit.Test;
 
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.io.resource.URLResource;
-import com.helger.commons.io.stream.NonBlockingBufferedReader;
+import com.helger.base.io.nonblocking.NonBlockingBufferedReader;
+import com.helger.io.resource.ClassPathResource;
+import com.helger.io.resource.IReadableResource;
+import com.helger.io.resource.URLResource;
 import com.helger.network.proxy.autoconf.ProxyAutoConfigHelper;
 
 public final class ReadWPADFuncTest

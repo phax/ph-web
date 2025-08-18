@@ -18,11 +18,10 @@ package com.helger.servlet.async;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.tostring.ToStringGenerator;
 
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 

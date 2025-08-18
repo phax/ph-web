@@ -18,18 +18,17 @@ package com.helger.smtp.data;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.ContainsSoftMigration;
-import com.helger.commons.base64.Base64;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.io.stream.StreamHelper;
+import com.helger.annotation.misc.ContainsSoftMigration;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.codec.base64.Base64;
+import com.helger.base.io.stream.StreamHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 
 import jakarta.activation.FileTypeMap;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailAttachment}.
@@ -57,7 +56,7 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     // Base64 encode
     final byte [] aBytes = StreamHelper.getAllBytes (aAttachment.getInputStream ());
     if (aBytes != null)
-      eAttachment.appendText (Base64.encodeBytes (aBytes));
+      eAttachment.addText (Base64.encodeBytes (aBytes));
     return eAttachment;
   }
 

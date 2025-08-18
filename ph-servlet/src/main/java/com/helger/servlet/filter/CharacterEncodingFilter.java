@@ -19,28 +19,26 @@ package com.helger.servlet.filter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.mime.EMimeContentType;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
+import com.helger.annotation.Nonempty;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.mime.EMimeContentType;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Special servlet filter that applies a certain encoding to a request and a
- * response. This must be a filter. Changing the request encoding does not work
- * in a servlet!
+ * Special servlet filter that applies a certain encoding to a request and a response. This must be
+ * a filter. Changing the request encoding does not work in a servlet!
  *
  * @author Philip Helger
  */
@@ -53,8 +51,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   /** Name of the init parameter to force setting the response encoding */
   public static final String INITPARAM_FORCE_RESPONSE_ENCODING = "forceResponseEncoding";
   /**
-   * Name of the init parameter to force setting the request and response
-   * encoding
+   * Name of the init parameter to force setting the request and response encoding
    */
   public static final String INITPARAM_FORCE_ENCODING = "forceEncoding";
 
@@ -74,8 +71,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   {}
 
   /**
-   * @return The encoding to be used by this filter. Neither <code>null</code>
-   *         nor empty.
+   * @return The encoding to be used by this filter. Neither <code>null</code> nor empty.
    */
   @Nonnull
   @Nonempty
@@ -125,7 +121,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
 
     // encoding
     final String sEncoding = getFilterConfig ().getInitParameter (INITPARAM_ENCODING);
-    if (StringHelper.hasText (sEncoding))
+    if (StringHelper.isNotEmpty (sEncoding))
       setEncoding (sEncoding);
 
     // force request encoding?
@@ -173,8 +169,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
           if (sOldRequestEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldRequestEncoding))
           {
             /*
-             * Request encoding should always be present (at least from
-             * browsers)
+             * Request encoding should always be present (at least from browsers)
              */
             LOGGER.info ("Changed request encoding from '" + sOldRequestEncoding + "' to '" + m_sEncoding + "'");
           }
@@ -203,8 +198,7 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
             if (sOldResponseEncoding != null && !m_sEncoding.equalsIgnoreCase (sOldResponseEncoding))
             {
               /*
-               * Default response encoding in Jetty 9.x is "iso-8859-1" on
-               * German Windows 7 machine
+               * Default response encoding in Jetty 9.x is "iso-8859-1" on German Windows 7 machine
                */
               if (LOGGER.isDebugEnabled ())
                 LOGGER.debug ("Changed response encoding from '" +

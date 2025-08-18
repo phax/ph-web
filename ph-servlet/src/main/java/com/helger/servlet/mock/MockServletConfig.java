@@ -19,19 +19,18 @@ package com.helger.servlet.mock;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EChange;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.collection.enumeration.EnumerationHelper;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 
@@ -68,8 +67,7 @@ public class MockServletConfig implements ServletConfig
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
    * @param aServletInitParams
-   *        The map with all servlet init parameters. May be <code>null</code>
-   *        or empty.
+   *        The map with all servlet init parameters. May be <code>null</code> or empty.
    */
   public MockServletConfig (@Nonnull final ServletContext aSC,
                             @Nonnull @Nonempty final String sServletName,
@@ -103,7 +101,7 @@ public class MockServletConfig implements ServletConfig
   @Nonnull
   public Enumeration <String> getInitParameterNames ()
   {
-    return IteratorHelper.getEnumeration (m_aServletInitParams.keySet ());
+    return EnumerationHelper.getEnumeration (m_aServletInitParams.keySet ());
   }
 
   public void addInitParameter (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)

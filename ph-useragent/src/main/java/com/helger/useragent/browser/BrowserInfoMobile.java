@@ -18,11 +18,11 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.base.version.Version;
 
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.version.Version;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Special browser info for Web Spider user agents.

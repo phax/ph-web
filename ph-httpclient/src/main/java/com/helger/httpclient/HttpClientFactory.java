@@ -19,10 +19,6 @@ package com.helger.httpclient;
 import java.io.IOException;
 import java.util.function.Function;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
@@ -68,11 +64,16 @@ import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.state.EHandled;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.state.EHandled;
+import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in the

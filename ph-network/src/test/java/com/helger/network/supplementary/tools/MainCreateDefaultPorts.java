@@ -18,18 +18,18 @@ package com.helger.network.supplementary.tools;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
 import com.helger.network.port.ENetworkProtocol;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroReader;
 import com.helger.xml.microdom.util.MicroHelper;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Source:
@@ -43,7 +43,7 @@ public final class MainCreateDefaultPorts
   private static final String CHAR_ESCAPE = "\b\t\n\f\r\"\\";
   private static final String CHAR_MACRO = "btnfr\"\\";
 
-  private static final String _id (@Nonnull final String sStr)
+  private static String _id (@Nonnull final String sStr)
   {
     final int n = sStr.length ();
     final StringBuilder aSB = new StringBuilder (sStr.length ());
@@ -69,7 +69,7 @@ public final class MainCreateDefaultPorts
   }
 
   @Nonnull
-  private static final String _quote (@Nonnull final String sStr)
+  private static String _quote (@Nonnull final String sStr)
   {
     final int n = sStr.length ();
     final StringBuilder aSB = new StringBuilder (n + 2);
@@ -142,7 +142,7 @@ public final class MainCreateDefaultPorts
                       eProtocol.name () +
                       "_" +
                       nPort +
-                      (StringHelper.hasText (sName) ? "_" + _id (sName) : "") +
+                      (StringHelper.isNotEmpty (sName) ? "_" + _id (sName) : "") +
                       " = _registerPort (" +
                       nPort +
                       ", ENetworkProtocol." +

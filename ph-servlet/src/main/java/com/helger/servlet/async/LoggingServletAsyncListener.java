@@ -18,12 +18,12 @@ package com.helger.servlet.async;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.annotation.concurrent.Immutable;
+
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 

@@ -21,14 +21,14 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import org.xbill.DNS.Name;
 import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.config.ResolverConfigProvider;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.collection.commons.ICommonsList;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A simple implementation of {@link ResolverConfigProvider} that uses a

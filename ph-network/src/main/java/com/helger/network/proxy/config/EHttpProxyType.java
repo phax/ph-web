@@ -18,15 +18,15 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.lang.EnumHelper;
-import com.helger.commons.url.EURLProtocol;
-import com.helger.commons.url.IURLProtocol;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.lang.EnumHelper;
+import com.helger.base.url.EURLProtocol;
+import com.helger.base.url.IURLProtocol;
 import com.helger.network.port.SchemeDefaultPortMapper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Proxy type determination.<br>

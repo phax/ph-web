@@ -18,15 +18,15 @@ package com.helger.web.scope.util;
 
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.lang.GenericReflection;
+import com.helger.annotation.Nonempty;
+import com.helger.base.reflection.GenericReflection;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.IScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A specialized request field that uses a value stored in the session as the

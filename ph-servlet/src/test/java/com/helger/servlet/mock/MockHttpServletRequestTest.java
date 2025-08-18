@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.helger.commons.http.EHttpMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.ServletHelper;
 
 /**

@@ -16,11 +16,11 @@
  */
 package com.helger.xservlet.exception;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.callback.ICallback;
-import com.helger.commons.state.EContinue;
+import com.helger.base.callback.ICallback;
+import com.helger.base.state.EContinue;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * High level exception handler for XServlet.

@@ -18,19 +18,19 @@ package com.helger.web.scope.multipart;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.UsedViaReflection;
+import com.helger.base.CGlobal;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.IScope;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.parse.DiskFileItem;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning up,

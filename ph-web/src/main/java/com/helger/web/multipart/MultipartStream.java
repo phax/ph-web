@@ -20,28 +20,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.base.CGlobal;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
+import com.helger.base.state.ICloseable;
+import com.helger.base.system.SystemHelper;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.commons.state.ICloseable;
-import com.helger.commons.system.SystemHelper;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * <p>
  * Low level API for processing file uploads.
  * <p>
- * This class can be used to process data streams conforming to MIME 'multipart'
- * format as defined in <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC
- * 1867</a>. Arbitrarily large amounts of data in the stream can be processed
- * under constant memory usage.
+ * This class can be used to process data streams conforming to MIME 'multipart' format as defined
+ * in <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Arbitrarily large amounts of data
+ * in the stream can be processed under constant memory usage.
  * <p>
  * The format of the stream is defined in the following way:<br>
  * <code>
@@ -59,10 +56,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  *   body-data := &lt;arbitrary data&gt;<br>
  * </code>
  * <p>
- * Note that body-data can contain another mulipart entity. There is limited
- * support for single pass processing of such nested streams. The nested stream
- * is <strong>required</strong> to have a boundary token of the same length as
- * the parent stream (see {@link #setBoundary(byte[])}).
+ * Note that body-data can contain another mulipart entity. There is limited support for single pass
+ * processing of such nested streams. The nested stream is <strong>required</strong> to have a
+ * boundary token of the same length as the parent stream (see {@link #setBoundary(byte[])}).
  * <p>
  * Here is an example of usage of this class.<br>
  *
@@ -114,8 +110,8 @@ public class MultipartStream
   public static final byte DASH = 0x2D;
 
   /**
-   * The maximum length of <code>header-part</code> that will be processed (20
-   * kilobytes = 10240 bytes.).
+   * The maximum length of <code>header-part</code> that will be processed (20 kilobytes = 10240
+   * bytes.).
    */
   public static final int HEADER_PART_SIZE_MAX = 20 * CGlobal.BYTES_PER_KILOBYTE;
 
@@ -125,20 +121,19 @@ public class MultipartStream
   private static final int DEFAULT_BUFSIZE = 4 * CGlobal.BYTES_PER_KILOBYTE;
 
   /**
-   * A byte sequence that marks the end of <code>header-part</code> (
-   * <code>CRLFCRLF</code>).
+   * A byte sequence that marks the end of <code>header-part</code> ( <code>CRLFCRLF</code>).
    */
   private static final byte [] HEADER_SEPARATOR = { CR, LF, CR, LF };
 
   /**
-   * A byte sequence that that follows a delimiter that will be followed by an
-   * encapsulation (<code>CRLF</code>).
+   * A byte sequence that that follows a delimiter that will be followed by an encapsulation
+   * (<code>CRLF</code>).
    */
   private static final byte [] FIELD_SEPARATOR = { CR, LF };
 
   /**
-   * A byte sequence that that follows a delimiter of the last encapsulation in
-   * the stream (<code>--</code>).
+   * A byte sequence that that follows a delimiter of the last encapsulation in the stream
+   * (<code>--</code>).
    */
   private static final byte [] STREAM_TERMINATOR = { DASH, DASH };
 
@@ -158,8 +153,8 @@ public class MultipartStream
   private int m_nBoundaryLength;
 
   /**
-   * The amount of data, in bytes, that must be kept in the buffer in order to
-   * detect delimiters reliably.
+   * The amount of data, in bytes, that must be kept in the buffer in order to detect delimiters
+   * reliably.
    */
   private final int m_nKeepRegion;
 
@@ -204,20 +199,18 @@ public class MultipartStream
    * <p>
    * Constructs a <code>MultipartStream</code> with a custom size buffer.
    * <p>
-   * Note that the buffer must be at least big enough to contain the boundary
-   * string, plus 4 characters for CR/LF and double dash, plus at least one byte
-   * of data. Too small a buffer size setting will degrade performance.
+   * Note that the buffer must be at least big enough to contain the boundary string, plus 4
+   * characters for CR/LF and double dash, plus at least one byte of data. Too small a buffer size
+   * setting will degrade performance.
    *
    * @param aIS
    *        The <code>InputStream</code> to serve as a data source.
    * @param aBoundary
-   *        The token used for dividing the stream into
-   *        <code>encapsulations</code>.
+   *        The token used for dividing the stream into <code>encapsulations</code>.
    * @param nBufSize
    *        The size of the buffer to be used, in bytes.
    * @param aNotifier
-   *        The notifier, which is used for calling the progress listener, if
-   *        any.
+   *        The notifier, which is used for calling the progress listener, if any.
    * @see #MultipartStream(InputStream, byte[],MultipartProgressNotifier)
    */
   public MultipartStream (final InputStream aIS,
@@ -249,8 +242,7 @@ public class MultipartStream
    * @param aIS
    *        The <code>InputStream</code> to serve as a data source.
    * @param aBoundary
-   *        The token used for dividing the stream into
-   *        <code>encapsulations</code>.
+   *        The token used for dividing the stream into <code>encapsulations</code>.
    * @param aNotifier
    *        An object for calling the progress listener, if any.
    * @see #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)
@@ -261,9 +253,8 @@ public class MultipartStream
   }
 
   /**
-   * Retrieves the character encoding used when reading the headers of an
-   * individual part. When not specified, or <code>null</code>, the platform
-   * default encoding is used.
+   * Retrieves the character encoding used when reading the headers of an individual part. When not
+   * specified, or <code>null</code>, the platform default encoding is used.
    *
    * @return The encoding used to read part headers.
    */
@@ -274,9 +265,8 @@ public class MultipartStream
   }
 
   /**
-   * Specifies the character encoding to be used when reading the headers of
-   * individual parts. When not specified, or <code>null</code>, the platform
-   * default encoding is used.
+   * Specifies the character encoding to be used when reading the headers of individual parts. When
+   * not specified, or <code>null</code>, the platform default encoding is used.
    *
    * @param sHeaderEncoding
    *        The encoding used to read part headers.
@@ -315,11 +305,11 @@ public class MultipartStream
   }
 
   /**
-   * Skips a <code>boundary</code> token, and checks whether more
-   * <code>encapsulations</code> are contained in the stream.
+   * Skips a <code>boundary</code> token, and checks whether more <code>encapsulations</code> are
+   * contained in the stream.
    *
-   * @return <code>true</code> if there are more encapsulations in this stream;
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if there are more encapsulations in this stream; <code>false</code>
+   *         otherwise.
    * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly or fails to follow required syntax.
    */
@@ -365,17 +355,17 @@ public class MultipartStream
    * <p>
    * This method allows single pass processing of nested multipart streams.
    * <p>
-   * The boundary token of the nested stream is <code>required</code> to be of
-   * the same length as the boundary token in parent stream.
+   * The boundary token of the nested stream is <code>required</code> to be of the same length as
+   * the boundary token in parent stream.
    * <p>
-   * Restoring the parent stream boundary token after processing of a nested
-   * stream is left to the application.
+   * Restoring the parent stream boundary token after processing of a nested stream is left to the
+   * application.
    *
    * @param aBoundary
    *        The boundary to be used for parsing of the nested stream.
    * @throws MultipartIllegalBoundaryException
-   *         if the <code>boundary</code> has a different length than the one
-   *         being currently parsed.
+   *         if the <code>boundary</code> has a different length than the one being currently
+   *         parsed.
    */
   public void setBoundary (@Nonnull final byte [] aBoundary) throws MultipartIllegalBoundaryException
   {
@@ -387,11 +377,10 @@ public class MultipartStream
 
   /**
    * <p>
-   * Reads the <code>header-part</code> of the current
-   * <code>encapsulation</code>.
+   * Reads the <code>header-part</code> of the current <code>encapsulation</code>.
    * <p>
-   * Headers are returned verbatim to the input stream, including the trailing
-   * <code>CRLF</code> marker. Parsing is left to the application.
+   * Headers are returned verbatim to the input stream, including the trailing <code>CRLF</code>
+   * marker. Parsing is left to the application.
    *
    * @return The <code>header-part</code> of the current encapsulation.
    * @throws MultipartMalformedStreamException
@@ -437,13 +426,11 @@ public class MultipartStream
 
   /**
    * <p>
-   * Reads <code>body-data</code> from the current <code>encapsulation</code>
-   * and writes its contents into the output <code>Stream</code>.
+   * Reads <code>body-data</code> from the current <code>encapsulation</code> and writes its
+   * contents into the output <code>Stream</code>.
    * <p>
-   * Arbitrary large amounts of data can be processed by this method using a
-   * constant size buffer. (see
-   * {@link #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)}
-   * ).
+   * Arbitrary large amounts of data can be processed by this method using a constant size buffer.
+   * (see {@link #MultipartStream(InputStream, byte[], int, MultipartProgressNotifier)} ).
    *
    * @return the amount of data read.
    * @throws MultipartMalformedStreamException
@@ -480,8 +467,7 @@ public class MultipartStream
 
   /**
    * <p>
-   * Reads <code>body-data</code> from the current <code>encapsulation</code>
-   * and discards it.
+   * Reads <code>body-data</code> from the current <code>encapsulation</code> and discards it.
    * <p>
    * Use this method to skip encapsulations you don't need or don't understand.
    *
@@ -499,8 +485,7 @@ public class MultipartStream
   /**
    * Finds the beginning of the first <code>encapsulation</code>.
    *
-   * @return <code>true</code> if an <code>encapsulation</code> was found in the
-   *         stream.
+   * @return <code>true</code> if an <code>encapsulation</code> was found in the stream.
    * @throws IOException
    *         if an i/o error occurs.
    */
@@ -533,15 +518,15 @@ public class MultipartStream
   }
 
   /**
-   * Searches for a byte of specified value in the <code>buffer</code>, starting
-   * at the specified <code>position</code>.
+   * Searches for a byte of specified value in the <code>buffer</code>, starting at the specified
+   * <code>position</code>.
    *
    * @param nValue
    *        The value to find.
    * @param nPos
    *        The starting position for searching.
-   * @return The position of byte found, counting from beginning of the
-   *         <code>buffer</code>, or <code>-1</code> if not found.
+   * @return The position of byte found, counting from beginning of the <code>buffer</code>, or
+   *         <code>-1</code> if not found.
    */
   @CheckForSigned
   protected int findByte (final byte nValue, final int nPos)
@@ -553,11 +538,11 @@ public class MultipartStream
   }
 
   /**
-   * Searches for the <code>boundary</code> in the <code>buffer</code> region
-   * delimited by <code>head</code> and <code>tail</code>.
+   * Searches for the <code>boundary</code> in the <code>buffer</code> region delimited by
+   * <code>head</code> and <code>tail</code>.
    *
-   * @return The position of the boundary found, counting from the beginning of
-   *         the <code>buffer</code>, or <code>-1</code> if not found.
+   * @return The position of the boundary found, counting from the beginning of the
+   *         <code>buffer</code>, or <code>-1</code> if not found.
    */
   protected int findSeparator ()
   {
@@ -594,8 +579,7 @@ public class MultipartStream
      */
     private long m_nTotal;
     /**
-     * The number of bytes, which must be hold, because they might be a part of
-     * the boundary.
+     * The number of bytes, which must be hold, because they might be a part of the boundary.
      */
     private int m_nPad;
     /**
@@ -641,8 +625,7 @@ public class MultipartStream
     }
 
     /**
-     * Returns the number of bytes, which are currently available, without
-     * blocking.
+     * Returns the number of bytes, which are currently available, without blocking.
      *
      * @throws IOException
      *         An I/O error occurs.
@@ -659,8 +642,7 @@ public class MultipartStream
     /**
      * Returns the next byte in the stream.
      *
-     * @return The next byte in the stream, as a non-negative integer, or -1 for
-     *         EOF.
+     * @return The next byte in the stream, as a non-negative integer, or -1 for EOF.
      * @throws IOException
      *         An I/O error occurred.
      */
@@ -738,7 +720,6 @@ public class MultipartStream
      * @throws IOException
      *         An I/O error occurred.
      */
-    @SuppressFBWarnings ("SR_NOT_CHECKED")
     public void close (final boolean bCloseUnderlying) throws IOException
     {
       if (m_bClosed)

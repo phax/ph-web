@@ -20,23 +20,23 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsEnumMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.functional.IThrowingConsumer;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.functional.IThrowingConsumer;
+import com.helger.base.state.EChange;
+import com.helger.base.string.StringImplode;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsEnumMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
 import com.helger.xservlet.handler.simple.XServletHandlerToSimpleHandler;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Wrapper around a map from {@link EHttpMethod} to {@link IXServletHandler}.
@@ -54,17 +54,16 @@ public class XServletHandlerRegistry
   {}
 
   /**
-   * Register a handler for the provided HTTP method. If another handler is
-   * already registered, the new registration overwrites the old one.
+   * Register a handler for the provided HTTP method. If another handler is already registered, the
+   * new registration overwrites the old one.
    *
    * @param eMethod
    *        The HTTP method to register for. May not be <code>null</code>.
    * @param aLowLevelHandler
    *        The handler to register. May not be <code>null</code>.
    * @param bAllowOverwrite
-   *        if <code>true</code> existing handler can be overwritten, if
-   *        <code>false</code> this method will throw an
-   *        {@link IllegalStateException}.
+   *        if <code>true</code> existing handler can be overwritten, if <code>false</code> this
+   *        method will throw an {@link IllegalStateException}.
    */
   public void registerHandler (@Nonnull final EHttpMethod eMethod,
                                @Nonnull final IXServletHandler aLowLevelHandler,
@@ -109,8 +108,8 @@ public class XServletHandlerRegistry
    *
    * @param eMethod
    *        The HTTP method to be used. May be <code>null</code>.
-   * @return {@link EChange#CHANGED} if removal was successful,
-   *         {@link EChange#UNCHANGED} otherwise. Never <code>null</code>.
+   * @return {@link EChange#CHANGED} if removal was successful, {@link EChange#UNCHANGED} otherwise.
+   *         Never <code>null</code>.
    * @since 9.3.2
    */
   @Nonnull
@@ -122,22 +121,22 @@ public class XServletHandlerRegistry
   }
 
   /**
-   * Copy an existing handler of a certain HTTP method to another HTTP method.
-   * The same instance of the handler is re-used!
+   * Copy an existing handler of a certain HTTP method to another HTTP method. The same instance of
+   * the handler is re-used!
    *
    * @param eFromMethod
    *        Source method. May not be <code>null</code>.
    * @param aToMethods
-   *        Destination methods. May not be <code>null</code> and may not
-   *        contain <code>null</code> values.
-   * @return {@link EChange#UNCHANGED} if no existing handler was found,
-   *         {@link EChange#CHANGED} if at least one handler was copied.
+   *        Destination methods. May not be <code>null</code> and may not contain <code>null</code>
+   *        values.
+   * @return {@link EChange#UNCHANGED} if no existing handler was found, {@link EChange#CHANGED} if
+   *         at least one handler was copied.
    * @throws IllegalStateException
-   *         In another handler is already registered for one of the destination
-   *         methods.
+   *         In another handler is already registered for one of the destination methods.
    * @see #copyHandlerToAll(EHttpMethod)
    */
-  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod, @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
+  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod,
+                              @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
   {
     ValueEnforcer.notNull (eFromMethod, "FromMethod");
     ValueEnforcer.notEmptyNoNullValue (aToMethods, "ToMethods");
@@ -152,17 +151,16 @@ public class XServletHandlerRegistry
   }
 
   /**
-   * Copy the handler of the passed method to all other HTTP methods in the
-   * range of GET, POST, PUT, DELETE and PATCH.
+   * Copy the handler of the passed method to all other HTTP methods in the range of GET, POST, PUT,
+   * DELETE and PATCH.
    *
    * @param eFromMethod
-   *        From method. May not be <code>null</code>. Should be one of GET,
-   *        POST, PUT, DELETE or PATCH.
-   * @return {@link EChange#UNCHANGED} if no existing handler was found,
-   *         {@link EChange#CHANGED} if at least one handler was copied.
+   *        From method. May not be <code>null</code>. Should be one of GET, POST, PUT, DELETE or
+   *        PATCH.
+   * @return {@link EChange#UNCHANGED} if no existing handler was found, {@link EChange#CHANGED} if
+   *         at least one handler was copied.
    * @throws IllegalStateException
-   *         In another handler is already registered for one of the destination
-   *         methods.
+   *         In another handler is already registered for one of the destination methods.
    * @see #copyHandler(EHttpMethod, Set)
    */
   @Nonnull
@@ -195,7 +193,7 @@ public class XServletHandlerRegistry
   @Nonnull
   public String getAllowedHttpMethodsString ()
   {
-    return StringHelper.getImplodedMapped (", ", getAllowedHTTPMethods (), EHttpMethod::getName);
+    return StringImplode.getImplodedMapped (", ", getAllowedHTTPMethods (), EHttpMethod::getName);
   }
 
   @Nullable

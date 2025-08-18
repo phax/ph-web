@@ -19,21 +19,20 @@ package com.helger.servlet.mock;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.UnsupportedOperation;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.string.StringHelper;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.enumeration.EnumerationHelper;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionBindingEvent;
@@ -93,7 +92,7 @@ public class MockHttpSession implements HttpSession
   public MockHttpSession (@Nullable final ServletContext aServletContext, @Nullable final String sID)
   {
     m_aServletContext = aServletContext;
-    m_sID = StringHelper.hasText (sID) ? sID : GlobalIDFactory.getNewStringID ();
+    m_sID = StringHelper.isNotEmpty (sID) ? sID : GlobalIDFactory.getNewStringID ();
 
     final HttpSessionEvent aHSE = new HttpSessionEvent (this);
     for (final HttpSessionListener aListener : MockHttpListener.getAllHttpSessionListeners ())
@@ -164,7 +163,7 @@ public class MockHttpSession implements HttpSession
   @Nonnull
   public Enumeration <String> getAttributeNames ()
   {
-    return IteratorHelper.getEnumeration (m_aAttributes.keySet ());
+    return EnumerationHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   @Deprecated (forRemoval = false)

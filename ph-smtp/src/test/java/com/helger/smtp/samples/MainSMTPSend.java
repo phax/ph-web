@@ -58,8 +58,6 @@ import org.eclipse.angus.mail.smtp.SMTPAddressSucceededException;
 import org.eclipse.angus.mail.smtp.SMTPSendFailedException;
 import org.eclipse.angus.mail.smtp.SMTPTransport;
 
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
-
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -243,7 +241,7 @@ public class MainSMTPSend
       /*
        * Initialize the JavaMail Session.
        */
-      final Properties props = IPrivilegedAction.systemGetProperties ().invokeSafe ();
+      final Properties props = System.getProperties ();
       if (mailhost != null)
         props.put ("mail." + prot + ".host", mailhost);
       if (auth)

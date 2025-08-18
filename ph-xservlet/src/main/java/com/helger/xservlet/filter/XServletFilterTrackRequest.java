@@ -18,14 +18,14 @@ package com.helger.xservlet.filter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.requesttrack.RequestTracker;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A special filter that tracks the request. Each servlet request requires it's

@@ -18,25 +18,25 @@ package com.helger.servlet.request;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.cache.AnnotationUsageCache;
-import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.cache.clazz.AnnotationUsageCache;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.collection.helper.CollectionSort;
+import com.helger.http.header.HttpHeaderMap;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.annotation.IsOffline;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -140,9 +140,9 @@ public final class RequestLogger
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     try
     {
-      for (final Map.Entry <String, String []> aEntry : CollectionHelper.getSortedByKey (aHttpRequest.getParameterMap ())
-                                                                        .entrySet ())
-        ret.put (aEntry.getKey (), StringHelper.getImploded (", ", aEntry.getValue ()));
+      for (final Map.Entry <String, String []> aEntry : CollectionSort.getSortedByKey (aHttpRequest.getParameterMap ())
+                                                                      .entrySet ())
+        ret.put (aEntry.getKey (), StringImplode.getImploded (", ", aEntry.getValue ()));
     }
     catch (final RuntimeException ex)
     {
@@ -164,15 +164,15 @@ public final class RequestLogger
   {
     final StringBuilder aSB = new StringBuilder ();
     aSB.append (aCookie.getValue ());
-    if (StringHelper.hasText (aCookie.getDomain ()))
+    if (StringHelper.isNotEmpty (aCookie.getDomain ()))
       aSB.append (" [domain=").append (aCookie.getDomain ()).append (']');
     aSB.append (" [maxage=").append (aCookie.getMaxAge ()).append (']');
-    if (StringHelper.hasText (aCookie.getPath ()))
+    if (StringHelper.isNotEmpty (aCookie.getPath ()))
       aSB.append (" [path=").append (aCookie.getPath ()).append (']');
     if (aCookie.getSecure ())
       aSB.append (" [secure]");
     aSB.append (" [version=").append (aCookie.getVersion ()).append (']');
-    if (StringHelper.hasText (aCookie.getComment ()))
+    if (StringHelper.isNotEmpty (aCookie.getComment ()))
       aSB.append (" [comment=").append (aCookie.getComment ()).append (']');
     if (aCookie.isHttpOnly ())
       aSB.append (" [http-only]");

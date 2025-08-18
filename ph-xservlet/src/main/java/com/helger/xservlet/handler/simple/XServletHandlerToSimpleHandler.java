@@ -19,37 +19,35 @@ package com.helger.xservlet.handler.simple;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.http.CHttp;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.state.EContinue;
-import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
-import com.helger.commons.statistics.StatisticsManager;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EContinue;
+import com.helger.base.string.StringHelper;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.http.CHttp;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.UnifiedResponse;
+import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
+import com.helger.statistics.impl.StatisticsManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.handler.IXServletHandler;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Implementation of {@link IXServletHandler} for
- * {@link IXServletSimpleHandler}.
+ * Implementation of {@link IXServletHandler} for {@link IXServletSimpleHandler}.
  *
  * @author Philip Helger
  */
@@ -157,13 +155,13 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     }
     // Handle the ETag
     final String sSupportedETag = m_aSimpleHandler.getSupportedETag (aRequestScope);
-    if (StringHelper.hasText (sSupportedETag))
+    if (StringHelper.isNotEmpty (sSupportedETag))
     {
       m_aStatsHasETag.increment ();
 
       // get the request ETag
       final String sRequestETags = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.IF_NON_MATCH);
-      if (StringHelper.hasText (sRequestETags))
+      if (StringHelper.isNotEmpty (sRequestETags))
       {
         // Request header may contain several ETag values
         final ICommonsList <String> aAllETags = RegExHelper.getSplitToList (sRequestETags, ",\\s+");

@@ -16,28 +16,26 @@
  */
 package com.helger.network.proxy.config;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.id.IHasID;
+import com.helger.base.string.StringParser;
+import com.helger.base.system.SystemProperties;
+import com.helger.base.url.IURLProtocol;
 
-import com.helger.commons.id.IHasID;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.system.SystemProperties;
-import com.helger.commons.url.IURLProtocol;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Proxy type determination interface.<br>
- * Source:
- * http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html
+ * Source: http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html
  *
  * @author Philip Helger
  */
 public interface IProxySettingsPerProtocol extends IHasID <String>
 {
   /**
-   * @return The URL protocol for which the proxy can be used. May not be
-   *         <code>null</code>.
+   * @return The URL protocol for which the proxy can be used. May not be <code>null</code>.
    */
   @Nonnull
   IURLProtocol getURLProtocol ();
@@ -46,8 +44,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   int getDefaultPort ();
 
   /**
-   * @return The name of the system property for getting and setting the proxy
-   *         host
+   * @return The name of the system property for getting and setting the proxy host
    */
   @Nonnull
   default String getPropertyNameProxyHost ()
@@ -56,8 +53,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The current proxy host for this HTTP proxy type. May be
-   *         <code>null</code>.
+   * @return The current proxy host for this HTTP proxy type. May be <code>null</code>.
    */
   @Nullable
   default String getProxyHost ()
@@ -66,8 +62,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The name of the system property for getting and setting the proxy
-   *         port
+   * @return The name of the system property for getting and setting the proxy port
    */
   @Nonnull
   default String getPropertyNameProxyPort ()
@@ -76,8 +71,8 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The current proxy port for this HTTP proxy type. May be
-   *         <code>-1</code> for "undefined".
+   * @return The current proxy port for this HTTP proxy type. May be <code>-1</code> for
+   *         "undefined".
    */
   @CheckForSigned
   default int getProxyPort ()
@@ -86,8 +81,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The name of the system property for getting and setting the proxy
-   *         user name
+   * @return The name of the system property for getting and setting the proxy user name
    */
   @Nonnull
   default String getPropertyNameProxyUserName ()
@@ -96,8 +90,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The current proxy user for this HTTP proxy type. May be
-   *         <code>null</code>.
+   * @return The current proxy user for this HTTP proxy type. May be <code>null</code>.
    */
   @Nullable
   default String getProxyUserName ()
@@ -106,8 +99,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The name of the system property for getting and setting the proxy
-   *         password
+   * @return The name of the system property for getting and setting the proxy password
    */
   @Nonnull
   default String getPropertyNameProxyPassword ()
@@ -116,8 +108,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The current proxy password for this HTTP proxy type. May be
-   *         <code>null</code>.
+   * @return The current proxy password for this HTTP proxy type. May be <code>null</code>.
    */
   @Nullable
   default String getProxyPassword ()
@@ -126,8 +117,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The name of the system property for getting and setting the
-   *         non-proxy hosts
+   * @return The name of the system property for getting and setting the non-proxy hosts
    */
   @Nonnull
   default String getPropertyNameNoProxyHosts ()
@@ -136,8 +126,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   }
 
   /**
-   * @return The current non-proxy hosts for this HTTP proxy type. May be
-   *         <code>null</code>.
+   * @return The current non-proxy hosts for this HTTP proxy type. May be <code>null</code>.
    */
   @Nullable
   default String getNoProxyHosts ()

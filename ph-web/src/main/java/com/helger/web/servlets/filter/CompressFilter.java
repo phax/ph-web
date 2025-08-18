@@ -18,13 +18,9 @@ package com.helger.web.servlets.filter;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
-import com.helger.commons.statistics.StatisticsManager;
-import com.helger.http.AcceptEncodingList;
+import com.helger.annotation.OverridingMethodsMustInvokeSuper;
+import com.helger.http.CHttpHeader;
+import com.helger.http.header.specific.AcceptEncodingList;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
@@ -34,7 +30,10 @@ import com.helger.servlet.response.gzip.AbstractCompressedResponseWrapper;
 import com.helger.servlet.response.gzip.CompressFilterSettings;
 import com.helger.servlet.response.gzip.DeflateResponse;
 import com.helger.servlet.response.gzip.GZIPResponse;
+import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
+import com.helger.statistics.impl.StatisticsManager;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

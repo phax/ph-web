@@ -16,12 +16,12 @@
  */
 package com.helger.web.progress;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.lang.ServiceLoaderHelper;
+import com.helger.base.spi.ServiceLoaderHelper;
+
+import jakarta.annotation.Nullable;
 
 /**
  * SPI handler for {@link IProgressListenerProviderSPI} implementations

@@ -16,11 +16,11 @@
  */
 package com.helger.smtp.listener;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.callback.ICallback;
+import com.helger.base.callback.ICallback;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An interface similar to javax.mail.event.TransportListener but specific

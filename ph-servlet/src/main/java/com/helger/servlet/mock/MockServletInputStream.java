@@ -19,12 +19,11 @@ package com.helger.servlet.mock;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletInputStream;
 
 /**

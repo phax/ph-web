@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.request.IRequestParamMap;

@@ -16,13 +16,13 @@
  */
 package com.helger.smtp.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.mail.datasource.InputStreamProviderDataSource;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Implementation of {@link IEmailAttachmentDataSource}

@@ -19,14 +19,13 @@ package com.helger.mail.config;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.IsSPIImplementation;
+import com.helger.base.email.EmailAddress;
+import com.helger.typeconvert.ITypeConverterRegistrarSPI;
+import com.helger.typeconvert.ITypeConverterRegistry;
 
-import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.email.EmailAddress;
-import com.helger.commons.typeconvert.ITypeConverterRegistrarSPI;
-import com.helger.commons.typeconvert.ITypeConverterRegistry;
-
+import jakarta.annotation.Nonnull;
 import jakarta.mail.internet.InternetAddress;
 
 /**

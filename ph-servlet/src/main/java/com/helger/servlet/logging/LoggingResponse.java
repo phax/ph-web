@@ -16,12 +16,12 @@
  */
 package com.helger.servlet.logging;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.http.HttpHeaderMap;
+import com.helger.http.header.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 final class LoggingResponse
 {

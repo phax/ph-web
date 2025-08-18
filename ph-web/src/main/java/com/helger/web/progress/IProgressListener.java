@@ -16,8 +16,8 @@
  */
 package com.helger.web.progress;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnegative;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonnegative;
 
 /**
  * The {@link IProgressListener} may be used to display a progress bar or do

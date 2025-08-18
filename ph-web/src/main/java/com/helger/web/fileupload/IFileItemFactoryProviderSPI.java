@@ -16,9 +16,9 @@
  */
 package com.helger.web.fileupload;
 
-import javax.annotation.Nonnull;
+import com.helger.annotation.style.IsSPIInterface;
 
-import com.helger.commons.annotation.IsSPIInterface;
+import jakarta.annotation.Nonnull;
 
 /**
  * SPI for a provider of a custom file item factory that should be used instead

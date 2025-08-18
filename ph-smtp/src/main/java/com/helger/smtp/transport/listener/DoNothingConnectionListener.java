@@ -16,11 +16,10 @@
  */
 package com.helger.smtp.transport.listener;
 
-import javax.annotation.Nonnull;
+import com.helger.base.callback.ICallback;
+import com.helger.base.tostring.ToStringGenerator;
 
-import com.helger.commons.callback.ICallback;
-import com.helger.commons.string.ToStringGenerator;
-
+import jakarta.annotation.Nonnull;
 import jakarta.mail.event.ConnectionEvent;
 import jakarta.mail.event.ConnectionListener;
 

@@ -16,8 +16,9 @@
  */
 package com.helger.useragent;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+
+import jakarta.annotation.Nullable;
 
 @Immutable
 public class UsetAgentKeyValuePair

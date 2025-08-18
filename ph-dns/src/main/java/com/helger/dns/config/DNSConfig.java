@@ -20,16 +20,16 @@ import java.net.InetAddress;
 import java.security.Security;
 import java.time.Duration;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.system.SystemProperties;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.system.SystemProperties;
 import com.helger.dns.ip.IPV4Addr;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Global DNS client configuration

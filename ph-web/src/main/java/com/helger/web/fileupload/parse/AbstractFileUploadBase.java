@@ -23,19 +23,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.string.StringParser;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringParser;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -54,18 +51,20 @@ import com.helger.web.multipart.MultipartProgressNotifier;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.progress.IProgressListener;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+
 /**
  * <p>
  * High level API for processing file uploads.
  * </p>
  * <p>
- * This class handles multiple files per single HTML widget, sent using
- * <code>multipart/mixed</code> encoding type, as specified by
- * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
+ * This class handles multiple files per single HTML widget, sent using <code>multipart/mixed</code>
+ * encoding type, as specified by <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
  * </p>
  * <p>
- * How the data for individual parts is stored is determined by the factory used
- * to create them; a given part may be in memory, on disk, or somewhere else.
+ * How the data for individual parts is stored is determined by the factory used to create them; a
+ * given part may be in memory, on disk, or somewhere else.
  * </p>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -81,14 +80,14 @@ public abstract class AbstractFileUploadBase
   private static final Logger LOGGER = LoggerFactory.getLogger (AbstractFileUploadBase.class);
 
   /**
-   * The maximum size permitted for the complete request, as opposed to
-   * {@link #m_nFileSizeMax}. A value of -1 indicates no maximum.
+   * The maximum size permitted for the complete request, as opposed to {@link #m_nFileSizeMax}. A
+   * value of -1 indicates no maximum.
    */
   private long m_nSizeMax = -1;
 
   /**
-   * The maximum size permitted for a single uploaded file, as opposed to
-   * {@link #m_nSizeMax}. A value of -1 indicates no maximum.
+   * The maximum size permitted for a single uploaded file, as opposed to {@link #m_nSizeMax}. A
+   * value of -1 indicates no maximum.
    */
   private long m_nFileSizeMax = -1;
 
@@ -117,8 +116,8 @@ public abstract class AbstractFileUploadBase
    * Returns the maximum allowed size of a complete request, as opposed to
    * {@link #getFileSizeMax()}.
    *
-   * @return The maximum allowed size, in bytes. The default value of -1
-   *         indicates, that there is no limit.
+   * @return The maximum allowed size, in bytes. The default value of -1 indicates, that there is no
+   *         limit.
    * @see #setSizeMax(long)
    */
   @CheckForSigned
@@ -132,8 +131,8 @@ public abstract class AbstractFileUploadBase
    * {@link #setFileSizeMax(long)}.
    *
    * @param nSizeMax
-   *        The maximum allowed size, in bytes. The default value of -1
-   *        indicates, that there is no limit.
+   *        The maximum allowed size, in bytes. The default value of -1 indicates, that there is no
+   *        limit.
    * @see #getSizeMax()
    */
   public void setSizeMax (final long nSizeMax)
@@ -155,8 +154,7 @@ public abstract class AbstractFileUploadBase
   }
 
   /**
-   * Sets the maximum allowed size of a single uploaded file, as opposed to
-   * {@link #getSizeMax()}.
+   * Sets the maximum allowed size of a single uploaded file, as opposed to {@link #getSizeMax()}.
    *
    * @see #getFileSizeMax()
    * @param nFileSizeMax
@@ -168,10 +166,9 @@ public abstract class AbstractFileUploadBase
   }
 
   /**
-   * Retrieves the character encoding used when reading the headers of an
-   * individual part. When not specified, or <code>null</code>, the request
-   * encoding is used. If that is also not specified, or <code>null</code>, the
-   * platform default encoding is used.
+   * Retrieves the character encoding used when reading the headers of an individual part. When not
+   * specified, or <code>null</code>, the request encoding is used. If that is also not specified,
+   * or <code>null</code>, the platform default encoding is used.
    *
    * @return The encoding used to read part headers.
    */
@@ -182,10 +179,9 @@ public abstract class AbstractFileUploadBase
   }
 
   /**
-   * Specifies the character encoding to be used when reading the headers of
-   * individual part. When not specified, or <code>null</code>, the request
-   * encoding is used. If that is also not specified, or <code>null</code>, the
-   * platform default encoding is used.
+   * Specifies the character encoding to be used when reading the headers of individual part. When
+   * not specified, or <code>null</code>, the request encoding is used. If that is also not
+   * specified, or <code>null</code>, the platform default encoding is used.
    *
    * @param sHeaderEncoding
    *        The encoding used to read part headers.
@@ -218,19 +214,18 @@ public abstract class AbstractFileUploadBase
   }
 
   /**
-   * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
-   * compliant <code>multipart/form-data</code> stream.
+   * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a> compliant
+   * <code>multipart/form-data</code> stream.
    *
    * @param aCtx
    *        The context for the request to be parsed.
-   * @return An iterator to instances of <code>FileItemStream</code> parsed from
-   *         the request, in the order that they were transmitted.
+   * @return An iterator to instances of <code>FileItemStream</code> parsed from the request, in the
+   *         order that they were transmitted.
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    * @throws IOException
-   *         An I/O error occurred. This may be a network error while
-   *         communicating with the client or a problem while storing the
-   *         uploaded content.
+   *         An I/O error occurred. This may be a network error while communicating with the client
+   *         or a problem while storing the uploaded content.
    */
   @Nonnull
   public IFileItemIterator getItemIterator (@Nonnull final IRequestContext aCtx) throws FileUploadException, IOException
@@ -239,13 +234,13 @@ public abstract class AbstractFileUploadBase
   }
 
   /**
-   * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
-   * compliant <code>multipart/form-data</code> stream.
+   * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a> compliant
+   * <code>multipart/form-data</code> stream.
    *
    * @param aCtx
    *        The context for the request to be parsed.
-   * @return A list of <code>FileItem</code> instances parsed from the request,
-   *         in the order that they were transmitted.
+   * @return A list of <code>FileItem</code> instances parsed from the request, in the order that
+   *         they were transmitted.
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
@@ -335,8 +330,7 @@ public abstract class AbstractFileUploadBase
    * Retrieves the boundary from the <code>Content-type</code> header.
    *
    * @param sContentType
-   *        The value of the content type header from which to extract the
-   *        boundary value.
+   *        The value of the content type header from which to extract the boundary value.
    * @return The boundary, as a byte array.
    */
   @Nullable
@@ -444,12 +438,11 @@ public abstract class AbstractFileUploadBase
    * <p>
    * Parses the <code>header-part</code> and returns as key/value pairs.
    * <p>
-   * If there are multiple headers of the same names, the name will map to a
-   * comma-separated list containing the values.
+   * If there are multiple headers of the same names, the name will map to a comma-separated list
+   * containing the values.
    *
    * @param sHeaderPart
-   *        The <code>header-part</code> of the current
-   *        <code>encapsulation</code>.
+   *        The <code>header-part</code> of the current <code>encapsulation</code>.
    * @return A <code>Map</code> containing the parsed HTTP request headers.
    */
   @Nonnull
@@ -760,15 +753,13 @@ public abstract class AbstractFileUploadBase
     }
 
     /**
-     * Returns, whether another instance of {@link IFileItemStream} is
-     * available.
+     * Returns, whether another instance of {@link IFileItemStream} is available.
      *
      * @throws FileUploadException
      *         Parsing or processing the file item failed.
      * @throws IOException
      *         Reading the file item failed.
-     * @return True, if one or more additional file items are available,
-     *         otherwise false.
+     * @return True, if one or more additional file items are available, otherwise false.
      */
     public boolean hasNext () throws FileUploadException, IOException
     {
@@ -783,14 +774,12 @@ public abstract class AbstractFileUploadBase
      * Returns the next available {@link IFileItemStream}.
      *
      * @throws NoSuchElementException
-     *         No more items are available. Use {@link #hasNext()} to prevent
-     *         this exception.
+     *         No more items are available. Use {@link #hasNext()} to prevent this exception.
      * @throws FileUploadException
      *         Parsing or processing the file item failed.
      * @throws IOException
      *         Reading the file item failed.
-     * @return FileItemStream instance, which provides access to the next file
-     *         item.
+     * @return FileItemStream instance, which provides access to the next file item.
      */
     @Nonnull
     public IFileItemStream next () throws FileUploadException, IOException

@@ -21,12 +21,12 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.CGlobal;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.string.StringHelper;
 
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Generic proxy settings interface.
@@ -43,15 +43,14 @@ public interface IProxySettings
   Proxy.Type getProxyType ();
 
   /**
-   * @return The proxy host name of IP address. May be <code>null</code> if
-   *         proxy type is DIRECT.
+   * @return The proxy host name of IP address. May be <code>null</code> if proxy type is DIRECT.
    */
   @Nullable
   String getProxyHost ();
 
   /**
-   * @return The proxy port for this HTTP proxy type. Should be &gt; 0. May be
-   *         &le; 0 if the proxy type is DIRECT.
+   * @return The proxy port for this HTTP proxy type. Should be &gt; 0. May be &le; 0 if the proxy
+   *         type is DIRECT.
    */
   int getProxyPort ();
 
@@ -63,13 +62,12 @@ public interface IProxySettings
 
   default boolean hasProxyUserName ()
   {
-    return StringHelper.hasText (getProxyUserName ());
+    return StringHelper.isNotEmpty (getProxyUserName ());
   }
 
   /**
-   * @return The proxy password for the provided user. May be <code>null</code>.
-   *         Note: an empty password may be valid. Only <code>null</code>
-   *         indicates "no password".
+   * @return The proxy password for the provided user. May be <code>null</code>. Note: an empty
+   *         password may be valid. Only <code>null</code> indicates "no password".
    */
   @Nullable
   String getProxyPassword ();
@@ -80,8 +78,7 @@ public interface IProxySettings
   }
 
   /**
-   * Check if hostname and port match the ones from the provided
-   * {@link InetSocketAddress}.
+   * Check if hostname and port match the ones from the provided {@link InetSocketAddress}.
    *
    * @param aAddr
    *        The address to compare with. May be <code>null</code>.
@@ -89,7 +86,9 @@ public interface IProxySettings
    */
   default boolean hasInetSocketAddress (@Nullable final InetSocketAddress aAddr)
   {
-    return aAddr != null && EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) && getProxyPort () == aAddr.getPort ();
+    return aAddr != null &&
+           EqualsHelper.equals (aAddr.getHostString (), getProxyHost ()) &&
+           getProxyPort () == aAddr.getPort ();
   }
 
   /**
@@ -97,16 +96,14 @@ public interface IProxySettings
    *
    * @param aAddr
    *        The socket address to compare to. May be <code>null</code>.
-   * @return <code>true</code> if the proxy type is DIRECT and the address is
-   *         <code>null</code>, or if the object is of type
-   *         {@link InetSocketAddress} and the values match.
+   * @return <code>true</code> if the proxy type is DIRECT and the address is <code>null</code>, or
+   *         if the object is of type {@link InetSocketAddress} and the values match.
    * @see #hasInetSocketAddress(InetSocketAddress)
    */
   boolean hasSocketAddress (@Nullable SocketAddress aAddr);
 
   /**
-   * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy
-   *         host and port.
+   * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy host and port.
    * @see #getProxyHost()
    * @see #getProxyPort()
    */
@@ -118,11 +115,10 @@ public interface IProxySettings
 
   /**
    * @param bResolveHostname
-   *        <code>true</code> to resolve host names (needed in production) or
-   *        <code>false</code> to not resolve them (mainly for testing
-   *        purposes). This flag has no impact if the proxy type is DIRECT.
-   * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy
-   *         host and port.
+   *        <code>true</code> to resolve host names (needed in production) or <code>false</code> to
+   *        not resolve them (mainly for testing purposes). This flag has no impact if the proxy
+   *        type is DIRECT.
+   * @return A non-<code>null</code> {@link Proxy} instance. Only uses proxy host and port.
    * @see #getProxyHost()
    * @see #getProxyPort()
    */
@@ -130,9 +126,8 @@ public interface IProxySettings
   Proxy getAsProxy (boolean bResolveHostname);
 
   /**
-   * @return The {@link PasswordAuthentication} instances matching the
-   *         credentials contained in this object or <code>null</code> if no
-   *         username is present.
+   * @return The {@link PasswordAuthentication} instances matching the credentials contained in this
+   *         object or <code>null</code> if no username is present.
    */
   @Nullable
   default PasswordAuthentication getAsPasswordAuthentication ()
@@ -144,6 +139,7 @@ public interface IProxySettings
     final String sProxyPassword = getProxyPassword ();
     // Constructor does not take null password!
     return new PasswordAuthentication (getProxyUserName (),
-                                       sProxyPassword == null ? ArrayHelper.EMPTY_CHAR_ARRAY : sProxyPassword.toCharArray ());
+                                       sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY : sProxyPassword
+                                                                                                         .toCharArray ());
   }
 }

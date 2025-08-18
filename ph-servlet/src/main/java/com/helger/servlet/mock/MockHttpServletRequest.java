@@ -27,49 +27,50 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.locale.IHasLocale;
-import com.helger.commons.mime.IMimeType;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.system.SystemHelper;
-import com.helger.commons.url.URLHelper;
-import com.helger.commons.url.URLParameter;
-import com.helger.commons.url.URLParameterList;
-import com.helger.http.AcceptCharsetHandler;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.UnsupportedOperation;
+import com.helger.base.CGlobal;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.base.system.SystemHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsCollection;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.collection.enumeration.EnumerationHelper;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.http.header.specific.AcceptCharsetHandler;
+import com.helger.http.url.SimpleURLHelper;
+import com.helger.http.url.URLParameter;
+import com.helger.http.url.URLParameterList;
+import com.helger.io.url.URLHelper;
+import com.helger.mime.IMimeType;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
+import com.helger.text.locale.IHasLocale;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
@@ -145,8 +146,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private boolean m_bRequestedSessionIDFromURL = false;
 
   /**
-   * Create a new MockHttpServletRequest with a default
-   * {@link MockServletContext}.
+   * Create a new MockHttpServletRequest with a default {@link MockServletContext}.
    *
    * @see MockServletContext
    */
@@ -160,8 +160,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @see MockServletContext
    */
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext)
@@ -173,8 +173,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @param eMethod
    *        the request method (may be <code>null</code>)
    * @see MockServletContext
@@ -188,13 +188,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Create a new MockHttpServletRequest.
    *
    * @param aServletContext
-   *        the ServletContext that the request runs in (may be
-   *        <code>null</code> to use a default MockServletContext)
+   *        the ServletContext that the request runs in (may be <code>null</code> to use a default
+   *        MockServletContext)
    * @param eMethod
    *        the request method (may be <code>null</code>)
    * @param bInvokeHttpListeners
-   *        if <code>true</code> than the HTTP request event listeners from
-   *        {@link MockHttpListener} are triggered
+   *        if <code>true</code> than the HTTP request event listeners from {@link MockHttpListener}
+   *        are triggered
    * @see #setMethod
    * @see MockServletContext
    */
@@ -222,9 +222,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * @return the ServletContext that this request is associated with. (Not
-   *         available in the standard HttpServletRequest interface for some
-   *         reason.). Never <code>null</code>.
+   * @return the ServletContext that this request is associated with. (Not available in the standard
+   *         HttpServletRequest interface for some reason.). Never <code>null</code>.
    */
   @Nonnull
   public final ServletContext getServletContext ()
@@ -251,8 +250,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Invalidate this request, clearing its state and invoking all HTTP event
-   * listener.
+   * Invalidate this request, clearing its state and invoking all HTTP event listener.
    *
    * @see #close()
    * @see #clearAttributes()
@@ -274,8 +272,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Check whether this request is still active (that is, not completed yet),
-   * throwing an IllegalStateException if not active anymore.
+   * Check whether this request is still active (that is, not completed yet), throwing an
+   * IllegalStateException if not active anymore.
    */
   protected void checkActive ()
   {
@@ -294,7 +292,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getAttributeNames ()
   {
     checkActive ();
-    return IteratorHelper.getEnumeration (m_aAttributes.keySet ());
+    return EnumerationHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   public void setCharacterEncoding (@Nullable final String sCharacterEncoding)
@@ -366,12 +364,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Note: do not change the content via {@link #setContent(byte[])}, while an
-   * input stream is open, because this may lead to indeterministic results!
+   * Note: do not change the content via {@link #setContent(byte[])}, while an input stream is open,
+   * because this may lead to indeterministic results!
    *
-   * @return <code>null</code> if no content is present. If non-
-   *         <code>null</code> the caller is responsible for closing the
-   *         {@link InputStream}.
+   * @return <code>null</code> if no content is present. If non- <code>null</code> the caller is
+   *         responsible for closing the {@link InputStream}.
    */
   @Nullable
   public ServletInputStream getInputStream ()
@@ -385,8 +382,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Set a single value for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, they will be replaced.
+   * If there are already one or more values registered for the given parameter name, they will be
+   * replaced.
    *
    * @param sName
    *        Parameter name
@@ -405,8 +402,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Set an array of values for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, they will be replaced.
+   * If there are already one or more values registered for the given parameter name, they will be
+   * replaced.
    *
    * @param sName
    *        Parameter name
@@ -423,9 +420,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Sets all provided parameters <em>replacing</em> any existing values for the
-   * provided parameter names. To add without replacing existing values, use
-   * {@link #addParameters(List)}.
+   * Sets all provided parameters <em>replacing</em> any existing values for the provided parameter
+   * names. To add without replacing existing values, use {@link #addParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map. May be <code>null</code>.
@@ -446,8 +442,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Add a single value for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, the given value will be added to the end of the list.
+   * If there are already one or more values registered for the given parameter name, the given
+   * value will be added to the end of the list.
    *
    * @param sName
    *        Parameter name
@@ -468,8 +464,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Add an array of values for the specified HTTP parameter.
    * <p>
-   * If there are already one or more values registered for the given parameter
-   * name, the given values will be added to the end of the list.
+   * If there are already one or more values registered for the given parameter name, the given
+   * values will be added to the end of the list.
    *
    * @param sName
    *        Parameter name
@@ -485,8 +481,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Adds all provided parameters <em>without</em> replacing any existing
-   * values. To replace existing values, use {@link #setParameters(List)}.
+   * Adds all provided parameters <em>without</em> replacing any existing values. To replace
+   * existing values, use {@link #setParameters(List)}.
    *
    * @param aParams
    *        Parameter name value map
@@ -537,7 +533,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public Enumeration <String> getParameterNames ()
   {
-    return IteratorHelper.getEnumeration (m_aParameters.getAllParamNames ());
+    return EnumerationHelper.getEnumeration (m_aParameters.getAllParamNames ());
   }
 
   @Nullable
@@ -545,7 +541,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public String [] getParameterValues (@Nonnull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return m_aParameters.getAllParamValues (sName).toArray (ArrayHelper.EMPTY_STRING_ARRAY);
+    return m_aParameters.getAllParamValues (sName).toArray (CGlobal.EMPTY_STRING_ARRAY);
   }
 
   @Nonnull
@@ -703,7 +699,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonempty
   public Enumeration <Locale> getLocales ()
   {
-    return IteratorHelper.getEnumeration (m_aLocales);
+    return EnumerationHelper.getEnumeration (m_aLocales);
   }
 
   @Nonnull
@@ -809,15 +805,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Add a header entry for the given name.
    * <p>
-   * If there was no entry for that header name before, the value will be used
-   * as-is. In case of an existing entry, a String array will be created, adding
-   * the given value (more specifically, its toString representation) as further
-   * element.
+   * If there was no entry for that header name before, the value will be used as-is. In case of an
+   * existing entry, a String array will be created, adding the given value (more specifically, its
+   * toString representation) as further element.
    * <p>
-   * Multiple values can only be stored as list of Strings, following the
-   * Servlet spec (see <code>getHeaders</code> accessor). As alternative to
-   * repeated <code>addHeader</code> calls for individual elements, you can use
-   * a single call with an entire array or Collection of values as parameter.
+   * Multiple values can only be stored as list of Strings, following the Servlet spec (see
+   * <code>getHeaders</code> accessor). As alternative to repeated <code>addHeader</code> calls for
+   * individual elements, you can use a single call with an entire array or Collection of values as
+   * parameter.
    *
    * @param sName
    *        header name
@@ -869,13 +864,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
     final ICommonsList <String> vals = m_aHeaders.getAllHeaderValues (sName);
-    return IteratorHelper.getEnumeration (vals);
+    return EnumerationHelper.getEnumeration (vals);
   }
 
   @Nonnull
   public Enumeration <String> getHeaderNames ()
   {
-    return IteratorHelper.getEnumeration (m_aHeaders.getAllHeaderNames ());
+    return EnumerationHelper.getEnumeration (m_aHeaders.getAllHeaderNames ());
   }
 
   @Nonnull
@@ -919,7 +914,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setContextPath (@Nullable final String sContextPath)
   {
-    if (StringHelper.hasText (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
+    if (StringHelper.isNotEmpty (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
       LOGGER.error ("Illegal context path specified: '" + sContextPath + "'");
     m_sContextPath = sContextPath;
     return this;
@@ -1011,7 +1006,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setServletPath (@Nullable final String sServletPath)
   {
-    if (StringHelper.hasText (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
+    if (StringHelper.isNotEmpty (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
       LOGGER.error ("ServletPath must be empty or start with a slash: '" + sServletPath + "'");
     m_sServletPath = sServletPath;
     return this;
@@ -1027,8 +1022,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Define the session ID to be used when creating a new session
    *
    * @param sSessionID
-   *        The session ID to be used. If it is <code>null</code> a unique
-   *        session ID is generated.
+   *        The session ID to be used. If it is <code>null</code> a unique session ID is generated.
    * @return this
    */
   @Nonnull
@@ -1039,8 +1033,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * @return The session ID to use or <code>null</code> if a new session ID
-   *         should be generated!
+   * @return The session ID to use or <code>null</code> if a new session ID should be generated!
    */
   @Nullable
   public String getSessionID ()
@@ -1192,13 +1185,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Set all path related members to the value to be deduced from the request
-   * URI.
+   * Set all path related members to the value to be deduced from the request URI.
    *
    * @param sRequestURL
-   *        The request URL to parse and set correctly. If it is
-   *        <code>null</code> or empty, all methods are set to <code>null</code>
-   *        .
+   *        The request URL to parse and set correctly. If it is <code>null</code> or empty, all
+   *        methods are set to <code>null</code> .
    * @return this
    * @see #setScheme(String)
    * @see #setServerName(String)
@@ -1212,7 +1203,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest setAllPaths (@Nullable final String sRequestURL)
   {
-    if (StringHelper.hasText (sRequestURL))
+    if (StringHelper.isNotEmpty (sRequestURL))
     {
       final URI aURI = URLHelper.getAsURI (RequestHelper.getWithoutSessionID (sRequestURL));
       if (aURI != null)
@@ -1258,7 +1249,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         // Request parameters
         setQueryString (aURI.getQuery ());
         removeAllParameters ();
-        setParameters (URLHelper.getParsedQueryParameters (aURI.getQuery ()));
+        setParameters (SimpleURLHelper.getParsedQueryParameters (aURI.getQuery ()));
         return this;
       }
     }

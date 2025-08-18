@@ -18,12 +18,12 @@ package com.helger.dns.naptr;
 
 import java.time.Duration;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.tostring.ToStringGenerator;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A logging implementation of {@link INaptrLookupTimeExceededCallback}.

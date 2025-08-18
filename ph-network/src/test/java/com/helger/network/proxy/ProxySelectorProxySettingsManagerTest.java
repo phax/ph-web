@@ -28,8 +28,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.url.URLHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.io.url.URLHelper;
 import com.helger.network.proxy.settings.ProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
 

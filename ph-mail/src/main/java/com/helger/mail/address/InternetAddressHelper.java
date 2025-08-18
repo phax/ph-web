@@ -19,23 +19,21 @@ package com.helger.mail.address;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.email.EmailAddress;
+import com.helger.base.email.IEmailAddress;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.collection.commons.ICommonsList;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.email.EmailAddress;
-import com.helger.commons.email.IEmailAddress;
-
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 
 /**
- * This class handles a single email address. It is split into an address part
- * and an optional name. The personal name is optional and may be
- * <code>null</code>.
+ * This class handles a single email address. It is split into an address part and an optional name.
+ * The personal name is optional and may be <code>null</code>.
  *
  * @author Philip Helger
  */

@@ -37,12 +37,10 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
   <organization>
     <name>Philip Helger</name>
     <url>https://www.helger.com</url>
   </organization>
-  
   <developers>
     <developer>
       <id>philip</id>
@@ -51,7 +49,6 @@
       <url>https://www.helger.com</url>
     </developer>
   </developers>
-  
   <dependencies>
     <dependency>
       <groupId>com.helger.commons</groupId>
@@ -61,12 +58,10 @@
       <groupId>com.helger.commons</groupId>
       <artifactId>ph-io</artifactId>
     </dependency>
-    
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
     </dependency>
-    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -78,7 +73,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
   <build>
     <plugins>
       <plugin>
@@ -91,7 +85,7 @@
             <Export-Package>com.helger.jsch.*</Export-Package>
             <Import-Package>!javax.annotation.*,*</Import-Package>
             <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
-            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI</Provide-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.helger.base.thirdparty.IThirdPartyModuleProviderSPI</Provide-Capability>
           </instructions>
         </configuration>
       </plugin>
@@ -109,12 +103,11 @@
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>
-            <!-- uses ByteArrayOutputStream -->
+                        <!-- uses ByteArrayOutputStream -->
             <exclude>**/CommandRunner.class</exclude>
           </excludes>
         </configuration>
-        <!-- local executions are ignored -->
-      </plugin>
+        <!-- local executions are ignored -->      </plugin>
     </plugins>
   </build>
 </project>

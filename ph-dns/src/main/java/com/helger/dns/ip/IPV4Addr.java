@@ -99,7 +99,7 @@ public class IPV4Addr
   @ReturnsMutableCopy
   public int [] getNumberParts ()
   {
-    return ArrayHelper.newIntArray (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
+    return ArrayHelper.createIntArray (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
   }
 
   @Nonnull

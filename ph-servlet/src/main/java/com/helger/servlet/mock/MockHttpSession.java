@@ -170,7 +170,7 @@ public class MockHttpSession implements HttpSession
   @Nonnull
   public String [] getValueNames ()
   {
-    return ArrayHelper.newArray (m_aAttributes.keySet (), String.class);
+    return ArrayHelper.createArray (m_aAttributes.keySet (), String.class);
   }
 
   public void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)

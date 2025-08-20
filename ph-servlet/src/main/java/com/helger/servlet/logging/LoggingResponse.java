@@ -71,7 +71,7 @@ final class LoggingResponse
     {
       final IJsonObject aHeaders = new JsonObject ();
       m_aHeaders.forEachSingleHeader (aHeaders::add, true);
-      ret.addJson ("headers", aHeaders);
+      ret.add ("headers", aHeaders);
     }
     if (m_sBody != null)
       ret.add ("body", m_sBody);

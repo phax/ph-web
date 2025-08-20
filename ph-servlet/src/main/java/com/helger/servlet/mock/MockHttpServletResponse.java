@@ -333,7 +333,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   @ReturnsMutableCopy
   public Cookie [] getCookies ()
   {
-    return ArrayHelper.newArray (m_aCookies, Cookie.class);
+    return ArrayHelper.createArray (m_aCookies, Cookie.class);
   }
 
   @Nullable

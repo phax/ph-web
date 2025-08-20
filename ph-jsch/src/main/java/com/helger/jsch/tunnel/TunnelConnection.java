@@ -23,16 +23,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.io.stream.StreamHelper;
+import com.helger.annotation.Nonempty;
+import com.helger.base.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * A TunnelConnection represents an ssh connection that opens one or more

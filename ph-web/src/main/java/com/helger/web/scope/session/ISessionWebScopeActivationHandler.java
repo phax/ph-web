@@ -16,9 +16,9 @@
  */
 package com.helger.web.scope.session;
 
-import javax.annotation.Nonnull;
-
 import com.helger.web.scope.ISessionWebScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Interface for session attributes that are notified during session activation.

@@ -18,9 +18,6 @@ package com.helger.dns.dnsjava;
 
 import java.net.InetAddress;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ResolverConfig;
@@ -32,11 +29,14 @@ import org.xbill.DNS.config.ResolverConfigProvider;
 import org.xbill.DNS.config.SunJvmResolverConfigProvider;
 import org.xbill.DNS.config.WindowsResolverConfigProvider;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Simplification for setting DnsJava global config providers.

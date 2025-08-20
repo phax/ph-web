@@ -18,22 +18,22 @@ package com.helger.sitemap;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.CGlobal;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Represents a set of {@link XMLSitemapURL} objects.
@@ -109,9 +109,9 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
   }
 
   /**
-   * @return The estimated output length of the result file. Without caching it
-   *         is approximately 50 times faster than building the XML and checking
-   *         the length. With caching it is a few thousand times faster!
+   * @return The estimated output length of the result file. Without caching it is approximately 50
+   *         times faster than building the XML and checking the length. With caching it is a few
+   *         thousand times faster!
    */
   @Nonnegative
   public int getOutputLength ()
@@ -131,8 +131,8 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
   }
 
   /**
-   * @return The maximum of the last modifications of all contained URLs. May be
-   *         <code>null</code> if no contained URL has a modification date!
+   * @return The maximum of the last modifications of all contained URLs. May be <code>null</code>
+   *         if no contained URL has a modification date!
    */
   @Nullable
   public LocalDateTime getLastModificationDateTime ()
@@ -141,8 +141,8 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
   }
 
   /**
-   * @return The whole URL set as a single XML document. This works only for
-   *         non-multi file sitemaps.
+   * @return The whole URL set as a single XML document. This works only for non-multi file
+   *         sitemaps.
    * @throws IllegalStateException
    *         if this is a multi-file URL set
    */
@@ -153,9 +153,9 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
       throw new IllegalStateException ("Cannot convert a multi file sitemap to a single - invalid - document");
 
     final IMicroDocument ret = new MicroDocument ();
-    final IMicroElement eUrlset = ret.appendElement (CXMLSitemap.XML_NAMESPACE_0_9, "urlset");
+    final IMicroElement eUrlset = ret.addElementNS (CXMLSitemap.XML_NAMESPACE_0_9, "urlset");
     for (final XMLSitemapURL aURL : m_aURLs)
-      eUrlset.appendChild (aURL.getAsElement ());
+      eUrlset.addChild (aURL.getAsElement ());
     return ret;
   }
 

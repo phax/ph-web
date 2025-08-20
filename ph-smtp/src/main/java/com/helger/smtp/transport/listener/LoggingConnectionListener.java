@@ -16,18 +16,17 @@
  */
 package com.helger.smtp.transport.listener;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.callback.ICallback;
-import com.helger.commons.error.level.EErrorLevel;
-import com.helger.commons.error.level.IErrorLevel;
-import com.helger.commons.log.LogHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.callback.ICallback;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.diagnostics.error.level.EErrorLevel;
+import com.helger.diagnostics.error.level.IErrorLevel;
+import com.helger.diagnostics.log.LogHelper;
 
+import jakarta.annotation.Nonnull;
 import jakarta.mail.event.ConnectionEvent;
 import jakarta.mail.event.ConnectionListener;
 

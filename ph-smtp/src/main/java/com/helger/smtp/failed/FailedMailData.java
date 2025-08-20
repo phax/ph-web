@@ -18,26 +18,25 @@ package com.helger.smtp.failed;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.email.IEmailAddress;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.type.ITypedObject;
-import com.helger.commons.type.ObjectType;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.email.IEmailAddress;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.base.type.ITypedObject;
+import com.helger.base.type.ObjectType;
+import com.helger.datetime.helper.PDTFactory;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+
 /**
- * This class represents a single email that was tried to be send out but
- * failed.
+ * This class represents a single email that was tried to be send out but failed.
  *
  * @author Philip Helger
  */
@@ -57,8 +56,7 @@ public class FailedMailData implements ITypedObject <String>
    * Constructor for message unspecific error.
    *
    * @param aSettings
-   *        The mail settings for which the error occurs. Never
-   *        <code>null</code>.
+   *        The mail settings for which the error occurs. Never <code>null</code>.
    * @param aError
    *        The exception that occurred. Never <code>null</code>.
    */
@@ -71,11 +69,9 @@ public class FailedMailData implements ITypedObject <String>
    * Constructor for message specific error.
    *
    * @param aSettings
-   *        The mail settings for which the error occurs. Never
-   *        <code>null</code>.
+   *        The mail settings for which the error occurs. Never <code>null</code>.
    * @param aEmailData
-   *        The message that failed to send. May not be <code>null</code> in
-   *        practice.
+   *        The message that failed to send. May not be <code>null</code> in practice.
    */
   public FailedMailData (@Nonnull final ISMTPSettings aSettings, @Nullable final IMutableEmailData aEmailData)
   {
@@ -86,11 +82,10 @@ public class FailedMailData implements ITypedObject <String>
    * Constructor for message specific error.
    *
    * @param aSettings
-   *        The mail settings for which the error occurs. Never
-   *        <code>null</code>.
+   *        The mail settings for which the error occurs. Never <code>null</code>.
    * @param aEmailData
-   *        The message that failed to send. May be <code>null</code> if it is a
-   *        mail-independent error.
+   *        The message that failed to send. May be <code>null</code> if it is a mail-independent
+   *        error.
    * @param aError
    *        The exception that occurred. May be <code>null</code>.
    */
@@ -114,14 +109,12 @@ public class FailedMailData implements ITypedObject <String>
    * @param aErrorDT
    *        The date and time when the error occurred. Never <code>null</code>.
    * @param aSettings
-   *        The mail settings for which the error occurs. Never
-   *        <code>null</code>.
+   *        The mail settings for which the error occurs. Never <code>null</code>.
    * @param aOriginalSentDT
-   *        The date and time when the message was originally sent. Never
-   *        <code>null</code>.
+   *        The date and time when the message was originally sent. Never <code>null</code>.
    * @param aEmailData
-   *        The message that failed to send. May be <code>null</code> if it is a
-   *        mail-independent error.
+   *        The message that failed to send. May be <code>null</code> if it is a mail-independent
+   *        error.
    * @param aError
    *        The exception that occurred. May be <code>null</code>.
    */
@@ -135,7 +128,9 @@ public class FailedMailData implements ITypedObject <String>
     m_sID = ValueEnforcer.notNull (sID, "ID");
     m_aErrorDT = ValueEnforcer.notNull (aErrorDT, "ErrorDT");
     m_aSettings = ValueEnforcer.notNull (aSettings, "Settings");
-    m_aOriginalSentDateTime = aOriginalSentDT != null ? aOriginalSentDT : aEmailData != null ? aEmailData.getSentDateTime () : null;
+    m_aOriginalSentDateTime = aOriginalSentDT != null ? aOriginalSentDT : aEmailData != null ? aEmailData
+                                                                                                         .getSentDateTime ()
+                                                                                             : null;
     m_aEmailData = aEmailData;
     m_aError = aError;
   }
@@ -180,9 +175,8 @@ public class FailedMailData implements ITypedObject <String>
   }
 
   /**
-   * @return The message object on which the error occurred. May be
-   *         <code>null</code> if e.g. a general authentication problem
-   *         occurred.
+   * @return The message object on which the error occurred. May be <code>null</code> if e.g. a
+   *         general authentication problem occurred.
    */
   @Nullable
   public IMutableEmailData getEmailData ()
@@ -210,17 +204,17 @@ public class FailedMailData implements ITypedObject <String>
   @Nonnull
   public String getSMTPServerDisplayText ()
   {
-    String ret = m_aSettings.getHostName ();
+    StringBuilder ret = new StringBuilder ().append (m_aSettings.getHostName ());
     if (m_aSettings.hasPort ())
-      ret += ":" + m_aSettings.getPort ();
+      ret.append (":").append (m_aSettings.getPort ());
     if (m_aSettings.hasUserName ())
     {
-      ret += "[" + m_aSettings.getUserName ();
+      ret.append ("[").append (m_aSettings.getUserName ());
       if (m_aSettings.hasPassword ())
-        ret += "/****";
-      ret += ']';
+        ret.append ("/****");
+      ret.append (']');
     }
-    return ret;
+    return ret.toString ();
   }
 
   @Nonnull

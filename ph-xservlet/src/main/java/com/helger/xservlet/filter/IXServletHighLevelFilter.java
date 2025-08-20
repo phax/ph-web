@@ -18,10 +18,9 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import com.helger.web.scope.IRequestWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 
 /**

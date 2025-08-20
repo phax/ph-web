@@ -16,20 +16,20 @@
  */
 package com.helger.servlet;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.servlet.request.RequestHelper;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * This singleton instance represents default server information for locations

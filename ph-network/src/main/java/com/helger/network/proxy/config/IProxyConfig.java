@@ -18,9 +18,9 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
-import javax.annotation.Nullable;
+import com.helger.annotation.style.MustImplementEqualsAndHashcode;
 
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
+import jakarta.annotation.Nullable;
 
 /**
  * Base interface for the proxy configuration.

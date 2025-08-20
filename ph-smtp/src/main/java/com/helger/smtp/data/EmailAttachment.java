@@ -18,18 +18,17 @@ package com.helger.smtp.data;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.io.streamprovider.ByteArrayInputStreamProvider;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.io.streamprovider.ByteArrayInputStreamProvider;
+import com.helger.base.tostring.ToStringGenerator;
 
 import jakarta.activation.FileTypeMap;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Base implementation for interface {@link IEmailAttachment}.

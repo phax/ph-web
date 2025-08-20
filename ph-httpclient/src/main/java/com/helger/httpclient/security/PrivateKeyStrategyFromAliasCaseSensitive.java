@@ -18,8 +18,6 @@ package com.helger.httpclient.security;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.net.ssl.SSLParameters;
 
 import org.apache.hc.core5.ssl.PrivateKeyDetails;
@@ -27,7 +25,10 @@ import org.apache.hc.core5.ssl.PrivateKeyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
+import com.helger.base.enforce.ValueEnforcer;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A private key strategy that select the key details from the provided alias.

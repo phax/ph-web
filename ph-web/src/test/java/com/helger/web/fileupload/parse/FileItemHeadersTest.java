@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.web.fileupload.IFileItemHeaders;
 
 /**

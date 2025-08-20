@@ -18,11 +18,11 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.base.string.StringHelper;
 
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Interface representing the basic SMTP settings required to login to a user.
@@ -55,7 +55,7 @@ public interface ISMTPSettings
 
   default boolean hasUserName ()
   {
-    return StringHelper.hasText (getUserName ());
+    return StringHelper.isNotEmpty (getUserName ());
   }
 
   /**
@@ -66,7 +66,7 @@ public interface ISMTPSettings
 
   default boolean hasPassword ()
   {
-    return StringHelper.hasText (getPassword ());
+    return StringHelper.isNotEmpty (getPassword ());
   }
 
   /**
@@ -88,14 +88,12 @@ public interface ISMTPSettings
   }
 
   /**
-   * @return <code>true</code> if SSL is enabled, <code>false</code> if SSL is
-   *         disabled
+   * @return <code>true</code> if SSL is enabled, <code>false</code> if SSL is disabled
    */
   boolean isSSLEnabled ();
 
   /**
-   * @return <code>true</code> if STARTTLS is enabled, <code>false</code> if
-   *         STARTTLS is disabled
+   * @return <code>true</code> if STARTTLS is enabled, <code>false</code> if STARTTLS is disabled
    */
   boolean isSTARTTLSEnabled ();
 
@@ -116,14 +114,14 @@ public interface ISMTPSettings
   long getTimeoutMilliSecs ();
 
   /**
-   * @return <code>true</code> to debug the SMTP transactions. By default this
-   *         is <code>GlobalDebug.isDebugMode()</code>.
+   * @return <code>true</code> to debug the SMTP transactions. By default this is
+   *         <code>GlobalDebug.isDebugMode()</code>.
    */
   boolean isDebugSMTP ();
 
   /**
-   * @return <code>true</code> if the minimum number of fields are defined, that
-   *         are required for sending.
+   * @return <code>true</code> if the minimum number of fields are defined, that are required for
+   *         sending.
    */
   boolean areRequiredFieldsSet ();
 }

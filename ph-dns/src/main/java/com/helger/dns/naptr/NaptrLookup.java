@@ -21,12 +21,6 @@ import java.time.Duration;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ExtendedResolver;
@@ -37,13 +31,19 @@ import org.xbill.DNS.Record;
 import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.builder.IBuilder;
-import com.helger.commons.callback.CallbackList;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.timing.StopWatch;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.builder.IBuilder;
+import com.helger.base.callback.CallbackList;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.timing.StopWatch;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.resolve.ResolverHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A new flexible class to perform NAPTR DNS lookups.

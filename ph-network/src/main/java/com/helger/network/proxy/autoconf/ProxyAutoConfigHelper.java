@@ -21,8 +21,6 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -30,19 +28,22 @@ import javax.script.ScriptException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.exception.InitializationException;
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.timing.StopWatch;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.exception.InitializationException;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.base.timing.StopWatch;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.resolve.DNSResolver;
+import com.helger.io.resource.ClassPathResource;
+import com.helger.io.resource.IReadableResource;
 import com.helger.network.proxy.config.SocksProxyConfig;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Proxy Auto Configuration helper. Requires ph-dns to work.
@@ -125,12 +126,11 @@ public final class ProxyAutoConfigHelper
       return null;
 
     /*
-     * Return Value Format The JavaScript function returns a single string. If
-     * the string is null, no proxies should be used. The string can contain any
-     * number of the following building blocks, separated by a semicolon: DIRECT
-     * Connections should be made directly, without any proxies. PROXY host:port
-     * The specified proxy should be used. SOCKS host:port The specified SOCKS
-     * server should be used.
+     * Return Value Format The JavaScript function returns a single string. If the string is null,
+     * no proxies should be used. The string can contain any number of the following building
+     * blocks, separated by a semicolon: DIRECT Connections should be made directly, without any
+     * proxies. PROXY host:port The specified proxy should be used. SOCKS host:port The specified
+     * SOCKS server should be used.
      */
     return aResult.toString ();
   }

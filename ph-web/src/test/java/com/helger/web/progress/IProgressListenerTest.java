@@ -28,8 +28,8 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.base.CGlobal;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.IFileItemStream;

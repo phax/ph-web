@@ -18,13 +18,13 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.string.StringParser;
+import com.helger.base.system.SystemProperties;
+import com.helger.base.tostring.ToStringGenerator;
 
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.system.SystemProperties;
+import jakarta.annotation.Nullable;
 
 /**
  * Proxy configuration that uses the system default proxy settings.
@@ -41,7 +41,8 @@ public class UseSystemProxyConfig implements IProxyConfig
 
   public boolean isUseSystemProxies ()
   {
-    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES), false);
+    return StringParser.parseBool (SystemProperties.getPropertyValueOrNull (SYSPROP_JAVA_NET_USE_SYSTEM_PROXIES),
+                                   false);
   }
 
   public void activateGlobally ()

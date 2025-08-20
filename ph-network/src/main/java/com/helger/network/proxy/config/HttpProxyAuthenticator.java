@@ -19,11 +19,11 @@ package com.helger.network.proxy.config;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.CGlobal;
+import com.helger.base.enforce.ValueEnforcer;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.ArrayHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A special authenticator for HTTP/HTTPS/FTPS proxy connections.
@@ -63,7 +63,8 @@ public class HttpProxyAuthenticator extends Authenticator
           final String sProxyUser = m_eProxyType.getProxyUserName ();
           final String sProxyPassword = m_eProxyType.getProxyPassword ();
           return new PasswordAuthentication (sProxyUser,
-                                             sProxyPassword == null ? ArrayHelper.EMPTY_CHAR_ARRAY : sProxyPassword.toCharArray ());
+                                             sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY : sProxyPassword
+                                                                                                               .toCharArray ());
         }
       }
     }

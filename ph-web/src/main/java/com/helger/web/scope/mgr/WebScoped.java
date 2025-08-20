@@ -16,12 +16,11 @@
  */
 package com.helger.web.scope.mgr;
 
-import javax.annotation.Nonnull;
-
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.IRequestWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

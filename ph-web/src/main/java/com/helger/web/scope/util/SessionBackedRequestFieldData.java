@@ -16,13 +16,13 @@
  */
 package com.helger.web.scope.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.Nonempty;
+import com.helger.annotation.Nonempty;
 import com.helger.scope.IScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A specialized request field that uses a value stored in the session as the

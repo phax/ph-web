@@ -16,16 +16,16 @@
  */
 package com.helger.servlet.response.gzip;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.state.EChange;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.state.EChange;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Contains the settings for the CompressFilter class.

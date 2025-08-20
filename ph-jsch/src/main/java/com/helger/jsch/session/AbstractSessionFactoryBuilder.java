@@ -16,13 +16,13 @@
  */
 package com.helger.jsch.session;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.collection.impl.ICommonsMap;
+import com.helger.collection.commons.ICommonsMap;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.UserInfo;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public abstract class AbstractSessionFactoryBuilder
 {

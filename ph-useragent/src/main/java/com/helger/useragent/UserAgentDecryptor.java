@@ -18,20 +18,20 @@ package com.helger.useragent;
 
 import java.util.regex.Matcher;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringScanner;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.http.url.URLProtocolRegistry;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.util.StringScanner;
-import com.helger.commons.url.URLProtocolRegistry;
+import jakarta.annotation.Nonnull;
 
 /**
- * This class converts an user agent string to an {@link IUserAgent} object if
- * possible.
+ * This class converts an user agent string to an {@link IUserAgent} object if possible.
  *
  * @author Philip Helger
  */
@@ -51,8 +51,8 @@ public final class UserAgentDecryptor
    *
    * @param sUserAgent
    *        The user agent string to parse.
-   * @return A list than can contain {@link ReadOnlyPair}, {@link String} and
-   *         {@link ICommonsList} of String objects.
+   * @return A list than can contain {@link ReadOnlyPair}, {@link String} and {@link ICommonsList}
+   *         of String objects.
    */
   @Nonnull
   private static UserAgentElementList _decryptUserAgent (@Nonnull final String sUserAgent)
@@ -108,7 +108,7 @@ public final class UserAgentDecryptor
           final String sParams = aSS.getUntilBalanced (1, '(', ')');
 
           // convert to ";" separated list
-          final ICommonsList <String> aParams = StringHelper.getExploded (';', sParams);
+          final ICommonsList <String> aParams = new CommonsArrayList <> (StringHelper.getExploded (';', sParams));
           ret.add (aParams.getAllMapped (String::trim));
           break;
         }

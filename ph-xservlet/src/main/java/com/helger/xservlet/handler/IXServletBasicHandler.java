@@ -16,10 +16,9 @@
  */
 package com.helger.xservlet.handler;
 
-import javax.annotation.Nonnull;
+import com.helger.collection.commons.ICommonsMap;
 
-import com.helger.commons.collection.impl.ICommonsMap;
-
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 
 /**

@@ -18,21 +18,19 @@ package com.helger.web.scope.mock;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.cleanup.CommonsCleanup;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.scope.ScopeCleanup;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.cleanup.CleanUpRegistry;
+import com.helger.http.EHttpMethod;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
-import com.helger.xml.util.XMLCleanup;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * Contains static initialization methods for web scope tests, that makes it a
- * bit easier to use them without JUnit.
+ * Contains static initialization methods for web scope tests, that makes it a bit easier to use
+ * them without JUnit.
  *
  * @author Philip Helger
  */
@@ -49,8 +47,8 @@ public final class WebScopeAwareTestSetup
   {}
 
   /**
-   * Create a new mock servlet context using the context path
-   * {@link #MOCK_CONTEXT_PATH} and no context init parameters.
+   * Create a new mock servlet context using the context path {@link #MOCK_CONTEXT_PATH} and no
+   * context init parameters.
    *
    * @return Never <code>null</code>.
    */
@@ -66,8 +64,7 @@ public final class WebScopeAwareTestSetup
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param aInitParams
-   *        The initialization context parameters to use. May be
-   *        <code>null</code>.
+   *        The initialization context parameters to use. May be <code>null</code>.
    * @return Never <code>null</code>.
    */
   @Nonnull
@@ -81,8 +78,7 @@ public final class WebScopeAwareTestSetup
    * Create a new mock request.
    *
    * @param aServletContext
-   *        The servlet context to use. May be <code>null</code> but not
-   *        recommended.
+   *        The servlet context to use. May be <code>null</code> but not recommended.
    * @return Never <code>null</code>.
    */
   @Nonnull
@@ -92,8 +88,7 @@ public final class WebScopeAwareTestSetup
   }
 
   /**
-   * Invalidate the passed request and the passed servlet context after the
-   * test.
+   * Invalidate the passed request and the passed servlet context after the test.
    *
    * @param aRequest
    *        The request to invalidate. May be <code>null</code>.
@@ -116,8 +111,6 @@ public final class WebScopeAwareTestSetup
     }
 
     // Cleanup all ph-commons stuff
-    XMLCleanup.cleanup ();
-    ScopeCleanup.cleanup ();
-    CommonsCleanup.cleanup ();
+    CleanUpRegistry.getInstance ().performCleanUp ();
   }
 }

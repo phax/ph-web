@@ -21,7 +21,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import com.helger.commons.http.CHttpHeader;
+import com.helger.http.CHttpHeader;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

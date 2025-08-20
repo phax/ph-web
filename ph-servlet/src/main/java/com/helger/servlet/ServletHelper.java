@@ -20,21 +20,20 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.lang.GenericReflection;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.reflection.GenericReflection;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
@@ -63,12 +62,10 @@ public final class ServletHelper
   {}
 
   /**
-   * Enable or disable the logging of caught exceptions. By default they are not
-   * logged.
+   * Enable or disable the logging of caught exceptions. By default they are not logged.
    *
    * @param bLog
-   *        <code>true</code> to enable logging, <code>false</code> to disable
-   *        logging.
+   *        <code>true</code> to enable logging, <code>false</code> to disable logging.
    * @since 8.8.2
    */
   public static void setLogExceptions (final boolean bLog)
@@ -77,8 +74,7 @@ public final class ServletHelper
   }
 
   /**
-   * @return <code>true</code> to log exceptions, <code>false</code> to omit
-   *         caught exceptions.
+   * @return <code>true</code> to log exceptions, <code>false</code> to omit caught exceptions.
    * @since 8.8.2
    */
   public static boolean isLogExceptions ()
@@ -87,8 +83,8 @@ public final class ServletHelper
   }
 
   /**
-   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code>
-   * to work around an error in certain Tomcat versions.
+   * Safe version of <code>ServletRequest.setAttribute (String, Object)</code> to work around an
+   * error in certain Tomcat versions.
    *
    * <pre>
   java.lang.NullPointerException
@@ -236,9 +232,8 @@ public final class ServletHelper
    *
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
-   * @return Empty string if request is <code>null</code> or a String specifying
-   *         the portion of the request URI that indicates the context of the
-   *         request
+   * @return Empty string if request is <code>null</code> or a String specifying the portion of the
+   *         request URI that indicates the context of the request
    */
   @Nonnull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest)
@@ -260,11 +255,10 @@ public final class ServletHelper
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
    * @param sFallback
-   *        Fallback context path to use, if none could be determined from the
-   *        request. May be <code>null</code>.
-   * @return Empty string if request is <code>null</code> or a String specifying
-   *         the portion of the request URI that indicates the context of the
-   *         request
+   *        Fallback context path to use, if none could be determined from the request. May be
+   *        <code>null</code>.
+   * @return Empty string if request is <code>null</code> or a String specifying the portion of the
+   *         request URI that indicates the context of the request
    * @since 9.1.10
    */
   @Nonnull
@@ -338,8 +332,8 @@ public final class ServletHelper
    *
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
-   * @return <code>null</code> if request is <code>null</code> or if no query
-   *         string could be determined, or if none is present
+   * @return <code>null</code> if request is <code>null</code> or if no query string could be
+   *         determined, or if none is present
    */
   @Nullable
   public static String getRequestQueryString (@Nullable final HttpServletRequest aHttpRequest)
@@ -395,8 +389,7 @@ public final class ServletHelper
    *
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
-   * @return Empty {@link StringBuffer} if request is <code>null</code> or the
-   *         request URL.
+   * @return Empty {@link StringBuffer} if request is <code>null</code> or the request URL.
    */
   @Nonnull
   public static StringBuffer getRequestRequestURL (@Nullable final HttpServletRequest aHttpRequest)
@@ -509,7 +502,7 @@ public final class ServletHelper
   public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
                                                   @Nullable final String sCharset)
   {
-    if (StringHelper.hasText (sCharset))
+    if (StringHelper.isNotEmpty (sCharset))
       try
       {
         aHttpRequest.setCharacterEncoding (sCharset);
@@ -536,7 +529,7 @@ public final class ServletHelper
       // Fallback for Undertow
       sPath = aSC.getRealPath ("");
     }
-    if (StringHelper.hasNoText (sPath))
+    if (StringHelper.isEmpty (sPath))
     {
       // This is e.g. the case if "Unpack WAR files" in Tomcat is disabled
       throw new IllegalStateException ("Failed to determine real path of ServletContext " + aSC);

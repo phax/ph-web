@@ -16,12 +16,11 @@
  */
 package com.helger.xservlet.requesttrack;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.CGlobal;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
 
 /**
  * Settings class for the Request tracker. Must be set before the first

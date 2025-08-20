@@ -18,21 +18,20 @@ package com.helger.web.fileupload.parse;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * A simple parser intended to parse sequences of name/value pairs. Parameter
- * values are expected to be enclosed in quotes if they contain unsafe
- * characters, such as '=' characters or separators. Parameter values are
- * optional and can be omitted.
+ * A simple parser intended to parse sequences of name/value pairs. Parameter values are expected to
+ * be enclosed in quotes if they contain unsafe characters, such as '=' characters or separators.
+ * Parameter values are optional and can be omitted.
  * <p>
  * <code>param1 = value; param2 = "anything goes; really"; param3</code>
  * </p>
@@ -81,8 +80,7 @@ public class ParameterParser
   /**
    * Are there any characters left to parse?
    *
-   * @return <code>true</code> if there are unparsed characters,
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if there are unparsed characters, <code>false</code> otherwise.
    */
   private boolean _hasChar ()
   {
@@ -90,12 +88,11 @@ public class ParameterParser
   }
 
   /**
-   * A helper method to process the parsed token. This method removes leading
-   * and trailing blanks as well as enclosing quotation marks, when necessary.
+   * A helper method to process the parsed token. This method removes leading and trailing blanks as
+   * well as enclosing quotation marks, when necessary.
    *
    * @param bQuoted
-   *        <code>true</code> if quotation marks are expected,
-   *        <code>false</code> otherwise.
+   *        <code>true</code> if quotation marks are expected, <code>false</code> otherwise.
    * @return the token
    */
   @Nullable
@@ -132,11 +129,9 @@ public class ParameterParser
    * Parses out a token until any of the given terminators is encountered.
    *
    * @param cTerminator1
-   *        the first terminating character. Any when encountered signify the
-   *        end of the token
+   *        the first terminating character. Any when encountered signify the end of the token
    * @param cTerminator2
-   *        the second terminating character. Any when encountered signify the
-   *        end of the token
+   *        the second terminating character. Any when encountered signify the end of the token
    * @return the token
    */
   @Nullable
@@ -157,12 +152,12 @@ public class ParameterParser
   }
 
   /**
-   * Parses out a token until any of the given terminators is encountered
-   * outside the quotation marks.
+   * Parses out a token until any of the given terminators is encountered outside the quotation
+   * marks.
    *
    * @param cTerminator
-   *        the terminating character. Any of these characters when encountered
-   *        outside the quotation marks signify the end of the token
+   *        the terminating character. Any of these characters when encountered outside the
+   *        quotation marks signify the end of the token
    * @return the token
    */
   @Nullable
@@ -189,12 +184,11 @@ public class ParameterParser
   }
 
   /**
-   * Returns <code>true</code> if parameter names are to be converted to lower
-   * case when name/value pairs are parsed.
+   * Returns <code>true</code> if parameter names are to be converted to lower case when name/value
+   * pairs are parsed.
    *
-   * @return <code>true</code> if parameter names are to be converted to lower
-   *         case when name/value pairs are parsed. Otherwise returns
-   *         <code>false</code>
+   * @return <code>true</code> if parameter names are to be converted to lower case when name/value
+   *         pairs are parsed. Otherwise returns <code>false</code>
    */
   public boolean isLowerCaseNames ()
   {
@@ -202,12 +196,12 @@ public class ParameterParser
   }
 
   /**
-   * Sets the flag if parameter names are to be converted to lower case when
-   * name/value pairs are parsed.
+   * Sets the flag if parameter names are to be converted to lower case when name/value pairs are
+   * parsed.
    *
    * @param bLowerCaseNames
-   *        <code>true</code> if parameter names are to be converted to lower
-   *        case when name/value pairs are parsed. <code>false</code> otherwise.
+   *        <code>true</code> if parameter names are to be converted to lower case when name/value
+   *        pairs are parsed. <code>false</code> otherwise.
    * @return this
    */
   @Nonnull
@@ -218,9 +212,8 @@ public class ParameterParser
   }
 
   /**
-   * Extracts a map of name/value pairs from the given string. Names are
-   * expected to be unique. Multiple separators may be specified and the
-   * earliest found in the input string is used.
+   * Extracts a map of name/value pairs from the given string. Names are expected to be unique.
+   * Multiple separators may be specified and the earliest found in the input string is used.
    *
    * @param sStr
    *        the string that contains a sequence of name/value pairs
@@ -254,8 +247,7 @@ public class ParameterParser
   }
 
   /**
-   * Extracts a map of name/value pairs from the given string. Names are
-   * expected to be unique.
+   * Extracts a map of name/value pairs from the given string. Names are expected to be unique.
    *
    * @param sStr
    *        the string that contains a sequence of name/value pairs
@@ -290,7 +282,7 @@ public class ParameterParser
           // skip separator
           m_nPos++;
         }
-        if (StringHelper.hasText (sParamName))
+        if (StringHelper.isNotEmpty (sParamName))
         {
           if (m_bLowerCaseNames)
             sParamName = sParamName.toLowerCase (Locale.US);

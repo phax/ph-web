@@ -21,30 +21,27 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.string.StringHelper;
-import com.helger.http.AcceptEncodingHandler;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.http.CHttpHeader;
+import com.helger.http.header.specific.AcceptEncodingHandler;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Abstract output stream switching
- * {@link jakarta.servlet.http.HttpServletResponseWrapper}
+ * Abstract output stream switching {@link jakarta.servlet.http.HttpServletResponseWrapper}
  *
  * @author Philip Helger
  */
@@ -351,7 +348,6 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
     return m_aCompressedOS;
   }
 
-  @SuppressFBWarnings ({ "DM_DEFAULT_ENCODING" })
   @Override
   @Nonnull
   public final PrintWriter getWriter () throws IOException

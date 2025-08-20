@@ -16,11 +16,11 @@
  */
 package com.helger.web.encoding;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.codec.IEncoder;
+import com.helger.base.enforce.ValueEnforcer;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.codec.IEncoder;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Heuristic Android filename encoder based on <a href=

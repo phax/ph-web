@@ -16,15 +16,15 @@
  */
 package com.helger.xservlet.exception;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.state.EContinue;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.lang.clazz.ClassHelper;
+import com.helger.base.state.EContinue;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Logging implementation of {@link IXServletExceptionHandler}. Registered by

@@ -16,9 +16,9 @@
  */
 package com.helger.httpclient;
 
-import javax.annotation.Nonnull;
-
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Provider interface for {@link CloseableHttpClient} objects.

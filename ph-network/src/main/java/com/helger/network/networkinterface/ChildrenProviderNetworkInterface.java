@@ -19,20 +19,19 @@ package com.helger.network.networkinterface;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.CollectionHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsCollection;
+import com.helger.collection.hierarchy.IChildrenProvider;
 
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.hierarchy.IChildrenProvider;
-import com.helger.commons.string.ToStringGenerator;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * Default implementation of {@link IChildrenProvider} for
- * {@link NetworkInterface}.
+ * Default implementation of {@link IChildrenProvider} for {@link NetworkInterface}.
  *
  * @author Philip Helger
  */
@@ -48,7 +47,7 @@ public class ChildrenProviderNetworkInterface implements IChildrenProvider <Netw
   @Nonnegative
   public int getChildCount (@Nonnull final NetworkInterface aCurrent)
   {
-    return IteratorHelper.getSize (aCurrent.getSubInterfaces ());
+    return CollectionHelper.getSize (aCurrent.getSubInterfaces ());
   }
 
   @Nullable

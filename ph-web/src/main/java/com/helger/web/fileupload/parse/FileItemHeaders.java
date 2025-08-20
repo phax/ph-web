@@ -19,23 +19,23 @@ package com.helger.web.fileupload.parse;
 import java.util.Iterator;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedSet;
+import com.helger.collection.iterator.IteratorHelper;
+import com.helger.http.CHttpHeader;
 import com.helger.web.fileupload.IFileItemHeaders;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.
@@ -49,8 +49,7 @@ public class FileItemHeaders implements IFileItemHeaders
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
 
   /**
-   * Map of <code>String</code> keys to a <code>List</code> of
-   * <code>String</code> instances.
+   * Map of <code>String</code> keys to a <code>List</code> of <code>String</code> instances.
    */
   private final ICommonsMap <String, ICommonsList <String>> m_aHeaderNameToValueListMap = new CommonsHashMap <> ();
 

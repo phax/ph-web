@@ -16,9 +16,9 @@
  */
 package com.helger.sitemap;
 
-import javax.annotation.Nonnull;
+import com.helger.annotation.style.IsSPIInterface;
 
-import com.helger.commons.annotation.IsSPIInterface;
+import jakarta.annotation.Nonnull;
 
 /**
  * SPI interface for components that offer sitemap entries.

@@ -16,14 +16,13 @@
  */
 package com.helger.servlet.mock;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.enforce.ValueEnforcer;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;

@@ -16,10 +16,8 @@
  */
 package com.helger.smtp.config;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.annotation.IsSPIImplementation;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.IsSPIImplementation;
 import com.helger.smtp.data.EmailAttachment;
 import com.helger.smtp.data.EmailAttachmentList;
 import com.helger.smtp.data.EmailAttachmentListMicroTypeConverter;
@@ -32,6 +30,8 @@ import com.helger.smtp.settings.SMTPSettings;
 import com.helger.smtp.settings.SMTPSettingsMicroTypeConverter;
 import com.helger.xml.microdom.convert.IMicroTypeConverterRegistrarSPI;
 import com.helger.xml.microdom.convert.IMicroTypeConverterRegistry;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Register all MicroTypeConverter implementations of this project.

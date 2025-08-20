@@ -20,12 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.helger.mail.cte.IContentTransferEncoding;
 
 import jakarta.activation.DataSource;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.mail.EncodingAware;
 
 /**

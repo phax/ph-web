@@ -16,7 +16,7 @@
  */
 package com.helger.mail.activation;
 
-import com.helger.commons.io.resource.ClassPathResource;
+import com.helger.io.resource.ClassPathResource;
 
 import jakarta.activation.MimetypesFileTypeMap;
 

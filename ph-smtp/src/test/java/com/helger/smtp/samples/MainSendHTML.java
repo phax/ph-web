@@ -53,8 +53,6 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
-
 import jakarta.activation.DataHandler;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
@@ -194,7 +192,7 @@ public class MainSendHTML
         System.out.println ("Subject: " + subject);
       }
 
-      final Properties props = IPrivilegedAction.systemGetProperties ().invokeSafe ();
+      final Properties props = System.getProperties ();
       // - could use Session.getTransport() and Transport.connect()
       // - assume we're using SMTP
       if (mailhost != null)

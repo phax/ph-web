@@ -18,13 +18,12 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.state.EContinue;
+import com.helger.base.state.EContinue;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

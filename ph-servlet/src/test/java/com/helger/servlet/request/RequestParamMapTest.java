@@ -29,22 +29,19 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.mock.CommonsAssert;
-import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.commons.string.StringHelper;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.helger.base.mock.CommonsAssert;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.unittest.support.TestHelper;
 
 /**
  * Unit test class for class {@link RequestParamMap}.
  *
  * @author Philip Helger
  */
-@SuppressFBWarnings ("NP_NONNULL_PARAM_VIOLATION")
 public final class RequestParamMapTest
 {
   @Test
@@ -345,12 +342,12 @@ public final class RequestParamMapTest
     assertEquals (2, aMap.getMap ("columns", "name").getAsObjectMap ().size ());
     assertEquals (0, aMap.getMap ("columns", "name", "test").getAsObjectMap ().size ());
 
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
-                                                                       aMap.getMap ("columns", "name"));
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
-                                                                       aMap.getMap ("columns", "name-equals"));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (aMap.getMap ("columns", "name"),
-                                                                           aMap.getMap ("columns", "name2"));
+    TestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
+                                                                aMap.getMap ("columns", "name"));
+    TestHelper.testDefaultImplementationWithEqualContentObject (aMap.getMap ("columns", "name"),
+                                                                aMap.getMap ("columns", "name-equals"));
+    TestHelper.testDefaultImplementationWithDifferentContentObject (aMap.getMap ("columns", "name"),
+                                                                    aMap.getMap ("columns", "name2"));
   }
 
   @Test

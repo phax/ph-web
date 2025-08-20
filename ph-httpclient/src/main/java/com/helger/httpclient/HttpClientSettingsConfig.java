@@ -20,26 +20,26 @@ import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.function.Function;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.state.ETriState;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonempty;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.ETriState;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.config.IConfig;
 import com.helger.config.fallback.IConfigWithFallback;
+import com.helger.typeconvert.impl.TypeConverter;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A helper class to configure {@link HttpClientSettings} using {@link IConfig} with standardized
@@ -493,7 +493,7 @@ public class HttpClientSettingsConfig
         }
 
         final String sNonProxyHosts = aHCC.getNonProxyHosts ();
-        if (StringHelper.hasText (sNonProxyHosts))
+        if (StringHelper.isNotEmpty (sNonProxyHosts))
         {
           if (LOGGER.isDebugEnabled ())
             LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
@@ -563,7 +563,7 @@ public class HttpClientSettingsConfig
     // Other stuff
     {
       final String sUserAgent = aHCC.getUserAgent ();
-      if (StringHelper.hasText (sUserAgent))
+      if (StringHelper.isNotEmpty (sUserAgent))
       {
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Setting configured HttpClientSettings.userAgent(" + sUserAgent + ")");

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.timing.StopWatch;
+import com.helger.base.timing.StopWatch;
 
 /**
  * Test class for class {@link NetworkOnlineStatusDeterminator}.

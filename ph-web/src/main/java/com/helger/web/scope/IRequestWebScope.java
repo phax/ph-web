@@ -19,8 +19,7 @@ package com.helger.web.scope;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.annotation.Nonnull;
-
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**

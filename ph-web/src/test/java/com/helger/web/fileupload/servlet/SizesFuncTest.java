@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;

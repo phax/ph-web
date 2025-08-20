@@ -18,20 +18,19 @@ package com.helger.servlet.session;
 
 import java.util.Enumeration;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.collection.iterate.EmptyEnumeration;
-import com.helger.commons.lang.GenericReflection;
-import com.helger.commons.state.EChange;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.reflection.GenericReflection;
+import com.helger.base.state.EChange;
+import com.helger.collection.base.EmptyEnumeration;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

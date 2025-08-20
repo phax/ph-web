@@ -19,25 +19,25 @@ package com.helger.dns.naptr;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.NAPTRRecord;
 import org.xbill.DNS.Name;
 import org.xbill.DNS.TextParseException;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.VisibleForTesting;
-import com.helger.commons.builder.IBuilder;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.compare.CompareHelper;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.VisibleForTesting;
+import com.helger.base.builder.IBuilder;
+import com.helger.base.compare.CompareHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Helper class to resolve NAPTR DNS records for BDMSL
@@ -118,14 +118,12 @@ public class NaptrResolver
     for (final NAPTRRecord aRecord : m_aNaptrRecords)
     {
       /**
-       * RFC 2915: Flags are single characters from the set [A-Z0-9]. The case
-       * of the alphabetic characters is not significant. <br>
-       * The labels for service requests shall be formed from the set of
-       * characters [A-Z0-9]. The case of the alphabetic characters is not
-       * significant.<br>
+       * RFC 2915: Flags are single characters from the set [A-Z0-9]. The case of the alphabetic
+       * characters is not significant. <br>
+       * The labels for service requests shall be formed from the set of characters [A-Z0-9]. The
+       * case of the alphabetic characters is not significant.<br>
        * RFC 3404: allows "+" in service names.<br>
-       * RFC 4848: allow many chars: service-parms = [ [app-service] *(":"
-       * app-protocol)]<br>
+       * RFC 4848: allow many chars: service-parms = [ [app-service] *(":" app-protocol)]<br>
        * ; The service-parms are considered case-insensitive.
        */
       if ("U".equalsIgnoreCase (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
@@ -295,8 +293,9 @@ public class NaptrResolver
     @Nonnull
     public NaptrResolver build ()
     {
-      if (StringHelper.hasNoText (m_sDomainName))
+      if (StringHelper.isEmpty (m_sDomainName))
         throw new IllegalStateException ("Domain name is required");
+
       if (m_aNaptrRecords.isEmpty ())
       {
         LOGGER.warn ("No NAPTR records are provided." + (m_bNaptrLookupProvided ? "" : " Using the default lookup."));

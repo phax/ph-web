@@ -18,10 +18,10 @@ package com.helger.web.scope;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-
 import com.helger.datetime.domain.IHasCreationDateTime;
 import com.helger.scope.IScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Base interface for web scopes. This is only a marker interface and offers no

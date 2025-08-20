@@ -18,23 +18,23 @@ package com.helger.sitemap;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.datetime.PDTWebDateHelper;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.url.ISimpleURL;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.datetime.domain.IHasLastModificationDateTime;
 import com.helger.datetime.util.PDTHelper;
+import com.helger.datetime.web.PDTWebDateHelper;
+import com.helger.http.url.ISimpleURL;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.serialize.write.EXMLCharMode;
 import com.helger.xml.serialize.write.XMLMaskHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Represents a single URL within an XML URL set.
@@ -95,8 +95,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
   }
 
   /**
-   * Get the length of a single tag name in XML representation for open AND
-   * close together.
+   * Get the length of a single tag name in XML representation for open AND close together.
    *
    * @param s
    *        The tag name without leading and trailing angle brackets
@@ -180,13 +179,13 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
   {
     final String sNamespaceURI = CXMLSitemap.XML_NAMESPACE_0_9;
     final IMicroElement ret = new MicroElement (sNamespaceURI, ELEMENT_URL);
-    ret.appendElement (sNamespaceURI, ELEMENT_LOC).appendText (m_sLocation);
+    ret.addElementNS (sNamespaceURI, ELEMENT_LOC).addText (m_sLocation);
     if (m_sLastMod != null)
-      ret.appendElement (sNamespaceURI, ELEMENT_LASTMOD).appendText (m_sLastMod);
+      ret.addElementNS (sNamespaceURI, ELEMENT_LASTMOD).addText (m_sLastMod);
     if (m_eChangeFreq != null)
-      ret.appendElement (sNamespaceURI, ELEMENT_CHANGEFREQ).appendText (m_eChangeFreq.getText ());
+      ret.addElementNS (sNamespaceURI, ELEMENT_CHANGEFREQ).addText (m_eChangeFreq.getText ());
     if (m_sPriority != null)
-      ret.appendElement (sNamespaceURI, ELEMENT_PRIORITY).appendText (m_sPriority);
+      ret.addElementNS (sNamespaceURI, ELEMENT_PRIORITY).addText (m_sPriority);
     return ret;
   }
 

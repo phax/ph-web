@@ -18,25 +18,24 @@ package com.helger.useragent;
 
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.http.CHttpHeader;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * Central cache for known user agents (see HTTP header field
- * {@link CHttpHeader#USER_AGENT}).
+ * Central cache for known user agents (see HTTP header field {@link CHttpHeader#USER_AGENT}).
  *
  * @author Philip Helger
  */
@@ -58,12 +57,11 @@ public final class UserAgentDatabase
   {}
 
   /**
-   * Set an external callback to get notified when a new unique UserAgent was
-   * received.
+   * Set an external callback to get notified when a new unique UserAgent was received.
    *
    * @param aCallback
-   *        Callback to set. May be <code>null</code>. The parameters to this
-   *        callback are always non-null.
+   *        Callback to set. May be <code>null</code>. The parameters to this callback are always
+   *        non-null.
    */
   public static void setUserAgentCallback (@Nullable final Consumer <? super IUserAgent> aCallback)
   {
@@ -73,7 +71,7 @@ public final class UserAgentDatabase
   @Nullable
   public static IUserAgent getParsedUserAgent (@Nullable final String sUserAgent)
   {
-    if (StringHelper.hasNoText (sUserAgent))
+    if (StringHelper.isEmpty (sUserAgent))
       return null;
 
     // Decrypt outside the lock

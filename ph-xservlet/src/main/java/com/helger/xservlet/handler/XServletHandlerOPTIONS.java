@@ -19,15 +19,14 @@ package com.helger.xservlet.handler;
 import java.io.IOException;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

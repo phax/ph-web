@@ -16,13 +16,12 @@
  */
 package com.helger.web.scope.multipart;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.state.EChange;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.web.scope.impl.RequestWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

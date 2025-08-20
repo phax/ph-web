@@ -19,22 +19,21 @@ package com.helger.servlet.logging;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.OverridingMethodsMustInvokeSuper;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.string.StringHelper;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.ICommonsSet;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
@@ -71,7 +70,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
     final FilterConfig aFilterConfig = getFilterConfig ();
 
     final String sLoggerName = aFilterConfig.getInitParameter ("loggerName");
-    if (StringHelper.hasText (sLoggerName))
+    if (StringHelper.isNotEmpty (sLoggerName))
       m_aLogger = LoggerFactory.getLogger (sLoggerName);
 
     final String sMaxContentSize = aFilterConfig.getInitParameter ("maxContentSize");
@@ -79,15 +78,15 @@ public class LoggingFilter extends AbstractHttpServletFilter
       m_nMaxContentSize = Integer.parseInt (sMaxContentSize);
 
     final String sExcludedPaths = aFilterConfig.getInitParameter ("excludedPaths");
-    if (StringHelper.hasText (sExcludedPaths))
+    if (StringHelper.isNotEmpty (sExcludedPaths))
       m_aExcludedPaths.setAll (RegExHelper.getSplitToArray (sExcludedPaths, "\\s*,\\s*"));
 
     final String sRequestPrefix = aFilterConfig.getInitParameter ("requestPrefix");
-    if (StringHelper.hasText (sRequestPrefix))
+    if (StringHelper.isNotEmpty (sRequestPrefix))
       m_sRequestPrefix = sRequestPrefix;
 
     final String sResponsePrefix = aFilterConfig.getInitParameter ("responsePrefix");
-    if (StringHelper.hasText (sResponsePrefix))
+    if (StringHelper.isNotEmpty (sResponsePrefix))
       m_sResponsePrefix = sResponsePrefix;
   }
 

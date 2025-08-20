@@ -21,28 +21,28 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.equals.EqualsHelper;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.system.SystemProperties;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.equals.EqualsHelper;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringImplode;
+import com.helger.base.system.SystemProperties;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.network.port.NetworkPortHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * HTTP proxy configuration.<br>
  * Attention when using userName and password, make sure to call
- * <code>Authenticator.setDefault (...)</code> with the same username and
- * password as well!
+ * <code>Authenticator.setDefault (...)</code> with the same username and password as well!
  *
  * @author Philip Helger
  */
@@ -56,7 +56,9 @@ public class HttpProxyConfig implements IProxyConfig
   private final String m_sPassword;
   private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
 
-  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType, @Nonnull @Nonempty final String sHost, @Nonnegative final int nPort)
+  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
+                          @Nonnull @Nonempty final String sHost,
+                          @Nonnegative final int nPort)
   {
     this (eProxyType, sHost, nPort, (String) null, (String) null, (List <String>) null);
   }
@@ -86,7 +88,7 @@ public class HttpProxyConfig implements IProxyConfig
     m_sPassword = sPassword;
     if (aNonProxyHosts != null)
       for (final String sNonProxyHost : aNonProxyHosts)
-        if (StringHelper.hasText (sNonProxyHost))
+        if (StringHelper.isNotEmpty (sNonProxyHost))
           m_aNonProxyHosts.add (sNonProxyHost);
   }
 
@@ -110,7 +112,7 @@ public class HttpProxyConfig implements IProxyConfig
 
   public boolean hasUserNameOrPassword ()
   {
-    return StringHelper.hasText (m_sUserName) || m_sPassword != null;
+    return StringHelper.isNotEmpty (m_sUserName) || m_sPassword != null;
   }
 
   @Nullable
@@ -142,7 +144,7 @@ public class HttpProxyConfig implements IProxyConfig
   public Authenticator getAsAuthenticator ()
   {
     // If no user name is set, no Authenticator needs to be created
-    if (StringHelper.hasNoText (m_eProxyType.getProxyUserName ()))
+    if (StringHelper.isEmpty (m_eProxyType.getProxyUserName ()))
       return null;
 
     return new HttpProxyAuthenticator (m_eProxyType);
@@ -158,7 +160,8 @@ public class HttpProxyConfig implements IProxyConfig
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPort (), Integer.toString (m_nPort));
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyUserName (), m_sUserName);
     SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameProxyPassword (), m_sPassword);
-    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (), StringHelper.getImploded ('|', m_aNonProxyHosts));
+    SystemProperties.setPropertyValue (m_eProxyType.getPropertyNameNoProxyHosts (),
+                                       StringImplode.getImploded ('|', m_aNonProxyHosts));
   }
 
   public static void deactivateGlobally ()

@@ -18,17 +18,17 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.ContainsSoftMigration;
-import com.helger.commons.charset.CharsetHelper;
-import com.helger.commons.string.StringParser;
+import com.helger.annotation.misc.ContainsSoftMigration;
+import com.helger.base.charset.CharsetHelper;
+import com.helger.base.string.StringParser;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link SMTPSettings}
@@ -103,7 +103,8 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
                                                                      EmailGlobalSettings.getConnectionTimeoutMilliSecs ());
 
     final String sTimeoutMilliSecs = eSMTPSettings.getAttributeValue (ATTR_TIMEOUT);
-    final long nTimeoutMilliSecs = StringParser.parseLong (sTimeoutMilliSecs, EmailGlobalSettings.getTimeoutMilliSecs ());
+    final long nTimeoutMilliSecs = StringParser.parseLong (sTimeoutMilliSecs,
+                                                           EmailGlobalSettings.getTimeoutMilliSecs ());
 
     final String sDebugSMTP = eSMTPSettings.getAttributeValue (ATTR_DEBUG_SMTP);
     final boolean bDebugSMTP = StringParser.parseBool (sDebugSMTP, EmailGlobalSettings.isDebugSMTP ());
@@ -121,8 +122,8 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
   }
 
   /*
-   * The alternative attributes are used to be consistent with old failed mail
-   * conversions, as they did the transformation manually!
+   * The alternative attributes are used to be consistent with old failed mail conversions, as they
+   * did the transformation manually!
    */
   @Nonnull
   @ContainsSoftMigration

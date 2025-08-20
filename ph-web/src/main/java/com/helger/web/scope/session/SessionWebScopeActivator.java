@@ -22,20 +22,19 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.DevelopersNote;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.lang.ClassHelper;
+import com.helger.annotation.misc.DevelopersNote;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.lang.clazz.ClassHelper;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.scope.ScopeHelper;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionActivationListener;
 import jakarta.servlet.http.HttpSessionEvent;

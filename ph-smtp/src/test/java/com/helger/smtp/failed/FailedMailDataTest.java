@@ -24,16 +24,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-
 import org.junit.Test;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.email.EmailAddress;
-import com.helger.commons.exception.mock.MockException;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.id.factory.MemoryIntIDFactory;
+import com.helger.base.CGlobal;
+import com.helger.base.email.EmailAddress;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.id.factory.MemoryIntIDFactory;
+import com.helger.base.mock.exception.MockException;
+import com.helger.datetime.helper.PDTFactory;
 import com.helger.smtp.data.EEmailType;
 import com.helger.smtp.data.EmailAttachment;
 import com.helger.smtp.data.EmailAttachmentList;
@@ -42,6 +40,8 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.settings.SMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
 import com.helger.xml.mock.XMLTestHelper;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Test class for class {@link FailedMailData}.

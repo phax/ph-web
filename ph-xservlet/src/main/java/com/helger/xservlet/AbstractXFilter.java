@@ -19,21 +19,19 @@ package com.helger.xservlet;
 import java.io.IOException;
 import java.util.function.BiFunction;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.callback.CallbackList;
-import com.helger.commons.state.EContinue;
-import com.helger.commons.statistics.IMutableStatisticsHandlerCounter;
-import com.helger.commons.statistics.StatisticsManager;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.callback.CallbackList;
+import com.helger.base.state.EContinue;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
+import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
+import com.helger.statistics.impl.StatisticsManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.impl.RequestWebScope;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
@@ -41,6 +39,7 @@ import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

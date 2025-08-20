@@ -18,13 +18,12 @@ package com.helger.web.servlets.scope;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.state.EContinue;
+import com.helger.base.state.EContinue;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

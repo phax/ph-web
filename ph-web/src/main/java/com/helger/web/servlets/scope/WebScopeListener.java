@@ -16,11 +16,10 @@
  */
 package com.helger.web.servlets.scope;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-
+import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.web.scope.mgr.WebScopeManager;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.http.HttpSessionEvent;

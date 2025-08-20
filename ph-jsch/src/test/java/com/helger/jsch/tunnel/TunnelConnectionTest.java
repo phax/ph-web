@@ -36,8 +36,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.lang.NonBlockingProperties;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.rt.NonBlockingProperties;
 import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
@@ -166,7 +166,8 @@ public final class TunnelConnectionTest
   public void testConnection ()
   {
     final int tunnelPort1 = 59701;
-    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory, new Tunnel (tunnelPort1, "localhost", servicePort)))
+    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory,
+                                                                   new Tunnel (tunnelPort1, "localhost", servicePort)))
     {
       tunnelConnection.open ();
 
@@ -187,7 +188,9 @@ public final class TunnelConnectionTest
     {
       tunnelConnection.open ();
 
-      assertEquals (expected, _writeToService (tunnelConnection.getTunnel (hostname, servicePort).getAssignedLocalPort (), expected));
+      assertEquals (expected,
+                    _writeToService (tunnelConnection.getTunnel (hostname, servicePort).getAssignedLocalPort (),
+                                     expected));
     }
     catch (final Exception e)
     {

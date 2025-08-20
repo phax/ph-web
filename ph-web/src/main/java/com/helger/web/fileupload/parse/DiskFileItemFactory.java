@@ -18,32 +18,31 @@ package com.helger.web.fileupload.parse;
 
 import java.io.File;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.VisibleForTesting;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.io.file.FileIOError;
-import com.helger.commons.io.file.FileOperations;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.VisibleForTesting;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.io.file.FileIOError;
+import com.helger.io.file.FileOperations;
 import com.helger.web.fileupload.IFileItemFactory;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * <p>
- * The default {@link com.helger.web.fileupload.IFileItemFactory}
- * implementation. This implementation creates {@link DiskFileItem} instances
- * which keep their content either in memory, for smaller items, or in a
- * temporary file on disk, for larger items. The size threshold, above which
- * content will be stored on disk, is configurable, as is the directory in which
- * temporary files will be created.
+ * The default {@link com.helger.web.fileupload.IFileItemFactory} implementation. This
+ * implementation creates {@link DiskFileItem} instances which keep their content either in memory,
+ * for smaller items, or in a temporary file on disk, for larger items. The size threshold, above
+ * which content will be stored on disk, is configurable, as is the directory in which temporary
+ * files will be created.
  * </p>
  * <p>
  * If not otherwise configured, the default configuration values are as follows:
@@ -54,8 +53,7 @@ import com.helger.web.fileupload.IFileItemFactory;
  * <code>System.getProperty("java.io.tmpdir")</code>.</li>
  * </ul>
  * <p>
- * Temporary files, which are created for file items, should be deleted later
- * on.
+ * Temporary files, which are created for file items, should be deleted later on.
  * </p>
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
@@ -90,11 +88,11 @@ public class DiskFileItemFactory implements IFileItemFactory
    * Constructs a preconfigured instance of this class.
    *
    * @param nSizeThreshold
-   *        The threshold, in bytes, below which items will be retained in
-   *        memory and above which they will be stored as a file.
+   *        The threshold, in bytes, below which items will be retained in memory and above which
+   *        they will be stored as a file.
    * @param aRepository
-   *        The data repository, which is the directory in which files will be
-   *        created, should the item size exceed the threshold.
+   *        The data repository, which is the directory in which files will be created, should the
+   *        item size exceed the threshold.
    */
   public DiskFileItemFactory (@Nonnegative final int nSizeThreshold, @Nullable final File aRepository)
   {
@@ -115,19 +113,17 @@ public class DiskFileItemFactory implements IFileItemFactory
   }
 
   /**
-   * Create a new {@link com.helger.web.fileupload.parse.DiskFileItem} instance
-   * from the supplied parameters and the local factory configuration.
+   * Create a new {@link com.helger.web.fileupload.parse.DiskFileItem} instance from the supplied
+   * parameters and the local factory configuration.
    *
    * @param sFieldName
    *        The name of the form field.
    * @param sContentType
    *        The content type of the form field.
    * @param bIsFormField
-   *        <code>true</code> if this is a plain form field; <code>false</code>
-   *        otherwise.
+   *        <code>true</code> if this is a plain form field; <code>false</code> otherwise.
    * @param sFileName
-   *        The name of the uploaded file, if any, as supplied by the browser or
-   *        other client.
+   *        The name of the uploaded file, if any, as supplied by the browser or other client.
    * @return The newly created file item.
    */
   @Nonnull

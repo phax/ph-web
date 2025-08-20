@@ -16,33 +16,32 @@
  */
 package com.helger.mail.config;
 
-import javax.annotation.Nullable;
+import com.helger.annotation.style.IsSPIImplementation;
+import com.helger.base.thirdparty.ELicense;
+import com.helger.base.thirdparty.IThirdPartyModule;
+import com.helger.base.thirdparty.IThirdPartyModuleProviderSPI;
+import com.helger.base.thirdparty.ThirdPartyModule;
+import com.helger.base.version.Version;
 
-import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.thirdparty.ELicense;
-import com.helger.commons.thirdparty.IThirdPartyModule;
-import com.helger.commons.thirdparty.IThirdPartyModuleProviderSPI;
-import com.helger.commons.thirdparty.ThirdPartyModule;
-import com.helger.commons.version.Version;
+import jakarta.annotation.Nullable;
 
 /**
- * Implement this SPI interface if your JAR file contains external third party
- * modules.
+ * Implement this SPI interface if your JAR file contains external third party modules.
  *
  * @author Philip Helger
  */
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule JAVAX_MAIL = new ThirdPartyModule ("Jakarta Mail",
+  public static final IThirdPartyModule ANGUS_MAIL = new ThirdPartyModule ("Angus Mail",
                                                                            "Eclipse Foundation",
                                                                            ELicense.EPL20,
-                                                                           new Version (1, 6, 7),
-                                                                           "https://eclipse-ee4j.github.io/mail/");
+                                                                           new Version (2, 0, 4),
+                                                                           "https://eclipse-ee4j.github.io/angus-mail/");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()
   {
-    return new IThirdPartyModule [] { JAVAX_MAIL };
+    return new IThirdPartyModule [] { ANGUS_MAIL };
   }
 }

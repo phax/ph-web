@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.Proxy;
 
-import javax.annotation.Nonnull;
 import javax.script.ScriptException;
 
 import org.junit.Assume;
@@ -31,12 +30,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.io.resource.ClassPathResource;
-import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.url.URLHelper;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.io.resource.ClassPathResource;
+import com.helger.io.resource.IReadableResource;
+import com.helger.io.url.URLHelper;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Unit test class for class {@link ProxyAutoConfigHelper}.

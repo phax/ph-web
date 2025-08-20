@@ -18,17 +18,16 @@ package com.helger.xservlet;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.state.EContinue;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.state.EContinue;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

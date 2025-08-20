@@ -16,10 +16,10 @@
  */
 package com.helger.jsch.session;
 
-import javax.annotation.Nonnull;
-
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An interface for creating {@link Session} objects. This is a base interface

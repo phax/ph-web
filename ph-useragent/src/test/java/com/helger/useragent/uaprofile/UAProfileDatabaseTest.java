@@ -21,15 +21,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.junit.Test;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.mock.CommonsTestHelper;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.collection.commons.ICommonsCollection;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.unittest.support.TestHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Test class for class {@link UAProfileDatabase}.
@@ -110,8 +110,8 @@ public final class UAProfileDatabaseTest
     assertEquals (1, aProfile.getDiffCount ());
 
     // Just some sanity check
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                       UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
+    TestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
   }
 
   @Test
@@ -143,15 +143,16 @@ public final class UAProfileDatabaseTest
     assertNull (aProfile.getProfileURL ());
     assertEquals (1, aProfile.getDiffCount ());
 
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                       UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
+    TestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
   }
 
   @Test
   public void testUAProfMultiDiff ()
   {
     final HttpHeaderMap aMap = new HttpHeaderMap ();
-    aMap.addHeader ("x-wap-profile", "\"1-diGacUwQ6eeOlaWB6cFEag==\", \"2-diGacUwQ6eeOlaWB6cFEag==\", \"3-diGacUwQ6eeOlaWB6cFEag==\"");
+    aMap.addHeader ("x-wap-profile",
+                    "\"1-diGacUwQ6eeOlaWB6cFEag==\", \"2-diGacUwQ6eeOlaWB6cFEag==\", \"3-diGacUwQ6eeOlaWB6cFEag==\"");
     aMap.addHeader ("x-wap-profile-diff",
                     "1;<?xml version=\"1.0\"?><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:prf=\"http://www.wapforum.org/profiles/UAPROF/ccppschema-20010430#\">1</rdf:RDF>");
     aMap.addHeader ("x-wap-profile-diff",
@@ -164,7 +165,7 @@ public final class UAProfileDatabaseTest
     assertNull (aProfile.getProfileURL ());
     assertEquals (3, aProfile.getDiffCount ());
 
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
-                                                                       UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
+    TestHelper.testDefaultImplementationWithEqualContentObject (aProfile,
+                                                                UAProfileDatabase.getUAProfileFromRequest (new MockProvider (aMap)));
   }
 }

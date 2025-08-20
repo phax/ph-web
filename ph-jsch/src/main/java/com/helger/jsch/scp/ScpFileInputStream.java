@@ -19,13 +19,13 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
 
 public class ScpFileInputStream extends InputStream
 {

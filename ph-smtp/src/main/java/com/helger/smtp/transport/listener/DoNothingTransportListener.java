@@ -16,11 +16,11 @@
  */
 package com.helger.smtp.transport.listener;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An implementation of {@link IEmailDataTransportListener} that does nothing.

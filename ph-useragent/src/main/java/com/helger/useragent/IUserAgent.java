@@ -16,13 +16,13 @@
  */
 package com.helger.useragent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.helger.useragent.browser.BrowserInfo;
 import com.helger.useragent.browser.BrowserInfoIE;
 import com.helger.useragent.browser.BrowserInfoMobile;
 import com.helger.useragent.browser.BrowserInfoSpider;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Represents a single parsed user agent.

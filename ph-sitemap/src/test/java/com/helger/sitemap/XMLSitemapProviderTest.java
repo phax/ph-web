@@ -24,8 +24,8 @@ import java.io.File;
 
 import org.junit.Test;
 
-import com.helger.commons.io.file.FileHelper;
-import com.helger.commons.io.file.FileOperations;
+import com.helger.io.file.FileHelper;
+import com.helger.io.file.FileOperations;
 
 /**
  * Test class for class {@link XMLSitemapProvider}.

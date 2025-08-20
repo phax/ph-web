@@ -19,10 +19,10 @@ package com.helger.web.fileupload.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.enforce.ValueEnforcer;
 
-import com.helger.commons.ValueEnforcer;
+import jakarta.annotation.Nonnull;
 
 /**
  * An output stream which triggers an event when a specified number of bytes of

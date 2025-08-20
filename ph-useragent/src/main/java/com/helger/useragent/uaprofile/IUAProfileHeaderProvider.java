@@ -16,10 +16,10 @@
  */
 package com.helger.useragent.uaprofile;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.collection.commons.ICommonsCollection;
 
-import com.helger.commons.collection.impl.ICommonsCollection;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * User Agent Profile Header provider

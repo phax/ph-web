@@ -16,18 +16,19 @@
  */
 package com.helger.xservlet.handler.specific;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.OverridingMethodsMustInvokeSuper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.url.CURL;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An {@link IXServletSimpleHandler} that does a redirect to another servlet.
@@ -44,8 +45,8 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    * Constructor.
    *
    * @param sServletPath
-   *        The servlet path (relative to the current context) to redirect to.
-   *        Must start with a slash ("/").
+   *        The servlet path (relative to the current context) to redirect to. Must start with a
+   *        slash ("/").
    */
   public RedirectToServletXServletHandler (@Nonnull @Nonempty final String sServletPath)
   {
@@ -56,8 +57,8 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
   }
 
   /**
-   * @return The servlet path as provided in the constructor. Always starts with
-   *         a slash. Neither <code>null</code> nor empty.
+   * @return The servlet path as provided in the constructor. Always starts with a slash. Neither
+   *         <code>null</code> nor empty.
    * @since 9.3.1
    */
   @Nonnull
@@ -72,20 +73,21 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    *
    * @param aRequestScope
    *        The current request scope to be used. Never <code>null</code>.
-   * @return The target URL to redirect to. If it is relative, the application
-   *         server is responsible for making it absolute.
+   * @return The target URL to redirect to. If it is relative, the application server is responsible
+   *         for making it absolute.
    * @since 9.6.3
    */
   @Nonnull
   @OverridingMethodsMustInvokeSuper
   protected String getRedirectURL (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
   {
-    String sRedirectURL = aRequestScope.getContextPath () + m_sServletPath;
+    final StringBuilder sRedirectURL = new StringBuilder ().append (aRequestScope.getContextPath ())
+                                                           .append (m_sServletPath);
 
     final String sQueryString = aRequestScope.getQueryString ();
-    if (StringHelper.hasText (sQueryString))
-      sRedirectURL += "?" + sQueryString;
-    return sRedirectURL;
+    if (StringHelper.isNotEmpty (sQueryString))
+      sRedirectURL.append (CURL.QUESTIONMARK).append (sQueryString);
+    return sRedirectURL.toString ();
   }
 
   public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,

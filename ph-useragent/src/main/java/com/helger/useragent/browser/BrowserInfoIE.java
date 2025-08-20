@@ -18,10 +18,10 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.base.version.Version;
 
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.version.Version;
+import jakarta.annotation.Nonnull;
 
 /**
  * Special browser info for Internet Explorer.
@@ -66,6 +66,8 @@ public class BrowserInfoIE extends BrowserInfo
   {
     if (isItNot ())
       return new ToStringGenerator (null).append ("isIt", "not").getToString ();
-    return ToStringGenerator.getDerived (super.toString ()).append ("ieCompatibilityMode", m_bIsIECompatibilityMode).getToString ();
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("ieCompatibilityMode", m_bIsIECompatibilityMode)
+                            .getToString ();
   }
 }

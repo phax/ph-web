@@ -20,45 +20,44 @@ import java.security.cert.X509Certificate;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.url.SimpleURL;
-import com.helger.commons.url.URLData;
-import com.helger.commons.url.URLHelper;
-import com.helger.http.AcceptCharsetHandler;
-import com.helger.http.AcceptCharsetList;
-import com.helger.http.AcceptEncodingHandler;
-import com.helger.http.AcceptEncodingList;
-import com.helger.http.AcceptLanguageHandler;
-import com.helger.http.AcceptLanguageList;
-import com.helger.http.AcceptMimeTypeHandler;
-import com.helger.http.AcceptMimeTypeList;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.url.CURL;
+import com.helger.http.CHttpHeader;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.http.basicauth.BasicAuthClientCredentials;
 import com.helger.http.basicauth.HttpBasicAuth;
 import com.helger.http.digestauth.DigestAuthClientCredentials;
 import com.helger.http.digestauth.HttpDigestAuth;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.http.header.specific.AcceptCharsetHandler;
+import com.helger.http.header.specific.AcceptCharsetList;
+import com.helger.http.header.specific.AcceptEncodingHandler;
+import com.helger.http.header.specific.AcceptEncodingList;
+import com.helger.http.header.specific.AcceptLanguageHandler;
+import com.helger.http.header.specific.AcceptLanguageList;
+import com.helger.http.header.specific.AcceptMimeTypeHandler;
+import com.helger.http.header.specific.AcceptMimeTypeList;
+import com.helger.http.url.ISimpleURL;
+import com.helger.http.url.SimpleURL;
+import com.helger.http.url.URLData;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -99,8 +98,7 @@ public final class RequestHelper
   public static final String MULTIPART_MIXED = MULTIPART + "mixed";
 
   /**
-   * The prefix to appended to the field name of the checkbox to create the
-   * hidden field.
+   * The prefix to appended to the field name of the checkbox to create the hidden field.
    */
   public static final String DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX = "__";
 
@@ -116,13 +114,11 @@ public final class RequestHelper
   /**
    * Get the passed string without an eventually contained session ID like in
    * "test.html;JSESSIONID=1234".<br>
-   * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they are most likely be stripped
-   * away!
+   * Attention: this methods does not consider eventually present request parameters. If parameters
+   * are present, they are most likely be stripped away!
    *
    * @param sValue
-   *        The value to strip the session ID from. May not be
-   *        <code>null</code>.
+   *        The value to strip the session ID from. May not be <code>null</code>.
    * @return The value without a session ID or the original string.
    */
   @Nonnull
@@ -153,16 +149,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the session ID of the passed string (like in
-   * "test.html;JSESSIONID=1234").<br>
-   * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they must be stripped away
-   * explicitly!
+   * Get the session ID of the passed string (like in "test.html;JSESSIONID=1234").<br>
+   * Attention: this methods does not consider eventually present request parameters. If parameters
+   * are present, they must be stripped away explicitly!
    *
    * @param sValue
    *        The value to get the session ID from. May not be <code>null</code>.
-   * @return The session ID of the value or <code>null</code> if no session ID
-   *         is present.
+   * @return The session ID of the value or <code>null</code> if no session ID is present.
    */
   @Nullable
   public static String getSessionID (@Nonnull final String sValue)
@@ -175,16 +168,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the session ID of the passed string (like in
-   * "test.html;JSESSIONID=1234").<br>
-   * Attention: this methods does not consider eventually present request
-   * parameters. If parameters are present, they must be stripped away
-   * explicitly!
+   * Get the session ID of the passed string (like in "test.html;JSESSIONID=1234").<br>
+   * Attention: this methods does not consider eventually present request parameters. If parameters
+   * are present, they must be stripped away explicitly!
    *
    * @param aURL
    *        The URL to get the session ID from. May not be <code>null</code>.
-   * @return The session ID of the value or <code>null</code> if no session ID
-   *         is present.
+   * @return The session ID of the value or <code>null</code> if no session ID is present.
    */
   @Nullable
   public static String getSessionID (@Nonnull final ISimpleURL aURL)
@@ -196,8 +186,7 @@ public final class RequestHelper
   }
 
   /**
-   * Get the request URI without an eventually appended session
-   * (";jsessionid=...").<br>
+   * Get the request URI without an eventually appended session (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
    * This method returns the percent decoded parameters
    * <table>
@@ -221,8 +210,7 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request. May not be <code>null</code>.
-   * @return The request URI without the optional session ID. Never
-   *         <code>null</code>.
+   * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
   @Nonnull
@@ -247,8 +235,7 @@ public final class RequestHelper
   }
 
   /**
-   * Get the request URI without an eventually appended session
-   * (";jsessionid=...").<br>
+   * Get the request URI without an eventually appended session (";jsessionid=...").<br>
    * This method considers the GlobalWebScope custom context path.<br>
    * This method returns the percent encoded parameters "as is"
    * <table>
@@ -272,8 +259,7 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request. May not be <code>null</code>.
-   * @return The request URI without the optional session ID. Never
-   *         <code>null</code>.
+   * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
   @Nonnull
@@ -302,15 +288,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the request path info without an eventually appended session
-   * (";jsessionid=...")
+   * Get the request path info without an eventually appended session (";jsessionid=...")
    *
    * @param aHttpRequest
    *        The HTTP request
-   * @return Returns any extra path information associated with the URL the
-   *         client sent when it made this request. The extra path information
-   *         follows the servlet path but precedes the query string and will
-   *         start with a "/" character. The optional session ID is stripped.
+   * @return Returns any extra path information associated with the URL the client sent when it made
+   *         this request. The extra path information follows the servlet path but precedes the
+   *         query string and will start with a "/" character. The optional session ID is stripped.
    */
   @Nullable
   public static String getPathInfo (@Nonnull final HttpServletRequest aHttpRequest)
@@ -318,7 +302,7 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
-    if (StringHelper.hasNoText (sPathInfo))
+    if (StringHelper.isEmpty (sPathInfo))
       return sPathInfo;
 
     return getWithoutSessionID (sPathInfo);
@@ -329,8 +313,8 @@ public final class RequestHelper
    *
    * @param aHttpRequest
    *        The HTTP request. May not be <code>null</code>.
-   * @return the path within the web application and never <code>null</code>. By
-   *         default "/" is returned is an empty request URI is determined.
+   * @return the path within the web application and never <code>null</code>. By default "/" is
+   *         returned is an empty request URI is determined.
    */
   @Nonnull
   public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest)
@@ -345,10 +329,10 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The HTTP request. May not be <code>null</code>.
    * @param bUseEncodedPath
-   *        <code>true</code> to use the URL encoded path, <code>false</code> to
-   *        use the decoded path
-   * @return the path within the web application and never <code>null</code>. By
-   *         default "/" is returned is an empty request URI is determined.
+   *        <code>true</code> to use the URL encoded path, <code>false</code> to use the decoded
+   *        path
+   * @return the path within the web application and never <code>null</code>. By default "/" is
+   *         returned is an empty request URI is determined.
    * @since 9.1.10
    */
   @Nonnull
@@ -359,7 +343,7 @@ public final class RequestHelper
 
     final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (
                                                                                                              aHttpRequest);
-    if (StringHelper.hasNoText (sRequestURI))
+    if (StringHelper.isEmpty (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
       if (LOGGER.isDebugEnabled ())
@@ -368,7 +352,7 @@ public final class RequestHelper
     }
     // Always use the context path
     final String sContextPath = ServletContextPathHolder.getContextPath ();
-    if (StringHelper.hasNoText (sContextPath) || !sRequestURI.startsWith (sContextPath))
+    if (StringHelper.isEmpty (sContextPath) || !sRequestURI.startsWith (sContextPath))
       return sRequestURI;
 
     // Normal case: URI contains context path.
@@ -377,11 +361,10 @@ public final class RequestHelper
   }
 
   /**
-   * Return the path within the servlet mapping for the given request, i.e. the
-   * part of the request's URL beyond the part that called the servlet, or "" if
-   * the whole URL has been used to identify the servlet. <br>
-   * Detects include request URL if called within a RequestDispatcher include.
-   * <br>
+   * Return the path within the servlet mapping for the given request, i.e. the part of the
+   * request's URL beyond the part that called the servlet, or "" if the whole URL has been used to
+   * identify the servlet. <br>
+   * Detects include request URL if called within a RequestDispatcher include. <br>
    * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -&gt; "/a". <br>
    * E.g.: servlet mapping = "/test"; request URI = "/test" -&gt; "". <br>
    * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -&gt; "".
@@ -398,11 +381,10 @@ public final class RequestHelper
   }
 
   /**
-   * Return the path within the servlet mapping for the given request, i.e. the
-   * part of the request's URL beyond the part that called the servlet, or "" if
-   * the whole URL has been used to identify the servlet. <br>
-   * Detects include request URL if called within a RequestDispatcher include.
-   * <br>
+   * Return the path within the servlet mapping for the given request, i.e. the part of the
+   * request's URL beyond the part that called the servlet, or "" if the whole URL has been used to
+   * identify the servlet. <br>
+   * Detects include request URL if called within a RequestDispatcher include. <br>
    * E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -&gt; "/a". <br>
    * E.g.: servlet mapping = "/test"; request URI = "/test" -&gt; "". <br>
    * E.g.: servlet mapping = "/*.test"; request URI = "/a.test" -&gt; "".
@@ -410,8 +392,8 @@ public final class RequestHelper
    * @param aHttpRequest
    *        current HTTP request
    * @param bUseEncodedPath
-   *        <code>true</code> to use the URL encoded path, <code>false</code> to
-   *        use the decoded path
+   *        <code>true</code> to use the URL encoded path, <code>false</code> to use the decoded
+   *        path
    * @return the path within the servlet mapping, or ""
    * @since 9.1.10
    */
@@ -433,27 +415,22 @@ public final class RequestHelper
   }
 
   /**
-   * Reconstructs the URL the client used to make the request. The returned URL
-   * contains a protocol, server name, port number, and server path, but it does
-   * not include query string parameters.<br>
+   * Reconstructs the URL the client used to make the request. The returned URL contains a protocol,
+   * server name, port number, and server path, but it does not include query string parameters.<br>
    * This method returns the percent decoded parameters
    * <p>
-   * If this request has been forwarded using
-   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
-   * reconstructed URL must reflect the path used to obtain the
+   * If this request has been forwarded using {@link jakarta.servlet.RequestDispatcher#forward}, the
+   * server path in the reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>
-   * Because this method returns a <code>StringBuilder</code>, not a string, you
-   * can modify the URL easily, for example, to append query parameters.
+   * Because this method returns a <code>StringBuilder</code>, not a string, you can modify the URL
+   * easily, for example, to append query parameters.
    * <p>
-   * This method is useful for creating redirect messages and for reporting
-   * errors.
+   * This method is useful for creating redirect messages and for reporting errors.
    *
    * @param aHttpRequest
-   *        The HTTP request to get the request URL from. May not be
-   *        <code>null</code>.
-   * @return a <code>StringBuilder</code> object containing the reconstructed
-   *         URL
+   *        The HTTP request to get the request URL from. May not be <code>null</code>.
+   * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
   @Nonnull
@@ -466,27 +443,22 @@ public final class RequestHelper
   }
 
   /**
-   * Reconstructs the URL the client used to make the request. The returned URL
-   * contains a protocol, server name, port number, and server path, but it does
-   * not include query string parameters.<br>
+   * Reconstructs the URL the client used to make the request. The returned URL contains a protocol,
+   * server name, port number, and server path, but it does not include query string parameters.<br>
    * This method returns the percent encoded parameters "as is"
    * <p>
-   * If this request has been forwarded using
-   * {@link jakarta.servlet.RequestDispatcher#forward}, the server path in the
-   * reconstructed URL must reflect the path used to obtain the
+   * If this request has been forwarded using {@link jakarta.servlet.RequestDispatcher#forward}, the
+   * server path in the reconstructed URL must reflect the path used to obtain the
    * RequestDispatcher, and not the server path specified by the client.
    * <p>
-   * Because this method returns a <code>StringBuilder</code>, not a string, you
-   * can modify the URL easily, for example, to append query parameters.
+   * Because this method returns a <code>StringBuilder</code>, not a string, you can modify the URL
+   * easily, for example, to append query parameters.
    * <p>
-   * This method is useful for creating redirect messages and for reporting
-   * errors.
+   * This method is useful for creating redirect messages and for reporting errors.
    *
    * @param aHttpRequest
-   *        The HTTP request to get the request URL from. May not be
-   *        <code>null</code>.
-   * @return a <code>StringBuilder</code> object containing the reconstructed
-   *         URL
+   *        The HTTP request to get the request URL from. May not be <code>null</code>.
+   * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
   @Nonnull
@@ -508,8 +480,8 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URL.
-   * @see #getURIDecoded(HttpServletRequest) getURI to retrieve the URL without
-   *      the server scheme and name.
+   * @see #getURIDecoded(HttpServletRequest) getURI to retrieve the URL without the server scheme
+   *      and name.
    * @since 9.1.10
    */
   @Nonnull
@@ -521,8 +493,8 @@ public final class RequestHelper
     final StringBuilder ret = getRequestURLDecoded (aHttpRequest);
     // query string
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
-    if (StringHelper.hasText (sQueryString))
-      ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
+    if (StringHelper.isNotEmpty (sQueryString))
+      ret.append (CURL.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
   }
 
@@ -536,8 +508,8 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URL.
-   * @see #getURIEncoded(HttpServletRequest) getURI to retrieve the URL without
-   *      the server scheme and name.
+   * @see #getURIEncoded(HttpServletRequest) getURI to retrieve the URL without the server scheme
+   *      and name.
    * @since 9.1.10
    */
 
@@ -550,8 +522,8 @@ public final class RequestHelper
     final StringBuilder ret = getRequestURLEncoded (aHttpRequest);
     // query string
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
-    if (StringHelper.hasText (sQueryString))
-      ret.append (URLHelper.QUESTIONMARK).append (sQueryString);
+    if (StringHelper.isNotEmpty (sQueryString))
+      ret.append (CURL.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
   }
 
@@ -578,8 +550,8 @@ public final class RequestHelper
     final String sReqUrl = getRequestURIDecoded (aHttpRequest);
     // d=789&x=y
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
-    if (StringHelper.hasText (sQueryString))
-      return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
+    if (StringHelper.isNotEmpty (sQueryString))
+      return sReqUrl + CURL.QUESTIONMARK + sQueryString;
     return sReqUrl;
   }
 
@@ -606,8 +578,8 @@ public final class RequestHelper
     final String sReqUrl = getRequestURIEncoded (aHttpRequest);
     // d=789&x=y
     final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
-    if (StringHelper.hasText (sQueryString))
-      return sReqUrl + URLHelper.QUESTIONMARK + sQueryString;
+    if (StringHelper.isNotEmpty (sQueryString))
+      return sReqUrl + CURL.QUESTIONMARK + sQueryString;
     return sReqUrl;
   }
 
@@ -644,9 +616,9 @@ public final class RequestHelper
   {
     // Reconstruct URL
     final StringBuilder aSB = new StringBuilder ();
-    if (StringHelper.hasText (sScheme))
+    if (StringHelper.isNotEmpty (sScheme))
       aSB.append (sScheme).append ("://");
-    if (StringHelper.hasText (sServerName))
+    if (StringHelper.isNotEmpty (sServerName))
       aSB.append (sServerName);
     if (NetworkPortHelper.isValidPort (nServerPort) && nServerPort != getDefaultServerPort (sScheme))
       aSB.append (':').append (nServerPort);
@@ -662,14 +634,14 @@ public final class RequestHelper
                                                  @Nullable final String sQueryString)
   {
     final StringBuilder aURL = getFullServerName (sScheme, sServerName, nServerPort);
-    if (StringHelper.hasText (sPath))
+    if (StringHelper.isNotEmpty (sPath))
     {
       if (!StringHelper.startsWith (sPath, '/'))
         aURL.append ('/');
       aURL.append (sPath);
     }
-    if (StringHelper.hasText (sQueryString))
-      aURL.append (URLHelper.QUESTIONMARK).append (sQueryString);
+    if (StringHelper.isNotEmpty (sQueryString))
+      aURL.append (CURL.QUESTIONMARK).append (sQueryString);
     return aURL.toString ();
   }
 
@@ -716,8 +688,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The http request to query. May not be <code>null</code>.
    * @param eDefault
-   *        The default to be returned, if no HTTP method could be found. May be
-   *        <code>null</code>.
+   *        The default to be returned, if no HTTP method could be found. May be <code>null</code>.
    * @return <code>null</code> if no supported HTTP method is contained
    * @since 9.1.6
    */
@@ -742,8 +713,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The source HTTP request. May not be <code>null</code>.
    * @param aConsumer
-   *        The BiConsumer that takes name and value. May not be
-   *        <code>null</code>.
+   *        The BiConsumer that takes name and value. May not be <code>null</code>.
    * @since 9.1.9
    */
   public static void forEachRequestHeader (@Nonnull final HttpServletRequest aHttpRequest,
@@ -793,8 +763,8 @@ public final class RequestHelper
 
   /**
    * Get the content length of the passed request. This is not done using
-   * <code>request.getContentLength()</code> but instead parsing the HTTP header
-   * field {@link CHttpHeader#CONTENT_LENGTH} manually!
+   * <code>request.getContentLength()</code> but instead parsing the HTTP header field
+   * {@link CHttpHeader#CONTENT_LENGTH} manually!
    *
    * @param aHttpRequest
    *        Source HTTP request. May not be <code>null</code>.
@@ -838,10 +808,8 @@ public final class RequestHelper
 
   /**
    * @param aHttpRequest
-   *        he HTTP servlet request to extract the information from. May not be
-   *        <code>null</code>.
-   * @return SSL cipher suite or <code>null</code> if no such attribute is
-   *         present
+   *        he HTTP servlet request to extract the information from. May not be <code>null</code>.
+   * @return SSL cipher suite or <code>null</code> if no such attribute is present
    */
   @Nullable
   public static String getRequestSSLCipherSuite (@Nonnull final HttpServletRequest aHttpRequest)
@@ -851,10 +819,8 @@ public final class RequestHelper
 
   /**
    * @param aHttpRequest
-   *        he HTTP servlet request to extract the information from. May not be
-   *        <code>null</code>.
-   * @return Bit size of the algorithm or <code>null</code> if no such attribute
-   *         is present
+   *        he HTTP servlet request to extract the information from. May not be <code>null</code>.
+   * @return Bit size of the algorithm or <code>null</code> if no such attribute is present
    */
   @Nullable
   public static Integer getRequestSSLKeySize (@Nonnull final HttpServletRequest aHttpRequest)
@@ -866,10 +832,8 @@ public final class RequestHelper
    * Get the client certificates provided by a HTTP servlet request.
    *
    * @param aHttpRequest
-   *        The HTTP servlet request to extract the information from. May not be
-   *        <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain any client
-   *         certificate
+   *        The HTTP servlet request to extract the information from. May not be <code>null</code>.
+   * @return <code>null</code> if the passed request does not contain any client certificate
    */
   @Nullable
   public static X509Certificate [] getRequestClientCertificates (@Nonnull final HttpServletRequest aHttpRequest)
@@ -878,13 +842,11 @@ public final class RequestHelper
   }
 
   /**
-   * Utility method that determines whether the request contains multipart
-   * content.
+   * Utility method that determines whether the request contains multipart content.
    *
    * @param sContentType
    *        The content type to be checked. May be <code>null</code>.
-   * @return <code>true</code> if the request is multipart; <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if the request is multipart; <code>false</code> otherwise.
    */
   public static boolean isMultipartContent (@Nullable final String sContentType)
   {
@@ -892,13 +854,11 @@ public final class RequestHelper
   }
 
   /**
-   * Utility method that determines whether the request contains multipart
-   * content.
+   * Utility method that determines whether the request contains multipart content.
    *
    * @param aHttpRequest
    *        The servlet request to be evaluated. Must be non-null.
-   * @return <code>true</code> if the request is multipart; <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if the request is multipart; <code>false</code> otherwise.
    */
   public static boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
@@ -909,14 +869,13 @@ public final class RequestHelper
   }
 
   /**
-   * Utility method that determines whether the request contains
-   * <code>multipart/form-data</code> content.
+   * Utility method that determines whether the request contains <code>multipart/form-data</code>
+   * content.
    *
    * @param sContentType
    *        The content type to be checked. May be <code>null</code>.
-   * @return <code>true</code> if the passed, lowercased content type starts
-   *         with <code>multipart/form-data</code>; <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if the passed, lowercased content type starts with
+   *         <code>multipart/form-data</code>; <code>false</code> otherwise.
    */
   public static boolean isMultipartFormDataContent (@Nullable final String sContentType)
   {
@@ -924,13 +883,11 @@ public final class RequestHelper
   }
 
   /**
-   * Utility method that determines whether the request contains multipart
-   * content.
+   * Utility method that determines whether the request contains multipart content.
    *
    * @param aHttpRequest
    *        The servlet request to be evaluated. Must be non-null.
-   * @return <code>true</code> if the request is multipart; <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if the request is multipart; <code>false</code> otherwise.
    */
   public static boolean isMultipartFormDataContent (@Nonnull final HttpServletRequest aHttpRequest)
   {
@@ -997,13 +954,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the Basic authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
+   * Get the Basic authentication credentials from the passed HTTP servlet request from the HTTP
+   * header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Basic Authentication header value.
+   * @return <code>null</code> if the passed request does not contain a valid HTTP Basic
+   *         Authentication header value.
    */
   @Nullable
   public static BasicAuthClientCredentials getBasicAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
@@ -1015,13 +972,13 @@ public final class RequestHelper
   }
 
   /**
-   * Get the Digest authentication credentials from the passed HTTP servlet
-   * request from the HTTP header {@link CHttpHeader#AUTHORIZATION}.
+   * Get the Digest authentication credentials from the passed HTTP servlet request from the HTTP
+   * header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
    *        The HTTP request to be interpreted. May be <code>null</code>.
-   * @return <code>null</code> if the passed request does not contain a valid
-   *         HTTP Digest Authentication header value.
+   * @return <code>null</code> if the passed request does not contain a valid HTTP Digest
+   *         Authentication header value.
    */
   @Nullable
   public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
@@ -1058,8 +1015,7 @@ public final class RequestHelper
    *
    * @param sFieldName
    *        The name of the check-box.
-   * @return The name of the hidden field associated with the given check-box
-   *         name.
+   * @return The name of the hidden field associated with the given check-box name.
    */
   @Nonnull
   @Nonempty

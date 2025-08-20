@@ -16,10 +16,10 @@
  */
 package com.helger.sitemap;
 
-import javax.annotation.Nonnull;
+import com.helger.annotation.style.IsSPIImplementation;
+import com.helger.http.url.SimpleURL;
 
-import com.helger.commons.annotation.IsSPIImplementation;
-import com.helger.commons.url.SimpleURL;
+import jakarta.annotation.Nonnull;
 
 @IsSPIImplementation
 public final class MockXMLSitemapProviderMultiFileSPI implements IXMLSitemapProviderSPI

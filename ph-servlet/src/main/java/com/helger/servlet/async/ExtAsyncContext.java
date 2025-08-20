@@ -16,13 +16,12 @@
  */
 package com.helger.servlet.async;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.http.EHttpMethod;
+import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

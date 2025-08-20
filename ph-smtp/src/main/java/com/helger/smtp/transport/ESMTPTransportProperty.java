@@ -16,11 +16,12 @@
  */
 package com.helger.smtp.transport;
 
-import javax.annotation.Nonnull;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
-import com.helger.commons.annotation.Nonempty;
+import com.helger.annotation.Nonempty;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Available SMTP settings for javax-mail 1.5.0.<br>

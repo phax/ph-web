@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
@@ -34,6 +31,9 @@ import org.w3c.dom.Document;
 
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.serialize.read.DOMReader;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to a DOM {@link Document} object.

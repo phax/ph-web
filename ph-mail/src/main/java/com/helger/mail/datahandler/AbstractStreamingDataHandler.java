@@ -22,11 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * {@link DataHandler} extended to offer better buffer management in a streaming

@@ -20,14 +20,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.WillCloseWhenClosed;
-import javax.annotation.concurrent.NotThreadSafe;
-
-import com.helger.commons.io.file.FilenameHelper;
-import com.helger.commons.state.ICloseable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.WillCloseWhenClosed;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.state.ICloseable;
+import com.helger.io.file.FilenameHelper;
 import com.helger.web.fileupload.IFileItemHeaders;
 import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
@@ -37,6 +34,9 @@ import com.helger.web.fileupload.io.FileUploadHelper;
 import com.helger.web.multipart.MultipartItemSkippedException;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.multipart.MultipartStream.MultipartItemInputStream;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of {@link IFileItemStream}.

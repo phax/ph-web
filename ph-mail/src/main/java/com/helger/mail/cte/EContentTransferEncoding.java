@@ -16,15 +16,15 @@
  */
 package com.helger.mail.cte;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.Nonempty;
+import com.helger.base.codec.IdentityByteArrayCodec;
+import com.helger.base.codec.base64.Base64Codec;
+import com.helger.base.codec.impl.QuotedPrintableCodec;
+import com.helger.base.codec.impl.RFC1522QCodec;
+import com.helger.base.lang.EnumHelper;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.codec.Base64Codec;
-import com.helger.commons.codec.IdentityByteArrayCodec;
-import com.helger.commons.codec.QuotedPrintableCodec;
-import com.helger.commons.codec.RFC1522QCodec;
-import com.helger.commons.lang.EnumHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Predefined Content Transfer Encoding types as per

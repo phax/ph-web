@@ -18,25 +18,23 @@ package com.helger.web.scope.impl;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.datetime.helper.PDTFactory;
 import com.helger.scope.GlobalScope;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.web.scope.IGlobalWebScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContext;
 
 /**
- * Implementation of the {@link IGlobalWebScope} interface for web applications.
- * <br>
- * Note: for synchronization issues, this class does not store the attributes in
- * the passed {@link ServletContext} but in a separate map.
+ * Implementation of the {@link IGlobalWebScope} interface for web applications. <br>
+ * Note: for synchronization issues, this class does not store the attributes in the passed
+ * {@link ServletContext} but in a separate map.
  *
  * @author Philip Helger
  */

@@ -18,16 +18,15 @@ package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.FileUpload;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**

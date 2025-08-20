@@ -30,9 +30,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.io.file.FileOperationManager;
-import com.helger.commons.io.file.SimpleFileIO;
-import com.helger.commons.io.stream.StreamHelper;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.io.file.FileOperationManager;
+import com.helger.io.file.SimpleFileIO;
 
 public final class ScpFileTest extends AbstractScpTestBase
 {

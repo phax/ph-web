@@ -18,18 +18,18 @@ package com.helger.xservlet.handler.specific;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.url.ISimpleURL;
-import com.helger.commons.url.SimpleURL;
+import com.helger.annotation.Nonempty;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.http.url.ISimpleURL;
+import com.helger.http.url.SimpleURL;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * An {@link IXServletSimpleHandler} that does a redirect to a fixed URL.

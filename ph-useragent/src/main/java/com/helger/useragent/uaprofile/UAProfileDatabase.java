@@ -22,32 +22,32 @@ import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.base64.Base64;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsCollection;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.regex.RegExHelper;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.url.URLHelper;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.CGlobal;
+import com.helger.base.codec.base64.Base64;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.cache.regex.RegExHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.ICommonsCollection;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.http.CHttpHeader;
+import com.helger.io.url.URLHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Central cache for known UAProfiles.
@@ -100,7 +100,7 @@ public final class UAProfileDatabase
   @Nullable
   private static String _getCleanedUp (@Nullable final String s)
   {
-    if (StringHelper.hasNoText (s))
+    if (StringHelper.isEmpty (s))
       return s;
 
     // trim string
@@ -223,7 +223,7 @@ public final class UAProfileDatabase
     for (String sProfile : aProfiles)
     {
       sProfile = _getCleanedUp (sProfile);
-      if (StringHelper.hasText (sProfile))
+      if (StringHelper.isNotEmpty (sProfile))
       {
         // Start tokenizing. Example (with stripped leading and trailing
         // quotes):
@@ -232,7 +232,7 @@ public final class UAProfileDatabase
         while (aTokenizer.hasMoreTokens ())
         {
           final String sToken = aTokenizer.nextToken ().trim ();
-          if (StringHelper.hasText (sToken))
+          if (StringHelper.isNotEmpty (sToken))
           {
             final Matcher aMatcher = RegExHelper.getMatcher ("^(\\d+)-(.+)$", sToken);
             if (aMatcher.matches ())
@@ -243,7 +243,7 @@ public final class UAProfileDatabase
               final int nDiffIndex = StringParser.parseInt (sDiffIndex, CGlobal.ILLEGAL_UINT);
               if (nDiffIndex != CGlobal.ILLEGAL_UINT)
               {
-                if (StringHelper.hasText (sDiffDigest))
+                if (StringHelper.isNotEmpty (sDiffDigest))
                 {
                   final byte [] aDigest = Base64.safeDecode (sDiffDigest);
                   if (aDigest != null)

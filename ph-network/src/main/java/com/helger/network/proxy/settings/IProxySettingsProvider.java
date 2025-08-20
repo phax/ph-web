@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
 
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
+import com.helger.collection.commons.ICommonsList;
 
-import com.helger.commons.collection.impl.ICommonsList;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public interface IProxySettingsProvider
 {

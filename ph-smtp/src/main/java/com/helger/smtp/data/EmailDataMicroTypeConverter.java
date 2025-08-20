@@ -21,18 +21,18 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.ContainsSoftMigration;
-import com.helger.commons.datetime.PDTWebDateHelper;
-import com.helger.commons.email.EmailAddress;
-import com.helger.commons.email.IEmailAddress;
+import com.helger.annotation.misc.ContainsSoftMigration;
+import com.helger.base.email.EmailAddress;
+import com.helger.base.email.IEmailAddress;
+import com.helger.datetime.web.PDTWebDateHelper;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailData}.
@@ -56,7 +56,8 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
   private static final String ELEMENT_CUSTOM = "custom";
   private static final String ATTR_ID = "id";
 
-  private static void _writeEmailAddress (@Nonnull final IMicroElement eParent, @Nonnull final IEmailAddress aEmailAddress)
+  private static void _writeEmailAddress (@Nonnull final IMicroElement eParent,
+                                          @Nonnull final IEmailAddress aEmailAddress)
   {
     eParent.setAttribute (ATTR_ADDRESS, aEmailAddress.getAddress ());
     if (aEmailAddress.getPersonal () != null)
@@ -72,15 +73,15 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     eEmailData.setAttribute (ATTR_TYPE, aEmailData.getEmailType ().getID ());
 
     if (aEmailData.getFrom () != null)
-      _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_FROM), aEmailData.getFrom ());
+      _writeEmailAddress (eEmailData.addElementNS (sNamespaceURI, ELEMENT_FROM), aEmailData.getFrom ());
     for (final IEmailAddress aReplyTo : aEmailData.replyTo ())
-      _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_REPLYTO), aReplyTo);
+      _writeEmailAddress (eEmailData.addElementNS (sNamespaceURI, ELEMENT_REPLYTO), aReplyTo);
     for (final IEmailAddress aTo : aEmailData.to ())
-      _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_TO), aTo);
+      _writeEmailAddress (eEmailData.addElementNS (sNamespaceURI, ELEMENT_TO), aTo);
     for (final IEmailAddress aCc : aEmailData.cc ())
-      _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_CC), aCc);
+      _writeEmailAddress (eEmailData.addElementNS (sNamespaceURI, ELEMENT_CC), aCc);
     for (final IEmailAddress aBcc : aEmailData.bcc ())
-      _writeEmailAddress (eEmailData.appendElement (sNamespaceURI, ELEMENT_BCC), aBcc);
+      _writeEmailAddress (eEmailData.addElementNS (sNamespaceURI, ELEMENT_BCC), aBcc);
 
     if (aEmailData.getSentDateTime () != null)
       eEmailData.setAttributeWithConversion (ATTR_SENTDATETIME, aEmailData.getSentDateTime ());
@@ -89,15 +90,19 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
       eEmailData.setAttribute (ATTR_SUBJECT, aEmailData.getSubject ());
 
     if (aEmailData.getBody () != null)
-      eEmailData.appendElement (sNamespaceURI, ELEMENT_BODY).appendText (aEmailData.getBody ());
+      eEmailData.addElementNS (sNamespaceURI, ELEMENT_BODY).addText (aEmailData.getBody ());
 
-    eEmailData.appendChild (MicroTypeConverter.convertToMicroElement (aEmailData.getAttachments (), sNamespaceURI, ELEMENT_ATTACHMENTS));
+    eEmailData.addChild (MicroTypeConverter.convertToMicroElement (aEmailData.getAttachments (),
+                                                                   sNamespaceURI,
+                                                                   ELEMENT_ATTACHMENTS));
 
-    for (final Map.Entry <String, String> aEntry : aEmailData.attrs ().getSortedByKey (Comparator.naturalOrder ()).entrySet ())
+    for (final Map.Entry <String, String> aEntry : aEmailData.attrs ()
+                                                             .getSortedByKey (Comparator.naturalOrder ())
+                                                             .entrySet ())
     {
-      final IMicroElement eCustom = eEmailData.appendElement (sNamespaceURI, ELEMENT_CUSTOM);
+      final IMicroElement eCustom = eEmailData.addElementNS (sNamespaceURI, ELEMENT_CUSTOM);
       eCustom.setAttribute (ATTR_ID, aEntry.getKey ());
-      eCustom.appendText (aEntry.getValue ());
+      eCustom.addText (aEntry.getValue ());
     }
 
     return eEmailData;
@@ -134,7 +139,8 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     for (final IMicroElement eBcc : eEmailData.getAllChildElements (ELEMENT_BCC))
       aEmailData.bcc ().add (_readEmailAddress (eBcc));
 
-    final LocalDateTime aSentDateTime = eEmailData.getAttributeValueWithConversion (ATTR_SENTDATETIME, LocalDateTime.class);
+    final LocalDateTime aSentDateTime = eEmailData.getAttributeValueWithConversion (ATTR_SENTDATETIME,
+                                                                                    LocalDateTime.class);
     if (aSentDateTime != null)
       aEmailData.setSentDateTime (aSentDateTime);
     else

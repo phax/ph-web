@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 
 /**
  * Unit tests {@link MultipartStream}.

@@ -18,12 +18,11 @@ package com.helger.servlet.mock;
 
 import java.util.EventListener;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.collection.commons.ICommonsList;
 
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.ICommonsList;
-
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.ServletRequestListener;
 import jakarta.servlet.http.HttpSessionListener;

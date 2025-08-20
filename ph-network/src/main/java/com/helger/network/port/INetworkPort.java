@@ -16,12 +16,12 @@
  */
 package com.helger.network.port;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.name.IHasName;
+import com.helger.base.string.StringHelper;
+import com.helger.text.IHasDescription;
 
-import com.helger.commons.name.IHasName;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.text.IHasDescription;
+import jakarta.annotation.Nonnull;
 
 /**
  * Interface describing a single network port.
@@ -50,12 +50,11 @@ public interface INetworkPort extends IHasName, IHasDescription
 
   default boolean hasName ()
   {
-    return StringHelper.hasText (getName ());
+    return StringHelper.isNotEmpty (getName ());
   }
 
   /**
-   * @return Description of this ports usage. May not be <code>null</code> but
-   *         maybe empty.
+   * @return Description of this ports usage. May not be <code>null</code> but maybe empty.
    */
   @Nonnull
   String getDescription ();

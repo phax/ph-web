@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import com.helger.commons.codec.IByteArrayCodec;
+import com.helger.base.codec.IByteArrayCodec;
 
 /**
  * Test class for class {@link EContentTransferEncoding}.

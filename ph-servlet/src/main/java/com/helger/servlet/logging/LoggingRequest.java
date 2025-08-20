@@ -16,13 +16,13 @@
  */
 package com.helger.servlet.logging;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.http.HttpHeaderMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.http.header.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 final class LoggingRequest
 {
@@ -110,12 +110,12 @@ final class LoggingRequest
     if (m_sPath != null)
       ret.add ("path", m_sPath);
     if (m_aParams != null)
-      ret.addJson ("params", new JsonObject ().addAll (m_aParams));
+      ret.add ("params", new JsonObject ().addAll (m_aParams));
     if (m_aHeaders != null)
     {
       final IJsonObject aHeaders = new JsonObject ();
       m_aHeaders.forEachSingleHeader (aHeaders::add, true);
-      ret.addJson ("headers", aHeaders);
+      ret.add ("headers", aHeaders);
     }
     if (m_sBody != null)
       ret.add ("body", m_sBody);

@@ -19,18 +19,18 @@ package com.helger.smtp.scope;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.state.ESuccess;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.UsedViaReflection;
+import com.helger.base.state.ESuccess;
 import com.helger.scope.IScope;
 import com.helger.scope.singleton.AbstractGlobalSingleton;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailAPI;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Scope aware wrapper around {@link MailAPI} class so that it is gracefully

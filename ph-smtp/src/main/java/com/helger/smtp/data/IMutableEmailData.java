@@ -18,10 +18,10 @@ package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.base.email.IEmailAddress;
 
-import com.helger.commons.email.IEmailAddress;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Contains all possible fields for mail sending.<br>

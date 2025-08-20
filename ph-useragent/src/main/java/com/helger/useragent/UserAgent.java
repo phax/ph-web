@@ -16,12 +16,9 @@
  */
 package com.helger.useragent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.string.ToStringGenerator;
-import com.helger.commons.version.Version;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.base.version.Version;
 import com.helger.useragent.browser.BrowserInfo;
 import com.helger.useragent.browser.BrowserInfoIE;
 import com.helger.useragent.browser.BrowserInfoMobile;
@@ -30,6 +27,9 @@ import com.helger.useragent.browser.EBrowserType;
 import com.helger.useragent.browser.MobileBrowserManager;
 import com.helger.useragent.spider.WebSpiderInfo;
 import com.helger.useragent.spider.WebSpiderManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of the {@link IUserAgent} interface.
@@ -50,12 +50,12 @@ public class UserAgent implements IUserAgent
   private static final String IE_TRIDENT_SEARCH_STRING = "Trident/";
   private static final String IE_RV_SEARCH_STRING = "rv:";
   private static final String KONQUEROR_PREFIX = "Konqueror/";
-  private static final String [] GECKO_VARIANTS = new String [] { "GranParadiso",
-                                                                  "Fedora",
-                                                                  "Namoroka",
-                                                                  "Netscape",
-                                                                  "K-Meleon",
-                                                                  "WebThumb" };
+  private static final String [] GECKO_VARIANTS = { "GranParadiso",
+                                                    "Fedora",
+                                                    "Namoroka",
+                                                    "Netscape",
+                                                    "K-Meleon",
+                                                    "WebThumb" };
   private static final int IE_VERSION_IN_COMPATIBILITY_MODE = 7;
 
   private final String m_sFullUserAgent;
@@ -194,7 +194,8 @@ public class UserAgent implements IUserAgent
         // IE Compatibility Mode check
         // http://blogs.msdn.com/b/ie/archive/2010/03/23/introducing-ie9-s-user-agent-string.aspx
         final Version aVersion = Version.parse (sInfoIE.substring (IE_SEARCH_STRING.length ()).trim ());
-        final boolean bIsIECompatibilityMode = aVersion.getMajor () == IE_VERSION_IN_COMPATIBILITY_MODE && sTrident != null;
+        final boolean bIsIECompatibilityMode = aVersion.getMajor () == IE_VERSION_IN_COMPATIBILITY_MODE &&
+                                               sTrident != null;
         m_aInfoIE = new BrowserInfoIE (aVersion, bIsIECompatibilityMode);
       }
     }
@@ -314,7 +315,8 @@ public class UserAgent implements IUserAgent
       if (sVersion == null)
         m_aInfoKonqueror = BrowserInfo.IS_IT_NOT;
       else
-        m_aInfoKonqueror = new BrowserInfo (EBrowserType.KONQUEROR, Version.parse (sVersion.substring (KONQUEROR_PREFIX.length ())));
+        m_aInfoKonqueror = new BrowserInfo (EBrowserType.KONQUEROR,
+                                            Version.parse (sVersion.substring (KONQUEROR_PREFIX.length ())));
     }
     return m_aInfoKonqueror;
   }

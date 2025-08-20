@@ -19,10 +19,10 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.annotation.Nonnull;
-
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
 
 public class ScpFileOutputStream extends OutputStream
 {

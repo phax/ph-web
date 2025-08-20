@@ -23,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.commons.mock.CommonsTestHelper;
-import com.helger.commons.url.SimpleURL;
 import com.helger.http.EHttpReferrerPolicy;
+import com.helger.http.url.SimpleURL;
 import com.helger.servlet.response.EXFrameOptionType;
+import com.helger.unittest.support.TestHelper;
 
 /**
  * Test class for class {@link XServletSettings}.
@@ -78,13 +78,16 @@ public final class XServletSettingsTest
     assertFalse (x2.hasXFrameOptions ());
     assertFalse (x2.isMultipartEnabled ());
 
-    CommonsTestHelper.testDefaultImplementationWithEqualContentObject (x, x2);
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x, x.getClone ().setMultipartEnabled (true));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x,
-                                                                           x.getClone ()
-                                                                            .setHttpReferrerPolicy (EHttpReferrerPolicy.NO_REFERRER));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x,
-                                                                           x.getClone ().setXFrameOptions (EXFrameOptionType.DENY, null));
-    CommonsTestHelper.testDefaultImplementationWithDifferentContentObject (x, x.getClone ().setXFrameOptions (null, new SimpleURL ("bla")));
+    TestHelper.testDefaultImplementationWithEqualContentObject (x, x2);
+    TestHelper.testDefaultImplementationWithDifferentContentObject (x, x.getClone ().setMultipartEnabled (true));
+    TestHelper.testDefaultImplementationWithDifferentContentObject (x,
+                                                                    x.getClone ()
+                                                                     .setHttpReferrerPolicy (EHttpReferrerPolicy.NO_REFERRER));
+    TestHelper.testDefaultImplementationWithDifferentContentObject (x,
+                                                                    x.getClone ()
+                                                                     .setXFrameOptions (EXFrameOptionType.DENY, null));
+    TestHelper.testDefaultImplementationWithDifferentContentObject (x,
+                                                                    x.getClone ()
+                                                                     .setXFrameOptions (null, new SimpleURL ("bla")));
   }
 }

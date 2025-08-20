@@ -19,21 +19,21 @@ package com.helger.web.scope;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.collection.ArrayHelper;
-import com.helger.commons.collection.attr.IAttributeContainerAny;
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.string.StringHelper;
+import com.helger.annotation.Nonempty;
+import com.helger.base.array.ArrayHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.servlet.request.RequestHelper;
+import com.helger.typeconvert.collection.IAttributeContainerAny;
 import com.helger.web.fileupload.IFileItem;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * A special request parameter container with support for file items etc. By default only
@@ -132,7 +132,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    */
   default boolean isCheckBoxChecked (@Nullable final String sFieldName, final boolean bDefaultValue)
   {
-    if (StringHelper.hasText (sFieldName))
+    if (StringHelper.isNotEmpty (sFieldName))
     {
       // Is the checked value present?
       final String sRequestValue = getAsString (sFieldName);
@@ -164,7 +164,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
   {
     // Is the checked value present?
     final String sRequestValue = getAsString (sFieldName);
-    return StringHelper.hasText (sRequestValue);
+    return StringHelper.isNotEmpty (sRequestValue);
   }
 
   /**

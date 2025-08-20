@@ -21,16 +21,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.state.ISuccessIndicator;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.state.ISuccessIndicator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 import jakarta.activation.DataSource;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * <p>

@@ -16,29 +16,28 @@
  */
 package com.helger.xservlet.forcedredirect;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.UsedViaReflection;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.debug.GlobalDebug;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.UsedViaReflection;
+import com.helger.base.debug.GlobalDebug;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.web.scope.singleton.AbstractSessionWebSingleton;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Stores per-session the data to be used in a Post-Redirect-Get scenario.<br>
- * This class usually takes 'IHCNode' but because of the reverse dependencies,
- * this type cannot be used and is therefore abstracted as 'Object' in this
- * implementation. So all the time you read 'Object' consider it to be
- * 'IHCNode'.
+ * This class usually takes 'IHCNode' but because of the reverse dependencies, this type cannot be
+ * used and is therefore abstracted as 'Object' in this implementation. So all the time you read
+ * 'Object' consider it to be 'IHCNode'.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -68,8 +67,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   }
 
   /**
-   * @return The instance to use if already instantiated. Maybe
-   *         <code>null</code>.
+   * @return The instance to use if already instantiated. Maybe <code>null</code>.
    */
   @Nullable
   public static ForcedRedirectManager getInstanceIfInstantiated ()
@@ -92,7 +90,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @Nullable
   public Object getContent (@Nullable final String sMenuItemID)
   {
-    if (StringHelper.hasNoText (sMenuItemID))
+    if (StringHelper.isEmpty (sMenuItemID))
       return null;
 
     // Get only
@@ -101,7 +99,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
 
   public boolean hasContent (@Nullable final String sMenuItemID)
   {
-    if (StringHelper.hasNoText (sMenuItemID))
+    if (StringHelper.isEmpty (sMenuItemID))
       return false;
 
     // Get only
@@ -111,7 +109,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @Nullable
   public static Object getLastForcedRedirectContent (@Nullable final String sMenuItemID)
   {
-    if (StringHelper.hasNoText (sMenuItemID))
+    if (StringHelper.isEmpty (sMenuItemID))
       return null;
 
     final ForcedRedirectManager aMgr = getInstanceIfInstantiated ();
@@ -125,7 +123,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @Nullable
   public Object getAndRemoveContent (@Nullable final String sMenuItemID)
   {
-    if (StringHelper.hasNoText (sMenuItemID))
+    if (StringHelper.isEmpty (sMenuItemID))
       return null;
 
     // Get in write lock
@@ -139,7 +137,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   @Nullable
   public static Object getAndRemoveLastForcedRedirectContent (@Nullable final String sMenuItemID)
   {
-    if (StringHelper.hasNoText (sMenuItemID))
+    if (StringHelper.isEmpty (sMenuItemID))
       return null;
 
     final ForcedRedirectManager aMgr = getInstanceIfInstantiated ();

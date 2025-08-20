@@ -24,10 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
@@ -45,15 +41,17 @@ import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.codec.URLCodec;
-import com.helger.commons.http.EHttpMethod;
-import com.helger.commons.io.stream.NonBlockingByteArrayOutputStream;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.url.ISimpleURL;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.codec.impl.URLCodec;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
+import com.helger.base.string.StringHelper;
+import com.helger.http.EHttpMethod;
+import com.helger.http.url.ISimpleURL;
 import com.helger.network.proxy.config.HttpProxyConfig;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Some utility methods for creating and handling Apache httpclient objects.
@@ -61,7 +59,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Philip Helger
  */
 @Immutable
-@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class HttpClientHelper
 {
   public static final Charset DEF_CONTENT_CHARSET = StandardCharsets.ISO_8859_1;
@@ -108,7 +105,7 @@ public final class HttpClientHelper
   @Nullable
   public static ContentType createContentType (@Nullable final String sContentType, @Nullable final Charset aCharset)
   {
-    if (StringHelper.hasNoText (sContentType))
+    if (StringHelper.isEmpty (sContentType))
       return null;
     return ContentType.create (sContentType, aCharset);
   }
@@ -191,7 +188,7 @@ public final class HttpClientHelper
 
         // Value is optional
         final String sValue = aEntry.getValue ();
-        if (StringHelper.hasText (sValue))
+        if (StringHelper.isNotEmpty (sValue))
         {
           aBAOS.write ('=');
           aURLCodec.encode (sValue.getBytes (aCharset), aBAOS);
@@ -225,8 +222,8 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static String entityToString (@Nonnull final HttpEntity aEntity,
-                                       @Nonnull final Charset aCharset) throws IOException
+  public static String entityToString (@Nonnull final HttpEntity aEntity, @Nonnull final Charset aCharset)
+                                                                                                           throws IOException
   {
     final byte [] ret = EntityUtils.toByteArray (aEntity);
     return ret == null ? null : new String (ret, aCharset);

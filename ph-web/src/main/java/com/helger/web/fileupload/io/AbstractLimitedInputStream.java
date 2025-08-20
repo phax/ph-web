@@ -19,12 +19,12 @@ package com.helger.web.fileupload.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.stream.WrappedInputStream;
+import com.helger.base.state.ICloseable;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.stream.WrappedInputStream;
-import com.helger.commons.state.ICloseable;
+import jakarta.annotation.Nonnull;
 
 /**
  * An input stream, which limits its data size. This stream is used, if the

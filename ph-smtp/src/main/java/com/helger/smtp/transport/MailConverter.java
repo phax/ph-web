@@ -19,18 +19,17 @@ package com.helger.smtp.transport;
 import java.nio.charset.Charset;
 import java.util.Date;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.helger.commons.mime.CMimeType;
-import com.helger.commons.mime.MimeType;
-import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.annotation.concurrent.Immutable;
 import com.helger.mail.address.InternetAddressHelper;
+import com.helger.mime.CMimeType;
+import com.helger.mime.MimeType;
 import com.helger.smtp.data.IEmailAttachmentDataSource;
 import com.helger.smtp.data.IMutableEmailAttachmentList;
 import com.helger.smtp.data.IMutableEmailData;
+import com.helger.typeconvert.impl.TypeConverter;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeBodyPart;
@@ -38,8 +37,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
 /**
- * Fill a {@link MimeMessage} object with the data of an
- * {@link IMutableEmailData} object.
+ * Fill a {@link MimeMessage} object with the data of an {@link IMutableEmailData} object.
  *
  * @author Philip Helger
  */
@@ -110,8 +108,7 @@ public final class MailConverter
         {
           aBodyPart.setContent (aMailData.getBody (),
                                 new MimeType (CMimeType.TEXT_HTML).addParameter (CMimeType.PARAMETER_NAME_CHARSET,
-                                                                                 aCharset.name ())
-                                                                  .getAsString ());
+                                                                                 aCharset.name ()).getAsString ());
         }
         else
           aBodyPart.setContent (aMailData.getBody (), CMimeType.TEXT_HTML.getAsString ());
@@ -144,14 +141,12 @@ public final class MailConverter
   }
 
   /**
-   * Fill the {@link MimeMessage} object with the {@link IMutableEmailData}
-   * elements.
+   * Fill the {@link MimeMessage} object with the {@link IMutableEmailData} elements.
    *
    * @param aMimeMessage
    *        The javax.mail object to be filled.
    * @param aMailData
-   *        The mail data object that contains all the source information to be
-   *        send.
+   *        The mail data object that contains all the source information to be send.
    * @param aCharset
    *        The character set to be used for sending.
    * @throws RuntimeException

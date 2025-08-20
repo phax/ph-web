@@ -20,17 +20,17 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.mime.IMimeType;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.httpclient.HttpClientHelper;
+import com.helger.mime.IMimeType;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to a simple String object using the provided

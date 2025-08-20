@@ -16,12 +16,12 @@
  */
 package com.helger.xservlet.requesttrack;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.callback.ICallback;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.callback.ICallback;
 import com.helger.web.scope.IRequestWebScope;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Callback interface to be implemented to get notified on long running

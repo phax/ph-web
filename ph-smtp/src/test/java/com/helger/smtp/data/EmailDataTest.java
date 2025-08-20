@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.helger.commons.email.EmailAddress;
+import com.helger.base.email.EmailAddress;
 import com.helger.xml.mock.XMLTestHelper;
 
 public final class EmailDataTest

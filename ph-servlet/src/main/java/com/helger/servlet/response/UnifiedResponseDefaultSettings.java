@@ -16,27 +16,26 @@
  */
 package com.helger.servlet.response;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.CGlobal;
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.http.CHttpHeader;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.url.ISimpleURL;
-import com.helger.http.CacheControlBuilder;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.CGlobal;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.state.EChange;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.http.CHttpHeader;
 import com.helger.http.EHttpReferrerPolicy;
+import com.helger.http.cache.CacheControlBuilder;
+import com.helger.http.header.HttpHeaderMap;
+import com.helger.http.url.ISimpleURL;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 
 /**
@@ -313,7 +312,7 @@ public final class UnifiedResponseDefaultSettings
   @Nonnull
   public static EChange removeCookie (@Nullable final String sName)
   {
-    if (StringHelper.hasNoText (sName))
+    if (StringHelper.isEmpty (sName))
       return EChange.UNCHANGED;
 
     return RW_LOCK.writeLockedGet ( () -> COOKIES.removeObject (sName));

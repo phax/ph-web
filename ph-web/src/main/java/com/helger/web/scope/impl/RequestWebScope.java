@@ -20,31 +20,27 @@ import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.attr.AttributeContainerAny;
-import com.helger.commons.collection.attr.IAttributeContainerAny;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.collection.iterate.EmptyEnumeration;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.datetime.PDTFactory;
-import com.helger.commons.http.HttpHeaderMap;
-import com.helger.commons.id.factory.GlobalIDFactory;
-import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.lang.clazz.ClassHelper;
+import com.helger.base.state.EChange;
+import com.helger.base.string.StringHex;
+import com.helger.base.string.StringImplode;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.base.EmptyEnumeration;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsOrderedSet;
+import com.helger.datetime.helper.PDTFactory;
+import com.helger.http.header.HttpHeaderMap;
 import com.helger.scope.AbstractScope;
 import com.helger.scope.ScopeHelper;
 import com.helger.scope.mgr.ScopeManager;
@@ -53,10 +49,14 @@ import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
+import com.helger.typeconvert.collection.AttributeContainerAny;
+import com.helger.typeconvert.collection.IAttributeContainerAny;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -91,9 +91,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
      * @param sParamName
      *        The current parameter name. May not be <code>null</code>.
      * @param nParamIndex
-     *        The index of the value. If the parameter has multiple values this
-     *        is respective index. If there is only one value, this is always 0
-     *        (zero).
+     *        The index of the value. If the parameter has multiple values this is respective index.
+     *        If there is only one value, this is always 0 (zero).
      * @param sParamValue
      *        The value to be cleaned. May be <code>null</code>.
      * @return The cleaned value. May also be <code>null</code>.
@@ -117,9 +116,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   private IRequestParamMap m_aRequestParamMap;
 
   /**
-   * @return The current value cleanser function. May be <code>null</code>. By
-   *         default {@link #getWithoutForbiddenCharsAndNormalized(String)} is
-   *         invoked.
+   * @return The current value cleanser function. May be <code>null</code>. By default
+   *         {@link #getWithoutForbiddenCharsAndNormalized(String)} is invoked.
    * @since 9.0.6
    * @see #setParamValueCleanser(IParamValueCleanser)
    */
@@ -130,13 +128,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * Set the param value cleanser function that is applied on all parameter
-   * values. By default only
+   * Set the param value cleanser function that is applied on all parameter values. By default only
    * {@link #getWithoutForbiddenCharsAndNormalized(String)} is invoked.
    *
    * @param aParamValueCleanser
-   *        The function to be applied. May be <code>null</code>. The function
-   *        itself must be able to handle <code>null</code> values.
+   *        The function to be applied. May be <code>null</code>. The function itself must be able
+   *        to handle <code>null</code> values.
    * @since 9.0.6
    * @see #getParamValueCleanser()
    */
@@ -181,10 +178,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   /**
    * Callback method to add special parameters.
    *
-   * @return {@link EChange#CHANGED} if some attributes were added,
-   *         <code>false</code> if not. If special attributes were added,
-   *         existing attributes are kept and will not be overwritten with HTTP
-   *         servlet request parameters!
+   * @return {@link EChange#CHANGED} if some attributes were added, <code>false</code> if not. If
+   *         special attributes were added, existing attributes are kept and will not be overwritten
+   *         with HTTP servlet request parameters!
    */
   @OverrideOnDemand
   @Nonnull
@@ -249,18 +245,17 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     LOGGER.warn ("Removed " +
                  nForbidden +
                  " forbidden character(s) from a request parameter value! Invalid chars are: " +
-                 StringHelper.imploder ()
-                             .separator (", ")
-                             .source (aInvalidChars,
-                                      x -> "0x" + StringHelper.getHexStringLeadingZero (x.charValue (), 2))
-                             .build ());
+                 StringImplode.imploder ()
+                              .separator (", ")
+                              .source (aInvalidChars, x -> "0x" + StringHex.getHexStringLeadingZero (x.charValue (), 2))
+                              .build ());
 
     return aCleanValue.toString ();
   }
 
   /**
-   * First normalize the input according to Unicode rules, so that "O 0xcc 0x88"
-   * (O with COMBINING DIAERESIS) becomes "Ö" (Capital O with umlaut).
+   * First normalize the input according to Unicode rules, so that "O 0xcc 0x88" (O with COMBINING
+   * DIAERESIS) becomes "Ö" (Capital O with umlaut).
    *
    * @param s
    *        Source string. May be <code>null</code>.
@@ -402,14 +397,13 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * This is a heuristic method to determine whether a request is for a file
-   * (e.g. x.jsp) or for a servlet. This method return <code>true</code> if the
-   * last dot is after the last slash
+   * This is a heuristic method to determine whether a request is for a file (e.g. x.jsp) or for a
+   * servlet. This method return <code>true</code> if the last dot is after the last slash
    *
    * @param sServletPath
    *        The non-<code>null</code> servlet path to check
-   * @return <code>true</code> if it is assumed that the request is file based,
-   *         <code>false</code> if it can be assumed to be a regular servlet.
+   * @return <code>true</code> if it is assumed that the request is file based, <code>false</code>
+   *         if it can be assumed to be a regular servlet.
    */
   public static boolean isFileBasedRequest (@Nonnull final String sServletPath)
   {
@@ -428,13 +422,12 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   }
 
   /**
-   * @return Returns the portion of the request URI that indicates the context
-   *         of the request. The context path always comes first in a request
-   *         URI. The path starts with a "/" character but does not end with a
-   *         "/" character. For servlets in the default (root) context, this
+   * @return Returns the portion of the request URI that indicates the context of the request. The
+   *         context path always comes first in a request URI. The path starts with a "/" character
+   *         but does not end with a "/" character. For servlets in the default (root) context, this
    *         method returns "". The container does not decode this string. E.g.
-   *         <code>/context</code> or an empty string for the root context.
-   *         Never with a trailing slash.
+   *         <code>/context</code> or an empty string for the root context. Never with a trailing
+   *         slash.
    * @see #getFullContextPath()
    */
   @Nonnull

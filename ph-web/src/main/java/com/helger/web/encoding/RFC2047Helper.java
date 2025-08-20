@@ -19,25 +19,22 @@ package com.helger.web.encoding;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.PresentForCodeCoverage;
+import com.helger.base.codec.DecodeException;
+import com.helger.base.codec.impl.RFC1522BCodec;
+import com.helger.base.codec.impl.RFC1522QCodec;
 
-import com.helger.commons.annotation.PresentForCodeCoverage;
-import com.helger.commons.codec.DecodeException;
-import com.helger.commons.codec.RFC1522BCodec;
-import com.helger.commons.codec.RFC1522QCodec;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * RFC 2047 Helper. MIME (Multipurpose Internet Mail Extensions) Part Three:
- * Message Header Extensions for Non-ASCII Text
+ * RFC 2047 Helper. MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header
+ * Extensions for Non-ASCII Text
  *
  * @author Apache Abdera
  */
 @Immutable
-@SuppressFBWarnings ("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class RFC2047Helper
 {
   public enum ECodec

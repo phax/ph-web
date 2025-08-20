@@ -16,15 +16,14 @@
  */
 package com.helger.mail.datasource;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.mime.CMimeType;
-import com.helger.commons.mime.IMimeType;
 import com.helger.mail.cte.IContentTransferEncoding;
+import com.helger.mime.CMimeType;
+import com.helger.mime.IMimeType;
 
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Extension interface for {@link DataSource}.

@@ -16,10 +16,9 @@
  */
 package com.helger.web.scope;
 
-import javax.annotation.Nonnull;
-
 import com.helger.scope.IGlobalScope;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContext;
 
 /**

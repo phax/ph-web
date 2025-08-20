@@ -19,7 +19,7 @@ package com.helger.servlet.logging;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.helger.commons.io.stream.NonBlockingByteArrayInputStream;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
 
 class LoggingServletInputStream extends AbstractServletInputStream

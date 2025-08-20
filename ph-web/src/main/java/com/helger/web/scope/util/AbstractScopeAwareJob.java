@@ -16,13 +16,11 @@
  */
 package com.helger.web.scope.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import javax.annotation.concurrent.ThreadSafe;
-
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.lang.ClassHelper;
-import com.helger.commons.state.ESuccess;
+import com.helger.annotation.OverridingMethodsMustInvokeSuper;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.base.lang.clazz.ClassHelper;
+import com.helger.base.state.ESuccess;
 import com.helger.quartz.IJob;
 import com.helger.quartz.IJobExecutionContext;
 import com.helger.quartz.JobDataMap;
@@ -33,10 +31,12 @@ import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.mgr.WebScopeManager;
 
+import jakarta.annotation.Nonnull;
+
 /**
- * Abstract {@link IJob} implementation that handles request scopes correctly.
- * This is required, because each scheduled job runs in its own thread so that
- * no default {@link ScopeManager} information would be available.
+ * Abstract {@link IJob} implementation that handles request scopes correctly. This is required,
+ * because each scheduled job runs in its own thread so that no default {@link ScopeManager}
+ * information would be available.
  *
  * @author Philip Helger
  */
@@ -47,8 +47,8 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   {}
 
   /**
-   * @return The dummy HTTP request to be used for executing this job. By
-   *         default an {@link OfflineHttpServletRequest} is created.
+   * @return The dummy HTTP request to be used for executing this job. By default an
+   *         {@link OfflineHttpServletRequest} is created.
    */
   @Nonnull
   @OverrideOnDemand
@@ -56,7 +56,8 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   {
     // Don't use "MockServletContext" to avoid that the global Servlet Context
     // Path is overriden!
-    final OfflineHttpServletRequest ret = new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ().getServletContext (), false);
+    final OfflineHttpServletRequest ret = new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ()
+                                                                                        .getServletContext (), false);
     // Use a fixed session ID, because Quartz jobs regularly use the session and
     // this avoids spanning too many sessions
     ret.setSessionID ("quartz.job." + ClassHelper.getClassLocalName (getClass ()));
@@ -64,8 +65,8 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   }
 
   /**
-   * @return The dummy HTTP response to be used for executing this job. By
-   *         default a {@link MockHttpServletResponse} is created.
+   * @return The dummy HTTP response to be used for executing this job. By default a
+   *         {@link MockHttpServletResponse} is created.
    */
   @Nonnull
   @OverrideOnDemand
@@ -75,8 +76,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   }
 
   /**
-   * Called before the job gets executed. This method is called after the scopes
-   * are initialized!
+   * Called before the job gets executed. This method is called after the scopes are initialized!
    *
    * @param aJobDataMap
    *        The current job data map. Never <code>null</code>.
@@ -84,7 +84,8 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    *        The current job execution context. Never <code>null</code>.
    */
   @OverrideOnDemand
-  protected void beforeExecuteInScope (@Nonnull final JobDataMap aJobDataMap, @Nonnull final IJobExecutionContext aContext)
+  protected void beforeExecuteInScope (@Nonnull final JobDataMap aJobDataMap,
+                                       @Nonnull final IJobExecutionContext aContext)
   {}
 
   @Override
@@ -102,8 +103,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
   }
 
   /**
-   * Called after the job gets executed. This method is called before the scopes
-   * are destroyed.
+   * Called after the job gets executed. This method is called before the scopes are destroyed.
    *
    * @param aJobDataMap
    *        The current job data map. Never <code>null</code>.

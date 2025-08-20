@@ -16,21 +16,21 @@
  */
 package com.helger.httpclient;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.annotation.ReturnsMutableObject;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsOrderedSet;
-import com.helger.commons.lang.ICloneable;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.annotation.style.ReturnsMutableObject;
+import com.helger.base.clone.ICloneable;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsOrderedSet;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * All the easily configurable settings for a single HTTP proxy server
@@ -152,10 +152,10 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
   @Nonnull
   public final HttpProxySettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
-    if (StringHelper.hasText (sDefinition))
+    if (StringHelper.isNotEmpty (sDefinition))
       StringHelper.explode ('|', sDefinition, sHost -> {
         final String sTrimmedHost = sHost.trim ();
-        if (StringHelper.hasText (sTrimmedHost))
+        if (StringHelper.isNotEmpty (sTrimmedHost))
           m_aNonProxyHosts.add (sTrimmedHost);
       });
     return this;

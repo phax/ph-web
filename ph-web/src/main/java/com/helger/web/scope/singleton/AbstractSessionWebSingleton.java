@@ -20,14 +20,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
-import com.helger.commons.collection.impl.ICommonsList;
+import com.helger.annotation.style.MustImplementEqualsAndHashcode;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * This is the base class for singleton objects that reside in the session web

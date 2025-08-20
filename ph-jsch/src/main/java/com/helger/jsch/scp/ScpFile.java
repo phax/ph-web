@@ -21,16 +21,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.io.stream.StreamHelper;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public class ScpFile
 {

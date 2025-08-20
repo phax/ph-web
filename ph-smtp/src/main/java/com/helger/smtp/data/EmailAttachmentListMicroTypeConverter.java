@@ -16,13 +16,13 @@
  */
 package com.helger.smtp.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailAttachmentList}.
@@ -40,7 +40,9 @@ public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeCo
   {
     final IMicroElement eAttachmentList = new MicroElement (sNamespaceURI, sTagName);
     for (final IEmailAttachment aAttachment : aAttachmentList.directGetAllAttachments ())
-      eAttachmentList.appendChild (MicroTypeConverter.convertToMicroElement (aAttachment, sNamespaceURI, ELEMENT_ATTACHMENT));
+      eAttachmentList.addChild (MicroTypeConverter.convertToMicroElement (aAttachment,
+                                                                          sNamespaceURI,
+                                                                          ELEMENT_ATTACHMENT));
     return eAttachmentList;
   }
 

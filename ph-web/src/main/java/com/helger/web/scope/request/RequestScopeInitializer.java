@@ -18,17 +18,16 @@ package com.helger.web.scope.request;
 
 import java.util.function.BiFunction;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
+import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

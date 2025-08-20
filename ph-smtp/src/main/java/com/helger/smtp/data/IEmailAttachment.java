@@ -19,16 +19,16 @@ package com.helger.smtp.data;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.helger.annotation.Nonempty;
+import com.helger.base.io.iface.IHasInputStream;
+import com.helger.base.string.StringHelper;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.io.IHasInputStream;
-import com.helger.commons.string.StringHelper;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
- * This interface represents attachments to be added to a mail message. Messages
- * with attachments are always send as MIME messages.
+ * This interface represents attachments to be added to a mail message. Messages with attachments
+ * are always send as MIME messages.
  *
  * @author Philip Helger
  */
@@ -59,8 +59,7 @@ public interface IEmailAttachment extends IHasInputStream
   }
 
   /**
-   * @return The charset of the email attachment. May be <code>null</code> if
-   *         not specified.
+   * @return The charset of the email attachment. May be <code>null</code> if not specified.
    */
   @Nullable
   Charset getCharset ();
@@ -78,7 +77,7 @@ public interface IEmailAttachment extends IHasInputStream
 
   default boolean hasContentType ()
   {
-    return StringHelper.hasText (getContentType ());
+    return StringHelper.isNotEmpty (getContentType ());
   }
 
   /**

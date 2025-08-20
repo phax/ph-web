@@ -18,11 +18,11 @@ package com.helger.servlet.http;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
-import com.helger.commons.ValueEnforcer;
+import com.helger.annotation.Nonnegative;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.servlet.io.AbstractServletOutputStream;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Servlet output stream that gobbles up all its data.

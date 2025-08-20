@@ -26,38 +26,35 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.collection.IteratorHelper;
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsLinkedHashMap;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.collection.impl.ICommonsOrderedMap;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.collection.iterate.EmptyEnumeration;
-import com.helger.commons.concurrent.SimpleReadWriteLock;
-import com.helger.commons.io.resource.IReadableResource;
-import com.helger.commons.io.resourceprovider.DefaultResourceProvider;
-import com.helger.commons.io.resourceprovider.IReadableResourceProvider;
-import com.helger.commons.lang.priviledged.IPrivilegedAction;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.system.SystemProperties;
+import com.helger.annotation.Nonempty;
+import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.ThreadSafe;
+import com.helger.annotation.style.OverrideOnDemand;
+import com.helger.annotation.style.UnsupportedOperation;
+import com.helger.base.concurrent.SimpleReadWriteLock;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.string.StringHelper;
+import com.helger.base.system.SystemProperties;
+import com.helger.collection.base.EmptyEnumeration;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.collection.enumeration.EnumerationHelper;
+import com.helger.io.resource.IReadableResource;
+import com.helger.io.resourceprovider.DefaultResourceProvider;
+import com.helger.io.resourceprovider.IReadableResourceProvider;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.spec.IServletContext310To400Migration;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.RequestDispatcher;
@@ -100,9 +97,9 @@ public class MockServletContext implements IServletContext310To400Migration
   private boolean m_bInvalidated = false;
 
   /**
-   * @return <code>true</code> if runtime exceptions from context listeners
-   *         should be propagated to the outside or if they should be logged and
-   *         processing should continue. Default is <code>false</code>.
+   * @return <code>true</code> if runtime exceptions from context listeners should be propagated to
+   *         the outside or if they should be logged and processing should continue. Default is
+   *         <code>false</code>.
    */
   public static boolean isReThrowListenerException ()
   {
@@ -111,8 +108,7 @@ public class MockServletContext implements IServletContext310To400Migration
 
   /**
    * @param bReThrowListenerException
-   *        <code>true</code> to re-throw listener exceptions (on context inited
-   *        and destroyed)
+   *        <code>true</code> to re-throw listener exceptions (on context inited and destroyed)
    */
   public static void setReThrowListenerException (final boolean bReThrowListenerException)
   {
@@ -172,8 +168,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Build a full resource location for the given path, prepending the resource
-   * base path of this MockServletContext.
+   * Build a full resource location for the given path, prepending the resource base path of this
+   * MockServletContext.
    *
    * @param sPath
    *        the path as specified
@@ -189,7 +185,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public final void setContextPath (@Nullable final String sContextPath)
   {
     m_aRWLock.writeLocked ( () -> {
-      if (StringHelper.hasNoText (sContextPath))
+      if (StringHelper.isEmpty (sContextPath))
         m_sContextPath = "";
       else
         if (StringHelper.startsWith (sContextPath, '/'))
@@ -321,7 +317,6 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nonnull
-  @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public String getRealPath (@Nonnull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
@@ -358,7 +353,7 @@ public class MockServletContext implements IServletContext310To400Migration
   @Nonnull
   public Enumeration <String> getInitParameterNames ()
   {
-    return m_aRWLock.readLockedGet ( () -> IteratorHelper.getEnumeration (m_aInitParameters.keySet ()));
+    return m_aRWLock.readLockedGet ( () -> EnumerationHelper.getEnumeration (m_aInitParameters.keySet ()));
   }
 
   @Nullable
@@ -371,7 +366,7 @@ public class MockServletContext implements IServletContext310To400Migration
   @Nonnull
   public Enumeration <String> getAttributeNames ()
   {
-    return IteratorHelper.getEnumeration (m_aRWLock.readLockedGet ( () -> m_aAttributes.keySet ()));
+    return EnumerationHelper.getEnumeration (m_aRWLock.readLockedGet ( () -> m_aAttributes.keySet ()));
   }
 
   public final void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)
@@ -403,8 +398,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletConfig} object without servlet init
-   * parameters.
+   * Create a new {@link MockServletConfig} object without servlet init parameters.
    *
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
@@ -422,8 +416,7 @@ public class MockServletContext implements IServletContext310To400Migration
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
    * @param aServletInitParams
-   *        The map with all servlet init parameters. May be <code>null</code>
-   *        or empty.
+   *        The map with all servlet init parameters. May be <code>null</code> or empty.
    * @return A new {@link MockServletConfig} object for this servlet context.
    */
   @Nonnull
@@ -642,7 +635,7 @@ public class MockServletContext implements IServletContext310To400Migration
 
   public ClassLoader getClassLoader ()
   {
-    return IPrivilegedAction.getClassLoader (getClass ()).invokeSafe ();
+    return getClass ().getClassLoader ();
   }
 
   @UnsupportedOperation
@@ -658,8 +651,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext}, using no base path and no context
-   * path. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext}, using no base path and no context path. The
+   * initialization listeners are triggered automatically.
    *
    * @return The created {@link MockServletContext}
    */
@@ -670,9 +663,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext}, using no base path and no context
-   * path using the provided initialization parameters. The initialization
-   * listeners are triggered automatically.
+   * Create a new {@link MockServletContext}, using no base path and no context path using the
+   * provided initialization parameters. The initialization listeners are triggered automatically.
    *
    * @param aInitParams
    *        The init parameter. May be <code>null</code>.
@@ -685,8 +677,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using no base path but the provided
-   * context path. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext} using no base path but the provided context path. The
+   * initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
@@ -699,8 +691,8 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using the provided context path and
-   * init parameters. The initialization listeners are triggered automatically.
+   * Create a new {@link MockServletContext} using the provided context path and init parameters.
+   * The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        Context path to use. May be <code>null</code>.
@@ -716,15 +708,13 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /**
-   * Create a new {@link MockServletContext} using the provided context path and
-   * resource base oath. The initialization listeners are triggered
-   * automatically.
+   * Create a new {@link MockServletContext} using the provided context path and resource base oath.
+   * The initialization listeners are triggered automatically.
    *
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash). May be
-   *        <code>null</code>.
+   *        the WAR root directory (should not end with a slash). May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull
@@ -740,13 +730,11 @@ public class MockServletContext implements IServletContext310To400Migration
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param sResourceBasePath
-   *        the WAR root directory (should not end with a slash). May be
-   *        <code>null</code>.
+   *        the WAR root directory (should not end with a slash). May be <code>null</code>.
    * @param aResourceLoader
    *        the IReadableResourceProvider to use. May be <code>null</code>.
    * @param aInitParams
-   *        Optional map with initialization parameters. May be
-   *        <code>null</code>.
+   *        Optional map with initialization parameters. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
   @Nonnull

@@ -18,18 +18,14 @@ package com.helger.smtp.failed;
 
 import java.time.LocalDateTime;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.datetime.PDTWebDateHelper;
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.string.StringParser;
-import com.helger.commons.typeconvert.TypeConverter;
+import com.helger.base.string.StringHelper;
+import com.helger.base.string.StringParser;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.datetime.web.PDTWebDateHelper;
 import com.helger.smtp.data.EmailData;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
@@ -37,11 +33,15 @@ import com.helger.smtp.settings.SMTPSettings;
 import com.helger.smtp.transport.ESMTPErrorCode;
 import com.helger.smtp.transport.MailSendDetails;
 import com.helger.smtp.transport.MailTransportError;
+import com.helger.typeconvert.impl.TypeConverter;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link FailedMailData}.
@@ -76,23 +76,22 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
     eFailedMail.setAttributeWithConversion (ATTR_ORIGINALSENT_DT, aFailedMail.getOriginalSentDateTime ());
 
     // SMTP settings
-    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getSMTPSettings (),
-                                                                       sNamespaceURI,
-                                                                       ELEMENT_SMTP_SETTINGS));
+    eFailedMail.addChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getSMTPSettings (),
+                                                                    sNamespaceURI,
+                                                                    ELEMENT_SMTP_SETTINGS));
 
     // email data
-    eFailedMail.appendChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (),
-                                                                       sNamespaceURI,
-                                                                       ELEMENT_EMAIL_DATA));
+    eFailedMail.addChild (MicroTypeConverter.convertToMicroElement (aFailedMail.getEmailData (),
+                                                                    sNamespaceURI,
+                                                                    ELEMENT_EMAIL_DATA));
 
     final MailTransportError aTransportError = aFailedMail.getTransportError ();
     if (aTransportError != null)
     {
-      eFailedMail.appendElement (sNamespaceURI, ELEMENT_ERROR_MSG)
-                 .appendText (aTransportError.getThrowable ().getMessage ());
+      eFailedMail.addElementNS (sNamespaceURI, ELEMENT_ERROR_MSG).addText (aTransportError.getThrowable ().getMessage ());
       for (final MailSendDetails aDetails : aTransportError.getAllDetails ())
       {
-        eFailedMail.appendElement (sNamespaceURI, ELEMENT_DETAILS)
+        eFailedMail.addElementNS (sNamespaceURI, ELEMENT_DETAILS)
                    .setAttribute (ATTR_ADDRESS_VALID, aDetails.isAddressValid ())
                    .setAttribute (ATTR_ADDRESS, aDetails.getAddress ())
                    .setAttribute (ATTR_COMMAND, aDetails.getCommand ())
@@ -151,7 +150,7 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
 
     // error message
     final String sErrorMessage = MicroHelper.getChildTextContent (eFailedMail, ELEMENT_ERROR_MSG);
-    final Exception aException = StringHelper.hasNoText (sErrorMessage) ? null : new Exception (sErrorMessage);
+    final Exception aException = StringHelper.isEmpty (sErrorMessage) ? null : new Exception (sErrorMessage);
     MailTransportError aError = null;
     if (aException != null)
     {

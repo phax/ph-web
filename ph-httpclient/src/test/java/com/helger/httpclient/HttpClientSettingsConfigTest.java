@@ -23,18 +23,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 
-import javax.annotation.Nonnull;
-
 import org.apache.hc.core5.util.Timeout;
 import org.junit.Test;
 
-import com.helger.commons.collection.impl.CommonsHashMap;
-import com.helger.commons.collection.impl.CommonsLinkedHashSet;
-import com.helger.commons.collection.impl.ICommonsMap;
-import com.helger.commons.ws.HostnameVerifierVerifyAll;
+import com.helger.collection.commons.CommonsHashMap;
+import com.helger.collection.commons.CommonsLinkedHashSet;
+import com.helger.collection.commons.ICommonsMap;
 import com.helger.config.fallback.ConfigWithFallback;
 import com.helger.config.fallback.IConfigWithFallback;
 import com.helger.config.source.appl.ConfigurationSourceFunction;
+import com.helger.http.security.HostnameVerifierVerifyAll;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Test class for {@link HttpClientSettingsConfig}.

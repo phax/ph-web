@@ -18,16 +18,16 @@ package com.helger.jsch.session;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.ValueEnforcer;
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.string.ToStringGenerator;
+import com.helger.annotation.Nonempty;
+import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Provides a convenience wrapper to sessions that maintains the session

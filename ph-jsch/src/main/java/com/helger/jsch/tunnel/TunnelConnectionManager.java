@@ -27,23 +27,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collection.impl.CommonsArrayList;
-import com.helger.commons.collection.impl.CommonsHashSet;
-import com.helger.commons.collection.impl.ICommonsList;
-import com.helger.commons.collection.impl.ICommonsSet;
-import com.helger.commons.io.file.FileHelper;
-import com.helger.commons.io.stream.NonBlockingBufferedReader;
-import com.helger.commons.io.stream.StreamHelper;
-import com.helger.commons.string.StringHelper;
+import com.helger.base.io.nonblocking.NonBlockingBufferedReader;
+import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsHashSet;
+import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsSet;
+import com.helger.io.file.FileHelper;
 import com.helger.jsch.proxy.SshProxy;
 import com.helger.jsch.session.AbstractSessionFactoryBuilder;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
+
+import jakarta.annotation.Nonnull;
 
 /**
  * Manages a collection of tunnels. This implementation will:

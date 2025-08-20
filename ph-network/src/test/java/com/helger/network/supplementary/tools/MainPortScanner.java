@@ -21,8 +21,8 @@ import java.util.EnumSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.string.StringHelper;
-import com.helger.commons.timing.StopWatch;
+import com.helger.base.string.StringHelper;
+import com.helger.base.timing.StopWatch;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.DefaultNetworkPorts;
 import com.helger.network.port.ENetworkProtocol;

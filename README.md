@@ -10,8 +10,6 @@ Java library with common web stuff. It contains the following sub-projects:
     * DNS client side helper methods based on dnsjava 
 * ph-network
     * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
-* ph-http
-    * Contains special HTTP related helpers 
 * ph-useragent
     * Contains User-Agent/Browser related helpers 
 * ph-servlet
@@ -30,6 +28,10 @@ Java library with common web stuff. It contains the following sub-projects:
     * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)
 * ph-jsch (since v9.2.0)
     * Helper around JSch - for SSH, SCP and SFTP connections  
+
+Previous modules:
+* ph-http (was moved to ph-commons for their v12)
+    * Contains special HTTP related helpers 
   
 # Maven usage
 
@@ -58,6 +60,11 @@ or to use it as a BOM put that in your `<dependencyManagement>` section:
 Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
+
+v11.0.0 - work in progress
+* Requires Java 17 as the minimum version
+* Updated to ph-commons 12.0.0
+* Submodule `ph-http` was moved to `ph-commons`
 
 v10.5.1 - 2025-08-12
 * Added new classes `HttpForwardedHeaderHop` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`

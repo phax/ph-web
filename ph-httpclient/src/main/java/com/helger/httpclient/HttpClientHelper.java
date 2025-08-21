@@ -42,7 +42,7 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 
 import com.helger.annotation.concurrent.Immutable;
-import com.helger.base.codec.impl.URLCodec;
+import com.helger.base.codec.impl.RFC3986Codec;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.string.StringHelper;
@@ -173,7 +173,7 @@ public final class HttpClientHelper
 
     try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (1024))
     {
-      final URLCodec aURLCodec = new URLCodec ();
+      final RFC3986Codec aURLCodec = new RFC3986Codec ();
       boolean bFirst = true;
       for (final Map.Entry <String, String> aEntry : aMap.entrySet ())
       {

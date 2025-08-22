@@ -487,7 +487,6 @@ public class HttpClientFactory implements IHttpClientProvider
     };
   }
 
-  @SuppressWarnings ("removal")
   @Nonnull
   public HttpClientBuilder createHttpClientBuilder ()
   {
@@ -516,10 +515,6 @@ public class HttpClientFactory implements IHttpClientProvider
 
     // Add cookies
     ret.addRequestInterceptorLast (new RequestAddCookies ());
-
-    // Enable usage of Java networking system properties
-    if (m_aSettings.isUseSystemProperties ())
-      ret.useSystemProperties ();
 
     // Set retry handler (if needed)
     if (m_aSettings.hasRetries ())

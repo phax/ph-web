@@ -66,7 +66,6 @@ public final class UnifiedResponseDefaultSettings
   {
     // Sensible defaults
     setAllowMimeSniffing (false);
-    setEnableXSSFilter (true);
     setStrictTransportSecurity (CGlobal.SECONDS_PER_HOUR, true);
     setXFrameOptions (EXFrameOptionType.DEFAULT, null);
     setReferrerPolicy (EHttpReferrerPolicy.NONE);
@@ -99,25 +98,6 @@ public final class UnifiedResponseDefaultSettings
       removeResponseHeaders (CHttpHeader.X_CONTENT_TYPE_OPTIONS);
     else
       setResponseHeader (CHttpHeader.X_CONTENT_TYPE_OPTIONS, CHttpHeader.VALUE_NOSNIFF);
-  }
-
-  /**
-   * This header enables the Cross-site scripting (XSS) filter built into most recent web browsers.
-   * It's usually enabled by default anyway, so the role of this header is to re-enable the filter
-   * for this particular website if it was disabled by the user. This header is supported in IE 8+,
-   * and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
-   * if that version honored this header.
-   *
-   * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to disable it.
-   */
-  @Deprecated (forRemoval = true, since = "10.4.4")
-  public static void setEnableXSSFilter (final boolean bEnable)
-  {
-    if (bEnable)
-      setResponseHeader (CHttpHeader.X_XSS_PROTECTION, "1; mode=block");
-    else
-      removeResponseHeaders (CHttpHeader.X_XSS_PROTECTION);
   }
 
   /**

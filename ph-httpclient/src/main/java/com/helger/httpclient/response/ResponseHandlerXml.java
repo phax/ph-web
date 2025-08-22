@@ -47,19 +47,10 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
   private boolean m_bDebugMode;
 
   public ResponseHandlerXml ()
-  {
-    this (false);
-  }
-
-  @Deprecated (forRemoval = true, since = "10.4.0")
-  public ResponseHandlerXml (final boolean bDebugMode)
-  {
-    setDebugMode (bDebugMode);
-  }
+  {}
 
   /**
-   * @return <code>true</code> if debug mode is enabled, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if debug mode is enabled, <code>false</code> if not.
    * @since 8.8.2
    */
   public final boolean isDebugMode ()
@@ -71,8 +62,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
    * Enable or disable debug mode on demand.
    *
    * @param bDebugMode
-   *        <code>true</code> to enable debug mode, <code>false</code> to
-   *        disable it.
+   *        <code>true</code> to enable debug mode, <code>false</code> to disable it.
    * @return this for chaining
    * @since 10.0.0
    */

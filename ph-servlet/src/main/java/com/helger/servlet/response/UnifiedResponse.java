@@ -1096,29 +1096,6 @@ public class UnifiedResponse
   }
 
   /**
-   * This header enables the Cross-site scripting (XSS) filter built into most recent web browsers.
-   * It's usually enabled by default anyway, so the role of this header is to re-enable the filter
-   * for this particular website if it was disabled by the user. This header is supported in IE 8+,
-   * and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown
-   * if that version honored this header.
-   *
-   * @param bEnable
-   *        <code>true</code> to enable the header, <code>false</code> to disable it.
-   * @return this
-   * @since 6.0.5
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.4.4")
-  public final UnifiedResponse setEnableXSSFilter (final boolean bEnable)
-  {
-    if (bEnable)
-      setCustomResponseHeader (CHttpHeader.X_XSS_PROTECTION, "1; mode=block");
-    else
-      removeCustomResponseHeaders (CHttpHeader.X_XSS_PROTECTION);
-    return this;
-  }
-
-  /**
    * When specifying <code>false</code>, this method uses a special response header to prevent
    * certain browsers from MIME-sniffing a response away from the declared content-type. When
    * passing <code>true</code>, that header is removed.

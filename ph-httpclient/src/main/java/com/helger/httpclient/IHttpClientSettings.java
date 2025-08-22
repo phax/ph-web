@@ -21,14 +21,10 @@ import java.time.Duration;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
-import org.apache.hc.client5.http.auth.Credentials;
-import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.util.Timeout;
 
 import com.helger.annotation.Nonnegative;
-import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.string.StringHelper;
-import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
 
 import jakarta.annotation.Nonnull;
@@ -42,36 +38,6 @@ import jakarta.annotation.Nullable;
  */
 public interface IHttpClientSettings
 {
-  /**
-   * Supported properties are (source:
-   * http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClientBuilder.html):
-   * <ul>
-   * <li>ssl.TrustManagerFactory.algorithm</li>
-   * <li>javax.net.ssl.trustStoreType</li>
-   * <li>javax.net.ssl.trustStore</li>
-   * <li>javax.net.ssl.trustStoreProvider</li>
-   * <li>javax.net.ssl.trustStorePassword</li>
-   * <li>ssl.KeyManagerFactory.algorithm</li>
-   * <li>javax.net.ssl.keyStoreType</li>
-   * <li>javax.net.ssl.keyStore</li>
-   * <li>javax.net.ssl.keyStoreProvider</li>
-   * <li>javax.net.ssl.keyStorePassword</li>
-   * <li>https.protocols</li>
-   * <li>https.cipherSuites</li>
-   * <li>http.proxyHost</li>
-   * <li>http.proxyPort</li>
-   * <li>http.nonProxyHosts</li>
-   * <li>http.keepAlive</li>
-   * <li>http.maxConnections</li>
-   * <li>http.agent</li>
-   * </ul>
-   *
-   * @return <code>true</code> if system properties for HTTP client should be used,
-   *         <code>false</code> if not. Default is <code>false</code>.
-   */
-  @Deprecated (since = "10.0.0", forRemoval = true)
-  boolean isUseSystemProperties ();
-
   /**
    * @return <code>true</code> if DNS client caching is enabled (default), <code>false</code> if it
    *         is disabled.
@@ -109,44 +75,6 @@ public interface IHttpClientSettings
    */
   @Nonnull
   IHttpProxySettings getGeneralProxy ();
-
-  /**
-   * @return The proxy host to be used. May be <code>null</code>.
-   * @see #getGeneralProxy()
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nullable
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  default HttpHost getProxyHost ()
-  {
-    return getGeneralProxy ().getProxyHost ();
-  }
-
-  /**
-   * @return The proxy server credentials to be used. May be <code>null</code>.
-   * @see #getGeneralProxy()
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nullable
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  default Credentials getProxyCredentials ()
-  {
-    return getGeneralProxy ().getProxyCredentials ();
-  }
-
-  /**
-   * @return The set of all host names and IP addresses for which no proxy should be used. Never
-   *         <code>null</code> and mutable.
-   * @see #getGeneralProxy()
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @ReturnsMutableObject
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  default ICommonsSet <String> nonProxyHosts ()
-  {
-    return getGeneralProxy ().nonProxyHosts ();
-  }
 
   /**
    * @return The HTTP proxy settings to be used exclusively for the "http" protocol. Never

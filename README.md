@@ -65,6 +65,7 @@ v11.0.0 - work in progress
 * Requires Java 17 as the minimum version
 * Updated to ph-commons 12.0.0
 * Submodule `ph-http` was moved to `ph-commons`
+* Removed all code marked as deprecated for removal
 
 v10.5.1 - 2025-08-12
 * Added new classes `HttpForwardedHeaderHop` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`

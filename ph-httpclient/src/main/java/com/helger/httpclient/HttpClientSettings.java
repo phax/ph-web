@@ -23,22 +23,16 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
-import org.apache.hc.client5.http.auth.Credentials;
-import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
-import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.CGlobal;
 import com.helger.base.clone.ICloneable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
-import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.http.security.HostnameVerifierVerifyAll;
 import com.helger.http.security.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
@@ -68,8 +62,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;
   public static final int DEFAULT_RETRY_COUNT = 0;
-  @Deprecated (since = "10.0.0", forRemoval = true)
-  public static final int DEFAULT_RETRIES = DEFAULT_RETRY_COUNT;
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final boolean DEFAULT_RETRY_ALWAYS = false;
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
@@ -80,9 +72,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientSettings.class);
-
-  private boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
+  private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
 
   private SSLContext m_aSSLContext;
@@ -133,19 +123,17 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The source settings to copy from. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @SuppressWarnings ("removal")
   @Nonnull
   public final HttpClientSettings setAllFrom (@Nonnull final IHttpClientSettings aSource)
   {
     ValueEnforcer.notNull (aSource, "Source");
-    setUseSystemProperties (aSource.isUseSystemProperties ());
     setUseDNSClientCache (aSource.isUseDNSClientCache ());
     setSSLContext (aSource.getSSLContext ());
     setTLSConfigurationMode (aSource.getTLSConfigurationMode ());
     setHostnameVerifier (aSource.getHostnameVerifier ());
-    setProxyHost (aSource.getProxyHost ());
-    setProxyCredentials (aSource.getProxyCredentials ());
-    nonProxyHosts ().setAll (aSource.nonProxyHosts ());
+    getGeneralProxy ().setAllFrom (aSource.getGeneralProxy ());
+    getHttpProxy ().setAllFrom (aSource.getHttpProxy ());
+    getHttpsProxy ().setAllFrom (aSource.getHttpsProxy ());
     setRetryCount (aSource.getRetryCount ());
     setRetryInterval (aSource.getRetryInterval ());
     setRetryAlways (aSource.isRetryAlways ());
@@ -156,39 +144,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setFollowRedirects (aSource.isFollowRedirects ());
     setUseKeepAlive (aSource.isUseKeepAlive ());
     setProtocolUpgradeEnabled (aSource.isProtocolUpgradeEnabled ());
-    return this;
-  }
-
-  /**
-   * @return <code>true</code> if system properties for HTTP client should be used,
-   *         <code>false</code> if not. Default is <code>false</code>.
-   */
-  @Deprecated (since = "10.0.0", forRemoval = true)
-  public final boolean isUseSystemProperties ()
-  {
-    return m_bUseSystemProperties;
-  }
-
-  /**
-   * Enable the usage of system properties in the HTTP client?
-   *
-   * @param bUseSystemProperties
-   *        <code>true</code> if system properties should be used, <code>false</code> if not.
-   * @return this for chaining
-   */
-  @Nonnull
-  @Deprecated (since = "10.0.0", forRemoval = true)
-  public final HttpClientSettings setUseSystemProperties (final boolean bUseSystemProperties)
-  {
-    m_bUseSystemProperties = bUseSystemProperties;
-    if (bUseSystemProperties)
-    {
-      if (m_aGeneralProxy.hasProxyHost ())
-      {
-        LOGGER.warn ("Since the proxy properties should be used, the explicit Proxy host is removed.");
-        m_aGeneralProxy.setProxyHost (null);
-      }
-    }
     return this;
   }
 
@@ -322,100 +277,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return m_aGeneralProxy;
   }
 
-  /**
-   * Set a proxy host without proxy server credentials.
-   *
-   * @param aProxyHost
-   *        The proxy host to be used. May be <code>null</code>.
-   * @return this for chaining
-   * @see #setProxyCredentials(Credentials)
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  public final HttpClientSettings setProxyHost (@Nullable final HttpHost aProxyHost)
-  {
-    m_aGeneralProxy.setProxyHost (aProxyHost);
-    if (aProxyHost != null && m_bUseSystemProperties)
-    {
-      LOGGER.warn ("Since an explicit Proxy host for is defined, the usage of the system properties is disabled.");
-      m_bUseSystemProperties = false;
-    }
-    return this;
-  }
-
-  /**
-   * Set proxy credentials.
-   *
-   * @param aProxyCredentials
-   *        The proxy server credentials to be used. May be <code>null</code>. They are only used if
-   *        a proxy host is present! Usually they are of type
-   *        {@link org.apache.hc.client5.http.auth.UsernamePasswordCredentials}.
-   * @return this for chaining
-   * @see #setProxyHost(HttpHost)
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  public final HttpClientSettings setProxyCredentials (@Nullable final Credentials aProxyCredentials)
-  {
-    m_aGeneralProxy.setProxyCredentials (aProxyCredentials);
-    return this;
-  }
-
-  /**
-   * @return The set of all host names and IP addresses for which no proxy should be used. Never
-   *         <code>null</code> and mutable.
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @ReturnsMutableObject
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  public final ICommonsOrderedSet <String> nonProxyHosts ()
-  {
-    return m_aGeneralProxy.nonProxyHosts ();
-  }
-
-  /**
-   * Add all non-proxy hosts from a piped string as in <code>127.0.0.1 | localhost</code>. Every
-   * entry must be separated by a pipe, and the values are trimmed.
-   *
-   * @param sDefinition
-   *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
-   *        trimmed text between pipes is interpreted as a host name.
-   * @return this for chaining
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  public final HttpClientSettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
-  {
-    m_aGeneralProxy.addNonProxyHostsFromPipeString (sDefinition);
-    return this;
-  }
-
-  /**
-   * Set all non-proxy hosts from a piped string as in <code>127.0.0.1 | localhost</code>. Every
-   * entry must be separated by a pipe, and the values are trimmed.<br>
-   * This is a shortcut for first clearing the list and then calling
-   * {@link #addNonProxyHostsFromPipeString(String)}
-   *
-   * @param sDefinition
-   *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
-   *        trimmed text between pipes is interpreted as a host name.
-   * @return this for chaining
-   * @see #addNonProxyHostsFromPipeString(String)
-   * @since 10.0.0
-   * @deprecated Use the method through {@link #getGeneralProxy()} instead
-   */
-  @Nonnull
-  @Deprecated (forRemoval = true, since = "10.5.0")
-  public final HttpClientSettings setNonProxyHostsFromPipeString (@Nullable final String sDefinition)
-  {
-    m_aGeneralProxy.setNonProxyHostsFromPipeString (sDefinition);
-    return this;
-  }
-
   @Nonnull
   public final HttpProxySettings getHttpProxy ()
   {
@@ -429,7 +290,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * @return The number of retries. Defaults to {@link #DEFAULT_RETRIES}.
+   * @return The number of retries. Defaults to {@link #DEFAULT_RETRY_COUNT}.
    */
   @Nonnegative
   public final int getRetryCount ()

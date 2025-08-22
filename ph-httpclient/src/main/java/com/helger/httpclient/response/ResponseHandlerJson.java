@@ -29,13 +29,6 @@ public class ResponseHandlerJson extends AbstractResponseHandlerJson <IJson, Res
 {
   public ResponseHandlerJson ()
   {
-    this (false);
-  }
-
-  @Deprecated (forRemoval = true, since = "10.4.0")
-  public ResponseHandlerJson (final boolean bDebugMode)
-  {
     super (Function.identity ());
-    setDebugMode (bDebugMode);
   }
 }

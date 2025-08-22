@@ -235,17 +235,6 @@ public class HttpClientSettingsConfig
 
     /**
      * @return The HttpProxy password to be used. May be <code>null</code>.
-     * @deprecated Use {@link #getHttpProxyPasswordCharArray()} instead
-     */
-    @Nullable
-    @Deprecated (forRemoval = true, since = "10.5.0")
-    public String getHttpProxyPassword ()
-    {
-      return _findString ("http.proxy.password", "http.proxyPassword");
-    }
-
-    /**
-     * @return The HttpProxy password to be used. May be <code>null</code>.
      */
     @Nullable
     public char [] getHttpProxyPasswordCharArray ()

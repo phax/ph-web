@@ -33,9 +33,8 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 /**
- * Convert a valid HTTP response to a simple String object using the provided
- * charset. The fallback content type used internally is text/plain with charset
- * iso-8859-1.
+ * Convert a valid HTTP response to a simple String object using the provided charset. The fallback
+ * content type used internally is text/plain with charset iso-8859-1.
  *
  * @author Philip Helger
  */
@@ -44,13 +43,6 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   private final ContentType m_aDefault;
   private Charset m_aFallbackCharset;
   private Consumer <Charset> m_aCharsetConsumer;
-
-  @Deprecated (since = "10.0.0", forRemoval = true)
-  public ResponseHandlerString ()
-  {
-    // text/plain with ISO-8859-1
-    this (ContentType.DEFAULT_TEXT);
-  }
 
   public ResponseHandlerString (@Nonnull final IMimeType aMimeType, @Nonnull final Charset aCharset)
   {
@@ -78,9 +70,8 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   }
 
   /**
-   * @return The fallback charset to be used, in case no charset can be
-   *         determined from the content. By default this is the HTTP default
-   *         charset. Never <code>null</code>.
+   * @return The fallback charset to be used, in case no charset can be determined from the content.
+   *         By default this is the HTTP default charset. Never <code>null</code>.
    * @see #setFallbackCharset(Charset)
    * @since 9.7.2
    */
@@ -91,8 +82,8 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   }
 
   /**
-   * Set the fallback charset to be used, if the payload has no charset. By
-   * default the fallback charset is the charset of the Content Type.
+   * Set the fallback charset to be used, if the payload has no charset. By default the fallback
+   * charset is the charset of the Content Type.
    *
    * @param aFallbackCharset
    *        The fallback charset to be used. May not be <code>null</code>.
@@ -114,8 +105,8 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   }
 
   /**
-   * Set the charset consumer that is informed about the default character set
-   * in which the response is interpreted.
+   * Set the charset consumer that is informed about the default character set in which the response
+   * is interpreted.
    *
    * @param aCharsetConsumer
    *        The charset consumer. May be <code>null</code>.

@@ -153,14 +153,6 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   }
 
   @Override
-  @Deprecated (forRemoval = false)
-  public void setStatus (final int sc, final String sm)
-  {
-    super.setStatus (sc, sm);
-    _updateStatus (sc);
-  }
-
-  @Override
   public void addHeader (final String sHeaderName, final String sHeaderValue)
   {
     if (CHttpHeader.CONTENT_LENGTH.equalsIgnoreCase (sHeaderName))

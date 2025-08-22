@@ -29,8 +29,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /**
- * A special {@link HttpServletResponseWrapper} that tracks the used status
- * codes as well as the set HTTP response headers.
+ * A special {@link HttpServletResponseWrapper} that tracks the used status codes as well as the set
+ * HTTP response headers.
  *
  * @author Philip Helger
  */
@@ -50,15 +50,6 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   public void setStatus (final int sc)
   {
     super.setStatus (sc);
-    m_nStatusCode = sc;
-  }
-
-  @Override
-  @Deprecated (forRemoval = false)
-  @OverridingMethodsMustInvokeSuper
-  public void setStatus (final int sc, final String sm)
-  {
-    super.setStatus (sc, sm);
     m_nStatusCode = sc;
   }
 

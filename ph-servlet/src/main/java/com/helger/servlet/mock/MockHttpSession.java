@@ -21,7 +21,6 @@ import java.util.Map;
 
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.NotThreadSafe;
-import com.helger.annotation.style.UnsupportedOperation;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.id.factory.GlobalIDFactory;
@@ -37,7 +36,6 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionBindingEvent;
 import jakarta.servlet.http.HttpSessionBindingListener;
-import jakarta.servlet.http.HttpSessionContext;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 
@@ -138,13 +136,6 @@ public class MockHttpSession implements HttpSession
   public int getMaxInactiveInterval ()
   {
     return m_nMaxInactiveInterval;
-  }
-
-  @Deprecated (forRemoval = false)
-  @UnsupportedOperation
-  public HttpSessionContext getSessionContext ()
-  {
-    throw new UnsupportedOperationException ("getSessionContext");
   }
 
   @Nullable

@@ -73,6 +73,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletConnection;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
@@ -1282,5 +1283,22 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public <T extends HttpUpgradeHandler> T upgrade (final Class <T> handlerClass) throws IOException, ServletException
   {
     throw new UnsupportedOperationException ("upgrade is not supported!");
+  }
+
+  // Servlet Spec 6.0
+
+  public String getRequestId ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public String getProtocolRequestId ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public ServletConnection getServletConnection ()
+  {
+    throw new UnsupportedOperationException ();
   }
 }

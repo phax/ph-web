@@ -171,9 +171,6 @@ public final class RequestLogger
       aSB.append (" [path=").append (aCookie.getPath ()).append (']');
     if (aCookie.getSecure ())
       aSB.append (" [secure]");
-    aSB.append (" [version=").append (aCookie.getVersion ()).append (']');
-    if (StringHelper.isNotEmpty (aCookie.getComment ()))
-      aSB.append (" [comment=").append (aCookie.getComment ()).append (']');
     if (aCookie.isHttpOnly ())
       aSB.append (" [http-only]");
     return aSB.toString ();

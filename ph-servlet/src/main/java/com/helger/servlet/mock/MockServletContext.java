@@ -281,12 +281,6 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Deprecated (forRemoval = false)
-  public Servlet getServlet (@Nullable final String sName)
-  {
-    return null;
-  }
-
-  @Deprecated (forRemoval = false)
   @Nonnull
   public Enumeration <Servlet> getServlets ()
   {

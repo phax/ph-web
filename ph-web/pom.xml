@@ -127,7 +127,7 @@
           <instructions>
             <Automatic-Module-Name>com.helger.web</Automatic-Module-Name>
             <Export-Package>com.helger.web.*</Export-Package>
-            <Import-Package>!javax.annotation.*,*</Import-Package>
+            <Import-Package>!jakarta.annotation.*,*</Import-Package>
             <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)",
 osgi.serviceloader; filter:="(osgi.serviceloader=com.helger.web.fileupload.IFileItemFactoryProviderSPI)"; cardinality:=multiple; resolution:=optional,
 osgi.serviceloader; filter:="(osgi.serviceloader=com.helger.web.progress.IProgressListenerProviderSPI)"; cardinality:=multiple; resolution:=optional</Require-Capability>

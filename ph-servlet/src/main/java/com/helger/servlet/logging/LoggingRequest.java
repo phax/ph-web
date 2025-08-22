@@ -110,7 +110,7 @@ final class LoggingRequest
     if (m_sPath != null)
       ret.add ("path", m_sPath);
     if (m_aParams != null)
-      ret.add ("params", new JsonObject ().addAll (m_aParams));
+      ret.add ("params", new JsonObject ().addAllAny (m_aParams));
     if (m_aHeaders != null)
     {
       final IJsonObject aHeaders = new JsonObject ();

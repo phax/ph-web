@@ -65,6 +65,7 @@
     <dependency>
       <groupId>dnsjava</groupId>
       <artifactId>dnsjava</artifactId>
+      <version>${dnsjava.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

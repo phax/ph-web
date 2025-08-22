@@ -62,6 +62,15 @@
     </developer>
   </developers>
   
+  <properties>
+    <angus-mail.version>2.0.4</angus-mail.version>
+    <commons-codec.version>1.19.0</commons-codec.version>
+    <dnsjava.version>3.6.3</dnsjava.version>
+    <httpclient.version>5.5</httpclient.version>
+    <httpcore.version>5.3.4</httpcore.version>
+    <jsch.version>0.1.55</jsch.version>
+  </properties>
+  
   <!-- Enable when using a SNAPSHOT version: -->
   <!--
   -->
@@ -94,37 +103,6 @@
         <version>6.0.0-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      
-      <dependency>
-        <groupId>dnsjava</groupId>
-        <artifactId>dnsjava</artifactId>
-        <version>3.6.3</version>
-      </dependency>
-      <dependency>
-        <groupId>com.jcraft</groupId>
-        <artifactId>jsch</artifactId>
-        <version>0.1.55</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.angus</groupId>
-        <artifactId>angus-mail</artifactId>
-        <version>2.0.4</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.httpcomponents.core5</groupId>
-        <artifactId>httpcore5</artifactId>
-        <version>5.3.4</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.httpcomponents.client5</groupId>
-        <artifactId>httpclient5</artifactId>
-        <version>5.5</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>1.19.0</version>
       </dependency>
 
       <dependency>

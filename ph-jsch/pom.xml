@@ -61,6 +61,7 @@
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
+      <version>${jsch.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

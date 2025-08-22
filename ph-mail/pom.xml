@@ -61,6 +61,7 @@
     <dependency>
       <groupId>org.eclipse.angus</groupId>
       <artifactId>angus-mail</artifactId>
+      <version>${angus-mail.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

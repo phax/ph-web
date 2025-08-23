@@ -66,6 +66,7 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.text.locale.IHasLocale;
 import com.helger.url.SimpleURLHelper;
+import com.helger.url.codec.URLParameterDecoder;
 import com.helger.url.param.IURLParameterList;
 import com.helger.url.param.URLParameter;
 import com.helger.url.param.URLParameterList;
@@ -1250,7 +1251,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         // Request parameters
         setQueryString (aURI.getQuery ());
         removeAllParameters ();
-        setParameters (SimpleURLHelper.getParsedQueryParameters (aURI.getQuery (), null));
+        setParameters (SimpleURLHelper.getParsedQueryParameters (aURI.getQuery (),
+                                                                 new URLParameterDecoder (getCharacterEncodingObjOrDefault ())));
         return this;
       }
     }

@@ -29,7 +29,7 @@ import com.helger.diagnostics.error.list.IErrorList;
 import com.helger.io.file.FileHelper;
 import com.helger.io.file.FileOperations;
 import com.helger.io.resource.ClassPathResource;
-import com.helger.url.SimpleURL;
+import com.helger.url.URLBuilder;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 
@@ -71,13 +71,13 @@ public final class XMLSitemapIndexTest
     assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
 
     final XMLSitemapURLSet s1 = new XMLSitemapURLSet ();
-    s1.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com")));
+    s1.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://www.helger.com").build ()));
     x.addURLSet (s1);
     assertEquals (1, x.getURLSetCount ());
     assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
 
     final XMLSitemapURLSet s2 = new XMLSitemapURLSet ();
-    s2.addURL (new XMLSitemapURL (new SimpleURL ("http://www.google.at")));
+    s2.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://www.google.at").build ()));
     x.addURLSet (s2);
     assertEquals (2, x.getURLSetCount ());
     assertNotNull (x.getAsDocument (FULL_SERVER_CONTEXT_PATH));
@@ -98,7 +98,7 @@ public final class XMLSitemapIndexTest
     // Create a very large URL set
     final XMLSitemapURLSet s = new XMLSitemapURLSet ();
     for (int i = 0; i < XMLSitemapURLSet.MAX_URLS_PER_FILE + 1; ++i)
-      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?x=" + i)));
+      s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://www.helger.com").addParam ("x", i).build ()));
 
     // And this must split up into 2 URL sets!
     x.addURLSet (s);
@@ -115,7 +115,7 @@ public final class XMLSitemapIndexTest
     // Create a very large URL set
     final XMLSitemapURLSet s = new XMLSitemapURLSet ();
     for (int i = 0; i < XMLSitemapURLSet.MAX_URLS_PER_FILE * 2; ++i)
-      s.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?x=" + i)));
+      s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://www.helger.com").addParam ("x", i).build ()));
 
     // And this must split up into 2 URL sets!
     x.addURLSet (s);

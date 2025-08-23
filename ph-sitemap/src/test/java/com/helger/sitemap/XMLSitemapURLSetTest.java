@@ -26,7 +26,8 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.diagnostics.error.list.IErrorList;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.unittest.support.TestHelper;
-import com.helger.url.SimpleURL;
+import com.helger.url.ReadOnlyURL;
+import com.helger.url.URLBuilder;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 
@@ -41,21 +42,24 @@ public final class XMLSitemapURLSetTest
   public void testGetOutputLength ()
   {
     final XMLSitemapURLSet s = new XMLSitemapURLSet ();
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://orf.at")));
+    s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://orf.at").build ()));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir")));
+    s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://abc.at/dir").build ()));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value"),
+    s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://abc.at/dir").addParam ("param", "value").build (),
                                  PDTFactory.getCurrentLocalDateTime (),
                                  null,
                                  null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at/dir?param=value&param2=value2"),
+    s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://abc.at/dir")
+                                                  .addParam ("param", "value")
+                                                  .addParam ("param2", "value2")
+                                                  .build (),
                                  PDTFactory.getCurrentLocalDateTime (),
                                  EXMLSitemapChangeFequency.NEVER,
                                  null));
     assertEquals ("error: " + s.getAsXMLString (), s.getOutputLength (), s.getAsXMLString ().length ());
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at"),
+    s.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://abc.at").build (),
                                  PDTFactory.getCurrentLocalDateTime (),
                                  EXMLSitemapChangeFequency.NEVER,
                                  Double.valueOf (1d / 9)));
@@ -74,14 +78,14 @@ public final class XMLSitemapURLSetTest
 
     // Insert exactly the number of maximum URLs
     while (s.getURLCount () < XMLSitemapURLSet.MAX_URLS_PER_FILE)
-      s.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at"),
+      s.addURL (new XMLSitemapURL (ReadOnlyURL.of ("http://abc.at"),
                                    PDTFactory.getCurrentLocalDateTime (),
                                    EXMLSitemapChangeFequency.NEVER,
                                    null));
     assertFalse (s.isMultiFileSitemap ());
 
     // Add one more URL
-    s.addURL (new XMLSitemapURL (new SimpleURL ("http://orf.at")));
+    s.addURL (new XMLSitemapURL (ReadOnlyURL.of ("http://orf.at")));
     assertTrue (s.isMultiFileSitemap ());
   }
 
@@ -93,7 +97,7 @@ public final class XMLSitemapURLSetTest
 
     // Build a very lengthy item
     // Use a time with 3 digit milliseconds for known length
-    final XMLSitemapURL aLongURL = new XMLSitemapURL (new SimpleURL ("http://www.myverlonghostnamethatisunreasoanble.com/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/filename?param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value#anchor"),
+    final XMLSitemapURL aLongURL = new XMLSitemapURL (ReadOnlyURL.of ("http://www.myverlonghostnamethatisunreasoanble.com/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/filename?param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value#anchor"),
                                                       PDTFactory.getCurrentLocalDateTime ().withNano (123_000_000),
                                                       EXMLSitemapChangeFequency.NEVER,
                                                       Double.valueOf (1d / 9));
@@ -121,11 +125,11 @@ public final class XMLSitemapURLSetTest
     final XMLSitemapURLSet s2 = new XMLSitemapURLSet ();
     for (int i = 0; i < 10; ++i)
     {
-      s1.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
-      s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
+      s1.addURL (new XMLSitemapURL (ReadOnlyURL.of ("http://abc.at")));
+      s2.addURL (new XMLSitemapURL (ReadOnlyURL.of ("http://abc.at")));
     }
     TestHelper.testDefaultImplementationWithEqualContentObject (s1, s2);
-    s2.addURL (new XMLSitemapURL (new SimpleURL ("http://abc.at")));
+    s2.addURL (new XMLSitemapURL (ReadOnlyURL.of ("http://abc.at")));
     TestHelper.testDefaultImplementationWithDifferentContentObject (s1, s2);
   }
 }

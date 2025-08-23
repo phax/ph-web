@@ -17,7 +17,7 @@
 package com.helger.sitemap;
 
 import com.helger.annotation.style.IsSPIImplementation;
-import com.helger.url.SimpleURL;
+import com.helger.url.URLBuilder;
 
 import jakarta.annotation.Nonnull;
 
@@ -29,7 +29,7 @@ public final class MockXMLSitemapProviderSPI implements IXMLSitemapProviderSPI
   {
     final XMLSitemapURLSet ret = new XMLSitemapURLSet ();
     for (int i = 0; i < 10; ++i)
-      ret.addURL (new XMLSitemapURL (new SimpleURL ("http://www.helger.com?xx=" + i)));
+      ret.addURL (new XMLSitemapURL (new URLBuilder ().path ("http://www.helger.com").addParam ("xx", i).build ()));
     return ret;
   }
 }

@@ -25,14 +25,14 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.servlet.response.EXFrameOptionType;
 import com.helger.url.ISimpleURL;
-import com.helger.url.SimpleURL;
+import com.helger.url.ReadOnlyURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 /**
- * This class keeps all the settings that can be applied to all XServlet based
- * settings. The settings need to be applied per Servlet instance!<br>
+ * This class keeps all the settings that can be applied to all XServlet based settings. The
+ * settings need to be applied per Servlet instance!<br>
  * The following things can be set here:
  * <ul>
  * <li>HTTP Referrer Policy - see {@link EHttpReferrerPolicy}</li>
@@ -65,14 +65,12 @@ public class XServletSettings implements ICloneable <XServletSettings>
     ValueEnforcer.notNull (aOther, "Other");
     m_eHttpReferrerPolicy = aOther.m_eHttpReferrerPolicy;
     m_eXFrameOptionsType = aOther.m_eXFrameOptionsType;
-    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain == null ? null
-                                                                   : new SimpleURL (aOther.m_aXFrameOptionsDomain);
+    m_aXFrameOptionsDomain = aOther.m_aXFrameOptionsDomain;
     m_bIsMultipartEnabled = aOther.m_bIsMultipartEnabled;
   }
 
   /**
-   * @return The current http Referrer Policy or <code>null</code> if none is
-   *         set.
+   * @return The current http Referrer Policy or <code>null</code> if none is set.
    */
   @Nullable
   public final EHttpReferrerPolicy getHttpReferrerPolicy ()
@@ -81,8 +79,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
   }
 
   /**
-   * @return <code>true</code> if a referrer policy is set, <code>false</code>
-   *         if not.
+   * @return <code>true</code> if a referrer policy is set, <code>false</code> if not.
    */
   public final boolean hasHttpReferrerPolicy ()
   {
@@ -93,8 +90,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
    * Set the Http Referrer Policy to be used.
    *
    * @param eHttpReferrerPolicy
-   *        The enumeration value to be used. May be <code>null</code> to
-   *        indicate: don't set
+   *        The enumeration value to be used. May be <code>null</code> to indicate: don't set
    * @return this for chaining
    */
   @Nonnull
@@ -126,8 +122,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
   }
 
   /**
-   * @return <code>true</code> if X-Frame-Options are defined,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if X-Frame-Options are defined, <code>false</code> if not.
    * @since 9.1.1
    */
   public final boolean hasXFrameOptions ()
@@ -136,11 +131,10 @@ public class XServletSettings implements ICloneable <XServletSettings>
   }
 
   /**
-   * The X-Frame-Options HTTP response header can be used to indicate whether or
-   * not a browser should be allowed to render a page in a &lt;frame&gt;,
-   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
-   * attacks, by ensuring that their content is not embedded into other sites.
-   * Example:
+   * The X-Frame-Options HTTP response header can be used to indicate whether or not a browser
+   * should be allowed to render a page in a &lt;frame&gt;, &lt;iframe&gt; or &lt;object&gt; . Sites
+   * can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into
+   * other sites. Example:
    *
    * <pre>
    * X-Frame-Options: DENY
@@ -151,8 +145,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
    * @param eType
    *        The X-Frame-Options type to be set. May be <code>null</code>.
    * @param aDomain
-   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
-   *        for the other cases.
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code> for the other cases.
    * @return this for chaining
    * @since 9.1.1
    */
@@ -164,7 +157,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
       ValueEnforcer.notNull (aDomain, "Domain");
 
     m_eXFrameOptionsType = eType;
-    m_aXFrameOptionsDomain = aDomain;
+    m_aXFrameOptionsDomain = aDomain == null ? null : ReadOnlyURL.of (aDomain);
     return this;
   }
 

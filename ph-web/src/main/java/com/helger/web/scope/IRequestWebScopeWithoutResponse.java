@@ -34,7 +34,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.url.ISimpleURL;
-import com.helger.url.SimpleURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -742,7 +741,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
     ValueEnforcer.notNull (aURL, "URL");
 
     // Encode only the path and copy params and anchor
-    return new SimpleURL (encodeURL (aURL.getPath ()), aURL.params (), aURL.getAnchor ());
+    return aURL.getWithPath (encodeURL (aURL.getPath ()));
   }
 
   /**
@@ -786,7 +785,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
     ValueEnforcer.notNull (aURL, "URL");
 
     // Encode only the path and copy params and anchor
-    return new SimpleURL (encodeRedirectURL (aURL.getPath ()), aURL.params (), aURL.getAnchor ());
+    return aURL.getWithPath (encodeRedirectURL (aURL.getPath ()));
   }
 
   /**

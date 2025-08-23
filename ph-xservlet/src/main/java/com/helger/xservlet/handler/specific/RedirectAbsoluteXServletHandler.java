@@ -25,7 +25,7 @@ import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.url.ISimpleURL;
-import com.helger.url.SimpleURL;
+import com.helger.url.URLBuilder;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
 
@@ -46,8 +46,7 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
    * Constructor.
    *
    * @param aTargetURL
-   *        The URL to redirect to. Is interpreted as an absolute URL. May not
-   *        be <code>null</code>.
+   *        The URL to redirect to. Is interpreted as an absolute URL. May not be <code>null</code>.
    */
   public RedirectAbsoluteXServletHandler (@Nonnull final ISimpleURL aTargetURL)
   {
@@ -57,8 +56,7 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
   }
 
   /**
-   * @return The target URL as provided in the constructor. Never
-   *         <code>null</code>.
+   * @return The target URL as provided in the constructor. Never <code>null</code>.
    * @since 9.3.1
    */
   @Nonnull
@@ -71,7 +69,7 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
   public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
                              @Nonnull final UnifiedResponse aUnifiedResponse) throws Exception
   {
-    final SimpleURL aTargetURL = new SimpleURL (m_aTargetURL);
+    final URLBuilder aTargetURL = URLBuilder.of (m_aTargetURL);
 
     // Add all parameters
     for (final Map.Entry <String, Object> aEntry : aRequestScope.params ().entrySet ())
@@ -79,14 +77,14 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
       final String sKey = aEntry.getKey ();
       final Object aValue = aEntry.getValue ();
       if (aValue instanceof String)
-        aTargetURL.add (sKey, (String) aValue);
+        aTargetURL.addParam (sKey, (String) aValue);
       else
         if (aValue instanceof String [])
           for (final String sValue : (String []) aValue)
-            aTargetURL.add (sKey, sValue);
+            aTargetURL.addParam (sKey, sValue);
     }
 
-    final String sRedirectURL = aTargetURL.getAsString ();
+    final String sRedirectURL = aTargetURL.build ().getAsString ();
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Sending redirect to '" + sRedirectURL + "'");

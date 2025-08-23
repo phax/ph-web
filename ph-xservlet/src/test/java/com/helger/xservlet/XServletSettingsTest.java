@@ -26,7 +26,7 @@ import org.junit.Test;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.servlet.response.EXFrameOptionType;
 import com.helger.unittest.support.TestHelper;
-import com.helger.url.SimpleURL;
+import com.helger.url.URLBuilder;
 
 /**
  * Test class for class {@link XServletSettings}.
@@ -88,6 +88,8 @@ public final class XServletSettingsTest
                                                                      .setXFrameOptions (EXFrameOptionType.DENY, null));
     TestHelper.testDefaultImplementationWithDifferentContentObject (x,
                                                                     x.getClone ()
-                                                                     .setXFrameOptions (null, new SimpleURL ("bla")));
+                                                                     .setXFrameOptions (null,
+                                                                                        new URLBuilder ().path ("bla")
+                                                                                                         .build ()));
   }
 }

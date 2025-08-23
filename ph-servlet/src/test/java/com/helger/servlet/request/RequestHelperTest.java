@@ -25,7 +25,7 @@ import com.helger.http.EHttpMethod;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
 import com.helger.url.ISimpleURL;
-import com.helger.url.SimpleURL;
+import com.helger.url.ReadOnlyURL;
 
 /**
  * Test class for class {@link RequestHelper}.
@@ -40,7 +40,8 @@ public final class RequestHelperTest
     final MockServletContext aSC = MockServletContext.create ();
     try
     {
-      MockHttpServletRequest r = new MockHttpServletRequest (aSC, EHttpMethod.GET).setAllPaths ("/context/servlet/index.xyz?x=1");
+      MockHttpServletRequest r = new MockHttpServletRequest (aSC, EHttpMethod.GET).setAllPaths (
+                                                                                                "/context/servlet/index.xyz?x=1");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
       r.addParameter ("abc", "xyz");
       assertEquals ("/context/servlet/index.xyz", RequestHelper.getRequestURIDecoded (r));
@@ -69,7 +70,7 @@ public final class RequestHelperTest
   public void testGetWithoutSessionID ()
   {
     final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
-    final ISimpleURL aBaseURL = new SimpleURL (sURL);
+    final ISimpleURL aBaseURL = ReadOnlyURL.of (sURL);
     // Just a sanity check that parsing works :)
     assertEquals (sURL, aBaseURL.getAsString ());
     final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
@@ -84,6 +85,6 @@ public final class RequestHelperTest
     assertEquals ("abc?x=y", RequestHelper.getSessionID ("test.html;abc?x=y"));
     final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
     assertEquals ("jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top", RequestHelper.getSessionID (sURL));
-    assertEquals ("jsessionid=1n3dlmrbng6ieckg4lahc7kpf", RequestHelper.getSessionID (new SimpleURL (sURL)));
+    assertEquals ("jsessionid=1n3dlmrbng6ieckg4lahc7kpf", RequestHelper.getSessionID (ReadOnlyURL.of (sURL)));
   }
 }

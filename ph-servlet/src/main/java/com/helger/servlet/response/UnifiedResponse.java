@@ -58,14 +58,14 @@ import com.helger.http.header.HttpHeaderMap;
 import com.helger.http.header.QValue;
 import com.helger.http.header.specific.AcceptCharsetList;
 import com.helger.http.header.specific.AcceptMimeTypeList;
-import com.helger.http.url.ISimpleURL;
-import com.helger.http.url.URLProtocolRegistry;
 import com.helger.io.file.FilenameHelper;
 import com.helger.mime.CMimeType;
 import com.helger.mime.IMimeType;
 import com.helger.mime.parse.MimeTypeParser;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.request.RequestHelper;
+import com.helger.url.ISimpleURL;
+import com.helger.url.protocol.URLProtocolRegistry;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -879,7 +879,7 @@ public class UnifiedResponse
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
-    return setRedirect (aRedirectTargetUrl.getAsStringWithEncodedParameters (), eRedirectMode);
+    return setRedirect (aRedirectTargetUrl.getAsString (), eRedirectMode);
   }
 
   @Nonnull
@@ -1161,7 +1161,7 @@ public class UnifiedResponse
 
     if (eType.isURLRequired ())
       setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
-                               eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ());
+                               eType.getID () + " " + aDomain.getAsString ());
     else
       setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;

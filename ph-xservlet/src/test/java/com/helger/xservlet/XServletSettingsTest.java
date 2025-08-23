@@ -24,9 +24,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.helger.http.EHttpReferrerPolicy;
-import com.helger.http.url.SimpleURL;
 import com.helger.servlet.response.EXFrameOptionType;
 import com.helger.unittest.support.TestHelper;
+import com.helger.url.SimpleURL;
 
 /**
  * Test class for class {@link XServletSettings}.

@@ -21,9 +21,9 @@ import java.net.Proxy;
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.lang.EnumHelper;
-import com.helger.base.url.EURLProtocol;
-import com.helger.base.url.IURLProtocol;
 import com.helger.network.port.SchemeDefaultPortMapper;
+import com.helger.url.protocol.EURLProtocol;
+import com.helger.url.protocol.IURLProtocol;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

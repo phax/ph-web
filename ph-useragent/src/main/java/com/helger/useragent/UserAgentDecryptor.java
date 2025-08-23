@@ -26,7 +26,7 @@ import com.helger.base.string.StringScanner;
 import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-import com.helger.http.url.URLProtocolRegistry;
+import com.helger.url.protocol.URLProtocolRegistry;
 
 import jakarta.annotation.Nonnull;
 

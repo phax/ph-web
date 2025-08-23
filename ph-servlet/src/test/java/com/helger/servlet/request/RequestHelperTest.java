@@ -22,10 +22,10 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.helger.http.EHttpMethod;
-import com.helger.http.url.ISimpleURL;
-import com.helger.http.url.SimpleURL;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
+import com.helger.url.ISimpleURL;
+import com.helger.url.SimpleURL;
 
 /**
  * Test class for class {@link RequestHelper}.
@@ -71,9 +71,9 @@ public final class RequestHelperTest
     final String sURL = "http://127.0.0.1:8080/erb/;jsessionid=1n3dlmrbng6ieckg4lahc7kpf?p=einvoice_precond_usp#top";
     final ISimpleURL aBaseURL = new SimpleURL (sURL);
     // Just a sanity check that parsing works :)
-    assertEquals (sURL, aBaseURL.getAsStringWithEncodedParameters ());
+    assertEquals (sURL, aBaseURL.getAsString ());
     final ISimpleURL aStrippedURL = RequestHelper.getWithoutSessionID (aBaseURL);
-    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top", aStrippedURL.getAsStringWithEncodedParameters ());
+    assertEquals ("http://127.0.0.1:8080/erb/?p=einvoice_precond_usp#top", aStrippedURL.getAsString ());
   }
 
   @Test

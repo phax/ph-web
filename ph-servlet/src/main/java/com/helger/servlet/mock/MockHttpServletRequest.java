@@ -44,6 +44,7 @@ import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.base.io.stream.StreamHelper;
 import com.helger.base.string.StringHelper;
 import com.helger.base.system.SystemHelper;
+import com.helger.base.url.URLHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.CommonsHashSet;
@@ -59,15 +60,15 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.http.header.specific.AcceptCharsetHandler;
-import com.helger.http.url.SimpleURLHelper;
-import com.helger.http.url.URLParameter;
-import com.helger.http.url.URLParameterList;
-import com.helger.io.url.URLHelper;
 import com.helger.mime.IMimeType;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.text.locale.IHasLocale;
+import com.helger.url.SimpleURLHelper;
+import com.helger.url.param.IURLParameterList;
+import com.helger.url.param.URLParameter;
+import com.helger.url.param.URLParameterList;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -429,7 +430,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @return this
    */
   @Nonnull
-  public MockHttpServletRequest setParameters (@Nullable final List <? extends URLParameter> aParams)
+  public MockHttpServletRequest setParameters (@Nullable final IURLParameterList aParams)
   {
     if (aParams != null)
     {
@@ -519,7 +520,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nonnull
   public MockHttpServletRequest removeAllParameters ()
   {
-    m_aParameters.clear ();
+    m_aParameters.removeAll ();
     return this;
   }
 
@@ -1199,7 +1200,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #setServletPath(String)
    * @see #setPathInfo(String)
    * @see #setQueryString(String)
-   * @see #setParameters(List)
    */
   @Nonnull
   public MockHttpServletRequest setAllPaths (@Nullable final String sRequestURL)
@@ -1250,7 +1250,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
         // Request parameters
         setQueryString (aURI.getQuery ());
         removeAllParameters ();
-        setParameters (SimpleURLHelper.getParsedQueryParameters (aURI.getQuery ()));
+        setParameters (SimpleURLHelper.getParsedQueryParameters (aURI.getQuery (), null));
         return this;
       }
     }

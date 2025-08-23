@@ -17,7 +17,6 @@
 package com.helger.smtp.data;
 
 import com.helger.annotation.style.ReturnsMutableCopy;
-import com.helger.base.iface.IHasSize;
 import com.helger.collection.commons.ICommonsIterable;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedSet;
@@ -30,15 +29,14 @@ import jakarta.annotation.Nullable;
  *
  * @author Philip Helger
  */
-public interface IEmailAttachmentList extends IHasSize, ICommonsIterable <IEmailAttachment>
+public interface IEmailAttachmentList extends ICommonsIterable <IEmailAttachment>
 {
   /**
    * Check if an attachment for the passed file name is contained.
    *
    * @param sFilename
    *        The file name to be checked. The file name is case sensitive.
-   * @return <code>true</code> if such an attachment is present,
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if such an attachment is present, <code>false</code> otherwise.
    */
   boolean containsAttachment (@Nullable String sFilename);
 

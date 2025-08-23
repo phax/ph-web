@@ -24,9 +24,9 @@ import org.junit.Test;
 
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.diagnostics.error.list.IErrorList;
-import com.helger.http.url.SimpleURL;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.unittest.support.TestHelper;
+import com.helger.url.SimpleURL;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 

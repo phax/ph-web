@@ -21,7 +21,7 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.id.IHasID;
 import com.helger.base.string.StringParser;
 import com.helger.base.system.SystemProperties;
-import com.helger.base.url.IURLProtocol;
+import com.helger.url.protocol.IURLProtocol;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

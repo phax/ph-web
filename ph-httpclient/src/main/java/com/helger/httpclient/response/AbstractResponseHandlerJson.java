@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
-import com.helger.base.traits.IGenericImplTrait;
+import com.helger.base.trait.IGenericImplTrait;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.json.IJson;
 import com.helger.json.serialize.JsonReader;

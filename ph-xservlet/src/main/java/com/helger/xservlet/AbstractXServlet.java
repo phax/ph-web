@@ -378,7 +378,7 @@ public abstract class AbstractXServlet extends HttpServlet
         aHttpResponse.setStatus (CHttp.HTTP_SEE_OTHER);
       }
       // Set the location header
-      String sTargetURL = ex.getRedirectTargetURL ().getAsStringWithEncodedParameters ();
+      String sTargetURL = ex.getRedirectTargetURL ().getAsString ();
       if (ServletSettings.isEncodeURLs ())
         sTargetURL = aHttpResponse.encodeRedirectURL (sTargetURL);
 

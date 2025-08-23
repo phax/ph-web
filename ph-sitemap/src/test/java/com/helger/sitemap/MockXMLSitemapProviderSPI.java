@@ -17,7 +17,7 @@
 package com.helger.sitemap;
 
 import com.helger.annotation.style.IsSPIImplementation;
-import com.helger.http.url.SimpleURL;
+import com.helger.url.SimpleURL;
 
 import jakarta.annotation.Nonnull;
 

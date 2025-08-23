@@ -47,14 +47,12 @@ import com.helger.http.header.specific.AcceptLanguageHandler;
 import com.helger.http.header.specific.AcceptLanguageList;
 import com.helger.http.header.specific.AcceptMimeTypeHandler;
 import com.helger.http.header.specific.AcceptMimeTypeList;
-import com.helger.http.url.ISimpleURL;
-import com.helger.http.url.SimpleURL;
-import com.helger.http.url.URLData;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
+import com.helger.url.ISimpleURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -140,12 +138,12 @@ public final class RequestHelper
    * @return The value without a session ID or the original string.
    */
   @Nonnull
-  public static SimpleURL getWithoutSessionID (@Nonnull final ISimpleURL aURL)
+  public static ISimpleURL getWithoutSessionID (@Nonnull final ISimpleURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
     // Strip the parameter from the path, but keep parameters and anchor intact!
     // Note: using URLData avoid parsing, since the data was already parsed!
-    return new SimpleURL (new URLData (getWithoutSessionID (aURL.getPath ()), aURL.params (), aURL.getAnchor ()));
+    return aURL.getWithPath (getWithoutSessionID (aURL.getPath ()));
   }
 
   /**

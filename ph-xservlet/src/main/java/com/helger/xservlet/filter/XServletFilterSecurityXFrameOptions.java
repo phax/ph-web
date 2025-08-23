@@ -22,8 +22,8 @@ import com.helger.base.state.EContinue;
 import com.helger.http.CHttpHeader;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
-import com.helger.http.url.ISimpleURL;
 import com.helger.servlet.response.EXFrameOptionType;
+import com.helger.url.ISimpleURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -70,7 +70,7 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
     m_eType = eType;
     m_aDomain = aDomain;
     if (eType.isURLRequired ())
-      m_sHeaderValue = eType.getID () + " " + aDomain.getAsStringWithEncodedParameters ();
+      m_sHeaderValue = eType.getID () + " " + aDomain.getAsString ();
     else
       m_sHeaderValue = eType.getID ();
   }

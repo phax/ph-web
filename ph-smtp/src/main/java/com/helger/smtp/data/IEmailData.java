@@ -28,9 +28,8 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 /**
- * Contains all possible fields for mail sending in a read-only fashion. If the
- * email data should be used in failed mail data, than only String values are
- * allowed!
+ * Contains all possible fields for mail sending in a read-only fashion. If the email data should be
+ * used in failed mail data, than only String values are allowed!
  *
  * @author Philip Helger
  */
@@ -115,12 +114,12 @@ public interface IEmailData
   String getBody ();
 
   /**
-   * Get an optional list of attachments. If attachments are present, the mail
-   * is always created as a MIME message and never a simple text message.
+   * Get an optional list of attachments. If attachments are present, the mail is always created as
+   * a MIME message and never a simple text message.
    *
-   * @return A map from the filename to an {@link java.io.InputStream}-provider
-   *         containing all desired attachments or <code>null</code>/an empty
-   *         container if no attachments are required.
+   * @return A map from the filename to an {@link java.io.InputStream}-provider containing all
+   *         desired attachments or <code>null</code>/an empty container if no attachments are
+   *         required.
    */
   @Nullable
   IEmailAttachmentList getAttachments ();
@@ -132,7 +131,7 @@ public interface IEmailData
   default int getAttachmentCount ()
   {
     final IEmailAttachmentList ret = getAttachments ();
-    return ret == null ? 0 : ret.getCount ();
+    return ret == null ? 0 : ret.size ();
   }
 
   /**

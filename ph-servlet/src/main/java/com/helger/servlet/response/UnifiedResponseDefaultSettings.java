@@ -32,7 +32,7 @@ import com.helger.http.CHttpHeader;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.cache.CacheControlBuilder;
 import com.helger.http.header.HttpHeaderMap;
-import com.helger.http.url.ISimpleURL;
+import com.helger.url.ISimpleURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -165,7 +165,7 @@ public final class UnifiedResponseDefaultSettings
     {
       final String sHeaderValue = eType.isURLRequired () ? eType.getID () +
                                                            " " +
-                                                           aDomain.getAsStringWithEncodedParameters () : eType.getID ();
+                                                           aDomain.getAsString () : eType.getID ();
       setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, sHeaderValue);
     }
   }

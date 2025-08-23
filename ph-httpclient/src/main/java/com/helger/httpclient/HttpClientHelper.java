@@ -47,8 +47,8 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.string.StringHelper;
 import com.helger.http.EHttpMethod;
-import com.helger.http.url.ISimpleURL;
 import com.helger.network.proxy.config.HttpProxyConfig;
+import com.helger.url.ISimpleURL;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -71,7 +71,7 @@ public final class HttpClientHelper
   public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
                                                   @Nonnull final ISimpleURL aSimpleURL)
   {
-    final String sURI = aSimpleURL.getAsStringWithEncodedParameters ();
+    final String sURI = aSimpleURL.getAsString ();
     return createRequest (eHTTPMethod, sURI);
   }
 

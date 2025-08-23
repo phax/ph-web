@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.http.url.ISimpleURL;
-import com.helger.http.url.SimpleURL;
 import com.helger.servlet.response.UnifiedResponse;
+import com.helger.url.ISimpleURL;
+import com.helger.url.SimpleURL;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
 
@@ -86,7 +86,7 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
             aTargetURL.add (sKey, sValue);
     }
 
-    final String sRedirectURL = aTargetURL.getAsStringWithEncodedParameters ();
+    final String sRedirectURL = aTargetURL.getAsString ();
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Sending redirect to '" + sRedirectURL + "'");

@@ -246,7 +246,7 @@ public class HttpClientSettingsConfig
      * @return The {@link UsernamePasswordCredentials} object to be used for proxy server
      *         authentication or <code>null</code> if not username and password are configured.
      * @see #getHttpProxyUsername()
-     * @see #getHttpProxyPassword()
+     * @see #getHttpProxyPasswordCharArray()
      */
     @Nullable
     public UsernamePasswordCredentials getHttpProxyCredentials ()

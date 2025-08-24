@@ -485,7 +485,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   /**
    * Adds all provided parameters <em>without</em> replacing any existing values. To replace
-   * existing values, use {@link #setParameters(List)}.
+   * existing values, use {@link #setParameters(ICommonsList)}.
    *
    * @param aParams
    *        Parameter name value map

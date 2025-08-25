@@ -93,14 +93,14 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>12.0.0-SNAPSHOT</version>
+        <version>12.0.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.helger.schedule</groupId>
         <artifactId>ph-schedule-parent-pom</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -222,17 +222,6 @@
         </configuration>
         <!-- local executions are ignored -->
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <verbose>false</verbose>
-          <!-- remove space between dashes
-          <additionalJOption>- -allow-script-in-comments</additionalJOption>
-          -->
-        </configuration>
-      </plugin> 
     </plugins>
   </build>
 </project>

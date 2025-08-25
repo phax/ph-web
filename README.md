@@ -61,11 +61,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.0.0 - work in progress
+v11.0.0 - 2025-08-25
 * Requires Java 17 as the minimum version
 * Updated to ph-commons 12.0.0
 * Updated to Servlet Spec 6.0.0 and JakartaEE 10
-* Submodule `ph-http` was moved to `ph-commons`
+* Submodule `ph-http` was moved to `ph-commons` (with the change group ID `com.helger.commons`!)
 * Removed all code marked as deprecated for removal
 
 v10.5.1 - 2025-08-12

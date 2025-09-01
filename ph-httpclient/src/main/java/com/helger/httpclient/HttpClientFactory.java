@@ -17,6 +17,7 @@
 package com.helger.httpclient;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import javax.net.ssl.HostnameVerifier;
@@ -34,29 +35,37 @@ import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.impl.DefaultClientConnectionReuseStrategy;
 import org.apache.hc.client5.http.impl.DefaultSchemePortResolver;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
 import org.apache.hc.client5.http.impl.routing.DefaultRoutePlanner;
 import org.apache.hc.client5.http.io.ConnectionEndpoint;
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.io.LeaseRequest;
+import org.apache.hc.client5.http.nio.AsyncClientConnectionManager;
+import org.apache.hc.client5.http.nio.AsyncConnectionEndpoint;
 import org.apache.hc.client5.http.protocol.RequestAddCookies;
 import org.apache.hc.client5.http.routing.HttpRoutePlanner;
 import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
 import org.apache.hc.client5.http.ssl.HttpsSupport;
 import org.apache.hc.client5.http.ssl.TlsSocketStrategy;
+import org.apache.hc.core5.concurrent.FutureCallback;
 import org.apache.hc.core5.http.ConnectionReuseStrategy;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.URIScheme;
 import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.io.CloseMode;
+import org.apache.hc.core5.reactor.ConnectionInitiator;
 import org.apache.hc.core5.reactor.ssl.SSLBufferMode;
 import org.apache.hc.core5.ssl.SSLInitializationException;
 import org.apache.hc.core5.util.TimeValue;
@@ -84,6 +93,136 @@ import jakarta.annotation.Nullable;
 @NotThreadSafe
 public class HttpClientFactory implements IHttpClientProvider
 {
+  private static final class MyDebugClientConnectionMgr implements HttpClientConnectionManager
+  {
+    private final PoolingHttpClientConnectionManager m_aConnMgr;
+    private final String m_sPrefix;
+
+    private MyDebugClientConnectionMgr (final PoolingHttpClientConnectionManager aConnMgr, final String sPrefix)
+    {
+      m_aConnMgr = aConnMgr;
+      m_sPrefix = sPrefix;
+    }
+
+    public void close (final CloseMode closeMode)
+    {
+      LOGGER.info (m_sPrefix + "close(" + closeMode + ")");
+      m_aConnMgr.close (closeMode);
+    }
+
+    public void close () throws IOException
+    {
+      LOGGER.info (m_sPrefix + "close()");
+      m_aConnMgr.close ();
+    }
+
+    public LeaseRequest lease (final String id, final HttpRoute route, final Timeout requestTimeout, final Object state)
+    {
+      LOGGER.info (m_sPrefix + "lease(" + id + ", " + route + ", " + requestTimeout + ", " + state + ")");
+      return m_aConnMgr.lease (id, route, state);
+    }
+
+    public void connect (final ConnectionEndpoint endpoint, final TimeValue connectTimeout, final HttpContext context)
+                                                                                                                       throws IOException
+    {
+      LOGGER.info (m_sPrefix + "connect(" + endpoint + ", " + connectTimeout + ", " + context + ")");
+      m_aConnMgr.connect (endpoint, connectTimeout, context);
+    }
+
+    public void upgrade (final ConnectionEndpoint endpoint, final HttpContext context) throws IOException
+    {
+      LOGGER.info (m_sPrefix + "upgrade(" + endpoint + ", " + context + ")");
+      m_aConnMgr.upgrade (endpoint, context);
+    }
+
+    public void release (final ConnectionEndpoint endpoint, final Object newState, final TimeValue validDuration)
+    {
+      LOGGER.info (m_sPrefix + "release(" + endpoint + ", " + newState + ", " + validDuration + ")");
+      m_aConnMgr.release (endpoint, newState, validDuration);
+    }
+  }
+
+  private static final class MyDebugAsyncClientConnectionMgr implements AsyncClientConnectionManager
+  {
+    private final PoolingAsyncClientConnectionManager m_aConnMgr;
+    private final String m_sPrefix;
+
+    private MyDebugAsyncClientConnectionMgr (final PoolingAsyncClientConnectionManager aConnMgr, final String sPrefix)
+    {
+      m_aConnMgr = aConnMgr;
+      m_sPrefix = sPrefix;
+    }
+
+    public void close (final CloseMode closeMode)
+    {
+      LOGGER.info (m_sPrefix + "close(" + closeMode + ")");
+      m_aConnMgr.close (closeMode);
+    }
+
+    public void close () throws IOException
+    {
+      LOGGER.info (m_sPrefix + "close()");
+      m_aConnMgr.close ();
+    }
+
+    public Future <AsyncConnectionEndpoint> lease (final String id,
+                                                   final HttpRoute route,
+                                                   final Object state,
+                                                   final Timeout requestTimeout,
+                                                   final FutureCallback <AsyncConnectionEndpoint> callback)
+    {
+      LOGGER.info (m_sPrefix +
+                   "lease(" +
+                   id +
+                   ", " +
+                   route +
+                   ", " +
+                   state +
+                   ", " +
+                   requestTimeout +
+                   ", " +
+                   callback +
+                   ")");
+      return m_aConnMgr.lease (id, route, state, requestTimeout, callback);
+    }
+
+    public void release (final AsyncConnectionEndpoint endpoint, final Object newState, final TimeValue validDuration)
+    {
+      LOGGER.info (m_sPrefix + "release(" + endpoint + ", " + newState + ", " + validDuration + ")");
+      m_aConnMgr.release (endpoint, newState, validDuration);
+    }
+
+    public Future <AsyncConnectionEndpoint> connect (final AsyncConnectionEndpoint endpoint,
+                                                     final ConnectionInitiator connectionInitiator,
+                                                     final Timeout connectTimeout,
+                                                     final Object attachment,
+                                                     final HttpContext context,
+                                                     final FutureCallback <AsyncConnectionEndpoint> callback)
+    {
+      LOGGER.info (m_sPrefix +
+                   "connect(" +
+                   endpoint +
+                   ", " +
+                   connectionInitiator +
+                   ", " +
+                   connectTimeout +
+                   ", " +
+                   attachment +
+                   ", " +
+                   context +
+                   ", " +
+                   callback +
+                   ")");
+      return m_aConnMgr.connect (endpoint, connectionInitiator, connectTimeout, attachment, context, callback);
+    }
+
+    public void upgrade (final AsyncConnectionEndpoint endpoint, final Object attachment, final HttpContext context)
+    {
+      LOGGER.info (m_sPrefix + "release(" + endpoint + ", " + attachment + ", " + context + ")");
+      m_aConnMgr.upgrade (endpoint, attachment, context);
+    }
+  }
+
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientFactory.class);
 
   private final HttpClientSettings m_aSettings;
@@ -132,9 +271,9 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  protected TlsSocketStrategy createCustomTlsSocketStrategy ()
+  protected DefaultClientTlsStrategy createCustomTlsSocketStrategy ()
   {
-    TlsSocketStrategy ret = null;
+    DefaultClientTlsStrategy ret = null;
 
     try
     {
@@ -175,9 +314,9 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
-  public TlsSocketStrategy createTlsSocketStrategy ()
+  public DefaultClientTlsStrategy createTlsSocketStrategy ()
   {
-    TlsSocketStrategy ret = createCustomTlsSocketStrategy ();
+    DefaultClientTlsStrategy ret = createCustomTlsSocketStrategy ();
 
     if (ret == null)
     {
@@ -262,49 +401,35 @@ public class HttpClientFactory implements IHttpClientProvider
     {
       // Simply add a logging layer on top of aConnMgr
       final String sPrefix = "HttpClientConnectionManager[" + GlobalIDFactory.getNewIntID () + "].";
-      ret = new HttpClientConnectionManager ()
-      {
-        public void close (final CloseMode closeMode)
-        {
-          LOGGER.info (sPrefix + "close(" + closeMode + ")");
-          aConnMgr.close (closeMode);
-        }
+      ret = new MyDebugClientConnectionMgr (aConnMgr, sPrefix);
+    }
+    else
+    {
+      ret = aConnMgr;
+    }
 
-        public void close () throws IOException
-        {
-          LOGGER.info (sPrefix + "close()");
-          aConnMgr.close ();
-        }
+    return ret;
+  }
 
-        public LeaseRequest lease (final String id,
-                                   final HttpRoute route,
-                                   final Timeout requestTimeout,
-                                   final Object state)
-        {
-          LOGGER.info (sPrefix + "lease(" + id + ", " + route + ", " + requestTimeout + ", " + state + ")");
-          return aConnMgr.lease (id, route, state);
-        }
+  @Nonnull
+  public AsyncClientConnectionManager createAsyncConnectionManager (@Nonnull final TlsStrategy aTlsStrategy)
+  {
+    final DnsResolver aDNSResolver = createDNSResolver ();
+    final ConnectionConfig aConnectionConfig = createConnectionConfig ();
+    final PoolingAsyncClientConnectionManager aConnMgr = PoolingAsyncClientConnectionManagerBuilder.create ()
+                                                                                                   .setTlsStrategy (aTlsStrategy)
+                                                                                                   .setDnsResolver (aDNSResolver)
+                                                                                                   .setDefaultConnectionConfig (aConnectionConfig)
+                                                                                                   .build ();
+    aConnMgr.setDefaultMaxPerRoute (100);
+    aConnMgr.setMaxTotal (200);
 
-        public void connect (final ConnectionEndpoint endpoint,
-                             final TimeValue connectTimeout,
-                             final HttpContext context) throws IOException
-        {
-          LOGGER.info (sPrefix + "connect(" + endpoint + ", " + connectTimeout + ", " + context + ")");
-          aConnMgr.connect (endpoint, connectTimeout, context);
-        }
-
-        public void upgrade (final ConnectionEndpoint endpoint, final HttpContext context) throws IOException
-        {
-          LOGGER.info (sPrefix + "upgrade(" + endpoint + ", " + context + ")");
-          aConnMgr.upgrade (endpoint, context);
-        }
-
-        public void release (final ConnectionEndpoint endpoint, final Object newState, final TimeValue validDuration)
-        {
-          LOGGER.info (sPrefix + "release(" + endpoint + ", " + newState + ", " + validDuration + ")");
-          aConnMgr.release (endpoint, newState, validDuration);
-        }
-      };
+    final AsyncClientConnectionManager ret;
+    if (HttpDebugger.isEnabled ())
+    {
+      // Simply add a logging layer on top of aConnMgr
+      final String sPrefix = "AsyncClientConnectionManager[" + GlobalIDFactory.getNewIntID () + "].";
+      ret = new MyDebugAsyncClientConnectionMgr (aConnMgr, sPrefix);
     }
     else
     {
@@ -534,5 +659,43 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     final HttpClientBuilder aBuilder = createHttpClientBuilder ();
     return aBuilder.build ();
+  }
+
+  public void applyTo (@Nonnull final HttpAsyncClientBuilder aBuilder)
+  {
+    final DefaultClientTlsStrategy aTlsStrategy = createTlsSocketStrategy ();
+    if (aTlsStrategy == null)
+      throw new IllegalStateException ("Failed to create TlsStrategy");
+
+    final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
+    final AsyncClientConnectionManager aConnMgr = createAsyncConnectionManager (aTlsStrategy);
+    final ConnectionReuseStrategy aConnectionReuseStrategy = createConnectionReuseStrategy ();
+    final RequestConfig aRequestConfig = createRequestConfig ();
+
+    // The credentials provider contains the proxy credentials
+    final CredentialsProvider aCredentialsProvider = createCredentialsProvider ();
+
+    // The route planner considers the proxy host
+    final HttpRoutePlanner aRoutePlanner = createRoutePlanner (aSchemePortResolver);
+
+    aBuilder.setSchemePortResolver (aSchemePortResolver)
+            .setConnectionManager (aConnMgr)
+            .setDefaultRequestConfig (aRequestConfig)
+            .setDefaultCredentialsProvider (aCredentialsProvider)
+            .setRoutePlanner (aRoutePlanner)
+            .setConnectionReuseStrategy (aConnectionReuseStrategy);
+
+    // Add cookies
+    aBuilder.addRequestInterceptorLast (new RequestAddCookies ());
+
+    // Set retry handler (if needed)
+    if (m_aSettings.hasRetries ())
+      aBuilder.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
+                                                             m_aSettings.getRetryIntervalAsTimeValue (),
+                                                             m_aSettings.isRetryAlways ()));
+
+    // Set user agent (if any)
+    if (m_aSettings.hasUserAgent ())
+      aBuilder.setUserAgent (m_aSettings.getUserAgent ());
   }
 }

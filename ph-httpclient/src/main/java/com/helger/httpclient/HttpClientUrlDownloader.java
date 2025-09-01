@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.url.IURLDownloader;
 import com.helger.httpclient.response.ResponseHandlerByteArray;
 
@@ -85,5 +86,11 @@ public class HttpClientUrlDownloader implements IURLDownloader
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Finished downloading via HttpClient from '" + sURL + "'");
     }
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("HttpClientFactory", m_aHCF).getToString ();
   }
 }

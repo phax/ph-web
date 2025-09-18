@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.1.0 - work in progress
+v11.1.0 - 2025-09-18
 * `HttpClientFactory` can now also apply itself onto a `HttpAsyncClientBuilder`
 * The return types if `HttpClientFactory.(createTlsSocketStrategy|createCustomTlsSocketStrategy)` needed to be changed to `DefaultClientTlsStrategy`
 

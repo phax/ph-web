@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.1.1 - work in progress
+v11.1.1 - 2025-10-03
 * Updated to Apache HttpCore v5.3.6
 * `AbstractXFilterUnifiedResponse` can now create a custome `UnifiedResponse` object
 

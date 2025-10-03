@@ -36,7 +36,7 @@ public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModule
   public static final IThirdPartyModule ANGUS_MAIL = new ThirdPartyModule ("Angus Mail",
                                                                            "Eclipse Foundation",
                                                                            ELicense.EPL20,
-                                                                           new Version (2, 0, 4),
+                                                                           new Version (2, 0, 5),
                                                                            "https://eclipse-ee4j.github.io/angus-mail/");
 
   @Nullable

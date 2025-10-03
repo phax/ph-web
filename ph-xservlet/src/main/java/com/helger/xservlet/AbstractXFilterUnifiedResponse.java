@@ -44,18 +44,40 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
   {}
 
   /**
+   * Create a unified response object. This can be used to provide a custom implementation instead.
+   *
+   * @param eHttpVersion
+   *        HTTP version of the current request.
+   * @param eHttpMethod
+   *        HTTP method of the current request.
+   * @param aHttpRequest
+   *        Current HTTP request
+   * @param aRequestScope
+   *        Current HTTP request scope
+   * @return The new unified response. Never <code>null</code>.
+   * @since 11.1.1
+   */
+  @Nonnull
+  @OverrideOnDemand
+  protected UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
+                                                   @Nonnull final EHttpMethod eHttpMethod,
+                                                   @Nonnull final HttpServletRequest aHttpRequest,
+                                                   @Nonnull final IRequestWebScope aRequestScope)
+  {
+    return new UnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
+  }
+
+  /**
    * Overwrite this method to fill your response.
    *
    * @param aRequestScope
-   *        The request scope to use. There is no direct access to the
-   *        {@link HttpServletResponse}. Everything must be handled with the
-   *        unified response! Never <code>null</code>.
+   *        The request scope to use. There is no direct access to the {@link HttpServletResponse}.
+   *        Everything must be handled with the unified response! Never <code>null</code>.
    * @param aUnifiedResponse
    *        The response object to be filled. Never <code>null</code>.
-   * @return If {@link EContinue#BREAK} is returned, the content of the unified
-   *         response is rendered to the HTTP servlet response and the filter
-   *         chain stops. On {@link EContinue#CONTINUE} the content of the
-   *         unified response is discarded and the filter chain continues as
+   * @return If {@link EContinue#BREAK} is returned, the content of the unified response is rendered
+   *         to the HTTP servlet response and the filter chain stops. On {@link EContinue#CONTINUE}
+   *         the content of the unified response is discarded and the filter chain continues as
    *         normal.
    * @throws IOException
    *         In case of an error
@@ -64,14 +86,16 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    */
   @Nonnull
   protected abstract EContinue onFilterBefore (@Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException, ServletException;
+                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException,
+                                                                                          ServletException;
 
   @Override
   @Nonnull
   @OverrideOnDemand
   public final EContinue onFilterBefore (@Nonnull final HttpServletRequest aHttpRequest,
                                          @Nonnull final HttpServletResponse aHttpResponse,
-                                         @Nonnull final IRequestWebScope aRequestScope) throws IOException, ServletException
+                                         @Nonnull final IRequestWebScope aRequestScope) throws IOException,
+                                                                                        ServletException
   {
     // Check HTTP version
     final EHttpVersion eHTTPVersion = RequestHelper.getHttpVersion (aHttpRequest);
@@ -93,7 +117,10 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
     }
 
     // Start unified response handling
-    final UnifiedResponse aUnifiedResponse = new UnifiedResponse (eHTTPVersion, eHTTPMethod, aHttpRequest);
+    final UnifiedResponse aUnifiedResponse = createUnifiedResponse (eHTTPVersion,
+                                                                    eHTTPMethod,
+                                                                    aHttpRequest,
+                                                                    aRequestScope);
     if (onFilterBefore (aRequestScope, aUnifiedResponse).isBreak ())
     {
       // Filter ended chain -> send response

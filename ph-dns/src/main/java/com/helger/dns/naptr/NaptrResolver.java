@@ -27,7 +27,6 @@ import org.xbill.DNS.TextParseException;
 
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.concurrent.NotThreadSafe;
-import com.helger.annotation.style.VisibleForTesting;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.compare.CompareHelper;
 import com.helger.base.enforce.ValueEnforcer;
@@ -40,7 +39,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 /**
- * Helper class to resolve NAPTR DNS records for BDMSL
+ * Helper class to resolve U-NAPTR DNS records
  *
  * @author Philip Helger
  * @since 5.1.5
@@ -48,35 +47,93 @@ import jakarta.annotation.Nullable;
 @Immutable
 public class NaptrResolver
 {
+  public static final String DEFAULT_FLAGS = "U";
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrResolver.class);
 
   private final String m_sDomainName;
   private final ICommonsList <NAPTRRecord> m_aNaptrRecords;
+  private final Predicate <? super String> m_aFlagsMatcher;
   private final Predicate <? super String> m_aServiceNameMatcher;
 
-  public NaptrResolver (@Nonnull final String sDomainName,
-                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
-                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  /**
+   * The matcher to be used to compare flags. By default a case-insensitive string compare with "U"
+   * is performed.
+   *
+   * @return The non-<code>null</code> matcher.
+   * @since 11.1.2
+   */
+  @Nonnull
+  public static Predicate <String> getDefaultFlagsMatcher ()
   {
-    ValueEnforcer.notNull (sDomainName, "DomainName");
-    ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
-    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
-
-    m_sDomainName = sDomainName;
-    m_aNaptrRecords = aNaptrRecords;
-    m_aServiceNameMatcher = aServiceNameMatcher;
+    return getDefaultFlagsMatcher (DEFAULT_FLAGS);
   }
 
+  /**
+   * The matcher to be used to compare flags. By default a case-insensitive string compare with the
+   * provided flags is performed.
+   *
+   * @param sFlags
+   *        The flags to compare to case insensitive.
+   * @return The non-<code>null</code> matcher.
+   * @since 11.1.2
+   */
+  @Nonnull
+  public static Predicate <String> getDefaultFlagsMatcher (@Nonnull final String sFlags)
+  {
+    return sFlags::equalsIgnoreCase;
+  }
+
+  /**
+   * The matcher to be used to compare service names. By default a case-insensitive string compare
+   * is performed.
+   *
+   * @param sServiceName
+   *        The service name to compare to case insensitive.
+   * @return The non-<code>null</code> matcher.
+   */
   @Nonnull
   public static Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
   {
     return sServiceName::equalsIgnoreCase;
   }
 
-  // NaptrRegex is e.g. <code>!^.*$!http://test-infra.peppol.at!</code>
+  @Deprecated (forRemoval = true, since = "11.1.2")
+  public NaptrResolver (@Nonnull final String sDomainName,
+                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  {
+    this (sDomainName, aNaptrRecords, getDefaultFlagsMatcher (), aServiceNameMatcher);
+  }
+
+  public NaptrResolver (@Nonnull final String sDomainName,
+                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                        @Nonnull final Predicate <? super String> aFlagsMatcher,
+                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  {
+    ValueEnforcer.notNull (sDomainName, "DomainName");
+    ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
+    ValueEnforcer.notNull (aFlagsMatcher, "aFlagsMatcher");
+    ValueEnforcer.notNull (aServiceNameMatcher, "ServiceNameMatcher");
+
+    m_sDomainName = sDomainName;
+    m_aNaptrRecords = aNaptrRecords;
+    m_aFlagsMatcher = aFlagsMatcher;
+    m_aServiceNameMatcher = aServiceNameMatcher;
+  }
+
+  /**
+   * Apply a NAPTR regular expression on the provided domain name and return the result. Example
+   * regular expression is e.g. <code>!^.*$!http://test-infra.peppol.at!</code>. The first and last
+   * character are expected to be the same and also the separator char.
+   *
+   * @param sNaptrRegEx
+   *        The regular expression to use.
+   * @param sDomainName
+   *        The source domain name to apply.
+   * @return <code>null</code> if the regular expression is invalid
+   */
   @Nullable
-  @VisibleForTesting
-  static String getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
+  public static String getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
   {
     final char cSep = sNaptrRegEx.charAt (0);
     final int nSecond = sNaptrRegEx.indexOf (cSep, 1);
@@ -86,6 +143,8 @@ public class NaptrResolver
       return null;
     }
     String sRegEx = sNaptrRegEx.substring (1, nSecond);
+
+    // Make sure regex works for Java
     if (!sRegEx.startsWith ("^"))
       sRegEx = '^' + sRegEx;
     if (!sRegEx.endsWith ("$"))
@@ -126,7 +185,7 @@ public class NaptrResolver
        * RFC 4848: allow many chars: service-parms = [ [app-service] *(":" app-protocol)]<br>
        * ; The service-parms are considered case-insensitive.
        */
-      if ("U".equalsIgnoreCase (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
+      if (m_aFlagsMatcher.test (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
       {
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Found a matching U-NAPTR record: " + aRecord);
@@ -146,6 +205,7 @@ public class NaptrResolver
         ret = CompareHelper.compare (x.getPreference (), y.getPreference ());
       return ret;
     });
+
     for (final NAPTRRecord aRecord : aMatchingRecords)
     {
       // The "U" record is terminal, so a RegExp must be present
@@ -163,7 +223,7 @@ public class NaptrResolver
         }
       }
     }
-    // Weird - no regexp present
+    // Weird - no regex present
     LOGGER.warn ("None of the matching DNS NAPTR records for '" +
                  m_sDomainName +
                  "' has a valid regular expression. Details: " +
@@ -177,12 +237,18 @@ public class NaptrResolver
     return new Builder ();
   }
 
+  /**
+   * Builder class for a {@link NaptrResolver}.
+   *
+   * @author Philip Helger
+   */
   @NotThreadSafe
   public static class Builder implements IBuilder <NaptrResolver>
   {
     private String m_sDomainName;
     private final ICommonsList <NAPTRRecord> m_aNaptrRecords = new CommonsArrayList <> ();
     private boolean m_bNaptrLookupProvided = false;
+    private Predicate <? super String> m_aFlagsMatcher = getDefaultFlagsMatcher ();
     private Predicate <? super String> m_aServiceNameMatcher;
 
     public Builder ()
@@ -278,6 +344,25 @@ public class NaptrResolver
     }
 
     @Nonnull
+    public final Builder flagsU ()
+    {
+      return flags (DEFAULT_FLAGS);
+    }
+
+    @Nonnull
+    public final Builder flags (@Nullable final String s)
+    {
+      return flags (s == null ? null : getDefaultFlagsMatcher (s));
+    }
+
+    @Nonnull
+    public final Builder flags (@Nullable final Predicate <? super String> a)
+    {
+      m_aFlagsMatcher = a;
+      return this;
+    }
+
+    @Nonnull
     public final Builder serviceName (@Nullable final String s)
     {
       return serviceName (s == null ? null : getDefaultServiceNameMatcher (s));
@@ -312,10 +397,14 @@ public class NaptrResolver
             LOGGER.error ("Creepy domain found", ex);
           }
       }
-      if (m_aServiceNameMatcher == null)
-        throw new IllegalStateException ("The service name predicate is required");
 
-      return new NaptrResolver (m_sDomainName, m_aNaptrRecords, m_aServiceNameMatcher);
+      if (m_aFlagsMatcher == null)
+        throw new IllegalStateException ("The flags matcher is required");
+
+      if (m_aServiceNameMatcher == null)
+        throw new IllegalStateException ("The service name matcher is required");
+
+      return new NaptrResolver (m_sDomainName, m_aNaptrRecords, m_aFlagsMatcher, m_aServiceNameMatcher);
     }
   }
 }

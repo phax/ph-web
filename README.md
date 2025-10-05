@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.1.2 - work in progress
+* Extended `NaptrResolver` to have a custom flags resolver
+
 v11.1.1 - 2025-10-03
 * Updated to Apache HttpCore v5.3.6
 * `AbstractXFilterUnifiedResponse` can now create a custome `UnifiedResponse` object

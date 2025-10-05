@@ -56,19 +56,6 @@ public class NaptrResolver
   private final Predicate <? super String> m_aServiceNameMatcher;
 
   /**
-   * The matcher to be used to compare flags. By default a case-insensitive string compare with "U"
-   * is performed.
-   *
-   * @return The non-<code>null</code> matcher.
-   * @since 11.1.2
-   */
-  @Nonnull
-  public static Predicate <String> getDefaultFlagsMatcher ()
-  {
-    return getDefaultFlagsMatcher (DEFAULT_FLAGS);
-  }
-
-  /**
    * The matcher to be used to compare flags. By default a case-insensitive string compare with the
    * provided flags is performed.
    *
@@ -102,7 +89,7 @@ public class NaptrResolver
                         @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
                         @Nonnull final Predicate <? super String> aServiceNameMatcher)
   {
-    this (sDomainName, aNaptrRecords, getDefaultFlagsMatcher (), aServiceNameMatcher);
+    this (sDomainName, aNaptrRecords, getDefaultFlagsMatcher (DEFAULT_FLAGS), aServiceNameMatcher);
   }
 
   public NaptrResolver (@Nonnull final String sDomainName,
@@ -248,11 +235,13 @@ public class NaptrResolver
     private String m_sDomainName;
     private final ICommonsList <NAPTRRecord> m_aNaptrRecords = new CommonsArrayList <> ();
     private boolean m_bNaptrLookupProvided = false;
-    private Predicate <? super String> m_aFlagsMatcher = getDefaultFlagsMatcher ();
+    private Predicate <? super String> m_aFlagsMatcher;
     private Predicate <? super String> m_aServiceNameMatcher;
 
     public Builder ()
-    {}
+    {
+      flags (getDefaultFlagsMatcher (DEFAULT_FLAGS));
+    }
 
     @Nonnull
     public final Builder domainName (@Nullable final NaptrLookup.Builder a)
@@ -341,12 +330,6 @@ public class NaptrResolver
       if (a != null)
         m_aNaptrRecords.addAll (a);
       return this;
-    }
-
-    @Nonnull
-    public final Builder flagsU ()
-    {
-      return flags (DEFAULT_FLAGS);
     }
 
     @Nonnull

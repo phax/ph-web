@@ -128,15 +128,16 @@ public class NaptrLookup
     // Omit the final dot
     final String sDomainName = m_aDomainName.toString (true);
 
-    LOGGER.info ("Trying to look up NAPTR on '" +
-                 sDomainName +
-                 "'" +
-                 (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
-                 " using network mode " +
-                 m_eLookupMode);
-
     final BooleanSupplier aIsEnabled = m_bDebugMode ? LOGGER::isInfoEnabled : LOGGER::isDebugEnabled;
     final Consumer <String> aLogger = m_bDebugMode ? LOGGER::info : LOGGER::debug;
+
+    if (aIsEnabled.getAsBoolean ())
+      aLogger.accept ("Trying to look up NAPTR on '" +
+                      sDomainName +
+                      "'" +
+                      (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
+                      " using network mode " +
+                      m_eLookupMode);
 
     final StopWatch aSW = StopWatch.createdStarted ();
     try
@@ -244,6 +245,11 @@ public class NaptrLookup
     return new Builder ();
   }
 
+  /**
+   * Builder class for {@link NaptrLookup} objects.
+   *
+   * @author Philip Helger
+   */
   @NotThreadSafe
   public static class Builder implements IBuilder <NaptrLookup>
   {
@@ -258,12 +264,13 @@ public class NaptrLookup
     private Duration m_aExecutionDurationWarn = DEFAULT_EXECUTION_DURATION_WARN;
     private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers = new CallbackList <> ();
     private ELookupNetworkMode m_eLookupMode = DEFAULT_LOOKUP_MODE;
-    private boolean m_bDebugMode = false;
+    private boolean m_bDebugMode;
 
     public Builder ()
     {
       // add a default handler
       m_aExecutionTimeExceededHandlers.add (new LoggingNaptrLookupTimeExceededCallback (false));
+      debugMode (false);
     }
 
     @Nullable

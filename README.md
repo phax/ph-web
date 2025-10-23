@@ -61,8 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.1.2 - work in progress
+v11.1.2 - 2025-10-23
 * Extended `NaptrResolver` to have a custom flags resolver
+* Added new method `StaticServerInfo.clearDefault()`
 
 v11.1.1 - 2025-10-03
 * Updated to Apache HttpCore v5.3.6

@@ -32,8 +32,8 @@ import com.helger.servlet.request.RequestHelper;
 import jakarta.annotation.Nonnull;
 
 /**
- * This singleton instance represents default server information for locations
- * where no request context is available (e.g. in scheduled tasks)
+ * This singleton instance represents default server information for locations where no request
+ * context is available (e.g. in scheduled tasks)
  *
  * @author Philip Helger
  */
@@ -87,8 +87,8 @@ public class StaticServerInfo
   }
 
   /**
-   * @return The server port we're running on. May be -1, if constructed from a
-   *         URL and the passed scheme is neither "http" nor "https".
+   * @return The server port we're running on. May be -1, if constructed from a URL and the passed
+   *         scheme is neither "http" nor "https".
    */
   @CheckForSigned
   public int getServerPort ()
@@ -106,8 +106,8 @@ public class StaticServerInfo
   }
 
   /**
-   * @return <code>scheme://server:port</code> or <code>scheme://server</code>
-   *         if the default port was used
+   * @return <code>scheme://server:port</code> or <code>scheme://server</code> if the default port
+   *         was used
    */
   @Nonnull
   public String getFullServerPath ()
@@ -116,11 +116,10 @@ public class StaticServerInfo
   }
 
   /**
-   * This is a shortcut for
-   * <code>getFullServerPath () + getContextPath ()</code>.
+   * This is a shortcut for <code>getFullServerPath () + getContextPath ()</code>.
    *
-   * @return <code>scheme://server:port/context</code> or
-   *         <code>scheme://server:port</code> for the ROOT context.
+   * @return <code>scheme://server:port/context</code> or <code>scheme://server:port</code> for the
+   *         ROOT context.
    */
   @Nonnull
   public String getFullContextPath ()
@@ -131,12 +130,12 @@ public class StaticServerInfo
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("scheme", m_sScheme)
-                                       .append ("serverName", m_sServerName)
-                                       .append ("serverPort", m_nServerPort)
-                                       .append ("contextPath", m_sContextPath)
-                                       .append ("fullServerPath", m_sFullServerPath)
-                                       .append ("fullServerAndContextPath", m_sFullServerAndContextPath)
+    return new ToStringGenerator (null).append ("Scheme", m_sScheme)
+                                       .append ("ServerName", m_sServerName)
+                                       .append ("ServerPort", m_nServerPort)
+                                       .append ("ContextPath", m_sContextPath)
+                                       .append ("FullServerPath", m_sFullServerPath)
+                                       .append ("FullServerAndContextPath", m_sFullServerAndContextPath)
                                        .getToString ();
   }
 

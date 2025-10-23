@@ -159,6 +159,15 @@ public class StaticServerInfo
     return aDefault;
   }
 
+  public static void clearDefault ()
+  {
+    if (isSet ())
+    {
+      RW_LOCK.writeLocked ( () -> s_aDefault = null);
+      LOGGER.info ("Static server information was reset");
+    }
+  }
+
   @Nonnull
   public static StaticServerInfo getInstance ()
   {

@@ -20,6 +20,9 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -34,9 +37,6 @@ import com.helger.http.EHttpMethod;
 import com.helger.servlet.async.ServletAsyncSpec;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
 import com.helger.xservlet.handler.simple.XServletHandlerToSimpleHandler;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Wrapper around a map from {@link EHttpMethod} to {@link IXServletHandler}.
@@ -65,8 +65,8 @@ public class XServletHandlerRegistry
    *        if <code>true</code> existing handler can be overwritten, if <code>false</code> this
    *        method will throw an {@link IllegalStateException}.
    */
-  public void registerHandler (@Nonnull final EHttpMethod eMethod,
-                               @Nonnull final IXServletHandler aLowLevelHandler,
+  public void registerHandler (@NonNull final EHttpMethod eMethod,
+                               @NonNull final IXServletHandler aLowLevelHandler,
                                final boolean bAllowOverwrite)
   {
     ValueEnforcer.notNull (eMethod, "HTTPMethod");
@@ -83,14 +83,14 @@ public class XServletHandlerRegistry
     m_aHandlers.put (eMethod, aLowLevelHandler);
   }
 
-  public void registerHandler (@Nonnull final EHttpMethod eMethod, @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  public void registerHandler (@NonNull final EHttpMethod eMethod, @NonNull final IXServletSimpleHandler aSimpleHandler)
   {
     registerHandler (eMethod, ServletAsyncSpec.getSync (), aSimpleHandler);
   }
 
-  public void registerHandler (@Nonnull final EHttpMethod eMethod,
-                               @Nonnull final ServletAsyncSpec aAsyncSpec,
-                               @Nonnull final IXServletSimpleHandler aSimpleHandler)
+  public void registerHandler (@NonNull final EHttpMethod eMethod,
+                               @NonNull final ServletAsyncSpec aAsyncSpec,
+                               @NonNull final IXServletSimpleHandler aSimpleHandler)
   {
     // Always invoke the simple handler
     IXServletHandler aRealHandler = new XServletHandlerToSimpleHandler (aSimpleHandler);
@@ -112,7 +112,7 @@ public class XServletHandlerRegistry
    *         Never <code>null</code>.
    * @since 9.3.2
    */
-  @Nonnull
+  @NonNull
   public EChange unregisterHandler (@Nullable final EHttpMethod eMethod)
   {
     if (eMethod == null)
@@ -135,8 +135,8 @@ public class XServletHandlerRegistry
    *         In another handler is already registered for one of the destination methods.
    * @see #copyHandlerToAll(EHttpMethod)
    */
-  public EChange copyHandler (@Nonnull final EHttpMethod eFromMethod,
-                              @Nonnull @Nonempty final Set <EHttpMethod> aToMethods)
+  public EChange copyHandler (@NonNull final EHttpMethod eFromMethod,
+                              @NonNull @Nonempty final Set <EHttpMethod> aToMethods)
   {
     ValueEnforcer.notNull (eFromMethod, "FromMethod");
     ValueEnforcer.notEmptyNoNullValue (aToMethods, "ToMethods");
@@ -163,8 +163,8 @@ public class XServletHandlerRegistry
    *         In another handler is already registered for one of the destination methods.
    * @see #copyHandler(EHttpMethod, Set)
    */
-  @Nonnull
-  public EChange copyHandlerToAll (@Nonnull final EHttpMethod eFromMethod)
+  @NonNull
+  public EChange copyHandlerToAll (@NonNull final EHttpMethod eFromMethod)
   {
     // These are the action methods
     final EnumSet <EHttpMethod> aDest = EnumSet.of (EHttpMethod.GET,
@@ -176,7 +176,7 @@ public class XServletHandlerRegistry
     return copyHandler (eFromMethod, aDest);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public Set <EHttpMethod> getAllowedHTTPMethods ()
   {
@@ -190,24 +190,24 @@ public class XServletHandlerRegistry
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public String getAllowedHttpMethodsString ()
   {
     return StringImplode.getImplodedMapped (", ", getAllowedHTTPMethods (), EHttpMethod::getName);
   }
 
   @Nullable
-  public IXServletHandler getHandler (@Nonnull final EHttpMethod eHttpMethod)
+  public IXServletHandler getHandler (@NonNull final EHttpMethod eHttpMethod)
   {
     return m_aHandlers.get (eHttpMethod);
   }
 
-  public void forEachHandler (@Nonnull final Consumer <? super IXServletHandler> aConsumer)
+  public void forEachHandler (@NonNull final Consumer <? super IXServletHandler> aConsumer)
   {
     m_aHandlers.forEachValue (aConsumer);
   }
 
-  public <EXTYPE extends Throwable> void forEachHandlerThrowing (@Nonnull final IThrowingConsumer <? super IXServletHandler, EXTYPE> aConsumer) throws EXTYPE
+  public <EXTYPE extends Throwable> void forEachHandlerThrowing (@NonNull final IThrowingConsumer <? super IXServletHandler, EXTYPE> aConsumer) throws EXTYPE
   {
     for (final IXServletHandler aHandler : m_aHandlers.values ())
       aConsumer.accept (aHandler);

@@ -18,6 +18,8 @@ package com.helger.web.scope.impl;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.base.enforce.ValueEnforcer;
@@ -28,7 +30,6 @@ import com.helger.scope.GlobalScope;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.web.scope.IGlobalWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContext;
 
 /**
@@ -44,9 +45,9 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   private final LocalDateTime m_aCreationDT;
   private final ServletContext m_aSC;
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _createScopeID (@Nonnull final ServletContext aServletContext)
+  private static String _createScopeID (@NonNull final ServletContext aServletContext)
   {
     ValueEnforcer.notNull (aServletContext, "ServletContext");
     String ret = aServletContext.getServletContextName ();
@@ -65,7 +66,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
    * @param aServletContext
    *        The servlet context to use. May not be <code>null</code>.
    */
-  public GlobalWebScope (@Nonnull final ServletContext aServletContext)
+  public GlobalWebScope (@NonNull final ServletContext aServletContext)
   {
     super (_createScopeID (aServletContext));
 
@@ -74,7 +75,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     ServletContextPathHolder.setServletContextPath (aServletContext.getContextPath ());
   }
 
-  @Nonnull
+  @NonNull
   public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
@@ -87,7 +88,7 @@ public class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     ServletContextPathHolder.clearContextPath ();
   }
 
-  @Nonnull
+  @NonNull
   public final ServletContext getServletContext ()
   {
     return m_aSC;

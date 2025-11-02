@@ -18,6 +18,7 @@ package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,6 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.xservlet.AbstractXServlet;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,7 +58,7 @@ public final class XServletAsyncHandler implements IXServletHandler
    * @param aAsyncServletRunner
    *        The runner to be used. May not be <code>null</code>.
    */
-  public static void setAsyncServletRunner (@Nonnull final IAsyncServletRunner aAsyncServletRunner)
+  public static void setAsyncServletRunner (@NonNull final IAsyncServletRunner aAsyncServletRunner)
   {
     ValueEnforcer.notNull (aAsyncServletRunner, "AsyncServletRunner");
     s_aAsyncServletRunner = aAsyncServletRunner;
@@ -67,7 +67,7 @@ public final class XServletAsyncHandler implements IXServletHandler
   /**
    * @return The global async runner. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static IAsyncServletRunner getAsyncServletRunner ()
   {
     return s_aAsyncServletRunner;
@@ -76,15 +76,15 @@ public final class XServletAsyncHandler implements IXServletHandler
   private final ServletAsyncSpec m_aAsyncSpec;
   private final IXServletHandler m_aNestedHandler;
 
-  public XServletAsyncHandler (@Nonnull final ServletAsyncSpec aAsyncSpec,
-                               @Nonnull final IXServletHandler aNestedHandler)
+  public XServletAsyncHandler (@NonNull final ServletAsyncSpec aAsyncSpec,
+                               @NonNull final IXServletHandler aNestedHandler)
   {
     m_aAsyncSpec = ValueEnforcer.notNull (aAsyncSpec, "AsyncSpec");
     m_aNestedHandler = ValueEnforcer.notNull (aNestedHandler, "NestedHandler");
   }
 
   @Override
-  public void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  public void onServletInit (@NonNull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     m_aNestedHandler.onServletInit (aInitParams);
   }
@@ -95,11 +95,11 @@ public final class XServletAsyncHandler implements IXServletHandler
     m_aNestedHandler.onServletDestroy ();
   }
 
-  private void _handleAsync (@Nonnull final HttpServletRequest aHttpRequest,
-                             @Nonnull final HttpServletResponse aHttpResponse,
-                             @Nonnull final EHttpVersion eHttpVersion,
-                             @Nonnull final EHttpMethod eHttpMethod,
-                             @Nonnull final IRequestWebScope aRequestScope)
+  private void _handleAsync (@NonNull final HttpServletRequest aHttpRequest,
+                             @NonNull final HttpServletResponse aHttpResponse,
+                             @NonNull final EHttpVersion eHttpVersion,
+                             @NonNull final EHttpMethod eHttpMethod,
+                             @NonNull final IRequestWebScope aRequestScope)
   {
     final ExtAsyncContext aExtAsyncCtx = ExtAsyncContext.create (aHttpRequest,
                                                                  aHttpResponse,
@@ -156,11 +156,11 @@ public final class XServletAsyncHandler implements IXServletHandler
     });
   }
 
-  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                         @Nonnull final HttpServletResponse aHttpResponse,
-                         @Nonnull final EHttpVersion eHttpVersion,
-                         @Nonnull final EHttpMethod eHttpMethod,
-                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@NonNull final HttpServletRequest aHttpRequest,
+                         @NonNull final HttpServletResponse aHttpResponse,
+                         @NonNull final EHttpVersion eHttpVersion,
+                         @NonNull final EHttpMethod eHttpMethod,
+                         @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     if (m_aAsyncSpec.isAsynchronous () && aHttpRequest.isAsyncSupported ())
     {

@@ -19,9 +19,9 @@ package com.helger.smtp.transport;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
-import com.helger.annotation.Nonempty;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.annotation.Nonempty;
 
 /**
  * Available SMTP settings for javax-mail 1.5.0.<br>
@@ -344,7 +344,7 @@ public enum ESMTPTransportProperty
   private final String m_sPropertyName;
   private final Class <?> m_aPropertyValueClass;
 
-  ESMTPTransportProperty (@Nonnull @Nonempty final String sPropertyName, @Nonnull final Class <?> aPropertyValueClass)
+  ESMTPTransportProperty (@NonNull @Nonempty final String sPropertyName, @NonNull final Class <?> aPropertyValueClass)
   {
     m_sPropertyName = sPropertyName;
     m_aPropertyValueClass = aPropertyValueClass;
@@ -354,7 +354,7 @@ public enum ESMTPTransportProperty
    * @return The property name for regular SMTP transfer. Neither
    *         <code>null</code> nor empty.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSMTPPropertyName ()
   {
@@ -365,7 +365,7 @@ public enum ESMTPTransportProperty
    * @return The property name for secure SMTP transfer. Neither
    *         <code>null</code> nor empty.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSMTPSPropertyName ()
   {
@@ -378,7 +378,7 @@ public enum ESMTPTransportProperty
    * @return The property name for regular SMTP transfer. Neither
    *         <code>null</code> nor empty.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getPropertyName (final boolean bForSMTPS)
   {
@@ -388,7 +388,7 @@ public enum ESMTPTransportProperty
   /**
    * @return The expected value class of this property. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public Class <?> getPropertyValueClass ()
   {
     return m_aPropertyValueClass;

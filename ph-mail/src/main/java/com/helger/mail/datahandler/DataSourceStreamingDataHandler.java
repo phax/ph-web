@@ -19,8 +19,9 @@ package com.helger.mail.datahandler;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
 
 /**
  * An implementation of AbstractStreamingDataHandler using {@link DataSource} as
@@ -30,7 +31,7 @@ import jakarta.annotation.Nonnull;
  */
 public class DataSourceStreamingDataHandler extends AbstractStreamingDataHandler
 {
-  public DataSourceStreamingDataHandler (@Nonnull final DataSource aDataSource)
+  public DataSourceStreamingDataHandler (@NonNull final DataSource aDataSource)
   {
     super (aDataSource);
   }

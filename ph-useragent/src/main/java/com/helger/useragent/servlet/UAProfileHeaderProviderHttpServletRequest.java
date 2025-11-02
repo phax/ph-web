@@ -16,13 +16,14 @@
  */
 package com.helger.useragent.servlet;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.servlet.ServletHelper;
 import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -36,19 +37,19 @@ public class UAProfileHeaderProviderHttpServletRequest implements IUAProfileHead
 {
   private final HttpServletRequest m_aHttpRequest;
 
-  public UAProfileHeaderProviderHttpServletRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  public UAProfileHeaderProviderHttpServletRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
     m_aHttpRequest = aHttpRequest;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
     return ServletHelper.getRequestHeaderNames (m_aHttpRequest);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {

@@ -18,6 +18,8 @@ package com.helger.xservlet.servletstatus;
 
 import java.lang.reflect.Modifier;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +38,6 @@ import com.helger.scope.singleton.AbstractGlobalSingleton;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.GenericServlet;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRegistration;
@@ -61,7 +61,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
   public ServletStatusManager ()
   {}
 
-  @Nonnull
+  @NonNull
   public static ServletStatusManager getInstance ()
   {
     return getGlobalSingleton (ServletStatusManager.class);
@@ -78,22 +78,22 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    *
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public EChange reset ()
   {
     return m_aRWLock.writeLockedGet (m_aMap::removeAll);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _getKey (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  private static String _getKey (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     return aServletClass.getName ();
   }
 
-  @Nonnull
+  @NonNull
   @MustBeLocked (ELockType.WRITE)
-  private ServletStatus _getOrCreateServletStatus (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  private ServletStatus _getOrCreateServletStatus (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     ValueEnforcer.notNull (aServletClass, "Servlet class");
     if (Modifier.isAbstract (aServletClass.getModifiers ()))
@@ -103,8 +103,8 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     return m_aMap.computeIfAbsent (sKey, k -> new ServletStatus (aServletClass.getName ()));
   }
 
-  private void _updateStatus (@Nonnull final Class <? extends GenericServlet> aServletClass,
-                              @Nonnull final EServletStatus eNewStatus)
+  private void _updateStatus (@NonNull final Class <? extends GenericServlet> aServletClass,
+                              @NonNull final EServletStatus eNewStatus)
   {
     ValueEnforcer.notNull (eNewStatus, "NewStatus");
 
@@ -114,7 +114,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
       LOGGER.debug ("Servlet status of " + aServletClass + " changed to " + eNewStatus);
   }
 
-  public void onServletCtor (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletCtor (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     _updateStatus (aServletClass, EServletStatus.CONSTRUCTED);
   }
@@ -125,15 +125,15 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    * @param aServletClass
    *        Relevant servlet class. May not be <code>null</code>.
    */
-  public void onServletInit (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletInit (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("onServletInit: " + aServletClass);
     _updateStatus (aServletClass, EServletStatus.INITED);
   }
 
-  public void onServletInitFailed (@Nonnull final Exception aInitException,
-                                   @Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletInitFailed (@NonNull final Exception aInitException,
+                                   @NonNull final Class <? extends GenericServlet> aServletClass)
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("onServletInitFailed: " + aServletClass, aInitException);
@@ -147,12 +147,12 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    * @param aServletClass
    *        Servlet class invoked. May not be <code>null</code>.
    */
-  public void onServletInvocation (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletInvocation (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     m_aRWLock.writeLocked ( () -> _getOrCreateServletStatus (aServletClass).internalIncrementInvocationCount ());
   }
 
-  public void onServletDestroy (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public void onServletDestroy (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     _updateStatus (aServletClass, EServletStatus.DESTROYED);
   }
@@ -167,7 +167,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
     return m_aRWLock.readLockedGet ( () -> m_aMap.get (sKey));
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsMap <String, ServletStatus> getAllStatus ()
   {
@@ -183,7 +183,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    * @return <code>true</code> if the passed servlet class is contained in the
    *         {@link ServletContext}.
    */
-  public static boolean isServletRegistered (@Nonnull final Class <? extends GenericServlet> aServletClass)
+  public static boolean isServletRegistered (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
     final String sClassName = ValueEnforcer.notNull (aServletClass, "ServletClass").getName ();
 

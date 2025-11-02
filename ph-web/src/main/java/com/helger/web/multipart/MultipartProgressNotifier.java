@@ -16,6 +16,7 @@
  */
 package com.helger.web.multipart;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,6 @@ import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.web.progress.IProgressListener;
-
-import jakarta.annotation.Nullable;
 
 /**
  * Internal class, which is used to invoke the {@link IProgressListener}.

@@ -18,14 +18,14 @@ package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.email.IEmailAddress;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.typeconvert.collection.IStringMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Contains all possible fields for mail sending in a read-only fashion. If the email data should be
@@ -38,7 +38,7 @@ public interface IEmailData
   /**
    * @return The type of the email - text or html.
    */
-  @Nonnull
+  @NonNull
   EEmailType getEmailType ();
 
   /**
@@ -55,7 +55,7 @@ public interface IEmailData
    * @return never <code>null</code>
    * @since 9.1.9
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   ICommonsList <IEmailAddress> replyTo ();
 
@@ -65,7 +65,7 @@ public interface IEmailData
    * @return Never <code>null</code>.
    * @since 9.1.9
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   ICommonsList <IEmailAddress> to ();
 
@@ -75,7 +75,7 @@ public interface IEmailData
    * @return Never <code>null</code>.
    * @since 9.1.9
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   ICommonsList <IEmailAddress> cc ();
 
@@ -85,7 +85,7 @@ public interface IEmailData
    * @return Never <code>null</code>.
    * @since 9.1.9
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   ICommonsList <IEmailAddress> bcc ();
 
@@ -137,7 +137,7 @@ public interface IEmailData
   /**
    * @return Custom attributes. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   IStringMap attrs ();
 }

@@ -18,6 +18,9 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.lang.EnumHelper;
@@ -25,20 +28,18 @@ import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.url.protocol.EURLProtocol;
 import com.helger.url.protocol.IURLProtocol;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 /**
  * Proxy type determination.<br>
- * Source:
- * http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html
+ * Source: http://docs.oracle.com/javase/6/docs/technotes/guides/net/proxies.html
  *
  * @author Philip Helger
  */
 public enum EHttpProxyType implements IProxySettingsPerProtocol
 {
   HTTP ("http", EURLProtocol.HTTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP)),
-  HTTPS ("https", EURLProtocol.HTTPS, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTPS)),
+  HTTPS ("https",
+         EURLProtocol.HTTPS,
+         SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTPS)),
   // Default proxy port for FTP is also 80! This is not a copy/paste error!
   FTP ("ftp", EURLProtocol.FTP, SchemeDefaultPortMapper.getDefaultPortOrThrow (SchemeDefaultPortMapper.SCHEME_HTTP));
 
@@ -46,27 +47,28 @@ public enum EHttpProxyType implements IProxySettingsPerProtocol
   private final IURLProtocol m_aURLProtocol;
   private final int m_nDefaultPort;
 
-  EHttpProxyType (@Nonnull @Nonempty final String sID, @Nonnull final IURLProtocol aURLProtocol, @Nonnegative final int nDefaultPort)
+  EHttpProxyType (@NonNull @Nonempty final String sID,
+                  @NonNull final IURLProtocol aURLProtocol,
+                  @Nonnegative final int nDefaultPort)
   {
     m_sID = sID;
     m_aURLProtocol = aURLProtocol;
     m_nDefaultPort = nDefaultPort;
   }
 
-  @Nonnull
-  public Proxy.Type getProxyType ()
+  public Proxy.@NonNull Type getProxyType ()
   {
     return Proxy.Type.HTTP;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {
     return m_sID;
   }
 
-  @Nonnull
+  @NonNull
   public IURLProtocol getURLProtocol ()
   {
     return m_aURLProtocol;
@@ -79,10 +81,9 @@ public enum EHttpProxyType implements IProxySettingsPerProtocol
   }
 
   /**
-   * @return The name of the system property for getting and setting the
-   *         non-proxy hosts
+   * @return The name of the system property for getting and setting the non-proxy hosts
    */
-  @Nonnull
+  @NonNull
   @Override
   public String getPropertyNameNoProxyHosts ()
   {

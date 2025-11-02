@@ -18,10 +18,11 @@ package com.helger.servlet.async;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.tostring.ToStringGenerator;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 
@@ -34,16 +35,16 @@ import jakarta.servlet.AsyncListener;
 @Immutable
 public abstract class AbstractServletAsyncListener implements AsyncListener
 {
-  public void onStartAsync (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onStartAsync (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {}
 
-  public void onComplete (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onComplete (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {}
 
-  public void onError (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onError (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {}
 
-  public void onTimeout (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onTimeout (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {}
 
   @Override

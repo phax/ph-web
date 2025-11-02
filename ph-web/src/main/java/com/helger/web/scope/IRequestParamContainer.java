@@ -19,6 +19,9 @@ package com.helger.web.scope;
 import java.util.Collections;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.enforce.ValueEnforcer;
@@ -31,9 +34,6 @@ import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.typeconvert.collection.IAttributeContainerAny;
 import com.helger.web.fileupload.IFileItem;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A special request parameter container with support for file items etc. By default only
@@ -50,7 +50,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    *         objects from file uploads. The key of the map is the field name. Important: if the
    *         value is an array of {@link IFileItem} it is not considered in the returned map!
    */
-  @Nonnull
+  @NonNull
   default ICommonsMap <String, IFileItem> getAllUploadedFileItems ()
   {
     final ICommonsMap <String, IFileItem> ret = new CommonsHashMap <> ();
@@ -67,7 +67,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @return A non-<code>null</code> but maybe empty map with all contained {@link IFileItem}
    *         objects from file uploads. The key of the map is the field name.
    */
-  @Nonnull
+  @NonNull
   default ICommonsMap <String, IFileItem []> getAllUploadedFileItemsComplete ()
   {
     final ICommonsMap <String, IFileItem []> ret = new CommonsHashMap <> ();
@@ -89,7 +89,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    *         request. In comparison to {@link #getAllUploadedFileItems()} this method also returns
    *         the content of {@link IFileItem} arrays.
    */
-  @Nonnull
+  @NonNull
   default ICommonsList <IFileItem> getAllUploadedFileItemValues ()
   {
     final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
@@ -160,7 +160,7 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @return <code>true</code> if the checkbox is checked, <code>false</code> if it is not checked.
    * @since 10.4.3
    */
-  default boolean isCheckBoxCheckedNoHiddenField (@Nonnull final String sFieldName)
+  default boolean isCheckBoxCheckedNoHiddenField (@NonNull final String sFieldName)
   {
     // Is the checked value present?
     final String sRequestValue = getAsString (sFieldName);
@@ -178,15 +178,15 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
    * @since 10.4.3
    */
   default boolean isCheckBoxCheckedNoHiddenField (@Nullable final String sFieldName,
-                                                  @Nonnull final String sExpectedValue)
+                                                  @NonNull final String sExpectedValue)
   {
     // Is the checked value present?
     final String sRequestValue = getAsString (sFieldName);
     return sRequestValue != null && sExpectedValue.equals (sRequestValue);
   }
 
-  default boolean hasCheckBoxValue (@Nonnull @Nonempty final String sFieldName,
-                                    @Nonnull final String sFieldValue,
+  default boolean hasCheckBoxValue (@NonNull @Nonempty final String sFieldName,
+                                    @NonNull final String sFieldValue,
                                     final boolean bDefaultValue)
   {
     ValueEnforcer.notEmpty (sFieldName, "FieldName");

@@ -18,6 +18,8 @@ package com.helger.smtp;
 
 import java.util.logging.Level;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +39,6 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.event.ConnectionListener;
 
 /**
@@ -117,7 +117,7 @@ public final class EmailGlobalSettings
    *        &le; than {@link #getMaxMailQueueLength()}.
    * @return {@link EChange}.
    */
-  @Nonnull
+  @NonNull
   public static EChange setMailQueueSize (@Nonnegative final int nMaxMailQueueLen,
                                           @Nonnegative final int nMaxMailSendCount)
   {
@@ -154,7 +154,7 @@ public final class EmailGlobalSettings
    *        <code>true</code> to use it by default, <code>false</code> if not.
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setUseSSL (final boolean bUseSSL)
   {
     return RW_LOCK.writeLockedGet ( () -> {
@@ -180,7 +180,7 @@ public final class EmailGlobalSettings
    *        <code>true</code> to use it by default, <code>false</code> if not.
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setUseSTARTTLS (final boolean bUseSTARTTLS)
   {
     return RW_LOCK.writeLockedGet ( () -> {
@@ -210,7 +210,7 @@ public final class EmailGlobalSettings
    *        The milliseconds timeout
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setConnectionTimeoutMilliSecs (final long nMilliSecs)
   {
     return RW_LOCK.writeLockedGet ( () -> {
@@ -242,7 +242,7 @@ public final class EmailGlobalSettings
    *        The milliseconds timeout
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setTimeoutMilliSecs (final long nMilliSecs)
   {
     return RW_LOCK.writeLockedGet ( () -> {
@@ -270,7 +270,7 @@ public final class EmailGlobalSettings
    * @return {@link EChange}
    * @since 1.0.1
    */
-  @Nonnull
+  @NonNull
   public static EChange setDebugSMTP (final boolean bDebugSMTP)
   {
     return RW_LOCK.writeLockedGet ( () -> {
@@ -288,7 +288,7 @@ public final class EmailGlobalSettings
    *        The new connection listener to add. May not be <code>null</code>.
    * @since 1.1.0
    */
-  public static void addConnectionListener (@Nonnull final ConnectionListener aConnectionListener)
+  public static void addConnectionListener (@NonNull final ConnectionListener aConnectionListener)
   {
     ValueEnforcer.notNull (aConnectionListener, "ConnectionListener");
     RW_LOCK.writeLockedBoolean ( () -> s_aConnectionListeners.add (aConnectionListener));
@@ -302,7 +302,7 @@ public final class EmailGlobalSettings
    * @return {@link EChange}
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   public static EChange removeConnectionListener (@Nullable final ConnectionListener aConnectionListener)
   {
     if (aConnectionListener == null)
@@ -317,7 +317,7 @@ public final class EmailGlobalSettings
    * @return {@link EChange}
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   public static EChange removeAllConnectionListeners ()
   {
     return RW_LOCK.writeLockedGet (s_aConnectionListeners::removeAll);
@@ -337,7 +337,7 @@ public final class EmailGlobalSettings
    * @return All mail connection listeners. Never <code>null</code>.
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <ConnectionListener> getAllConnectionListeners ()
   {
@@ -351,7 +351,7 @@ public final class EmailGlobalSettings
    *        The new transport listener to add. May not be <code>null</code>.
    * @since 1.1.0
    */
-  public static void addEmailDataTransportListener (@Nonnull final IEmailDataTransportListener aEmailDataTransportListener)
+  public static void addEmailDataTransportListener (@NonNull final IEmailDataTransportListener aEmailDataTransportListener)
   {
     ValueEnforcer.notNull (aEmailDataTransportListener, "EmailDataTransportListener");
     RW_LOCK.writeLockedBoolean ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
@@ -365,7 +365,7 @@ public final class EmailGlobalSettings
    * @return {@link EChange}
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   public static EChange removeEmailDataTransportListener (@Nullable final IEmailDataTransportListener aEmailDataTransportListener)
   {
     if (aEmailDataTransportListener == null)
@@ -380,7 +380,7 @@ public final class EmailGlobalSettings
    * @return {@link EChange}
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   public static EChange removeAllEmailDataTransportListeners ()
   {
     return RW_LOCK.writeLockedGet (s_aEmailDataTransportListeners::removeAll);
@@ -400,7 +400,7 @@ public final class EmailGlobalSettings
    * @return All mail transport listeners. Never <code>null</code>.
    * @since 1.1.0
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <IEmailDataTransportListener> getAllEmailDataTransportListeners ()
   {

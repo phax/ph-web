@@ -34,11 +34,11 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Class for indicating direct Internet access (no proxy needed).
@@ -59,7 +59,7 @@ public class NoProxyConfig implements IProxyConfig
     UseSystemProxyConfig.deactivateGlobally ();
   }
 
-  @Nonnull
+  @NonNull
   public Proxy getAsProxy ()
   {
     return Proxy.NO_PROXY;

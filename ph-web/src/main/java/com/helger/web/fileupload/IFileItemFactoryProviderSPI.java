@@ -16,9 +16,9 @@
  */
 package com.helger.web.fileupload;
 
-import com.helger.annotation.style.IsSPIInterface;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.annotation.style.IsSPIInterface;
 
 /**
  * SPI for a provider of a custom file item factory that should be used instead
@@ -33,6 +33,6 @@ public interface IFileItemFactoryProviderSPI
    * @return Retrieves the file item factory implementation, may not be
    *         <code>null</code>
    */
-  @Nonnull
+  @NonNull
   IFileItemFactory getFileItemFactory ();
 }

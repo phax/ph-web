@@ -16,12 +16,12 @@
  */
 package com.helger.useragent.spider;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public enum EWebSpiderType implements IHasID <String>
 {
@@ -39,12 +39,12 @@ public enum EWebSpiderType implements IHasID <String>
 
   private final String m_sID;
 
-  EWebSpiderType (@Nonnull @Nonempty final String sID)
+  EWebSpiderType (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {

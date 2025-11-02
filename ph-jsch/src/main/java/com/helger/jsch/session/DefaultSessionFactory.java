@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * The default implementation of {@link com.helger.jsch.session.ISessionFactory SessionFactory}.
@@ -153,7 +152,7 @@ public class DefaultSessionFactory implements ISessionFactory
     m_aJSch.removeAllIdentity ();
   }
 
-  @Nonnull
+  @NonNull
   private File _dotSshDir ()
   {
     if (m_aDotSshDir == null)
@@ -196,7 +195,7 @@ public class DefaultSessionFactory implements ISessionFactory
    * @see #setConfig(ICommonsMap)
    * @see com.jcraft.jsch.Session#setConfig(java.util.Hashtable)
    */
-  public void setConfig (@Nonnull final String key, @Nonnull final String value)
+  public void setConfig (@NonNull final String key, @NonNull final String value)
   {
     if (m_aConfig == null)
       m_aConfig = new CommonsHashMap <> ();

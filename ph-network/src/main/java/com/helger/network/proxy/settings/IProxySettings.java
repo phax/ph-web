@@ -21,12 +21,12 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.CGlobal;
 import com.helger.base.equals.EqualsHelper;
 import com.helger.base.string.StringHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Generic proxy settings interface.
@@ -39,8 +39,7 @@ public interface IProxySettings
   /**
    * @return The proxy type to be used. May not be <code>null</code>.
    */
-  @Nonnull
-  Proxy.Type getProxyType ();
+  Proxy.@NonNull Type getProxyType ();
 
   /**
    * @return The proxy host name of IP address. May be <code>null</code> if proxy type is DIRECT.
@@ -107,7 +106,7 @@ public interface IProxySettings
    * @see #getProxyHost()
    * @see #getProxyPort()
    */
-  @Nonnull
+  @NonNull
   default Proxy getAsProxy ()
   {
     return getAsProxy (true);
@@ -122,7 +121,7 @@ public interface IProxySettings
    * @see #getProxyHost()
    * @see #getProxyPort()
    */
-  @Nonnull
+  @NonNull
   Proxy getAsProxy (boolean bResolveHostname);
 
   /**

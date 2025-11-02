@@ -16,13 +16,13 @@
  */
 package com.helger.network.port;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Represents a single network port.
@@ -38,9 +38,9 @@ public class NetworkPort implements INetworkPort
   private final String m_sDescription;
 
   public NetworkPort (@Nonnegative final int nPort,
-                      @Nonnull final ENetworkProtocol eProtocol,
-                      @Nonnull final String sName,
-                      @Nonnull final String sDescription)
+                      @NonNull final ENetworkProtocol eProtocol,
+                      @NonNull final String sName,
+                      @NonNull final String sDescription)
   {
     ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), () -> "Port is illegal: " + nPort);
     m_nPort = nPort;
@@ -55,19 +55,19 @@ public class NetworkPort implements INetworkPort
     return m_nPort;
   }
 
-  @Nonnull
+  @NonNull
   public ENetworkProtocol getProtocol ()
   {
     return m_eProtocol;
   }
 
-  @Nonnull
+  @NonNull
   public String getName ()
   {
     return m_sName;
   }
 
-  @Nonnull
+  @NonNull
   public String getDescription ()
   {
     return m_sDescription;

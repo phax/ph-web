@@ -18,6 +18,9 @@ package com.helger.xservlet.handler.simple;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.debug.GlobalDebug;
 import com.helger.base.state.EContinue;
@@ -28,8 +31,6 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.IXServletBasicHandler;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -53,11 +54,11 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *        Current HTTP request scope
    * @return The new unified response. Never <code>null</code>.
    */
-  @Nonnull
-  default UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
-                                                 @Nonnull final EHttpMethod eHttpMethod,
-                                                 @Nonnull final HttpServletRequest aHttpRequest,
-                                                 @Nonnull final IRequestWebScope aRequestScope)
+  @NonNull
+  default UnifiedResponse createUnifiedResponse (@NonNull final EHttpVersion eHttpVersion,
+                                                 @NonNull final EHttpMethod eHttpMethod,
+                                                 @NonNull final HttpServletRequest aHttpRequest,
+                                                 @NonNull final IRequestWebScope aRequestScope)
   {
     return new UnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
   }
@@ -78,8 +79,8 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *         as usual.
    */
   @OverrideOnDemand
-  default EContinue initRequestState (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                                      @Nonnull final UnifiedResponse aUnifiedResponse)
+  default EContinue initRequestState (@NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                                      @NonNull final UnifiedResponse aUnifiedResponse)
   {
     return EContinue.CONTINUE;
   }
@@ -99,7 +100,7 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *         determined
    */
   @Nullable
-  default LocalDateTime getLastModificationDateTime (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  default LocalDateTime getLastModificationDateTime (@NonNull final IRequestWebScopeWithoutResponse aRequestScope)
   {
     return null;
   }
@@ -115,7 +116,7 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    * @return <code>null</code> if this servlet does not support ETags
    */
   @Nullable
-  default String getSupportedETag (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  default String getSupportedETag (@NonNull final IRequestWebScopeWithoutResponse aRequestScope)
   {
     return null;
   }
@@ -130,7 +131,7 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *        Never <code>null</code>.
    */
   @OverrideOnDemand
-  default void onRequestBegin (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  default void onRequestBegin (@NonNull final IRequestWebScopeWithoutResponse aRequestScope)
   {}
 
   /**
@@ -146,7 +147,7 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    * @throws Exception
    *         In case of an error
    */
-  void handleRequest (@Nonnull IRequestWebScopeWithoutResponse aRequestScope, @Nonnull UnifiedResponse aUnifiedResponse) throws Exception;
+  void handleRequest (@NonNull IRequestWebScopeWithoutResponse aRequestScope, @NonNull UnifiedResponse aUnifiedResponse) throws Exception;
 
   /**
    * Called when an exception occurred in
@@ -164,10 +165,10 @@ public interface IXServletSimpleHandler extends IXServletBasicHandler
    *         <code>null</code>.
    */
   @OverrideOnDemand
-  @Nonnull
-  default EContinue onException (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                                 @Nonnull final UnifiedResponse aUnifiedResponse,
-                                 @Nonnull final Throwable t)
+  @NonNull
+  default EContinue onException (@NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                                 @NonNull final UnifiedResponse aUnifiedResponse,
+                                 @NonNull final Throwable t)
   {
     // Propagate only in debug mode
     return EContinue.valueOf (GlobalDebug.isDebugMode ());

@@ -19,6 +19,9 @@ package com.helger.web.fileupload.parse;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.concurrent.SimpleReadWriteLock;
@@ -33,9 +36,6 @@ import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.collection.iterator.IteratorHelper;
 import com.helger.http.CHttpHeader;
 import com.helger.web.fileupload.IFileItemHeaders;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of the {@link IFileItemHeaders} interface.
@@ -59,7 +59,7 @@ public class FileItemHeaders implements IFileItemHeaders
   private final ICommonsOrderedSet <String> m_aHeaderNameList = new CommonsLinkedHashSet <> ();
 
   @Nullable
-  public String getHeader (@Nonnull final String sName)
+  public String getHeader (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "HeaderName");
 
@@ -87,8 +87,8 @@ public class FileItemHeaders implements IFileItemHeaders
     return getHeader (CHttpHeader.CONTENT_LENGTH);
   }
 
-  @Nonnull
-  public Iterator <String> getHeaders (@Nonnull final String sName)
+  @NonNull
+  public Iterator <String> getHeaders (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "HeaderName");
 
@@ -98,13 +98,13 @@ public class FileItemHeaders implements IFileItemHeaders
     return IteratorHelper.getIterator (aHeaderValueList);
   }
 
-  @Nonnull
+  @NonNull
   public Iterator <String> getHeaderNames ()
   {
     return m_aRWLock.readLockedGet (m_aHeaderNameList::iterator);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
@@ -119,7 +119,7 @@ public class FileItemHeaders implements IFileItemHeaders
    * @param sValue
    *        value of this header
    */
-  public void addHeader (@Nonnull final String sName, @Nullable final String sValue)
+  public void addHeader (@NonNull final String sName, @Nullable final String sValue)
   {
     ValueEnforcer.notNull (sName, "HeaderName");
 

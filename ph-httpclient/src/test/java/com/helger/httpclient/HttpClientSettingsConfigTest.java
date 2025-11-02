@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.time.Duration;
 
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.collection.commons.CommonsHashMap;
@@ -34,8 +35,6 @@ import com.helger.config.fallback.IConfigWithFallback;
 import com.helger.config.source.appl.ConfigurationSourceFunction;
 import com.helger.http.security.HostnameVerifierVerifyAll;
 
-import jakarta.annotation.Nonnull;
-
 /**
  * Test class for {@link HttpClientSettingsConfig}.
  *
@@ -43,7 +42,7 @@ import jakarta.annotation.Nonnull;
  */
 public final class HttpClientSettingsConfigTest
 {
-  @Nonnull
+  @NonNull
   private static IConfigWithFallback _createConfig ()
   {
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();

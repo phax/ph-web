@@ -19,12 +19,12 @@ package com.helger.network.authenticator;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A simple implementation of the abstract {@link Authenticator} class using a
@@ -41,12 +41,12 @@ public class ConstantAuthenticator extends Authenticator
   private final String m_sUserName;
   private final String m_sPassword;
 
-  public ConstantAuthenticator (@Nullable final String sDomain, @Nonnull final String sUserName, @Nonnull final String sPassword)
+  public ConstantAuthenticator (@Nullable final String sDomain, @NonNull final String sUserName, @NonNull final String sPassword)
   {
     this (StringHelper.getConcatenatedOnDemand (sDomain, DOMAIN_SEPARATOR, sUserName), sPassword);
   }
 
-  public ConstantAuthenticator (@Nonnull final String sUserName, @Nonnull final String sPassword)
+  public ConstantAuthenticator (@NonNull final String sUserName, @NonNull final String sPassword)
   {
     m_sUserName = ValueEnforcer.notNull (sUserName, "UserName");
     m_sPassword = ValueEnforcer.notNull (sPassword, "Password");
@@ -56,7 +56,7 @@ public class ConstantAuthenticator extends Authenticator
    * @return The provided user name, including an eventually present domain.
    *         Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public String getUserName ()
   {
     return m_sUserName;
@@ -65,7 +65,7 @@ public class ConstantAuthenticator extends Authenticator
   /**
    * @return The provided password. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public String getPassword ()
   {
     return m_sPassword;

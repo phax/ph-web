@@ -16,9 +16,10 @@
  */
 package com.helger.xservlet.handler;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.collection.commons.ICommonsMap;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 
 /**
@@ -37,7 +38,7 @@ public interface IXServletBasicHandler
    * @throws ServletException
    *         if something goes wrong
    */
-  default void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  default void onServletInit (@NonNull final ICommonsMap <String, String> aInitParams) throws ServletException
   {}
 
   /**

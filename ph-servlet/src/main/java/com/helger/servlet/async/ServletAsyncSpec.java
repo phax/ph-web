@@ -16,6 +16,9 @@
  */
 package com.helger.servlet.async;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -27,8 +30,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncListener;
 
@@ -109,7 +110,7 @@ public class ServletAsyncSpec
    * @return A copy of the list of all {@link AsyncListener}. Only contains
    *         items if this is an asynchronous spec.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <AsyncListener> getAllAsyncListeners ()
   {
@@ -125,7 +126,7 @@ public class ServletAsyncSpec
     return m_aAsyncListeners.isNotEmpty ();
   }
 
-  public void applyToAsyncContext (@Nonnull final AsyncContext aAsyncCtx)
+  public void applyToAsyncContext (@NonNull final AsyncContext aAsyncCtx)
   {
     if (!isAsynchronous ())
       throw new IllegalStateException ("This servlet is not declared asynchronous: " + toString ());
@@ -149,7 +150,7 @@ public class ServletAsyncSpec
    * @return A synchronous spec. This always returns the constant value
    *         {@link #SYNC_SPEC}. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ServletAsyncSpec getSync ()
   {
     return SYNC_SPEC;
@@ -164,7 +165,7 @@ public class ServletAsyncSpec
    *        The async listeners to use. May be <code>null</code>.
    * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ServletAsyncSpec createAsync (@CheckForSigned final long nTimeoutMillis,
                                               @Nullable final Iterable <? extends AsyncListener> aAsyncListeners)
   {
@@ -177,7 +178,7 @@ public class ServletAsyncSpec
    *
    * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ServletAsyncSpec createAsyncDefault ()
   {
     return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND : 30 * CGlobal.MILLISECONDS_PER_SECOND,

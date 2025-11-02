@@ -18,13 +18,14 @@ package com.helger.servlet.response;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.http.header.HttpHeaderMap;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
@@ -40,7 +41,7 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   private final HttpHeaderMap m_aHeaderMap = new HttpHeaderMap ();
   private int m_nStatusCode = SC_OK;
 
-  public StatusAwareHttpResponseWrapper (@Nonnull final HttpServletResponse aHttpResponse)
+  public StatusAwareHttpResponseWrapper (@NonNull final HttpServletResponse aHttpResponse)
   {
     super (aHttpResponse);
   }
@@ -97,63 +98,63 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   }
 
   @Override
-  public void setContentType (@Nonnull final String sContentType)
+  public void setContentType (@NonNull final String sContentType)
   {
     super.setContentType (sContentType);
     m_aHeaderMap.setContentType (sContentType);
   }
 
   @Override
-  public void setDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
+  public void setDateHeader (@NonNull @Nonempty final String sName, final long nMillis)
   {
     super.setDateHeader (sName, nMillis);
     m_aHeaderMap.setDateHeader (sName, nMillis);
   }
 
   @Override
-  public void addDateHeader (@Nonnull @Nonempty final String sName, final long nMillis)
+  public void addDateHeader (@NonNull @Nonempty final String sName, final long nMillis)
   {
     super.addDateHeader (sName, nMillis);
     m_aHeaderMap.addDateHeader (sName, nMillis);
   }
 
   @Override
-  public void setHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
+  public void setHeader (@NonNull @Nonempty final String sName, @NonNull final String sValue)
   {
     super.setHeader (sName, sValue);
     m_aHeaderMap.setHeader (sName, sValue);
   }
 
   @Override
-  public void addHeader (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
+  public void addHeader (@NonNull @Nonempty final String sName, @NonNull final String sValue)
   {
     super.addHeader (sName, sValue);
     m_aHeaderMap.addHeader (sName, sValue);
   }
 
   @Override
-  public void setIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
+  public void setIntHeader (@NonNull @Nonempty final String sName, final int nValue)
   {
     super.setIntHeader (sName, nValue);
     m_aHeaderMap.setIntHeader (sName, nValue);
   }
 
   @Override
-  public void addIntHeader (@Nonnull @Nonempty final String sName, final int nValue)
+  public void addIntHeader (@NonNull @Nonempty final String sName, final int nValue)
   {
     super.addIntHeader (sName, nValue);
     m_aHeaderMap.addIntHeader (sName, nValue);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public HttpHeaderMap headerMap ()
   {
     return m_aHeaderMap;
   }
 
-  @Nonnull
-  public static StatusAwareHttpResponseWrapper wrap (@Nonnull final HttpServletResponse aHttpResponse)
+  @NonNull
+  public static StatusAwareHttpResponseWrapper wrap (@NonNull final HttpServletResponse aHttpResponse)
   {
     if (aHttpResponse instanceof StatusAwareHttpResponseWrapper)
       return (StatusAwareHttpResponseWrapper) aHttpResponse;

@@ -16,10 +16,10 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.UsedViaReflection;
 import com.helger.scope.IScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractGlobalWebSingleton}
@@ -38,14 +38,14 @@ public final class MockGlobalWebSingleton extends AbstractGlobalWebSingleton
     s_nCtorCount++;
   }
 
-  @Nonnull
+  @NonNull
   public static MockGlobalWebSingleton getInstance ()
   {
     return getGlobalSingleton (MockGlobalWebSingleton.class);
   }
 
   @Override
-  protected void onDestroy (@Nonnull final IScope aScopeInDestruction) throws Exception
+  protected void onDestroy (@NonNull final IScope aScopeInDestruction) throws Exception
   {
     s_nDtorCount++;
   }

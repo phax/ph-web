@@ -18,6 +18,9 @@ package com.helger.sitemap;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.CGlobal;
@@ -31,9 +34,6 @@ import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a set of {@link XMLSitemapURL} objects.
@@ -59,7 +59,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
   public XMLSitemapURLSet ()
   {}
 
-  public void addURL (@Nonnull final XMLSitemapURL aURL)
+  public void addURL (@NonNull final XMLSitemapURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
     m_aURLs.add (aURL);
@@ -124,7 +124,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
     return getURLCount () > MAX_URLS_PER_FILE || getOutputLength () > MAX_FILE_SIZE;
   }
 
-  @Nonnull
+  @NonNull
   public XMLSitemapURL getURL (@Nonnegative final int nIndex)
   {
     return m_aURLs.get (nIndex);
@@ -146,7 +146,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
    * @throws IllegalStateException
    *         if this is a multi-file URL set
    */
-  @Nonnull
+  @NonNull
   public IMicroDocument getAsDocument ()
   {
     if (isMultiFileSitemap ())
@@ -159,7 +159,7 @@ public class XMLSitemapURLSet implements IHasLastModificationDateTime
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public String getAsXMLString ()
   {
     // Important: No indent and align, because otherwise the calculated output

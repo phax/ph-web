@@ -19,6 +19,9 @@ package com.helger.mail.datasource;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.UnsupportedOperation;
@@ -28,8 +31,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.mime.IMimeType;
 
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A special {@link DataSource} implementation based on data from
@@ -48,42 +49,42 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
   private final String m_sContentType;
   private final boolean m_bReadMultiple;
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS, @Nonnull final String sName)
+  public InputStreamDataSource (@NonNull final InputStream aIS, @NonNull final String sName)
   {
     this (aIS, sName, (String) null, DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
+  public InputStreamDataSource (@NonNull final InputStream aIS,
+                                @NonNull final String sName,
                                 final boolean bReadMultiple)
   {
     this (aIS, sName, (String) null, bReadMultiple);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
+  public InputStreamDataSource (@NonNull final InputStream aIS,
+                                @NonNull final String sName,
                                 @Nullable final IMimeType aContentType,
                                 final boolean bReadMultiple)
   {
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), bReadMultiple);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
+  public InputStreamDataSource (@NonNull final InputStream aIS,
+                                @NonNull final String sName,
                                 @Nullable final IMimeType aContentType)
   {
     this (aIS, sName, aContentType == null ? null : aContentType.getAsString (), DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
+  public InputStreamDataSource (@NonNull final InputStream aIS,
+                                @NonNull final String sName,
                                 @Nullable final String sContentType)
   {
     this (aIS, sName, sContentType, DEFAULT_READ_MULTIPLE);
   }
 
-  public InputStreamDataSource (@Nonnull final InputStream aIS,
-                                @Nonnull final String sName,
+  public InputStreamDataSource (@NonNull final InputStream aIS,
+                                @NonNull final String sName,
                                 @Nullable final String sContentType,
                                 final boolean bReadMultiple)
   {
@@ -107,7 +108,7 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     return m_nISAcquired;
   }
 
-  @Nonnull
+  @NonNull
   public InputStream getInputStream ()
   {
     m_nISAcquired++;
@@ -122,13 +123,13 @@ public class InputStreamDataSource implements IExtendedDataSource, IHasInputStre
     throw new UnsupportedOperationException ("Read-only!");
   }
 
-  @Nonnull
+  @NonNull
   public String getContentType ()
   {
     return m_sContentType;
   }
 
-  @Nonnull
+  @NonNull
   public String getName ()
   {
     return m_sName;

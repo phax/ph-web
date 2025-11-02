@@ -22,6 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.GuardedBy;
 import com.helger.annotation.concurrent.ThreadSafe;
@@ -32,9 +35,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Global class to determine if the client is offline or not. The state is cached for a configurable
@@ -70,7 +70,7 @@ public final class NetworkOnlineStatusDeterminator
   /**
    * @return The current caching duration. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static Duration getCacheDuration ()
   {
     return RW_LOCK.readLockedGet ( () -> s_aCacheDuration);
@@ -82,7 +82,7 @@ public final class NetworkOnlineStatusDeterminator
    * @param aCacheDuration
    *        The duration to use. May not be <code>null</code>.
    */
-  public static void setCacheDuration (@Nonnull final Duration aCacheDuration)
+  public static void setCacheDuration (@NonNull final Duration aCacheDuration)
   {
     ValueEnforcer.notNull (aCacheDuration, "CacheDuration");
     RW_LOCK.writeLockedGet ( () -> s_aCacheDuration = aCacheDuration);
@@ -123,7 +123,7 @@ public final class NetworkOnlineStatusDeterminator
    * @return The current offline state from cache only. No update is performed. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ENetworkOnlineStatus getCachedNetworkStatus ()
   {
     return RW_LOCK.readLockedGet ( () -> s_eStatus);
@@ -146,7 +146,7 @@ public final class NetworkOnlineStatusDeterminator
    *
    * @return The online/offline status. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ENetworkOnlineStatus getNetworkStatus ()
   {
     RW_LOCK.readLock ().lock ();
@@ -174,7 +174,7 @@ public final class NetworkOnlineStatusDeterminator
    *
    * @return The online/offline status. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ENetworkOnlineStatus getNetworkStatusNoCache ()
   {
     final LocalDateTime aNow = PDTFactory.getCurrentLocalDateTime ();

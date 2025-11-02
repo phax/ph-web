@@ -18,14 +18,13 @@ package com.helger.xservlet.filter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.requesttrack.RequestTracker;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A special filter that tracks the request. Each servlet request requires it's
@@ -49,7 +48,7 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
   public XServletFilterTrackRequest ()
   {}
 
-  private static boolean _trackBeforeHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
+  private static boolean _trackBeforeHandleRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     // Check if an attribute is already present
     // An ID may already be present, if the request is internally dispatched
@@ -76,18 +75,18 @@ public final class XServletFilterTrackRequest implements IXServletHighLevelFilte
     return true;
   }
 
-  private static void _trackAfterHandleRequest (@Nonnull final IRequestWebScope aRequestScope)
+  private static void _trackAfterHandleRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     final String sID = aRequestScope.attrs ().getAsString (REQUEST_ATTR_ID);
     RequestTracker.removeRequest (sID);
   }
 
-  public void beforeRequest (@Nonnull final IRequestWebScope aRequestScope)
+  public void beforeRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     m_bTrackedRequest = _trackBeforeHandleRequest (aRequestScope);
   }
 
-  public void afterRequest (@Nonnull final IRequestWebScope aRequestScope)
+  public void afterRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     if (m_bTrackedRequest)
     {

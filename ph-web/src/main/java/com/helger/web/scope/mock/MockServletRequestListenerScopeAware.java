@@ -16,11 +16,12 @@
  */
 package com.helger.web.scope.mock;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.servlet.mock.MockServletRequestListener;
 import com.helger.web.scope.mgr.WebScopeManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -36,14 +37,14 @@ public class MockServletRequestListenerScopeAware extends MockServletRequestList
   {}
 
   @Override
-  public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
+  public void requestInitialized (@NonNull final ServletRequestEvent aEvent)
   {
     super.requestInitialized (aEvent);
     WebScopeManager.onRequestBegin ((HttpServletRequest) aEvent.getServletRequest (), getCurrentMockResponse ());
   }
 
   @Override
-  public void requestDestroyed (@Nonnull final ServletRequestEvent aEvent)
+  public void requestDestroyed (@NonNull final ServletRequestEvent aEvent)
   {
     WebScopeManager.onRequestEnd ();
     super.requestDestroyed (aEvent);

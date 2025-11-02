@@ -18,6 +18,8 @@ package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.http.CHttp;
 import com.helger.http.EHttpMethod;
@@ -28,7 +30,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,11 +50,11 @@ public class XServletHandlerTRACE implements IXServletHandler
   public XServletHandlerTRACE ()
   {}
 
-  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                         @Nonnull final HttpServletResponse aHttpResponse,
-                         @Nonnull final EHttpVersion eHTTPVersion,
-                         @Nonnull final EHttpMethod eHTTPMethod,
-                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@NonNull final HttpServletRequest aHttpRequest,
+                         @NonNull final HttpServletResponse aHttpResponse,
+                         @NonNull final EHttpVersion eHTTPVersion,
+                         @NonNull final EHttpMethod eHTTPMethod,
+                         @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     final StringBuilder aSB = new StringBuilder ().append (EHttpMethod.TRACE.getName ())
                                                   .append (' ')

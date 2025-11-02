@@ -18,6 +18,9 @@ package com.helger.web.scope.util;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.OverrideOnDemand;
@@ -28,9 +31,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.helper.CollectionEqualsHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a wrapper around a single request value. It allows gathering the current values,
@@ -51,7 +51,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    * @param aRF
    *        The request field to copy the values from. May not be <code>null</code>.
    */
-  public RequestFieldDataMultiValue (@Nonnull final RequestFieldDataMultiValue aRF)
+  public RequestFieldDataMultiValue (@NonNull final RequestFieldDataMultiValue aRF)
   {
     this (aRF.getFieldName (), aRF.m_aDefaultValues);
   }
@@ -62,7 +62,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    * @param sFieldName
    *        The field name to use. May neither be <code>null</code> nor empty.
    */
-  public RequestFieldDataMultiValue (@Nonnull @Nonempty final String sFieldName)
+  public RequestFieldDataMultiValue (@NonNull @Nonempty final String sFieldName)
   {
     this (sFieldName, (Collection <String>) null);
   }
@@ -75,7 +75,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    * @param aDefaultValues
    *        The default values to use, if no value is present in the request scope.
    */
-  public RequestFieldDataMultiValue (@Nonnull @Nonempty final String sFieldName,
+  public RequestFieldDataMultiValue (@NonNull @Nonempty final String sFieldName,
                                      @Nullable final Collection <String> aDefaultValues)
   {
     super (sFieldName);
@@ -87,7 +87,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    * @return The default values to be used if no request parameter is present. Is never
    *         <code>null</code> but an empty list if no default value is available.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   @OverrideOnDemand
   public ICommonsList <String> getDefaultValues ()
@@ -112,7 +112,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    *
    * @return A single request value as string.
    */
-  @Nonnull
+  @NonNull
   public final ICommonsList <String> getRequestValues ()
   {
     return getParams ().getAsStringList (getFieldName (), getDefaultValues ());
@@ -126,7 +126,7 @@ public class RequestFieldDataMultiValue extends AbstractRequestFieldData
    *        The list of expected values. May not be <code>null</code>.
    * @return <code>true</code> if the passed value equals the actual request value
    */
-  public final boolean hasRequestValues (@Nonnull final Collection <String> aExpectedValues)
+  public final boolean hasRequestValues (@NonNull final Collection <String> aExpectedValues)
   {
     ValueEnforcer.notNull (aExpectedValues, "ExpectedValues");
 

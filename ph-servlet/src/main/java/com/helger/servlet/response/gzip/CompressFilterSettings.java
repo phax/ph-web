@@ -16,6 +16,7 @@
  */
 package com.helger.servlet.response.gzip;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +25,6 @@ import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.state.EChange;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Contains the settings for the CompressFilter class.
@@ -88,7 +87,7 @@ public final class CompressFilterSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -119,7 +118,7 @@ public final class CompressFilterSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -150,7 +149,7 @@ public final class CompressFilterSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -175,7 +174,7 @@ public final class CompressFilterSettings
    *        <code>true</code> to enable Deflate if compression is enabled
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setAll (final boolean bResponseCompressionEnabled,
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
@@ -200,7 +199,7 @@ public final class CompressFilterSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setDebugModeEnabled (final boolean bDebugModeEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {

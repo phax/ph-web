@@ -16,6 +16,9 @@
  */
 package com.helger.servlet.response;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.GuardedBy;
@@ -34,8 +37,6 @@ import com.helger.http.cache.CacheControlBuilder;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.url.ISimpleURL;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 
 /**
@@ -77,7 +78,7 @@ public final class UnifiedResponseDefaultSettings
   /**
    * @return The non-<code>null</code> header map.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static HttpHeaderMap getResponseHeaderMap ()
   {
@@ -194,7 +195,7 @@ public final class UnifiedResponseDefaultSettings
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public static void setResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public static void setResponseHeader (@NonNull @Nonempty final String sName, @NonNull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -212,7 +213,7 @@ public final class UnifiedResponseDefaultSettings
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public static void addResponseHeader (@Nonnull @Nonempty final String sName, @Nonnull @Nonempty final String sValue)
+  public static void addResponseHeader (@NonNull @Nonempty final String sName, @NonNull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -230,8 +231,8 @@ public final class UnifiedResponseDefaultSettings
    *        Name of the header to be removed. May neither be <code>null</code> nor empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
-  @Nonnull
-  public static EChange removeResponseHeaders (@Nonnull @Nonempty final String sName)
+  @NonNull
+  public static EChange removeResponseHeaders (@NonNull @Nonempty final String sName)
   {
     ValueEnforcer.notEmpty (sName, "Name");
 
@@ -243,7 +244,7 @@ public final class UnifiedResponseDefaultSettings
    *
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange removeAllResponseHeaders ()
   {
     return RW_LOCK.writeLockedGet (RESPONSE_HEADER_MAP::removeAll);
@@ -260,7 +261,7 @@ public final class UnifiedResponseDefaultSettings
   /**
    * @return A copy of all contained cookies. Never <code>null</code> but maybe empty.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
@@ -273,7 +274,7 @@ public final class UnifiedResponseDefaultSettings
    * @param aCookie
    *        The cookie to be added. May not be <code>null</code>.
    */
-  public static void addCookie (@Nonnull final Cookie aCookie)
+  public static void addCookie (@NonNull final Cookie aCookie)
   {
     ValueEnforcer.notNull (aCookie, "Cookie");
 
@@ -289,7 +290,7 @@ public final class UnifiedResponseDefaultSettings
    *        The name of the cookie to be removed. May be <code>null</code>.
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange removeCookie (@Nullable final String sName)
   {
     if (StringHelper.isEmpty (sName))
@@ -303,7 +304,7 @@ public final class UnifiedResponseDefaultSettings
    *
    * @return {@link EChange#CHANGED} if at least one cookie was removed.
    */
-  @Nonnull
+  @NonNull
   public static EChange removeAllCookies ()
   {
     return RW_LOCK.writeLockedGet (COOKIES::removeAll);

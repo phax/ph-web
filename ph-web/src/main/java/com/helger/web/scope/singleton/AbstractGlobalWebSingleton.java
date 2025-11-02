@@ -16,13 +16,13 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is the base class for singleton objects that reside in the global scope.
@@ -42,7 +42,7 @@ public abstract class AbstractGlobalWebSingleton extends AbstractSingleton imple
    *        if it may be <code>null</code>.
    * @return The scope to be used for this type of singleton.
    */
-  @Nonnull
+  @NonNull
   private static IGlobalWebScope _getStaticScope (final boolean bMustBePresent)
   {
     return bMustBePresent ? WebScopeManager.getGlobalScope () : WebScopeManager.getGlobalScopeOrNull ();
@@ -59,8 +59,8 @@ public abstract class AbstractGlobalWebSingleton extends AbstractSingleton imple
    *        be public as needs to have a public no-argument constructor.
    * @return The singleton object and never <code>null</code>.
    */
-  @Nonnull
-  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingleton (@Nonnull final Class <T> aClass)
+  @NonNull
+  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingleton (@NonNull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
@@ -77,7 +77,7 @@ public abstract class AbstractGlobalWebSingleton extends AbstractSingleton imple
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractGlobalWebSingleton> T getGlobalSingletonIfInstantiated (@NonNull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -91,7 +91,7 @@ public abstract class AbstractGlobalWebSingleton extends AbstractSingleton imple
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isGlobalSingletonInstantiated (@Nonnull final Class <? extends AbstractGlobalWebSingleton> aClass)
+  public static final boolean isGlobalSingletonInstantiated (@NonNull final Class <? extends AbstractGlobalWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -102,7 +102,7 @@ public abstract class AbstractGlobalWebSingleton extends AbstractSingleton imple
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current global web scope.
    */
-  @Nonnull
+  @NonNull
   public static final ICommonsList <AbstractGlobalWebSingleton> getAllGlobalSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), AbstractGlobalWebSingleton.class);

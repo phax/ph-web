@@ -19,14 +19,14 @@ package com.helger.web.encoding;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.codec.DecodeException;
 import com.helger.base.codec.impl.RFC1522BCodec;
 import com.helger.base.codec.impl.RFC1522QCodec;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * RFC 2047 Helper. MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header
@@ -58,7 +58,7 @@ public final class RFC2047Helper
   }
 
   @Nullable
-  public static String encode (@Nullable final String sValue, @Nonnull final Charset aCharset)
+  public static String encode (@Nullable final String sValue, @NonNull final Charset aCharset)
   {
     return encode (sValue, aCharset, ECodec.B);
   }
@@ -75,7 +75,7 @@ public final class RFC2047Helper
    * @return Encoded String
    */
   @Nullable
-  public static String encode (@Nullable final String sValue, @Nonnull final Charset aCharset, final ECodec eCodec)
+  public static String encode (@Nullable final String sValue, @NonNull final Charset aCharset, final ECodec eCodec)
   {
     if (sValue == null)
       return null;

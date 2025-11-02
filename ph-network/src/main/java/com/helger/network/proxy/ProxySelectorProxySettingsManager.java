@@ -23,6 +23,8 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +35,6 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * An implementation of {@link ProxySelector} that uses {@link ProxySettingsManager} to fetch the
@@ -77,7 +76,7 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
    */
   @Nullable
   @OverrideOnDemand
-  protected List <Proxy> selectProxies (@Nonnull final URI aURI)
+  protected List <Proxy> selectProxies (@NonNull final URI aURI)
   {
     // 1. search from ProxySettingsManager
     final ICommonsOrderedSet <IProxySettings> aProxySettings = ProxySettingsManager.findAllProxySettings (aURI);
@@ -93,8 +92,8 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
   }
 
   @Override
-  @Nonnull
-  public List <Proxy> select (@Nonnull final URI aURI)
+  @NonNull
+  public List <Proxy> select (@NonNull final URI aURI)
   {
     ValueEnforcer.notNull (aURI, "URI");
 
@@ -126,18 +125,18 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
    *        The I/O exception thrown when the connect failed. Never <code>null</code>.
    * @return {@link EHandled}
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  protected EHandled handleConnectFailed (@Nonnull final URI aURI,
-                                          @Nonnull final SocketAddress aAddr,
-                                          @Nonnull final IOException ex)
+  protected EHandled handleConnectFailed (@NonNull final URI aURI,
+                                          @NonNull final SocketAddress aAddr,
+                                          @NonNull final IOException ex)
   {
     // Logging is done inside
     return ProxySettingsManager.onConnectionFailed (aURI, aAddr, ex);
   }
 
   @Override
-  public void connectFailed (@Nonnull final URI aURI, @Nonnull final SocketAddress aAddr, @Nonnull final IOException ex)
+  public void connectFailed (@NonNull final URI aURI, @NonNull final SocketAddress aAddr, @NonNull final IOException ex)
   {
     ValueEnforcer.notNull (aURI, "URI");
     ValueEnforcer.notNull (aAddr, "SockerAddr");

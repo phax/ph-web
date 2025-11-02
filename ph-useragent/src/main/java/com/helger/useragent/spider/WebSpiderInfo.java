@@ -16,15 +16,15 @@
  */
 package com.helger.useragent.spider;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.equals.EqualsHelper;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.id.IHasID;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Contains information about a single web spider.
@@ -38,12 +38,12 @@ public class WebSpiderInfo implements IHasID <String>
   private EWebSpiderType m_eType;
   private String m_sInfo;
 
-  public WebSpiderInfo (@Nonnull @Nonempty final String sID)
+  public WebSpiderInfo (@NonNull @Nonempty final String sID)
   {
     m_sID = ValueEnforcer.notEmpty (sID, "ID");
   }
 
-  @Nonnull
+  @NonNull
   public final String getID ()
   {
     return m_sID;
@@ -55,7 +55,7 @@ public class WebSpiderInfo implements IHasID <String>
     return m_sName;
   }
 
-  @Nonnull
+  @NonNull
   final WebSpiderInfo setName (@Nullable final String sName)
   {
     m_sName = sName;
@@ -68,7 +68,7 @@ public class WebSpiderInfo implements IHasID <String>
     return m_eType;
   }
 
-  @Nonnull
+  @NonNull
   final WebSpiderInfo setType (@Nullable final EWebSpiderType eType)
   {
     m_eType = eType;
@@ -81,7 +81,7 @@ public class WebSpiderInfo implements IHasID <String>
     return m_sInfo;
   }
 
-  @Nonnull
+  @NonNull
   final WebSpiderInfo setInfo (@Nullable final String sInfo)
   {
     m_sInfo = sInfo;

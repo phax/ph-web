@@ -16,12 +16,13 @@
  */
 package com.helger.web.scope.multipart;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.state.EChange;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.web.scope.impl.RequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,8 +36,8 @@ public class RequestWebScopeMultipart extends RequestWebScope
 {
   private boolean m_bParsedMultipart = false;
 
-  public RequestWebScopeMultipart (@Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse)
+  public RequestWebScopeMultipart (@NonNull final HttpServletRequest aHttpRequest,
+                                   @NonNull final HttpServletResponse aHttpResponse)
   {
     super (aHttpRequest, aHttpResponse);
   }

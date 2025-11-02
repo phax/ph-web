@@ -18,15 +18,15 @@ package com.helger.web.scope.mock;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.cleanup.CleanUpRegistry;
 import com.helger.http.EHttpMethod;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Contains static initialization methods for web scope tests, that makes it a bit easier to use
@@ -52,7 +52,7 @@ public final class WebScopeAwareTestSetup
    *
    * @return Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext createDefaultMockServletContext ()
   {
     return createDefaultMockServletContext (MOCK_CONTEXT_PATH, null);
@@ -67,7 +67,7 @@ public final class WebScopeAwareTestSetup
    *        The initialization context parameters to use. May be <code>null</code>.
    * @return Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext createDefaultMockServletContext (@Nullable final String sContextPath,
                                                                     @Nullable final Map <String, String> aInitParams)
   {
@@ -81,8 +81,8 @@ public final class WebScopeAwareTestSetup
    *        The servlet context to use. May be <code>null</code> but not recommended.
    * @return Never <code>null</code>.
    */
-  @Nonnull
-  public static MockHttpServletRequest createDefaultMockRequest (@Nonnull final MockServletContext aServletContext)
+  @NonNull
+  public static MockHttpServletRequest createDefaultMockRequest (@NonNull final MockServletContext aServletContext)
   {
     return new MockHttpServletRequest (aServletContext, EHttpMethod.GET);
   }

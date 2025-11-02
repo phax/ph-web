@@ -16,11 +16,11 @@
  */
 package com.helger.smtp.transport.listener;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An implementation of {@link IEmailDataTransportListener} that does nothing.
@@ -30,11 +30,11 @@ import jakarta.annotation.Nonnull;
 public class DoNothingTransportListener implements IEmailDataTransportListener
 {
   @Override
-  public void messageDelivered (@Nonnull final EmailDataTransportEvent aEvent)
+  public void messageDelivered (@NonNull final EmailDataTransportEvent aEvent)
   {}
 
   @Override
-  public void messageNotDelivered (@Nonnull final EmailDataTransportEvent aEvent)
+  public void messageNotDelivered (@NonNull final EmailDataTransportEvent aEvent)
   {}
 
   @Override

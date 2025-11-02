@@ -19,6 +19,8 @@ package com.helger.useragent.uaprofile;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +34,6 @@ import com.helger.collection.CollectionFind;
 import com.helger.collection.CollectionHelper;
 import com.helger.collection.commons.CommonsTreeMap;
 import com.helger.collection.commons.ICommonsSortedMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class represents a single UA profile.
@@ -86,7 +85,7 @@ public class UAProfile
     return CollectionHelper.getSize (m_aProfileDiffData);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsSortedMap <Integer, UAProfileDiff> getProfileDiffData ()
   {

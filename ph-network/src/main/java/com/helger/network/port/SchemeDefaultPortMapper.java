@@ -16,6 +16,9 @@
  */
 package com.helger.network.port;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.GuardedBy;
@@ -27,9 +30,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default port mapper. By default it contains the following mappings:
@@ -68,7 +68,7 @@ public final class SchemeDefaultPortMapper
   private SchemeDefaultPortMapper ()
   {}
 
-  public static void registerDefaultPort (@Nonnull @Nonempty final String sSchemeName, @Nonnegative final int nPort)
+  public static void registerDefaultPort (@NonNull @Nonempty final String sSchemeName, @Nonnegative final int nPort)
   {
     ValueEnforcer.notEmpty (sSchemeName, "SchemeName");
     ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), "Invalid port provided");
@@ -104,7 +104,7 @@ public final class SchemeDefaultPortMapper
     return nPort;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsMap <String, Integer> getAll ()
   {

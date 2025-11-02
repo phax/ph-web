@@ -22,12 +22,12 @@ import java.net.ServerSocket;
 
 import javax.net.ServerSocketFactory;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Network protocol enumeration.
@@ -77,7 +77,7 @@ public enum ENetworkProtocol implements IHasID <String>
 
   private final String m_sID;
 
-  ENetworkProtocol (@Nonnull @Nonempty final String sID)
+  ENetworkProtocol (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
@@ -108,7 +108,7 @@ public enum ENetworkProtocol implements IHasID <String>
     return !isPortAvailable (nPort);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {

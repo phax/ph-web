@@ -18,9 +18,9 @@ package com.helger.dns.naptr;
 
 import java.time.Duration;
 
-import com.helger.base.callback.ICallback;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.base.callback.ICallback;
 
 /**
  * Callback interface to be used to notify interested parties when a NAPTR
@@ -43,5 +43,5 @@ public interface INaptrLookupTimeExceededCallback extends ICallback
    *        The duration the execution should not exceed. So the maximum
    *        configured execution time. Always &gt; 0.
    */
-  void onLookupTimeExceeded (@Nonnull String sMsg, @Nonnull Duration aExecutionDuration, @Nonnull Duration aLimitDuration);
+  void onLookupTimeExceeded (@NonNull String sMsg, @NonNull Duration aExecutionDuration, @NonNull Duration aLimitDuration);
 }

@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,6 @@ import com.helger.xservlet.handler.XServletHandlerRegistry;
 import com.helger.xservlet.handler.XServletHandlerTRACE;
 import com.helger.xservlet.servletstatus.ServletStatusManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -193,7 +193,7 @@ public abstract class AbstractXServlet extends HttpServlet
    * @return The handler registry for HTTP method to handler registration. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final XServletHandlerRegistry handlerRegistry ()
   {
@@ -204,7 +204,7 @@ public abstract class AbstractXServlet extends HttpServlet
    * @return The internal filter list where custom filters can be added. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final ICommonsList <IXServletLowLevelFilter> filterLowLevelList ()
   {
@@ -215,7 +215,7 @@ public abstract class AbstractXServlet extends HttpServlet
    * @return The internal filter list where custom filters can be added. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final ICommonsList <IXServletHighLevelFilter> filterHighLevelList ()
   {
@@ -225,7 +225,7 @@ public abstract class AbstractXServlet extends HttpServlet
   /**
    * @return The internal exception handler list. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final CallbackList <IXServletExceptionHandler> exceptionHandler ()
   {
@@ -244,7 +244,7 @@ public abstract class AbstractXServlet extends HttpServlet
    * @return The servlet status manager stored in the constructor. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   protected final ServletStatusManager getServletStatusMgr ()
   {
     return m_aStatusMgr;
@@ -268,7 +268,7 @@ public abstract class AbstractXServlet extends HttpServlet
    * A final overload of "init". Overload "init" instead.
    */
   @Override
-  public final void init (@Nonnull final ServletConfig aSC) throws ServletException
+  public final void init (@NonNull final ServletConfig aSC) throws ServletException
   {
     // this indirectly calls "init()"
     super.init (aSC);
@@ -309,11 +309,11 @@ public abstract class AbstractXServlet extends HttpServlet
     super.destroy ();
   }
 
-  private void _invokeHandler (@Nonnull final HttpServletRequest aHttpRequest,
-                               @Nonnull final HttpServletResponse aHttpResponse,
-                               @Nonnull final EHttpVersion eHttpVersion,
-                               @Nonnull final EHttpMethod eHttpMethod,
-                               @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  private void _invokeHandler (@NonNull final HttpServletRequest aHttpRequest,
+                               @NonNull final HttpServletResponse aHttpResponse,
+                               @NonNull final EHttpVersion eHttpVersion,
+                               @NonNull final EHttpMethod eHttpMethod,
+                               @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     // HTTP version and method are valid
     m_aCounterRequestsAccepted.increment ();
@@ -425,7 +425,7 @@ public abstract class AbstractXServlet extends HttpServlet
    *        The current HTTP request. May not be <code>null</code>.
    */
   @OverrideOnDemand
-  protected void logInvalidRequestSetup (@Nonnull final String sMsg, @Nonnull final HttpServletRequest aHttpRequest)
+  protected void logInvalidRequestSetup (@NonNull final String sMsg, @NonNull final HttpServletRequest aHttpRequest)
   {
     log (sMsg + ":\n" + RequestLogger.getRequestDebugString (aHttpRequest).toString ());
   }
@@ -448,8 +448,8 @@ public abstract class AbstractXServlet extends HttpServlet
    * @see jakarta.servlet.Servlet#service
    */
   @Override
-  protected final void service (@Nonnull final HttpServletRequest aHttpRequest,
-                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
+  protected final void service (@NonNull final HttpServletRequest aHttpRequest,
+                                @NonNull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
     // Increase counter
     m_aCounterRequestsTotal.increment ();
@@ -588,7 +588,7 @@ public abstract class AbstractXServlet extends HttpServlet
 
   // Avoid overloading in sub classes
   @Override
-  public final void service (@Nonnull final ServletRequest req, @Nonnull final ServletResponse res)
+  public final void service (@NonNull final ServletRequest req, @NonNull final ServletResponse res)
                                                                                                     throws ServletException,
                                                                                                     IOException
   {

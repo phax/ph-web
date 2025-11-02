@@ -20,14 +20,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.MustImplementEqualsAndHashcode;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is the base class for singleton objects that reside in the session web
@@ -42,12 +42,12 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
   protected AbstractSessionWebSingleton ()
   {}
 
-  private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
+  private void writeObject (@NonNull final ObjectOutputStream aOOS) throws IOException
   {
     writeAbstractSingletonFields (aOOS);
   }
 
-  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
+  private void readObject (@NonNull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
   {
     readAbstractSingletonFields (aOIS);
   }
@@ -58,7 +58,7 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
    *        existing, <code>false</code> if not.
    * @return The scope to be used for this type of singleton.
    */
-  @Nonnull
+  @NonNull
   private static ISessionWebScope _getStaticScope (final boolean bCreateIfNotExisting)
   {
     return WebScopeManager.getSessionScope (bCreateIfNotExisting);
@@ -75,8 +75,8 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
    *        be public as needs to have a public no-argument constructor.
    * @return The singleton object and never <code>null</code>.
    */
-  @Nonnull
-  public static final <T extends AbstractSessionWebSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
+  @NonNull
+  public static final <T extends AbstractSessionWebSingleton> T getSessionSingleton (@NonNull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
@@ -93,7 +93,7 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends AbstractSessionWebSingleton> T getSessionSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractSessionWebSingleton> T getSessionSingletonIfInstantiated (@NonNull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -107,7 +107,7 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isSessionSingletonInstantiated (@Nonnull final Class <? extends AbstractSessionWebSingleton> aClass)
+  public static final boolean isSessionSingletonInstantiated (@NonNull final Class <? extends AbstractSessionWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -118,7 +118,7 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current session web scope.
    */
-  @Nonnull
+  @NonNull
   public static final ICommonsList <AbstractSessionWebSingleton> getAllSessionSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), AbstractSessionWebSingleton.class);

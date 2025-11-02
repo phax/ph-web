@@ -19,11 +19,12 @@ package com.helger.servlet.mock;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletInputStream;
 
 /**
@@ -36,12 +37,12 @@ public class MockServletInputStream extends AbstractServletInputStream
 {
   private final InputStream m_aIS;
 
-  public MockServletInputStream (@Nonnull final byte [] aContent)
+  public MockServletInputStream (@NonNull final byte [] aContent)
   {
     this (new NonBlockingByteArrayInputStream (aContent));
   }
 
-  public MockServletInputStream (@Nonnull final InputStream aBaseIS)
+  public MockServletInputStream (@NonNull final InputStream aBaseIS)
   {
     m_aIS = ValueEnforcer.notNull (aBaseIS, "BaseInputStream");
   }

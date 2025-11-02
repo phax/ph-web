@@ -16,6 +16,8 @@
  */
 package com.helger.web.scope.util;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -23,8 +25,6 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Abstract base class for request field data classes.
@@ -43,7 +43,7 @@ public abstract class AbstractRequestFieldData
    * @param sFieldName
    *        The field name to use. May neither be <code>null</code> nor empty.
    */
-  public AbstractRequestFieldData (@Nonnull @Nonempty final String sFieldName)
+  public AbstractRequestFieldData (@NonNull @Nonempty final String sFieldName)
   {
     m_sFieldName = ValueEnforcer.notEmpty (sFieldName, "FieldName");
   }
@@ -51,7 +51,7 @@ public abstract class AbstractRequestFieldData
   /**
    * @return The field name of this request field
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public final String getFieldName ()
   {
@@ -63,7 +63,7 @@ public abstract class AbstractRequestFieldData
    *
    * @return The current request scope to use.
    */
-  @Nonnull
+  @NonNull
   protected static final IRequestParamContainer getParams ()
   {
     return WebScopeManager.getRequestScope ().params ();

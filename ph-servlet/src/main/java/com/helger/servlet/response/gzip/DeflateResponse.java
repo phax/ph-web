@@ -20,12 +20,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.DeflaterOutputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -33,9 +34,9 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
 {
   public static class DeflateServletOutputStream extends AbstractCompressedServletOutputStream
   {
-    public DeflateServletOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                       @Nonnull final HttpServletResponse aHttpResponse,
-                                       @Nonnull final String sContentEncoding,
+    public DeflateServletOutputStream (@NonNull final HttpServletRequest aHttpRequest,
+                                       @NonNull final HttpServletResponse aHttpResponse,
+                                       @NonNull final String sContentEncoding,
                                        final long nContentLength,
                                        @Nonnegative final long nMinCompressSize) throws IOException
     {
@@ -43,8 +44,8 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
     }
 
     @Override
-    @Nonnull
-    protected DeflaterOutputStream createDeflaterOutputStream (@Nonnull final OutputStream aOS)
+    @NonNull
+    protected DeflaterOutputStream createDeflaterOutputStream (@NonNull final OutputStream aOS)
     {
       return new DeflaterOutputStream (aOS);
     }
@@ -52,19 +53,19 @@ public final class DeflateResponse extends AbstractCompressedResponseWrapper
 
   private static final IMutableStatisticsHandlerCounter STATS_COUNTER_DEFLATE = StatisticsManager.getCounterHandler (DeflateResponse.class);
 
-  public DeflateResponse (@Nonnull final HttpServletRequest aHttpRequest,
-                          @Nonnull final HttpServletResponse aHttpResponse,
-                          @Nonnull final String sContentEncoding)
+  public DeflateResponse (@NonNull final HttpServletRequest aHttpRequest,
+                          @NonNull final HttpServletResponse aHttpResponse,
+                          @NonNull final String sContentEncoding)
   {
     super (aHttpRequest, aHttpResponse, sContentEncoding);
     STATS_COUNTER_DEFLATE.increment ();
   }
 
   @Override
-  @Nonnull
-  protected DeflateServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                                     @Nonnull final HttpServletResponse aHttpResponse,
-                                                                     @Nonnull @Nonempty final String sContentEncoding,
+  @NonNull
+  protected DeflateServletOutputStream createCompressedOutputStream (@NonNull final HttpServletRequest aHttpRequest,
+                                                                     @NonNull final HttpServletResponse aHttpResponse,
+                                                                     @NonNull @Nonempty final String sContentEncoding,
                                                                      final long nContentLength,
                                                                      @Nonnegative final long nMinCompressSize) throws IOException
   {

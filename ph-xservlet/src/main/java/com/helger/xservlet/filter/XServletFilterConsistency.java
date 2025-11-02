@@ -18,6 +18,8 @@ package com.helger.xservlet.filter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +36,6 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -82,11 +82,11 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
     return SILENT_MODE.getAndSet (bSilentMode);
   }
 
-  @Nonnull
-  public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                  @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod)
+  @NonNull
+  public EContinue beforeRequest (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse,
+                                  @NonNull final EHttpVersion eHttpVersion,
+                                  @NonNull final EHttpMethod eHttpMethod)
   {
     return EContinue.CONTINUE;
   }
@@ -100,9 +100,9 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkStatusCode (@Nonnull final String sRequestURL,
+  protected void checkStatusCode (@NonNull final String sRequestURL,
                                   final int nStatusCode,
-                                  @Nonnull final EHttpMethod eHttpMethod)
+                                  @NonNull final EHttpMethod eHttpMethod)
   {
     // < 200 || >= 400?
     if (nStatusCode < CHttp.HTTP_OK || nStatusCode >= CHttp.HTTP_BAD_REQUEST)
@@ -135,10 +135,10 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkCharacterEncoding (@Nonnull final String sRequestURL,
+  protected void checkCharacterEncoding (@NonNull final String sRequestURL,
                                          @Nullable final String sCharacterEncoding,
                                          final int nStatusCode,
-                                         @Nonnull final EHttpMethod eHttpMethod)
+                                         @NonNull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.isEmpty (sCharacterEncoding) && _isContentExpected (nStatusCode))
       if (!isSilentMode ())
@@ -162,10 +162,10 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkContentType (@Nonnull final String sRequestURL,
+  protected void checkContentType (@NonNull final String sRequestURL,
                                    @Nullable final String sContentType,
                                    final int nStatusCode,
-                                   @Nonnull final EHttpMethod eHttpMethod)
+                                   @NonNull final EHttpMethod eHttpMethod)
   {
     if (StringHelper.isEmpty (sContentType) && _isContentExpected (nStatusCode))
       if (!isSilentMode ())
@@ -189,10 +189,10 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
    *        Used HTTP Method
    */
   @OverrideOnDemand
-  protected void checkHeaders (@Nonnull final String sRequestURL,
-                               @Nonnull final HttpHeaderMap aHeaders,
+  protected void checkHeaders (@NonNull final String sRequestURL,
+                               @NonNull final HttpHeaderMap aHeaders,
                                final int nStatusCode,
-                               @Nonnull final EHttpMethod eHttpMethod)
+                               @NonNull final EHttpMethod eHttpMethod)
   {
     // Happens because of the default headers in the
     // UnifiedResponseDefaultSettings
@@ -210,10 +210,10 @@ public class XServletFilterConsistency implements IXServletLowLevelFilter
   }
 
   @Override
-  public void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final EHttpVersion eHttpVersion,
-                            @Nonnull final EHttpMethod eHttpMethod,
+  public void afterRequest (@NonNull final HttpServletRequest aHttpRequest,
+                            @NonNull final HttpServletResponse aHttpResponse,
+                            @NonNull final EHttpVersion eHttpVersion,
+                            @NonNull final EHttpMethod eHttpMethod,
                             final boolean bInvokeHandler,
                             @Nullable final Throwable aCaughtException,
                             final boolean bIsHandledAsync)

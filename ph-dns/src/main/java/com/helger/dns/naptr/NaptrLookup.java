@@ -21,6 +21,8 @@ import java.time.Duration;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ExtendedResolver;
@@ -41,9 +43,6 @@ import com.helger.base.timing.StopWatch;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.resolve.ResolverHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A new flexible class to perform NAPTR DNS lookups.
@@ -94,11 +93,11 @@ public class NaptrLookup
   private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers;
   private final boolean m_bDebugMode;
 
-  public NaptrLookup (@Nonnull final Name aDomainName,
+  public NaptrLookup (@NonNull final Name aDomainName,
                       @Nullable final ICommonsList <InetAddress> aCustomDNSServers,
                       @Nonnegative final int nMaxRetries,
                       @Nullable final Duration aTimeout,
-                      @Nonnull final ELookupNetworkMode eLookupMode,
+                      @NonNull final ELookupNetworkMode eLookupMode,
                       @Nullable final Duration aExecutionDurationWarn,
                       @Nullable final CallbackList <INaptrLookupTimeExceededCallback> aExecutionTimeExceededHandlers,
                       final boolean bDebugMode)
@@ -122,7 +121,7 @@ public class NaptrLookup
    *
    * @return A never <code>null</code> but maybe empty list of records.
    */
-  @Nonnull
+  @NonNull
   public ICommonsList <NAPTRRecord> lookup ()
   {
     // Omit the final dot
@@ -239,10 +238,10 @@ public class NaptrLookup
     }
   }
 
-  @Nonnull
-  public static Builder builder ()
+  @NonNull
+  public static NaptrLookupBuilder builder ()
   {
-    return new Builder ();
+    return new NaptrLookupBuilder ();
   }
 
   /**
@@ -251,7 +250,7 @@ public class NaptrLookup
    * @author Philip Helger
    */
   @NotThreadSafe
-  public static class Builder implements IBuilder <NaptrLookup>
+  public static class NaptrLookupBuilder implements IBuilder <NaptrLookup>
   {
     public static final int DEFAULT_MAX_RETRIES = 1;
     public static final Duration DEFAULT_EXECUTION_DURATION_WARN = Duration.ofSeconds (1);
@@ -266,7 +265,7 @@ public class NaptrLookup
     private ELookupNetworkMode m_eLookupMode = DEFAULT_LOOKUP_MODE;
     private boolean m_bDebugMode;
 
-    public Builder ()
+    public NaptrLookupBuilder ()
     {
       // add a default handler
       m_aExecutionTimeExceededHandlers.add (new LoggingNaptrLookupTimeExceededCallback (false));
@@ -285,21 +284,21 @@ public class NaptrLookup
       return m_aDomainName == null ? null : m_aDomainName.toString (false);
     }
 
-    @Nonnull
-    public final Builder domainName (@Nullable final String s) throws TextParseException
+    @NonNull
+    public final NaptrLookupBuilder domainName (@Nullable final String s) throws TextParseException
     {
       return domainName (Name.fromString (s));
     }
 
-    @Nonnull
-    public final Builder domainName (@Nullable final Name a)
+    @NonNull
+    public final NaptrLookupBuilder domainName (@Nullable final Name a)
     {
       m_aDomainName = a;
       return this;
     }
 
-    @Nonnull
-    public final Builder customDNSServer (@Nullable final InetAddress a)
+    @NonNull
+    public final NaptrLookupBuilder customDNSServer (@Nullable final InetAddress a)
     {
       if (a == null)
         m_aCustomDNSServers.clear ();
@@ -308,8 +307,8 @@ public class NaptrLookup
       return this;
     }
 
-    @Nonnull
-    public final Builder customDNSServers (@Nullable final InetAddress... a)
+    @NonNull
+    public final NaptrLookupBuilder customDNSServers (@Nullable final InetAddress... a)
     {
       if (a == null)
         m_aCustomDNSServers.clear ();
@@ -318,8 +317,8 @@ public class NaptrLookup
       return this;
     }
 
-    @Nonnull
-    public final Builder customDNSServers (@Nullable final Iterable <? extends InetAddress> a)
+    @NonNull
+    public final NaptrLookupBuilder customDNSServers (@Nullable final Iterable <? extends InetAddress> a)
     {
       if (a == null)
         m_aCustomDNSServers.clear ();
@@ -328,92 +327,92 @@ public class NaptrLookup
       return this;
     }
 
-    @Nonnull
-    public final Builder addCustomDNSServer (@Nullable final InetAddress a)
+    @NonNull
+    public final NaptrLookupBuilder addCustomDNSServer (@Nullable final InetAddress a)
     {
       if (a != null)
         m_aCustomDNSServers.add (a);
       return this;
     }
 
-    @Nonnull
-    public final Builder addCustomDNSServers (@Nullable final InetAddress... a)
+    @NonNull
+    public final NaptrLookupBuilder addCustomDNSServers (@Nullable final InetAddress... a)
     {
       if (a != null)
         m_aCustomDNSServers.addAll (a);
       return this;
     }
 
-    @Nonnull
-    public final Builder addCustomDNSServers (@Nullable final Iterable <? extends InetAddress> a)
+    @NonNull
+    public final NaptrLookupBuilder addCustomDNSServers (@Nullable final Iterable <? extends InetAddress> a)
     {
       if (a != null)
         m_aCustomDNSServers.addAll (a);
       return this;
     }
 
-    @Nonnull
-    public final Builder maxRetries (final int n)
+    @NonNull
+    public final NaptrLookupBuilder maxRetries (final int n)
     {
       m_nMaxRetries = n;
       return this;
     }
 
-    @Nonnull
-    public final Builder noRetries ()
+    @NonNull
+    public final NaptrLookupBuilder noRetries ()
     {
       return maxRetries (0);
     }
 
-    @Nonnull
-    public final Builder timeoutMS (final long n)
+    @NonNull
+    public final NaptrLookupBuilder timeoutMS (final long n)
     {
       return timeout (n < 0 ? null : Duration.ofMillis (n));
     }
 
-    @Nonnull
-    public final Builder timeout (@Nullable final Duration a)
+    @NonNull
+    public final NaptrLookupBuilder timeout (@Nullable final Duration a)
     {
       m_aTimeout = a;
       return this;
     }
 
-    @Nonnull
-    public final Builder lookupMode (@Nullable final ELookupNetworkMode e)
+    @NonNull
+    public final NaptrLookupBuilder lookupMode (@Nullable final ELookupNetworkMode e)
     {
       m_eLookupMode = e;
       return this;
     }
 
-    @Nonnull
-    public final Builder executionDurationWarnMS (final long nMillis)
+    @NonNull
+    public final NaptrLookupBuilder executionDurationWarnMS (final long nMillis)
     {
       return executionDurationWarn (nMillis < 0 ? null : Duration.ofMillis (nMillis));
     }
 
-    @Nonnull
-    public final Builder executionDurationWarn (@Nullable final Duration a)
+    @NonNull
+    public final NaptrLookupBuilder executionDurationWarn (@Nullable final Duration a)
     {
       m_aExecutionDurationWarn = a;
       return this;
     }
 
-    @Nonnull
-    public final Builder addExecutionTimeExceededHandler (@Nullable final INaptrLookupTimeExceededCallback a)
+    @NonNull
+    public final NaptrLookupBuilder addExecutionTimeExceededHandler (@Nullable final INaptrLookupTimeExceededCallback a)
     {
       if (a != null)
         m_aExecutionTimeExceededHandlers.add (a);
       return this;
     }
 
-    @Nonnull
-    public final Builder debugMode (final boolean b)
+    @NonNull
+    public final NaptrLookupBuilder debugMode (final boolean b)
     {
       m_bDebugMode = b;
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public NaptrLookup build ()
     {
       if (m_aDomainName == null)
@@ -433,7 +432,7 @@ public class NaptrLookup
                               m_bDebugMode);
     }
 
-    @Nonnull
+    @NonNull
     public ICommonsList <NAPTRRecord> lookup ()
     {
       return build ().lookup ();

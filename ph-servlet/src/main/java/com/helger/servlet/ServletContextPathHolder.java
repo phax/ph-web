@@ -18,6 +18,8 @@ package com.helger.servlet;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +28,6 @@ import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.debug.GlobalDebug;
 import com.helger.base.enforce.ValueEnforcer;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletContext;
 
 /**
@@ -62,7 +62,7 @@ public final class ServletContextPathHolder
     return SILENT_MODE.getAndSet (bSilentMode);
   }
 
-  public static void setServletContextPath (@Nonnull final String sServletContextPath)
+  public static void setServletContextPath (@NonNull final String sServletContextPath)
   {
     ValueEnforcer.notNull (sServletContextPath, "ServletContextPath");
     if (s_sServletContextPath == null)
@@ -118,7 +118,7 @@ public final class ServletContextPathHolder
    *        The context path of the web application, or "" for the default
    *        (root) context. May not be <code>null</code>.
    */
-  public static void setCustomContextPath (@Nonnull final String sCustomContextPath)
+  public static void setCustomContextPath (@NonNull final String sCustomContextPath)
   {
     ValueEnforcer.notNull (sCustomContextPath, "CustomContextPath");
     if (s_sCustomContextPath == null)
@@ -223,7 +223,7 @@ public final class ServletContextPathHolder
    * @see #getCustomContextPath()
    * @see #getServletContextPath()
    */
-  @Nonnull
+  @NonNull
   public static String getContextPath ()
   {
     final String ret = getContextPathOrNull ();

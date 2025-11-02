@@ -21,13 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.protocol.HttpContext;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.concurrent.Immutable;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Some debugging for HTTP requests. Currently used in
@@ -62,7 +61,7 @@ public final class HttpDebugger
    * @param aHttpContext
    *        The special HTTP content for this call. May be <code>null</code>.
    */
-  public static void beforeRequest (@Nonnull final ClassicHttpRequest aRequest,
+  public static void beforeRequest (@NonNull final ClassicHttpRequest aRequest,
                                     @Nullable final HttpContext aHttpContext)
   {
     if (isEnabled ())
@@ -84,7 +83,7 @@ public final class HttpDebugger
    *        The caught exception. May be <code>null</code>.
    * @since 8.8.2
    */
-  public static void afterRequest (@Nonnull final ClassicHttpRequest aRequest,
+  public static void afterRequest (@NonNull final ClassicHttpRequest aRequest,
                                    @Nullable final Object aResponse,
                                    @Nullable final Throwable aCaughtException)
   {

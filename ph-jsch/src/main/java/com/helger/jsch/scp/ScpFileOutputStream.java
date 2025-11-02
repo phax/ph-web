@@ -19,16 +19,16 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
 
 public class ScpFileOutputStream extends OutputStream
 {
   private final ScpOutputStream m_aOS;
 
-  ScpFileOutputStream (@Nonnull final ISessionFactory aSessionFactory,
+  ScpFileOutputStream (@NonNull final ISessionFactory aSessionFactory,
                        final String sDirectory,
                        final ScpEntry aScpEntry) throws JSchException, IOException
   {

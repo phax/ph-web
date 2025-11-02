@@ -17,6 +17,8 @@
 package com.helger.httpclient;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +27,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.url.IURLDownloader;
 import com.helger.httpclient.response.ResponseHandlerByteArray;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Special implementation of {@link IURLDownloader} to download data using Apache HttpClient via GET
@@ -48,7 +47,7 @@ public class HttpClientUrlDownloader implements IURLDownloader
    * @param aHCS
    *        The {@link HttpClientSettings} to use. Must not be <code>null</code>.
    */
-  public HttpClientUrlDownloader (@Nonnull final HttpClientSettings aHCS)
+  public HttpClientUrlDownloader (@NonNull final HttpClientSettings aHCS)
   {
     this (new HttpClientFactory (aHCS));
   }
@@ -59,14 +58,14 @@ public class HttpClientUrlDownloader implements IURLDownloader
    * @param aHCF
    *        The {@link HttpClientFactory} to use. Must not be <code>null</code>.
    */
-  public HttpClientUrlDownloader (@Nonnull final HttpClientFactory aHCF)
+  public HttpClientUrlDownloader (@NonNull final HttpClientFactory aHCF)
   {
     ValueEnforcer.notNull (aHCF, "HttpClientFactory");
     m_aHCF = aHCF;
   }
 
   @Nullable
-  public byte [] downloadURL (@Nonnull @Nonempty final String sURL) throws Exception
+  public byte [] downloadURL (@NonNull @Nonempty final String sURL) throws Exception
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Trying to download via HttpClient from '" + sURL + "'");

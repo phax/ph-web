@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.WillNotClose;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -29,9 +32,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.io.stream.StreamHelper;
 import com.helger.io.file.FileHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * An output stream which will retain data in memory until a specified threshold
@@ -82,7 +82,7 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    * @param aOutputFile
    *        The file to which data is saved beyond the threshold.
    */
-  public DeferredFileOutputStream (@Nonnegative final int nThreshold, @Nonnull final File aOutputFile)
+  public DeferredFileOutputStream (@Nonnegative final int nThreshold, @NonNull final File aOutputFile)
   {
     super (nThreshold);
     m_aOutputFile = ValueEnforcer.notNull (aOutputFile, "OutputFile");
@@ -202,7 +202,7 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    * @return The file for this output stream, or <code>null</code> if no such
    *         file exists.
    */
-  @Nonnull
+  @NonNull
   public File getFile ()
   {
     return m_aOutputFile;
@@ -230,7 +230,7 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
    * @exception IOException
    *            if this stream is not yet closed or an error occurs.
    */
-  public void writeTo (@Nonnull @WillNotClose final OutputStream aOS) throws IOException
+  public void writeTo (@NonNull @WillNotClose final OutputStream aOS) throws IOException
   {
     // we may only need to check if this is closed if we are working with a file
     // but we should force the habit of closing whether we are working with

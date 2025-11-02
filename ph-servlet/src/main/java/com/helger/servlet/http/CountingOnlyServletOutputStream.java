@@ -18,11 +18,11 @@ package com.helger.servlet.http;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.servlet.io.AbstractServletOutputStream;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Servlet output stream that gobbles up all its data.
@@ -50,7 +50,7 @@ public class CountingOnlyServletOutputStream extends AbstractServletOutputStream
   }
 
   @Override
-  public void write (@Nonnull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public void write (@NonNull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
   {
     ValueEnforcer.isArrayOfsLen (aBuf, nOfs, nLen);
     m_nContentLength += nLen;

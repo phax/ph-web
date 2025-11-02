@@ -18,6 +18,9 @@ package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.annotation.style.ReturnsMutableObject;
@@ -30,9 +33,6 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.typeconvert.collection.StringMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of the {@link IMutableEmailData} interface. Note: the
@@ -56,19 +56,19 @@ public class EmailData implements IMutableEmailData
   private IMutableEmailAttachmentList m_aAttachments;
   private final StringMap m_aCustomAttrs = new StringMap ();
 
-  public EmailData (@Nonnull final EEmailType eEmailType)
+  public EmailData (@NonNull final EEmailType eEmailType)
   {
     setEmailType (eEmailType);
   }
 
-  @Nonnull
+  @NonNull
   public EEmailType getEmailType ()
   {
     return m_eEmailType;
   }
 
-  @Nonnull
-  public final EmailData setEmailType (@Nonnull final EEmailType eEmailType)
+  @NonNull
+  public final EmailData setEmailType (@NonNull final EEmailType eEmailType)
   {
     ValueEnforcer.notNull (eEmailType, "EmailType");
     m_eEmailType = eEmailType;
@@ -81,42 +81,42 @@ public class EmailData implements IMutableEmailData
     return m_aFrom;
   }
 
-  @Nonnull
+  @NonNull
   public final EmailData setFrom (@Nullable final IEmailAddress sFrom)
   {
     m_aFrom = sFrom;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsList <IEmailAddress> replyTo ()
   {
     return m_aReplyTo;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsList <IEmailAddress> to ()
   {
     return m_aTo;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsList <IEmailAddress> cc ()
   {
     return m_aCc;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsList <IEmailAddress> bcc ()
   {
     return m_aBcc;
   }
 
-  @Nonnull
+  @NonNull
   public final EmailData setSentDateTime (@Nullable final LocalDateTime aSentDateTime)
   {
     m_aSentDateTime = PDTFactory.getWithMillisOnly (aSentDateTime);
@@ -129,7 +129,7 @@ public class EmailData implements IMutableEmailData
     return m_aSentDateTime;
   }
 
-  @Nonnull
+  @NonNull
   public final EmailData setSubject (@Nullable final String sSubject)
   {
     m_sSubject = sSubject;
@@ -142,7 +142,7 @@ public class EmailData implements IMutableEmailData
     return m_sSubject;
   }
 
-  @Nonnull
+  @NonNull
   public final EmailData setBody (@Nullable final String sBody)
   {
     m_sBody = sBody;
@@ -161,7 +161,7 @@ public class EmailData implements IMutableEmailData
     return m_aAttachments;
   }
 
-  @Nonnull
+  @NonNull
   public final EmailData setAttachments (@Nullable final IEmailAttachmentList aAttachments)
   {
     if (aAttachments != null && !aAttachments.isEmpty ())
@@ -171,7 +171,7 @@ public class EmailData implements IMutableEmailData
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public StringMap attrs ()
   {
@@ -248,8 +248,8 @@ public class EmailData implements IMutableEmailData
    *        Any attachments to use. May be <code>null</code>.
    * @return The created {@link EmailData} and never <code>null</code>.
    */
-  @Nonnull
-  public static EmailData createEmailData (@Nonnull final EEmailType eEmailType,
+  @NonNull
+  public static EmailData createEmailData (@NonNull final EEmailType eEmailType,
                                            @Nullable final IEmailAddress aSender,
                                            @Nullable final IEmailAddress aReceiver,
                                            @Nullable final String sSubject,

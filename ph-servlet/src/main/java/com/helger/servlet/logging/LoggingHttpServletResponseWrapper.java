@@ -22,12 +22,13 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.charset.CharsetHelper;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.io.stream.StreamHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,47 +39,47 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   private final LoggingServletOutpuStream m_aOS = new LoggingServletOutpuStream ();
   private final HttpServletResponse m_aDelegate;
 
-  public LoggingHttpServletResponseWrapper (@Nonnull final HttpServletResponse aDelegate)
+  public LoggingHttpServletResponseWrapper (@NonNull final HttpServletResponse aDelegate)
   {
     super (aDelegate);
     m_aDelegate = aDelegate;
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public ServletOutputStream getOutputStream () throws IOException
   {
     return m_aOS;
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public PrintWriter getWriter () throws IOException
   {
     return new PrintWriter (StreamHelper.createWriter (m_aOS.m_aBAOS, _getCharset ()));
   }
 
-  @Nonnull
+  @NonNull
   private Charset _getCharset ()
   {
     final String sResponseEncoding = m_aDelegate.getCharacterEncoding ();
     return CharsetHelper.getCharsetFromNameOrDefault (sResponseEncoding, StandardCharsets.UTF_8);
   }
 
-  @Nonnull
+  @NonNull
   public String getContentAsString ()
   {
     return m_aOS.m_aBAOS.getAsString (_getCharset ());
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public byte [] getContentAsBytes ()
   {
     return m_aOS.m_aBAOS.toByteArray ();
   }
 
-  public void writeContentTo (@Nonnull final OutputStream aOS) throws IOException
+  public void writeContentTo (@NonNull final OutputStream aOS) throws IOException
   {
     if (!m_aDelegate.isCommitted () && m_aOS.m_aBAOS.isNotEmpty ())
       m_aOS.m_aBAOS.writeTo (aOS);

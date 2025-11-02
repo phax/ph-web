@@ -20,6 +20,8 @@ import java.security.cert.X509Certificate;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +56,6 @@ import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 import com.helger.url.ISimpleURL;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -119,8 +119,8 @@ public final class RequestHelper
    *        The value to strip the session ID from. May not be <code>null</code>.
    * @return The value without a session ID or the original string.
    */
-  @Nonnull
-  public static String getWithoutSessionID (@Nonnull final String sValue)
+  @NonNull
+  public static String getWithoutSessionID (@NonNull final String sValue)
   {
     ValueEnforcer.notNull (sValue, "Value");
 
@@ -137,8 +137,8 @@ public final class RequestHelper
    *        The value to strip the session ID from the path
    * @return The value without a session ID or the original string.
    */
-  @Nonnull
-  public static ISimpleURL getWithoutSessionID (@Nonnull final ISimpleURL aURL)
+  @NonNull
+  public static ISimpleURL getWithoutSessionID (@NonNull final ISimpleURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
     // Strip the parameter from the path, but keep parameters and anchor intact!
@@ -156,7 +156,7 @@ public final class RequestHelper
    * @return The session ID of the value or <code>null</code> if no session ID is present.
    */
   @Nullable
-  public static String getSessionID (@Nonnull final String sValue)
+  public static String getSessionID (@NonNull final String sValue)
   {
     ValueEnforcer.notNull (sValue, "Value");
 
@@ -175,7 +175,7 @@ public final class RequestHelper
    * @return The session ID of the value or <code>null</code> if no session ID is present.
    */
   @Nullable
-  public static String getSessionID (@Nonnull final ISimpleURL aURL)
+  public static String getSessionID (@NonNull final ISimpleURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
 
@@ -211,8 +211,8 @@ public final class RequestHelper
    * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
-  @Nonnull
-  public static String getRequestURIDecoded (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static String getRequestURIDecoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -260,8 +260,8 @@ public final class RequestHelper
    * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
-  @Nonnull
-  public static String getRequestURIEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static String getRequestURIEncoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -295,7 +295,7 @@ public final class RequestHelper
    *         query string and will start with a "/" character. The optional session ID is stripped.
    */
   @Nullable
-  public static String getPathInfo (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getPathInfo (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -314,8 +314,8 @@ public final class RequestHelper
    * @return the path within the web application and never <code>null</code>. By default "/" is
    *         returned is an empty request URI is determined.
    */
-  @Nonnull
-  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static String getPathWithinServletContext (@NonNull final HttpServletRequest aHttpRequest)
   {
     // false for backwards compatibility
     return getPathWithinServletContext (aHttpRequest, false);
@@ -333,8 +333,8 @@ public final class RequestHelper
    *         returned is an empty request URI is determined.
    * @since 9.1.10
    */
-  @Nonnull
-  public static String getPathWithinServletContext (@Nonnull final HttpServletRequest aHttpRequest,
+  @NonNull
+  public static String getPathWithinServletContext (@NonNull final HttpServletRequest aHttpRequest,
                                                     final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
@@ -371,8 +371,8 @@ public final class RequestHelper
    *        current HTTP request
    * @return the path within the servlet mapping, or ""
    */
-  @Nonnull
-  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static String getPathWithinServlet (@NonNull final HttpServletRequest aHttpRequest)
   {
     // false for backwards compatibility
     return getPathWithinServlet (aHttpRequest, false);
@@ -395,8 +395,8 @@ public final class RequestHelper
    * @return the path within the servlet mapping, or ""
    * @since 9.1.10
    */
-  @Nonnull
-  public static String getPathWithinServlet (@Nonnull final HttpServletRequest aHttpRequest,
+  @NonNull
+  public static String getPathWithinServlet (@NonNull final HttpServletRequest aHttpRequest,
                                              final boolean bUseEncodedPath)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
@@ -431,9 +431,9 @@ public final class RequestHelper
    * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static StringBuilder getRequestURLDecoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static StringBuilder getRequestURLDecoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -459,9 +459,9 @@ public final class RequestHelper
    * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static StringBuilder getRequestURLEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static StringBuilder getRequestURLEncoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -482,9 +482,9 @@ public final class RequestHelper
    *      and name.
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getURLDecoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getURLDecoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -511,9 +511,9 @@ public final class RequestHelper
    * @since 9.1.10
    */
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getURLEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getURLEncoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -539,9 +539,9 @@ public final class RequestHelper
    * @see #getURLDecoded(HttpServletRequest) getURL to retrieve the absolute URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getURIDecoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getURIDecoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -567,9 +567,9 @@ public final class RequestHelper
    * @see #getURLDecoded(HttpServletRequest) getURL to retrieve the absolute URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getURIEncoded (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getURIEncoded (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -588,7 +588,7 @@ public final class RequestHelper
   }
 
   @CheckForSigned
-  public static int getServerPortToUse (@Nonnull final String sScheme, @CheckForSigned final int nServerPort)
+  public static int getServerPortToUse (@NonNull final String sScheme, @CheckForSigned final int nServerPort)
   {
     // URL.getPort() delivers -1 for unspecified ports
     if (!NetworkPortHelper.isValidPort (nServerPort))
@@ -596,9 +596,9 @@ public final class RequestHelper
     return nServerPort;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static StringBuilder getFullServerName (@Nonnull final HttpServletRequest aHttpRequest)
+  public static StringBuilder getFullServerName (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     return getFullServerName (ServletHelper.getRequestScheme (aHttpRequest),
@@ -606,7 +606,7 @@ public final class RequestHelper
                               ServletHelper.getRequestServerPort (aHttpRequest));
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public static StringBuilder getFullServerName (@Nullable final String sScheme,
                                                  @Nullable final String sServerName,
@@ -623,7 +623,7 @@ public final class RequestHelper
     return aSB;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public static String getFullServerNameAndPath (@Nullable final String sScheme,
                                                  @Nullable final String sServerName,
@@ -644,7 +644,7 @@ public final class RequestHelper
   }
 
   @Nullable
-  public static String getHttpReferer (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getHttpReferer (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -659,7 +659,7 @@ public final class RequestHelper
    * @return <code>null</code> if no supported HTTP version is contained
    */
   @Nullable
-  public static EHttpVersion getHttpVersion (@Nonnull final HttpServletRequest aHttpRequest)
+  public static EHttpVersion getHttpVersion (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -675,7 +675,7 @@ public final class RequestHelper
    * @return <code>null</code> if no supported HTTP method is contained
    */
   @Nullable
-  public static EHttpMethod getHttpMethod (@Nonnull final HttpServletRequest aHttpRequest)
+  public static EHttpMethod getHttpMethod (@NonNull final HttpServletRequest aHttpRequest)
   {
     return getHttpMethodOrDefault (aHttpRequest, null);
   }
@@ -691,7 +691,7 @@ public final class RequestHelper
    * @since 9.1.6
    */
   @Nullable
-  public static EHttpMethod getHttpMethodOrDefault (@Nonnull final HttpServletRequest aHttpRequest,
+  public static EHttpMethod getHttpMethodOrDefault (@NonNull final HttpServletRequest aHttpRequest,
                                                     @Nullable final EHttpMethod eDefault)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
@@ -714,8 +714,8 @@ public final class RequestHelper
    *        The BiConsumer that takes name and value. May not be <code>null</code>.
    * @since 9.1.9
    */
-  public static void forEachRequestHeader (@Nonnull final HttpServletRequest aHttpRequest,
-                                           @Nonnull final BiConsumer <String, String> aConsumer)
+  public static void forEachRequestHeader (@NonNull final HttpServletRequest aHttpRequest,
+                                           @NonNull final BiConsumer <String, String> aConsumer)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (aConsumer, "Consumer");
@@ -732,9 +732,9 @@ public final class RequestHelper
    *        The source HTTP request. May not be <code>null</code>.
    * @return Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static HttpHeaderMap getRequestHeaderMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static HttpHeaderMap getRequestHeaderMap (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -743,8 +743,8 @@ public final class RequestHelper
     return ret;
   }
 
-  @Nonnull
-  public static IRequestParamMap getRequestParamMap (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static IRequestParamMap getRequestParamMap (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -769,7 +769,7 @@ public final class RequestHelper
    * @return -1 if no or an invalid content length is set in the header
    */
   @CheckForSigned
-  public static long getContentLength (@Nonnull final HttpServletRequest aHttpRequest)
+  public static long getContentLength (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -777,9 +777,9 @@ public final class RequestHelper
   }
 
   @Nullable
-  private static <T> T _getRequestAttr (@Nonnull final HttpServletRequest aHttpRequest,
-                                        @Nonnull @Nonempty final String sAttrName,
-                                        @Nonnull final Class <T> aDstClass)
+  private static <T> T _getRequestAttr (@NonNull final HttpServletRequest aHttpRequest,
+                                        @NonNull @Nonempty final String sAttrName,
+                                        @NonNull final Class <T> aDstClass)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -810,7 +810,7 @@ public final class RequestHelper
    * @return SSL cipher suite or <code>null</code> if no such attribute is present
    */
   @Nullable
-  public static String getRequestSSLCipherSuite (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestSSLCipherSuite (@NonNull final HttpServletRequest aHttpRequest)
   {
     return _getRequestAttr (aHttpRequest, SERVLET_ATTR_SSL_CIPHER_SUITE, String.class);
   }
@@ -821,7 +821,7 @@ public final class RequestHelper
    * @return Bit size of the algorithm or <code>null</code> if no such attribute is present
    */
   @Nullable
-  public static Integer getRequestSSLKeySize (@Nonnull final HttpServletRequest aHttpRequest)
+  public static Integer getRequestSSLKeySize (@NonNull final HttpServletRequest aHttpRequest)
   {
     return _getRequestAttr (aHttpRequest, SERVLET_ATTR_SSL_KEY_SIZE, Integer.class);
   }
@@ -834,7 +834,7 @@ public final class RequestHelper
    * @return <code>null</code> if the passed request does not contain any client certificate
    */
   @Nullable
-  public static X509Certificate [] getRequestClientCertificates (@Nonnull final HttpServletRequest aHttpRequest)
+  public static X509Certificate [] getRequestClientCertificates (@NonNull final HttpServletRequest aHttpRequest)
   {
     return _getRequestAttr (aHttpRequest, SERVLET_ATTR_CLIENT_CERTIFICATE, X509Certificate [].class);
   }
@@ -858,7 +858,7 @@ public final class RequestHelper
    *        The servlet request to be evaluated. Must be non-null.
    * @return <code>true</code> if the request is multipart; <code>false</code> otherwise.
    */
-  public static boolean isMultipartContent (@Nonnull final HttpServletRequest aHttpRequest)
+  public static boolean isMultipartContent (@NonNull final HttpServletRequest aHttpRequest)
   {
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
@@ -887,7 +887,7 @@ public final class RequestHelper
    *        The servlet request to be evaluated. Must be non-null.
    * @return <code>true</code> if the request is multipart; <code>false</code> otherwise.
    */
-  public static boolean isMultipartFormDataContent (@Nonnull final HttpServletRequest aHttpRequest)
+  public static boolean isMultipartFormDataContent (@NonNull final HttpServletRequest aHttpRequest)
   {
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
@@ -895,8 +895,8 @@ public final class RequestHelper
     return isMultipartFormDataContent (ServletHelper.getRequestContentType (aHttpRequest));
   }
 
-  @Nonnull
-  public static AcceptCharsetList getAcceptCharsets (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static AcceptCharsetList getAcceptCharsets (@NonNull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
     AcceptCharsetList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptCharsetList.class.getName ());
@@ -909,8 +909,8 @@ public final class RequestHelper
     return aValue;
   }
 
-  @Nonnull
-  public static AcceptEncodingList getAcceptEncodings (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static AcceptEncodingList getAcceptEncodings (@NonNull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
     AcceptEncodingList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptEncodingList.class.getName ());
@@ -923,8 +923,8 @@ public final class RequestHelper
     return aValue;
   }
 
-  @Nonnull
-  public static AcceptLanguageList getAcceptLanguages (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static AcceptLanguageList getAcceptLanguages (@NonNull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
     AcceptLanguageList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptLanguageList.class.getName ());
@@ -937,8 +937,8 @@ public final class RequestHelper
     return aValue;
   }
 
-  @Nonnull
-  public static AcceptMimeTypeList getAcceptMimeTypes (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static AcceptMimeTypeList getAcceptMimeTypes (@NonNull final HttpServletRequest aHttpRequest)
   {
     // Check if a value is cached in the HTTP request
     AcceptMimeTypeList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptMimeTypeList.class.getName ());
@@ -961,7 +961,7 @@ public final class RequestHelper
    *         Authentication header value.
    */
   @Nullable
-  public static BasicAuthClientCredentials getBasicAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
+  public static BasicAuthClientCredentials getBasicAuthClientCredentials (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -979,7 +979,7 @@ public final class RequestHelper
    *         Authentication header value.
    */
   @Nullable
-  public static DigestAuthClientCredentials getDigestAuthClientCredentials (@Nonnull final HttpServletRequest aHttpRequest)
+  public static DigestAuthClientCredentials getDigestAuthClientCredentials (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -995,7 +995,7 @@ public final class RequestHelper
    * @return <code>null</code> if no user agent string is present
    */
   @Nullable
-  public static String getHttpUserAgentStringFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getHttpUserAgentStringFromRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
     // Use non-standard headers first
     String sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.UA);
@@ -1015,9 +1015,9 @@ public final class RequestHelper
    *        The name of the check-box.
    * @return The name of the hidden field associated with the given check-box name.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getCheckBoxHiddenFieldName (@Nonnull @Nonempty final String sFieldName)
+  public static String getCheckBoxHiddenFieldName (@NonNull @Nonempty final String sFieldName)
   {
     ValueEnforcer.notEmpty (sFieldName, "FieldName");
     return DEFAULT_CHECKBOX_HIDDEN_FIELD_PREFIX + sFieldName;

@@ -16,13 +16,13 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.singleton.AbstractSingleton;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is the base class for singleton objects that reside in the request
@@ -43,7 +43,7 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    *        if it may be <code>null</code>.
    * @return The scope to be used for this type of singleton.
    */
-  @Nonnull
+  @NonNull
   private static IRequestWebScope _getStaticScope (final boolean bMustBePresent)
   {
     return bMustBePresent ? WebScopeManager.getRequestScope () : WebScopeManager.getRequestScopeOrNull ();
@@ -60,8 +60,8 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    *        be public as needs to have a public no-argument constructor.
    * @return The singleton object and never <code>null</code>.
    */
-  @Nonnull
-  public static final <T extends AbstractRequestWebSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
+  @NonNull
+  public static final <T extends AbstractRequestWebSingleton> T getRequestSingleton (@NonNull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (true), aClass);
   }
@@ -78,7 +78,7 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final <T extends AbstractRequestWebSingleton> T getRequestSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  public static final <T extends AbstractRequestWebSingleton> T getRequestSingletonIfInstantiated (@NonNull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -92,7 +92,7 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  public static final boolean isRequestSingletonInstantiated (@Nonnull final Class <? extends AbstractRequestWebSingleton> aClass)
+  public static final boolean isRequestSingletonInstantiated (@NonNull final Class <? extends AbstractRequestWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -103,7 +103,7 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current request web scope.
    */
-  @Nonnull
+  @NonNull
   public static final ICommonsList <AbstractRequestWebSingleton> getAllRequestSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), AbstractRequestWebSingleton.class);

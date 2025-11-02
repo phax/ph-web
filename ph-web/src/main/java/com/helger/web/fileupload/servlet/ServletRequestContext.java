@@ -18,14 +18,15 @@ package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.fileupload.IRequestContext;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -53,7 +54,7 @@ public class ServletRequestContext implements IRequestContext
    *        The request to which this context applies. May not be
    *        <code>null</code>.
    */
-  public ServletRequestContext (@Nonnull final HttpServletRequest aHttpRequest)
+  public ServletRequestContext (@NonNull final HttpServletRequest aHttpRequest)
   {
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
   }
@@ -76,7 +77,7 @@ public class ServletRequestContext implements IRequestContext
     return RequestHelper.getContentLength (m_aHttpRequest);
   }
 
-  @Nonnull
+  @NonNull
   public ServletInputStream getInputStream () throws IOException
   {
     return m_aHttpRequest.getInputStream ();

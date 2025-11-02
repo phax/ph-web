@@ -20,6 +20,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Address;
@@ -27,9 +29,6 @@ import org.xbill.DNS.Address;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.dns.ip.IPV4Addr;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A simple DNS resolver, using the dnsjava library.
@@ -81,7 +80,7 @@ public final class DNSResolver
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public static InetAddress [] resolveAllByName (@Nullable final String sHostName)
   {
     if (LOGGER.isDebugEnabled ())
@@ -122,7 +121,7 @@ public final class DNSResolver
    *         name could not be resolved.
    */
   @Nullable
-  public static String dnsResolve (@Nonnull final String sHostName)
+  public static String dnsResolve (@NonNull final String sHostName)
   {
     final InetAddress aAddress = resolveByName (sHostName);
     if (aAddress == null)
@@ -138,7 +137,7 @@ public final class DNSResolver
    * @return The resolved IP addresses as String or <code>null</code> if the
    *         host name could not be resolved.
    */
-  @Nonnull
+  @NonNull
   public static String dnsResolveEx (final String sHostName)
   {
     final StringBuilder aSB = new StringBuilder ();
@@ -157,7 +156,7 @@ public final class DNSResolver
    *
    * @return My IP address as a String and never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static String getMyIpAddress ()
   {
     return getMyIpAddressOrDefault ("127.0.0.1");

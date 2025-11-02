@@ -22,11 +22,10 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.message.StatusLine;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.http.CHttp;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Base response handler that checks the status code and handles only status
@@ -44,7 +43,7 @@ public class ResponseHandlerHttpEntity implements HttpClientResponseHandler <Htt
   {}
 
   @Nullable
-  public HttpEntity handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public HttpEntity handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final StatusLine aStatusLine = new StatusLine (aHttpResponse);
     final HttpEntity aEntity = aHttpResponse.getEntity ();

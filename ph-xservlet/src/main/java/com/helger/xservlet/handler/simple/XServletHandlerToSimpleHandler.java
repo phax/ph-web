@@ -19,6 +19,7 @@ package com.helger.xservlet.handler.simple;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,6 @@ import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.forcedredirect.ForcedRedirectException;
 import com.helger.xservlet.handler.IXServletHandler;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -74,22 +74,22 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
 
   private final IXServletSimpleHandler m_aSimpleHandler;
 
-  public XServletHandlerToSimpleHandler (@Nonnull final IXServletSimpleHandler aSimpleHandler)
+  public XServletHandlerToSimpleHandler (@NonNull final IXServletSimpleHandler aSimpleHandler)
   {
     ValueEnforcer.notNull (aSimpleHandler, "SimpleHandler");
     m_aSimpleHandler = aSimpleHandler;
   }
 
   @Override
-  public void onServletInit (@Nonnull final ICommonsMap <String, String> aInitParams) throws ServletException
+  public void onServletInit (@NonNull final ICommonsMap <String, String> aInitParams) throws ServletException
   {
     // Pass-through!
     m_aSimpleHandler.onServletInit (aInitParams);
   }
 
-  private void _onException (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                             @Nonnull final UnifiedResponse aUnifiedResponse,
-                             @Nonnull final Throwable t) throws IOException, ServletException
+  private void _onException (@NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                             @NonNull final UnifiedResponse aUnifiedResponse,
+                             @NonNull final Throwable t) throws IOException, ServletException
   {
     LOGGER.error ("An exception was caught in servlet processing for URL '" + aRequestScope.getURLEncoded () + "'", t);
 
@@ -105,10 +105,10 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     }
   }
 
-  @Nonnull
-  private EContinue _handleETag (@Nonnull final HttpServletRequest aHttpRequest,
-                                 @Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                                 @Nonnull final UnifiedResponse aUnifiedResponse)
+  @NonNull
+  private EContinue _handleETag (@NonNull final HttpServletRequest aHttpRequest,
+                                 @NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                                 @NonNull final UnifiedResponse aUnifiedResponse)
   {
     final LocalDateTime aLastModification = m_aSimpleHandler.getLastModificationDateTime (aRequestScope);
     if (aLastModification != null)
@@ -191,11 +191,11 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     return EContinue.CONTINUE;
   }
 
-  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                         @Nonnull final HttpServletResponse aHttpResponse,
-                         @Nonnull final EHttpVersion eHttpVersion,
-                         @Nonnull final EHttpMethod eHttpMethod,
-                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@NonNull final HttpServletRequest aHttpRequest,
+                         @NonNull final HttpServletResponse aHttpResponse,
+                         @NonNull final EHttpVersion eHttpVersion,
+                         @NonNull final EHttpMethod eHttpMethod,
+                         @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     final UnifiedResponse aUnifiedResponse = m_aSimpleHandler.createUnifiedResponse (eHttpVersion,
                                                                                      eHttpMethod,

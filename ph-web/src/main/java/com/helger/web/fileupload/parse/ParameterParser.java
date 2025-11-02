@@ -18,15 +18,15 @@ package com.helger.web.fileupload.parse;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A simple parser intended to parse sequences of name/value pairs. Parameter values are expected to
@@ -204,7 +204,7 @@ public class ParameterParser
    *        pairs are parsed. <code>false</code> otherwise.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public ParameterParser setLowerCaseNames (final boolean bLowerCaseNames)
   {
     m_bLowerCaseNames = bLowerCaseNames;
@@ -221,7 +221,7 @@ public class ParameterParser
    *        the name/value pairs separators
    * @return a map of name/value pairs
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsMap <String, String> parse (@Nullable final String sStr, @Nullable final char [] aSeparators)
   {
@@ -255,7 +255,7 @@ public class ParameterParser
    *        the name/value pairs separator
    * @return a map of name/value pairs
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsMap <String, String> parse (@Nullable final String sStr, final char cSeparator)
   {

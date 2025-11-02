@@ -19,6 +19,9 @@ package com.helger.smtp.transport;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.mail.address.InternetAddressHelper;
 import com.helger.mime.CMimeType;
@@ -28,8 +31,6 @@ import com.helger.smtp.data.IMutableEmailAttachmentList;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.typeconvert.impl.TypeConverter;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeBodyPart;
@@ -47,9 +48,9 @@ public final class MailConverter
   private MailConverter ()
   {}
 
-  public static void setSubject (@Nonnull final MimeMessage aMIMEMessage,
-                                 @Nonnull final String sSubject,
-                                 @Nonnull final Charset aCharset)
+  public static void setSubject (@NonNull final MimeMessage aMIMEMessage,
+                                 @NonNull final String sSubject,
+                                 @NonNull final Charset aCharset)
   {
     try
     {
@@ -61,9 +62,9 @@ public final class MailConverter
     }
   }
 
-  public static void setText (@Nonnull final MimeBodyPart aMIMEBody,
-                              @Nonnull final String sText,
-                              @Nonnull final Charset aCharset)
+  public static void setText (@NonNull final MimeBodyPart aMIMEBody,
+                              @NonNull final String sText,
+                              @NonNull final Charset aCharset)
   {
     try
     {
@@ -75,8 +76,8 @@ public final class MailConverter
     }
   }
 
-  public static void fillMimeMessageUnsafe (@Nonnull final MimeMessage aMIMEMessage,
-                                            @Nonnull final IMutableEmailData aMailData,
+  public static void fillMimeMessageUnsafe (@NonNull final MimeMessage aMIMEMessage,
+                                            @NonNull final IMutableEmailData aMailData,
                                             @Nullable final Charset aCharset) throws MessagingException
   {
     if (aMailData.getFrom () != null)
@@ -152,8 +153,8 @@ public final class MailConverter
    * @throws RuntimeException
    *         in case of an error
    */
-  public static void fillMimeMessage (@Nonnull final MimeMessage aMimeMessage,
-                                      @Nonnull final IMutableEmailData aMailData,
+  public static void fillMimeMessage (@NonNull final MimeMessage aMimeMessage,
+                                      @NonNull final IMutableEmailData aMailData,
                                       @Nullable final Charset aCharset)
   {
     try

@@ -16,12 +16,12 @@
  */
 package com.helger.xservlet.forcedredirect;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.url.ISimpleURL;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is a hack to allow for easy POST/Redirect/GET pattern implementation.
@@ -49,8 +49,8 @@ public class ForcedRedirectException extends RuntimeException
    *        <code>null</code>. Usually this is an <code>IHCNode</code> but this
    *        class is not accessible from here!
    */
-  public ForcedRedirectException (@Nonnull @Nonempty final String sSourceMenuItemID,
-                                  @Nonnull final ISimpleURL aRedirectTargetURL,
+  public ForcedRedirectException (@NonNull @Nonempty final String sSourceMenuItemID,
+                                  @NonNull final ISimpleURL aRedirectTargetURL,
                                   @Nullable final Object aContent)
   {
     m_sSourceMenuItemID = ValueEnforcer.notEmpty (sSourceMenuItemID, "SourceMenuItemID");
@@ -62,7 +62,7 @@ public class ForcedRedirectException extends RuntimeException
    * @return The source menu item ID that triggered the PRG as specified in the
    *         constructor. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSourceMenuItemID ()
   {
@@ -73,7 +73,7 @@ public class ForcedRedirectException extends RuntimeException
    * @return The redirect target URL as specified in the constructor. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public ISimpleURL getRedirectTargetURL ()
   {
     return m_aRedirectTargetURL;

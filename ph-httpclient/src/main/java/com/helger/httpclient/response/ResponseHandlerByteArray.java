@@ -22,9 +22,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Convert a valid HTTP response to a byte array.
@@ -34,7 +33,7 @@ import jakarta.annotation.Nullable;
 public class ResponseHandlerByteArray implements HttpClientResponseHandler <byte []>
 {
   @Nullable
-  public byte [] handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public byte [] handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

@@ -19,12 +19,12 @@ package com.helger.smtp.data;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.io.iface.IHasInputStream;
 import com.helger.base.string.StringHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This interface represents attachments to be added to a mail message. Messages with attachments
@@ -37,17 +37,17 @@ public interface IEmailAttachment extends IHasInputStream
   /**
    * @return The filename of the attachment
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   String getFilename ();
 
   /**
    * @return The object holding the input stream to the data.
    */
-  @Nonnull
+  @NonNull
   IHasInputStream getInputStreamProvider ();
 
-  @Nonnull
+  @NonNull
   default InputStream getInputStream ()
   {
     return getInputStreamProvider ().getInputStream ();
@@ -83,12 +83,12 @@ public interface IEmailAttachment extends IHasInputStream
   /**
    * @return The disposition type to use. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   EEmailAttachmentDisposition getDisposition ();
 
   /**
    * @return The attachment as a {@link jakarta.activation.DataSource}.
    */
-  @Nonnull
+  @NonNull
   IEmailAttachmentDataSource getAsDataSource ();
 }

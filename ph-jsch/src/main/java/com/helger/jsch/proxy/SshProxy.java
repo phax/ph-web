@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +33,6 @@ import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SocketFactory;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 public class SshProxy implements Proxy, AutoCloseable
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (SshProxy.class);
@@ -43,7 +42,7 @@ public class SshProxy implements Proxy, AutoCloseable
   private InputStream m_aIS;
   private OutputStream m_aOS;
 
-  public SshProxy (@Nonnull final ISessionProvider aSessionProvider) throws JSchException
+  public SshProxy (@NonNull final ISessionProvider aSessionProvider) throws JSchException
   {
     m_aSessionProvider = aSessionProvider;
     m_aSession = aSessionProvider.createSession ();

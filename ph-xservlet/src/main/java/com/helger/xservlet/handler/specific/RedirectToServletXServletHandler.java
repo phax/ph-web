@@ -16,6 +16,7 @@
  */
 package com.helger.xservlet.handler.specific;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,6 @@ import com.helger.base.url.CURL;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An {@link IXServletSimpleHandler} that does a redirect to another servlet.
@@ -48,7 +47,7 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    *        The servlet path (relative to the current context) to redirect to. Must start with a
    *        slash ("/").
    */
-  public RedirectToServletXServletHandler (@Nonnull @Nonempty final String sServletPath)
+  public RedirectToServletXServletHandler (@NonNull @Nonempty final String sServletPath)
   {
     ValueEnforcer.notEmpty (sServletPath, "ServletPath");
     ValueEnforcer.isTrue (sServletPath.startsWith ("/"), "Path must start with '/'!");
@@ -61,7 +60,7 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    *         <code>null</code> nor empty.
    * @since 9.3.1
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public final String getServletPath ()
   {
@@ -77,9 +76,9 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
    *         for making it absolute.
    * @since 9.6.3
    */
-  @Nonnull
+  @NonNull
   @OverridingMethodsMustInvokeSuper
-  protected String getRedirectURL (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope)
+  protected String getRedirectURL (@NonNull final IRequestWebScopeWithoutResponse aRequestScope)
   {
     final StringBuilder sRedirectURL = new StringBuilder ().append (aRequestScope.getContextPath ())
                                                            .append (m_sServletPath);
@@ -90,8 +89,8 @@ public class RedirectToServletXServletHandler implements IXServletSimpleHandler
     return sRedirectURL.toString ();
   }
 
-  public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                             @Nonnull final UnifiedResponse aUnifiedResponse) throws Exception
+  public void handleRequest (@NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                             @NonNull final UnifiedResponse aUnifiedResponse) throws Exception
   {
     final String sRedirectURL = getRedirectURL (aRequestScope);
 

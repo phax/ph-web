@@ -19,6 +19,7 @@ package com.helger.web.scope.multipart;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,6 @@ import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.progress.IProgressListener;
 import com.helger.web.progress.ProgressListenerProvider;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 public final class RequestMultipartHelper
@@ -88,9 +88,9 @@ public final class RequestMultipartHelper
    *        {@link IFileItem}[] or {@link String} or {@link String}[].
    * @return {@link EChange#CHANGED} if something was added
    */
-  @Nonnull
-  public static EChange handleMultipartFormData (@Nonnull final HttpServletRequest aHttpRequest,
-                                                 @Nonnull final BiConsumer <String, Object> aConsumer)
+  @NonNull
+  public static EChange handleMultipartFormData (@NonNull final HttpServletRequest aHttpRequest,
+                                                 @NonNull final BiConsumer <String, Object> aConsumer)
   {
     if (aHttpRequest instanceof MockHttpServletRequest)
     {

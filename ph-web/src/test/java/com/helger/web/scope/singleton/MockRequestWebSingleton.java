@@ -16,10 +16,10 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.UsedViaReflection;
 import com.helger.base.hashcode.HashCodeGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractRequestWebSingleton}
@@ -35,7 +35,7 @@ public final class MockRequestWebSingleton extends AbstractRequestWebSingleton
   public MockRequestWebSingleton ()
   {}
 
-  @Nonnull
+  @NonNull
   public static MockRequestWebSingleton getInstance ()
   {
     return getRequestSingleton (MockRequestWebSingleton.class);

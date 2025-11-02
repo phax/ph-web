@@ -18,11 +18,11 @@ package com.helger.web.fileupload;
 
 import java.util.Iterator;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -49,7 +49,7 @@ public interface IFileItemHeaders
    *         name
    */
   @Nullable
-  String getHeader (@Nonnull String sName);
+  String getHeader (@NonNull String sName);
 
   @Nullable
   String getHeaderContentDisposition ();
@@ -77,8 +77,8 @@ public interface IFileItemHeaders
    *         header. If the item does not have any headers of that name, return
    *         an empty <code>Iterator</code>
    */
-  @Nonnull
-  Iterator <String> getHeaders (@Nonnull String sName);
+  @NonNull
+  Iterator <String> getHeaders (@NonNull String sName);
 
   /**
    * <p>
@@ -88,7 +88,7 @@ public interface IFileItemHeaders
    * @return an <code>Enumeration</code> containing the headers. If the item
    *         does not have any headers return an empty <code>Iterator</code>
    */
-  @Nonnull
+  @NonNull
   Iterator <String> getHeaderNames ();
 
   /**
@@ -100,7 +100,7 @@ public interface IFileItemHeaders
    *         If the item does not have any headers of that name return an empty
    *         <code>Enumeration</code>
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsList <String> getAllHeaderNames ();
 }

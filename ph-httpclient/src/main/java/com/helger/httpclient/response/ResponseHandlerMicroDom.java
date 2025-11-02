@@ -25,6 +25,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +34,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to an {@link IMicroDocument} object.
@@ -67,7 +66,7 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
    * @return this for chaining
    * @since 10.0.0
    */
-  @Nonnull
+  @NonNull
   public final ResponseHandlerMicroDom setDebugMode (final boolean bDebugMode)
   {
     m_bDebugMode = bDebugMode;
@@ -75,7 +74,7 @@ public class ResponseHandlerMicroDom implements HttpClientResponseHandler <IMicr
   }
 
   @Nullable
-  public IMicroDocument handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public IMicroDocument handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.apache.hc.client5.http.DnsResolver;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ARecord;
@@ -37,9 +39,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.lang.clazz.ClassHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A special implementation of {@link DnsResolver} that tries to disable caching
@@ -61,8 +60,8 @@ public class NonCachingDnsResolver implements DnsResolver
   public NonCachingDnsResolver ()
   {}
 
-  @Nonnull
-  public static Lookup createDefaultLookup (@Nonnull final String sHost) throws TextParseException
+  @NonNull
+  public static Lookup createDefaultLookup (@NonNull final String sHost) throws TextParseException
   {
     // Until v10.1.6 Type.ANY was used - but that's not "all" - that's just
     // "one" of them. See
@@ -70,8 +69,8 @@ public class NonCachingDnsResolver implements DnsResolver
     return createDefaultLookup (sHost, Type.A);
   }
 
-  @Nonnull
-  public static Lookup createDefaultLookup (@Nonnull final String sHost, final int nType) throws TextParseException
+  @NonNull
+  public static Lookup createDefaultLookup (@NonNull final String sHost, final int nType) throws TextParseException
   {
     final Lookup aDNSLookup = new Lookup (sHost, nType);
     try
@@ -88,14 +87,14 @@ public class NonCachingDnsResolver implements DnsResolver
     return aDNSLookup;
   }
 
-  @Nonnull
-  protected Lookup createLookup (@Nonnull final String sHost) throws TextParseException
+  @NonNull
+  protected Lookup createLookup (@NonNull final String sHost) throws TextParseException
   {
     return createDefaultLookup (sHost);
   }
 
-  @Nonnull
-  public InetAddress [] resolveExt (@Nonnull final String sHost,
+  @NonNull
+  public InetAddress [] resolveExt (@NonNull final String sHost,
                                     @Nullable final Consumer <? super Record> aRecordConsumer) throws UnknownHostException
   {
     ValueEnforcer.notNull (sHost, "Host");
@@ -169,14 +168,14 @@ public class NonCachingDnsResolver implements DnsResolver
     return ret;
   }
 
-  @Nonnull
-  public InetAddress [] resolve (@Nonnull final String sHost) throws UnknownHostException
+  @NonNull
+  public InetAddress [] resolve (@NonNull final String sHost) throws UnknownHostException
   {
     return resolveExt (sHost, null);
   }
 
-  @Nonnull
-  public String resolveCanonicalHostname (@Nonnull final String sHost) throws UnknownHostException
+  @NonNull
+  public String resolveCanonicalHostname (@NonNull final String sHost) throws UnknownHostException
   {
     final InetAddress [] aResolvedAddresses = resolve (sHost);
     if (aResolvedAddresses.length > 0)

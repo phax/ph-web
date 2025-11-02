@@ -18,6 +18,9 @@ package com.helger.smtp.data;
 
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.misc.ContainsSoftMigration;
 import com.helger.base.charset.CharsetHelper;
 import com.helger.base.codec.base64.Base64;
@@ -27,8 +30,6 @@ import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 
 import jakarta.activation.FileTypeMap;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailAttachment}.
@@ -42,10 +43,10 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
   private static final String ATTR_DISPOSITION = "disposition";
   private static final String ATTR_CONTENT_TYPE = "contenttype";
 
-  @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final EmailAttachment aAttachment,
+  @NonNull
+  public IMicroElement convertToMicroElement (@NonNull final EmailAttachment aAttachment,
                                               @Nullable final String sNamespaceURI,
-                                              @Nonnull final String sTagName)
+                                              @NonNull final String sTagName)
   {
     final IMicroElement eAttachment = new MicroElement (sNamespaceURI, sTagName);
     eAttachment.setAttribute (ATTR_FILENAME, aAttachment.getFilename ());
@@ -60,9 +61,9 @@ public final class EmailAttachmentMicroTypeConverter implements IMicroTypeConver
     return eAttachment;
   }
 
-  @Nonnull
+  @NonNull
   @ContainsSoftMigration
-  public EmailAttachment convertToNative (@Nonnull final IMicroElement eAttachment)
+  public EmailAttachment convertToNative (@NonNull final IMicroElement eAttachment)
   {
     final String sFilename = eAttachment.getAttributeValue (ATTR_FILENAME);
 

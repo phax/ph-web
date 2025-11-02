@@ -19,6 +19,8 @@ package com.helger.xservlet.handler;
 import java.io.IOException;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.http.CHttpHeader;
@@ -26,7 +28,6 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,7 +51,7 @@ public class XServletHandlerOPTIONS implements IXServletHandler
    *        The supplier to use. Must be a supplier, because the underlying
    *        "Allow" string can change at runtime!
    */
-  public XServletHandlerOPTIONS (@Nonnull final Supplier <String> aAllowProvider)
+  public XServletHandlerOPTIONS (@NonNull final Supplier <String> aAllowProvider)
   {
     m_aAllowProvider = ValueEnforcer.notNull (aAllowProvider, "AllowProvider");
   }
@@ -59,17 +60,17 @@ public class XServletHandlerOPTIONS implements IXServletHandler
    * @return The value supplier passed in the constructor.
    * @since 9.3.2
    */
-  @Nonnull
+  @NonNull
   public final Supplier <String> getAllowValueProvider ()
   {
     return m_aAllowProvider;
   }
 
-  public void onRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                         @Nonnull final HttpServletResponse aHttpResponse,
-                         @Nonnull final EHttpVersion eHTTPVersion,
-                         @Nonnull final EHttpMethod eHTTPMethod,
-                         @Nonnull final IRequestWebScope aRequestScope) throws ServletException, IOException
+  public void onRequest (@NonNull final HttpServletRequest aHttpRequest,
+                         @NonNull final HttpServletResponse aHttpResponse,
+                         @NonNull final EHttpVersion eHTTPVersion,
+                         @NonNull final EHttpMethod eHTTPMethod,
+                         @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
     // Build Allow response header - that's it
     aHttpResponse.setHeader (CHttpHeader.ALLOW, m_aAllowProvider.get ());

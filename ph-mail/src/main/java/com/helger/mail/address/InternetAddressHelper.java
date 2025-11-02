@@ -19,6 +19,9 @@ package com.helger.mail.address;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.email.EmailAddress;
@@ -26,8 +29,6 @@ import com.helger.base.email.IEmailAddress;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.ICommonsList;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 
@@ -46,15 +47,15 @@ public final class InternetAddressHelper
   private InternetAddressHelper ()
   {}
 
-  @Nonnull
-  public static InternetAddress getAsInternetAddress (@Nonnull final IEmailAddress aAddress,
+  @NonNull
+  public static InternetAddress getAsInternetAddress (@NonNull final IEmailAddress aAddress,
                                                       @Nullable final Charset aCharset) throws AddressException
   {
     return getAsInternetAddress (aAddress.getAddress (), aAddress.getPersonal (), aCharset);
   }
 
-  @Nonnull
-  public static InternetAddress getAsInternetAddress (@Nonnull final String sAddress,
+  @NonNull
+  public static InternetAddress getAsInternetAddress (@NonNull final String sAddress,
                                                       @Nullable final String sPersonal,
                                                       @Nullable final Charset aCharset) throws AddressException
   {
@@ -68,16 +69,16 @@ public final class InternetAddressHelper
     }
   }
 
-  @Nonnull
-  public static InternetAddress getAsInternetAddress (@Nonnull final IEmailAddress aAddress,
+  @NonNull
+  public static InternetAddress getAsInternetAddress (@NonNull final IEmailAddress aAddress,
                                                       @Nullable final String sCharset) throws UnsupportedEncodingException,
                                                                                        AddressException
   {
     return getAsInternetAddress (aAddress.getAddress (), aAddress.getPersonal (), sCharset);
   }
 
-  @Nonnull
-  public static InternetAddress getAsInternetAddress (@Nonnull final String sAddress,
+  @NonNull
+  public static InternetAddress getAsInternetAddress (@NonNull final String sAddress,
                                                       @Nullable final String sPersonal,
                                                       @Nullable final String sCharset) throws UnsupportedEncodingException,
                                                                                        AddressException
@@ -87,8 +88,8 @@ public final class InternetAddressHelper
     return ret;
   }
 
-  @Nonnull
-  public static InternetAddress [] getAsInternetAddressArray (@Nonnull final ICommonsList <? extends IEmailAddress> aAddresses,
+  @NonNull
+  public static InternetAddress [] getAsInternetAddressArray (@NonNull final ICommonsList <? extends IEmailAddress> aAddresses,
                                                               @Nullable final Charset aCharset) throws AddressException
   {
     ValueEnforcer.notNull (aAddresses, "Addresses");

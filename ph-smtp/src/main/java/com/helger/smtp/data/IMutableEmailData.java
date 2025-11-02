@@ -18,10 +18,10 @@ package com.helger.smtp.data;
 
 import java.time.LocalDateTime;
 
-import com.helger.base.email.IEmailAddress;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.base.email.IEmailAddress;
 
 /**
  * Contains all possible fields for mail sending.<br>
@@ -31,19 +31,19 @@ import jakarta.annotation.Nullable;
  */
 public interface IMutableEmailData extends IEmailData
 {
-  @Nonnull
-  IMutableEmailData setEmailType (@Nonnull EEmailType eType);
+  @NonNull
+  IMutableEmailData setEmailType (@NonNull EEmailType eType);
 
-  @Nonnull
+  @NonNull
   IMutableEmailData setFrom (@Nullable IEmailAddress aFrom);
 
-  @Nonnull
+  @NonNull
   IMutableEmailData setSentDateTime (@Nullable LocalDateTime aDateTime);
 
-  @Nonnull
+  @NonNull
   IMutableEmailData setSubject (@Nullable String sSubject);
 
-  @Nonnull
+  @NonNull
   IMutableEmailData setBody (@Nullable String sBody);
 
   // Change return type
@@ -59,6 +59,6 @@ public interface IMutableEmailData extends IEmailData
    *        The attachments to be used. May be <code>null</code> or empty.
    * @return this
    */
-  @Nonnull
+  @NonNull
   IMutableEmailData setAttachments (@Nullable IEmailAttachmentList aAttachments);
 }

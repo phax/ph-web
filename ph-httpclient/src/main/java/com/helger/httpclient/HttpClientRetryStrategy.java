@@ -19,12 +19,11 @@ package com.helger.httpclient;
 import org.apache.hc.client5.http.impl.DefaultHttpRequestRetryStrategy;
 import org.apache.hc.core5.http.HttpRequest;
 import org.apache.hc.core5.util.TimeValue;
+import org.jspecify.annotations.NonNull;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * HTTP client retry handler based on DefaultHttpRequestRetryStrategy
@@ -38,7 +37,7 @@ public class HttpClientRetryStrategy extends DefaultHttpRequestRetryStrategy
   private final boolean m_bRetryAlways;
 
   public HttpClientRetryStrategy (@Nonnegative final int nMaxRetries,
-                                  @Nonnull final TimeValue aRetryInterval,
+                                  @NonNull final TimeValue aRetryInterval,
                                   final boolean bRetryAlways)
   {
     super (nMaxRetries, aRetryInterval);
@@ -55,7 +54,7 @@ public class HttpClientRetryStrategy extends DefaultHttpRequestRetryStrategy
     return m_nMaxRetries;
   }
 
-  @Nonnull
+  @NonNull
   public final TimeValue getRetryInterval ()
   {
     return m_aRetryInterval;

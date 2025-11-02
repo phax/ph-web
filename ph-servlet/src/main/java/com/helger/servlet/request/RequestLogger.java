@@ -18,6 +18,7 @@ package com.helger.servlet.request;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,6 @@ import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.annotation.IsOffline;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -59,9 +59,9 @@ public final class RequestLogger
   private RequestLogger ()
   {}
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getRequestFieldMap (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, String> getRequestFieldMap (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -119,23 +119,23 @@ public final class RequestLogger
     return ret;
   }
 
-  public static void debugAppendRequestFields (@Nonnull final Map <String, String> aRequestFieldMap,
-                                               @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestFields (@NonNull final Map <String, String> aRequestFieldMap,
+                                               @NonNull final StringBuilder aSB)
   {
     aSB.append ("Request:\n");
     for (final Map.Entry <String, String> aEntry : aRequestFieldMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = ").append (aEntry.getValue ()).append ('\n');
   }
 
-  public static void debugAppendRequestHeader (@Nonnull final HttpHeaderMap aRequestHeaderMap,
-                                               @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestHeader (@NonNull final HttpHeaderMap aRequestHeaderMap,
+                                               @NonNull final StringBuilder aSB)
   {
     aSB.append ("Headers:\n");
     aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'), true);
   }
 
-  @Nonnull
-  public static ICommonsOrderedMap <String, String> getRequestParameterMap (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static ICommonsOrderedMap <String, String> getRequestParameterMap (@NonNull final HttpServletRequest aHttpRequest)
   {
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     try
@@ -151,16 +151,16 @@ public final class RequestLogger
     return ret;
   }
 
-  public static void debugAppendRequestParameters (@Nonnull final Map <String, String> aRequestParameterMap,
-                                                   @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestParameters (@NonNull final Map <String, String> aRequestParameterMap,
+                                                   @NonNull final StringBuilder aSB)
   {
     aSB.append ("Request parameters:\n");
     for (final Map.Entry <String, String> aEntry : aRequestParameterMap.entrySet ())
       aSB.append ("  ").append (aEntry.getKey ()).append (" = '").append (aEntry.getValue ()).append ("'\n");
   }
 
-  @Nonnull
-  public static String getCookieValue (@Nonnull final Cookie aCookie)
+  @NonNull
+  public static String getCookieValue (@NonNull final Cookie aCookie)
   {
     final StringBuilder aSB = new StringBuilder ();
     aSB.append (aCookie.getValue ());
@@ -176,8 +176,8 @@ public final class RequestLogger
     return aSB.toString ();
   }
 
-  public static void debugAppendRequestCookies (@Nonnull final HttpServletRequest aHttpRequest,
-                                                @Nonnull final StringBuilder aSB)
+  public static void debugAppendRequestCookies (@NonNull final HttpServletRequest aHttpRequest,
+                                                @NonNull final StringBuilder aSB)
   {
     aSB.append ("Cookies:\n");
     final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
@@ -186,8 +186,8 @@ public final class RequestLogger
         aSB.append ("  ").append (aCookie.getName ()).append (" = ").append (getCookieValue (aCookie)).append ('\n');
   }
 
-  @Nonnull
-  public static StringBuilder getRequestDebugString (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static StringBuilder getRequestDebugString (@NonNull final HttpServletRequest aHttpRequest)
   {
     final StringBuilder aSB = new StringBuilder ();
     debugAppendRequestFields (getRequestFieldMap (aHttpRequest), aSB);
@@ -197,7 +197,7 @@ public final class RequestLogger
     return aSB;
   }
 
-  public static void logRequestComplete (@Nonnull final HttpServletRequest aHttpRequest)
+  public static void logRequestComplete (@NonNull final HttpServletRequest aHttpRequest)
   {
     LOGGER.info (getRequestDebugString (aHttpRequest).toString ());
   }

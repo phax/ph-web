@@ -19,6 +19,8 @@ package com.helger.dns.naptr;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.NAPTRRecord;
@@ -34,9 +36,7 @@ import com.helger.base.string.StringHelper;
 import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.dns.naptr.NaptrLookup.NaptrLookupBuilder;
 
 /**
  * Helper class to resolve U-NAPTR DNS records
@@ -64,8 +64,8 @@ public class NaptrResolver
    * @return The non-<code>null</code> matcher.
    * @since 11.1.2
    */
-  @Nonnull
-  public static Predicate <String> getDefaultFlagsMatcher (@Nonnull final String sFlags)
+  @NonNull
+  public static Predicate <String> getDefaultFlagsMatcher (@NonNull final String sFlags)
   {
     return sFlags::equalsIgnoreCase;
   }
@@ -78,24 +78,24 @@ public class NaptrResolver
    *        The service name to compare to case insensitive.
    * @return The non-<code>null</code> matcher.
    */
-  @Nonnull
-  public static Predicate <String> getDefaultServiceNameMatcher (@Nonnull final String sServiceName)
+  @NonNull
+  public static Predicate <String> getDefaultServiceNameMatcher (@NonNull final String sServiceName)
   {
     return sServiceName::equalsIgnoreCase;
   }
 
   @Deprecated (forRemoval = true, since = "11.1.2")
-  public NaptrResolver (@Nonnull final String sDomainName,
-                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
-                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  public NaptrResolver (@NonNull final String sDomainName,
+                        @NonNull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                        @NonNull final Predicate <? super String> aServiceNameMatcher)
   {
     this (sDomainName, aNaptrRecords, getDefaultFlagsMatcher (DEFAULT_FLAGS), aServiceNameMatcher);
   }
 
-  public NaptrResolver (@Nonnull final String sDomainName,
-                        @Nonnull final ICommonsList <NAPTRRecord> aNaptrRecords,
-                        @Nonnull final Predicate <? super String> aFlagsMatcher,
-                        @Nonnull final Predicate <? super String> aServiceNameMatcher)
+  public NaptrResolver (@NonNull final String sDomainName,
+                        @NonNull final ICommonsList <NAPTRRecord> aNaptrRecords,
+                        @NonNull final Predicate <? super String> aFlagsMatcher,
+                        @NonNull final Predicate <? super String> aServiceNameMatcher)
   {
     ValueEnforcer.notNull (sDomainName, "DomainName");
     ValueEnforcer.notNull (aNaptrRecords, "NAPTRRecords");
@@ -120,7 +120,7 @@ public class NaptrResolver
    * @return <code>null</code> if the regular expression is invalid
    */
   @Nullable
-  public static String getAppliedNAPTRRegEx (@Nonnull final String sNaptrRegEx, @Nonnull final String sDomainName)
+  public static String getAppliedNAPTRRegEx (@NonNull final String sNaptrRegEx, @NonNull final String sDomainName)
   {
     final char cSep = sNaptrRegEx.charAt (0);
     final int nSecond = sNaptrRegEx.indexOf (cSep, 1);
@@ -218,7 +218,7 @@ public class NaptrResolver
     return null;
   }
 
-  @Nonnull
+  @NonNull
   public static Builder builder ()
   {
     return new Builder ();
@@ -243,32 +243,32 @@ public class NaptrResolver
       flags (getDefaultFlagsMatcher (DEFAULT_FLAGS));
     }
 
-    @Nonnull
-    public final Builder domainName (@Nullable final NaptrLookup.Builder a)
+    @NonNull
+    public final Builder domainName (@Nullable final NaptrLookupBuilder a)
     {
       return domainName (a == null ? null : a.domainName ());
     }
 
-    @Nonnull
+    @NonNull
     public final Builder domainName (@Nullable final Name a)
     {
       return domainName (a == null ? null : a.toString (false));
     }
 
-    @Nonnull
+    @NonNull
     public final Builder domainName (@Nullable final String s)
     {
       m_sDomainName = s;
       return this;
     }
 
-    @Nonnull
-    public final Builder naptrRecords (@Nullable final NaptrLookup.Builder a)
+    @NonNull
+    public final Builder naptrRecords (@Nullable final NaptrLookupBuilder a)
     {
       return naptrRecords (a == null ? null : a.build ());
     }
 
-    @Nonnull
+    @NonNull
     public final Builder naptrRecords (@Nullable final NaptrLookup a)
     {
       if (a != null)
@@ -278,7 +278,7 @@ public class NaptrResolver
       return naptrRecords (a == null ? null : a.lookup ());
     }
 
-    @Nonnull
+    @NonNull
     public final Builder naptrRecord (@Nullable final NAPTRRecord a)
     {
       if (a == null)
@@ -288,7 +288,7 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder naptrRecords (@Nullable final NAPTRRecord... a)
     {
       if (a == null)
@@ -298,7 +298,7 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder naptrRecords (@Nullable final Iterable <? extends NAPTRRecord> a)
     {
       if (a == null)
@@ -308,7 +308,7 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder addNaptrRecord (@Nullable final NAPTRRecord a)
     {
       if (a != null)
@@ -316,7 +316,7 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder addNaptrRecords (@Nullable final NAPTRRecord... a)
     {
       if (a != null)
@@ -324,7 +324,7 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder addNaptrRecords (@Nullable final Iterable <? extends NAPTRRecord> a)
     {
       if (a != null)
@@ -332,33 +332,33 @@ public class NaptrResolver
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder flags (@Nullable final String s)
     {
       return flags (s == null ? null : getDefaultFlagsMatcher (s));
     }
 
-    @Nonnull
+    @NonNull
     public final Builder flags (@Nullable final Predicate <? super String> a)
     {
       m_aFlagsMatcher = a;
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public final Builder serviceName (@Nullable final String s)
     {
       return serviceName (s == null ? null : getDefaultServiceNameMatcher (s));
     }
 
-    @Nonnull
+    @NonNull
     public final Builder serviceName (@Nullable final Predicate <? super String> a)
     {
       m_aServiceNameMatcher = a;
       return this;
     }
 
-    @Nonnull
+    @NonNull
     public NaptrResolver build ()
     {
       if (StringHelper.isEmpty (m_sDomainName))

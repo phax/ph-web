@@ -19,6 +19,8 @@ package com.helger.xservlet.servletstatus;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +33,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsEnumMap;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.datetime.helper.PDTFactory;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Keep the status of a single servlet.
@@ -51,12 +50,12 @@ public class ServletStatus
   private final ICommonsMap <EServletStatus, LocalDateTime> m_aStatusChangeDates = new CommonsEnumMap <> (EServletStatus.class);
   private final AtomicInteger m_aInvocationCount = new AtomicInteger (0);
 
-  public ServletStatus (@Nonnull @Nonempty final String sClassName)
+  public ServletStatus (@NonNull @Nonempty final String sClassName)
   {
     m_sClassName = ValueEnforcer.notEmpty (sClassName, "ClassName");
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public final String getClassName ()
   {
@@ -69,7 +68,7 @@ public class ServletStatus
     return m_eCurrentStatus;
   }
 
-  void internalSetCurrentStatus (@Nonnull final EServletStatus eNewStatus)
+  void internalSetCurrentStatus (@NonNull final EServletStatus eNewStatus)
   {
     ValueEnforcer.notNull (eNewStatus, "NewStatus");
     if (!EServletStatus.isValidSuccessorOf (m_eCurrentStatus, eNewStatus))
@@ -89,7 +88,7 @@ public class ServletStatus
     m_aStatusChangeDates.put (eNewStatus, PDTFactory.getCurrentLocalDateTime ());
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsMap <EServletStatus, LocalDateTime> getStatusChangeMap ()
   {
@@ -97,7 +96,7 @@ public class ServletStatus
   }
 
   @Nullable
-  public final LocalDateTime getDateTimeOfStatus (@Nonnull final EServletStatus eStatus)
+  public final LocalDateTime getDateTimeOfStatus (@NonNull final EServletStatus eStatus)
   {
     return eStatus == null ? null : m_aStatusChangeDates.get (eStatus);
   }

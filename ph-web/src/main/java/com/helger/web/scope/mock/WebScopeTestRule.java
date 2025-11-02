@@ -18,6 +18,8 @@ package com.helger.web.scope.mock;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.rules.ExternalResource;
 
 import com.helger.annotation.OverridingMethodsMustInvokeSuper;
@@ -33,8 +35,6 @@ import com.helger.servlet.mock.MockServletContext;
 import com.helger.servlet.mock.MockServletPool;
 import com.helger.web.servlets.scope.WebScopeListener;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -63,7 +63,7 @@ public class WebScopeTestRule extends ExternalResource
     m_aServletContextInitParameters = aServletContextInitParameters;
   }
 
-  @Nonnull
+  @NonNull
   public final WebScopeTestRule setContextPath (@Nullable final String sContextPath)
   {
     m_sContextPath = sContextPath;
@@ -76,14 +76,14 @@ public class WebScopeTestRule extends ExternalResource
     return m_sContextPath;
   }
 
-  @Nonnull
+  @NonNull
   public final WebScopeTestRule setServletContextInitParameters (@Nullable final ICommonsMap <String, String> aServletContextInitParameters)
   {
     m_aServletContextInitParameters = aServletContextInitParameters;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsMap <String, String> getServletContextInitParameters ()
   {
@@ -114,7 +114,7 @@ public class WebScopeTestRule extends ExternalResource
    *        <code>null</code>.
    * @return Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
   protected MockServletContext createMockServletContext (@Nullable final String sContextPath,
                                                          @Nullable final Map <String, String> aInitParams)
@@ -132,7 +132,7 @@ public class WebScopeTestRule extends ExternalResource
    */
   @Nullable
   @OverrideOnDemand
-  protected MockHttpServletRequest createMockRequest (@Nonnull final MockServletContext aServletContext)
+  protected MockHttpServletRequest createMockRequest (@NonNull final MockServletContext aServletContext)
   {
     return WebScopeAwareTestSetup.createDefaultMockRequest (aServletContext);
   }

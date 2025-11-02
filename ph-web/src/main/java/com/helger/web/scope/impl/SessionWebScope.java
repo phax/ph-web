@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,6 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.scope.SessionScope;
 import com.helger.web.scope.ISessionWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -48,7 +48,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   // Do not serialize the session
   private final HttpSession m_aHttpSession;
 
-  public SessionWebScope (@Nonnull final HttpSession aHttpSession)
+  public SessionWebScope (@NonNull final HttpSession aHttpSession)
   {
     super (aHttpSession.getId ());
 
@@ -63,7 +63,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
       });
   }
 
-  @Nonnull
+  @NonNull
   public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
@@ -84,7 +84,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public EContinue selfDestruct ()
   {
     // Since the session is still open when we're shutting down the global
@@ -106,7 +106,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     return EContinue.CONTINUE;
   }
 
-  @Nonnull
+  @NonNull
   public HttpSession getSession ()
   {
     return m_aHttpSession;

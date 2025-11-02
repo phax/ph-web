@@ -18,6 +18,9 @@ package com.helger.sitemap;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -32,9 +35,6 @@ import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.serialize.write.EXMLCharMode;
 import com.helger.xml.serialize.write.XMLMaskHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a single URL within an XML URL set.
@@ -64,17 +64,17 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
   private final String m_sPriority;
   private final int m_nOutputLength;
 
-  public XMLSitemapURL (@Nonnull final ISimpleURL aLocation)
+  public XMLSitemapURL (@NonNull final ISimpleURL aLocation)
   {
     this (aLocation, null);
   }
 
-  public XMLSitemapURL (@Nonnull final ISimpleURL aLocation, @Nullable final LocalDateTime aLastModification)
+  public XMLSitemapURL (@NonNull final ISimpleURL aLocation, @Nullable final LocalDateTime aLastModification)
   {
     this (aLocation, aLastModification, null, null);
   }
 
-  public XMLSitemapURL (@Nonnull final ISimpleURL aLocation,
+  public XMLSitemapURL (@NonNull final ISimpleURL aLocation,
                         @Nullable final LocalDateTime aLastModification,
                         @Nullable final EXMLSitemapChangeFequency eChangeFreq,
                         @Nullable final Double aPriority)
@@ -102,7 +102,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
    * @return The length in chars in XML representation
    */
   @Nonnegative
-  private static int _getTagOutputLength (@Nonnull final String s)
+  private static int _getTagOutputLength (@NonNull final String s)
   {
     // length + "<" + ">" + "<" + "/>"
     return s.length () * 2 + 5;
@@ -138,7 +138,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public String getLocation ()
   {
     return m_sLocation;
@@ -174,7 +174,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
     return m_nOutputLength;
   }
 
-  @Nonnull
+  @NonNull
   public IMicroElement getAsElement ()
   {
     final String sNamespaceURI = CXMLSitemap.XML_NAMESPACE_0_9;

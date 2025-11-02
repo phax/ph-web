@@ -18,6 +18,8 @@ package com.helger.smtp.failed;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +42,6 @@ import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 /**
  * Micro type converter for class {@link FailedMailData}.
  *
@@ -64,10 +63,10 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
   private static final String ATTR_ERROR_MESSAGE = "errormsg";
   private static final String ATTR_ERROR_CODE = "errcode";
 
-  @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final FailedMailData aFailedMail,
+  @NonNull
+  public IMicroElement convertToMicroElement (@NonNull final FailedMailData aFailedMail,
                                               @Nullable final String sNamespaceURI,
-                                              @Nonnull final String sTagName)
+                                              @NonNull final String sTagName)
   {
     final IMicroElement eFailedMail = new MicroElement (sNamespaceURI, sTagName);
 
@@ -103,7 +102,7 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
   }
 
   @Nullable
-  public FailedMailData convertToNative (@Nonnull final IMicroElement eFailedMail)
+  public FailedMailData convertToNative (@NonNull final IMicroElement eFailedMail)
   {
     final String sID = eFailedMail.getAttributeValue (ATTR_ID);
     if (sID == null)

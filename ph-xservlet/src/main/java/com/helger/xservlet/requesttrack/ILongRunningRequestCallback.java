@@ -16,12 +16,12 @@
  */
 package com.helger.xservlet.requesttrack;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.callback.ICallback;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Callback interface to be implemented to get notified on long running
@@ -43,7 +43,7 @@ public interface ILongRunningRequestCallback extends ICallback
    * @param nRunningMilliseconds
    *        The milliseconds this request is already running.
    */
-  void onLongRunningRequest (@Nonnull @Nonempty String sUniqueRequestID,
-                             @Nonnull IRequestWebScope aRequestScope,
+  void onLongRunningRequest (@NonNull @Nonempty String sUniqueRequestID,
+                             @NonNull IRequestWebScope aRequestScope,
                              @Nonnegative long nRunningMilliseconds);
 }

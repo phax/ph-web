@@ -16,12 +16,12 @@
  */
 package com.helger.sitemap;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.lang.EnumHelper;
 import com.helger.base.string.StringHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * The determined change frequency of a sitemap entry
@@ -40,12 +40,12 @@ public enum EXMLSitemapChangeFequency
 
   private final String m_sText;
 
-  EXMLSitemapChangeFequency (@Nonnull @Nonempty final String sText)
+  EXMLSitemapChangeFequency (@NonNull @Nonempty final String sText)
   {
     m_sText = sText;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getText ()
   {

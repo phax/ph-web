@@ -18,11 +18,11 @@ package com.helger.xservlet.requesttrack;
 
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.callback.ICallback;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Callback interface to be implemented to get notified when a certain amount of
@@ -43,7 +43,7 @@ public interface IParallelRunningRequestCallback extends ICallback
    *        The list of requests currently running. The size should be identical
    *        to the number of parallel requests. Never <code>null</code>.
    */
-  void onParallelRunningRequests (@Nonnegative int nParallelRequests, @Nonnull @Nonempty List <TrackedRequest> aRequests);
+  void onParallelRunningRequests (@Nonnegative int nParallelRequests, @NonNull @Nonempty List <TrackedRequest> aRequests);
 
   /**
    * This method is only called after the threshold was exceeded, when it is

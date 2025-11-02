@@ -16,13 +16,13 @@
  */
 package com.helger.smtp.data;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.iface.IHasInputStream;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.mail.datasource.InputStreamProviderDataSource;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Implementation of {@link IEmailAttachmentDataSource}
@@ -33,16 +33,16 @@ public class EmailAttachmentDataSource extends InputStreamProviderDataSource imp
 {
   private final EEmailAttachmentDisposition m_eDisposition;
 
-  public EmailAttachmentDataSource (@Nonnull final IHasInputStream aISP,
-                                    @Nonnull final String sFilename,
+  public EmailAttachmentDataSource (@NonNull final IHasInputStream aISP,
+                                    @NonNull final String sFilename,
                                     @Nullable final String sContentType,
-                                    @Nonnull final EEmailAttachmentDisposition eDisposition)
+                                    @NonNull final EEmailAttachmentDisposition eDisposition)
   {
     super (aISP, sFilename, sContentType);
     m_eDisposition = ValueEnforcer.notNull (eDisposition, "Disposition");
   }
 
-  @Nonnull
+  @NonNull
   public EEmailAttachmentDisposition getDisposition ()
   {
     return m_eDisposition;

@@ -19,10 +19,10 @@ package com.helger.web.fileupload.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An output stream which triggers an event when a specified number of bytes of
@@ -97,7 +97,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (@Nonnull final byte [] b) throws IOException
+  public void write (@NonNull final byte [] b) throws IOException
   {
     checkThreshold (b.length);
     getStream ().write (b);
@@ -118,7 +118,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (@Nonnull final byte [] b, @Nonnegative final int off, @Nonnegative final int len) throws IOException
+  public void write (@NonNull final byte [] b, @Nonnegative final int off, @Nonnegative final int len) throws IOException
   {
     checkThreshold (len);
     getStream ().write (b, off, len);
@@ -230,7 +230,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * @exception IOException
    *            if an error occurs.
    */
-  @Nonnull
+  @NonNull
   protected abstract OutputStream getStream () throws IOException;
 
   /**

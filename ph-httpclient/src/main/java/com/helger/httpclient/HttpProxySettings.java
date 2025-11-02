@@ -18,6 +18,8 @@ package com.helger.httpclient;
 
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -28,9 +30,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsLinkedHashSet;
 import com.helger.collection.commons.ICommonsOrderedSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * All the easily configurable settings for a single HTTP proxy server
@@ -57,7 +56,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    * @param aSource
    *        The source settings to copy from. May not be <code>null</code>.
    */
-  public HttpProxySettings (@Nonnull final IHttpProxySettings aSource)
+  public HttpProxySettings (@NonNull final IHttpProxySettings aSource)
   {
     setAllFrom (aSource);
   }
@@ -69,8 +68,8 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    *        The source settings to copy from. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @Nonnull
-  public final HttpProxySettings setAllFrom (@Nonnull final IHttpProxySettings aSource)
+  @NonNull
+  public final HttpProxySettings setAllFrom (@NonNull final IHttpProxySettings aSource)
   {
     ValueEnforcer.notNull (aSource, "Source");
     setProxyHost (aSource.getProxyHost ());
@@ -96,7 +95,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    * @return this for chaining
    * @see #setProxyCredentials(Credentials)
    */
-  @Nonnull
+  @NonNull
   public final HttpProxySettings setProxyHost (@Nullable final HttpHost aProxyHost)
   {
     m_aProxyHost = aProxyHost;
@@ -122,7 +121,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    * @return this for chaining
    * @see #setProxyHost(HttpHost)
    */
-  @Nonnull
+  @NonNull
   public final HttpProxySettings setProxyCredentials (@Nullable final Credentials aProxyCredentials)
   {
     m_aProxyCredentials = aProxyCredentials;
@@ -133,7 +132,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    * @return The set of all host names and IP addresses for which no proxy should be used. Never
    *         <code>null</code> and mutable.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public final ICommonsOrderedSet <String> nonProxyHosts ()
   {
@@ -149,7 +148,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    *        trimmed text between pipes is interpreted as a host name.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpProxySettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
     if (StringHelper.isNotEmpty (sDefinition))
@@ -174,14 +173,14 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    * @see #addNonProxyHostsFromPipeString(String)
    * @since 10.0.0
    */
-  @Nonnull
+  @NonNull
   public final HttpProxySettings setNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
     m_aNonProxyHosts.clear ();
     return addNonProxyHostsFromPipeString (sDefinition);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public HttpProxySettings getClone ()
   {

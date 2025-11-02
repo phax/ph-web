@@ -16,10 +16,10 @@
  */
 package com.helger.mail.cte;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.codec.IByteArrayCodec;
 import com.helger.base.id.IHasID;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Base interface for a content transfer encoding. See
@@ -34,6 +34,6 @@ public interface IContentTransferEncoding extends IHasID <String>
    *         <code>null</code>.
    * @since 9.0.5
    */
-  @Nonnull
+  @NonNull
   IByteArrayCodec createCodec ();
 }

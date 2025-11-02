@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
@@ -35,8 +36,6 @@ import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.mock.CommonsAssert;
 import com.helger.web.fileupload.IFileItem;
 import com.helger.web.fileupload.IFileItemFactory;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Serialization Unit tests for {@link DiskFileItem}.
@@ -166,7 +165,7 @@ public final class DiskFileItemTest
   /**
    * Compare FileItem's (except the byte[] content)
    */
-  private void _compareFileItems (@Nonnull final IFileItem aOrigItem, @Nonnull final IFileItem aNewItem)
+  private void _compareFileItems (@NonNull final IFileItem aOrigItem, @NonNull final IFileItem aNewItem)
   {
     CommonsAssert.assertEquals ("Compare: is in Memory", aOrigItem.isInMemory (), aNewItem.isInMemory ());
     CommonsAssert.assertEquals ("Compare: is Form Field", aOrigItem.isFormField (), aNewItem.isFormField ());

@@ -18,6 +18,8 @@ package com.helger.web.fileupload.servlet;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.web.fileupload.IFileItem;
@@ -26,7 +28,6 @@ import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.FileUpload;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -63,7 +64,7 @@ public class ServletFileUpload extends FileUpload
    * @param aFileItemFactory
    *        The factory to use for creating file items.
    */
-  public ServletFileUpload (@Nonnull final IFileItemFactory aFileItemFactory)
+  public ServletFileUpload (@NonNull final IFileItemFactory aFileItemFactory)
   {
     super (aFileItemFactory);
   }
@@ -79,9 +80,9 @@ public class ServletFileUpload extends FileUpload
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public ICommonsList <IFileItem> parseRequest (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException
+  public ICommonsList <IFileItem> parseRequest (@NonNull final HttpServletRequest aHttpRequest) throws FileUploadException
   {
     return super.parseRequest (new ServletRequestContext (aHttpRequest));
   }
@@ -101,8 +102,8 @@ public class ServletFileUpload extends FileUpload
    *         communicating with the client or a problem while storing the
    *         uploaded content.
    */
-  @Nonnull
-  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest aHttpRequest) throws FileUploadException, IOException
+  @NonNull
+  public IFileItemIterator getItemIterator (@NonNull final HttpServletRequest aHttpRequest) throws FileUploadException, IOException
   {
     return super.getItemIterator (new ServletRequestContext (aHttpRequest));
   }

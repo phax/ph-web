@@ -16,9 +16,9 @@
  */
 package com.helger.web.progress;
 
-import com.helger.annotation.style.IsSPIInterface;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nullable;
+import com.helger.annotation.style.IsSPIInterface;
 
 /**
  * Provider interface for {@link IProgressListener} instances.

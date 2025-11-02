@@ -19,6 +19,9 @@ package com.helger.mail.datasource;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.UnsupportedOperation;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.iface.IHasInputStream;
@@ -26,8 +29,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.mime.IMimeType;
 
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A special {@link DataSource} implementation based on data from
@@ -42,20 +43,20 @@ public class InputStreamProviderDataSource implements IExtendedDataSource
   private final String m_sName;
   private final String m_sContentType;
 
-  public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP, @Nonnull final String sName)
+  public InputStreamProviderDataSource (@NonNull final IHasInputStream aISP, @NonNull final String sName)
   {
     this (aISP, sName, (String) null);
   }
 
-  public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP,
-                                        @Nonnull final String sName,
+  public InputStreamProviderDataSource (@NonNull final IHasInputStream aISP,
+                                        @NonNull final String sName,
                                         @Nullable final IMimeType aContentType)
   {
     this (aISP, sName, aContentType == null ? null : aContentType.getAsString ());
   }
 
-  public InputStreamProviderDataSource (@Nonnull final IHasInputStream aISP,
-                                        @Nonnull final String sName,
+  public InputStreamProviderDataSource (@NonNull final IHasInputStream aISP,
+                                        @NonNull final String sName,
                                         @Nullable final String sContentType)
   {
     m_aISP = ValueEnforcer.notNull (aISP, "InputStreamProvider");
@@ -78,13 +79,13 @@ public class InputStreamProviderDataSource implements IExtendedDataSource
     throw new UnsupportedOperationException ("Read-only!");
   }
 
-  @Nonnull
+  @NonNull
   public String getContentType ()
   {
     return m_sContentType;
   }
 
-  @Nonnull
+  @NonNull
   public String getName ()
   {
     return m_sName;

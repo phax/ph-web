@@ -16,14 +16,14 @@
  */
 package com.helger.smtp.transport;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class encapsulates the error that occurs for a single mail sending. It
@@ -37,24 +37,24 @@ public class MailTransportError
   private final Throwable m_aThrowable;
   private final ICommonsList <MailSendDetails> m_aDetails = new CommonsArrayList <> ();
 
-  public MailTransportError (@Nonnull final Throwable aThrowable)
+  public MailTransportError (@NonNull final Throwable aThrowable)
   {
     this (aThrowable, null);
   }
 
-  public MailTransportError (@Nonnull final Throwable aThrowable, @Nullable final Iterable <? extends MailSendDetails> aDetails)
+  public MailTransportError (@NonNull final Throwable aThrowable, @Nullable final Iterable <? extends MailSendDetails> aDetails)
   {
     m_aThrowable = ValueEnforcer.notNull (aThrowable, "Throwable");
     m_aDetails.addAll (aDetails);
   }
 
-  @Nonnull
+  @NonNull
   public Throwable getThrowable ()
   {
     return m_aThrowable;
   }
 
-  @Nonnull
+  @NonNull
   public ICommonsList <MailSendDetails> getAllDetails ()
   {
     return m_aDetails.getClone ();

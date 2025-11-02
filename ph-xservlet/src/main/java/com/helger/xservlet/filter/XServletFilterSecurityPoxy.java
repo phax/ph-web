@@ -18,6 +18,7 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,6 @@ import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestLogger;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -46,11 +46,11 @@ public class XServletFilterSecurityPoxy implements IXServletLowLevelFilter
   protected XServletFilterSecurityPoxy ()
   {}
 
-  @Nonnull
-  public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                  @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod) throws IOException
+  @NonNull
+  public EContinue beforeRequest (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse,
+                                  @NonNull final EHttpVersion eHttpVersion,
+                                  @NonNull final EHttpMethod eHttpMethod) throws IOException
   {
     final String sPoxy = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.PROXY);
     if (sPoxy != null)

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +43,6 @@ import com.helger.jsch.proxy.SshProxy;
 import com.helger.jsch.session.AbstractSessionFactoryBuilder;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Manages a collection of tunnels. This implementation will:
@@ -196,7 +195,7 @@ public class TunnelConnectionManager implements Closeable
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnectionsFromFile (final File tunnelsConfig, @Nonnull final Charset aCharset) throws IOException, JSchException
+  public void setTunnelConnectionsFromFile (final File tunnelsConfig, @NonNull final Charset aCharset) throws IOException, JSchException
   {
     final List <String> aLines = new ArrayList <> ();
     try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig, aCharset)))
@@ -257,7 +256,7 @@ public class TunnelConnectionManager implements Closeable
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnections (@Nonnull final Iterable <String> aPathAndSpecList) throws JSchException
+  public void setTunnelConnections (@NonNull final Iterable <String> aPathAndSpecList) throws JSchException
   {
     final Map <String, ICommonsSet <Tunnel>> aMap = new HashMap <> ();
     for (final String sItem : aPathAndSpecList)

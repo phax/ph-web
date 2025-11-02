@@ -18,7 +18,8 @@ package com.helger.servlet.filter;
 
 import java.io.IOException;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -50,13 +51,13 @@ public abstract class AbstractHttpServletFilter extends AbstractServletFilter
    * @throws ServletException
    *         For non IO errors
    */
-  public abstract void doHttpFilter (@Nonnull HttpServletRequest aHttpRequest,
-                                     @Nonnull HttpServletResponse aHttpResponse,
-                                     @Nonnull FilterChain aChain) throws IOException, ServletException;
+  public abstract void doHttpFilter (@NonNull HttpServletRequest aHttpRequest,
+                                     @NonNull HttpServletResponse aHttpResponse,
+                                     @NonNull FilterChain aChain) throws IOException, ServletException;
 
-  public final void doFilter (@Nonnull final ServletRequest aRequest,
-                              @Nonnull final ServletResponse aResponse,
-                              @Nonnull final FilterChain aChain) throws IOException, ServletException
+  public final void doFilter (@NonNull final ServletRequest aRequest,
+                              @NonNull final ServletResponse aResponse,
+                              @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     if (aRequest instanceof HttpServletRequest && aResponse instanceof HttpServletResponse)
     {

@@ -27,6 +27,8 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.StatusLine;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -34,9 +36,6 @@ import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.httpclient.HttpClientHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A specialized version of {@link HttpResponseException} that has access to all the fields in a
@@ -52,10 +51,10 @@ public class ExtendedHttpResponseException extends HttpResponseException
   private final byte [] m_aResponseBody;
   private final transient Charset m_aResponseCharset;
 
-  public ExtendedHttpResponseException (@Nonnull final StatusLine aStatusLine,
-                                        @Nonnull final HttpResponse aHttpResponse,
+  public ExtendedHttpResponseException (@NonNull final StatusLine aStatusLine,
+                                        @NonNull final HttpResponse aHttpResponse,
                                         @Nullable final byte [] aResponseBody,
-                                        @Nonnull final Charset aCharset)
+                                        @NonNull final Charset aCharset)
   {
     super (aStatusLine.getStatusCode (), aStatusLine.getReasonPhrase () + " [" + aStatusLine.getStatusCode () + "]");
     ValueEnforcer.notNull (aHttpResponse, "HTTPResponse");
@@ -69,7 +68,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   /**
    * @return The status line received. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final StatusLine getStatusLine ()
   {
     return m_aStatusLine;
@@ -79,7 +78,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return The HTTP response object that triggered the exception. May not be <code>null</code>.
    *         May be used to determine the headers of the response.
    */
-  @Nonnull
+  @NonNull
   public final HttpResponse getHttpResponse ()
   {
     return m_aHttpResponse;
@@ -116,7 +115,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
   /**
    * @return The response charset. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final Charset getResponseCharset ()
   {
     return m_aResponseCharset;
@@ -142,19 +141,19 @@ public class ExtendedHttpResponseException extends HttpResponseException
    * @return <code>null</code> if no response body is present.
    */
   @Nullable
-  public final String getResponseBodyAsString (@Nonnull final Charset aCharset)
+  public final String getResponseBodyAsString (@NonNull final Charset aCharset)
   {
     return m_aResponseBody == null ? null : new String (m_aResponseBody, aCharset);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getMessagePartStatusLine ()
   {
     return m_aStatusLine.getReasonPhrase () + " [" + m_aStatusLine.getStatusCode () + ']';
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getMessagePartHeaders ()
   {
@@ -166,7 +165,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
     return aSB.toString ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getMessagePartResponseBody ()
   {
@@ -176,23 +175,23 @@ public class ExtendedHttpResponseException extends HttpResponseException
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public String getMessage ()
   {
     return getMessagePartStatusLine () + '\n' + getMessagePartHeaders () + '\n' + getMessagePartResponseBody ();
   }
 
-  @Nonnull
-  public static ExtendedHttpResponseException create (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  @NonNull
+  public static ExtendedHttpResponseException create (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final StatusLine aStatusLine = new StatusLine (aHttpResponse);
     return create (aStatusLine, aHttpResponse, aHttpResponse.getEntity ());
   }
 
-  @Nonnull
-  public static ExtendedHttpResponseException create (@Nonnull final StatusLine aStatusLine,
-                                                      @Nonnull final HttpResponse aHttpResponse,
-                                                      @Nonnull final HttpEntity aEntity) throws IOException
+  @NonNull
+  public static ExtendedHttpResponseException create (@NonNull final StatusLine aStatusLine,
+                                                      @NonNull final HttpResponse aHttpResponse,
+                                                      @NonNull final HttpEntity aEntity) throws IOException
   {
     final ContentType aContentType = HttpClientHelper.getContentTypeOrDefault (aEntity);
 

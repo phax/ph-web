@@ -19,6 +19,8 @@ package com.helger.smtp.data;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +38,6 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.commons.ICommonsOrderedSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is the default implementation of the {@link IMutableEmailAttachmentList}
@@ -81,7 +80,7 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
     return m_aMap.isEmpty ();
   }
 
-  public final void addAttachment (@Nonnull final IEmailAttachment aAttachment)
+  public final void addAttachment (@NonNull final IEmailAttachment aAttachment)
   {
     ValueEnforcer.notNull (aAttachment, "Attachment");
 
@@ -91,13 +90,13 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
     m_aMap.put (sKey, aAttachment);
   }
 
-  @Nonnull
+  @NonNull
   public EChange removeAttachment (@Nullable final String sFilename)
   {
     return m_aMap.removeObject (sFilename);
   }
 
-  @Nonnull
+  @NonNull
   public EChange removeAll ()
   {
     return m_aMap.removeAll ();
@@ -108,14 +107,14 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
     return m_aMap.containsKey (sFilename);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedSet <String> getAllAttachmentFilenames ()
   {
     return m_aMap.copyOfKeySet ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject ("speed")
   @CodingStyleguideUnaware
   Collection <IEmailAttachment> directGetAllAttachments ()
@@ -123,21 +122,21 @@ public class EmailAttachmentList implements IMutableEmailAttachmentList
     return m_aMap.values ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <IEmailAttachment> getAllAttachments ()
   {
     return m_aMap.copyOfValues ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <IEmailAttachmentDataSource> getAsDataSourceList ()
   {
     return new CommonsArrayList <> (m_aMap.values (), IEmailAttachment::getAsDataSource);
   }
 
-  @Nonnull
+  @NonNull
   public Iterator <IEmailAttachment> iterator ()
   {
     return m_aMap.values ().iterator ();

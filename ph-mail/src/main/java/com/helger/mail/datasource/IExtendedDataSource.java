@@ -16,14 +16,15 @@
  */
 package com.helger.mail.datasource;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.mail.cte.IContentTransferEncoding;
 import com.helger.mime.CMimeType;
 import com.helger.mime.IMimeType;
 
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Extension interface for {@link DataSource}.
@@ -34,13 +35,13 @@ public interface IExtendedDataSource extends DataSource
 {
   IMimeType DEFAULT_CONTENT_TYPE = CMimeType.APPLICATION_OCTET_STREAM;
 
-  @Nonnull
+  @NonNull
   default DataHandler getAsDataHandler ()
   {
     return new DataHandler (this);
   }
 
-  @Nonnull
+  @NonNull
   default IEncodingAwareDataSource getEncodingAware (@Nullable final IContentTransferEncoding aCTE)
   {
     return IEncodingAwareDataSource.getEncodingAware (this, aCTE);

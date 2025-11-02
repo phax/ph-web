@@ -29,6 +29,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -47,7 +48,6 @@ import com.helger.web.fileupload.servlet.ServletFileUpload;
 import com.helger.web.fileupload.servlet.ServletRequestContext;
 import com.helger.web.multipart.MultipartMalformedStreamException;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -213,7 +213,7 @@ public final class StreamingFuncTest
     return _parseUploadToList (new NonBlockingByteArrayInputStream (bytes), bytes.length);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream,
                                                        final int pLength) throws FileUploadException

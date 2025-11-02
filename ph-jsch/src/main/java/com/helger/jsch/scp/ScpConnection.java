@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +36,6 @@ import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Based on protocol information found
@@ -55,9 +54,9 @@ public class ScpConnection implements Closeable
   private final OutputStream m_aOS;
   private final Session m_aSession;
 
-  public ScpConnection (@Nonnull final ISessionFactory aSessionFactory,
+  public ScpConnection (@NonNull final ISessionFactory aSessionFactory,
                         final String sPath,
-                        @Nonnull final EScpMode eScpMode,
+                        @NonNull final EScpMode eScpMode,
                         @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
@@ -92,11 +91,11 @@ public class ScpConnection implements Closeable
         _checkAck ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _getCommand (@Nonnull final EScpMode eScpMode,
+  private static String _getCommand (@NonNull final EScpMode eScpMode,
                                      @Nullable final ECopyMode eCopyMode,
-                                     @Nonnull final String sPath)
+                                     @NonNull final String sPath)
   {
     final StringBuilder aSB;
     switch (eScpMode)
@@ -308,7 +307,7 @@ public class ScpConnection implements Closeable
     putNextEntry (ScpEntry.newFile (name, size));
   }
 
-  public void putNextEntry (@Nonnull final ScpEntry aEntry) throws IOException
+  public void putNextEntry (@NonNull final ScpEntry aEntry) throws IOException
   {
     if (aEntry.isEndOfDirectory ())
     {
@@ -342,7 +341,7 @@ public class ScpConnection implements Closeable
     }
   }
 
-  @Nonnull
+  @NonNull
   private String _readMessageSegment () throws IOException
   {
     final byte [] buffer = new byte [1024];

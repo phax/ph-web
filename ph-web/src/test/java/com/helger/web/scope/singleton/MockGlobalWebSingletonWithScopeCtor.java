@@ -16,11 +16,11 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.UsedViaReflection;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.scope.IScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractGlobalWebSingleton}
@@ -35,27 +35,27 @@ public final class MockGlobalWebSingletonWithScopeCtor extends AbstractGlobalWeb
 
   @Deprecated (forRemoval = false)
   @UsedViaReflection
-  public MockGlobalWebSingletonWithScopeCtor (@Nonnull final IScope aScope)
+  public MockGlobalWebSingletonWithScopeCtor (@NonNull final IScope aScope)
   {
     m_aScope = ValueEnforcer.notNull (aScope, "Scope");
     s_nCtorCount++;
   }
 
-  @Nonnull
+  @NonNull
   public static MockGlobalWebSingletonWithScopeCtor getInstance ()
   {
     return getGlobalSingleton (MockGlobalWebSingletonWithScopeCtor.class);
   }
 
   @Override
-  protected void onDestroy (@Nonnull final IScope aScopeInDestruction) throws Exception
+  protected void onDestroy (@NonNull final IScope aScopeInDestruction) throws Exception
   {
     if (!m_aScope.equals (aScopeInDestruction))
       throw new IllegalStateException ("Saved scope differs from scope in destruction!");
     s_nDtorCount++;
   }
 
-  @Nonnull
+  @NonNull
   public IScope getScope ()
   {
     return m_aScope;

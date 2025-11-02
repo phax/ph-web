@@ -16,6 +16,9 @@
  */
 package com.helger.xservlet;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.clone.ICloneable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -26,9 +29,6 @@ import com.helger.http.EHttpReferrerPolicy;
 import com.helger.servlet.response.EXFrameOptionType;
 import com.helger.url.ISimpleURL;
 import com.helger.url.ReadOnlyURL;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class keeps all the settings that can be applied to all XServlet based settings. The
@@ -60,7 +60,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
   public XServletSettings ()
   {}
 
-  public XServletSettings (@Nonnull final XServletSettings aOther)
+  public XServletSettings (@NonNull final XServletSettings aOther)
   {
     ValueEnforcer.notNull (aOther, "Other");
     m_eHttpReferrerPolicy = aOther.m_eHttpReferrerPolicy;
@@ -93,7 +93,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
    *        The enumeration value to be used. May be <code>null</code> to indicate: don't set
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final XServletSettings setHttpReferrerPolicy (@Nullable final EHttpReferrerPolicy eHttpReferrerPolicy)
   {
     m_eHttpReferrerPolicy = eHttpReferrerPolicy;
@@ -149,7 +149,7 @@ public class XServletSettings implements ICloneable <XServletSettings>
    * @return this for chaining
    * @since 9.1.1
    */
-  @Nonnull
+  @NonNull
   public final XServletSettings setXFrameOptions (@Nullable final EXFrameOptionType eType,
                                                   @Nullable final ISimpleURL aDomain)
   {
@@ -166,14 +166,14 @@ public class XServletSettings implements ICloneable <XServletSettings>
     return m_bIsMultipartEnabled;
   }
 
-  @Nonnull
+  @NonNull
   public final XServletSettings setMultipartEnabled (final boolean bIsMultipartEnabled)
   {
     m_bIsMultipartEnabled = bIsMultipartEnabled;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public XServletSettings getClone ()
   {

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,6 @@ import com.helger.base.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A TunnelConnection represents an ssh connection that opens one or more
@@ -47,16 +46,16 @@ public class TunnelConnection implements Closeable
   private final Iterable <Tunnel> m_aTunnels;
   private Session m_aSession;
 
-  @Nonnull
+  @NonNull
   @Nonempty
   private static String _hostnamePortKey (final String hostname, final int port)
   {
     return hostname + ":" + port;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _hostnamePortKey (@Nonnull final Tunnel tunnel)
+  private static String _hostnamePortKey (@NonNull final Tunnel tunnel)
   {
     return _hostnamePortKey (tunnel.getDestinationHostname (), tunnel.getDestinationPort ());
   }
@@ -217,7 +216,7 @@ public class TunnelConnection implements Closeable
     open ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getAsString ()
   {

@@ -19,6 +19,8 @@ package com.helger.smtp.transport;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +37,6 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class collects instances of {@link IMutableEmailData} and tries to
@@ -67,8 +66,8 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
    */
   public MailQueuePerSMTP (@Nonnegative final int nMaxQueueSize,
                            @Nonnegative final int nMaxPerformCount,
-                           @Nonnull final ISMTPSettings aSMTPSettings,
-                           @Nonnull final FailedMailQueue aFailedMailQueue)
+                           @NonNull final ISMTPSettings aSMTPSettings,
+                           @NonNull final FailedMailQueue aFailedMailQueue)
   {
     super (nMaxQueueSize, nMaxPerformCount);
     ValueEnforcer.notNull (aSMTPSettings, "SMTPSettings");
@@ -84,7 +83,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
   /**
    * @return The SMTP settings used for this queue. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public ISMTPSettings getSMTPSettings ()
   {
     return m_aTransport.getSMTPSettings ();
@@ -93,14 +92,14 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
   /**
    * @return The Failed mail queue to be used for this queue.
    */
-  @Nonnull
+  @NonNull
   public FailedMailQueue getFailedMailQueue ()
   {
     return m_aFailedMailQueue;
   }
 
-  @Nonnull
-  public MailQueuePerSMTP setFailedMailQueue (@Nonnull final FailedMailQueue aFailedMailQueue)
+  @NonNull
+  public MailQueuePerSMTP setFailedMailQueue (@NonNull final FailedMailQueue aFailedMailQueue)
   {
     m_aFailedMailQueue = ValueEnforcer.notNull (aFailedMailQueue, "FailedMailQueue");
     return this;
@@ -153,7 +152,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
    *        in sending are continued to be sent out.
    * @return {@link ESuccess}
    */
-  @Nonnull
+  @NonNull
   public ESuccess stopQueuingNewObjects (final boolean bStopImmediately)
   {
     if (bStopImmediately)

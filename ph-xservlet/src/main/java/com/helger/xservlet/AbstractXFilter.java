@@ -19,6 +19,7 @@ package com.helger.xservlet;
 import java.io.IOException;
 import java.util.function.BiFunction;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,6 @@ import com.helger.web.scope.request.RequestScopeInitializer;
 import com.helger.xservlet.exception.IXServletExceptionHandler;
 import com.helger.xservlet.exception.XServletLoggingExceptionHandler;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,7 +83,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   /**
    * @return The internal exception handler list. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final CallbackList <IXServletExceptionHandler> exceptionHandler ()
   {
@@ -129,11 +129,11 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
    * @throws ServletException
    *         In case of business level error
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  public EContinue onFilterBefore (@Nonnull final HttpServletRequest aHttpRequest,
-                                   @Nonnull final HttpServletResponse aHttpResponse,
-                                   @Nonnull final IRequestWebScope aRequestScope) throws IOException, ServletException
+  public EContinue onFilterBefore (@NonNull final HttpServletRequest aHttpRequest,
+                                   @NonNull final HttpServletResponse aHttpResponse,
+                                   @NonNull final IRequestWebScope aRequestScope) throws IOException, ServletException
   {
     // By default continue
     return EContinue.CONTINUE;
@@ -154,15 +154,15 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
    *         In case of business level error
    */
   @OverrideOnDemand
-  public void onFilterAfter (@Nonnull final HttpServletRequest aHttpRequest,
-                             @Nonnull final HttpServletResponse aHttpResponse,
-                             @Nonnull final IRequestWebScope aRequestScope) throws IOException, ServletException
+  public void onFilterAfter (@NonNull final HttpServletRequest aHttpRequest,
+                             @NonNull final HttpServletResponse aHttpResponse,
+                             @NonNull final IRequestWebScope aRequestScope) throws IOException, ServletException
   {}
 
   @Override
-  public void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final FilterChain aChain) throws IOException, ServletException
+  public void doHttpFilter (@NonNull final HttpServletRequest aHttpRequest,
+                            @NonNull final HttpServletResponse aHttpResponse,
+                            @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     // Increase counter
     m_aCounterRequestsTotal.increment ();

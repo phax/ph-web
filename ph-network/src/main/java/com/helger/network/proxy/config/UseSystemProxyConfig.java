@@ -18,13 +18,13 @@ package com.helger.network.proxy.config;
 
 import java.net.Proxy;
 
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.string.StringParser;
 import com.helger.base.system.SystemProperties;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nullable;
 
 /**
  * Proxy configuration that uses the system default proxy settings.

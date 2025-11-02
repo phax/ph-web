@@ -16,12 +16,13 @@
  */
 package com.helger.servlet.async;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.servlet.ServletHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,9 +45,9 @@ public class ExtAsyncContext
   private final String m_sServletPath;
   private boolean m_bSetAttrs = false;
 
-  public ExtAsyncContext (@Nonnull final AsyncContext aAsyncContext,
-                          @Nonnull final EHttpVersion eHttpVersion,
-                          @Nonnull final EHttpMethod eHttpMethod,
+  public ExtAsyncContext (@NonNull final AsyncContext aAsyncContext,
+                          @NonNull final EHttpVersion eHttpVersion,
+                          @NonNull final EHttpMethod eHttpMethod,
                           @Nullable final String sContextPath,
                           @Nullable final String sPathInfo,
                           @Nullable final String sQueryString,
@@ -63,25 +64,25 @@ public class ExtAsyncContext
     m_sServletPath = sServletPath;
   }
 
-  @Nonnull
+  @NonNull
   protected AsyncContext getAsyncContext ()
   {
     return m_aAsyncContext;
   }
 
-  @Nonnull
+  @NonNull
   public EHttpVersion getHTTPVersion ()
   {
     return m_eHttpVersion;
   }
 
-  @Nonnull
+  @NonNull
   public EHttpMethod getHTTPMethod ()
   {
     return m_eHttpMethod;
   }
 
-  @Nonnull
+  @NonNull
   public HttpServletRequest getRequest ()
   {
     final HttpServletRequest ret = (HttpServletRequest) m_aAsyncContext.getRequest ();
@@ -98,13 +99,13 @@ public class ExtAsyncContext
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public HttpServletResponse getResponse ()
   {
     return (HttpServletResponse) m_aAsyncContext.getResponse ();
   }
 
-  public void start (@Nonnull final Runnable r)
+  public void start (@NonNull final Runnable r)
   {
     m_aAsyncContext.start (r);
   }
@@ -114,12 +115,12 @@ public class ExtAsyncContext
     m_aAsyncContext.complete ();
   }
 
-  @Nonnull
-  public static ExtAsyncContext create (@Nonnull final HttpServletRequest aHttpRequest,
-                                        @Nonnull final HttpServletResponse aHttpResponse,
-                                        @Nonnull final EHttpVersion eHttpVersion,
-                                        @Nonnull final EHttpMethod eHttpMethod,
-                                        @Nonnull final ServletAsyncSpec aAsyncSpec)
+  @NonNull
+  public static ExtAsyncContext create (@NonNull final HttpServletRequest aHttpRequest,
+                                        @NonNull final HttpServletResponse aHttpResponse,
+                                        @NonNull final EHttpVersion eHttpVersion,
+                                        @NonNull final EHttpMethod eHttpMethod,
+                                        @NonNull final ServletAsyncSpec aAsyncSpec)
   {
     final AsyncContext aAsyncContext = aHttpRequest.startAsync (aHttpRequest, aHttpResponse);
     aAsyncSpec.applyToAsyncContext (aAsyncContext);

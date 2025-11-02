@@ -40,6 +40,8 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.codec.impl.RFC3986Codec;
@@ -49,9 +51,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.http.EHttpMethod;
 import com.helger.network.proxy.config.HttpProxyConfig;
 import com.helger.url.ISimpleURL;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Some utility methods for creating and handling Apache httpclient objects.
@@ -67,16 +66,16 @@ public final class HttpClientHelper
   private HttpClientHelper ()
   {}
 
-  @Nonnull
-  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod,
-                                                  @Nonnull final ISimpleURL aSimpleURL)
+  @NonNull
+  public static HttpUriRequestBase createRequest (@NonNull final EHttpMethod eHTTPMethod,
+                                                  @NonNull final ISimpleURL aSimpleURL)
   {
     final String sURI = aSimpleURL.getAsString ();
     return createRequest (eHTTPMethod, sURI);
   }
 
-  @Nonnull
-  public static HttpUriRequestBase createRequest (@Nonnull final EHttpMethod eHTTPMethod, @Nonnull final String sURI)
+  @NonNull
+  public static HttpUriRequestBase createRequest (@NonNull final EHttpMethod eHTTPMethod, @NonNull final String sURI)
   {
     switch (eHTTPMethod)
     {
@@ -110,14 +109,14 @@ public final class HttpClientHelper
     return ContentType.create (sContentType, aCharset);
   }
 
-  @Nonnull
-  public static Charset getCharset (@Nonnull final ContentType aContentType)
+  @NonNull
+  public static Charset getCharset (@NonNull final ContentType aContentType)
   {
     return getCharset (aContentType, DEF_CONTENT_CHARSET);
   }
 
   @Nullable
-  public static Charset getCharset (@Nonnull final ContentType aContentType, @Nullable final Charset aDefault)
+  public static Charset getCharset (@NonNull final ContentType aContentType, @Nullable final Charset aDefault)
   {
     final Charset ret = aContentType.getCharset ();
     return ret != null ? ret : aDefault;
@@ -155,15 +154,15 @@ public final class HttpClientHelper
 
   @Nullable
   public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
-                                                  @Nonnull final ContentType aContentType)
+                                                  @NonNull final ContentType aContentType)
   {
     return createParameterEntity (aMap, aContentType, StandardCharsets.UTF_8);
   }
 
   @Nullable
   public static HttpEntity createParameterEntity (@Nullable final Map <String, String> aMap,
-                                                  @Nonnull final ContentType aContentType,
-                                                  @Nonnull final Charset aCharset)
+                                                  @NonNull final ContentType aContentType,
+                                                  @NonNull final Charset aCharset)
   {
     ValueEnforcer.notNull (aContentType, "ContentType");
     ValueEnforcer.notNull (aCharset, "Charset");
@@ -222,7 +221,7 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static String entityToString (@Nonnull final HttpEntity aEntity, @Nonnull final Charset aCharset)
+  public static String entityToString (@NonNull final HttpEntity aEntity, @NonNull final Charset aCharset)
                                                                                                            throws IOException
   {
     final byte [] ret = EntityUtils.toByteArray (aEntity);

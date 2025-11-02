@@ -16,10 +16,11 @@
  */
 package com.helger.web.servlets.scope;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.web.scope.mgr.WebScopeManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.http.HttpSessionEvent;
@@ -35,28 +36,28 @@ import jakarta.servlet.http.HttpSessionListener;
 public class WebScopeListener implements ServletContextListener, HttpSessionListener
 {
   @OverridingMethodsMustInvokeSuper
-  public void contextInitialized (@Nonnull final ServletContextEvent aEvent)
+  public void contextInitialized (@NonNull final ServletContextEvent aEvent)
   {
     // Init the global scope
     WebScopeManager.onGlobalBegin (aEvent.getServletContext ());
   }
 
   @OverridingMethodsMustInvokeSuper
-  public void contextDestroyed (@Nonnull final ServletContextEvent aEvent)
+  public void contextDestroyed (@NonNull final ServletContextEvent aEvent)
   {
     // End the global scope
     WebScopeManager.onGlobalEnd ();
   }
 
   @OverridingMethodsMustInvokeSuper
-  public void sessionCreated (@Nonnull final HttpSessionEvent aEvent)
+  public void sessionCreated (@NonNull final HttpSessionEvent aEvent)
   {
     // Create a new session
     WebScopeManager.onSessionBegin (aEvent.getSession ());
   }
 
   @OverridingMethodsMustInvokeSuper
-  public void sessionDestroyed (@Nonnull final HttpSessionEvent aEvent)
+  public void sessionDestroyed (@NonNull final HttpSessionEvent aEvent)
   {
     // End an existing session
     WebScopeManager.onSessionEnd (aEvent.getSession ());

@@ -18,6 +18,7 @@ package com.helger.web.scope.request;
 
 import java.util.function.BiFunction;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,6 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -53,7 +53,7 @@ public final class RequestScopeInitializer implements AutoCloseable
    *        <code>true</code> if the request scope was newly created,
    *        <code>false</code> if an existing request web scope is reused.
    */
-  private RequestScopeInitializer (@Nonnull final IRequestWebScope aRequestScope, final boolean bCreatedIt)
+  private RequestScopeInitializer (@NonNull final IRequestWebScope aRequestScope, final boolean bCreatedIt)
   {
     m_aRequestScope = ValueEnforcer.notNull (aRequestScope, "RequestScope");
     m_bCreatedIt = bCreatedIt;
@@ -62,7 +62,7 @@ public final class RequestScopeInitializer implements AutoCloseable
   /**
    * @return The request web scope to be used.
    */
-  @Nonnull
+  @NonNull
   public IRequestWebScope getRequestScope ()
   {
     return m_aRequestScope;
@@ -91,17 +91,17 @@ public final class RequestScopeInitializer implements AutoCloseable
     }
   }
 
-  @Nonnull
-  public static RequestScopeInitializer createMultipart (@Nonnull final HttpServletRequest aHttpRequest,
-                                                         @Nonnull final HttpServletResponse aHttpResponse)
+  @NonNull
+  public static RequestScopeInitializer createMultipart (@NonNull final HttpServletRequest aHttpRequest,
+                                                         @NonNull final HttpServletResponse aHttpResponse)
   {
     return create (aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
   }
 
-  @Nonnull
-  public static RequestScopeInitializer create (@Nonnull final HttpServletRequest aHttpRequest,
-                                                @Nonnull final HttpServletResponse aHttpResponse,
-                                                @Nonnull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory)
+  @NonNull
+  public static RequestScopeInitializer create (@NonNull final HttpServletRequest aHttpRequest,
+                                                @NonNull final HttpServletResponse aHttpResponse,
+                                                @NonNull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory)
   {
     // Check if a request scope is already present
     final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScopeOrNull ();

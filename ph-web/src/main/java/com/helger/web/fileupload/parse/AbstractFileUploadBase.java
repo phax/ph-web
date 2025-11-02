@@ -23,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,9 +52,6 @@ import com.helger.web.fileupload.io.AbstractLimitedInputStream;
 import com.helger.web.multipart.MultipartProgressNotifier;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.progress.IProgressListener;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -109,7 +108,7 @@ public abstract class AbstractFileUploadBase
    *
    * @return The factory class for new file items.
    */
-  @Nonnull
+  @NonNull
   public abstract IFileItemFactory getFileItemFactory ();
 
   /**
@@ -227,8 +226,8 @@ public abstract class AbstractFileUploadBase
    *         An I/O error occurred. This may be a network error while communicating with the client
    *         or a problem while storing the uploaded content.
    */
-  @Nonnull
-  public IFileItemIterator getItemIterator (@Nonnull final IRequestContext aCtx) throws FileUploadException, IOException
+  @NonNull
+  public IFileItemIterator getItemIterator (@NonNull final IRequestContext aCtx) throws FileUploadException, IOException
   {
     return new FileItemIterator (aCtx);
   }
@@ -244,9 +243,9 @@ public abstract class AbstractFileUploadBase
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public ICommonsList <IFileItem> parseRequest (@Nonnull final IRequestContext aCtx) throws FileUploadException
+  public ICommonsList <IFileItem> parseRequest (@NonNull final IRequestContext aCtx) throws FileUploadException
   {
     final ICommonsList <IFileItem> aItems = new CommonsArrayList <> ();
     boolean bSuccessful = false;
@@ -334,7 +333,7 @@ public abstract class AbstractFileUploadBase
    * @return The boundary, as a byte array.
    */
   @Nullable
-  protected byte [] getBoundary (@Nonnull final String sContentType)
+  protected byte [] getBoundary (@NonNull final String sContentType)
   {
     // Parameter parser can handle null input
     final ICommonsMap <String, String> aParams = new ParameterParser ().setLowerCaseNames (true)
@@ -353,7 +352,7 @@ public abstract class AbstractFileUploadBase
    * @return The file name for the current <code>encapsulation</code>.
    */
   @Nullable
-  protected String getFileName (@Nonnull final IFileItemHeaders aHeaders)
+  protected String getFileName (@NonNull final IFileItemHeaders aHeaders)
   {
     return _getFilename (aHeaders.getHeaderContentDisposition ());
   }
@@ -406,7 +405,7 @@ public abstract class AbstractFileUploadBase
    * @return The field name for the current <code>encapsulation</code>.
    */
   @Nullable
-  protected String getFieldName (@Nonnull final IFileItemHeaders aFileItemHeaders)
+  protected String getFieldName (@NonNull final IFileItemHeaders aFileItemHeaders)
   {
     return _getFieldName (aFileItemHeaders.getHeaderContentDisposition ());
   }
@@ -445,8 +444,8 @@ public abstract class AbstractFileUploadBase
    *        The <code>header-part</code> of the current <code>encapsulation</code>.
    * @return A <code>Map</code> containing the parsed HTTP request headers.
    */
-  @Nonnull
-  protected IFileItemHeaders getParsedHeaders (@Nonnull final String sHeaderPart)
+  @NonNull
+  protected IFileItemHeaders getParsedHeaders (@NonNull final String sHeaderPart)
   {
     final int nLen = sHeaderPart.length ();
     final FileItemHeaders aHeaders = createFileItemHeaders ();
@@ -489,7 +488,7 @@ public abstract class AbstractFileUploadBase
    *
    * @return The new instance.
    */
-  @Nonnull
+  @NonNull
   protected FileItemHeaders createFileItemHeaders ()
   {
     return new FileItemHeaders ();
@@ -504,7 +503,7 @@ public abstract class AbstractFileUploadBase
    *        Index of the last byte, which has yet been processed.
    * @return Index of the \r\n sequence, which indicates end of line.
    */
-  private static int _parseEndOfLine (@Nonnull final String sHeaderPart, final int nEnd)
+  private static int _parseEndOfLine (@NonNull final String sHeaderPart, final int nEnd)
   {
     int nIndex = nEnd;
     for (;;)
@@ -527,7 +526,7 @@ public abstract class AbstractFileUploadBase
    * @param sHeader
    *        Map where to store the current header.
    */
-  private static void _parseHeaderLine (@Nonnull final FileItemHeaders aHeaders, @Nonnull final String sHeader)
+  private static void _parseHeaderLine (@NonNull final FileItemHeaders aHeaders, @NonNull final String sHeader)
   {
     final int nColonOffset = sHeader.indexOf (':');
     if (nColonOffset == -1)
@@ -590,7 +589,7 @@ public abstract class AbstractFileUploadBase
      * @throws IOException
      *         An I/O error occurred.
      */
-    FileItemIterator (@Nonnull final IRequestContext aCtx) throws FileUploadException, IOException
+    FileItemIterator (@NonNull final IRequestContext aCtx) throws FileUploadException, IOException
     {
       ValueEnforcer.notNull (aCtx, "RequestContext");
 
@@ -747,7 +746,7 @@ public abstract class AbstractFileUploadBase
       }
     }
 
-    private long _getContentLength (@Nonnull final IFileItemHeaders aHeaders)
+    private long _getContentLength (@NonNull final IFileItemHeaders aHeaders)
     {
       return StringParser.parseLong (aHeaders.getHeaderContentLength (), -1L);
     }
@@ -781,7 +780,7 @@ public abstract class AbstractFileUploadBase
      *         Reading the file item failed.
      * @return FileItemStream instance, which provides access to the next file item.
      */
-    @Nonnull
+    @NonNull
     public IFileItemStream next () throws FileUploadException, IOException
     {
       if (m_bEOF || (!m_bItemValid && !hasNext ()))

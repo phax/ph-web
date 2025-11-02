@@ -20,6 +20,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +34,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
@@ -100,8 +100,8 @@ public final class ServletHelper
    * @param aAttrValue
    *        Attribute value. May be <code>null</code>.
    */
-  public static void setRequestAttribute (@Nonnull final ServletRequest aServletRequest,
-                                          @Nonnull final String sAttrName,
+  public static void setRequestAttribute (@NonNull final ServletRequest aServletRequest,
+                                          @NonNull final String sAttrName,
                                           @Nullable final Object aAttrValue)
   {
     try
@@ -117,8 +117,8 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static Object getRequestAttribute (@Nonnull final ServletRequest aServletRequest,
-                                            @Nonnull final String sAttrName)
+  public static Object getRequestAttribute (@NonNull final ServletRequest aServletRequest,
+                                            @NonNull final String sAttrName)
   {
     try
     {
@@ -136,15 +136,15 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static <T> T getRequestAttributeAs (@Nonnull final ServletRequest aServletRequest,
-                                             @Nonnull final String sAttrName)
+  public static <T> T getRequestAttributeAs (@NonNull final ServletRequest aServletRequest,
+                                             @NonNull final String sAttrName)
   {
     return GenericReflection.uncheckedCast (getRequestAttribute (aServletRequest, sAttrName));
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <String> getRequestHeaderNames (@Nonnull final HttpServletRequest aServletRequest)
+  public static ICommonsList <String> getRequestHeaderNames (@NonNull final HttpServletRequest aServletRequest)
   {
     try
     {
@@ -161,10 +161,10 @@ public final class ServletHelper
     }
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <String> getRequestHeaders (@Nonnull final HttpServletRequest aServletRequest,
-                                                         @Nonnull final String sHeaderName)
+  public static ICommonsList <String> getRequestHeaders (@NonNull final HttpServletRequest aServletRequest,
+                                                         @NonNull final String sHeaderName)
   {
     try
     {
@@ -182,8 +182,8 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestHeader (@Nonnull final HttpServletRequest aServletRequest,
-                                         @Nonnull final String sHeaderName)
+  public static String getRequestHeader (@NonNull final HttpServletRequest aServletRequest,
+                                         @NonNull final String sHeaderName)
   {
     try
     {
@@ -201,8 +201,8 @@ public final class ServletHelper
   }
 
   @CheckForSigned
-  public static long getRequestDateHeader (@Nonnull final HttpServletRequest aServletRequest,
-                                           @Nonnull final String sHeaderName)
+  public static long getRequestDateHeader (@NonNull final HttpServletRequest aServletRequest,
+                                           @NonNull final String sHeaderName)
   {
     try
     {
@@ -235,7 +235,7 @@ public final class ServletHelper
    * @return Empty string if request is <code>null</code> or a String specifying the portion of the
    *         request URI that indicates the context of the request
    */
-  @Nonnull
+  @NonNull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest)
   {
     return getRequestContextPath (aHttpRequest, ServletContextPathHolder.getContextPath ());
@@ -261,7 +261,7 @@ public final class ServletHelper
    *         request URI that indicates the context of the request
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest,
                                               @Nullable final String sFallback)
   {
@@ -295,7 +295,7 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or a the path info.
    */
-  @Nonnull
+  @NonNull
   public static String getRequestPathInfo (@Nullable final HttpServletRequest aHttpRequest)
   {
     String ret = null;
@@ -363,7 +363,7 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or the request URI.
    */
-  @Nonnull
+  @NonNull
   public static String getRequestRequestURI (@Nullable final HttpServletRequest aHttpRequest)
   {
     String ret = "";
@@ -391,7 +391,7 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return Empty {@link StringBuffer} if request is <code>null</code> or the request URL.
    */
-  @Nonnull
+  @NonNull
   public static StringBuffer getRequestRequestURL (@Nullable final HttpServletRequest aHttpRequest)
   {
     StringBuffer ret = null;
@@ -417,7 +417,7 @@ public final class ServletHelper
    * @return Empty string if request is <code>null</code> or the servlet path.
    * @since 8.8.0
    */
-  @Nonnull
+  @NonNull
   public static String getRequestServletPath (@Nullable final HttpServletRequest aHttpRequest)
   {
     String ret = "";
@@ -484,7 +484,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+  public static void setRequestCharacterEncoding (@NonNull final HttpServletRequest aHttpRequest,
                                                   @Nullable final Charset aCharset)
   {
     setRequestCharacterEncoding (aHttpRequest, aCharset != null ? aCharset.name () : null);
@@ -499,7 +499,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
-  public static void setRequestCharacterEncoding (@Nonnull final HttpServletRequest aHttpRequest,
+  public static void setRequestCharacterEncoding (@NonNull final HttpServletRequest aHttpRequest,
                                                   @Nullable final String sCharset)
   {
     if (StringHelper.isNotEmpty (sCharset))
@@ -520,8 +520,8 @@ public final class ServletHelper
    *        Servlet context. May not be <code>null</code>.
    * @return The non-<code>null</code> base path.
    */
-  @Nonnull
-  public static String getServletContextBasePath (@Nonnull final ServletContext aSC)
+  @NonNull
+  public static String getServletContextBasePath (@NonNull final ServletContext aSC)
   {
     String sPath = aSC.getRealPath (".");
     if (sPath == null)
@@ -538,7 +538,7 @@ public final class ServletHelper
   }
 
   @CheckForSigned
-  public static long getRequestContentLength (@Nonnull final HttpServletRequest aHttpRequest)
+  public static long getRequestContentLength (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -555,7 +555,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestContentType (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestContentType (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -571,7 +571,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestMethod (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestMethod (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -587,7 +587,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestProtocol (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestProtocol (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -603,7 +603,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestScheme (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestScheme (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -619,7 +619,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static String getRequestServerName (@Nonnull final HttpServletRequest aHttpRequest)
+  public static String getRequestServerName (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -635,7 +635,7 @@ public final class ServletHelper
   }
 
   @CheckForSigned
-  public static int getRequestServerPort (@Nonnull final HttpServletRequest aHttpRequest)
+  public static int getRequestServerPort (@NonNull final HttpServletRequest aHttpRequest)
   {
     try
     {
@@ -651,7 +651,7 @@ public final class ServletHelper
   }
 
   @Nullable
-  public static HttpSession getRequestSession (@Nonnull final HttpServletRequest aHttpRequest, final boolean bCreate)
+  public static HttpSession getRequestSession (@NonNull final HttpServletRequest aHttpRequest, final boolean bCreate)
   {
     try
     {

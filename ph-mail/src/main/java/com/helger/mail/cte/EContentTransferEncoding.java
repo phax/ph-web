@@ -16,15 +16,15 @@
  */
 package com.helger.mail.cte;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.codec.IdentityByteArrayCodec;
 import com.helger.base.codec.base64.Base64Codec;
 import com.helger.base.codec.impl.QuotedPrintableCodec;
 import com.helger.base.codec.impl.RFC1522QCodec;
 import com.helger.base.lang.EnumHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Predefined Content Transfer Encoding types as per
@@ -113,12 +113,12 @@ public enum EContentTransferEncoding implements IContentTransferEncoding
 
   private final String m_sID;
 
-  EContentTransferEncoding (@Nonnull @Nonempty final String sID)
+  EContentTransferEncoding (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {

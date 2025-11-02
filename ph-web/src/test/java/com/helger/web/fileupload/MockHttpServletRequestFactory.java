@@ -18,15 +18,16 @@ package com.helger.web.fileupload;
 
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 final class MockHttpServletRequestFactory
 {
-  @Nonnull
+  @NonNull
   public static HttpServletRequest createHttpServletRequestWithNullContentType ()
   {
     final byte [] requestData = "foobar".getBytes (StandardCharsets.US_ASCII);

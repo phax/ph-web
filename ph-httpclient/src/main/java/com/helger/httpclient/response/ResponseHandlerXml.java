@@ -25,15 +25,14 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.xml.serialize.read.DOMReader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to a DOM {@link Document} object.
@@ -66,7 +65,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
    * @return this for chaining
    * @since 10.0.0
    */
-  @Nonnull
+  @NonNull
   public final ResponseHandlerXml setDebugMode (final boolean bDebugMode)
   {
     m_bDebugMode = bDebugMode;
@@ -74,7 +73,7 @@ public class ResponseHandlerXml implements HttpClientResponseHandler <Document>
   }
 
   @Nullable
-  public Document handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public Document handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

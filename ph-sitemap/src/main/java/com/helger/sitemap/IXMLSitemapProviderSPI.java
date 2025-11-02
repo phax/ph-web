@@ -16,9 +16,9 @@
  */
 package com.helger.sitemap;
 
-import com.helger.annotation.style.IsSPIInterface;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.annotation.style.IsSPIInterface;
 
 /**
  * SPI interface for components that offer sitemap entries.
@@ -33,6 +33,6 @@ public interface IXMLSitemapProviderSPI
    *
    * @return A non-<code>null</code> URL set with all elements.
    */
-  @Nonnull
+  @NonNull
   XMLSitemapURLSet createURLSet ();
 }

@@ -28,6 +28,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.CodingStyleguideUnaware;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.array.ArrayHelper;
@@ -40,8 +43,6 @@ import com.helger.http.EHttpMethod;
 import com.helger.mime.CMimeType;
 import com.helger.servlet.ServletHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -56,7 +57,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   private final Map <String, String []> m_aParameterMap;
   private final HttpServletRequest m_aDelegate;
 
-  public LoggingHttpServletRequestWrapper (@Nonnull final HttpServletRequest aRequest)
+  public LoggingHttpServletRequestWrapper (@NonNull final HttpServletRequest aRequest)
   {
     super (aRequest);
     m_aDelegate = aRequest;
@@ -98,7 +99,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public Map <String, String []> getParameterMap ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
@@ -108,7 +109,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public Enumeration <String> getParameterNames ()
   {
     if (ArrayHelper.isEmpty (m_aContent) || m_aParameterMap.isEmpty ())
@@ -127,14 +128,14 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     return m_aParameterMap.get (sName);
   }
 
-  @Nonnull
+  @NonNull
   private Charset _getCharset ()
   {
     final String sRequestEncoding = m_aDelegate.getCharacterEncoding ();
     return CharsetHelper.getCharsetFromNameOrDefault (sRequestEncoding, StandardCharsets.UTF_8);
   }
 
-  @Nonnull
+  @NonNull
   public String getContent ()
   {
     try
@@ -158,8 +159,8 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     }
   }
 
-  @Nonnull
-  private static String _getContentFromParameterMap (@Nonnull final Map <String, String []> aParameterMap)
+  @NonNull
+  private static String _getContentFromParameterMap (@NonNull final Map <String, String []> aParameterMap)
   {
     final StringBuilder aSB = new StringBuilder ();
     for (final Map.Entry <String, String []> aEntry : aParameterMap.entrySet ())
@@ -172,7 +173,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     return aSB.toString ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsMap <String, String> getParameters ()
   {

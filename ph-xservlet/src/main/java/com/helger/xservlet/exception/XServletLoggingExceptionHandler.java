@@ -16,6 +16,7 @@
  */
 package com.helger.xservlet.exception;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,6 @@ import com.helger.base.io.stream.StreamHelper;
 import com.helger.base.lang.clazz.ClassHelper;
 import com.helger.base.state.EContinue;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Logging implementation of {@link IXServletExceptionHandler}. Registered by
@@ -37,8 +36,8 @@ public class XServletLoggingExceptionHandler implements IXServletExceptionHandle
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (XServletLoggingExceptionHandler.class);
 
-  @Nonnull
-  public EContinue onException (@Nonnull final IRequestWebScope aRequestScope, @Nonnull final Throwable t)
+  @NonNull
+  public EContinue onException (@NonNull final IRequestWebScope aRequestScope, @NonNull final Throwable t)
   {
     final String sMsg = "Internal error on " +
                         aRequestScope.getHttpVersion ().getName () +

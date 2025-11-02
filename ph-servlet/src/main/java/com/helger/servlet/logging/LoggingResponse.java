@@ -16,12 +16,12 @@
  */
 package com.helger.servlet.logging;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.json.IJsonObject;
 import com.helger.json.JsonObject;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 final class LoggingResponse
 {
@@ -61,7 +61,7 @@ final class LoggingResponse
     m_sBody = sBody;
   }
 
-  @Nonnull
+  @NonNull
   public IJsonObject getAsJson ()
   {
     final JsonObject ret = new JsonObject ();

@@ -16,13 +16,13 @@
  */
 package com.helger.servlet.response;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
 import com.helger.http.CHttpHeader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * The possible values for the X-Frame-Options HTTP header.
@@ -51,12 +51,12 @@ public enum EXFrameOptionType implements IHasID <String>
 
   private final String m_sID;
 
-  EXFrameOptionType (@Nonnull @Nonempty final String sID)
+  EXFrameOptionType (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getID ()
   {

@@ -16,7 +16,7 @@
  */
 package com.helger.web.fileupload;
 
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Interface that will indicate that {@link IFileItem} or

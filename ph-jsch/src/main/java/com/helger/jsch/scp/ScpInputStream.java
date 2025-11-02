@@ -19,15 +19,14 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public class ScpInputStream extends InputStream
 {
@@ -36,7 +35,7 @@ public class ScpInputStream extends InputStream
   private final ScpConnection m_aConnection;
   private InputStream m_aIS;
 
-  public ScpInputStream (@Nonnull final ISessionFactory aSessionFactory,
+  public ScpInputStream (@NonNull final ISessionFactory aSessionFactory,
                          final String sPath,
                          @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
@@ -77,7 +76,7 @@ public class ScpInputStream extends InputStream
   }
 
   @Override
-  public int read (@Nonnull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public int read (@NonNull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
   {
     if (m_aIS == null)
       throw new IllegalStateException ("no current entry, cannot read");

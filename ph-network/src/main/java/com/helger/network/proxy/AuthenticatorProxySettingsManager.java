@@ -21,15 +21,14 @@ import java.net.InetAddress;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettingsManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * {@link Authenticator} implementation based in {@link ProxySettingsManager}.
@@ -74,9 +73,9 @@ public class AuthenticatorProxySettingsManager extends Authenticator
   protected PasswordAuthentication findProxyPasswordAuthentication (@Nullable final String sRequestingHost,
                                                                     @Nullable final InetAddress aRequestingSite,
                                                                     final int nRequestingPort,
-                                                                    @Nonnull final String sRequestingProtocol,
+                                                                    @NonNull final String sRequestingProtocol,
                                                                     @Nullable final String sRequestingPrompt,
-                                                                    @Nonnull final String sRequestingScheme,
+                                                                    @NonNull final String sRequestingScheme,
                                                                     @Nullable final URL aRequestingURL)
   {
     final ICommonsOrderedSet <IProxySettings> aMatching = ProxySettingsManager.findAllProxySettings (sRequestingProtocol,

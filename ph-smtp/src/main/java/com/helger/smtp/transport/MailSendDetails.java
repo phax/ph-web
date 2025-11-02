@@ -16,11 +16,11 @@
  */
 package com.helger.smtp.transport;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This class encapsulates all details about a single email receiver
@@ -37,10 +37,10 @@ public class MailSendDetails
   private final ESMTPErrorCode m_eErrorCode;
 
   public MailSendDetails (final boolean bAddressValid,
-                          @Nonnull final String sAddress,
-                          @Nonnull final String sCommand,
-                          @Nonnull final String sErrorMessage,
-                          @Nonnull final ESMTPErrorCode eErrorCode)
+                          @NonNull final String sAddress,
+                          @NonNull final String sCommand,
+                          @NonNull final String sErrorMessage,
+                          @NonNull final ESMTPErrorCode eErrorCode)
   {
     m_bAddressValid = bAddressValid;
     m_sAddress = ValueEnforcer.notNull (sAddress, "Address");
@@ -62,7 +62,7 @@ public class MailSendDetails
   /**
    * @return The email address that it's all about. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public String getAddress ()
   {
     return m_sAddress;
@@ -72,7 +72,7 @@ public class MailSendDetails
    * @return The issued RFC 821 command. For techies only. Never
    *         <code>null</code>-.
    */
-  @Nonnull
+  @NonNull
   public String getCommand ()
   {
     return m_sCommand;
@@ -82,7 +82,7 @@ public class MailSendDetails
    * @return The error message returned from the server. Never <code>null</code>
    *         .
    */
-  @Nonnull
+  @NonNull
   public String getErrorMessage ()
   {
     return m_sErrorMessage;
@@ -91,7 +91,7 @@ public class MailSendDetails
   /**
    * @return The occurred SMTP error code. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public ESMTPErrorCode getErrorCode ()
   {
     return m_eErrorCode;

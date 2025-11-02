@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.base.io.iface.IHasInputStream;
 import com.helger.base.state.ISuccessIndicator;
@@ -28,8 +31,6 @@ import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -62,14 +63,14 @@ public interface IFileItem extends DataSource, IHasInputStream
    * @return An {@link InputStream} that can be used to retrieve the contents of
    *         the file.
    */
-  @Nonnull
+  @NonNull
   InputStream getInputStream ();
 
   /**
    * @return An {@link OutputStream} that can be used for storing the contents
    *         of the file.
    */
-  @Nonnull
+  @NonNull
   OutputStream getOutputStream ();
 
   /**
@@ -151,8 +152,8 @@ public interface IFileItem extends DataSource, IHasInputStream
    *        The character encoding to use.
    * @return The contents of the item, as a string.
    */
-  @Nonnull
-  default String getString (@Nonnull final Charset aEncoding)
+  @NonNull
+  default String getString (@NonNull final Charset aEncoding)
   {
     return new String (directGet (), aEncoding);
   }
@@ -164,7 +165,7 @@ public interface IFileItem extends DataSource, IHasInputStream
    *
    * @return The contents of the item, as a string.
    */
-  @Nonnull
+  @NonNull
   String getString ();
 
   /**
@@ -184,8 +185,8 @@ public interface IFileItem extends DataSource, IHasInputStream
    * @throws FileUploadException
    *         if an error occurs.
    */
-  @Nonnull
-  ISuccessIndicator write (@Nonnull File aDstFile) throws FileUploadException;
+  @NonNull
+  ISuccessIndicator write (@NonNull File aDstFile) throws FileUploadException;
 
   /**
    * Deletes the underlying storage for a file item, including deleting any

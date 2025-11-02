@@ -19,12 +19,12 @@ package com.helger.web.fileupload.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.stream.WrappedInputStream;
 import com.helger.base.state.ICloseable;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An input stream, which limits its data size. This stream is used, if the
@@ -54,7 +54,7 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
    *        The limit; no more than this number of bytes shall be returned by
    *        the source stream.
    */
-  public AbstractLimitedInputStream (@Nonnull final InputStream aIS, @Nonnegative final long nSizeMax)
+  public AbstractLimitedInputStream (@NonNull final InputStream aIS, @Nonnegative final long nSizeMax)
   {
     super (aIS);
     m_nSizeMax = ValueEnforcer.isGE0 (nSizeMax, "SizeMax");
@@ -138,7 +138,7 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
    * @see java.io.FilterInputStream
    */
   @Override
-  public int read (@Nonnull final byte [] b, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public int read (@NonNull final byte [] b, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
   {
     ValueEnforcer.isArrayOfsLen (b, nOfs, nLen);
     final int res = super.read (b, nOfs, nLen);

@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +45,6 @@ import com.helger.web.scope.impl.SessionWebScope;
 import com.helger.web.scope.multipart.RequestWebScopeMultipart;
 import com.helger.web.scope.session.SessionWebScopeActivator;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -134,15 +134,15 @@ public final class WebScopeManager
    *        not be <code>null</code>
    * @return The created global web scope
    */
-  @Nonnull
-  public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext)
+  @NonNull
+  public static IGlobalWebScope onGlobalBegin (@NonNull final ServletContext aServletContext)
   {
     return onGlobalBegin (aServletContext, GlobalWebScope::new);
   }
 
-  @Nonnull
-  public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext,
-                                               @Nonnull final Function <? super ServletContext, ? extends IGlobalWebScope> aFactory)
+  @NonNull
+  public static IGlobalWebScope onGlobalBegin (@NonNull final ServletContext aServletContext,
+                                               @NonNull final Function <? super ServletContext, ? extends IGlobalWebScope> aFactory)
   {
     final IGlobalWebScope aGlobalScope = aFactory.apply (aServletContext);
     ScopeManager.setGlobalScope (aGlobalScope);
@@ -182,7 +182,7 @@ public final class WebScopeManager
    * @throws IllegalStateException
    *         If no global web scope object is present
    */
-  @Nonnull
+  @NonNull
   public static IGlobalWebScope getGlobalScope ()
   {
     final IGlobalWebScope aGlobalScope = getGlobalScopeOrNull ();
@@ -213,15 +213,15 @@ public final class WebScopeManager
    *        <code>null</code>
    * @return The created global session scope
    */
-  @Nonnull
-  public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
+  @NonNull
+  public static ISessionWebScope onSessionBegin (@NonNull final HttpSession aHttpSession)
   {
     return onSessionBegin (aHttpSession, SessionWebScope::new);
   }
 
-  @Nonnull
-  public static <T extends ISessionWebScope> T onSessionBegin (@Nonnull final HttpSession aHttpSession,
-                                                               @Nonnull final Function <? super HttpSession, T> aFactory)
+  @NonNull
+  public static <T extends ISessionWebScope> T onSessionBegin (@NonNull final HttpSession aHttpSession,
+                                                               @NonNull final Function <? super HttpSession, T> aFactory)
   {
     final T aSessionWebScope = aFactory.apply (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
@@ -250,7 +250,7 @@ public final class WebScopeManager
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
-  public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession,
+  public static ISessionWebScope internalGetOrCreateSessionScope (@NonNull final HttpSession aHttpSession,
                                                                   final boolean bCreateIfNotExisting,
                                                                   final boolean bItsOkayToCreateANewScope)
   {
@@ -293,7 +293,7 @@ public final class WebScopeManager
    *
    * @return Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ISessionWebScope getSessionScope ()
   {
     return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
@@ -382,7 +382,7 @@ public final class WebScopeManager
    *        The source session to destroy the matching scope. May not be
    *        <code>null</code>
    */
-  public static void onSessionEnd (@Nonnull final HttpSession aHttpSession)
+  public static void onSessionEnd (@NonNull final HttpSession aHttpSession)
   {
     ValueEnforcer.notNull (aHttpSession, "HttpSession");
 
@@ -425,17 +425,17 @@ public final class WebScopeManager
 
   // --- request scopes ---
 
-  @Nonnull
-  public static IRequestWebScope onRequestBegin (@Nonnull final HttpServletRequest aHttpRequest,
-                                                 @Nonnull final HttpServletResponse aHttpResponse)
+  @NonNull
+  public static IRequestWebScope onRequestBegin (@NonNull final HttpServletRequest aHttpRequest,
+                                                 @NonNull final HttpServletResponse aHttpResponse)
   {
     return onRequestBegin (aHttpRequest, aHttpResponse, RequestWebScopeMultipart::new);
   }
 
-  @Nonnull
-  public static <T extends IRequestWebScope> T onRequestBegin (@Nonnull final HttpServletRequest aHttpRequest,
-                                                               @Nonnull final HttpServletResponse aHttpResponse,
-                                                               @Nonnull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, T> aFactory)
+  @NonNull
+  public static <T extends IRequestWebScope> T onRequestBegin (@NonNull final HttpServletRequest aHttpRequest,
+                                                               @NonNull final HttpServletResponse aHttpResponse,
+                                                               @NonNull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, T> aFactory)
   {
     final T aRequestScope = aFactory.apply (aHttpRequest, aHttpResponse);
     ScopeManager.internalSetAndInitRequestScope (aRequestScope);
@@ -462,7 +462,7 @@ public final class WebScopeManager
     return ScopeManager.getRequestScopeOrNull () instanceof IRequestWebScope;
   }
 
-  @Nonnull
+  @NonNull
   public static IRequestWebScope getRequestScope ()
   {
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();

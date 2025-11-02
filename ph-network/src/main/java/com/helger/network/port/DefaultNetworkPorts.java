@@ -19,14 +19,14 @@ package com.helger.network.port;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.style.CodingStyleguideUnaware;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A list of default ports between 0 and 1024. Created from the IANA port list.
@@ -2035,11 +2035,11 @@ public final class DefaultNetworkPorts
   public static final INetworkPort TCP_1023 = _registerPort (1023, ENetworkProtocol.TCP, "", "Reserved");
   public static final INetworkPort UDP_1023 = _registerPort (1023, ENetworkProtocol.UDP, "", "Reserved");
 
-  @Nonnull
+  @NonNull
   private static INetworkPort _registerPort (@Nonnegative final int nPort,
-                                             @Nonnull final ENetworkProtocol eProtocol,
-                                             @Nonnull final String sName,
-                                             @Nonnull final String sDescription)
+                                             @NonNull final ENetworkProtocol eProtocol,
+                                             @NonNull final String sName,
+                                             @NonNull final String sDescription)
   {
     final NetworkPort aPort = new NetworkPort (nPort, eProtocol, sName, sDescription);
     PORT_LIST.add (aPort);
@@ -2055,27 +2055,27 @@ public final class DefaultNetworkPorts
   /**
    * @return A non-null list with all known ports.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <NetworkPort> getAllPorts ()
   {
     return PORT_LIST.getClone ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <NetworkPort> getAllPorts (@Nonnegative final int nPort)
   {
     return PORT_LIST.getAll (x -> x.getPort () == nPort);
   }
 
-  public static void forEachPort (@Nonnull final Consumer <? super INetworkPort> aConsumer)
+  public static void forEachPort (@NonNull final Consumer <? super INetworkPort> aConsumer)
   {
     PORT_LIST.forEach (aConsumer);
   }
 
-  public static void forEachPort (@Nonnull final Predicate <? super INetworkPort> aFilter,
-                                  @Nonnull final Consumer <? super INetworkPort> aConsumer)
+  public static void forEachPort (@NonNull final Predicate <? super INetworkPort> aFilter,
+                                  @NonNull final Consumer <? super INetworkPort> aConsumer)
   {
     PORT_LIST.findAll (aFilter, aConsumer);
   }

@@ -18,15 +18,15 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.version.Version;
 import com.helger.text.display.IHasDisplayText;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents information about a certain browser.
@@ -51,7 +51,7 @@ public class BrowserInfo implements IHasDisplayText
     m_aVersion = new Version (0);
   }
 
-  public BrowserInfo (@Nonnull final EBrowserType eBrowserType, @Nonnull final Version aVersion)
+  public BrowserInfo (@NonNull final EBrowserType eBrowserType, @NonNull final Version aVersion)
   {
     m_eBrowserType = ValueEnforcer.notNull (eBrowserType, "BrowserType");
     m_aVersion = ValueEnforcer.notNull (aVersion, "Version");
@@ -75,14 +75,14 @@ public class BrowserInfo implements IHasDisplayText
 
   @Nullable
   @OverrideOnDemand
-  public String getDisplayText (@Nonnull final Locale aContentLocale)
+  public String getDisplayText (@NonNull final Locale aContentLocale)
   {
     return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) +
                                             " " +
                                             m_aVersion.getAsString ());
   }
 
-  @Nonnull
+  @NonNull
   public final Version getVersion ()
   {
     return m_aVersion;

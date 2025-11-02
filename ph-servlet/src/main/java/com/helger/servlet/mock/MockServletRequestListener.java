@@ -16,10 +16,11 @@
  */
 package com.helger.servlet.mock;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.ThreadSafe;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.ServletRequestListener;
 
@@ -36,7 +37,7 @@ public class MockServletRequestListener implements ServletRequestListener
   public MockServletRequestListener ()
   {}
 
-  public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
+  public void requestInitialized (@NonNull final ServletRequestEvent aEvent)
   {
     m_aResp = new MockHttpServletResponse ();
   }
@@ -47,7 +48,7 @@ public class MockServletRequestListener implements ServletRequestListener
     return m_aResp;
   }
 
-  public void requestDestroyed (@Nonnull final ServletRequestEvent aEvent)
+  public void requestDestroyed (@NonNull final ServletRequestEvent aEvent)
   {
     m_aResp = null;
   }

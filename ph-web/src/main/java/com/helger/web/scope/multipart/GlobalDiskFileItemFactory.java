@@ -18,6 +18,9 @@ package com.helger.web.scope.multipart;
 
 import java.io.File;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.annotation.style.UsedViaReflection;
 import com.helger.base.CGlobal;
@@ -28,9 +31,6 @@ import com.helger.web.fileupload.IFileItemFactory;
 import com.helger.web.fileupload.parse.DiskFileItem;
 import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning up,
@@ -47,14 +47,14 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
   public GlobalDiskFileItemFactory ()
   {}
 
-  @Nonnull
+  @NonNull
   public static GlobalDiskFileItemFactory getInstance ()
   {
     return getGlobalSingleton (GlobalDiskFileItemFactory.class);
   }
 
   @Override
-  protected void onDestroy (@Nonnull final IScope aScopeInDestruction)
+  protected void onDestroy (@NonNull final IScope aScopeInDestruction)
   {
     m_aFactory.deleteAllTemporaryFiles ();
   }
@@ -64,7 +64,7 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
     m_aFactory.setRepository (aRepository);
   }
 
-  @Nonnull
+  @NonNull
   public DiskFileItem createItem (final String sFieldName,
                                   @Nullable final String sContentType,
                                   final boolean bIsFormField,
@@ -73,7 +73,7 @@ public final class GlobalDiskFileItemFactory extends AbstractGlobalWebSingleton 
     return m_aFactory.createItem (sFieldName, sContentType, bIsFormField, sFileName);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <File> getAllTemporaryFiles ()
   {

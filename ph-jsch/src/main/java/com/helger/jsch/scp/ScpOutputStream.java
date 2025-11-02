@@ -19,14 +19,13 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Based upon information found
@@ -42,7 +41,7 @@ public class ScpOutputStream extends OutputStream
   private final ScpConnection m_aConnection;
   private OutputStream m_aOS;
 
-  public ScpOutputStream (@Nonnull final ISessionFactory aSessionFactory,
+  public ScpOutputStream (@NonNull final ISessionFactory aSessionFactory,
                           final String sPath,
                           @Nullable final ECopyMode eCopyMode) throws JSchException, IOException
   {
@@ -78,7 +77,7 @@ public class ScpOutputStream extends OutputStream
     m_aOS = m_aConnection.getCurrentOuputStream ();
   }
 
-  public void putNextEntry (@Nonnull final ScpEntry aEntry) throws IOException
+  public void putNextEntry (@NonNull final ScpEntry aEntry) throws IOException
   {
     m_aConnection.putNextEntry (aEntry);
     m_aOS = m_aConnection.getCurrentOuputStream ();

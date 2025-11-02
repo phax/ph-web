@@ -16,6 +16,8 @@
  */
 package com.helger.web.scope.util;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.annotation.style.OverrideOnDemand;
@@ -30,8 +32,6 @@ import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Abstract {@link IJob} implementation that handles request scopes correctly. This is required,
@@ -50,7 +50,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    * @return The dummy HTTP request to be used for executing this job. By default an
    *         {@link OfflineHttpServletRequest} is created.
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
   protected MockHttpServletRequest createMockHttpServletRequest ()
   {
@@ -68,7 +68,7 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    * @return The dummy HTTP response to be used for executing this job. By default a
    *         {@link MockHttpServletResponse} is created.
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
   protected MockHttpServletResponse createMockHttpServletResponse ()
   {
@@ -84,14 +84,14 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    *        The current job execution context. Never <code>null</code>.
    */
   @OverrideOnDemand
-  protected void beforeExecuteInScope (@Nonnull final JobDataMap aJobDataMap,
-                                       @Nonnull final IJobExecutionContext aContext)
+  protected void beforeExecuteInScope (@NonNull final JobDataMap aJobDataMap,
+                                       @NonNull final IJobExecutionContext aContext)
   {}
 
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected void beforeExecute (@Nonnull final JobDataMap aJobDataMap, @Nonnull final IJobExecutionContext aContext)
+  protected void beforeExecute (@NonNull final JobDataMap aJobDataMap, @NonNull final IJobExecutionContext aContext)
   {
     // Scopes (ensure to create a new scope each time!)
     final MockHttpServletRequest aHttpRequest = createMockHttpServletRequest ();
@@ -113,17 +113,17 @@ public abstract class AbstractScopeAwareJob extends AbstractJob
    *        The execution success state. Never <code>null</code>.
    */
   @OverrideOnDemand
-  protected void afterExecuteInScope (@Nonnull final JobDataMap aJobDataMap,
-                                      @Nonnull final IJobExecutionContext aContext,
-                                      @Nonnull final ESuccess eExecSuccess)
+  protected void afterExecuteInScope (@NonNull final JobDataMap aJobDataMap,
+                                      @NonNull final IJobExecutionContext aContext,
+                                      @NonNull final ESuccess eExecSuccess)
   {}
 
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected void afterExecute (@Nonnull final JobDataMap aJobDataMap,
-                               @Nonnull final IJobExecutionContext aContext,
-                               @Nonnull final ESuccess eExecSuccess)
+  protected void afterExecute (@NonNull final JobDataMap aJobDataMap,
+                               @NonNull final IJobExecutionContext aContext,
+                               @NonNull final ESuccess eExecSuccess)
   {
     try
     {

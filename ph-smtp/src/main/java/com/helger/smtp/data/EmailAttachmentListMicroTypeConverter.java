@@ -16,13 +16,13 @@
  */
 package com.helger.smtp.data;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailAttachmentList}.
@@ -33,10 +33,10 @@ public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeCo
 {
   private static final String ELEMENT_ATTACHMENT = "attachment";
 
-  @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final EmailAttachmentList aAttachmentList,
+  @NonNull
+  public IMicroElement convertToMicroElement (@NonNull final EmailAttachmentList aAttachmentList,
                                               @Nullable final String sNamespaceURI,
-                                              @Nonnull final String sTagName)
+                                              @NonNull final String sTagName)
   {
     final IMicroElement eAttachmentList = new MicroElement (sNamespaceURI, sTagName);
     for (final IEmailAttachment aAttachment : aAttachmentList.directGetAllAttachments ())
@@ -46,8 +46,8 @@ public final class EmailAttachmentListMicroTypeConverter implements IMicroTypeCo
     return eAttachmentList;
   }
 
-  @Nonnull
-  public EmailAttachmentList convertToNative (@Nonnull final IMicroElement eAttachmentList)
+  @NonNull
+  public EmailAttachmentList convertToNative (@NonNull final IMicroElement eAttachmentList)
   {
     final EmailAttachmentList ret = new EmailAttachmentList ();
     for (final IMicroElement eAttachment : eAttachmentList.getAllChildElements (ELEMENT_ATTACHMENT))

@@ -16,6 +16,7 @@
  */
 package com.helger.servlet;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,6 @@ import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.servlet.request.RequestHelper;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This singleton instance represents default server information for locations where no request
@@ -53,10 +52,10 @@ public class StaticServerInfo
   private final String m_sFullServerPath;
   private final String m_sFullServerAndContextPath;
 
-  protected StaticServerInfo (@Nonnull @Nonempty final String sScheme,
-                              @Nonnull @Nonempty final String sServerName,
+  protected StaticServerInfo (@NonNull @Nonempty final String sScheme,
+                              @NonNull @Nonempty final String sServerName,
                               @Nonnegative final int nServerPort,
-                              @Nonnull final String sContextPath)
+                              @NonNull final String sContextPath)
   {
     m_sScheme = ValueEnforcer.notEmpty (sScheme, "Scheme");
     m_sServerName = ValueEnforcer.notEmpty (sServerName, "ServerName");
@@ -71,7 +70,7 @@ public class StaticServerInfo
   /**
    * @return The scheme. E.g. "http" or "https".
    */
-  @Nonnull
+  @NonNull
   public String getScheme ()
   {
     return m_sScheme;
@@ -80,7 +79,7 @@ public class StaticServerInfo
   /**
    * @return The server name without scheme. E.g. "www.helger.com"
    */
-  @Nonnull
+  @NonNull
   public String getServerName ()
   {
     return m_sServerName;
@@ -99,7 +98,7 @@ public class StaticServerInfo
   /**
    * @return <code>"/context"</code> or <code>""</code> (empty string)
    */
-  @Nonnull
+  @NonNull
   public String getContextPath ()
   {
     return m_sContextPath;
@@ -109,7 +108,7 @@ public class StaticServerInfo
    * @return <code>scheme://server:port</code> or <code>scheme://server</code> if the default port
    *         was used
    */
-  @Nonnull
+  @NonNull
   public String getFullServerPath ()
   {
     return m_sFullServerPath;
@@ -121,7 +120,7 @@ public class StaticServerInfo
    * @return <code>scheme://server:port/context</code> or <code>scheme://server:port</code> for the
    *         ROOT context.
    */
-  @Nonnull
+  @NonNull
   public String getFullContextPath ()
   {
     return m_sFullServerAndContextPath;
@@ -144,11 +143,11 @@ public class StaticServerInfo
     return RW_LOCK.readLockedBoolean ( () -> s_aDefault != null);
   }
 
-  @Nonnull
-  public static StaticServerInfo init (@Nonnull @Nonempty final String sScheme,
-                                       @Nonnull @Nonempty final String sServerName,
+  @NonNull
+  public static StaticServerInfo init (@NonNull @Nonempty final String sScheme,
+                                       @NonNull @Nonempty final String sServerName,
                                        @Nonnegative final int nServerPort,
-                                       @Nonnull final String sContextPath)
+                                       @NonNull final String sContextPath)
   {
     if (isSet ())
       throw new IllegalStateException ("Static server info already present!");
@@ -168,7 +167,7 @@ public class StaticServerInfo
     }
   }
 
-  @Nonnull
+  @NonNull
   public static StaticServerInfo getInstance ()
   {
     final StaticServerInfo ret = RW_LOCK.readLockedGet ( () -> s_aDefault);

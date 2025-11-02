@@ -21,19 +21,18 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.InetAddress;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public final class DNSResolverTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (DNSResolverTest.class);
 
   @Nullable
-  private static InetAddress _resolveByName (@Nonnull final String sHostName)
+  private static InetAddress _resolveByName (@NonNull final String sHostName)
   {
     LOGGER.info ("Trying to resolve '" + sHostName + "'");
     return DNSResolver.resolveByName (sHostName);

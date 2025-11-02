@@ -16,13 +16,13 @@
  */
 package com.helger.web.scope.util;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.scope.IScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A specialized request field that uses a value stored in the session as the
@@ -33,13 +33,13 @@ import jakarta.annotation.Nullable;
  */
 public class SessionBackedRequestFieldData extends RequestFieldData
 {
-  public SessionBackedRequestFieldData (@Nonnull final String sFieldName)
+  public SessionBackedRequestFieldData (@NonNull final String sFieldName)
   {
     super (sFieldName);
     _init ();
   }
 
-  public SessionBackedRequestFieldData (@Nonnull final String sFieldName, @Nullable final String sDefaultValue)
+  public SessionBackedRequestFieldData (@NonNull final String sFieldName, @Nullable final String sDefaultValue)
   {
     super (sFieldName, sDefaultValue);
     _init ();
@@ -49,7 +49,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
    * @return The name of the session scope variable that contains the stored
    *         value.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSessionFieldName ()
   {

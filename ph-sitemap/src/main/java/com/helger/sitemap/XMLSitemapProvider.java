@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.spi.ServiceLoaderHelper;
 import com.helger.base.state.ESuccess;
 import com.helger.io.file.FileHelper;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This class manages the implementations of {@link IXMLSitemapProviderSPI}.
@@ -69,7 +68,7 @@ public final class XMLSitemapProvider
    *        The consumer to be invoked. Must be able to handle <code>null</code> and empty values.
    *        May itself not be <code>null</code>.
    */
-  public static void forEachURLSet (@Nonnull final Consumer <? super XMLSitemapURLSet> aConsumer)
+  public static void forEachURLSet (@NonNull final Consumer <? super XMLSitemapURLSet> aConsumer)
   {
     ValueEnforcer.notNull (aConsumer, "Consumer");
     for (final IXMLSitemapProviderSPI aSPI : PROVIDERS)
@@ -79,17 +78,17 @@ public final class XMLSitemapProvider
     }
   }
 
-  @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
-                                             @Nonnull @Nonempty final String sFullContextPath)
+  @NonNull
+  public static ESuccess createSitemapFiles (@NonNull final File aTargetDirectory,
+                                             @NonNull @Nonempty final String sFullContextPath)
   {
     return createSitemapFiles (aTargetDirectory, XMLSitemapIndex.DEFAULT_USE_GZIP, sFullContextPath);
   }
 
-  @Nonnull
-  public static ESuccess createSitemapFiles (@Nonnull final File aTargetDirectory,
+  @NonNull
+  public static ESuccess createSitemapFiles (@NonNull final File aTargetDirectory,
                                              final boolean bUseGZip,
-                                             @Nonnull @Nonempty final String sFullContextPath)
+                                             @NonNull @Nonempty final String sFullContextPath)
   {
     ValueEnforcer.notNull (aTargetDirectory, "TargetDirectory");
     ValueEnforcer.isTrue (FileHelper.existsDir (aTargetDirectory),

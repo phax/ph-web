@@ -16,12 +16,12 @@
  */
 package com.helger.web.fileupload.io;
 
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.string.StringReplace;
 import com.helger.web.fileupload.exception.InvalidFileNameException;
-
-import jakarta.annotation.Nullable;
 
 /**
  * Utility class for working with streams.

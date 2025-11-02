@@ -18,6 +18,7 @@ package com.helger.jsch.sftp;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +26,6 @@ import com.helger.jsch.session.ISessionFactory;
 import com.helger.jsch.session.SessionManager;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Provides a convenience wrapper around an <code>sftp</code> channel. This
@@ -49,7 +48,7 @@ public class SftpRunner implements AutoCloseable
    * @param aSessionFactory
    *        The factory used to create a session manager
    */
-  public SftpRunner (@Nonnull final ISessionFactory aSessionFactory)
+  public SftpRunner (@NonNull final ISessionFactory aSessionFactory)
   {
     m_aSessionManager = SessionManager.create (aSessionFactory);
   }
@@ -66,7 +65,7 @@ public class SftpRunner implements AutoCloseable
    * @throws IOException
    *         If unable to read the result data
    */
-  public void execute (@Nonnull final ISftp aSftp) throws JSchException, IOException
+  public void execute (@NonNull final ISftp aSftp) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("executing sftp command on " + m_aSessionManager.getAsString ());

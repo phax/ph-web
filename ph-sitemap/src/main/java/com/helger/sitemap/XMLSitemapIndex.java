@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.zip.GZIPOutputStream;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +43,6 @@ import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroDocument;
 import com.helger.xml.microdom.serialize.MicroWriter;
 import com.helger.xml.serialize.write.IXMLWriterSettings;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Contains a set of {@link XMLSitemapURLSet} objects. Necessary to group multiple sitemaps when the
@@ -95,14 +94,14 @@ public class XMLSitemapIndex
     return m_aURLSets.size ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <XMLSitemapURLSet> getAllURLSets ()
   {
     return m_aURLSets.getClone ();
   }
 
-  public void addURLSet (@Nonnull final XMLSitemapURLSet aURLSet)
+  public void addURLSet (@NonNull final XMLSitemapURLSet aURLSet)
   {
     ValueEnforcer.notNull (aURLSet, "URLset");
 
@@ -144,7 +143,7 @@ public class XMLSitemapIndex
    * @return The name of the sitemap file. Neither <code>null</code> nor empty.
    * @see #getSitemapFilename(int)
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public static String getSitemapFilename (@Nonnegative final int nIndex, final boolean bUseGZip)
   {
@@ -159,7 +158,7 @@ public class XMLSitemapIndex
    * @return The name of the sitemap file. Neither <code>null</code> nor empty.
    * @see #getSitemapFilename(int, boolean)
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSitemapFilename (@Nonnegative final int nIndex)
   {
@@ -174,8 +173,8 @@ public class XMLSitemapIndex
    *        <code>scheme://server:port</code> for the ROOT context.
    * @return The created micro document and never <code>null</code>.
    */
-  @Nonnull
-  public IMicroDocument getAsDocument (@Nonnull @Nonempty final String sFullContextPath)
+  @NonNull
+  public IMicroDocument getAsDocument (@NonNull @Nonempty final String sFullContextPath)
   {
     final String sNamespaceURL = CXMLSitemap.XML_NAMESPACE_0_9;
     final IMicroDocument ret = new MicroDocument ();
@@ -200,7 +199,7 @@ public class XMLSitemapIndex
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public IXMLWriterSettings getXMLWriterSettings ()
   {
     // Important: No indent and align, because otherwise the calculated output
@@ -208,14 +207,14 @@ public class XMLSitemapIndex
     return CXMLSitemap.XML_WRITER_SETTINGS;
   }
 
-  @Nonnull
-  public String getAsXMLString (@Nonnull @Nonempty final String sFullContextPath)
+  @NonNull
+  public String getAsXMLString (@NonNull @Nonempty final String sFullContextPath)
   {
     return MicroWriter.getNodeAsString (getAsDocument (sFullContextPath), getXMLWriterSettings ());
   }
 
-  @Nonnull
-  private OutputStream _createOutputStream (@Nonnull final File aFile)
+  @NonNull
+  private OutputStream _createOutputStream (@NonNull final File aFile)
   {
     OutputStream aOS = FileHelper.getOutputStream (aFile);
     if (m_bUseGZip)
@@ -230,8 +229,8 @@ public class XMLSitemapIndex
     return aOS;
   }
 
-  @Nonnull
-  public ESuccess writeToDisk (@Nonnull final File aBaseDir, @Nonnull @Nonempty final String sFullContextPath)
+  @NonNull
+  public ESuccess writeToDisk (@NonNull final File aBaseDir, @NonNull @Nonempty final String sFullContextPath)
   {
     ValueEnforcer.notNull (aBaseDir, "Basedir");
     ValueEnforcer.isTrue (FileHelper.existsDir (aBaseDir), () -> "The passed directory does not exist: " + aBaseDir);

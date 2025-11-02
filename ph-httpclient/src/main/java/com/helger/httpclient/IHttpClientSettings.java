@@ -22,13 +22,12 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.base.string.StringHelper;
 import com.helger.http.tls.ITLSConfigurationMode;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Read-only interface for {@link HttpClientSettings}
@@ -73,7 +72,7 @@ public interface IHttpClientSettings
    * @see #getHttpsProxy()
    * @since 10.5.0
    */
-  @Nonnull
+  @NonNull
   IHttpProxySettings getGeneralProxy ();
 
   /**
@@ -83,7 +82,7 @@ public interface IHttpClientSettings
    * @see #getHttpsProxy()
    * @since 10.5.0
    */
-  @Nonnull
+  @NonNull
   IHttpProxySettings getHttpProxy ();
 
   /**
@@ -93,7 +92,7 @@ public interface IHttpClientSettings
    * @see #getHttpProxy()
    * @since 10.5.0
    */
-  @Nonnull
+  @NonNull
   IHttpProxySettings getHttpsProxy ();
 
   /**
@@ -114,7 +113,7 @@ public interface IHttpClientSettings
    * @return The retry interval (the duration after which a retry is performed). Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   Duration getRetryInterval ();
 
   /**
@@ -127,19 +126,19 @@ public interface IHttpClientSettings
    * @return The connection request timeout in milliseconds. A value of 0 means "indefinite". Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   Timeout getConnectionRequestTimeout ();
 
   /**
    * @return The connect timeout. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   Timeout getConnectTimeout ();
 
   /**
    * @return The response/read/request/socket timeout. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   Timeout getResponseTimeout ();
 
   /**

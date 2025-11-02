@@ -16,10 +16,11 @@
  */
 package com.helger.smtp.transport.listener;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.callback.ICallback;
 import com.helger.base.tostring.ToStringGenerator;
 
-import jakarta.annotation.Nonnull;
 import jakarta.mail.event.ConnectionEvent;
 import jakarta.mail.event.ConnectionListener;
 
@@ -30,13 +31,13 @@ import jakarta.mail.event.ConnectionListener;
  */
 public class DoNothingConnectionListener implements ConnectionListener, ICallback
 {
-  public void opened (@Nonnull final ConnectionEvent aEvent)
+  public void opened (@NonNull final ConnectionEvent aEvent)
   {}
 
-  public void disconnected (@Nonnull final ConnectionEvent aEvent)
+  public void disconnected (@NonNull final ConnectionEvent aEvent)
   {}
 
-  public void closed (@Nonnull final ConnectionEvent aEvent)
+  public void closed (@NonNull final ConnectionEvent aEvent)
   {}
 
   @Override

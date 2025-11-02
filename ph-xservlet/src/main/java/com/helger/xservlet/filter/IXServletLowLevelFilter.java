@@ -18,12 +18,13 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.state.EContinue;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,11 +58,11 @@ public interface IXServletLowLevelFilter
    * @throws IOException
    *         in case of IO error.
    */
-  @Nonnull
-  EContinue beforeRequest (@Nonnull HttpServletRequest aHttpRequest,
-                           @Nonnull HttpServletResponse aHttpResponse,
-                           @Nonnull EHttpVersion eHttpVersion,
-                           @Nonnull EHttpMethod eHttpMethod) throws ServletException, IOException;
+  @NonNull
+  EContinue beforeRequest (@NonNull HttpServletRequest aHttpRequest,
+                           @NonNull HttpServletResponse aHttpResponse,
+                           @NonNull EHttpVersion eHttpVersion,
+                           @NonNull EHttpMethod eHttpMethod) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
@@ -94,10 +95,10 @@ public interface IXServletLowLevelFilter
    * @throws IOException
    *         in case of IO error
    */
-  default void afterRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                             @Nonnull final HttpServletResponse aHttpResponse,
-                             @Nonnull final EHttpVersion eHttpVersion,
-                             @Nonnull final EHttpMethod eHttpMethod,
+  default void afterRequest (@NonNull final HttpServletRequest aHttpRequest,
+                             @NonNull final HttpServletResponse aHttpResponse,
+                             @NonNull final EHttpVersion eHttpVersion,
+                             @NonNull final EHttpMethod eHttpMethod,
                              final boolean bInvokeHandler,
                              @Nullable final Throwable aCaughtException,
                              final boolean bIsHandledAsync) throws ServletException, IOException

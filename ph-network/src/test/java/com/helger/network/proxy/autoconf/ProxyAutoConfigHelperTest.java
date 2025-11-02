@@ -25,6 +25,7 @@ import java.net.Proxy;
 
 import javax.script.ScriptException;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Assume;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -36,8 +37,6 @@ import com.helger.io.resource.ClassPathResource;
 import com.helger.io.resource.IReadableResource;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Unit test class for class {@link ProxyAutoConfigHelper}.
@@ -74,7 +73,7 @@ public final class ProxyAutoConfigHelperTest
     }
   }
 
-  @Nonnull
+  @NonNull
   private static IProxySettings _getResolved (final String sJS) throws ScriptException
   {
     final String sCode = "function FindProxyForURL(url, host) { " + sJS + " }";

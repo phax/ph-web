@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.DeflaterOutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +33,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,9 +58,9 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   private long m_nContentLength;
   private final long m_nMinCompressSize;
 
-  public AbstractCompressedServletOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                @Nonnull final HttpServletResponse aHttpResponse,
-                                                @Nonnull final String sContentEncoding,
+  public AbstractCompressedServletOutputStream (@NonNull final HttpServletRequest aHttpRequest,
+                                                @NonNull final HttpServletResponse aHttpResponse,
+                                                @NonNull final String sContentEncoding,
                                                 final long nContentLength,
                                                 @Nonnegative final long nMinCompressSize) throws IOException
   {
@@ -105,8 +105,8 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
       ResponseHelper.setContentLength (m_aHttpResponse, m_nContentLength);
   }
 
-  @Nonnull
-  protected abstract DeflaterOutputStream createDeflaterOutputStream (@Nonnull OutputStream aOS) throws IOException;
+  @NonNull
+  protected abstract DeflaterOutputStream createDeflaterOutputStream (@NonNull OutputStream aOS) throws IOException;
 
   public final void doCompress (@Nullable final String sDebugInfo) throws IOException
   {
@@ -298,13 +298,13 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes) throws IOException
+  public final void write (@NonNull final byte [] aBytes) throws IOException
   {
     write (aBytes, 0, aBytes.length);
   }
 
   @Override
-  public final void write (@Nonnull final byte [] aBytes,
+  public final void write (@NonNull final byte [] aBytes,
                            @Nonnegative final int nOfs,
                            @Nonnegative final int nLen) throws IOException
   {

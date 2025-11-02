@@ -18,6 +18,8 @@ package com.helger.smtp.transport.listener;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +33,6 @@ import com.helger.smtp.listener.EmailDataTransportEvent;
 import com.helger.smtp.listener.IEmailDataTransportListener;
 import com.helger.smtp.transport.MailSendDetails;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -54,18 +54,18 @@ public class LoggingTransportListener implements IEmailDataTransportListener
     this (EErrorLevel.INFO);
   }
 
-  public LoggingTransportListener (@Nonnull final IErrorLevel eErrorLevel)
+  public LoggingTransportListener (@NonNull final IErrorLevel eErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (eErrorLevel, "ErrorLevel");
   }
 
-  @Nonnull
+  @NonNull
   public IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }
 
-  @Nonnull
+  @NonNull
   public static String getAddressesString (@Nullable final Collection <? extends MailSendDetails> aAddresses)
   {
     if (aAddresses == null || aAddresses.isEmpty ())
@@ -82,7 +82,7 @@ public class LoggingTransportListener implements IEmailDataTransportListener
     return aSB.append (']').toString ();
   }
 
-  @Nonnull
+  @NonNull
   public static String getMessageString (@Nullable final Message aMsg)
   {
     if (aMsg == null)
@@ -99,8 +99,8 @@ public class LoggingTransportListener implements IEmailDataTransportListener
     return ClassHelper.getClassLocalName (aMsg.getClass ());
   }
 
-  @Nonnull
-  public static String getLogString (@Nonnull final EmailDataTransportEvent aEvent)
+  @NonNull
+  public static String getLogString (@NonNull final EmailDataTransportEvent aEvent)
   {
     return "validSent=" +
            getAddressesString (aEvent.getValidSentAddresses ()) +
@@ -112,12 +112,12 @@ public class LoggingTransportListener implements IEmailDataTransportListener
            getMessageString (aEvent.getMimeMessage ());
   }
 
-  public void messageDelivered (@Nonnull final EmailDataTransportEvent aEvent)
+  public void messageDelivered (@NonNull final EmailDataTransportEvent aEvent)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Message delivered: " + getLogString (aEvent));
   }
 
-  public void messageNotDelivered (@Nonnull final EmailDataTransportEvent aEvent)
+  public void messageNotDelivered (@NonNull final EmailDataTransportEvent aEvent)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Message not delivered: " + getLogString (aEvent));
   }

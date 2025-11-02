@@ -18,15 +18,15 @@ package com.helger.mail.datasource;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A DataSource implementation based on a byte array
@@ -49,7 +49,7 @@ public class ByteArrayDataSource implements IExtendedDataSource
   private byte [] m_aBytes;
   private final String m_sName;
 
-  public ByteArrayDataSource (@Nonnull final byte [] aBytes, @Nullable final String sContentType, @Nullable final String sName)
+  public ByteArrayDataSource (@NonNull final byte [] aBytes, @Nullable final String sContentType, @Nullable final String sName)
   {
     ValueEnforcer.notNull (aBytes, "Bytes");
     m_aBytes = aBytes;
@@ -57,26 +57,26 @@ public class ByteArrayDataSource implements IExtendedDataSource
     m_sName = sName;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public byte [] directGetBytes ()
   {
     return m_aBytes;
   }
 
-  @Nonnull
+  @NonNull
   public NonBlockingByteArrayInputStream getInputStream ()
   {
     return new NonBlockingByteArrayInputStream (m_aBytes);
   }
 
-  @Nonnull
+  @NonNull
   public NonBlockingByteArrayOutputStream getOutputStream () throws IOException
   {
     return new WrappedOutputStream ();
   }
 
-  @Nonnull
+  @NonNull
   public String getContentType ()
   {
     return m_sContentType;

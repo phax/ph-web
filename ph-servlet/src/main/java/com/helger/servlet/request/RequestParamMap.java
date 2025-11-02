@@ -19,6 +19,9 @@ package com.helger.servlet.request;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
@@ -34,8 +37,6 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.commons.ICommonsOrderedSet;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -76,7 +77,7 @@ public class RequestParamMap implements IRequestParamMap
    * @param aMap
    *        The map to use. May not be <code>null</code>.
    */
-  public RequestParamMap (@Nonnull final Map <String, ?> aMap)
+  public RequestParamMap (@NonNull final Map <String, ?> aMap)
   {
     for (final Map.Entry <String, ?> aEntry : aMap.entrySet ())
     {
@@ -86,8 +87,8 @@ public class RequestParamMap implements IRequestParamMap
     }
   }
 
-  private static void _parseAndAddItem (@Nonnull final Map <String, RequestParamMapItem> aMap,
-                                        @Nonnull final String sName,
+  private static void _parseAndAddItem (@NonNull final Map <String, RequestParamMapItem> aMap,
+                                        @NonNull final String sName,
                                         @Nullable final Object aValue)
   {
     Map <String, RequestParamMapItem> aCurMap = aMap;
@@ -130,7 +131,7 @@ public class RequestParamMap implements IRequestParamMap
     }
   }
 
-  public void put (@Nonnull final String sPath, @Nullable final Object aValue)
+  public void put (@NonNull final String sPath, @Nullable final Object aValue)
   {
     // replace everything just to have opening separators ("[") left and only
     // one closing separator ("]") at the end
@@ -145,7 +146,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  private static ICommonsOrderedMap <String, RequestParamMapItem> _getChildMap (@Nonnull final Map <String, RequestParamMapItem> aMap,
+  private static ICommonsOrderedMap <String, RequestParamMapItem> _getChildMap (@NonNull final Map <String, RequestParamMapItem> aMap,
                                                                                 @Nullable final String sPath)
   {
     final RequestParamMapItem aPathObj = aMap.get (sPath);
@@ -160,7 +161,7 @@ public class RequestParamMap implements IRequestParamMap
    * @return The map. May be <code>null</code> if the path did not find such a child.
    */
   @Nullable
-  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapExceptLast (@Nonnull @Nonempty final String... aPath)
+  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapExceptLast (@NonNull @Nonempty final String... aPath)
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
@@ -175,7 +176,7 @@ public class RequestParamMap implements IRequestParamMap
     return aMap;
   }
 
-  public boolean contains (@Nonnull @Nonempty final String... aPath)
+  public boolean contains (@NonNull @Nonempty final String... aPath)
   {
     final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
     if (aMap == null)
@@ -192,14 +193,14 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  public RequestParamMapItem getObject (@Nonnull @Nonempty final String... aPath)
+  public RequestParamMapItem getObject (@NonNull @Nonempty final String... aPath)
   {
     final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapExceptLast (aPath);
     return aMap == null ? null : aMap.get (ArrayHelper.getLast (aPath));
   }
 
   @Nullable
-  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapFully (@Nonnull final String... aPath)
+  private ICommonsOrderedMap <String, RequestParamMapItem> _getChildMapFully (@NonNull final String... aPath)
   {
     ICommonsOrderedMap <String, RequestParamMapItem> aMap = m_aMap;
     for (final String sPath : aPath)
@@ -212,7 +213,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  public ICommonsOrderedMap <String, String> getValueMap (@Nonnull @Nonempty final String... aPath)
+  public ICommonsOrderedMap <String, String> getValueMap (@NonNull @Nonempty final String... aPath)
   {
     final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
@@ -221,7 +222,7 @@ public class RequestParamMap implements IRequestParamMap
   }
 
   @Nullable
-  public ICommonsOrderedMap <String, String> getValueTrimmedMap (@Nonnull @Nonempty final String... aPath)
+  public ICommonsOrderedMap <String, String> getValueTrimmedMap (@NonNull @Nonempty final String... aPath)
   {
     final ICommonsOrderedMap <String, RequestParamMapItem> aMap = _getChildMapFully (aPath);
     if (aMap == null)
@@ -231,7 +232,7 @@ public class RequestParamMap implements IRequestParamMap
 
   @Nullable
   @ReturnsMutableCopy
-  public IRequestParamMap getMap (@Nonnull @Nonempty final String... aPath)
+  public IRequestParamMap getMap (@NonNull @Nonempty final String... aPath)
   {
     ValueEnforcer.notEmpty (aPath, "Path");
 
@@ -257,51 +258,51 @@ public class RequestParamMap implements IRequestParamMap
     return m_aMap.size ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedSet <String> keySet ()
   {
     return m_aMap.copyOfKeySet ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <RequestParamMapItem> values ()
   {
     return m_aMap.copyOfValues ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ()
   {
     return m_aMap.getClone ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getAsValueMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap)
+  public static ICommonsOrderedMap <String, String> getAsValueMap (@NonNull final Map <String, ? extends RequestParamMapItem> aMap)
   {
     ValueEnforcer.notNull (aMap, "Map");
     return new CommonsLinkedHashMap <> (aMap, Function.identity (), RequestParamMapItem::getValue);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String> getAsValueMap ()
   {
     return getAsValueMap (m_aMap);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, String> getAsValueTrimmedMap (@Nonnull final Map <String, ? extends RequestParamMapItem> aMap)
+  public static ICommonsOrderedMap <String, String> getAsValueTrimmedMap (@NonNull final Map <String, ? extends RequestParamMapItem> aMap)
   {
     ValueEnforcer.notNull (aMap, "Map");
     return new CommonsLinkedHashMap <> (aMap, Function.identity (), RequestParamMapItem::getValueTrimmed);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String> getAsValueTrimmedMap ()
   {
@@ -331,8 +332,8 @@ public class RequestParamMap implements IRequestParamMap
     return new ToStringGenerator (this).append ("map", m_aMap).getToString ();
   }
 
-  @Nonnull
-  public static IRequestParamMap create (@Nonnull final Map <String, Object> aAttrCont)
+  @NonNull
+  public static IRequestParamMap create (@NonNull final Map <String, Object> aAttrCont)
   {
     final RequestParamMap ret = new RequestParamMap ();
     for (final Map.Entry <String, Object> aEntry : aAttrCont.entrySet ())
@@ -340,8 +341,8 @@ public class RequestParamMap implements IRequestParamMap
     return ret;
   }
 
-  @Nonnull
-  public static IRequestParamMap createFromRequest (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static IRequestParamMap createFromRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
     final RequestParamMap ret = new RequestParamMap ();
     for (final Map.Entry <String, String []> aEntry : aHttpRequest.getParameterMap ().entrySet ())
@@ -358,19 +359,19 @@ public class RequestParamMap implements IRequestParamMap
    *        Base name
    * @return Base name as is.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   @Deprecated (forRemoval = false)
-  public static String getFieldName (@Nonnull @Nonempty final String sBaseName)
+  public static String getFieldName (@NonNull @Nonempty final String sBaseName)
   {
     ValueEnforcer.notEmpty (sBaseName, "BaseName");
 
     return sBaseName;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getFieldName (@Nonnull @Nonempty final String sBaseName, @Nullable final String... aSuffixes)
+  public static String getFieldName (@NonNull @Nonempty final String sBaseName, @Nullable final String... aSuffixes)
   {
     ValueEnforcer.notEmpty (sBaseName, "BaseName");
 
@@ -381,9 +382,9 @@ public class RequestParamMap implements IRequestParamMap
     return aSB.toString ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  public static String getFieldName (@Nonnull @Nonempty final String sBaseName, @Nullable final int... aSuffixes)
+  public static String getFieldName (@NonNull @Nonempty final String sBaseName, @Nullable final int... aSuffixes)
   {
     ValueEnforcer.notEmpty (sBaseName, "BaseName");
 
@@ -423,7 +424,7 @@ public class RequestParamMap implements IRequestParamMap
    * @param sClose
    *        Close string. May neither be <code>null</code> nor empty.
    */
-  public static void setSeparators (@Nonnull @Nonempty final String sOpen, @Nonnull @Nonempty final String sClose)
+  public static void setSeparators (@NonNull @Nonempty final String sOpen, @NonNull @Nonempty final String sClose)
   {
     ValueEnforcer.notEmpty (sOpen, "Open");
     ValueEnforcer.notEmpty (sClose, "Close");
@@ -437,7 +438,7 @@ public class RequestParamMap implements IRequestParamMap
    * @return The open char. By default this is "[". Never <code>null</code> nor empty.
    * @see #DEFAULT_OPEN
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public static String getOpenSeparator ()
   {
@@ -448,7 +449,7 @@ public class RequestParamMap implements IRequestParamMap
    * @return The close char. By default this is "]". Never <code>null</code> nor empty.
    * @see #DEFAULT_CLOSE
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public static String getCloseSeparator ()
   {

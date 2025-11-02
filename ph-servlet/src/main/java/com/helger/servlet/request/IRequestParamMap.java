@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.iface.IHasSize;
@@ -29,9 +32,6 @@ import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.typeconvert.impl.TypeConverter;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 /**
  * A request parameter map. It handles complex request parameters and lets you iterate the
  * structure.
@@ -40,58 +40,58 @@ import jakarta.annotation.Nullable;
  */
 public interface IRequestParamMap extends IHasSize
 {
-  boolean contains (@Nonnull @Nonempty String... aPath);
+  boolean contains (@NonNull @Nonempty String... aPath);
 
   @Nullable
-  RequestParamMapItem getObject (@Nonnull @Nonempty String... aPath);
+  RequestParamMapItem getObject (@NonNull @Nonempty String... aPath);
 
   @Nullable
-  default String getString (@Nonnull @Nonempty final String... aPath)
+  default String getString (@NonNull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
     return aItem == null ? null : aItem.getValue ();
   }
 
   @Nullable
-  default String getStringTrimmed (@Nonnull @Nonempty final String... aPath)
+  default String getStringTrimmed (@NonNull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
     return aItem == null ? null : aItem.getValueTrimmed ();
   }
 
-  default boolean getBoolean (@Nonnull @Nonempty final String sPath, final boolean bDefault)
+  default boolean getBoolean (@NonNull @Nonempty final String sPath, final boolean bDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
     return aItem == null ? bDefault : TypeConverter.convertToBoolean (aItem.getValue (), bDefault);
   }
 
-  default double getDouble (@Nonnull @Nonempty final String sPath, final double dDefault)
+  default double getDouble (@NonNull @Nonempty final String sPath, final double dDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
     return aItem == null ? dDefault : TypeConverter.convertToDouble (aItem.getValue (), dDefault);
   }
 
-  default int getInt (@Nonnull @Nonempty final String sPath, final int nDefault)
+  default int getInt (@NonNull @Nonempty final String sPath, final int nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
     return aItem == null ? nDefault : TypeConverter.convertToInt (aItem.getValue (), nDefault);
   }
 
-  default long getLong (@Nonnull @Nonempty final String sPath, final long nDefault)
+  default long getLong (@NonNull @Nonempty final String sPath, final long nDefault)
   {
     final RequestParamMapItem aItem = getObject (sPath);
     return aItem == null ? nDefault : TypeConverter.convertToLong (aItem.getValue (), nDefault);
   }
 
   @Nullable
-  default BigInteger getBigInteger (@Nonnull @Nonempty final String... aPath)
+  default BigInteger getBigInteger (@NonNull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
     return aItem == null ? null : TypeConverter.convert (aItem.getValue (), BigInteger.class);
   }
 
   @Nullable
-  default BigDecimal getBigDecimal (@Nonnull @Nonempty final String... aPath)
+  default BigDecimal getBigDecimal (@NonNull @Nonempty final String... aPath)
   {
     final RequestParamMapItem aItem = getObject (aPath);
     return aItem == null ? null : TypeConverter.convert (aItem.getValue (), BigDecimal.class);
@@ -130,10 +130,10 @@ public interface IRequestParamMap extends IHasSize
   }
 
   @Nullable
-  ICommonsOrderedMap <String, String> getValueMap (@Nonnull @Nonempty String... aPath);
+  ICommonsOrderedMap <String, String> getValueMap (@NonNull @Nonempty String... aPath);
 
   @Nullable
-  ICommonsOrderedMap <String, String> getValueTrimmedMap (@Nonnull @Nonempty String... aPath);
+  ICommonsOrderedMap <String, String> getValueTrimmedMap (@NonNull @Nonempty String... aPath);
 
   /**
    * Get a nested map for the specified path.
@@ -143,7 +143,7 @@ public interface IRequestParamMap extends IHasSize
    * @return <code>null</code> if the path could not be resolved.
    */
   @Nullable
-  IRequestParamMap getMap (@Nonnull @Nonempty String... aPath);
+  IRequestParamMap getMap (@NonNull @Nonempty String... aPath);
 
   /**
    * Check if this map, contains the passed key. This will be true both for nested maps as well as
@@ -158,7 +158,7 @@ public interface IRequestParamMap extends IHasSize
   /**
    * @return A set of all contained key. Never <code>null</code> but maybe empty.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsOrderedSet <String> keySet ();
 
@@ -166,14 +166,14 @@ public interface IRequestParamMap extends IHasSize
    * @return A collection of all values of this map. The type of the value is usually either
    *         {@link String}, file item (from upload) or {@link Map} from String to Object.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsList <RequestParamMapItem> values ();
 
   /**
    * @return A copy of the contained map. For the value types see {@link #values()}
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsOrderedMap <String, RequestParamMapItem> getAsObjectMap ();
 
@@ -181,7 +181,7 @@ public interface IRequestParamMap extends IHasSize
    * @return A key/value map, with enforced values. If this map contains a nested map, the nested
    *         maps are ignored!
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsOrderedMap <String, String> getAsValueMap ();
 
@@ -189,7 +189,7 @@ public interface IRequestParamMap extends IHasSize
    * @return A key/value map, with enforced and trimmed values. If this map contains a nested map,
    *         the nested maps are ignored!
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsOrderedMap <String, String> getAsValueTrimmedMap ();
 }

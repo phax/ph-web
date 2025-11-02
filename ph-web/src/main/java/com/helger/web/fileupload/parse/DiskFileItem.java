@@ -27,6 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +60,6 @@ import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.io.DeferredFileOutputStream;
 import com.helger.web.fileupload.io.FileUploadHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -248,7 +247,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * @throws ClassNotFoundException
    *         if class cannot be found.
    */
-  private void readObject (@Nonnull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
+  private void readObject (@NonNull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
   {
     // read values
     aOIS.defaultReadObject ();
@@ -272,7 +271,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * @return The base directory for all temporary files.
    */
-  @Nonnull
+  @NonNull
   public final File getTempDirectory ()
   {
     return m_aTempDir;
@@ -286,7 +285,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *
    * @return The {@link File} to be used for temporary storage.
    */
-  @Nonnull
+  @NonNull
   protected File getTempFile ()
   {
     if (m_aTempFile == null)
@@ -309,7 +308,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * @return An {@link InputStream} that can be used to retrieve the contents of the file.
    */
-  @Nonnull
+  @NonNull
   public InputStream getInputStream ()
   {
     if (isInMemory ())
@@ -424,7 +423,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     return SimpleFileIO.getAllFileBytes (m_aDFOS.getFile ());
   }
 
-  @Nonnull
+  @NonNull
   public String getString ()
   {
     return getStringWithFallback (DEFAULT_CHARSET_OBJ);
@@ -438,8 +437,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    *        be <code>null</code>.
    * @return The string representation of the item.
    */
-  @Nonnull
-  public String getStringWithFallback (@Nonnull final Charset aFallbackCharset)
+  @NonNull
+  public String getStringWithFallback (@NonNull final Charset aFallbackCharset)
   {
     final String sCharset = getCharSet ();
     final Charset aCharset = CharsetHelper.getCharsetFromNameOrDefault (sCharset, aFallbackCharset);
@@ -464,8 +463,8 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * @throws FileUploadException
    *         if an error occurs.
    */
-  @Nonnull
-  public ISuccessIndicator write (@Nonnull final File aDstFile) throws FileUploadException
+  @NonNull
+  public ISuccessIndicator write (@NonNull final File aDstFile) throws FileUploadException
   {
     ValueEnforcer.notNull (aDstFile, "DstFile");
 
@@ -570,7 +569,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_aHeaders = aHeaders;
   }
 
-  @Nonnull
+  @NonNull
   public DeferredFileOutputStream getOutputStream ()
   {
     if (m_aDFOS == null)

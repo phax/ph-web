@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public interface IProxySettingsProvider
 {
@@ -57,9 +57,9 @@ public interface IProxySettingsProvider
    *        The I/O exception thrown when the connect failed. Never
    *        <code>null</code>.
    */
-  default void onConnectionFailed (@Nonnull final IProxySettings aProxySettings,
-                                   @Nonnull final URI aURI,
-                                   @Nonnull final SocketAddress aAddr,
-                                   @Nonnull final IOException ex)
+  default void onConnectionFailed (@NonNull final IProxySettings aProxySettings,
+                                   @NonNull final URI aURI,
+                                   @NonNull final SocketAddress aAddr,
+                                   @NonNull final IOException ex)
   {}
 }

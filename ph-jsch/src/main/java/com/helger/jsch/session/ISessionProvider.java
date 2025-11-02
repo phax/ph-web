@@ -16,10 +16,10 @@
  */
 package com.helger.jsch.session;
 
+import org.jspecify.annotations.NonNull;
+
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An interface for creating {@link Session} objects. This is a base interface
@@ -35,6 +35,6 @@ public interface ISessionProvider
    *         If <code>username</code> or <code>hostname</code> are invalid
    * @see com.jcraft.jsch.JSch#getSession(String, String, int)
    */
-  @Nonnull
+  @NonNull
   Session createSession () throws JSchException;
 }

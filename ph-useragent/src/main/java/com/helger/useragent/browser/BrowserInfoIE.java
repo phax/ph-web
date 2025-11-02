@@ -18,10 +18,10 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.version.Version;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Special browser info for Internet Explorer.
@@ -40,7 +40,7 @@ public class BrowserInfoIE extends BrowserInfo
     m_bIsIECompatibilityMode = false;
   }
 
-  public BrowserInfoIE (@Nonnull final Version aVersion, final boolean bIsIECompatibilityMode)
+  public BrowserInfoIE (@NonNull final Version aVersion, final boolean bIsIECompatibilityMode)
   {
     super (EBrowserType.IE, aVersion);
     m_bIsIECompatibilityMode = bIsIECompatibilityMode;
@@ -55,7 +55,7 @@ public class BrowserInfoIE extends BrowserInfo
   }
 
   @Override
-  public String getDisplayText (@Nonnull final Locale aContentLocale)
+  public String getDisplayText (@NonNull final Locale aContentLocale)
   {
     return super.getDisplayText (aContentLocale) +
            (isIECompatibilityMode () ? EBrowserText.IE_COMPATIBILITY_MODE.getDisplayText (aContentLocale) : "");

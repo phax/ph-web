@@ -19,10 +19,10 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.helger.annotation.CheckForSigned;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.annotation.CheckForSigned;
 
 /**
  * <p>
@@ -69,6 +69,6 @@ public interface IRequestContext
    * @throws IOException
    *         if a problem occurs.
    */
-  @Nonnull
+  @NonNull
   InputStream getInputStream () throws IOException;
 }

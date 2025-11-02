@@ -19,13 +19,12 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
 
 public class ScpFileInputStream extends InputStream
 {
@@ -34,7 +33,7 @@ public class ScpFileInputStream extends InputStream
   private final ScpInputStream m_aIS;
   private final ScpEntry m_aScpEntry;
 
-  ScpFileInputStream (@Nonnull final ISessionFactory aSessionFactory, final String sPath) throws JSchException, IOException
+  ScpFileInputStream (@NonNull final ISessionFactory aSessionFactory, final String sPath) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpInputStream to " + aSessionFactory.getAsString () + " " + sPath);

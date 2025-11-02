@@ -18,9 +18,9 @@ package com.helger.web.fileupload;
 
 import java.io.IOException;
 
-import com.helger.web.fileupload.exception.FileUploadException;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.web.fileupload.exception.FileUploadException;
 
 /**
  * An iterator, as returned by
@@ -54,6 +54,6 @@ public interface IFileItemIterator
    * @return FileItemStream instance, which provides access to the next file
    *         item.
    */
-  @Nonnull
+  @NonNull
   IFileItemStream next () throws FileUploadException, IOException;
 }

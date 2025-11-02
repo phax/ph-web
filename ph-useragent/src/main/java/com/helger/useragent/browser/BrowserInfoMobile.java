@@ -18,11 +18,11 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.version.Version;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Special browser info for Web Spider user agents.
@@ -49,7 +49,7 @@ public class BrowserInfoMobile extends BrowserInfo
 
   @Override
   @Nullable
-  public String getDisplayText (@Nonnull final Locale aContentLocale)
+  public String getDisplayText (@NonNull final Locale aContentLocale)
   {
     return m_sUA;
   }

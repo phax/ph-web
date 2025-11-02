@@ -18,6 +18,8 @@ package com.helger.web.scope.mgr;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +32,6 @@ import com.helger.scope.IScopeRenewalAware;
 import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionWebScope;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -50,8 +50,8 @@ public final class WebScopeSessionHelper
   private WebScopeSessionHelper ()
   {}
 
-  private static void _restoreScopeAttributes (@Nonnull final ISessionWebScope aNewSessionScope,
-                                               @Nonnull final Map <String, IScopeRenewalAware> aSessionScopeValues)
+  private static void _restoreScopeAttributes (@NonNull final ISessionWebScope aNewSessionScope,
+                                               @NonNull final Map <String, IScopeRenewalAware> aSessionScopeValues)
   {
     // restore the session scope attributes
     for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSessionScopeValues.entrySet ())
@@ -68,7 +68,7 @@ public final class WebScopeSessionHelper
    *        and a new session is created.
    * @return {@link EChange#UNCHANGED} if no session scope is present.
    */
-  @Nonnull
+  @NonNull
   public static EChange renewCurrentSessionScope (final boolean bInvalidateHttpSession)
   {
     // Get the old session scope
@@ -117,7 +117,7 @@ public final class WebScopeSessionHelper
    *         otherwise.
    */
   @Nullable
-  public static ISessionWebScope renewSessionScope (@Nonnull final HttpSession aHttpSession)
+  public static ISessionWebScope renewSessionScope (@NonNull final HttpSession aHttpSession)
   {
     ValueEnforcer.notNull (aHttpSession, "HttpSession");
 

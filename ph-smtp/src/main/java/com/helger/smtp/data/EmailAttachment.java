@@ -18,6 +18,9 @@ package com.helger.smtp.data;
 
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.equals.EqualsHelper;
@@ -27,8 +30,6 @@ import com.helger.base.io.streamprovider.ByteArrayInputStreamProvider;
 import com.helger.base.tostring.ToStringGenerator;
 
 import jakarta.activation.FileTypeMap;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Base implementation for interface {@link IEmailAttachment}.
@@ -45,58 +46,58 @@ public class EmailAttachment implements IEmailAttachment
   private final String m_sContentType;
   private final EEmailAttachmentDisposition m_eDisposition;
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final byte [] aContent)
+  public EmailAttachment (@NonNull @Nonempty final String sFilename, @NonNull final byte [] aContent)
   {
     this (sFilename, aContent, (Charset) null);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final byte [] aContent, @Nullable final Charset aCharset)
+  public EmailAttachment (@NonNull @Nonempty final String sFilename, @NonNull final byte [] aContent, @Nullable final Charset aCharset)
   {
     this (sFilename, aContent, aCharset, DEFAULT_DISPOSITION);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final byte [] aContent,
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final byte [] aContent,
                           @Nullable final Charset aCharset,
-                          @Nonnull final EEmailAttachmentDisposition eDisposition)
+                          @NonNull final EEmailAttachmentDisposition eDisposition)
   {
     this (sFilename, aContent, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final byte [] aContent,
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final byte [] aContent,
                           @Nullable final Charset aCharset,
                           @Nullable final String sContentType,
-                          @Nonnull final EEmailAttachmentDisposition eDisposition)
+                          @NonNull final EEmailAttachmentDisposition eDisposition)
   {
     this (sFilename, new ByteArrayInputStreamProvider (aContent), aCharset, sContentType, eDisposition);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename, @Nonnull final IHasInputStream aInputStreamProvider)
+  public EmailAttachment (@NonNull @Nonempty final String sFilename, @NonNull final IHasInputStream aInputStreamProvider)
   {
     this (sFilename, aInputStreamProvider, (Charset) null);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final IHasInputStream aInputStreamProvider,
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final IHasInputStream aInputStreamProvider,
                           @Nullable final Charset aCharset)
   {
     this (sFilename, aInputStreamProvider, aCharset, DEFAULT_DISPOSITION);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final IHasInputStream aInputStreamProvider,
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final IHasInputStream aInputStreamProvider,
                           @Nullable final Charset aCharset,
-                          @Nonnull final EEmailAttachmentDisposition eDisposition)
+                          @NonNull final EEmailAttachmentDisposition eDisposition)
   {
     this (sFilename, aInputStreamProvider, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
   }
 
-  public EmailAttachment (@Nonnull @Nonempty final String sFilename,
-                          @Nonnull final IHasInputStream aInputStreamProvider,
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final IHasInputStream aInputStreamProvider,
                           @Nullable final Charset aCharset,
                           @Nullable final String sContentType,
-                          @Nonnull final EEmailAttachmentDisposition eDisposition)
+                          @NonNull final EEmailAttachmentDisposition eDisposition)
   {
     m_sFilename = ValueEnforcer.notEmpty (sFilename, "Filename");
     m_aInputStreamProvider = ValueEnforcer.notNull (aInputStreamProvider, "InputStreamProvider");
@@ -105,14 +106,14 @@ public class EmailAttachment implements IEmailAttachment
     m_eDisposition = ValueEnforcer.notNull (eDisposition, "Disposition");
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getFilename ()
   {
     return m_sFilename;
   }
 
-  @Nonnull
+  @NonNull
   public IHasInputStream getInputStreamProvider ()
   {
     return m_aInputStreamProvider;
@@ -130,13 +131,13 @@ public class EmailAttachment implements IEmailAttachment
     return m_sContentType;
   }
 
-  @Nonnull
+  @NonNull
   public EEmailAttachmentDisposition getDisposition ()
   {
     return m_eDisposition;
   }
 
-  @Nonnull
+  @NonNull
   public EmailAttachmentDataSource getAsDataSource ()
   {
     return new EmailAttachmentDataSource (m_aInputStreamProvider, m_sFilename, m_sContentType, m_eDisposition);

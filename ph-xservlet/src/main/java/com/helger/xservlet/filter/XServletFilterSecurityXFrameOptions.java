@@ -16,6 +16,9 @@
  */
 package com.helger.xservlet.filter;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.state.EContinue;
@@ -25,8 +28,6 @@ import com.helger.http.EHttpVersion;
 import com.helger.servlet.response.EXFrameOptionType;
 import com.helger.url.ISimpleURL;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -61,7 +62,7 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
    *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
    *        for the other cases.
    */
-  public XServletFilterSecurityXFrameOptions (@Nonnull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public XServletFilterSecurityXFrameOptions (@NonNull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
     if (eType.isURLRequired ())
@@ -80,7 +81,7 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
    *         <code>null</code>.
    * @since 9.3.2
    */
-  @Nonnull
+  @NonNull
   public final EXFrameOptionType getXFrameOptionsType ()
   {
     return m_eType;
@@ -102,18 +103,18 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
    * @return The header values to be used. Neither <code>null</code> nor empty.
    * @since 9.3.2
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public final String getHeaderValue ()
   {
     return m_sHeaderValue;
   }
 
-  @Nonnull
-  public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                  @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod)
+  @NonNull
+  public EContinue beforeRequest (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse,
+                                  @NonNull final EHttpVersion eHttpVersion,
+                                  @NonNull final EHttpMethod eHttpMethod)
   {
     // Ensure the response header is present
     aHttpResponse.addHeader (CHttpHeader.X_FRAME_OPTIONS, m_sHeaderValue);

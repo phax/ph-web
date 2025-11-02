@@ -25,6 +25,8 @@ import javax.net.ssl.TrustManager;
 
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
@@ -38,9 +40,6 @@ import com.helger.http.security.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.http.tls.TLSConfigurationMode;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * All the easily configurable settings for an {@link HttpClientFactory}
@@ -111,7 +110,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @param aSource
    *        The source settings to copy from. May not be <code>null</code>.
    */
-  public HttpClientSettings (@Nonnull final IHttpClientSettings aSource)
+  public HttpClientSettings (@NonNull final IHttpClientSettings aSource)
   {
     setAllFrom (aSource);
   }
@@ -123,8 +122,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The source settings to copy from. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @Nonnull
-  public final HttpClientSettings setAllFrom (@Nonnull final IHttpClientSettings aSource)
+  @NonNull
+  public final HttpClientSettings setAllFrom (@NonNull final IHttpClientSettings aSource)
   {
     ValueEnforcer.notNull (aSource, "Source");
     setUseDNSClientCache (aSource.isUseDNSClientCache ());
@@ -163,7 +162,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        <code>true</code> to use DNS caching, <code>false</code> to disable it.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setUseDNSClientCache (final boolean bUseDNSClientCache)
   {
     m_bUseDNSClientCache = bUseDNSClientCache;
@@ -188,7 +187,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The SSL context to be used. May be <code>null</code>.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setSSLContext (@Nullable final SSLContext aSSLContext)
   {
     m_aSSLContext = aSSLContext;
@@ -204,7 +203,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @throws GeneralSecurityException
    *         In case TLS initialization fails
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setSSLContextTrustAll () throws GeneralSecurityException
   {
     final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
@@ -228,7 +227,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Verifier to be used. May be <code>null</code>.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setHostnameVerifier (@Nullable final HostnameVerifier aHostnameVerifier)
   {
     m_aHostnameVerifier = aHostnameVerifier;
@@ -241,7 +240,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setHostnameVerifierVerifyAll ()
   {
     return setHostnameVerifier (new HostnameVerifierVerifyAll (false));
@@ -264,26 +263,26 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        The configuration mode to use. <code>null</code> means use system default.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setTLSConfigurationMode (@Nullable final ITLSConfigurationMode aTLSConfigurationMode)
   {
     m_aTLSConfigurationMode = aTLSConfigurationMode;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final HttpProxySettings getGeneralProxy ()
   {
     return m_aGeneralProxy;
   }
 
-  @Nonnull
+  @NonNull
   public final HttpProxySettings getHttpProxy ()
   {
     return m_aHttpProxy;
   }
 
-  @Nonnull
+  @NonNull
   public final HttpProxySettings getHttpsProxy ()
   {
     return m_aHttpsProxy;
@@ -305,7 +304,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Retries to use. Must be &ge; 0.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setRetryCount (@Nonnegative final int nRetries)
   {
     ValueEnforcer.isGE0 (nRetries, "Retries");
@@ -313,13 +312,13 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final Duration getRetryInterval ()
   {
     return m_aRetryInterval;
   }
 
-  @Nonnull
+  @NonNull
   public final TimeValue getRetryIntervalAsTimeValue ()
   {
     return TimeValue.ofMilliseconds (m_aRetryInterval.toMillis ());
@@ -332,8 +331,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Retry interval to use. Must not be <code>null</code>.
    * @return this for chaining
    */
-  @Nonnull
-  public final HttpClientSettings setRetryInterval (@Nonnull final Duration aRetryInterval)
+  @NonNull
+  public final HttpClientSettings setRetryInterval (@NonNull final Duration aRetryInterval)
   {
     ValueEnforcer.notNull (aRetryInterval, "RetryInterval");
     m_aRetryInterval = aRetryInterval;
@@ -353,14 +352,14 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return this for chaining
    * @since 9.7.1
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setRetryAlways (final boolean bRetryAlways)
   {
     m_bRetryAlways = bRetryAlways;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final Timeout getConnectionRequestTimeout ()
   {
     return m_aConnectionRequestTimeout;
@@ -373,15 +372,15 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @Nonnull
-  public final HttpClientSettings setConnectionRequestTimeout (@Nonnull final Timeout aConnectionRequestTimeout)
+  @NonNull
+  public final HttpClientSettings setConnectionRequestTimeout (@NonNull final Timeout aConnectionRequestTimeout)
   {
     ValueEnforcer.notNull (aConnectionRequestTimeout, "ConnectionRequestTimeout");
     m_aConnectionRequestTimeout = aConnectionRequestTimeout;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final Timeout getConnectTimeout ()
   {
     return m_aConnectTimeout;
@@ -394,15 +393,15 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @Nonnull
-  public final HttpClientSettings setConnectTimeout (@Nonnull final Timeout aConnectTimeout)
+  @NonNull
+  public final HttpClientSettings setConnectTimeout (@NonNull final Timeout aConnectTimeout)
   {
     ValueEnforcer.notNull (aConnectTimeout, "ConnectTimeout");
     m_aConnectTimeout = aConnectTimeout;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final Timeout getResponseTimeout ()
   {
     return m_aResponseTimeout;
@@ -415,8 +414,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        Timeout to be used. May not be <code>null</code>.
    * @return this for chaining.
    */
-  @Nonnull
-  public final HttpClientSettings setResponseTimeout (@Nonnull final Timeout aResponseTimeout)
+  @NonNull
+  public final HttpClientSettings setResponseTimeout (@NonNull final Timeout aResponseTimeout)
   {
     ValueEnforcer.notNull (aResponseTimeout, "SocketTimeout");
     m_aResponseTimeout = aResponseTimeout;
@@ -437,7 +436,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @return this for chaining
    * @since 9.1.9
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setUserAgent (@Nullable final String sUserAgent)
   {
     m_sUserAgent = sUserAgent;
@@ -456,7 +455,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        <code>true</code> to follow redirects, <code>false</code> if not.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setFollowRedirects (final boolean bFollowRedirects)
   {
     m_bFollowRedirects = bFollowRedirects;
@@ -475,7 +474,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        <code>true</code> to use keep-alive, <code>false</code> if not.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setUseKeepAlive (final boolean bUseKeepAlive)
   {
     m_bUseKeepAlive = bUseKeepAlive;
@@ -494,14 +493,14 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    *        <code>true</code> to enable protocol upgrade, <code>false</code> to disable it.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings setProtocolUpgradeEnabled (final boolean bProtocolUpgradeEnabled)
   {
     m_bProtocolUpgradeEnabled = bProtocolUpgradeEnabled;
     return this;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public HttpClientSettings getClone ()
   {

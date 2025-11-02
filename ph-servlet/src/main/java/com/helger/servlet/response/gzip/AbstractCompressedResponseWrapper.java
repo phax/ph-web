@@ -21,6 +21,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,9 +60,9 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   private PrintWriter m_aWriter;
   private boolean m_bNoCompression = false;
 
-  public AbstractCompressedResponseWrapper (@Nonnull final HttpServletRequest aHttpRequest,
-                                            @Nonnull final HttpServletResponse aHttpResponse,
-                                            @Nonnull @Nonempty final String sContentEncoding)
+  public AbstractCompressedResponseWrapper (@NonNull final HttpServletRequest aHttpRequest,
+                                            @NonNull final HttpServletResponse aHttpResponse,
+                                            @NonNull @Nonempty final String sContentEncoding)
   {
     super (aHttpResponse);
     m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
@@ -109,7 +109,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   }
 
   @Override
-  public void setContentType (@Nonnull final String sContentType)
+  public void setContentType (@NonNull final String sContentType)
   {
     super.setContentType (sContentType);
 
@@ -296,14 +296,14 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
       m_aCompressedOS.finishAndClose ();
   }
 
-  @Nonnull
-  protected abstract AbstractCompressedServletOutputStream createCompressedOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                                                         @Nonnull final HttpServletResponse aHttpResponse,
-                                                                                         @Nonnull @Nonempty String sContentEncoding,
+  @NonNull
+  protected abstract AbstractCompressedServletOutputStream createCompressedOutputStream (@NonNull final HttpServletRequest aHttpRequest,
+                                                                                         @NonNull final HttpServletResponse aHttpResponse,
+                                                                                         @NonNull @Nonempty String sContentEncoding,
                                                                                          long nContentLength,
                                                                                          @Nonnegative long nMinCompressSize) throws IOException;
 
-  @Nonnull
+  @NonNull
   private AbstractCompressedServletOutputStream _createCompressedOutputStream () throws IOException
   {
     if (CompressFilterSettings.isDebugModeEnabled ())
@@ -324,7 +324,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public final ServletOutputStream getOutputStream () throws IOException
   {
     if (m_aCompressedOS == null)
@@ -341,7 +341,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
   }
 
   @Override
-  @Nonnull
+  @NonNull
   public final PrintWriter getWriter () throws IOException
   {
     if (m_aWriter == null)

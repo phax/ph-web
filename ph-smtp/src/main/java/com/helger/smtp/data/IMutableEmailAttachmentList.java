@@ -16,12 +16,12 @@
  */
 package com.helger.smtp.data;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.io.iface.IHasInputStream;
 import com.helger.base.state.EChange;
 import com.helger.base.state.IClearable;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This interface represents attachments to be added to a mail message. Messages
@@ -40,7 +40,7 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    *        The {@link IHasInputStream} representing the data. May not be
    *        <code>null</code>.
    */
-  default void addAttachment (@Nonnull final String sFilename, @Nonnull final IHasInputStream aISS)
+  default void addAttachment (@NonNull final String sFilename, @NonNull final IHasInputStream aISS)
   {
     addAttachment (new EmailAttachment (sFilename, aISS));
   }
@@ -51,7 +51,7 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    * @param aAttachment
    *        The attachment to be added. May not be <code>null</code>.
    */
-  void addAttachment (@Nonnull IEmailAttachment aAttachment);
+  void addAttachment (@NonNull IEmailAttachment aAttachment);
 
   /**
    * Add all provided attachments.
@@ -89,6 +89,6 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    *        sensitive.
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   EChange removeAttachment (@Nullable String sFilename);
 }

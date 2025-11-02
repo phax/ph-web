@@ -19,6 +19,9 @@ package com.helger.network.networkinterface;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.tostring.ToStringGenerator;
@@ -26,9 +29,6 @@ import com.helger.collection.CollectionHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsCollection;
 import com.helger.collection.hierarchy.IChildrenProvider;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of {@link IChildrenProvider} for {@link NetworkInterface}.
@@ -39,19 +39,19 @@ import jakarta.annotation.Nullable;
 public class ChildrenProviderNetworkInterface implements IChildrenProvider <NetworkInterface>
 {
   @Override
-  public boolean hasChildren (@Nonnull final NetworkInterface aCurrent)
+  public boolean hasChildren (@NonNull final NetworkInterface aCurrent)
   {
     return aCurrent.getSubInterfaces ().hasMoreElements ();
   }
 
   @Nonnegative
-  public int getChildCount (@Nonnull final NetworkInterface aCurrent)
+  public int getChildCount (@NonNull final NetworkInterface aCurrent)
   {
     return CollectionHelper.getSize (aCurrent.getSubInterfaces ());
   }
 
   @Nullable
-  public ICommonsCollection <NetworkInterface> getAllChildren (@Nonnull final NetworkInterface aCurrent)
+  public ICommonsCollection <NetworkInterface> getAllChildren (@NonNull final NetworkInterface aCurrent)
   {
     final Enumeration <NetworkInterface> aSubIFs = aCurrent.getSubInterfaces ();
     return aSubIFs.hasMoreElements () ? new CommonsArrayList <> (aSubIFs) : null;

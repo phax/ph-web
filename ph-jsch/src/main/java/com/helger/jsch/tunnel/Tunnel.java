@@ -18,12 +18,12 @@ package com.helger.jsch.tunnel;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.string.StringHelper;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Tunnel stores all the information needed to define an ssh port-forwarding
@@ -65,7 +65,7 @@ public class Tunnel
    * @see #Tunnel(String, int, String, int)
    * @see <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a>
    */
-  public Tunnel (@Nonnull @Nonempty final String sSpec)
+  public Tunnel (@NonNull @Nonempty final String sSpec)
   {
     final String [] aParts = StringHelper.getExplodedArray (':', sSpec, 4);
     if (aParts.length == 4)
@@ -246,7 +246,7 @@ public class Tunnel
    *
    * @return The spec string
    */
-  @Nonnull
+  @NonNull
   public String getSpec ()
   {
     if (m_sSpec == null)
@@ -259,7 +259,7 @@ public class Tunnel
     m_nAssignedLocalPort = port;
   }
 
-  @Nonnull
+  @NonNull
   public String getAsString ()
   {
     return (m_sLocalAlias == null ? "" : m_sLocalAlias + ":") +

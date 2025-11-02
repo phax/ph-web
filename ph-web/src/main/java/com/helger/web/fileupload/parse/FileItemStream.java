@@ -20,6 +20,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.WillCloseWhenClosed;
 import com.helger.annotation.concurrent.NotThreadSafe;
@@ -34,9 +37,6 @@ import com.helger.web.fileupload.io.FileUploadHelper;
 import com.helger.web.multipart.MultipartItemSkippedException;
 import com.helger.web.multipart.MultipartStream;
 import com.helger.web.multipart.MultipartStream.MultipartItemInputStream;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of {@link IFileItemStream}.
@@ -91,7 +91,7 @@ public class FileItemStream implements IFileItemStream, Closeable
                   @Nullable final String sContentType,
                   final boolean bFormField,
                   @CheckForSigned final long nContentLength,
-                  @Nonnull final MultipartStream aMulti,
+                  @NonNull final MultipartStream aMulti,
                   final long nFileSizeMax) throws IOException
   {
     m_sName = sName;
@@ -210,7 +210,7 @@ public class FileItemStream implements IFileItemStream, Closeable
    * @throws IOException
    *         An I/O error occurred.
    */
-  @Nonnull
+  @NonNull
   public InputStream openStream () throws IOException
   {
     if (m_aIS instanceof ICloseable && ((ICloseable) m_aIS).isClosed ())

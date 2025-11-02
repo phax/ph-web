@@ -18,6 +18,9 @@ package com.helger.useragent;
 
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.enforce.ValueEnforcer;
@@ -25,9 +28,6 @@ import com.helger.base.equals.EqualsHelper;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class wraps the basic elements of a user agent string.
@@ -44,30 +44,30 @@ public class UserAgentElementList
     m_aList = new CommonsArrayList <> ();
   }
 
-  public UserAgentElementList (@Nonnull final UserAgentElementList aOther)
+  public UserAgentElementList (@NonNull final UserAgentElementList aOther)
   {
     m_aList = aOther.getAllElements ();
   }
 
-  public void add (@Nonnull final UsetAgentKeyValuePair aPair)
+  public void add (@NonNull final UsetAgentKeyValuePair aPair)
   {
     ValueEnforcer.notNull (aPair, "Pair");
     m_aList.add (aPair);
   }
 
-  public void add (@Nonnull final String sValue)
+  public void add (@NonNull final String sValue)
   {
     ValueEnforcer.notNull (sValue, "Value");
     m_aList.add (sValue);
   }
 
-  public void add (@Nonnull final ICommonsList <String> aItems)
+  public void add (@NonNull final ICommonsList <String> aItems)
   {
     ValueEnforcer.notNull (aItems, "Items");
     m_aList.add (aItems);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <Object> getAllElements ()
   {

@@ -25,6 +25,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,9 +36,6 @@ import com.helger.base.trait.IGenericImplTrait;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.json.IJson;
 import com.helger.json.serialize.JsonReader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to an {@link IJson} object.
@@ -61,7 +60,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
   private boolean m_bDebugMode = DEFAULT_DEBUG_MODE;
   private Charset m_aFallbackCharset = HttpClientHelper.DEF_CONTENT_CHARSET;
 
-  protected AbstractResponseHandlerJson (@Nonnull final Function <IJson, T> aMapper)
+  protected AbstractResponseHandlerJson (@NonNull final Function <IJson, T> aMapper)
   {
     ValueEnforcer.notNull (aMapper, "Mapper");
     m_aMapper = aMapper;
@@ -84,7 +83,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
    * @return this for chaining
    * @since 9.6.3
    */
-  @Nonnull
+  @NonNull
   public final IMPLTYPE setDebugMode (final boolean bDebugMode)
   {
     m_bDebugMode = bDebugMode;
@@ -96,7 +95,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
    *         By default this is the HTTP default charset. Never <code>null</code>.
    * @since 9.6.3
    */
-  @Nonnull
+  @NonNull
   public final Charset getFallbackCharset ()
   {
     return m_aFallbackCharset;
@@ -110,8 +109,8 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
    * @return this for chaining
    * @since 9.6.3
    */
-  @Nonnull
-  public final IMPLTYPE setFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  @NonNull
+  public final IMPLTYPE setFallbackCharset (@NonNull final Charset aFallbackCharset)
   {
     ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
     m_aFallbackCharset = aFallbackCharset;
@@ -119,7 +118,7 @@ public abstract class AbstractResponseHandlerJson <T extends IJson, IMPLTYPE ext
   }
 
   @Nullable
-  public T handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public T handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);
     if (aEntity == null)

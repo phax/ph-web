@@ -16,7 +16,8 @@
  */
 package com.helger.servlet.async;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -42,8 +43,8 @@ public interface IAsyncServletRunner
    *        The main runner that does the heavy lifting. Never
    *        <code>null</code>.
    */
-  void runAsync (@Nonnull HttpServletRequest aOriginalHttpRequest,
-                 @Nonnull HttpServletResponse aOriginalHttpResponse,
-                 @Nonnull ExtAsyncContext aAsyncContext,
-                 @Nonnull Runnable aRunnable);
+  void runAsync (@NonNull HttpServletRequest aOriginalHttpRequest,
+                 @NonNull HttpServletResponse aOriginalHttpResponse,
+                 @NonNull ExtAsyncContext aAsyncContext,
+                 @NonNull Runnable aRunnable);
 }

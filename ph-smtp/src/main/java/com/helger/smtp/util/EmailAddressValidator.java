@@ -18,6 +18,8 @@ package com.helger.smtp.util;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Lookup;
@@ -27,9 +29,6 @@ import org.xbill.DNS.Type;
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.email.EmailAddressHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Perform email address validations.
@@ -79,7 +78,7 @@ public final class EmailAddressValidator
    * @return <code>true</code> if an MX record was found, <code>false</code> if
    *         not (or if an exception occurred)
    */
-  private static boolean _hasMXRecord (@Nonnull final String sHostName)
+  private static boolean _hasMXRecord (@NonNull final String sHostName)
   {
     try
     {

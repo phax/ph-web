@@ -21,6 +21,9 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.misc.ContainsSoftMigration;
 import com.helger.base.email.EmailAddress;
 import com.helger.base.email.IEmailAddress;
@@ -30,9 +33,6 @@ import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
 import com.helger.xml.microdom.convert.MicroTypeConverter;
 import com.helger.xml.microdom.util.MicroHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link EmailData}.
@@ -56,18 +56,18 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
   private static final String ELEMENT_CUSTOM = "custom";
   private static final String ATTR_ID = "id";
 
-  private static void _writeEmailAddress (@Nonnull final IMicroElement eParent,
-                                          @Nonnull final IEmailAddress aEmailAddress)
+  private static void _writeEmailAddress (@NonNull final IMicroElement eParent,
+                                          @NonNull final IEmailAddress aEmailAddress)
   {
     eParent.setAttribute (ATTR_ADDRESS, aEmailAddress.getAddress ());
     if (aEmailAddress.getPersonal () != null)
       eParent.setAttribute (ATTR_PERSONAL, aEmailAddress.getPersonal ());
   }
 
-  @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final EmailData aEmailData,
+  @NonNull
+  public IMicroElement convertToMicroElement (@NonNull final EmailData aEmailData,
                                               @Nullable final String sNamespaceURI,
-                                              @Nonnull final String sTagName)
+                                              @NonNull final String sTagName)
   {
     final IMicroElement eEmailData = new MicroElement (sNamespaceURI, sTagName);
     eEmailData.setAttribute (ATTR_TYPE, aEmailData.getEmailType ().getID ());
@@ -108,17 +108,17 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     return eEmailData;
   }
 
-  @Nonnull
-  private static IEmailAddress _readEmailAddress (@Nonnull final IMicroElement eElement)
+  @NonNull
+  private static IEmailAddress _readEmailAddress (@NonNull final IMicroElement eElement)
   {
     final String sAddress = eElement.getAttributeValue (ATTR_ADDRESS);
     final String sPersonal = eElement.getAttributeValue (ATTR_PERSONAL);
     return new EmailAddress (sAddress, sPersonal);
   }
 
-  @Nonnull
+  @NonNull
   @ContainsSoftMigration
-  public EmailData convertToNative (@Nonnull final IMicroElement eEmailData)
+  public EmailData convertToNative (@NonNull final IMicroElement eEmailData)
   {
     final String sEmailType = eEmailData.getAttributeValue (ATTR_TYPE);
     final EEmailType eEmailType = EEmailType.getFromIDOrNull (sEmailType);

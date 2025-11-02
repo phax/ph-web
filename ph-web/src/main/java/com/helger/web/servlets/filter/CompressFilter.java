@@ -18,6 +18,8 @@ package com.helger.web.servlets.filter;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.http.CHttpHeader;
 import com.helger.http.header.specific.AcceptEncodingList;
@@ -33,7 +35,6 @@ import com.helger.servlet.response.gzip.GZIPResponse;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,10 +71,10 @@ public class CompressFilter extends AbstractHttpServletFilter
     ResponseHelperSettings.setResponseCompressionEnabled (false);
   }
 
-  private static void _performCompressed (@Nonnull final HttpServletRequest aRequest,
-                                          @Nonnull final FilterChain aChain,
-                                          @Nonnull final HttpServletResponse aHttpResponse,
-                                          @Nonnull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException,
+  private static void _performCompressed (@NonNull final HttpServletRequest aRequest,
+                                          @NonNull final FilterChain aChain,
+                                          @NonNull final HttpServletResponse aHttpResponse,
+                                          @NonNull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException,
                                                                                                                 ServletException
   {
     boolean bException = true;
@@ -96,9 +97,9 @@ public class CompressFilter extends AbstractHttpServletFilter
   }
 
   @Override
-  public void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final FilterChain aChain) throws IOException, ServletException
+  public void doHttpFilter (@NonNull final HttpServletRequest aHttpRequest,
+                            @NonNull final HttpServletResponse aHttpResponse,
+                            @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     if (CompressFilterSettings.isResponseCompressionEnabled () &&
         ServletHelper.getRequestAttribute (aHttpRequest, REQUEST_ATTR) == null)

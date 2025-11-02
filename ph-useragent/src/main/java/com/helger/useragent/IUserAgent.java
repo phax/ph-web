@@ -16,13 +16,13 @@
  */
 package com.helger.useragent;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.useragent.browser.BrowserInfo;
 import com.helger.useragent.browser.BrowserInfoIE;
 import com.helger.useragent.browser.BrowserInfoMobile;
 import com.helger.useragent.browser.BrowserInfoSpider;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a single parsed user agent.
@@ -46,79 +46,79 @@ public interface IUserAgent
   /**
    * @return Information about Mozilla Firefox in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoFirefox ();
 
   /**
    * @return Information about Microsoft Internet Explorer in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfoIE getInfoIE ();
 
   /**
    * @return Information about Opera in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoOpera ();
 
   /**
    * @return Information about Apple Safari in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoSafari ();
 
   /**
    * @return Information about Google Chrome in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoChrome ();
 
   /**
    * @return Information about Vivaldi in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoVivaldi ();
 
   /**
    * @return Information about Lynx in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoLynx ();
 
   /**
    * @return Information about Konqueror in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoKonqueror ();
 
   /**
    * @return Information about Gecko based browsers in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoGeckoBased ();
 
   /**
    * @return Information about WebKit based browsers in this user agent (e.g.
    *         Chrome, Vivaldi etc.)
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoWebKitBased ();
 
   /**
    * @return Information about mobile browsers in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfoMobile getInfoMobile ();
 
   /**
    * @return Information about search engines/web spiders in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfoSpider getInfoWebSpider ();
 
   /**
    * @return Information about applications/APIs in this user agent.
    */
-  @Nonnull
+  @NonNull
   BrowserInfo getInfoApplication ();
 }

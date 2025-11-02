@@ -22,10 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * {@link DataHandler} extended to offer better buffer management in a streaming
@@ -44,17 +45,17 @@ public abstract class AbstractStreamingDataHandler extends DataHandler implement
 {
   private String m_sHrefCid;
 
-  public AbstractStreamingDataHandler (@Nonnull final Object aObj, @Nonnull final String sMimeType)
+  public AbstractStreamingDataHandler (@NonNull final Object aObj, @NonNull final String sMimeType)
   {
     super (aObj, sMimeType);
   }
 
-  public AbstractStreamingDataHandler (@Nonnull final URL aUrl)
+  public AbstractStreamingDataHandler (@NonNull final URL aUrl)
   {
     super (aUrl);
   }
 
-  public AbstractStreamingDataHandler (@Nonnull final DataSource aDataSource)
+  public AbstractStreamingDataHandler (@NonNull final DataSource aDataSource)
   {
     super (aDataSource);
   }
@@ -91,6 +92,6 @@ public abstract class AbstractStreamingDataHandler extends DataHandler implement
    * @throws IOException
    *         if any i/o error
    */
-  @Nonnull
+  @NonNull
   public abstract InputStream readOnce () throws IOException;
 }

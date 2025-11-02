@@ -18,6 +18,7 @@ package com.helger.xservlet.handler.specific;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,6 @@ import com.helger.url.ISimpleURL;
 import com.helger.url.URLBuilder;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 import com.helger.xservlet.handler.simple.IXServletSimpleHandler;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An {@link IXServletSimpleHandler} that does a redirect to a fixed URL.
@@ -48,7 +47,7 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
    * @param aTargetURL
    *        The URL to redirect to. Is interpreted as an absolute URL. May not be <code>null</code>.
    */
-  public RedirectAbsoluteXServletHandler (@Nonnull final ISimpleURL aTargetURL)
+  public RedirectAbsoluteXServletHandler (@NonNull final ISimpleURL aTargetURL)
   {
     ValueEnforcer.notNull (aTargetURL, "TargetURL");
 
@@ -59,15 +58,15 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
    * @return The target URL as provided in the constructor. Never <code>null</code>.
    * @since 9.3.1
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public final ISimpleURL getTargetURL ()
   {
     return m_aTargetURL;
   }
 
-  public void handleRequest (@Nonnull final IRequestWebScopeWithoutResponse aRequestScope,
-                             @Nonnull final UnifiedResponse aUnifiedResponse) throws Exception
+  public void handleRequest (@NonNull final IRequestWebScopeWithoutResponse aRequestScope,
+                             @NonNull final UnifiedResponse aUnifiedResponse) throws Exception
   {
     final URLBuilder aTargetURL = URLBuilder.of (m_aTargetURL);
 

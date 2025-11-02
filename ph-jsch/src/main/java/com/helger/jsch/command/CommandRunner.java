@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +37,6 @@ import com.helger.jsch.session.SessionManager;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Provides a convenience wrapper around an <code>exec</code> channel. This
@@ -59,7 +58,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * @param aSessionFactory
    *        The factory used to create a session manager
    */
-  public CommandRunner (@Nonnull final ISessionFactory aSessionFactory)
+  public CommandRunner (@NonNull final ISessionFactory aSessionFactory)
   {
     m_aSessionManager = SessionManager.create (aSessionFactory);
   }
@@ -80,7 +79,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    *
    * @return A duplicate CommandRunner with a different session.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public CommandRunner getClone ()
   {
@@ -104,7 +103,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * @throws IOException
    *         If unable to read the result data
    */
-  @Nonnull
+  @NonNull
   public ExecuteResult execute (final String command) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
@@ -146,7 +145,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
    * @throws IOException
    *         If unable to read the result data
    */
-  @Nonnull
+  @NonNull
   public ChannelExecWrapper open (final String sCommand) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
@@ -229,8 +228,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     private OutputStream m_aStdIn;
     private InputStream m_aStdOut;
 
-    public ChannelExecWrapper (@Nonnull final Session aSession,
-                               @Nonnull final String sCommand,
+    public ChannelExecWrapper (@NonNull final Session aSession,
+                               @NonNull final String sCommand,
                                @Nullable final InputStream aStdIn,
                                @Nullable final OutputStream aStdOut,
                                @Nullable final OutputStream aStdErr) throws JSchException
@@ -308,7 +307,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to read from the stream
      */
-    @Nonnull
+    @NonNull
     @WillNotClose
     public InputStream getErrStream () throws IOException
     {
@@ -326,7 +325,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to read from the stream
      */
-    @Nonnull
+    @NonNull
     @WillNotClose
     public InputStream getInputStream () throws IOException
     {
@@ -344,7 +343,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
      * @throws IOException
      *         If unable to write to the stream
      */
-    @Nonnull
+    @NonNull
     @WillNotClose
     public OutputStream getOutputStream () throws IOException
     {

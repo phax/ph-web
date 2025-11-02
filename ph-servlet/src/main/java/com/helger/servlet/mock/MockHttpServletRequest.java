@@ -27,6 +27,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +72,6 @@ import com.helger.url.SimpleURLHelper;
 import com.helger.url.codec.URLParameterDecoder;
 import com.helger.url.param.URLParameter;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletConnection;
@@ -227,7 +227,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @return the ServletContext that this request is associated with. (Not available in the standard
    *         HttpServletRequest interface for some reason.). Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final ServletContext getServletContext ()
   {
     if (m_aServletContext == null)
@@ -290,7 +290,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_aAttributes.get (sName);
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getAttributeNames ()
   {
     checkActive ();
@@ -319,7 +319,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_aCharacterEncoding;
   }
 
-  @Nonnull
+  @NonNull
   public Charset getCharacterEncodingObjOrDefault ()
   {
     Charset ret = getCharacterEncodingObj ();
@@ -328,7 +328,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setContent (@Nullable final byte [] aContent)
   {
     m_aContent = ArrayHelper.getCopy (aContent);
@@ -343,13 +343,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_aContent != null ? m_aContent.length : -1;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setContentType (@Nullable final IMimeType aContentType)
   {
     return setContentType (aContentType == null ? null : aContentType.getAsString ());
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setContentType (@Nullable final String sContentType)
   {
     m_sContentType = sContentType;
@@ -393,8 +393,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter value
    * @return this
    */
-  @Nonnull
-  public MockHttpServletRequest setParameter (@Nonnull final String sName, @Nullable final String sValue)
+  @NonNull
+  public MockHttpServletRequest setParameter (@NonNull final String sName, @Nullable final String sValue)
   {
     m_aParameters.removeIf (x -> x.hasName (sName));
     m_aParameters.add (new URLParameter (sName, sValue));
@@ -413,8 +413,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter values
    * @return this
    */
-  @Nonnull
-  public MockHttpServletRequest setParameter (@Nonnull final String sName, @Nullable final String [] aValues)
+  @NonNull
+  public MockHttpServletRequest setParameter (@NonNull final String sName, @Nullable final String [] aValues)
   {
     m_aParameters.removeIf (x -> x.hasName (sName));
     if (aValues != null)
@@ -431,7 +431,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter name value map. May be <code>null</code>.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setParameters (@Nullable final ICommonsList <URLParameter> aParams)
   {
     if (aParams != null)
@@ -455,8 +455,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter value
    * @return this
    */
-  @Nonnull
-  public final MockHttpServletRequest addParameter (@Nonnull final String sName, @Nullable final String sValue)
+  @NonNull
+  public final MockHttpServletRequest addParameter (@NonNull final String sName, @Nullable final String sValue)
   {
     m_aParameters.add (new URLParameter (sName, StringHelper.getNotNull (sValue)));
     return this;
@@ -474,8 +474,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter values
    * @return this
    */
-  @Nonnull
-  public final MockHttpServletRequest addParameter (@Nonnull final String sName, @Nullable final String [] aValues)
+  @NonNull
+  public final MockHttpServletRequest addParameter (@NonNull final String sName, @Nullable final String [] aValues)
   {
     if (aValues != null)
       for (final String sValue : aValues)
@@ -491,7 +491,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter name value map
    * @return this
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest addParameters (@Nullable final List <? extends URLParameter> aParams)
   {
     m_aParameters.addAll (aParams);
@@ -505,8 +505,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        Parameter name
    * @return this
    */
-  @Nonnull
-  public MockHttpServletRequest removeParameter (@Nonnull final String sName)
+  @NonNull
+  public MockHttpServletRequest removeParameter (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     m_aParameters.removeIf (x -> x.hasName (sName));
@@ -518,7 +518,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest removeAllParameters ()
   {
     m_aParameters.removeAll ();
@@ -526,14 +526,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   @Nullable
-  public String getParameter (@Nonnull final String sName)
+  public String getParameter (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
 
     return m_aParameters.findFirstMapped (x -> x.hasName (sName), URLParameter::getValue);
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getParameterNames ()
   {
     // Use set to make sure each name is returned only once
@@ -542,14 +542,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   @Nullable
   @ReturnsMutableCopy
-  public String [] getParameterValues (@Nonnull final String sName)
+  public String [] getParameterValues (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     return m_aParameters.getAllMapped (x -> x.hasName (sName), URLParameter::getValue)
                         .toArray (CGlobal.EMPTY_STRING_ARRAY);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String []> getParameterMap ()
   {
@@ -559,7 +559,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setProtocol (@Nullable final String sProtocol)
   {
     m_sProtocol = sProtocol;
@@ -572,7 +572,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sProtocol;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setScheme (@Nullable final String sScheme)
   {
     m_sScheme = sScheme;
@@ -585,7 +585,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sScheme;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setServerName (@Nullable final String sServerName)
   {
     m_sServerName = sServerName;
@@ -598,7 +598,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sServerName;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setServerPort (final int nServerPort)
   {
     m_nServerPort = nServerPort;
@@ -621,7 +621,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return new BufferedReader (aReader);
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRemoteAddr (@Nullable final String sRemoteAddr)
   {
     m_sRemoteAddr = sRemoteAddr;
@@ -634,7 +634,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sRemoteAddr;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRemoteHost (@Nullable final String sRemoteHost)
   {
     m_sRemoteHost = sRemoteHost;
@@ -647,7 +647,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sRemoteHost;
   }
 
-  public void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)
+  public void setAttribute (@NonNull final String sName, @Nullable final Object aValue)
   {
     checkActive ();
     ValueEnforcer.notNull (sName, "Name");
@@ -658,7 +658,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       m_aAttributes.remove (sName);
   }
 
-  public void removeAttribute (@Nonnull final String sName)
+  public void removeAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
 
@@ -671,7 +671,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest clearAttributes ()
   {
     m_aAttributes.clear ();
@@ -685,29 +685,29 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        preferred locale
    * @return this
    */
-  @Nonnull
-  public MockHttpServletRequest addPreferredLocale (@Nonnull final Locale aLocale)
+  @NonNull
+  public MockHttpServletRequest addPreferredLocale (@NonNull final Locale aLocale)
   {
     ValueEnforcer.notNull (aLocale, "Locale");
     m_aLocales.add (0, aLocale);
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public Locale getLocale ()
   {
     // One element is added in ctor!
     return m_aLocales.getFirstOrNull ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public Enumeration <Locale> getLocales ()
   {
     return EnumerationHelper.getEnumeration (m_aLocales);
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setSecure (final boolean bSecure)
   {
     m_bSecure = bSecure;
@@ -719,19 +719,19 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_bSecure;
   }
 
-  @Nonnull
-  public MockRequestDispatcher getRequestDispatcher (@Nonnull final String sPath)
+  @NonNull
+  public MockRequestDispatcher getRequestDispatcher (@NonNull final String sPath)
   {
     return new MockRequestDispatcher (sPath);
   }
 
   @Deprecated (forRemoval = false)
-  public String getRealPath (@Nonnull final String sPath)
+  public String getRealPath (@NonNull final String sPath)
   {
     return getServletContext ().getRealPath (sPath);
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRemotePort (final int nRemotePort)
   {
     m_nRemotePort = nRemotePort;
@@ -743,7 +743,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_nRemotePort;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setLocalName (@Nullable final String sLocalName)
   {
     m_sLocalName = sLocalName;
@@ -756,7 +756,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sLocalName;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setLocalAddr (@Nullable final String sLocalAddr)
   {
     m_sLocalAddr = sLocalAddr;
@@ -769,7 +769,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sLocalAddr;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setLocalPort (final int nLocalPort)
   {
     m_nLocalPort = nLocalPort;
@@ -781,7 +781,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_nLocalPort;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setAuthType (@Nullable final String sAuthType)
   {
     m_sAuthType = sAuthType;
@@ -794,7 +794,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sAuthType;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setCookies (@Nullable final Cookie [] aCookies)
   {
     m_aCookies = ArrayHelper.getCopy (aCookies);
@@ -830,14 +830,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #getDateHeader
    * @see #getIntHeader
    */
-  @Nonnull
+  @NonNull
   public final MockHttpServletRequest addHeader (@Nullable final String sName, @Nullable final String aValue)
   {
     m_aHeaders.addHeader (sName, aValue);
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest removeHeader (@Nullable final String sName)
   {
     m_aHeaders.removeHeaders (sName);
@@ -865,20 +865,20 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return aValue == null || aValue.isEmpty () ? null : String.valueOf (aValue.iterator ().next ());
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getHeaders (@Nullable final String sName)
   {
     final ICommonsList <String> vals = m_aHeaders.getAllHeaderValues (sName);
     return EnumerationHelper.getEnumeration (vals);
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getHeaderNames ()
   {
     return EnumerationHelper.getEnumeration (m_aHeaders.getAllHeaderNames ());
   }
 
-  @Nonnull
+  @NonNull
   public final MockHttpServletRequest setMethod (@Nullable final EHttpMethod eMethod)
   {
     m_eMethod = eMethod;
@@ -897,7 +897,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_eMethod == null ? null : m_eMethod.getName ();
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setPathInfo (@Nullable final String sPathInfo)
   {
     m_sPathInfo = sPathInfo;
@@ -916,7 +916,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sPathInfo != null ? getRealPath (m_sPathInfo) : null;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setContextPath (@Nullable final String sContextPath)
   {
     if (StringHelper.isNotEmpty (sContextPath) && !StringHelper.startsWith (sContextPath, '/'))
@@ -931,7 +931,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sContextPath;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setQueryString (@Nullable final String sQueryString)
   {
     m_sQueryString = sQueryString;
@@ -944,7 +944,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sQueryString;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRemoteUser (@Nullable final String sRemoteUser)
   {
     m_sRemoteUser = sRemoteUser;
@@ -957,7 +957,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sRemoteUser;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest addUserRole (@Nullable final String sRole)
   {
     m_aUserRoles.add (sRole);
@@ -969,7 +969,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_aUserRoles.contains (sRole);
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setUserPrincipal (@Nullable final Principal aUserPrincipal)
   {
     m_aUserPrincipal = aUserPrincipal;
@@ -988,7 +988,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return getSession (true).getId ();
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRequestURI (@Nullable final String sRequestURI)
   {
     m_sRequestURI = sRequestURI;
@@ -1001,14 +1001,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sRequestURI;
   }
 
-  @Nonnull
+  @NonNull
   public StringBuffer getRequestURL ()
   {
     return new StringBuffer ().append (RequestHelper.getFullServerName (m_sScheme, m_sServerName, m_nServerPort))
                               .append (ServletHelper.getRequestRequestURI (this));
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setServletPath (@Nullable final String sServletPath)
   {
     if (StringHelper.isNotEmpty (sServletPath) && !StringHelper.startsWith (sServletPath, '/'))
@@ -1030,7 +1030,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        The session ID to be used. If it is <code>null</code> a unique session ID is generated.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setSessionID (@Nullable final String sSessionID)
   {
     m_sSessionID = sSessionID;
@@ -1046,7 +1046,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sSessionID;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setSession (@Nullable final HttpSession aHttpSession)
   {
     m_aSession = aHttpSession;
@@ -1075,13 +1075,13 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_aSession;
   }
 
-  @Nonnull
+  @NonNull
   public HttpSession getSession ()
   {
     return getSession (true);
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRequestedSessionIdValid (final boolean bRequestedSessionIdValid)
   {
     m_bRequestedSessionIDValid = bRequestedSessionIdValid;
@@ -1093,7 +1093,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_bRequestedSessionIDValid;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRequestedSessionIdFromCookie (final boolean bRequestedSessionIdFromCookie)
   {
     m_bRequestedSessionIDFromCookie = bRequestedSessionIdFromCookie;
@@ -1105,7 +1105,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_bRequestedSessionIDFromCookie;
   }
 
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setRequestedSessionIdFromURL (final boolean bRequestedSessionIdFromURL)
   {
     m_bRequestedSessionIDFromURL = bRequestedSessionIdFromURL;
@@ -1204,7 +1204,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #setPathInfo(String)
    * @see #setQueryString(String)
    */
-  @Nonnull
+  @NonNull
   public MockHttpServletRequest setAllPaths (@Nullable final String sRequestURL)
   {
     if (StringHelper.isNotEmpty (sRequestURL))

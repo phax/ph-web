@@ -16,6 +16,7 @@
  */
 package com.helger.xservlet.requesttrack;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +28,6 @@ import com.helger.diagnostics.error.level.EErrorLevel;
 import com.helger.diagnostics.error.level.IErrorLevel;
 import com.helger.diagnostics.log.LogHelper;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A simple implementation of {@link ILongRunningRequestCallback} simply logging
@@ -50,7 +49,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
     this (EErrorLevel.WARN);
   }
 
-  public LoggingLongRunningRequestCallback (@Nonnull final IErrorLevel aErrorLevel)
+  public LoggingLongRunningRequestCallback (@NonNull final IErrorLevel aErrorLevel)
   {
     setErrorLevel (aErrorLevel);
   }
@@ -59,14 +58,14 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
    * @return The error level as provided in the constructor. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }
 
-  @Nonnull
-  public final LoggingLongRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
+  @NonNull
+  public final LoggingLongRunningRequestCallback setErrorLevel (@NonNull final IErrorLevel aErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (aErrorLevel, "ErrorLevel");
     return this;
@@ -77,15 +76,15 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
     return m_bLogRemoteAddr;
   }
 
-  @Nonnull
+  @NonNull
   public final LoggingLongRunningRequestCallback setLogRemoteAddr (final boolean bLogRemoteAddr)
   {
     m_bLogRemoteAddr = bLogRemoteAddr;
     return this;
   }
 
-  public void onLongRunningRequest (@Nonnull @Nonempty final String sUniqueRequestID,
-                                    @Nonnull final IRequestWebScope aRequestScope,
+  public void onLongRunningRequest (@NonNull @Nonempty final String sUniqueRequestID,
+                                    @NonNull final IRequestWebScope aRequestScope,
                                     @Nonnegative final long nRunningMilliseconds)
   {
     LogHelper.log (LOGGER,

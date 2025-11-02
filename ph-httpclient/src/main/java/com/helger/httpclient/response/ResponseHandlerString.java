@@ -24,13 +24,12 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.httpclient.HttpClientHelper;
 import com.helger.mime.IMimeType;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Convert a valid HTTP response to a simple String object using the provided charset. The fallback
@@ -44,12 +43,12 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   private Charset m_aFallbackCharset;
   private Consumer <Charset> m_aCharsetConsumer;
 
-  public ResponseHandlerString (@Nonnull final IMimeType aMimeType, @Nonnull final Charset aCharset)
+  public ResponseHandlerString (@NonNull final IMimeType aMimeType, @NonNull final Charset aCharset)
   {
     this (ContentType.create (aMimeType.getAsString (), aCharset));
   }
 
-  public ResponseHandlerString (@Nonnull final ContentType aDefault)
+  public ResponseHandlerString (@NonNull final ContentType aDefault)
   {
     ValueEnforcer.notNull (aDefault, "Default");
     ValueEnforcer.notNull (aDefault.getCharset (), "DefaultContentType.Charset");
@@ -57,13 +56,13 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
     m_aFallbackCharset = aDefault.getCharset ();
   }
 
-  @Nonnull
+  @NonNull
   public final ContentType getDefaultContentType ()
   {
     return m_aDefault;
   }
 
-  @Nonnull
+  @NonNull
   public final Charset getDefaultCharset ()
   {
     return m_aDefault.getCharset ();
@@ -75,7 +74,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
    * @see #setFallbackCharset(Charset)
    * @since 9.7.2
    */
-  @Nonnull
+  @NonNull
   public final Charset getFallbackCharset ()
   {
     return m_aFallbackCharset;
@@ -90,8 +89,8 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
    * @return this for chaining
    * @since 9.7.2
    */
-  @Nonnull
-  public final ResponseHandlerString setFallbackCharset (@Nonnull final Charset aFallbackCharset)
+  @NonNull
+  public final ResponseHandlerString setFallbackCharset (@NonNull final Charset aFallbackCharset)
   {
     ValueEnforcer.notNull (aFallbackCharset, "FallbackCharset");
     m_aFallbackCharset = aFallbackCharset;
@@ -112,7 +111,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
    *        The charset consumer. May be <code>null</code>.
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final ResponseHandlerString setCharsetConsumer (@Nullable final Consumer <Charset> aCharsetConsumer)
   {
     m_aCharsetConsumer = aCharsetConsumer;
@@ -120,7 +119,7 @@ public class ResponseHandlerString implements HttpClientResponseHandler <String>
   }
 
   @Nullable
-  public String handleResponse (@Nonnull final ClassicHttpResponse aHttpResponse) throws IOException
+  public String handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
     // Convert to entity
     final HttpEntity aEntity = ResponseHandlerHttpEntity.INSTANCE.handleResponse (aHttpResponse);

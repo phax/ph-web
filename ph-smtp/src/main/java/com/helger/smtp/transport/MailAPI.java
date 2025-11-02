@@ -23,6 +23,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,9 +53,6 @@ import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class simplifies the task of sending an email. For a scope aware version please see
@@ -100,7 +99,7 @@ public final class MailAPI
   /**
    * @return The current failed mail queue. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static FailedMailQueue getFailedMailQueue ()
   {
     return RW_LOCK.readLockedGet ( () -> s_aFailedMailQueue);
@@ -112,7 +111,7 @@ public final class MailAPI
    * @param aFailedMailQueue
    *        The new failed mail queue to set. May not be <code>null</code>.
    */
-  public static void setFailedMailQueue (@Nonnull final FailedMailQueue aFailedMailQueue)
+  public static void setFailedMailQueue (@NonNull final FailedMailQueue aFailedMailQueue)
   {
     ValueEnforcer.notNull (aFailedMailQueue, "FailedMailQueue");
 
@@ -127,9 +126,9 @@ public final class MailAPI
     LOGGER.info ("Set FailedMailQueue to " + aFailedMailQueue);
   }
 
-  @Nonnull
+  @NonNull
   @MustBeLocked (ELockType.WRITE)
-  private static MailQueuePerSMTP _getOrCreateMailQueuePerSMTP (@Nonnull final ISMTPSettings aSMTPSettings)
+  private static MailQueuePerSMTP _getOrCreateMailQueuePerSMTP (@NonNull final ISMTPSettings aSMTPSettings)
   {
     ValueEnforcer.notNull (aSMTPSettings, "SmtpSettings");
     if (SENDER_THREAD_POOL.isShutdown ())
@@ -175,9 +174,9 @@ public final class MailAPI
    *        The mail message to queue. May not be <code>null</code>.
    * @return {@link ESuccess}.
    */
-  @Nonnull
-  public static ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings,
-                                    @Nonnull final IMutableEmailData aMailData)
+  @NonNull
+  public static ESuccess queueMail (@NonNull final ISMTPSettings aSMTPSettings,
+                                    @NonNull final IMutableEmailData aMailData)
   {
     final int nQueuedMails = queueMails (aSMTPSettings, new CommonsArrayList <> (aMailData));
     return ESuccess.valueOf (nQueuedMails == 1);
@@ -194,8 +193,8 @@ public final class MailAPI
    *         {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
-  public static int queueMails (@Nonnull final ISMTPSettings aSMTPSettings,
-                                @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
+  public static int queueMails (@NonNull final ISMTPSettings aSMTPSettings,
+                                @NonNull final Collection <? extends IMutableEmailData> aMailDataList)
   {
     ValueEnforcer.notNull (aSMTPSettings, "SmtpSettings");
     ValueEnforcer.notNull (aMailDataList, "MailDataList");
@@ -350,7 +349,7 @@ public final class MailAPI
    *
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange stop ()
   {
     return stop (DEFAULT_STOP_IMMEDIATLY);
@@ -364,7 +363,7 @@ public final class MailAPI
    *        failed mail queue. Only the emails currently in sending are continued to be sent out.
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange stop (final boolean bStopImmediately)
   {
     RW_LOCK.writeLock ().lock ();

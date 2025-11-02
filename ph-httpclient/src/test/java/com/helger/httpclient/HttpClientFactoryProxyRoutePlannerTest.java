@@ -31,9 +31,8 @@ import org.apache.hc.client5.http.routing.HttpRoutePlanner;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.http.protocol.HttpCoreContext;
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Comprehensive test class for {@link HttpClientFactory} focusing on proxy route planner
@@ -67,7 +66,7 @@ public final class HttpClientFactoryProxyRoutePlannerTest
    * Helper method to extract the proxy determination from a route planner. Uses reflection to call
    * the protected determineProxy method.
    */
-  private static HttpHost _getProxyForTarget (@Nonnull final HttpRoutePlanner aPlanner, @Nonnull final HttpHost aTarget)
+  private static HttpHost _getProxyForTarget (@NonNull final HttpRoutePlanner aPlanner, @NonNull final HttpHost aTarget)
                                                                                                                          throws Exception
   {
     if (aPlanner instanceof DefaultProxyRoutePlanner)

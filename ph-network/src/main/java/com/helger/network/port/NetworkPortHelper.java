@@ -21,6 +21,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +30,6 @@ import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Network port helper class. Contains some utility methods.
@@ -73,8 +72,8 @@ public final class NetworkPortHelper
    *        Connection timeout in milliseconds.
    * @return Never <code>null</code>.
    */
-  @Nonnull
-  public static ENetworkPortStatus checkPortOpen (@Nonnull @Nonempty final String sHostName,
+  @NonNull
+  public static ENetworkPortStatus checkPortOpen (@NonNull @Nonempty final String sHostName,
                                                   @Nonnegative final int nPort,
                                                   @Nonnegative final int nTimeoutMillisecs)
   {
@@ -96,8 +95,8 @@ public final class NetworkPortHelper
    * @return Never <code>null</code>.
    * @since 9.1.2
    */
-  @Nonnull
-  public static ENetworkPortStatus checkPortOpen (@Nonnull @Nonempty final String sHostName,
+  @NonNull
+  public static ENetworkPortStatus checkPortOpen (@NonNull @Nonempty final String sHostName,
                                                   @Nonnegative final int nPort,
                                                   @Nonnegative final int nTimeoutMillisecs,
                                                   final boolean bSilentMode)

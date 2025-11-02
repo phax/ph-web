@@ -19,6 +19,9 @@ package com.helger.dns.ip;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -29,9 +32,6 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.string.StringHelper;
 import com.helger.base.string.StringParser;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Representation of a single IP V4 address.
@@ -59,12 +59,12 @@ public class IPV4Addr
     return ValueEnforcer.isBetweenInclusive (n, "IP part", PART_MIN_VALUE, PART_MAX_VALUE);
   }
 
-  public IPV4Addr (@Nonnull final InetAddress aAddress)
+  public IPV4Addr (@NonNull final InetAddress aAddress)
   {
     this (aAddress.getAddress ());
   }
 
-  public IPV4Addr (@Nonnull final byte [] aAddressBytes)
+  public IPV4Addr (@NonNull final byte [] aAddressBytes)
   {
     this (aAddressBytes[0] & PART_MAX_VALUE,
           aAddressBytes[1] & PART_MAX_VALUE,
@@ -95,14 +95,14 @@ public class IPV4Addr
     m_nIP3 = _validatePart (n4);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public int [] getNumberParts ()
   {
     return ArrayHelper.createIntArray (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
   }
 
-  @Nonnull
+  @NonNull
   private static InetAddress _getAsInetAddress (final int n0, final int n1, final int n2, final int n3)
   {
     // Values are guaranteed to be 0-255
@@ -119,13 +119,13 @@ public class IPV4Addr
     }
   }
 
-  @Nonnull
+  @NonNull
   public static InetAddress getAsInetAddress (final int n0, final int n1, final int n2, final int n3)
   {
     return _getAsInetAddress (_validatePart (n0), _validatePart (n1), _validatePart (n2), _validatePart (n3));
   }
 
-  @Nonnull
+  @NonNull
   public InetAddress getAsInetAddress ()
   {
     return _getAsInetAddress (m_nIP0, m_nIP1, m_nIP2, m_nIP3);
@@ -134,7 +134,7 @@ public class IPV4Addr
   /**
    * @return The ID address as a usual string (e.g. "10.0.0.1")
    */
-  @Nonnull
+  @NonNull
   public String getAsString ()
   {
     return new StringBuilder (15).append (m_nIP0)
@@ -188,8 +188,8 @@ public class IPV4Addr
    * @throws IllegalArgumentException
    *         If the passed string is not a valid IPv4 address
    */
-  @Nonnull
-  public static IPV4Addr parse (@Nonnull final String sText)
+  @NonNull
+  public static IPV4Addr parse (@NonNull final String sText)
   {
     ValueEnforcer.notNull (sText, "Text");
     final String [] aParts = StringHelper.getExplodedArray ('.', sText);

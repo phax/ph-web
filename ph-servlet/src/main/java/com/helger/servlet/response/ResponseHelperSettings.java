@@ -19,6 +19,7 @@ package com.helger.servlet.response;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,6 @@ import com.helger.base.CGlobal;
 import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.state.EChange;
 import com.helger.datetime.web.PDTWebDateHelper;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Contains the settings for the {@link ResponseHelper} class.
@@ -85,7 +84,7 @@ public final class ResponseHelperSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -116,7 +115,7 @@ public final class ResponseHelperSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -147,7 +146,7 @@ public final class ResponseHelperSettings
    *        <code>true</code> to enable it, <code>false</code> to disable it
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {
@@ -172,7 +171,7 @@ public final class ResponseHelperSettings
    *        <code>true</code> to enable Deflate if compression is enabled
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setAll (final boolean bResponseCompressionEnabled,
                                 final boolean bResponseGzipEnabled,
                                 final boolean bResponseDeflateEnabled)
@@ -197,7 +196,7 @@ public final class ResponseHelperSettings
    *        The number of seconds for which the response should be cached
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public static EChange setExpirationSeconds (final int nExpirationSeconds)
   {
     final EChange ret = RW_LOCK.writeLockedGet ( () -> {

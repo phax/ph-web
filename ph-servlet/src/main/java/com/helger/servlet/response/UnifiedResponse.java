@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,8 +69,6 @@ import com.helger.servlet.request.RequestHelper;
 import com.helger.url.ISimpleURL;
 import com.helger.url.protocol.URLProtocolRegistry;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -174,7 +174,7 @@ public class UnifiedResponse
     return SILENT_MODE.getAndSet (bSilentMode);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   private static ICommonsOrderedMap <String, Cookie> _createCookieMap ()
   {
@@ -191,9 +191,9 @@ public class UnifiedResponse
    * @param aHttpRequest
    *        The main HTTP request
    */
-  public UnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
-                          @Nonnull final EHttpMethod eHttpMethod,
-                          @Nonnull final HttpServletRequest aHttpRequest)
+  public UnifiedResponse (@NonNull final EHttpVersion eHttpVersion,
+                          @NonNull final EHttpMethod eHttpMethod,
+                          @NonNull final HttpServletRequest aHttpRequest)
   {
     m_eHttpVersion = ValueEnforcer.notNull (eHttpVersion, "HTTPVersion");
     m_eHttpMethod = ValueEnforcer.notNull (eHttpMethod, "HTTPMethod");
@@ -213,7 +213,7 @@ public class UnifiedResponse
     m_bHttpHeaderValuesQuoteIfNecessary = UnifiedResponseDefaultSettings.isHttpHeaderValuesQuoteIfNecessary ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   protected final String getRequestURL ()
   {
@@ -222,14 +222,14 @@ public class UnifiedResponse
     return m_sRequestURL;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   protected String getLogPrefix ()
   {
     return "UnifiedResponse[" + m_nResponseID + "] to [" + m_eHttpMethod.getName () + " " + getRequestURL () + "]: ";
   }
 
-  protected void logInfo (@Nonnull final String sMsg)
+  protected void logInfo (@NonNull final String sMsg)
   {
     LOGGER.info (getLogPrefix () + sMsg);
   }
@@ -256,13 +256,13 @@ public class UnifiedResponse
     }
   }
 
-  protected void logWarn (@Nonnull final String sMsg)
+  protected void logWarn (@NonNull final String sMsg)
   {
     LOGGER.warn (getLogPrefix () + sMsg);
     showRequestInfo ();
   }
 
-  protected void logError (@Nonnull final String sMsg)
+  protected void logError (@NonNull final String sMsg)
   {
     LOGGER.error (getLogPrefix () + sMsg);
     showRequestInfo ();
@@ -271,7 +271,7 @@ public class UnifiedResponse
   /**
    * @return The HTTP version of the request. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final EHttpVersion getHttpVersion ()
   {
     return m_eHttpVersion;
@@ -280,7 +280,7 @@ public class UnifiedResponse
   /**
    * @return The HTTP method of the request. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final EHttpMethod getHttpMethod ()
   {
     return m_eHttpMethod;
@@ -294,7 +294,7 @@ public class UnifiedResponse
     return m_bAllowContentOnRedirect;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setAllowContentOnRedirect (final boolean bAllowContentOnRedirect)
   {
     m_bAllowContentOnRedirect = bAllowContentOnRedirect;
@@ -309,7 +309,7 @@ public class UnifiedResponse
     return m_bAllowContentOnStatusCode;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setAllowContentOnStatusCode (final boolean bAllowContentOnStatusCode)
   {
     m_bAllowContentOnStatusCode = bAllowContentOnStatusCode;
@@ -322,8 +322,8 @@ public class UnifiedResponse
     return m_aCharset;
   }
 
-  @Nonnull
-  public final UnifiedResponse setCharset (@Nonnull final Charset aCharset)
+  @NonNull
+  public final UnifiedResponse setCharset (@NonNull final Charset aCharset)
   {
     ValueEnforcer.notNull (aCharset, "Charset");
     if (m_aCharset != null)
@@ -332,7 +332,7 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeCharset ()
   {
     m_aCharset = null;
@@ -345,8 +345,8 @@ public class UnifiedResponse
     return m_aMimeType;
   }
 
-  @Nonnull
-  public final UnifiedResponse setMimeType (@Nonnull final IMimeType aMimeType)
+  @NonNull
+  public final UnifiedResponse setMimeType (@NonNull final IMimeType aMimeType)
   {
     ValueEnforcer.notNull (aMimeType, "MimeType");
     if (m_aMimeType != null)
@@ -355,8 +355,8 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
-  public final UnifiedResponse setMimeTypeString (@Nonnull @Nonempty final String sMimeType)
+  @NonNull
+  public final UnifiedResponse setMimeTypeString (@NonNull @Nonempty final String sMimeType)
   {
     ValueEnforcer.notEmpty (sMimeType, "MimeType");
 
@@ -368,7 +368,7 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeMimeType ()
   {
     m_aMimeType = null;
@@ -388,7 +388,7 @@ public class UnifiedResponse
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setEmptyContent ()
   {
     return setContent (CGlobal.EMPTY_BYTE_ARRAY, 0, 0);
@@ -403,8 +403,8 @@ public class UnifiedResponse
    *        The charset to use. May not be <code>null</code>.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setContentAndCharset (@Nonnull final String sContent, @Nonnull final Charset aCharset)
+  @NonNull
+  public final UnifiedResponse setContentAndCharset (@NonNull final String sContent, @NonNull final Charset aCharset)
   {
     ValueEnforcer.notNull (sContent, "Content");
     setCharset (aCharset);
@@ -421,8 +421,8 @@ public class UnifiedResponse
    *        but maybe empty.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setContent (@Nonnull final byte [] aContent)
+  @NonNull
+  public final UnifiedResponse setContent (@NonNull final byte [] aContent)
   {
     ValueEnforcer.notNull (aContent, "Content");
     return setContent (aContent, 0, aContent.length);
@@ -441,8 +441,8 @@ public class UnifiedResponse
    *        The content length to use. Must be &ge; 0 and &le; than the content length!
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setContent (@Nonnull final byte [] aContent,
+  @NonNull
+  public final UnifiedResponse setContent (@NonNull final byte [] aContent,
                                            @Nonnegative final int nOfs,
                                            @Nonnegative final int nLen)
   {
@@ -463,8 +463,8 @@ public class UnifiedResponse
    *        The content provider to be used. May not be <code>null</code>.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setContent (@Nonnull final IHasInputStream aISP)
+  @NonNull
+  public final UnifiedResponse setContent (@NonNull final IHasInputStream aISP)
   {
     ValueEnforcer.notNull (aISP, "InputStreamProvider");
     if (hasContent ())
@@ -476,7 +476,7 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeContent ()
   {
     m_aContentArray = null;
@@ -486,22 +486,22 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
-  public final UnifiedResponse setExpires (@Nonnull final LocalDateTime aDT)
+  @NonNull
+  public final UnifiedResponse setExpires (@NonNull final LocalDateTime aDT)
   {
     m_aResponseHeaderMap.setDateHeader (CHttpHeader.EXPIRES, aDT);
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeExpires ()
   {
     m_aResponseHeaderMap.removeHeaders (CHttpHeader.EXPIRES);
     return this;
   }
 
-  @Nonnull
-  public final UnifiedResponse setLastModified (@Nonnull final LocalDateTime aDT)
+  @NonNull
+  public final UnifiedResponse setLastModified (@NonNull final LocalDateTime aDT)
   {
     if (m_eHttpMethod != EHttpMethod.GET && m_eHttpMethod != EHttpMethod.HEAD)
       logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
@@ -510,7 +510,7 @@ public class UnifiedResponse
     return this;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeLastModified ()
   {
     m_aResponseHeaderMap.removeHeaders (CHttpHeader.LAST_MODIFIED);
@@ -525,8 +525,8 @@ public class UnifiedResponse
    *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setETag (@Nonnull @Nonempty final String sETag)
+  @NonNull
+  public final UnifiedResponse setETag (@NonNull @Nonempty final String sETag)
   {
     ValueEnforcer.notEmpty (sETag, "ETag");
     ValueEnforcer.isTrue (sETag.startsWith ("\"") || sETag.startsWith ("W/\""),
@@ -547,8 +547,8 @@ public class UnifiedResponse
    *        The quoted ETag to be set. May neither be <code>null</code> nor empty.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setETagIfApplicable (@Nonnull @Nonempty final String sETag)
+  @NonNull
+  public final UnifiedResponse setETagIfApplicable (@NonNull @Nonempty final String sETag)
   {
     if (m_eHttpVersion.isAtLeast11 ())
       setETag (sETag);
@@ -560,7 +560,7 @@ public class UnifiedResponse
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeETag ()
   {
     m_aResponseHeaderMap.removeHeaders (CHttpHeader.ETAG);
@@ -577,8 +577,8 @@ public class UnifiedResponse
    * @return this
    * @see #setContentDispositionFilename(String)
    */
-  @Nonnull
-  public final UnifiedResponse setContentDispositionType (@Nonnull final EContentDispositionType eContentDispositionType)
+  @NonNull
+  public final UnifiedResponse setContentDispositionType (@NonNull final EContentDispositionType eContentDispositionType)
   {
     ValueEnforcer.notNull (eContentDispositionType, "ContentDispositionType");
 
@@ -590,7 +590,7 @@ public class UnifiedResponse
    * @return The current content disposition type. Never <code>null</code>. Default is
    *         {@link #DEFAULT_CONTENT_DISPOSITION_TYPE}.
    */
-  @Nonnull
+  @NonNull
   public final EContentDispositionType getContentDispositionType ()
   {
     return m_eContentDispositionType;
@@ -604,8 +604,8 @@ public class UnifiedResponse
    * @return this
    * @see #removeContentDispositionFilename()
    */
-  @Nonnull
-  public final UnifiedResponse setContentDispositionFilename (@Nonnull @Nonempty final String sFilename)
+  @NonNull
+  public final UnifiedResponse setContentDispositionFilename (@NonNull @Nonempty final String sFilename)
   {
     ValueEnforcer.notEmpty (sFilename, "Filename");
 
@@ -658,7 +658,7 @@ public class UnifiedResponse
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeContentDispositionFilename ()
   {
     m_sContentDispositionFilename = null;
@@ -673,16 +673,16 @@ public class UnifiedResponse
    *        The filename to be used.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse setDownloadFilename (@Nonnull @Nonempty final String sFilename)
+  @NonNull
+  public final UnifiedResponse setDownloadFilename (@NonNull @Nonempty final String sFilename)
   {
     setMimeType (CMimeType.APPLICATION_FORCE_DOWNLOAD);
     setContentDispositionFilename (sFilename);
     return this;
   }
 
-  @Nonnull
-  public final UnifiedResponse setCacheControl (@Nonnull final CacheControlBuilder aCacheControl)
+  @NonNull
+  public final UnifiedResponse setCacheControl (@NonNull final CacheControlBuilder aCacheControl)
   {
     ValueEnforcer.notNull (aCacheControl, "CacheControl");
 
@@ -703,7 +703,7 @@ public class UnifiedResponse
     return m_aCacheControl;
   }
 
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeCacheControl ()
   {
     m_aCacheControl = null;
@@ -713,7 +713,7 @@ public class UnifiedResponse
   /**
    * @return The non-<code>null</code> header map.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   protected final HttpHeaderMap responseHeaderMap ()
   {
@@ -725,7 +725,7 @@ public class UnifiedResponse
    *
    * @return this for chaining
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeCaching ()
   {
     // Remove any eventually set headers
@@ -742,7 +742,7 @@ public class UnifiedResponse
    *
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse disableCaching ()
   {
     // Remove any eventually set headers
@@ -781,7 +781,7 @@ public class UnifiedResponse
    *        The number of seconds caching is allowed. Must be &gt; 0.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse enableCaching (@Nonnegative final int nSeconds)
   {
     ValueEnforcer.isGT0 (nSeconds, "Seconds");
@@ -836,7 +836,7 @@ public class UnifiedResponse
    *        The status code to be set. Must be a valid HTTP response code.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setStatus (@Nonnegative final int nStatusCode)
   {
     _setStatus (nStatusCode);
@@ -851,7 +851,7 @@ public class UnifiedResponse
    *        be <code>null</code> or empty.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setStatusUnauthorized (@Nullable final String sAuthenticate)
   {
     _setStatus (HttpServletResponse.SC_UNAUTHORIZED);
@@ -865,30 +865,30 @@ public class UnifiedResponse
     return m_sRedirectTargetUrl != null;
   }
 
-  @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl)
+  @NonNull
+  public final UnifiedResponse setRedirect (@NonNull final ISimpleURL aRedirectTargetUrl)
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
     return setRedirect (aRedirectTargetUrl, ERedirectMode.DEFAULT);
   }
 
-  @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull final ISimpleURL aRedirectTargetUrl,
-                                            @Nonnull final ERedirectMode eRedirectMode)
+  @NonNull
+  public final UnifiedResponse setRedirect (@NonNull final ISimpleURL aRedirectTargetUrl,
+                                            @NonNull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notNull (aRedirectTargetUrl, "RedirectTargetUrl");
 
     return setRedirect (aRedirectTargetUrl.getAsString (), eRedirectMode);
   }
 
-  @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl)
+  @NonNull
+  public final UnifiedResponse setRedirect (@NonNull @Nonempty final String sRedirectTargetUrl)
   {
     return setRedirect (sRedirectTargetUrl, ERedirectMode.DEFAULT);
   }
 
-  private static boolean _isRelative (@Nonnull final String sURL)
+  private static boolean _isRelative (@NonNull final String sURL)
   {
     if (URLProtocolRegistry.getInstance ().hasKnownProtocol (sURL))
     {
@@ -904,9 +904,9 @@ public class UnifiedResponse
     return true;
   }
 
-  @Nonnull
-  public final UnifiedResponse setRedirect (@Nonnull @Nonempty final String sRedirectTargetUrl,
-                                            @Nonnull final ERedirectMode eRedirectMode)
+  @NonNull
+  public final UnifiedResponse setRedirect (@NonNull @Nonempty final String sRedirectTargetUrl,
+                                            @NonNull final ERedirectMode eRedirectMode)
   {
     ValueEnforcer.notEmpty (sRedirectTargetUrl, "RedirectTargetUrl");
     ValueEnforcer.notNull (eRedirectMode, "RedirectMode");
@@ -945,7 +945,7 @@ public class UnifiedResponse
    * @return this
    * @since 6.0.5
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setWarnOnDuplicateCookies (final boolean bWarnOnDuplicateCookies)
   {
     m_bWarnOnDuplicateCookies = bWarnOnDuplicateCookies;
@@ -959,8 +959,8 @@ public class UnifiedResponse
    *        The cookie to be added. May not be <code>null</code>.
    * @return this
    */
-  @Nonnull
-  public final UnifiedResponse addCookie (@Nonnull final Cookie aCookie)
+  @NonNull
+  public final UnifiedResponse addCookie (@NonNull final Cookie aCookie)
   {
     ValueEnforcer.notNull (aCookie, "Cookie");
 
@@ -983,7 +983,7 @@ public class UnifiedResponse
    *        The name of the cookie to be removed. May be <code>null</code>.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeCookie (@Nullable final String sName)
   {
     if (m_aCookies != null)
@@ -997,7 +997,7 @@ public class UnifiedResponse
    * @return {@link EChange#CHANGED} if at least one cookie was removed.
    * @since 6.0.5
    */
-  @Nonnull
+  @NonNull
   public final EChange removeAllCookies ()
   {
     return m_aCookies == null ? EChange.UNCHANGED : m_aCookies.removeAll ();
@@ -1016,7 +1016,7 @@ public class UnifiedResponse
    * @return A copy of all contained cookies. Never <code>null</code> but maybe empty.
    * @since 6.0.5
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsOrderedMap <String, Cookie> getAllCookies ()
   {
@@ -1041,7 +1041,7 @@ public class UnifiedResponse
    * @return this for chaining
    * @since 9.1.4
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setHttpHeaderValuesUnified (final boolean bHttpHeaderValuesUnified)
   {
     m_bHttpHeaderValuesUnified = bHttpHeaderValuesUnified;
@@ -1069,7 +1069,7 @@ public class UnifiedResponse
    * @see #setHttpHeaderValuesUnified(boolean)
    * @since 9.1.4
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setHttpHeaderValuesQuoteIfNecessary (final boolean bHttpHeaderValuesQuoteIfNecessary)
   {
     m_bHttpHeaderValuesQuoteIfNecessary = bHttpHeaderValuesQuoteIfNecessary;
@@ -1085,7 +1085,7 @@ public class UnifiedResponse
    *        Whether or not sniffing should be allowed (default is <code>true</code>).
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setAllowMimeSniffing (final boolean bAllow)
   {
     if (bAllow)
@@ -1108,7 +1108,7 @@ public class UnifiedResponse
    *        as any sub-domains of the host's domain name.
    * @return this
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse setStrictTransportSecurity (final int nMaxAgeSeconds, final boolean bIncludeSubdomains)
   {
     setCustomResponseHeader (CHttpHeader.STRICT_TRANSPORT_SECURITY,
@@ -1125,7 +1125,7 @@ public class UnifiedResponse
    * @return this
    * @since 6.0.5
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeStrictTransportSecurity ()
   {
     removeCustomResponseHeaders (CHttpHeader.STRICT_TRANSPORT_SECURITY);
@@ -1151,8 +1151,8 @@ public class UnifiedResponse
    * @return this
    * @since 6.0.5
    */
-  @Nonnull
-  public final UnifiedResponse setXFrameOptions (@Nonnull final EXFrameOptionType eType,
+  @NonNull
+  public final UnifiedResponse setXFrameOptions (@NonNull final EXFrameOptionType eType,
                                                  @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
@@ -1173,7 +1173,7 @@ public class UnifiedResponse
    * @return this
    * @since 6.0.5
    */
-  @Nonnull
+  @NonNull
   public final UnifiedResponse removeXFrameOptions ()
   {
     removeCustomResponseHeaders (CHttpHeader.X_FRAME_OPTIONS);
@@ -1193,8 +1193,8 @@ public class UnifiedResponse
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void addCustomResponseHeader (@Nonnull @Nonempty final String sName,
-                                             @Nonnull @Nonempty final String sValue)
+  public final void addCustomResponseHeader (@NonNull @Nonempty final String sName,
+                                             @NonNull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1226,8 +1226,8 @@ public class UnifiedResponse
    * @param sValue
    *        Value of the header. May neither be <code>null</code> nor empty.
    */
-  public final void setCustomResponseHeader (@Nonnull @Nonempty final String sName,
-                                             @Nonnull @Nonempty final String sValue)
+  public final void setCustomResponseHeader (@NonNull @Nonempty final String sName,
+                                             @NonNull @Nonempty final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notEmpty (sValue, "Value");
@@ -1258,8 +1258,8 @@ public class UnifiedResponse
    *        Name of the header to be removed. May neither be <code>null</code> nor empty.
    * @return {@link EChange#CHANGED} in header was removed.
    */
-  @Nonnull
-  public final EChange removeCustomResponseHeaders (@Nonnull @Nonempty final String sName)
+  @NonNull
+  public final EChange removeCustomResponseHeaders (@NonNull @Nonempty final String sName)
   {
     ValueEnforcer.notEmpty (sName, "Name");
 
@@ -1309,9 +1309,9 @@ public class UnifiedResponse
     }
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _getAsStringMimeTypes (@Nonnull final ICommonsMap <IMimeType, QValue> aMap)
+  private static String _getAsStringMimeTypes (@NonNull final ICommonsMap <IMimeType, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ().append ('{');
     for (final Map.Entry <IMimeType, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
@@ -1323,9 +1323,9 @@ public class UnifiedResponse
     return aSB.append ('}').toString ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _getAsStringText (@Nonnull final ICommonsMap <String, QValue> aMap)
+  private static String _getAsStringText (@NonNull final ICommonsMap <String, QValue> aMap)
   {
     final StringBuilder aSB = new StringBuilder ().append ('{');
     for (final Map.Entry <String, QValue> aEntry : aMap.getSortedByValue (Comparator.naturalOrder ()).entrySet ())
@@ -1353,7 +1353,7 @@ public class UnifiedResponse
     }
   }
 
-  private void _applyContent (@Nonnull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet)
+  private void _applyContent (@NonNull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet)
                                                                                                                         throws IOException
   {
     if (m_aContentArray != null)
@@ -1451,7 +1451,7 @@ public class UnifiedResponse
         }
   }
 
-  public final void applyToResponse (@Nonnull final HttpServletResponse aHttpResponse) throws IOException
+  public final void applyToResponse (@NonNull final HttpServletResponse aHttpResponse) throws IOException
   {
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
@@ -1733,8 +1733,8 @@ public class UnifiedResponse
    * @return New {@link UnifiedResponse}. Never <code>null</code>.
    * @since 8.8.0
    */
-  @Nonnull
-  public static UnifiedResponse createSimple (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static UnifiedResponse createSimple (@NonNull final HttpServletRequest aHttpRequest)
   {
     return new UnifiedResponse (RequestHelper.getHttpVersion (aHttpRequest),
                                 RequestHelper.getHttpMethod (aHttpRequest),

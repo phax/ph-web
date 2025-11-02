@@ -22,13 +22,12 @@ import javax.net.ssl.SSLParameters;
 
 import org.apache.hc.core5.ssl.PrivateKeyDetails;
 import org.apache.hc.core5.ssl.PrivateKeyStrategy;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A private key strategy that select the key details from the provided alias.
@@ -45,7 +44,7 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
   private final String m_sExpectedAlias;
   private boolean m_bWarnOnCaseDifference = false;
 
-  public PrivateKeyStrategyFromAliasCaseInsensitive (@Nonnull final String sExpectedAlias)
+  public PrivateKeyStrategyFromAliasCaseInsensitive (@NonNull final String sExpectedAlias)
   {
     ValueEnforcer.notNull (sExpectedAlias, "ExpectedAlias");
     m_sExpectedAlias = sExpectedAlias;
@@ -55,7 +54,7 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
    * @return The name of the expected alias as provided in the constructor.
    *         Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final String getExpectedAlias ()
   {
     return m_sExpectedAlias;
@@ -72,7 +71,7 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
   }
 
   @Nullable
-  public String chooseAlias (@Nonnull final Map <String, PrivateKeyDetails> aAliases,
+  public String chooseAlias (@NonNull final Map <String, PrivateKeyDetails> aAliases,
                              @Nullable final SSLParameters aSSLParameters)
   {
     if (LOGGER.isDebugEnabled ())

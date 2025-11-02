@@ -18,14 +18,14 @@ package com.helger.smtp.transport;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.id.IHasIntID;
 import com.helger.base.lang.EnumHelper;
 import com.helger.text.display.IHasDisplayText;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * See RFC 821 for details
@@ -62,7 +62,7 @@ public enum ESMTPErrorCode implements IHasDisplayText, IHasIntID
   private final int m_nECode;
   private final String m_sErrorMsg;
 
-  ESMTPErrorCode (@Nonnegative final int nECode, @Nonnull @Nonempty final String sErrorMsg)
+  ESMTPErrorCode (@Nonnegative final int nECode, @NonNull @Nonempty final String sErrorMsg)
   {
     m_nECode = nECode;
     m_sErrorMsg = sErrorMsg;
@@ -74,7 +74,7 @@ public enum ESMTPErrorCode implements IHasDisplayText, IHasIntID
     return m_nECode;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getDisplayText (final Locale aContentLocale)
   {

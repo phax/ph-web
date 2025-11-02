@@ -21,15 +21,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsCollection;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.unittest.support.TestHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Test class for class {@link UAProfileDatabase}.
@@ -42,19 +41,19 @@ public final class UAProfileDatabaseTest
   {
     private final HttpHeaderMap m_aMap;
 
-    public MockProvider (@Nonnull final HttpHeaderMap aMap)
+    public MockProvider (@NonNull final HttpHeaderMap aMap)
     {
       m_aMap = aMap;
     }
 
-    @Nonnull
+    @NonNull
     @ReturnsMutableCopy
     public ICommonsCollection <String> getAllHeaderNames ()
     {
       return m_aMap.getAllHeaderNames ();
     }
 
-    @Nonnull
+    @NonNull
     @ReturnsMutableCopy
     public ICommonsCollection <String> getHeaders (final String sName)
     {

@@ -18,11 +18,11 @@ package com.helger.web.fileupload;
 
 import java.io.File;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -60,10 +60,10 @@ public interface IFileItemFactory
    *        other client.
    * @return The newly created file item.
    */
-  @Nonnull
+  @NonNull
   IFileItem createItem (@Nullable String sFieldName, @Nullable String sContentType, boolean bIsFormField, @Nullable String sFileName);
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsList <File> getAllTemporaryFiles ();
 }

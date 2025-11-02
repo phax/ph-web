@@ -70,6 +70,8 @@ import org.apache.hc.core5.reactor.ssl.SSLBufferMode;
 import org.apache.hc.core5.ssl.SSLInitializationException;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,9 +82,6 @@ import com.helger.base.id.factory.GlobalIDFactory;
 import com.helger.base.state.EHandled;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in the
@@ -241,7 +240,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @param aSettings
    *        The settings to be used. May not be <code>null</code>.
    */
-  public HttpClientFactory (@Nonnull final HttpClientSettings aSettings)
+  public HttpClientFactory (@NonNull final HttpClientSettings aSettings)
   {
     ValueEnforcer.notNull (aSettings, "Settings");
     m_aSettings = aSettings;
@@ -252,7 +251,7 @@ public class HttpClientFactory implements IHttpClientProvider
    *         object impact this HTTP client factory.
    * @since 9.6.4
    */
-  @Nonnull
+  @NonNull
   public final HttpClientSettings httpClientSettings ()
   {
     return m_aSettings;
@@ -264,7 +263,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return Never <code>null</code>.
    * @since 9.1.1
    */
-  @Nonnull
+  @NonNull
   public SchemePortResolver createSchemePortResolver ()
   {
     return DefaultSchemePortResolver.INSTANCE;
@@ -352,8 +351,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The socket configuration builder used by the {@link PoolingHttpClientConnectionManager}
    *         to create the default socket configuration.
    */
-  @Nonnull
-  public SocketConfig.Builder createSocketConfigBuilder ()
+  public SocketConfig.@NonNull Builder createSocketConfigBuilder ()
   {
     return SocketConfig.custom ();
   }
@@ -362,7 +360,7 @@ public class HttpClientFactory implements IHttpClientProvider
    * @return The default connection configuration used by the
    *         {@link PoolingHttpClientConnectionManager}.
    */
-  @Nonnull
+  @NonNull
   public SocketConfig createSocketConfig ()
   {
     return createSocketConfigBuilder ().build ();
@@ -380,8 +378,8 @@ public class HttpClientFactory implements IHttpClientProvider
     return m_aSettings.isUseDNSClientCache () ? SystemDefaultDnsResolver.INSTANCE : NonCachingDnsResolver.INSTANCE;
   }
 
-  @Nonnull
-  public HttpClientConnectionManager createConnectionManager (@Nonnull final TlsSocketStrategy aTlsSocketFactory)
+  @NonNull
+  public HttpClientConnectionManager createConnectionManager (@NonNull final TlsSocketStrategy aTlsSocketFactory)
   {
     final DnsResolver aDNSResolver = createDNSResolver ();
     final ConnectionConfig aConnectionConfig = createConnectionConfig ();
@@ -411,8 +409,8 @@ public class HttpClientFactory implements IHttpClientProvider
     return ret;
   }
 
-  @Nonnull
-  public AsyncClientConnectionManager createAsyncConnectionManager (@Nonnull final TlsStrategy aTlsStrategy)
+  @NonNull
+  public AsyncClientConnectionManager createAsyncConnectionManager (@NonNull final TlsStrategy aTlsStrategy)
   {
     final DnsResolver aDNSResolver = createDNSResolver ();
     final ConnectionConfig aConnectionConfig = createConnectionConfig ();
@@ -449,20 +447,18 @@ public class HttpClientFactory implements IHttpClientProvider
     return (request, response, context) -> false;
   }
 
-  @Nonnull
-  public ConnectionConfig.Builder createConnectionConfigBuilder ()
+  public ConnectionConfig.@NonNull Builder createConnectionConfigBuilder ()
   {
     return ConnectionConfig.custom ().setConnectTimeout (m_aSettings.getConnectTimeout ());
   }
 
-  @Nonnull
+  @NonNull
   public ConnectionConfig createConnectionConfig ()
   {
     return createConnectionConfigBuilder ().build ();
   }
 
-  @Nonnull
-  public RequestConfig.Builder createRequestConfigBuilder ()
+  public RequestConfig.@NonNull Builder createRequestConfigBuilder ()
   {
     return RequestConfig.custom ()
                         .setCookieSpec (StandardCookieSpec.STRICT)
@@ -473,7 +469,7 @@ public class HttpClientFactory implements IHttpClientProvider
                         .setProtocolUpgradeEnabled (m_aSettings.isProtocolUpgradeEnabled ());
   }
 
-  @Nonnull
+  @NonNull
   public RequestConfig createRequestConfig ()
   {
     return createRequestConfigBuilder ().build ();
@@ -506,14 +502,14 @@ public class HttpClientFactory implements IHttpClientProvider
 
   @Nullable
   public HttpRequestRetryStrategy createRequestRetryStrategy (@Nonnegative final int nMaxRetries,
-                                                              @Nonnull final TimeValue aRetryInterval,
+                                                              @NonNull final TimeValue aRetryInterval,
                                                               final boolean bRetryAlways)
   {
     return new HttpClientRetryStrategy (nMaxRetries, aRetryInterval, bRetryAlways);
   }
 
   @Nullable
-  public HttpRoutePlanner createRoutePlanner (@Nonnull final SchemePortResolver aSchemePortResolver)
+  public HttpRoutePlanner createRoutePlanner (@NonNull final SchemePortResolver aSchemePortResolver)
   {
     final IHttpProxySettings aGeneralProxySettings = m_aSettings.getGeneralProxy ();
     final IHttpProxySettings aHttpProxySettings = m_aSettings.getHttpProxy ();
@@ -548,7 +544,7 @@ public class HttpClientFactory implements IHttpClientProvider
     return new DefaultRoutePlanner (aSchemePortResolver)
     {
       @Override
-      protected HttpHost determineProxy (@Nonnull final HttpHost aTarget, @Nonnull final HttpContext aContext)
+      protected HttpHost determineProxy (@NonNull final HttpHost aTarget, @NonNull final HttpContext aContext)
                                                                                                                throws HttpException
       {
         final String sSchemeName = aTarget.getSchemeName ();
@@ -612,7 +608,7 @@ public class HttpClientFactory implements IHttpClientProvider
     };
   }
 
-  @Nonnull
+  @NonNull
   public HttpClientBuilder createHttpClientBuilder ()
   {
     final TlsSocketStrategy aTlsSocketStrategy = createTlsSocketStrategy ();
@@ -654,14 +650,14 @@ public class HttpClientFactory implements IHttpClientProvider
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public CloseableHttpClient createHttpClient ()
   {
     final HttpClientBuilder aBuilder = createHttpClientBuilder ();
     return aBuilder.build ();
   }
 
-  public void applyTo (@Nonnull final HttpAsyncClientBuilder aBuilder)
+  public void applyTo (@NonNull final HttpAsyncClientBuilder aBuilder)
   {
     final DefaultClientTlsStrategy aTlsStrategy = createTlsSocketStrategy ();
     if (aTlsStrategy == null)

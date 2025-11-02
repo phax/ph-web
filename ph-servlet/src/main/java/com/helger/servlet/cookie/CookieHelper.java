@@ -18,6 +18,9 @@ package com.helger.servlet.cookie;
 
 import java.util.function.Function;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -29,8 +32,6 @@ import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,9 +52,9 @@ public final class CookieHelper
   private CookieHelper ()
   {}
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsOrderedMap <String, Cookie> getAllCookies (@Nonnull final HttpServletRequest aHttpRequest)
+  public static ICommonsOrderedMap <String, Cookie> getAllCookies (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -63,7 +64,7 @@ public final class CookieHelper
   }
 
   @Nullable
-  public static Cookie getCookie (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final String sCookieName)
+  public static Cookie getCookie (@NonNull final HttpServletRequest aHttpRequest, @NonNull final String sCookieName)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (sCookieName, "CookieName");
@@ -76,8 +77,8 @@ public final class CookieHelper
     return null;
   }
 
-  public static boolean containsCookie (@Nonnull final HttpServletRequest aHttpRequest,
-                                        @Nonnull final String sCookieName)
+  public static boolean containsCookie (@NonNull final HttpServletRequest aHttpRequest,
+                                        @NonNull final String sCookieName)
   {
     return getCookie (aHttpRequest, sCookieName) != null;
   }
@@ -99,8 +100,8 @@ public final class CookieHelper
    * @return The created cookie object.
    * @since 9.3.2
    */
-  @Nonnull
-  public static Cookie createCookie (@Nonnull final String sName,
+  @NonNull
+  public static Cookie createCookie (@NonNull final String sName,
                                      @Nullable final String sValue,
                                      final String sPath,
                                      final boolean bExpireWhenBrowserIsClosed,
@@ -131,8 +132,8 @@ public final class CookieHelper
    * @return The created cookie object.
    * @since 9.3.2
    */
-  @Nonnull
-  public static Cookie createContextCookie (@Nonnull final String sName,
+  @NonNull
+  public static Cookie createContextCookie (@NonNull final String sName,
                                             @Nullable final String sValue,
                                             final boolean bExpireWhenBrowserIsClosed,
                                             final boolean bSecure)
@@ -154,7 +155,7 @@ public final class CookieHelper
    * @param aCookie
    *        The cookie to be removed. May not be <code>null</code>.
    */
-  public static void removeCookie (@Nonnull final HttpServletResponse aHttpResponse, @Nonnull final Cookie aCookie)
+  public static void removeCookie (@NonNull final HttpServletResponse aHttpResponse, @NonNull final Cookie aCookie)
   {
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
     ValueEnforcer.notNull (aCookie, "aCookie");

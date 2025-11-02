@@ -19,11 +19,11 @@ package com.helger.network.proxy.config;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.CGlobal;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A special authenticator for HTTP/HTTPS/FTPS proxy connections.
@@ -34,12 +34,12 @@ public class HttpProxyAuthenticator extends Authenticator
 {
   private final EHttpProxyType m_eProxyType;
 
-  public HttpProxyAuthenticator (@Nonnull final EHttpProxyType eProxyType)
+  public HttpProxyAuthenticator (@NonNull final EHttpProxyType eProxyType)
   {
     m_eProxyType = ValueEnforcer.notNull (eProxyType, "ProxyType");
   }
 
-  @Nonnull
+  @NonNull
   public final EHttpProxyType getProxyType ()
   {
     return m_eProxyType;

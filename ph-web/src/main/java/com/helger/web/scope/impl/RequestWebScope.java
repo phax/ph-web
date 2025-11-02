@@ -20,6 +20,8 @@ import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.Enumeration;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,8 +57,6 @@ import com.helger.web.fileupload.IFileItem;
 import com.helger.web.scope.IRequestParamContainer;
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -98,7 +98,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
      * @return The cleaned value. May also be <code>null</code>.
      */
     @Nullable
-    String getCleanedValue (@Nonnull String sParamName, @Nonnegative int nParamIndex, @Nullable String sParamValue);
+    String getCleanedValue (@NonNull String sParamName, @Nonnegative int nParamIndex, @Nullable String sParamValue);
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestWebScope.class);
@@ -142,17 +142,17 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     RW_LOCK.writeLocked ( () -> s_aParamValueCleanser = aParamValueCleanser);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _createScopeID (@Nonnull final HttpServletRequest aHttpRequest)
+  private static String _createScopeID (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
     return GlobalIDFactory.getNewIntID () + "@" + RequestHelper.getRequestURIDecoded (aHttpRequest);
   }
 
-  public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
-                          @Nonnull final HttpServletResponse aHttpResponse)
+  public RequestWebScope (@NonNull final HttpServletRequest aHttpRequest,
+                          @NonNull final HttpServletResponse aHttpResponse)
   {
     super (_createScopeID (aHttpRequest));
 
@@ -169,7 +169,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
                    ScopeHelper.getDebugException ());
   }
 
-  @Nonnull
+  @NonNull
   public final LocalDateTime getCreationDateTime ()
   {
     return m_aCreationDT;
@@ -183,7 +183,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    *         with HTTP servlet request parameters!
    */
   @OverrideOnDemand
-  @Nonnull
+  @NonNull
   protected EChange addSpecialRequestParams ()
   {
     return EChange.UNCHANGED;
@@ -371,7 +371,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
                    ScopeHelper.getDebugException ());
   }
 
-  @Nonnull
+  @NonNull
   public final HttpHeaderMap headers ()
   {
     HttpHeaderMap ret = m_aHeaders;
@@ -380,14 +380,14 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public final IRequestParamContainer params ()
   {
     return m_aParams;
   }
 
-  @Nonnull
+  @NonNull
   public final IRequestParamMap getRequestParamMap ()
   {
     IRequestParamMap ret = m_aRequestParamMap;
@@ -405,7 +405,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    * @return <code>true</code> if it is assumed that the request is file based, <code>false</code>
    *         if it can be assumed to be a regular servlet.
    */
-  public static boolean isFileBasedRequest (@Nonnull final String sServletPath)
+  public static boolean isFileBasedRequest (@NonNull final String sServletPath)
   {
     final int nLastDot = sServletPath.lastIndexOf ('.');
     if (nLastDot < 0)
@@ -430,7 +430,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    *         slash.
    * @see #getFullContextPath()
    */
-  @Nonnull
+  @NonNull
   public String getContextPath ()
   {
     // Always use the context path from the global web scope because it can be
@@ -438,7 +438,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return ServletContextPathHolder.getContextPath ();
   }
 
-  @Nonnull
+  @NonNull
   public String getContextAndServletPath ()
   {
     final String sServletPath = getServletPath ();
@@ -448,7 +448,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return getContextPath () + sServletPath + '/';
   }
 
-  @Nonnull
+  @NonNull
   public String getFullContextAndServletPath ()
   {
     final String sServletPath = getServletPath ();
@@ -458,20 +458,20 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return getFullContextPath () + sServletPath + '/';
   }
 
-  @Nonnull
+  @NonNull
   public final HttpServletRequest getRequest ()
   {
     return m_aHttpRequest;
   }
 
-  @Nonnull
+  @NonNull
   public final HttpServletResponse getResponse ()
   {
     return m_aHttpResponse;
   }
 
-  @Nonnull
-  public String encodeURL (@Nonnull final String sURL)
+  @NonNull
+  public String encodeURL (@NonNull final String sURL)
   {
     if (ServletSettings.isEncodeURLs ())
       return getResponse ().encodeURL (sURL);
@@ -479,8 +479,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     return sURL;
   }
 
-  @Nonnull
-  public String encodeRedirectURL (@Nonnull final String sURL)
+  @NonNull
+  public String encodeRedirectURL (@NonNull final String sURL)
   {
     if (ServletSettings.isEncodeURLs ())
       return getResponse ().encodeRedirectURL (sURL);

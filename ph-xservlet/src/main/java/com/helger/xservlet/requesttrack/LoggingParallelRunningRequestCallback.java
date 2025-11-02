@@ -18,6 +18,7 @@ package com.helger.xservlet.requesttrack;
 
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.diagnostics.error.level.EErrorLevel;
 import com.helger.diagnostics.error.level.IErrorLevel;
 import com.helger.diagnostics.log.LogHelper;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A simple implementation of {@link IParallelRunningRequestCallback} simply
@@ -49,25 +48,25 @@ public class LoggingParallelRunningRequestCallback implements IParallelRunningRe
     this (EErrorLevel.WARN);
   }
 
-  public LoggingParallelRunningRequestCallback (@Nonnull final IErrorLevel aErrorLevel)
+  public LoggingParallelRunningRequestCallback (@NonNull final IErrorLevel aErrorLevel)
   {
     setErrorLevel (aErrorLevel);
   }
 
-  @Nonnull
+  @NonNull
   public final IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }
 
-  @Nonnull
-  public final LoggingParallelRunningRequestCallback setErrorLevel (@Nonnull final IErrorLevel aErrorLevel)
+  @NonNull
+  public final LoggingParallelRunningRequestCallback setErrorLevel (@NonNull final IErrorLevel aErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (aErrorLevel, "ErrorLevel");
     return this;
   }
 
-  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests, @Nonnull @Nonempty final List <TrackedRequest> aRequests)
+  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests, @NonNull @Nonempty final List <TrackedRequest> aRequests)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Currently " + nParallelRequests + " parallel requests are active!");
   }

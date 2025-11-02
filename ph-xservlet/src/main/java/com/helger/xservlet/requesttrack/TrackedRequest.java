@@ -16,14 +16,14 @@
  */
 package com.helger.xservlet.requesttrack;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This class represents a single tracked request.
@@ -38,21 +38,21 @@ public final class TrackedRequest
   private final IRequestWebScope m_aRequestScope;
   private final long m_nStartMillis;
 
-  public TrackedRequest (@Nonnull @Nonempty final String sRequestID, @Nonnull final IRequestWebScope aRequestScope)
+  public TrackedRequest (@NonNull @Nonempty final String sRequestID, @NonNull final IRequestWebScope aRequestScope)
   {
     m_sRequestID = ValueEnforcer.notEmpty (sRequestID, "RequestID");
     m_aRequestScope = ValueEnforcer.notNull (aRequestScope, "RequestScope");
     m_nStartMillis = System.currentTimeMillis ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getRequestID ()
   {
     return m_sRequestID;
   }
 
-  @Nonnull
+  @NonNull
   public IRequestWebScope getRequestScope ()
   {
     return m_aRequestScope;

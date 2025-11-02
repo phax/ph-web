@@ -19,6 +19,8 @@ package com.helger.useragent.uaprofile;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +37,6 @@ import com.helger.security.messagedigest.EMessageDigestAlgorithm;
 import com.helger.security.messagedigest.MessageDigestValue;
 import com.helger.xml.microdom.IMicroDocument;
 import com.helger.xml.microdom.serialize.MicroReader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a single UA profile diff.
@@ -56,7 +55,7 @@ public class UAProfileDiff
   // State variables
   private final IMicroDocument m_aDocument;
 
-  public UAProfileDiff (@Nonnull @Nonempty final String sData, @Nullable final byte [] aMD5Digest)
+  public UAProfileDiff (@NonNull @Nonempty final String sData, @Nullable final byte [] aMD5Digest)
   {
     ValueEnforcer.notEmpty (sData, "Data");
     if (aMD5Digest != null && aMD5Digest.length != EXPECTED_MD5_DIGEST_BYTES)
@@ -82,7 +81,7 @@ public class UAProfileDiff
       LOGGER.warn ("Failed to parse profile diff data as XML '" + sData + "'");
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getData ()
   {

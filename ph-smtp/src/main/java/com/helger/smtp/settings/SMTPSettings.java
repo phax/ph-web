@@ -18,6 +18,9 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.clone.ICloneable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -29,9 +32,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.smtp.CSMTP;
 import com.helger.smtp.EmailGlobalSettings;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Writable implementation of the {@link ISMTPSettings} interface.
@@ -58,7 +58,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @param aOther
    *        The settings to use. May not be <code>null</code>.
    */
-  public SMTPSettings (@Nonnull final ISMTPSettings aOther)
+  public SMTPSettings (@NonNull final ISMTPSettings aOther)
   {
     this (aOther.getHostName (),
           aOther.getPort (),
@@ -78,7 +78,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @param sHost
    *        SMTP server name or IP address. May neither be <code>null</code> nor empty.
    */
-  public SMTPSettings (@Nonnull final String sHost)
+  public SMTPSettings (@NonNull final String sHost)
   {
     this (sHost, -1, null, null, (Charset) null, EmailGlobalSettings.isUseSSL ());
   }
@@ -99,7 +99,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @param bSSLEnabled
    *        <code>true</code> to enable SSL communications
    */
-  public SMTPSettings (@Nonnull final String sHostName,
+  public SMTPSettings (@NonNull final String sHostName,
                        final int nPort,
                        @Nullable final String sUserName,
                        @Nullable final String sPassword,
@@ -142,7 +142,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @param bDebugSMTP
    *        <code>true</code> to enable SMTP debugging, <code>false</code> to disable it.
    */
-  public SMTPSettings (@Nonnull final String sHostName,
+  public SMTPSettings (@NonNull final String sHostName,
                        final int nPort,
                        @Nullable final String sUserName,
                        @Nullable final String sPassword,
@@ -165,14 +165,14 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     setDebugSMTP (bDebugSMTP);
   }
 
-  @Nonnull
+  @NonNull
   public String getHostName ()
   {
     return m_sHostName;
   }
 
-  @Nonnull
-  public EChange setHostName (@Nonnull final String sHostName)
+  @NonNull
+  public EChange setHostName (@NonNull final String sHostName)
   {
     ValueEnforcer.notNull (sHostName, "Host");
 
@@ -187,7 +187,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return m_nPort;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setPort (final int nPort)
   {
     if (nPort != -1 && !NetworkPortHelper.isValidPort (nPort))
@@ -205,7 +205,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return m_sUserName;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setUserName (@Nullable final String sUserName)
   {
     final String sRealUserName = StringHelper.isEmpty (sUserName) ? null : sUserName;
@@ -221,7 +221,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return m_sPassword;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setPassword (@Nullable final String sPassword)
   {
     final String sRealPassword = StringHelper.isEmpty (sPassword) ? null : sPassword;
@@ -231,13 +231,13 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return EChange.CHANGED;
   }
 
-  @Nonnull
+  @NonNull
   public Charset getCharsetObj ()
   {
     return m_aCharset;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setCharset (@Nullable final Charset aCharset)
   {
     if (EqualsHelper.equals (aCharset, m_aCharset))
@@ -251,7 +251,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return m_bSSLEnabled;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setSSLEnabled (final boolean bSSLEnabled)
   {
     if (m_bSSLEnabled == bSSLEnabled)
@@ -265,7 +265,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return m_bSTARTTLSEnabled;
   }
 
-  @Nonnull
+  @NonNull
   public EChange setSTARTTLSEnabled (final boolean bSTARTTLSEnabled)
   {
     if (m_bSTARTTLSEnabled == bSTARTTLSEnabled)
@@ -287,7 +287,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    *        The milliseconds timeout
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public EChange setConnectionTimeoutMilliSecs (final long nMilliSecs)
   {
     if (m_nConnectionTimeoutMilliSecs == nMilliSecs)
@@ -309,7 +309,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    *        The milliseconds timeout
    * @return {@link EChange}
    */
-  @Nonnull
+  @NonNull
   public EChange setTimeoutMilliSecs (final long nMilliSecs)
   {
     if (m_nTimeoutMilliSecs == nMilliSecs)
@@ -333,7 +333,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
    * @return {@link EChange}
    * @since 1.0.1
    */
-  @Nonnull
+  @NonNull
   public EChange setDebugSMTP (final boolean bDebugSMTP)
   {
     if (m_bDebugSMTP == bDebugSMTP)
@@ -347,7 +347,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return StringHelper.isNotEmpty (m_sHostName);
   }
 
-  @Nonnull
+  @NonNull
   public SMTPSettings getClone ()
   {
     return new SMTPSettings (this);

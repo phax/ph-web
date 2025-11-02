@@ -16,11 +16,12 @@
  */
 package com.helger.servlet.filter;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.tostring.ToStringGenerator;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
@@ -46,7 +47,7 @@ public abstract class AbstractServletFilter implements Filter
     return m_aFilterConfig;
   }
 
-  public final void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
+  public final void init (@NonNull final FilterConfig aFilterConfig) throws ServletException
   {
     m_aFilterConfig = aFilterConfig;
     init ();

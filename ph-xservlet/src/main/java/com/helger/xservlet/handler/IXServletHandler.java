@@ -18,11 +18,12 @@ package com.helger.xservlet.handler;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,9 +55,9 @@ public interface IXServletHandler extends IXServletBasicHandler
    * @throws IOException
    *         On IO error
    */
-  void onRequest (@Nonnull HttpServletRequest aHttpRequest,
-                  @Nonnull HttpServletResponse aHttpResponse,
-                  @Nonnull EHttpVersion eHttpVersion,
-                  @Nonnull EHttpMethod eHttpMethod,
-                  @Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void onRequest (@NonNull HttpServletRequest aHttpRequest,
+                  @NonNull HttpServletResponse aHttpResponse,
+                  @NonNull EHttpVersion eHttpVersion,
+                  @NonNull EHttpMethod eHttpMethod,
+                  @NonNull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

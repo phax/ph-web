@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.net.URI;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +37,6 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.CommonsLinkedHashSet;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Static manager class for {@link IProxySettingsProvider}.
@@ -55,14 +54,14 @@ public final class ProxySettingsManager
   private ProxySettingsManager ()
   {}
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <IProxySettingsProvider> getAllProviders ()
   {
     return RW_LOCK.readLockedGet (LIST::getClone);
   }
 
-  public static void registerProvider (@Nonnull final IProxySettingsProvider aProvider)
+  public static void registerProvider (@NonNull final IProxySettingsProvider aProvider)
   {
     ValueEnforcer.notNull (aProvider, "Provider");
     RW_LOCK.writeLocked ( () -> LIST.add (aProvider));
@@ -70,7 +69,7 @@ public final class ProxySettingsManager
     LOGGER.info ("Registered proxy settings provider " + aProvider);
   }
 
-  @Nonnull
+  @NonNull
   public static EChange unregisterProvider (@Nullable final IProxySettingsProvider aProvider)
   {
     if (aProvider == null)
@@ -82,7 +81,7 @@ public final class ProxySettingsManager
     return eChange;
   }
 
-  @Nonnull
+  @NonNull
   public static EChange removeAllProviders ()
   {
     final EChange eChange = RW_LOCK.writeLockedGet (LIST::removeAll);
@@ -100,9 +99,9 @@ public final class ProxySettingsManager
    *         is used to avoid that the same settings are used more than once.
    * @see #findAllProxySettings(String, String, int)
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsOrderedSet <IProxySettings> findAllProxySettings (@Nonnull final URI aURI)
+  public static ICommonsOrderedSet <IProxySettings> findAllProxySettings (@NonNull final URI aURI)
   {
     return findAllProxySettings (aURI.getScheme (), aURI.getHost (), aURI.getPort ());
   }
@@ -119,7 +118,7 @@ public final class ProxySettingsManager
    * @return A non-<code>null</code> set with all matching proxy settings. A set
    *         is used to avoid that the same settings are used more than once.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsOrderedSet <IProxySettings> findAllProxySettings (@Nullable final String sProtocol,
                                                                           @Nullable final String sHostName,
@@ -135,10 +134,10 @@ public final class ProxySettingsManager
     return ret;
   }
 
-  @Nonnull
-  public static EHandled onConnectionFailed (@Nonnull final URI aURI,
-                                             @Nonnull final SocketAddress aAddr,
-                                             @Nonnull final IOException ex)
+  @NonNull
+  public static EHandled onConnectionFailed (@NonNull final URI aURI,
+                                             @NonNull final SocketAddress aAddr,
+                                             @NonNull final IOException ex)
   {
     final String sProtocol = aURI.getScheme ();
     final String sHostName = aURI.getHost ();

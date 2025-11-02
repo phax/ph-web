@@ -16,10 +16,11 @@
  */
 package com.helger.servlet.mock;
 
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.servlet.annotation.IsOffline;
 
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletContext;
 
 /**

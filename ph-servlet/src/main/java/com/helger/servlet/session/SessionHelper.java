@@ -18,6 +18,8 @@ package com.helger.servlet.session;
 
 import java.util.Enumeration;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +31,6 @@ import com.helger.base.state.EChange;
 import com.helger.collection.base.EmptyEnumeration;
 import com.helger.servlet.ServletHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -58,7 +58,7 @@ public final class SessionHelper
    * @return {@link EChange#CHANGED} if the session was invalidated,
    *         {@link EChange#UNCHANGED} otherwise.
    */
-  @Nonnull
+  @NonNull
   public static EChange safeInvalidateSession (@Nullable final HttpSession aSession)
   {
     if (aSession != null)
@@ -85,8 +85,8 @@ public final class SessionHelper
    *        The session to use. May not be <code>null</code>.
    * @return Never <code>null</code>.
    */
-  @Nonnull
-  public static Enumeration <String> getAllAttributes (@Nonnull final HttpSession aSession)
+  @NonNull
+  public static Enumeration <String> getAllAttributes (@NonNull final HttpSession aSession)
   {
     ValueEnforcer.notNull (aSession, "Session");
 
@@ -109,8 +109,8 @@ public final class SessionHelper
    *        The HTTP request to use. May not be <code>null</code>.
    * @return The new {@link HttpSession} to use. Never <code>null</code>.
    */
-  @Nonnull
-  public static HttpSession safeRenewSession (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static HttpSession safeRenewSession (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 

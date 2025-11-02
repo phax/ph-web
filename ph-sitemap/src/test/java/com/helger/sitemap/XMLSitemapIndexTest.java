@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.diagnostics.error.list.IErrorList;
@@ -33,8 +34,6 @@ import com.helger.url.URLBuilder;
 import com.helger.xml.schema.XMLSchemaValidationHelper;
 import com.helger.xml.transform.StringStreamSource;
 
-import jakarta.annotation.Nonnull;
-
 /**
  * Test class for class {@link XMLSitemapIndex}.
  *
@@ -44,7 +43,7 @@ public final class XMLSitemapIndexTest
 {
   private static final String FULL_SERVER_CONTEXT_PATH = "http://localhost:80/any";
 
-  private static void _testWriteXMLSitemapeIndex (@Nonnull final XMLSitemapIndex x)
+  private static void _testWriteXMLSitemapeIndex (@NonNull final XMLSitemapIndex x)
   {
     final File aBaseDir = new File ("xmlsitemaps-testdir");
     FileOperations.createDirIfNotExisting (aBaseDir);

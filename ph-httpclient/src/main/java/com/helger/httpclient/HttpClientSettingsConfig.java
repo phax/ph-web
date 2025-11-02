@@ -23,6 +23,8 @@ import java.util.function.Function;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,9 +39,6 @@ import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.config.IConfig;
 import com.helger.config.fallback.IConfigWithFallback;
 import com.helger.typeconvert.impl.TypeConverter;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A helper class to configure {@link HttpClientSettings} using {@link IConfig} with standardized
@@ -57,8 +56,8 @@ public class HttpClientSettingsConfig
     private final IConfigWithFallback m_aConfig;
     private final ICommonsOrderedSet <String> m_aConfigPrefixes;
 
-    public HttpClientConfig (@Nonnull final IConfigWithFallback aConfig,
-                             @Nonnull @Nonempty final ICommonsOrderedSet <String> aConfigPrefixes)
+    public HttpClientConfig (@NonNull final IConfigWithFallback aConfig,
+                             @NonNull @Nonempty final ICommonsOrderedSet <String> aConfigPrefixes)
     {
       ValueEnforcer.notNull (aConfig, "Config");
       ValueEnforcer.notEmptyNoNullValue (aConfigPrefixes, "Prefixes");
@@ -66,9 +65,9 @@ public class HttpClientSettingsConfig
       m_aConfigPrefixes = aConfigPrefixes;
     }
 
-    @Nonnull
-    private static String [] _copyAndMap (@Nonnull final String [] aArray,
-                                          @Nonnull final Function <String, String> aFun)
+    @NonNull
+    private static String [] _copyAndMap (@NonNull final String [] aArray,
+                                          @NonNull final Function <String, String> aFun)
     {
       final String [] ret = new String [aArray.length];
       ArrayHelper.forEach (aArray, (val, idx) -> ret[idx] = aFun.apply (val));
@@ -76,7 +75,7 @@ public class HttpClientSettingsConfig
     }
 
     @Nullable
-    private String _findString (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
+    private String _findString (@NonNull final String sLocalKey, @Nullable final String... aLocalSubKeys)
     {
       for (final String sConfigPrefix : m_aConfigPrefixes)
       {
@@ -97,7 +96,7 @@ public class HttpClientSettingsConfig
     }
 
     @Nullable
-    private char [] _findCharArray (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
+    private char [] _findCharArray (@NonNull final String sLocalKey, @Nullable final String... aLocalSubKeys)
     {
       for (final String sConfigPrefix : m_aConfigPrefixes)
       {
@@ -117,8 +116,8 @@ public class HttpClientSettingsConfig
       return null;
     }
 
-    @Nonnull
-    private ETriState _findBoolean (@Nonnull final String sLocalKey,
+    @NonNull
+    private ETriState _findBoolean (@NonNull final String sLocalKey,
                                     final boolean bDefault,
                                     @Nullable final String... aLocalSubKeys)
     {
@@ -130,7 +129,7 @@ public class HttpClientSettingsConfig
     }
 
     @CheckForSigned
-    private int _findInt (@Nonnull final String sLocalKey, final int nDefault, @Nullable final String... aLocalSubKeys)
+    private int _findInt (@NonNull final String sLocalKey, final int nDefault, @Nullable final String... aLocalSubKeys)
     {
       for (final String sConfigPrefix : m_aConfigPrefixes)
       {
@@ -150,8 +149,8 @@ public class HttpClientSettingsConfig
     }
 
     @CheckForSigned
-    private long _findSingleLong (@Nonnull final String sConfigPrefix,
-                                  @Nonnull final String sLocalKey,
+    private long _findSingleLong (@NonNull final String sConfigPrefix,
+                                  @NonNull final String sLocalKey,
                                   final long nDefault,
                                   @Nullable final String... aLocalSubKeys)
     {
@@ -164,7 +163,7 @@ public class HttpClientSettingsConfig
     }
 
     @CheckForSigned
-    private long _findLong (@Nonnull final String sLocalKey,
+    private long _findLong (@NonNull final String sLocalKey,
                             final long nDefault,
                             @Nullable final String... aLocalSubKeys)
     {
@@ -177,13 +176,13 @@ public class HttpClientSettingsConfig
       return nDefault;
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getUseDNSClientCache (final boolean bDefault)
     {
       return _findBoolean ("http.dnsclientcache.use", bDefault, "http.useDNSClientCache");
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getHttpProxyEnabled (final boolean bDefault)
     {
       return _findBoolean ("http.proxy.enabled", bDefault);
@@ -277,7 +276,7 @@ public class HttpClientSettingsConfig
     }
 
     @Nullable
-    private Duration _findDuration (@Nonnull final String sLocalKey, @Nullable final String... aLocalSubKeys)
+    private Duration _findDuration (@NonNull final String sLocalKey, @Nullable final String... aLocalSubKeys)
     {
       for (final String sConfigPrefix : m_aConfigPrefixes)
       {
@@ -322,14 +321,14 @@ public class HttpClientSettingsConfig
       return _findDuration ("http.retry.interval");
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getRetryAlways (final boolean bDefault)
     {
       return _findBoolean ("http.retry.always", bDefault);
     }
 
     @Nullable
-    private Timeout _findTimeout (@Nonnull final String sPrefix, @Nullable final String... aLocalSubKeys)
+    private Timeout _findTimeout (@NonNull final String sPrefix, @Nullable final String... aLocalSubKeys)
     {
       final Duration aDuration = _findDuration (sPrefix, aLocalSubKeys);
       return aDuration == null ? null : Timeout.of (aDuration);
@@ -359,13 +358,13 @@ public class HttpClientSettingsConfig
       return _findString ("http.useragent");
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getFollowRedirects (final boolean bDefault)
     {
       return _findBoolean ("http.follow-redirects", bDefault);
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getUseKeepAlive (final boolean bDefault)
     {
       return _findBoolean ("http.keep-alive", bDefault);
@@ -379,25 +378,25 @@ public class HttpClientSettingsConfig
      * @return Never <code>null</code>.
      * @since 10.5.0
      */
-    @Nonnull
+    @NonNull
     public ETriState getProtocolUpgradeEnabled (final boolean bDefault)
     {
       return _findBoolean ("http.protocol-upgrade.enabled", bDefault);
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getDisableTlsChecks (final boolean bDefault)
     {
       return _findBoolean ("http.tls.checks.disabled", bDefault);
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getDisableHostnameCheck (final boolean bDefault)
     {
       return _findBoolean ("http.tls.hostname-check.disabled", bDefault);
     }
 
-    @Nonnull
+    @NonNull
     public ETriState getDisableCertificateCheck (final boolean bDefault)
     {
       return _findBoolean ("http.tls.certificate-check.disabled", bDefault);
@@ -422,9 +421,9 @@ public class HttpClientSettingsConfig
    *        The configuration prefixes to be used. If this value may neither be <code>null</code>
    *        nor empty, it will be used as the constant prefix.
    */
-  public static final void assignConfigValues (@Nonnull final HttpClientSettings aHCS,
-                                               @Nonnull final IConfigWithFallback aConfig,
-                                               @Nonnull @Nonempty final String... aPrefixes)
+  public static final void assignConfigValues (@NonNull final HttpClientSettings aHCS,
+                                               @NonNull final IConfigWithFallback aConfig,
+                                               @NonNull @Nonempty final String... aPrefixes)
   {
     ValueEnforcer.notNull (aHCS, "HttpClientSettings");
     ValueEnforcer.notNull (aConfig, "Config");

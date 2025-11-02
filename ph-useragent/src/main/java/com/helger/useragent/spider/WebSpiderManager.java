@@ -19,6 +19,8 @@ package com.helger.useragent.spider;
 import java.util.Locale;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +37,6 @@ import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.serialize.MicroReader;
 import com.helger.xml.microdom.util.MicroHelper;
 import com.helger.xml.microdom.util.XMLListHandler;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Provides a list of known web spiders.
@@ -63,8 +62,8 @@ public final class WebSpiderManager
     _readSpiderList2 ("codelists/spiderlist2.xml");
   }
 
-  @Nonnull
-  private static String _getUnifiedID (@Nonnull final String sID)
+  @NonNull
+  private static String _getUnifiedID (@NonNull final String sID)
   {
     return sID.toLowerCase (Locale.US);
   }
@@ -115,13 +114,13 @@ public final class WebSpiderManager
     }
   }
 
-  @Nonnull
+  @NonNull
   public static WebSpiderManager getInstance ()
   {
     return SingletonHolder.INSTANCE;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsCollection <WebSpiderInfo> getAllKnownSpiders ()
   {
@@ -129,7 +128,7 @@ public final class WebSpiderManager
   }
 
   @Nullable
-  public WebSpiderInfo getWebSpiderFromUserAgent (@Nonnull final String sUserAgent)
+  public WebSpiderInfo getWebSpiderFromUserAgent (@NonNull final String sUserAgent)
   {
     // Search case insensitive (key set is lowercase!)
     final String sUserAgentLC = _getUnifiedID (sUserAgent);

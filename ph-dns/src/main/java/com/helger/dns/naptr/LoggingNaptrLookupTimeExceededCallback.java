@@ -18,12 +18,11 @@ package com.helger.dns.naptr;
 
 import java.time.Duration;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A logging implementation of {@link INaptrLookupTimeExceededCallback}.
@@ -47,16 +46,16 @@ public class LoggingNaptrLookupTimeExceededCallback implements INaptrLookupTimeE
     return m_bEmitStackTrace;
   }
 
-  @Nonnull
+  @NonNull
   public final LoggingNaptrLookupTimeExceededCallback setEmitStackTrace (final boolean bEmitStackTrace)
   {
     m_bEmitStackTrace = bEmitStackTrace;
     return this;
   }
 
-  public void onLookupTimeExceeded (@Nonnull final String sMsg,
-                                    @Nonnull final Duration aExecutionMillis,
-                                    @Nonnull final Duration aLimitMillis)
+  public void onLookupTimeExceeded (@NonNull final String sMsg,
+                                    @NonNull final Duration aExecutionMillis,
+                                    @NonNull final Duration aLimitMillis)
   {
     LOGGER.warn (sMsg + " took " + aExecutionMillis.toMillis () + "ms (limit is " + aLimitMillis.toMillis () + " ms)",
                  m_bEmitStackTrace ? new Exception () : null);

@@ -16,6 +16,8 @@
  */
 package com.helger.xservlet.filter;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.state.EContinue;
 import com.helger.http.CHttpHeader;
@@ -23,7 +25,6 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpReferrerPolicy;
 import com.helger.http.EHttpVersion;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -37,7 +38,7 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
 {
   private final EHttpReferrerPolicy m_eHttpReferrerPolicy;
 
-  public XServletFilterSecurityHttpReferrerPolicy (@Nonnull final EHttpReferrerPolicy eHttpReferrerPolicy)
+  public XServletFilterSecurityHttpReferrerPolicy (@NonNull final EHttpReferrerPolicy eHttpReferrerPolicy)
   {
     m_eHttpReferrerPolicy = ValueEnforcer.notNull (eHttpReferrerPolicy, "HttpReferrerPolicy");
   }
@@ -46,17 +47,17 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
    * @return The "Referrer-Policy" as provided in the constructor. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final EHttpReferrerPolicy getHttpReferrerPolicy ()
   {
     return m_eHttpReferrerPolicy;
   }
 
-  @Nonnull
-  public EContinue beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                  @Nonnull final EHttpVersion eHttpVersion,
-                                  @Nonnull final EHttpMethod eHttpMethod)
+  @NonNull
+  public EContinue beforeRequest (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse,
+                                  @NonNull final EHttpVersion eHttpVersion,
+                                  @NonNull final EHttpMethod eHttpMethod)
   {
     // Ensure the response header is present
     aHttpResponse.addHeader (CHttpHeader.REFERRER_POLICY, m_eHttpReferrerPolicy.getValue ());

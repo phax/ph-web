@@ -16,6 +16,8 @@
  */
 package com.helger.xservlet.forcedredirect;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +31,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.web.scope.singleton.AbstractSessionWebSingleton;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Stores per-session the data to be used in a Post-Redirect-Get scenario.<br>
@@ -60,7 +59,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
   /**
    * @return The instance to use. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public static ForcedRedirectManager getInstance ()
   {
     return getSessionSingleton (ForcedRedirectManager.class);
@@ -75,7 +74,7 @@ public final class ForcedRedirectManager extends AbstractSessionWebSingleton
     return getSessionSingletonIfInstantiated (ForcedRedirectManager.class);
   }
 
-  public void createForcedRedirect (@Nonnull final ForcedRedirectException ex)
+  public void createForcedRedirect (@NonNull final ForcedRedirectException ex)
   {
     ValueEnforcer.notNull (ex, "Exception");
     m_aRWLock.writeLockedGet ( () -> m_aMap.put (ex.getSourceMenuItemID (), ex.getContent ()));

@@ -16,13 +16,13 @@
  */
 package com.helger.smtp.data;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsIterable;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This interface represents attachments to be added to a mail message.
@@ -43,21 +43,21 @@ public interface IEmailAttachmentList extends ICommonsIterable <IEmailAttachment
   /**
    * @return A list with all registered file names or an empty list.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsOrderedSet <String> getAllAttachmentFilenames ();
 
   /**
    * @return A list with all registered attachments or an empty list.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsList <IEmailAttachment> getAllAttachments ();
 
   /**
    * @return A list of all attachments as Java Activation DataSource objects.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   ICommonsList <IEmailAttachmentDataSource> getAsDataSourceList ();
 }

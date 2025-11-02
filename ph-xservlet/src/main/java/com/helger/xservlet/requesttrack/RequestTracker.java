@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,6 @@ import com.helger.web.scope.mgr.WebScopeManager;
 import com.helger.web.scope.mgr.WebScoped;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -67,14 +67,14 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
     // AuditingParallelRunningRequestCallback ());
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public static CallbackList <ILongRunningRequestCallback> longRunningRequestCallbacks ()
   {
     return CB_LONG_RUNNING;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   public static CallbackList <IParallelRunningRequestCallback> parallelRunningRequestCallbacks ()
   {
@@ -146,7 +146,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   }
 
   @Override
-  protected void onDestroy (@Nonnull final IScope aScopeInDestruction)
+  protected void onDestroy (@NonNull final IScope aScopeInDestruction)
   {
     LOGGER.info ("RequestTrackerMonitor is now shutting down");
     // Destroy RequestTrackerMonitor thread(s)
@@ -154,7 +154,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
     LOGGER.info ("RequestTrackerMonitor was uninstalled successfully.");
   }
 
-  @Nonnull
+  @NonNull
   public static RequestTracker getInstance ()
   {
     return getGlobalSingleton (RequestTracker.class);
@@ -164,7 +164,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @return The underlying request tracking manager. Never <code>null</code>. Don't use except you
    *         know what you are doing!
    */
-  @Nonnull
+  @NonNull
   public RequestTrackingManager getRequestTrackingMgr ()
   {
     return m_aRequestTrackingMgr;
@@ -173,7 +173,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
   /**
    * @return The executor service used to schedule the background tasks
    */
-  @Nonnull
+  @NonNull
   public ScheduledExecutorService getExecutorService ()
   {
     return m_aExecSvc;
@@ -187,8 +187,8 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param aRequestScope
    *        The request scope itself.
    */
-  public static void addRequest (@Nonnull @Nonempty final String sRequestID,
-                                 @Nonnull final IRequestWebScope aRequestScope)
+  public static void addRequest (@NonNull @Nonempty final String sRequestID,
+                                 @NonNull final IRequestWebScope aRequestScope)
   {
     getInstance ().m_aRequestTrackingMgr.addRequest (sRequestID, aRequestScope, CB_PARALLEL_RUNNING);
   }
@@ -199,7 +199,7 @@ public final class RequestTracker extends AbstractGlobalWebSingleton
    * @param sRequestID
    *        The request ID.
    */
-  public static void removeRequest (@Nonnull @Nonempty final String sRequestID)
+  public static void removeRequest (@NonNull @Nonempty final String sRequestID)
   {
     final RequestTracker aTracker = getGlobalSingletonIfInstantiated (RequestTracker.class);
     if (aTracker != null)

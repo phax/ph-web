@@ -16,15 +16,15 @@
  */
 package com.helger.web.scope.util;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a wrapper around a single request value. It allows gathering the
@@ -45,7 +45,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    *        The request field to copy the values from. May not be
    *        <code>null</code>.
    */
-  public RequestFieldData (@Nonnull final RequestFieldData aRF)
+  public RequestFieldData (@NonNull final RequestFieldData aRF)
   {
     this (aRF.getFieldName (), aRF.m_sDefaultValue);
   }
@@ -56,7 +56,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    * @param sFieldName
    *        The field name to use. May neither be <code>null</code> nor empty.
    */
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName)
+  public RequestFieldData (@NonNull @Nonempty final String sFieldName)
   {
     this (sFieldName, (String) null);
   }
@@ -70,7 +70,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    *        The default value to use, if no value is present in the request
    *        scope.
    */
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
+  public RequestFieldData (@NonNull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
   {
     super (sFieldName);
     m_sDefaultValue = sDefaultValue == null ? "" : sDefaultValue;
@@ -81,7 +81,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    *         never <code>null</code> but an empty string if no default value is
    *         available.
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
   public String getDefaultValue ()
   {
@@ -106,7 +106,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    *
    * @return A single request value as string.
    */
-  @Nonnull
+  @NonNull
   public final String getRequestValue ()
   {
     return getParams ().getAsString (getFieldName (), getDefaultValue ());
@@ -121,7 +121,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    * @return <code>true</code> if the passed value equals the actual request
    *         value
    */
-  public final boolean hasRequestValue (@Nonnull final String sExpectedValue)
+  public final boolean hasRequestValue (@NonNull final String sExpectedValue)
   {
     ValueEnforcer.notNull (sExpectedValue, "ExpectedValue");
 

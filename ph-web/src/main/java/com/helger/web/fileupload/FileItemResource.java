@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +32,6 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.hashcode.IHashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.io.resource.IReadableResource;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Implementation of the {@link IReadableResource} interface for uploaded
@@ -49,18 +48,18 @@ public class FileItemResource implements IReadableResource
   // Status vars
   private int m_nHashCode = IHashCodeGenerator.ILLEGAL_HASHCODE;
 
-  public FileItemResource (@Nonnull final IFileItem aFileItem)
+  public FileItemResource (@NonNull final IFileItem aFileItem)
   {
     m_aFileItem = ValueEnforcer.notNull (aFileItem, "FileItem");
   }
 
-  @Nonnull
+  @NonNull
   public String getResourceID ()
   {
     return getPath ();
   }
 
-  @Nonnull
+  @NonNull
   public String getPath ()
   {
     return m_aFileItem.getNameSecure ();
@@ -96,9 +95,9 @@ public class FileItemResource implements IReadableResource
     return null;
   }
 
-  @Nonnull
+  @NonNull
   @UnsupportedOperation
-  public IReadableResource getReadableCloneForPath (@Nonnull final String sPath)
+  public IReadableResource getReadableCloneForPath (@NonNull final String sPath)
   {
     throw new UnsupportedOperationException ();
   }

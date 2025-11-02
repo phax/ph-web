@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.CountDownLatch;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,6 @@ import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mock.AbstractWebScopeAwareTestCase;
 
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
 /**

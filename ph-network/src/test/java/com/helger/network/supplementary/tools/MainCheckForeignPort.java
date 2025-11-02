@@ -21,14 +21,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Small tool to list all TCP and UDP ports that are currently in use on this
@@ -54,8 +53,8 @@ public final class MainCheckForeignPort
     }
   }
 
-  @Nonnull
-  public static EPortStatus checkPortOpen (@Nonnull @Nonempty final String sHostName,
+  @NonNull
+  public static EPortStatus checkPortOpen (@NonNull @Nonempty final String sHostName,
                                            @Nonnegative final int nPort,
                                            @Nonnegative final int nTimeoutMillisecs)
   {

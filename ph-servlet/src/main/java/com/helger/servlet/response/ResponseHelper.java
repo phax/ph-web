@@ -22,6 +22,8 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
@@ -33,7 +35,6 @@ import com.helger.http.header.HttpHeaderMap;
 import com.helger.http.header.specific.AcceptEncodingList;
 import com.helger.servlet.request.RequestHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -66,8 +67,8 @@ public final class ResponseHelper
    * @return The best matching output stream type. Never <code>null</code>.
    * @see ResponseHelperSettings
    */
-  @Nonnull
-  public static EResponseStreamType getBestSuitableOutputStreamType (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static EResponseStreamType getBestSuitableOutputStreamType (@NonNull final HttpServletRequest aHttpRequest)
   {
     if (ResponseHelperSettings.isResponseCompressionEnabled ())
     {
@@ -115,9 +116,9 @@ public final class ResponseHelper
    *         In case of IO error
    * @see ResponseHelperSettings
    */
-  @Nonnull
-  public static OutputStream getBestSuitableOutputStream (@Nonnull final HttpServletRequest aHttpRequest,
-                                                          @Nonnull final HttpServletResponse aHttpResponse) throws IOException
+  @NonNull
+  public static OutputStream getBestSuitableOutputStream (@NonNull final HttpServletRequest aHttpRequest,
+                                                          @NonNull final HttpServletResponse aHttpResponse) throws IOException
   {
     OutputStream aOS = aHttpResponse.getOutputStream ();
 
@@ -153,7 +154,7 @@ public final class ResponseHelper
     return aOS;
   }
 
-  public static void finishReponseOutputStream (@Nonnull final OutputStream aOS) throws IOException
+  public static void finishReponseOutputStream (@NonNull final OutputStream aOS) throws IOException
   {
     ValueEnforcer.notNull (aOS, "OutputStream");
 
@@ -182,7 +183,7 @@ public final class ResponseHelper
    * @param nContentLength
    *        The content length to set
    */
-  public static void setContentLength (@Nonnull final HttpServletResponse aHttpResponse, @Nonnegative final long nContentLength)
+  public static void setContentLength (@NonNull final HttpServletResponse aHttpResponse, @Nonnegative final long nContentLength)
   {
     if (nContentLength < Integer.MAX_VALUE)
       aHttpResponse.setContentLength ((int) nContentLength);
@@ -198,9 +199,9 @@ public final class ResponseHelper
    * @return Never <code>null</code>.
    * @since 8.7.3
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static HttpHeaderMap getResponseHeaderMap (@Nonnull final HttpServletResponse aHttpResponse)
+  public static HttpHeaderMap getResponseHeaderMap (@NonNull final HttpServletResponse aHttpResponse)
   {
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 

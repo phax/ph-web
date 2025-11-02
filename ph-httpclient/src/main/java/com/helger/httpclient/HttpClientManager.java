@@ -24,12 +24,11 @@ import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.protocol.HttpContext;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.stream.StreamHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A small wrapper around {@link CloseableHttpClient}.
@@ -45,7 +44,7 @@ public class HttpClientManager implements AutoCloseable
     this (new HttpClientFactory ());
   }
 
-  public HttpClientManager (@Nonnull final IHttpClientProvider aHttpClientSupplier)
+  public HttpClientManager (@NonNull final IHttpClientProvider aHttpClientSupplier)
   {
     ValueEnforcer.notNull (aHttpClientSupplier, "HttpClientSupplier");
     m_aHttpClient = aHttpClientSupplier.createHttpClient ();
@@ -96,8 +95,8 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
-  public <T> T execute (@Nonnull final HttpUriRequest aRequest,
-                        @Nonnull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
+  public <T> T execute (@NonNull final HttpUriRequest aRequest,
+                        @NonNull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
     return execute (aRequest, (HttpClientContext) null, aResponseHandler);
   }
@@ -124,9 +123,9 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
-  public <T> T execute (@Nonnull final ClassicHttpRequest aRequest,
+  public <T> T execute (@NonNull final ClassicHttpRequest aRequest,
                         @Nullable final HttpContext aHttpContext,
-                        @Nonnull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
+                        @NonNull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
     checkIfClosed ();
     HttpDebugger.beforeRequest (aRequest, aHttpContext);
@@ -148,8 +147,8 @@ public class HttpClientManager implements AutoCloseable
     }
   }
 
-  @Nonnull
-  public static HttpClientManager create (@Nonnull final HttpClientSettings aHttpClientSettings)
+  @NonNull
+  public static HttpClientManager create (@NonNull final HttpClientSettings aHttpClientSettings)
   {
     return new HttpClientManager (new HttpClientFactory (aHttpClientSettings));
   }

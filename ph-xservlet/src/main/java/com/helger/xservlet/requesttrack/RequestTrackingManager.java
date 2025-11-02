@@ -18,6 +18,7 @@ package com.helger.xservlet.requesttrack;
 
 import java.util.Map.Entry;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,6 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * The request time manager manages all currently running requests.
@@ -55,9 +54,9 @@ public final class RequestTrackingManager
   public RequestTrackingManager ()
   {}
 
-  public void addRequest (@Nonnull @Nonempty final String sRequestID,
-                          @Nonnull final IRequestWebScope aRequestScope,
-                          @Nonnull final CallbackList <IParallelRunningRequestCallback> aCallbacks)
+  public void addRequest (@NonNull @Nonempty final String sRequestID,
+                          @NonNull final IRequestWebScope aRequestScope,
+                          @NonNull final CallbackList <IParallelRunningRequestCallback> aCallbacks)
   {
     boolean bNotifyOnParallelRequests = false;
     ICommonsList <TrackedRequest> aOpenRequests = null;
@@ -96,8 +95,8 @@ public final class RequestTrackingManager
     }
   }
 
-  public void removeRequest (@Nonnull @Nonempty final String sRequestID,
-                             @Nonnull final CallbackList <IParallelRunningRequestCallback> aCallbacks)
+  public void removeRequest (@NonNull @Nonempty final String sRequestID,
+                             @NonNull final CallbackList <IParallelRunningRequestCallback> aCallbacks)
   {
     boolean bNowBelowLimit = false;
     m_aRWLock.writeLock ().lock ();
@@ -133,7 +132,7 @@ public final class RequestTrackingManager
     }
   }
 
-  public void checkForLongRunningRequests (@Nonnull final ICallbackList <ILongRunningRequestCallback> aCallbacks)
+  public void checkForLongRunningRequests (@NonNull final ICallbackList <ILongRunningRequestCallback> aCallbacks)
   {
     if (aCallbacks.isNotEmpty ())
     {

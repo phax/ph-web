@@ -19,13 +19,14 @@ package com.helger.mail.config;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.IsSPIImplementation;
 import com.helger.base.email.EmailAddress;
 import com.helger.typeconvert.ITypeConverterRegistrarSPI;
 import com.helger.typeconvert.ITypeConverterRegistry;
 
-import jakarta.annotation.Nonnull;
 import jakarta.mail.internet.InternetAddress;
 
 /**
@@ -37,7 +38,7 @@ import jakarta.mail.internet.InternetAddress;
 @IsSPIImplementation
 public final class TypeConverterRegistrar_ph_mail implements ITypeConverterRegistrarSPI
 {
-  public void registerTypeConverter (@Nonnull final ITypeConverterRegistry aRegistry)
+  public void registerTypeConverter (@NonNull final ITypeConverterRegistry aRegistry)
   {
     aRegistry.registerTypeConverter (InternetAddress.class,
                                      EmailAddress.class,

@@ -19,10 +19,10 @@ package com.helger.jsch.scp;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import com.helger.annotation.Nonempty;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.annotation.Nonempty;
 
 public class ScpEntry
 {
@@ -42,9 +42,9 @@ public class ScpEntry
   private final long m_nSize;
   private final EType m_eType;
 
-  @Nonnull
+  @NonNull
   @Nonempty
-  private static String _standardizeMode (@Nonnull final String sMode) throws IOException
+  private static String _standardizeMode (@NonNull final String sMode) throws IOException
   {
     if (!MODE_PATTERN.matcher (sMode).matches ())
       throw new IOException ("invalid file mode '" + sMode + "'");
@@ -93,7 +93,7 @@ public class ScpEntry
     return m_eType == EType.FILE;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getAsString ()
   {
@@ -110,31 +110,31 @@ public class ScpEntry
     }
   }
 
-  @Nonnull
+  @NonNull
   public static ScpEntry newDirectory (final String sName) throws IOException
   {
     return newDirectory (sName, DEFAULT_DIRECTORY_MODE);
   }
 
-  @Nonnull
+  @NonNull
   public static ScpEntry newDirectory (final String sName, @Nullable final String sMode) throws IOException
   {
     return new ScpEntry (sName, 0L, sMode, EType.DIRECTORY);
   }
 
-  @Nonnull
+  @NonNull
   public static ScpEntry newEndOfDirectory () throws IOException
   {
     return new ScpEntry (null, 0L, null, EType.END_OF_DIRECTORY);
   }
 
-  @Nonnull
+  @NonNull
   public static ScpEntry newFile (final String sName, final long nSize) throws IOException
   {
     return newFile (sName, nSize, DEFAULT_FILE_MODE);
   }
 
-  @Nonnull
+  @NonNull
   public static ScpEntry newFile (final String sName, final long nSize, @Nullable final String sMode) throws IOException
   {
     return new ScpEntry (sName, nSize, sMode, EType.FILE);

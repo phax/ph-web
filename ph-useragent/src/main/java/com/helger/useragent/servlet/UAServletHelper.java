@@ -16,6 +16,8 @@
  */
 package com.helger.useragent.servlet;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +32,6 @@ import com.helger.useragent.UserAgentElementList;
 import com.helger.useragent.uaprofile.UAProfile;
 import com.helger.useragent.uaprofile.UAProfileDatabase;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -58,7 +58,7 @@ public final class UAServletHelper
    *         case of an internal inconsistency.
    */
   @Nullable
-  public static IUserAgent getUserAgent (@Nonnull final HttpServletRequest aHttpRequest)
+  public static IUserAgent getUserAgent (@NonNull final HttpServletRequest aHttpRequest)
   {
     final Object aAttr = ServletHelper.getRequestAttribute (aHttpRequest, IUserAgent.class.getName ());
     try
@@ -108,8 +108,8 @@ public final class UAServletHelper
    *        The HTTP request to extract the information from.
    * @return A non-<code>null</code> user agent object.
    */
-  @Nonnull
-  public static UAProfile getUAProfile (@Nonnull final HttpServletRequest aHttpRequest)
+  @NonNull
+  public static UAProfile getUAProfile (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 

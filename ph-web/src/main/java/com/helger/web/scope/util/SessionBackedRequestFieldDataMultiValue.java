@@ -18,15 +18,15 @@ package com.helger.web.scope.util;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.reflection.GenericReflection;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.scope.IScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * A specialized request field that uses a value stored in the session as the
@@ -38,13 +38,13 @@ import jakarta.annotation.Nullable;
  */
 public class SessionBackedRequestFieldDataMultiValue extends RequestFieldDataMultiValue
 {
-  public SessionBackedRequestFieldDataMultiValue (@Nonnull final String sFieldName)
+  public SessionBackedRequestFieldDataMultiValue (@NonNull final String sFieldName)
   {
     super (sFieldName);
     _init ();
   }
 
-  public SessionBackedRequestFieldDataMultiValue (@Nonnull final String sFieldName, @Nullable final Collection <String> aDefaultValues)
+  public SessionBackedRequestFieldDataMultiValue (@NonNull final String sFieldName, @Nullable final Collection <String> aDefaultValues)
   {
     super (sFieldName, aDefaultValues);
     _init ();
@@ -54,7 +54,7 @@ public class SessionBackedRequestFieldDataMultiValue extends RequestFieldDataMul
    * @return The name of the session scope variable that contains the stored
    *         value.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getSessionFieldName ()
   {

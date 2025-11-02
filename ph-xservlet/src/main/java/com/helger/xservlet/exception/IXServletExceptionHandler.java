@@ -16,11 +16,11 @@
  */
 package com.helger.xservlet.exception;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.callback.ICallback;
 import com.helger.base.state.EContinue;
 import com.helger.web.scope.IRequestWebScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * High level exception handler for XServlet.
@@ -46,6 +46,6 @@ public interface IXServletExceptionHandler extends ICallback
    *         invoked, {@link EContinue#BREAK} if the exception was finally
    *         handled.
    */
-  @Nonnull
-  EContinue onException (@Nonnull IRequestWebScope aRequestScope, @Nonnull Throwable t);
+  @NonNull
+  EContinue onException (@NonNull IRequestWebScope aRequestScope, @NonNull Throwable t);
 }

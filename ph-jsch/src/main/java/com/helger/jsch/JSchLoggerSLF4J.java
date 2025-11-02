@@ -16,6 +16,7 @@
  */
 package com.helger.jsch;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,6 @@ import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * JSch logger implementation on top of SLF4J.
@@ -36,18 +35,18 @@ public class JSchLoggerSLF4J implements com.jcraft.jsch.Logger
 {
   private final Logger m_aLogger;
 
-  public JSchLoggerSLF4J (@Nonnull final Class <?> aClass)
+  public JSchLoggerSLF4J (@NonNull final Class <?> aClass)
   {
     this (aClass.getName ());
   }
 
-  public JSchLoggerSLF4J (@Nonnull @Nonempty final String sLoggerName)
+  public JSchLoggerSLF4J (@NonNull @Nonempty final String sLoggerName)
   {
     ValueEnforcer.notEmpty (sLoggerName, "LoggerName");
     m_aLogger = LoggerFactory.getLogger (sLoggerName);
   }
 
-  @Nonnull
+  @NonNull
   public Logger getLogger ()
   {
     return m_aLogger;

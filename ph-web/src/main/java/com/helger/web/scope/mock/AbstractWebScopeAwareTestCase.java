@@ -16,14 +16,14 @@
  */
 package com.helger.web.scope.mock;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.mock.MockServletContext;
 import com.helger.servlet.mock.MockServletPool;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -40,13 +40,13 @@ public abstract class AbstractWebScopeAwareTestCase
   @Rule
   public final WebScopeTestRule m_aWebScope = new WebScopeTestRule ();
 
-  @Nonnull
+  @NonNull
   protected final MockServletContext getServletContext ()
   {
     return m_aWebScope.getServletContext ();
   }
 
-  @Nonnull
+  @NonNull
   protected final MockServletPool getServletPool ()
   {
     return m_aWebScope.getServletPool ();

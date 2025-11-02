@@ -16,10 +16,10 @@
  */
 package com.helger.web.scope.mgr;
 
-import com.helger.web.scope.IWebScope;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.web.scope.IWebScope;
 
 /**
  * This enumeration defines all the possible web scopes including some utility
@@ -40,7 +40,7 @@ public enum EWebScope
    * @return The current {@link IWebScope} object for this enum. Aequivalent to
    *         <code>getScope(true)</code> and therefore never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public IWebScope getScope ()
   {
     return getScope (true);
@@ -78,7 +78,7 @@ public enum EWebScope
    *         If an illegal enumeration value is passed.
    */
   @Nullable
-  public static IWebScope getScope (@Nonnull final EWebScope eWebScope, final boolean bCreateIfNotExisting)
+  public static IWebScope getScope (@NonNull final EWebScope eWebScope, final boolean bCreateIfNotExisting)
   {
     switch (eWebScope)
     {

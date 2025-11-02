@@ -16,9 +16,9 @@
  */
 package com.helger.web.scope.session;
 
-import com.helger.web.scope.ISessionWebScope;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.web.scope.ISessionWebScope;
 
 /**
  * Interface for session attributes that are notified during session activation.
@@ -33,5 +33,5 @@ public interface ISessionWebScopeActivationHandler
    * @param aSessionScope
    *        The activated session scope. Never <code>null</code>.
    */
-  void onSessionDidActivate (@Nonnull ISessionWebScope aSessionScope);
+  void onSessionDidActivate (@NonNull ISessionWebScope aSessionScope);
 }

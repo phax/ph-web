@@ -18,6 +18,8 @@ package com.helger.xservlet;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.OverrideOnDemand;
 import com.helger.base.state.EContinue;
 import com.helger.http.EHttpMethod;
@@ -27,7 +29,6 @@ import com.helger.servlet.response.UnifiedResponse;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.IRequestWebScopeWithoutResponse;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,12 +58,12 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    * @return The new unified response. Never <code>null</code>.
    * @since 11.1.1
    */
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  protected UnifiedResponse createUnifiedResponse (@Nonnull final EHttpVersion eHttpVersion,
-                                                   @Nonnull final EHttpMethod eHttpMethod,
-                                                   @Nonnull final HttpServletRequest aHttpRequest,
-                                                   @Nonnull final IRequestWebScope aRequestScope)
+  protected UnifiedResponse createUnifiedResponse (@NonNull final EHttpVersion eHttpVersion,
+                                                   @NonNull final EHttpMethod eHttpMethod,
+                                                   @NonNull final HttpServletRequest aHttpRequest,
+                                                   @NonNull final IRequestWebScope aRequestScope)
   {
     return new UnifiedResponse (eHttpVersion, eHttpMethod, aHttpRequest);
   }
@@ -84,17 +85,17 @@ public abstract class AbstractXFilterUnifiedResponse extends AbstractXFilter
    * @throws ServletException
    *         In case of an error
    */
-  @Nonnull
-  protected abstract EContinue onFilterBefore (@Nonnull IRequestWebScopeWithoutResponse aRequestScope,
-                                               @Nonnull UnifiedResponse aUnifiedResponse) throws IOException,
+  @NonNull
+  protected abstract EContinue onFilterBefore (@NonNull IRequestWebScopeWithoutResponse aRequestScope,
+                                               @NonNull UnifiedResponse aUnifiedResponse) throws IOException,
                                                                                           ServletException;
 
   @Override
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  public final EContinue onFilterBefore (@Nonnull final HttpServletRequest aHttpRequest,
-                                         @Nonnull final HttpServletResponse aHttpResponse,
-                                         @Nonnull final IRequestWebScope aRequestScope) throws IOException,
+  public final EContinue onFilterBefore (@NonNull final HttpServletRequest aHttpRequest,
+                                         @NonNull final HttpServletResponse aHttpResponse,
+                                         @NonNull final IRequestWebScope aRequestScope) throws IOException,
                                                                                         ServletException
   {
     // Check HTTP version

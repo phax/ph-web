@@ -16,11 +16,11 @@
  */
 package com.helger.web.encoding;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.codec.IEncoder;
 import com.helger.base.enforce.ValueEnforcer;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Heuristic Android filename encoder based on <a href=
@@ -34,14 +34,14 @@ public class AndroidFilenameEncoder implements IEncoder <String, String>
   public static final char DEFAULT_REPLACEMENT_CHAR = '_';
   private static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-+,@£$€!½§~'=()[]{}0123456789";
 
-  @Nonnull
-  public static String getSafeAndroidFilename (@Nonnull final String sSrc)
+  @NonNull
+  public static String getSafeAndroidFilename (@NonNull final String sSrc)
   {
     return getSafeAndroidFilename (sSrc, DEFAULT_REPLACEMENT_CHAR);
   }
 
-  @Nonnull
-  public static String getSafeAndroidFilename (@Nonnull final String sSrc, final char cReplacement)
+  @NonNull
+  public static String getSafeAndroidFilename (@NonNull final String sSrc, final char cReplacement)
   {
     ValueEnforcer.notNull (sSrc, "Src");
     if (ALLOWED_CHARS.indexOf (cReplacement) < 0)

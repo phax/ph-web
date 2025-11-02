@@ -16,11 +16,11 @@
  */
 package com.helger.smtp.listener;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.callback.ICallback;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * An interface similar to javax.mail.event.TransportListener but specific
@@ -38,7 +38,7 @@ public interface IEmailDataTransportListener extends ICallback
    *        The data transport event with all the details. Never
    *        <code>null</code>.
    */
-  void messageDelivered (@Nonnull EmailDataTransportEvent aEvent);
+  void messageDelivered (@NonNull EmailDataTransportEvent aEvent);
 
   /**
    * Invoked when a Message is not delivered.
@@ -47,5 +47,5 @@ public interface IEmailDataTransportListener extends ICallback
    *        The data transport event with all the details. Never
    *        <code>null</code>.
    */
-  void messageNotDelivered (@Nonnull EmailDataTransportEvent aEvent);
+  void messageNotDelivered (@NonNull EmailDataTransportEvent aEvent);
 }

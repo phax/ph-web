@@ -16,7 +16,7 @@
  */
 package com.helger.smtp.transport;
 
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Central exception in case something's wrong with mail sending.

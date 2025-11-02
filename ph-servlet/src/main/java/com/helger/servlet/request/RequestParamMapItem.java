@@ -18,6 +18,9 @@ package com.helger.servlet.request;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.annotation.style.ReturnsMutableObject;
@@ -28,9 +31,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.CollectionHelper;
 import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsOrderedMap;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Represents a single item in a {@link RequestParamMap}. It consists of a
@@ -47,7 +47,7 @@ public final class RequestParamMapItem
   public RequestParamMapItem ()
   {}
 
-  public RequestParamMapItem (@Nonnull final RequestParamMapItem aOther)
+  public RequestParamMapItem (@NonNull final RequestParamMapItem aOther)
   {
     m_sValue = aOther.m_sValue;
     m_aChildren.putAll (aOther.m_aChildren);
@@ -75,14 +75,14 @@ public final class RequestParamMapItem
     return m_aChildren.isNotEmpty ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject ("design")
   public ICommonsOrderedMap <String, RequestParamMapItem> directGetChildren ()
   {
     return m_aChildren;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, RequestParamMapItem> getAllChildren ()
   {

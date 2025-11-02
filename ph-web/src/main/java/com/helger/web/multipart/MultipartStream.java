@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.base.CGlobal;
 import com.helger.base.array.ArrayHelper;
@@ -28,9 +31,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.state.ICloseable;
 import com.helger.base.system.SystemHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -367,7 +367,7 @@ public class MultipartStream
    *         if the <code>boundary</code> has a different length than the one being currently
    *         parsed.
    */
-  public void setBoundary (@Nonnull final byte [] aBoundary) throws MultipartIllegalBoundaryException
+  public void setBoundary (@NonNull final byte [] aBoundary) throws MultipartIllegalBoundaryException
   {
     ValueEnforcer.notNull (aBoundary, "Boundary");
     if (aBoundary.length != m_nBoundaryLength - BOUNDARY_PREFIX.length)
@@ -386,7 +386,7 @@ public class MultipartStream
    * @throws MultipartMalformedStreamException
    *         if the stream ends unexpectedly.
    */
-  @Nonnull
+  @NonNull
   public String readHeaders () throws MultipartMalformedStreamException
   {
     // to support multi-byte characters
@@ -459,7 +459,7 @@ public class MultipartStream
    *
    * @return A new instance of {@link MultipartItemInputStream}.
    */
-  @Nonnull
+  @NonNull
   public MultipartItemInputStream createInputStream ()
   {
     return new MultipartItemInputStream ();

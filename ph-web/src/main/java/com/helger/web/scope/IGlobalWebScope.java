@@ -16,9 +16,10 @@
  */
 package com.helger.web.scope;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.scope.IGlobalScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletContext;
 
 /**
@@ -31,6 +32,6 @@ public interface IGlobalWebScope extends IGlobalScope, IWebScope
   /**
    * @return The underlying servlet context. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   ServletContext getServletContext ();
 }

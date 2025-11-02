@@ -16,12 +16,12 @@
  */
 package com.helger.network.port;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.base.name.IHasName;
 import com.helger.base.string.StringHelper;
 import com.helger.text.IHasDescription;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Interface describing a single network port.
@@ -39,13 +39,13 @@ public interface INetworkPort extends IHasName, IHasDescription
   /**
    * @return The underlying network protocol (TCP / UDP)
    */
-  @Nonnull
+  @NonNull
   ENetworkProtocol getProtocol ();
 
   /**
    * @return Port name. May not be <code>null</code> but maybe empty.
    */
-  @Nonnull
+  @NonNull
   String getName ();
 
   default boolean hasName ()
@@ -56,6 +56,6 @@ public interface INetworkPort extends IHasName, IHasDescription
   /**
    * @return Description of this ports usage. May not be <code>null</code> but maybe empty.
    */
-  @Nonnull
+  @NonNull
   String getDescription ();
 }

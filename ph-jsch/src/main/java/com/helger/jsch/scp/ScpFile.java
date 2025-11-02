@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +30,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.stream.StreamHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public class ScpFile
 {
@@ -40,7 +39,7 @@ public class ScpFile
   private final String [] m_aPath;
   private final ISessionFactory m_aSessionFactory;
 
-  public ScpFile (@Nonnull final ISessionFactory aSessionFactory, @Nonnull final EDestinationOS eOS, final String... aPath)
+  public ScpFile (@NonNull final ISessionFactory aSessionFactory, @NonNull final EDestinationOS eOS, final String... aPath)
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
     ValueEnforcer.notNull (eOS, "OS");
@@ -50,12 +49,12 @@ public class ScpFile
     m_aPath = aPath;
   }
 
-  public void copyFrom (@Nonnull final File file) throws IOException, JSchException
+  public void copyFrom (@NonNull final File file) throws IOException, JSchException
   {
     copyFrom (file, null);
   }
 
-  public void copyFrom (@Nonnull final File file, @Nullable final String mode) throws IOException, JSchException
+  public void copyFrom (@NonNull final File file, @Nullable final String mode) throws IOException, JSchException
   {
     try (final FileInputStream from = new FileInputStream (file);
          final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ()) : getOutputStream (file.length (), mode))
@@ -64,7 +63,7 @@ public class ScpFile
     }
   }
 
-  public void copyTo (@Nonnull final File aFile) throws JSchException, IOException
+  public void copyTo (@NonNull final File aFile) throws JSchException, IOException
   {
     try (final ScpFileInputStream from = getInputStream ())
     {
@@ -107,7 +106,7 @@ public class ScpFile
     }
   }
 
-  public void copyTo (@Nonnull final ScpFile aFile) throws JSchException, IOException
+  public void copyTo (@NonNull final ScpFile aFile) throws JSchException, IOException
   {
     try (final ScpFileInputStream aFromIS = getInputStream ())
     {
@@ -120,31 +119,31 @@ public class ScpFile
     }
   }
 
-  @Nonnull
+  @NonNull
   public ScpFileInputStream getInputStream () throws JSchException, IOException
   {
     return new ScpFileInputStream (m_aSessionFactory, getPath ());
   }
 
-  @Nonnull
+  @NonNull
   private ScpFileOutputStream _getOutputStream (final ScpEntry scpEntry) throws JSchException, IOException
   {
     return new ScpFileOutputStream (m_aSessionFactory, getDirectory (), scpEntry);
   }
 
-  @Nonnull
+  @NonNull
   public ScpFileOutputStream getOutputStream (final long size) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size));
   }
 
-  @Nonnull
+  @NonNull
   public ScpFileOutputStream getOutputStream (final long size, @Nullable final String mode) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size, mode));
   }
 
-  @Nonnull
+  @NonNull
   String getDirectory ()
   {
     return m_eOS.joinPath (m_aPath, 0, m_aPath.length - 1);
@@ -155,14 +154,14 @@ public class ScpFile
     return m_aPath[m_aPath.length - 1];
   }
 
-  @Nonnull
+  @NonNull
   String getPath ()
   {
     return m_eOS.joinPath (m_aPath);
   }
 
-  @Nonnull
-  public static ScpFile forUnix (@Nonnull final ISessionFactory aSessionFactory, final String... aPath)
+  @NonNull
+  public static ScpFile forUnix (@NonNull final ISessionFactory aSessionFactory, final String... aPath)
   {
     return new ScpFile (aSessionFactory, EDestinationOS.UNIX, aPath);
   }

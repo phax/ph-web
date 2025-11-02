@@ -16,15 +16,15 @@
  */
 package com.helger.sitemap;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.IsSPIImplementation;
 import com.helger.url.URLBuilder;
-
-import jakarta.annotation.Nonnull;
 
 @IsSPIImplementation
 public final class MockXMLSitemapProviderMultiFileSPI implements IXMLSitemapProviderSPI
 {
-  @Nonnull
+  @NonNull
   public XMLSitemapURLSet createURLSet ()
   {
     final XMLSitemapURLSet ret = new XMLSitemapURLSet ();

@@ -16,10 +16,10 @@
  */
 package com.helger.useragent.uaprofile;
 
-import com.helger.collection.commons.ICommonsCollection;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.collection.commons.ICommonsCollection;
 
 /**
  * User Agent Profile Header provider
@@ -28,10 +28,10 @@ import jakarta.annotation.Nullable;
  */
 public interface IUAProfileHeaderProvider
 {
-  @Nonnull
+  @NonNull
   ICommonsCollection <String> getAllHeaderNames ();
 
-  @Nonnull
+  @NonNull
   ICommonsCollection <String> getHeaders (@Nullable String sName);
 
   @Nullable

@@ -18,13 +18,12 @@ package com.helger.httpclient;
 
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.collection.commons.ICommonsSet;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Read-only interface for {@link HttpProxySettings}
@@ -66,7 +65,7 @@ public interface IHttpProxySettings
    * @return The mutable original set of all host names and IP addresses for which no proxy should
    *         be used. Never <code>null</code> and mutable.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   ICommonsSet <String> nonProxyHosts ();
 
@@ -74,7 +73,7 @@ public interface IHttpProxySettings
    * @return A mutable copy of the set of all host names and IP addresses for which no proxy should
    *         be used. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   default ICommonsSet <String> getAllNonProxyHosts ()
   {

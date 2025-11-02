@@ -16,6 +16,9 @@
  */
 package com.helger.useragent;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.version.Version;
@@ -27,9 +30,6 @@ import com.helger.useragent.browser.EBrowserType;
 import com.helger.useragent.browser.MobileBrowserManager;
 import com.helger.useragent.spider.WebSpiderInfo;
 import com.helger.useragent.spider.WebSpiderManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Default implementation of the {@link IUserAgent} interface.
@@ -74,13 +74,13 @@ public class UserAgent implements IUserAgent
   private BrowserInfoSpider m_aInfoWebSpider;
   private BrowserInfo m_aInfoApplication;
 
-  public UserAgent (@Nonnull final String sFullUserAgent, @Nonnull final UserAgentElementList aElements)
+  public UserAgent (@NonNull final String sFullUserAgent, @NonNull final UserAgentElementList aElements)
   {
     m_sFullUserAgent = ValueEnforcer.notNull (sFullUserAgent, "FullUserAgent");
     m_aElements = ValueEnforcer.notNull (aElements, "Elements");
   }
 
-  @Nonnull
+  @NonNull
   public String getAsString ()
   {
     return m_sFullUserAgent;
@@ -118,7 +118,7 @@ public class UserAgent implements IUserAgent
     return null;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoFirefox ()
   {
     if (m_aInfoFirefox == null)
@@ -143,7 +143,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoFirefox;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfoIE getInfoIE ()
   {
     if (m_aInfoIE == null)
@@ -202,7 +202,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoIE;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoOpera ()
   {
     if (m_aInfoOpera == null)
@@ -232,7 +232,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoOpera;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoSafari ()
   {
     if (m_aInfoSafari == null)
@@ -250,7 +250,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoSafari;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoChrome ()
   {
     if (m_aInfoChrome == null)
@@ -268,7 +268,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoChrome;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoVivaldi ()
   {
     if (m_aInfoVivaldi == null)
@@ -287,7 +287,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoVivaldi;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoLynx ()
   {
     if (m_aInfoLynx == null)
@@ -303,7 +303,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoLynx;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoKonqueror ()
   {
     if (m_aInfoKonqueror == null)
@@ -321,7 +321,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoKonqueror;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoGeckoBased ()
   {
     if (m_aInfoGeckoBased == null)
@@ -356,7 +356,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoGeckoBased;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoWebKitBased ()
   {
     if (m_aInfoWebKitBased == null)
@@ -376,7 +376,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoWebKitBased;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfoMobile getInfoMobile ()
   {
     if (m_aInfoMobile == null)
@@ -390,7 +390,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoMobile;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfoSpider getInfoWebSpider ()
   {
     if (m_aInfoWebSpider == null)
@@ -404,7 +404,7 @@ public class UserAgent implements IUserAgent
     return m_aInfoWebSpider;
   }
 
-  @Nonnull
+  @NonNull
   public BrowserInfo getInfoApplication ()
   {
     if (m_aInfoApplication == null)

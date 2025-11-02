@@ -19,6 +19,9 @@ package com.helger.web.scope;
 import java.nio.charset.Charset;
 import java.security.Principal;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.style.ReturnsMutableObject;
@@ -35,8 +38,6 @@ import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.url.ISimpleURL;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -52,21 +53,21 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return A cached header map for this request. Never <code>null</code>. Alterations to this map
    *         are visible everywhere. Clone the object if you need to modify it.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   HttpHeaderMap headers ();
 
   /**
    * @return The external URL parameters. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableObject
   IRequestParamContainer params ();
 
   /**
    * @return A cached request param map for this request. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   IRequestParamMap getRequestParamMap ();
 
   @Nullable
@@ -358,7 +359,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         slash.
    * @see #getFullContextPath()
    */
-  @Nonnull
+  @NonNull
   String getContextPath ();
 
   /**
@@ -443,7 +444,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
-  @Nonnull
+  @NonNull
   default String getRequestURIDecoded ()
   {
     return RequestHelper.getRequestURIDecoded (getRequest ());
@@ -475,7 +476,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The request URI without the optional session ID. Never <code>null</code>.
    * @since 9.1.0
    */
-  @Nonnull
+  @NonNull
   default String getRequestURIEncoded ()
   {
     return RequestHelper.getRequestURIEncoded (getRequest ());
@@ -498,7 +499,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default StringBuilder getRequestURLDecoded ()
   {
@@ -522,7 +523,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return a <code>StringBuilder</code> object containing the reconstructed URL
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default StringBuilder getRequestURLEncoded ()
   {
@@ -542,7 +543,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         specified in the request URL, decoded, or an empty string if the servlet used to
    *         process the request is matched using the "/*" pattern.
    */
-  @Nonnull
+  @NonNull
   default String getServletPath ()
   {
     return ServletHelper.getRequestServletPath (getRequest ());
@@ -614,7 +615,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   /**
    * @return Return the absolute server path. E.g. "http://localhost:8080"
    */
-  @Nonnull
+  @NonNull
   default String getFullServerPath ()
   {
     return RequestHelper.getFullServerName (getRequest ()).toString ();
@@ -625,7 +626,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         Never with a trailing slash.
    * @see #getContextPath()
    */
-  @Nonnull
+  @NonNull
   default String getFullContextPath ()
   {
     return RequestHelper.getFullServerName (getRequest ()).append (getContextPath ()).toString ();
@@ -635,7 +636,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return Return the absolute servlet path. E.g. <code>/context/config.jsp</code> or
    *         <code>/context/action/</code>
    */
-  @Nonnull
+  @NonNull
   String getContextAndServletPath ();
 
   /**
@@ -643,7 +644,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *         <code>http://localhost:8080/context/config.jsp</code> or
    *         <code>http://localhost:8080/context/action/</code>
    */
-  @Nonnull
+  @NonNull
   String getFullContextAndServletPath ();
 
   /**
@@ -653,7 +654,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The full URI of the current request.
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default String getURIDecoded ()
   {
@@ -668,7 +669,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The full URI of the current request.
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default String getURIEncoded ()
   {
@@ -683,7 +684,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The full URL of the current request.
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default String getURLDecoded ()
   {
@@ -698,7 +699,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return The full URL of the current request.
    * @since 9.1.10
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   default String getURLEncoded ()
   {
@@ -719,8 +720,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *        the url to be encoded. May not be <code>null</code>.
    * @return the encoded URL if encoding is needed; the unchanged URL otherwise.
    */
-  @Nonnull
-  String encodeURL (@Nonnull String sURL);
+  @NonNull
+  String encodeURL (@NonNull String sURL);
 
   /**
    * Encodes the specified URL by including the session ID in it, or, if encoding is not needed,
@@ -735,8 +736,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *        the url to be encoded. May not be <code>null</code>.
    * @return the encoded URL if encoding is needed. Never <code>null</code>.
    */
-  @Nonnull
-  default ISimpleURL encodeURL (@Nonnull final ISimpleURL aURL)
+  @NonNull
+  default ISimpleURL encodeURL (@NonNull final ISimpleURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
 
@@ -760,8 +761,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return the encoded URL if encoding is needed; the unchanged URL otherwise.
    * @see #encodeURL(String)
    */
-  @Nonnull
-  String encodeRedirectURL (@Nonnull String sURL);
+  @NonNull
+  String encodeRedirectURL (@NonNull String sURL);
 
   /**
    * Encodes the specified URL for use in the <code>sendRedirect</code> method or, if encoding is
@@ -779,8 +780,8 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return the encoded URL if encoding is needed. Never <code>null</code>.
    * @see #encodeURL(String)
    */
-  @Nonnull
-  default ISimpleURL encodeRedirectURL (@Nonnull final ISimpleURL aURL)
+  @NonNull
+  default ISimpleURL encodeRedirectURL (@NonNull final ISimpleURL aURL)
   {
     ValueEnforcer.notNull (aURL, "URL");
 
@@ -806,7 +807,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return the path within the web application and never <code>null</code>. By default "/" is
    *         returned is an empty request URI is determined.
    */
-  @Nonnull
+  @NonNull
   default String getPathWithinServletContext ()
   {
     return RequestHelper.getPathWithinServletContext (getRequest ());
@@ -823,7 +824,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    *
    * @return the path within the servlet mapping, or ""
    */
-  @Nonnull
+  @NonNull
   default String getPathWithinServlet ()
   {
     return RequestHelper.getPathWithinServlet (getRequest ());
@@ -832,6 +833,6 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   /**
    * @return The underlying HTTP servlet request object. Never <code>null</code> .
    */
-  @Nonnull
+  @NonNull
   HttpServletRequest getRequest ();
 }

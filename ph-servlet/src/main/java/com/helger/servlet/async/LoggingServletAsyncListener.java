@@ -18,12 +18,12 @@ package com.helger.servlet.async;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.concurrent.Immutable;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 
@@ -39,25 +39,25 @@ public class LoggingServletAsyncListener extends AbstractServletAsyncListener
   private static final Logger LOGGER = LoggerFactory.getLogger (LoggingServletAsyncListener.class);
 
   @Override
-  public void onStartAsync (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onStartAsync (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {
     LOGGER.info ("onStartAsync " + aAsyncEvent);
   }
 
   @Override
-  public void onComplete (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onComplete (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {
     LOGGER.info ("onComplete " + aAsyncEvent);
   }
 
   @Override
-  public void onError (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onError (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {
     LOGGER.error ("onError " + aAsyncEvent);
   }
 
   @Override
-  public void onTimeout (@Nonnull final AsyncEvent aAsyncEvent) throws IOException
+  public void onTimeout (@NonNull final AsyncEvent aAsyncEvent) throws IOException
   {
     LOGGER.warn ("onTimeout " + aAsyncEvent);
   }

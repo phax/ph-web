@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import java.security.Security;
 import java.time.Duration;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +29,6 @@ import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.system.SystemProperties;
 import com.helger.dns.ip.IPV4Addr;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Global DNS client configuration
@@ -89,7 +88,7 @@ public final class DNSConfig
     SystemProperties.setPropertyValue ("disableWSAddressCaching", nSeconds == 0);
   }
 
-  @Nonnull
+  @NonNull
   public static Duration getResolverTimeout ()
   {
     return DEFAULT_RESOLVER_TIMEOUT;

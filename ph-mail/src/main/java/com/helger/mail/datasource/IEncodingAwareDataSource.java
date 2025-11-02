@@ -20,11 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.mail.cte.IContentTransferEncoding;
 
 import jakarta.activation.DataSource;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.EncodingAware;
 
 /**
@@ -49,8 +50,8 @@ public interface IEncodingAwareDataSource extends IExtendedDataSource, EncodingA
     return aCTE == null ? null : aCTE.getID ();
   }
 
-  @Nonnull
-  static IEncodingAwareDataSource getEncodingAware (@Nonnull final DataSource aDS,
+  @NonNull
+  static IEncodingAwareDataSource getEncodingAware (@NonNull final DataSource aDS,
                                                     @Nullable final IContentTransferEncoding aCTE)
   {
     return new IEncodingAwareDataSource ()

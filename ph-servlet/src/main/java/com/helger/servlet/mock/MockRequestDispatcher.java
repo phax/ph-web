@@ -16,13 +16,13 @@
  */
 package com.helger.servlet.mock;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.enforce.ValueEnforcer;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -46,12 +46,12 @@ public class MockRequestDispatcher implements RequestDispatcher
    * @param sURL
    *        the URL to dispatch to.
    */
-  public MockRequestDispatcher (@Nonnull final String sURL)
+  public MockRequestDispatcher (@NonNull final String sURL)
   {
     m_sURL = ValueEnforcer.notNull (sURL, "URL");
   }
 
-  public void forward (@Nonnull final ServletRequest aRequest, @Nonnull final ServletResponse aResponse)
+  public void forward (@NonNull final ServletRequest aRequest, @NonNull final ServletResponse aResponse)
   {
     ValueEnforcer.notNull (aRequest, "Request");
     ValueEnforcer.notNull (aResponse, "Response");
@@ -63,7 +63,7 @@ public class MockRequestDispatcher implements RequestDispatcher
       LOGGER.debug ("MockRequestDispatcher: forwarding to URL '" + m_sURL + "'");
   }
 
-  public void include (@Nonnull final ServletRequest aRequest, @Nonnull final ServletResponse aResponse)
+  public void include (@NonNull final ServletRequest aRequest, @NonNull final ServletResponse aResponse)
   {
     ValueEnforcer.notNull (aRequest, "Request");
     ValueEnforcer.notNull (aResponse, "Response");
@@ -81,8 +81,8 @@ public class MockRequestDispatcher implements RequestDispatcher
    *        Original response
    * @return The matching {@link MockHttpServletResponse}
    */
-  @Nonnull
-  protected MockHttpServletResponse getMockHttpServletResponse (@Nonnull final ServletResponse aResponse)
+  @NonNull
+  protected MockHttpServletResponse getMockHttpServletResponse (@NonNull final ServletResponse aResponse)
   {
     if (aResponse instanceof MockHttpServletResponse)
       return (MockHttpServletResponse) aResponse;

@@ -16,12 +16,12 @@
  */
 package com.helger.web.scope.singleton;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.style.UsedViaReflection;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.scope.IScope;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Mock implementation of {@link AbstractSessionWebSingleton}
@@ -35,12 +35,12 @@ public final class MockSessionWebSingletonWithScopeCtor extends AbstractSessionW
 
   @Deprecated (forRemoval = false)
   @UsedViaReflection
-  public MockSessionWebSingletonWithScopeCtor (@Nonnull final IScope aScope)
+  public MockSessionWebSingletonWithScopeCtor (@NonNull final IScope aScope)
   {
     m_aScope = ValueEnforcer.notNull (aScope, "Scope");
   }
 
-  @Nonnull
+  @NonNull
   public static MockSessionWebSingletonWithScopeCtor getInstance ()
   {
     return getSessionSingleton (MockSessionWebSingletonWithScopeCtor.class);
@@ -56,7 +56,7 @@ public final class MockSessionWebSingletonWithScopeCtor extends AbstractSessionW
     return i;
   }
 
-  @Nonnull
+  @NonNull
   public IScope getScope ()
   {
     return m_aScope;

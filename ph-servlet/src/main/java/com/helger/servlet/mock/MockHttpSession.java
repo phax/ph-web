@@ -19,6 +19,9 @@ package com.helger.servlet.mock;
 import java.util.Enumeration;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.array.ArrayHelper;
@@ -30,8 +33,6 @@ import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.collection.enumeration.EnumerationHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionBindingEvent;
@@ -102,7 +103,7 @@ public class MockHttpSession implements HttpSession
     return m_nCreationTime;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getId ()
   {
@@ -120,7 +121,7 @@ public class MockHttpSession implements HttpSession
     return m_nLastAccessedTime;
   }
 
-  @Nonnull
+  @NonNull
   public ServletContext getServletContext ()
   {
     if (m_aServletContext == null)
@@ -139,32 +140,32 @@ public class MockHttpSession implements HttpSession
   }
 
   @Nullable
-  public Object getAttribute (@Nonnull final String sName)
+  public Object getAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     return m_aAttributes.get (sName);
   }
 
   @Deprecated (forRemoval = false)
-  public Object getValue (@Nonnull final String sName)
+  public Object getValue (@NonNull final String sName)
   {
     return getAttribute (sName);
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getAttributeNames ()
   {
     return EnumerationHelper.getEnumeration (m_aAttributes.keySet ());
   }
 
   @Deprecated (forRemoval = false)
-  @Nonnull
+  @NonNull
   public String [] getValueNames ()
   {
     return ArrayHelper.createArray (m_aAttributes.keySet (), String.class);
   }
 
-  public void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)
+  public void setAttribute (@NonNull final String sName, @Nullable final Object aValue)
   {
     ValueEnforcer.notNull (sName, "Name");
 
@@ -181,12 +182,12 @@ public class MockHttpSession implements HttpSession
   }
 
   @Deprecated (forRemoval = false)
-  public void putValue (@Nonnull final String sName, @Nullable final Object aValue)
+  public void putValue (@NonNull final String sName, @Nullable final Object aValue)
   {
     setAttribute (sName, aValue);
   }
 
-  public void removeAttribute (@Nonnull final String sName)
+  public void removeAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
 
@@ -196,7 +197,7 @@ public class MockHttpSession implements HttpSession
   }
 
   @Deprecated (forRemoval = false)
-  public void removeValue (@Nonnull final String sName)
+  public void removeValue (@NonNull final String sName)
   {
     removeAttribute (sName);
   }

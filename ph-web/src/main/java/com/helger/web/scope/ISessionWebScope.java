@@ -16,9 +16,10 @@
  */
 package com.helger.web.scope;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.scope.ISessionScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -35,6 +36,6 @@ public interface ISessionWebScope extends ISessionScope, IWebScope
    *
    * @return The underlying HTTP session. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   HttpSession getSession ();
 }

@@ -19,9 +19,9 @@ package com.helger.web.fileupload;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.helger.web.fileupload.exception.InvalidFileNameException;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nullable;
+import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
  * <p>

@@ -18,13 +18,13 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
 import com.helger.text.display.IHasDisplayText;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Contains the major web browsers on the market.
@@ -50,19 +50,19 @@ public enum EBrowserType implements IHasID <String>, IHasDisplayText
   private final String m_sID;
   private final IHasDisplayText m_aDisplayName;
 
-  EBrowserType (@Nonnull @Nonempty final String sID, @Nonnull @Nonempty final IHasDisplayText aDisplayName)
+  EBrowserType (@NonNull @Nonempty final String sID, @NonNull @Nonempty final IHasDisplayText aDisplayName)
   {
     m_sID = sID;
     m_aDisplayName = aDisplayName;
   }
 
-  @Nonnull
+  @NonNull
   public String getID ()
   {
     return m_sID;
   }
 
-  @Nonnull
+  @NonNull
   public String getDisplayText (final Locale aContentLocale)
   {
     return m_aDisplayName.getDisplayText (aContentLocale);

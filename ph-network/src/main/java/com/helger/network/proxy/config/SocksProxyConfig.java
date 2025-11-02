@@ -19,6 +19,9 @@ package com.helger.network.proxy.config;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
@@ -26,9 +29,6 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.system.SystemProperties;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.network.port.NetworkPortHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * SOCKS proxy configuration.
@@ -52,7 +52,7 @@ public class SocksProxyConfig implements IProxyConfig
    * @param sHost
    *        The SOCKS proxy host. May not be <code>null</code>.
    */
-  public SocksProxyConfig (@Nonnull final String sHost)
+  public SocksProxyConfig (@NonNull final String sHost)
   {
     this (sHost, DEFAULT_SOCKS_PROXY_PORT);
   }
@@ -65,7 +65,7 @@ public class SocksProxyConfig implements IProxyConfig
    * @param nPort
    *        The port to use for communication. Must be &ge; 0.
    */
-  public SocksProxyConfig (@Nonnull final String sHost, @Nonnegative final int nPort)
+  public SocksProxyConfig (@NonNull final String sHost, @Nonnegative final int nPort)
   {
     ValueEnforcer.notEmpty (sHost, "Host");
     ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), () -> "The passed port " + nPort + " is invalid");
@@ -73,7 +73,7 @@ public class SocksProxyConfig implements IProxyConfig
     m_nPort = nPort;
   }
 
-  @Nonnull
+  @NonNull
   public final String getHost ()
   {
     return m_sHost;
@@ -121,7 +121,7 @@ public class SocksProxyConfig implements IProxyConfig
     SystemProperties.removePropertyValue (SYSPROP_SOCKS_PROXY_PORT);
   }
 
-  @Nonnull
+  @NonNull
   public Proxy getAsProxy ()
   {
     return new Proxy (Proxy.Type.SOCKS, new InetSocketAddress (m_sHost, m_nPort));

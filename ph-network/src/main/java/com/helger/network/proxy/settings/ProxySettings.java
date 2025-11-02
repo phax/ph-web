@@ -20,6 +20,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -28,9 +31,6 @@ import com.helger.base.equals.EqualsHelper;
 import com.helger.base.functional.Predicates;
 import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Immutable default implementation of {@link IProxySettings}
@@ -46,12 +46,14 @@ public class ProxySettings implements IProxySettings
   private final String m_sProxyUserName;
   private final String m_sProxyPassword;
 
-  public ProxySettings (@Nonnull final Proxy.Type eProxyType, @Nullable final String sProxyHost, @Nonnegative final int nProxyPort)
+  public ProxySettings (final Proxy.@NonNull Type eProxyType,
+                        @Nullable final String sProxyHost,
+                        @Nonnegative final int nProxyPort)
   {
     this (eProxyType, sProxyHost, nProxyPort, null, null);
   }
 
-  public ProxySettings (@Nonnull final Proxy.Type eProxyType,
+  public ProxySettings (final Proxy.@NonNull Type eProxyType,
                         @Nullable final String sProxyHost,
                         @Nonnegative final int nProxyPort,
                         @Nullable final String sProxyUserName,
@@ -65,8 +67,7 @@ public class ProxySettings implements IProxySettings
     m_sProxyPassword = sProxyPassword;
   }
 
-  @Nonnull
-  public final Proxy.Type getProxyType ()
+  public final Proxy.@NonNull Type getProxyType ()
   {
     return m_eProxyType;
   }
@@ -97,33 +98,26 @@ public class ProxySettings implements IProxySettings
 
   public boolean hasSocketAddress (@Nullable final SocketAddress aAddr)
   {
-    switch (m_eProxyType)
+    return switch (m_eProxyType)
     {
-      case DIRECT:
-        return aAddr == null;
-      case HTTP:
-      case SOCKS:
-        return aAddr instanceof InetSocketAddress && hasInetSocketAddress ((InetSocketAddress) aAddr);
-      default:
-        throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
-    }
+      case DIRECT -> aAddr == null;
+      case HTTP, SOCKS -> aAddr instanceof InetSocketAddress && hasInetSocketAddress ((InetSocketAddress) aAddr);
+      default -> throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
+    };
   }
 
-  @Nonnull
+  @NonNull
   public Proxy getAsProxy (final boolean bResolveHostname)
   {
-    switch (m_eProxyType)
+    return switch (m_eProxyType)
     {
-      case DIRECT:
-        return Proxy.NO_PROXY;
-      case HTTP:
-      case SOCKS:
-        return new Proxy (m_eProxyType,
-                          bResolveHostname ? new InetSocketAddress (m_sProxyHost, m_nProxyPort)
-                                           : InetSocketAddress.createUnresolved (m_sProxyHost, m_nProxyPort));
-      default:
-        throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
-    }
+      case DIRECT -> Proxy.NO_PROXY;
+      case HTTP, SOCKS -> new Proxy (m_eProxyType,
+                                     bResolveHostname ? new InetSocketAddress (m_sProxyHost, m_nProxyPort)
+                                                      : InetSocketAddress.createUnresolved (m_sProxyHost,
+                                                                                            m_nProxyPort));
+      default -> throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
+    };
   }
 
   @Override
@@ -163,7 +157,7 @@ public class ProxySettings implements IProxySettings
                                        .getToString ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ProxySettings createNoProxySettings ()
   {

@@ -16,11 +16,12 @@
  */
 package com.helger.web.scope.mgr;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.servlet.mock.MockHttpServletResponse;
 import com.helger.servlet.mock.OfflineHttpServletRequest;
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -41,17 +42,17 @@ public class WebScoped implements AutoCloseable
     this (new OfflineHttpServletRequest (WebScopeManager.getGlobalScope ().getServletContext (), false));
   }
 
-  public WebScoped (@Nonnull final HttpServletRequest aHttpRequest)
+  public WebScoped (@NonNull final HttpServletRequest aHttpRequest)
   {
     this (aHttpRequest, new MockHttpServletResponse ());
   }
 
-  public WebScoped (@Nonnull final HttpServletRequest aHttpRequest, @Nonnull final HttpServletResponse aHttpResponse)
+  public WebScoped (@NonNull final HttpServletRequest aHttpRequest, @NonNull final HttpServletResponse aHttpResponse)
   {
     m_aRequestScope = WebScopeManager.onRequestBegin (aHttpRequest, aHttpResponse);
   }
 
-  @Nonnull
+  @NonNull
   public IRequestWebScope getRequestScope ()
   {
     if (m_aRequestScope == null)

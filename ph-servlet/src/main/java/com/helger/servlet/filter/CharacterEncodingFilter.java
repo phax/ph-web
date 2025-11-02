@@ -19,6 +19,7 @@ package com.helger.servlet.filter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,6 @@ import com.helger.base.string.StringParser;
 import com.helger.mime.EMimeContentType;
 import com.helger.servlet.ServletHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,14 +73,14 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   /**
    * @return The encoding to be used by this filter. Neither <code>null</code> nor empty.
    */
-  @Nonnull
+  @NonNull
   @Nonempty
   public final String getEncoding ()
   {
     return m_sEncoding;
   }
 
-  public final void setEncoding (@Nonnull @Nonempty final String sEncoding)
+  public final void setEncoding (@NonNull @Nonempty final String sEncoding)
   {
     ValueEnforcer.notEmpty (sEncoding, "Encoding");
     // Throws IllegalArgumentException in case it is unknown
@@ -141,9 +141,9 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   }
 
   @Override
-  public void doHttpFilter (@Nonnull final HttpServletRequest aRequest,
-                            @Nonnull final HttpServletResponse aResponse,
-                            @Nonnull final FilterChain aChain) throws IOException, ServletException
+  public void doHttpFilter (@NonNull final HttpServletRequest aRequest,
+                            @NonNull final HttpServletResponse aResponse,
+                            @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     // Avoid double filtering
     boolean bPerform;

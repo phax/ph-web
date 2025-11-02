@@ -18,9 +18,10 @@ package com.helger.xservlet.filter;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.web.scope.IRequestWebScope;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.ServletException;
 
 /**
@@ -42,7 +43,7 @@ public interface IXServletHighLevelFilter
    * @throws IOException
    *         in case of IO error.
    */
-  void beforeRequest (@Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void beforeRequest (@NonNull IRequestWebScope aRequestScope) throws ServletException, IOException;
 
   /**
    * Invoked after an XServlet request was handled. After is always called, even
@@ -56,5 +57,5 @@ public interface IXServletHighLevelFilter
    * @throws IOException
    *         in case of IO error
    */
-  void afterRequest (@Nonnull IRequestWebScope aRequestScope) throws ServletException, IOException;
+  void afterRequest (@NonNull IRequestWebScope aRequestScope) throws ServletException, IOException;
 }

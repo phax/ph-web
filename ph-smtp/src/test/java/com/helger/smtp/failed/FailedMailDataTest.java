@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.base.CGlobal;
@@ -41,8 +42,6 @@ import com.helger.smtp.settings.SMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
 import com.helger.xml.mock.XMLTestHelper;
 
-import jakarta.annotation.Nonnull;
-
 /**
  * Test class for class {@link FailedMailData}.
  *
@@ -55,13 +54,13 @@ public final class FailedMailDataTest
     GlobalIDFactory.setPersistentIntIDFactory (new MemoryIntIDFactory ());
   }
 
-  @Nonnull
+  @NonNull
   private static SMTPSettings _createSMTPSettings ()
   {
     return new SMTPSettings ("mail.example.com", 19, "anyuser", "secret", StandardCharsets.UTF_8, true);
   }
 
-  @Nonnull
+  @NonNull
   private static EmailData _createEmailData ()
   {
     final EmailData aData = new EmailData (EEmailType.TEXT);

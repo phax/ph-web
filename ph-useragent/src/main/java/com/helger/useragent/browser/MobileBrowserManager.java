@@ -18,6 +18,9 @@ package com.helger.useragent.browser;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.string.StringHelper;
@@ -27,9 +30,6 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.xml.microdom.util.XMLListHandler;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 @Immutable
 public final class MobileBrowserManager
@@ -47,13 +47,13 @@ public final class MobileBrowserManager
   private MobileBrowserManager ()
   {}
 
-  @Nonnull
-  private static String _unify (@Nonnull final String sItem)
+  @NonNull
+  private static String _unify (@NonNull final String sItem)
   {
     return sItem.toLowerCase (Locale.US);
   }
 
-  private static void _readList (@Nonnull final String sPath)
+  private static void _readList (@NonNull final String sPath)
   {
     final ICommonsList <String> aList = new CommonsArrayList <> ();
     if (XMLListHandler.readList (new ClassPathResource (sPath), aList).isFailure ())

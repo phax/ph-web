@@ -16,9 +16,9 @@
  */
 package com.helger.jsch.scp;
 
-import com.helger.annotation.Nonnegative;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.annotation.Nonnegative;
 
 public enum EDestinationOS
 {
@@ -32,14 +32,14 @@ public enum EDestinationOS
     m_cSep = separator;
   }
 
-  @Nonnull
-  public String joinPath (@Nonnull final String [] aParts)
+  @NonNull
+  public String joinPath (@NonNull final String [] aParts)
   {
     return joinPath (aParts, 0, aParts.length);
   }
 
-  @Nonnull
-  public String joinPath (@Nonnull final String [] aParts, @Nonnegative final int nOfs, @Nonnegative final int nLen)
+  @NonNull
+  public String joinPath (@NonNull final String [] aParts, @Nonnegative final int nOfs, @Nonnegative final int nLen)
   {
     final StringBuilder aSB = new StringBuilder ();
     for (int i = nOfs, end = nOfs + nLen; i < end; i++)

@@ -19,7 +19,8 @@ package com.helger.web.scope;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -33,7 +34,7 @@ public interface IRequestWebScope extends IRequestWebScopeWithoutResponse
   /**
    * @return The underlying HTTP servlet response object
    */
-  @Nonnull
+  @NonNull
   HttpServletResponse getResponse ();
 
   /**
@@ -41,7 +42,7 @@ public interface IRequestWebScope extends IRequestWebScopeWithoutResponse
    * @throws IOException
    *         In case of an error
    */
-  @Nonnull
+  @NonNull
   default OutputStream getOutputStream () throws IOException
   {
     return getResponse ().getOutputStream ();

@@ -19,6 +19,8 @@ package com.helger.smtp.scope;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.annotation.style.UsedViaReflection;
@@ -29,8 +31,6 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailAPI;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Scope aware wrapper around {@link MailAPI} class so that it is gracefully
@@ -50,7 +50,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
   public ScopedMailAPI ()
   {}
 
-  @Nonnull
+  @NonNull
   public static ScopedMailAPI getInstance ()
   {
     return getGlobalSingleton (ScopedMailAPI.class);
@@ -59,7 +59,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
   /**
    * @return The current failed mail queue. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public FailedMailQueue getFailedMailQueue ()
   {
     return MailAPI.getFailedMailQueue ();
@@ -71,7 +71,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    * @param aFailedMailQueue
    *        The new failed mail queue to set. May not be <code>null</code>.
    */
-  public void setFailedMailQueue (@Nonnull final FailedMailQueue aFailedMailQueue)
+  public void setFailedMailQueue (@NonNull final FailedMailQueue aFailedMailQueue)
   {
     MailAPI.setFailedMailQueue (aFailedMailQueue);
   }
@@ -85,8 +85,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    *        The data of the email to be send. May not be <code>null</code>.
    * @return {@link ESuccess}
    */
-  @Nonnull
-  public ESuccess queueMail (@Nonnull final ISMTPSettings aSMTPSettings, @Nonnull final IMutableEmailData aMailData)
+  @NonNull
+  public ESuccess queueMail (@NonNull final ISMTPSettings aSMTPSettings, @NonNull final IMutableEmailData aMailData)
   {
     return MailAPI.queueMail (aSMTPSettings, aMailData);
   }
@@ -102,8 +102,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    *         number of {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
-  public int queueMails (@Nonnull final ISMTPSettings aSMTPSettings,
-                         @Nonnull final Collection <? extends IMutableEmailData> aMailDataList)
+  public int queueMails (@NonNull final ISMTPSettings aSMTPSettings,
+                         @NonNull final Collection <? extends IMutableEmailData> aMailDataList)
   {
     return MailAPI.queueMails (aSMTPSettings, aMailDataList);
   }
@@ -138,7 +138,7 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
   }
 
   @Override
-  protected void onDestroy (@Nonnull final IScope aScopeInDestruction)
+  protected void onDestroy (@NonNull final IScope aScopeInDestruction)
   {
     // Stop mail queues
     MailAPI.stop (isStopImmediately ());

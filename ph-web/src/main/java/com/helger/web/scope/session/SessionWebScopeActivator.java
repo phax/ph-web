@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,6 @@ import com.helger.scope.ScopeHelper;
 import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionActivationListener;
 import jakarta.servlet.http.HttpSessionEvent;
@@ -66,12 +66,12 @@ public final class SessionWebScopeActivator implements
    * @param aSessionWebScope
    *        the scope to be written
    */
-  public SessionWebScopeActivator (@Nonnull final ISessionWebScope aSessionWebScope)
+  public SessionWebScopeActivator (@NonNull final ISessionWebScope aSessionWebScope)
   {
     m_aSessionWebScope = ValueEnforcer.notNull (aSessionWebScope, "SessionWebScope");
   }
 
-  private void writeObject (@Nonnull final ObjectOutputStream out) throws IOException
+  private void writeObject (@NonNull final ObjectOutputStream out) throws IOException
   {
     if (m_aSessionWebScope == null)
       throw new IllegalStateException ("No SessionWebScope is present!");
@@ -95,7 +95,7 @@ public final class SessionWebScopeActivator implements
   }
 
   @SuppressWarnings ("unchecked")
-  private void readObject (@Nonnull final ObjectInputStream in) throws IOException, ClassNotFoundException
+  private void readObject (@NonNull final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     if (m_aSessionWebScope != null)
       throw new IllegalStateException ("Another SessionWebScope is already present: " + m_aSessionWebScope.toString ());
@@ -111,7 +111,7 @@ public final class SessionWebScopeActivator implements
                    ScopeHelper.getDebugException ());
   }
 
-  public void sessionWillPassivate (@Nonnull final HttpSessionEvent aEvent)
+  public void sessionWillPassivate (@NonNull final HttpSessionEvent aEvent)
   {
     // Writing is all handled in the writeObject method
 
@@ -131,7 +131,7 @@ public final class SessionWebScopeActivator implements
     }
   }
 
-  public void sessionDidActivate (@Nonnull final HttpSessionEvent aEvent)
+  public void sessionDidActivate (@NonNull final HttpSessionEvent aEvent)
   {
     final HttpSession aHttpSession = aEvent.getSession ();
 

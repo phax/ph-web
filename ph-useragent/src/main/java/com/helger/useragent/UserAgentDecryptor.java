@@ -18,6 +18,8 @@ package com.helger.useragent;
 
 import java.util.regex.Matcher;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.base.enforce.ValueEnforcer;
@@ -27,8 +29,6 @@ import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.url.protocol.URLProtocolRegistry;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * This class converts an user agent string to an {@link IUserAgent} object if possible.
@@ -54,8 +54,8 @@ public final class UserAgentDecryptor
    * @return A list than can contain {@link ReadOnlyPair}, {@link String} and {@link ICommonsList}
    *         of String objects.
    */
-  @Nonnull
-  private static UserAgentElementList _decryptUserAgent (@Nonnull final String sUserAgent)
+  @NonNull
+  private static UserAgentElementList _decryptUserAgent (@NonNull final String sUserAgent)
   {
     final UserAgentElementList ret = new UserAgentElementList ();
     final StringScanner aSS = new StringScanner (sUserAgent.trim ());
@@ -131,8 +131,8 @@ public final class UserAgentDecryptor
    *        The user agent string to decrypt. May not be <code>null</code>.
    * @return The user agent object. Never <code>null</code>.
    */
-  @Nonnull
-  public static IUserAgent decryptUserAgentString (@Nonnull final String sUserAgent)
+  @NonNull
+  public static IUserAgent decryptUserAgentString (@NonNull final String sUserAgent)
   {
     ValueEnforcer.notNull (sUserAgent, "UserAgent");
 

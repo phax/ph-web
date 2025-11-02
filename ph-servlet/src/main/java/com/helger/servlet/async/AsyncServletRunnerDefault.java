@@ -16,10 +16,10 @@
  */
 package com.helger.servlet.async;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -36,10 +36,10 @@ public class AsyncServletRunnerDefault implements IAsyncServletRunner
   public AsyncServletRunnerDefault ()
   {}
 
-  public void runAsync (@Nonnull final HttpServletRequest aOriginalHttpRequest,
-                        @Nonnull final HttpServletResponse aOriginalHttpResponse,
-                        @Nonnull final ExtAsyncContext aAsyncContext,
-                        @Nonnull final Runnable aRunnable)
+  public void runAsync (@NonNull final HttpServletRequest aOriginalHttpRequest,
+                        @NonNull final HttpServletResponse aOriginalHttpResponse,
+                        @NonNull final ExtAsyncContext aAsyncContext,
+                        @NonNull final Runnable aRunnable)
   {
     final Runnable aRealRunner = () -> {
       // Debug - safe references to original req/resp

@@ -27,6 +27,8 @@ import java.util.function.Consumer;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.eclipse.angus.mail.smtp.SMTPAddressSucceededException;
 import org.eclipse.angus.mail.util.MailSSLSocketFactory;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +58,6 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.mail.Address;
 import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.MessagingException;
@@ -106,7 +106,7 @@ public final class MailTransport
    *         <code>null</code>.
    * @since 9.5.3
    */
-  @Nonnull
+  @NonNull
   public static EChange setDefaultMailProperties (@Nullable final Map <String, String> aMap)
   {
     if (INSTANCE_COUNT.get () > 0)
@@ -125,7 +125,7 @@ public final class MailTransport
    * @return <code>true</code> to use "smtps".
    * @since 1.0.1
    */
-  public static boolean isUseSMTPS (@Nonnull final ISMTPSettings aSettings)
+  public static boolean isUseSMTPS (@NonNull final ISMTPSettings aSettings)
   {
     return aSettings.isSSLEnabled () || aSettings.isSTARTTLSEnabled ();
   }
@@ -137,9 +137,9 @@ public final class MailTransport
    *         <code>null</code>.
    * @since 1.0.1
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
-  public static ICommonsMap <String, String> createSessionProperties (@Nonnull final ISMTPSettings aSettings)
+  public static ICommonsMap <String, String> createSessionProperties (@NonNull final ISMTPSettings aSettings)
   {
     final ICommonsMap <String, String> ret = new CommonsHashMap <> ();
     final boolean bSMTPS = isUseSMTPS (aSettings);
@@ -190,7 +190,7 @@ public final class MailTransport
     return ret;
   }
 
-  public MailTransport (@Nonnull final ISMTPSettings aSettings)
+  public MailTransport (@NonNull final ISMTPSettings aSettings)
   {
     ValueEnforcer.notNull (aSettings, "Settings");
 
@@ -211,13 +211,13 @@ public final class MailTransport
     INSTANCE_COUNT.incrementAndGet ();
   }
 
-  @Nonnull
+  @NonNull
   public ISMTPSettings getSMTPSettings ()
   {
     return m_aSMTPSettings;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsMap <String, String> getMailProperties ()
   {
@@ -231,7 +231,7 @@ public final class MailTransport
    *        Email data objects to send. May be <code>null</code>.
    * @return A non-<code>null</code> map of the failed messages
    */
-  @Nonnull
+  @NonNull
   public ICommonsOrderedMap <IMutableEmailData, MailTransportError> send (@Nullable final Collection <IMutableEmailData> aAllMessages)
   {
     final ICommonsOrderedMap <IMutableEmailData, MailTransportError> aFailedMessages = new CommonsLinkedHashMap <> ();

@@ -16,6 +16,8 @@
  */
 package com.helger.web.scope.mgr;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +29,6 @@ import com.helger.scope.ISessionScope;
 import com.helger.scope.mgr.ScopeSessionManager;
 import com.helger.web.scope.ISessionWebScope;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -88,7 +88,7 @@ public final class WebScopeSessionManager
    * @return A non-<code>null</code>, mutable copy of all managed session web
    *         scopes.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsCollection <ISessionWebScope> getAllSessionWebScopes ()
   {

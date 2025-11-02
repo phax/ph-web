@@ -18,6 +18,8 @@ package com.helger.smtp.listener;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.enforce.ValueEnforcer;
@@ -27,7 +29,6 @@ import com.helger.smtp.data.IEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailSendDetails;
 
-import jakarta.annotation.Nonnull;
 import jakarta.mail.internet.MimeMessage;
 
 /**
@@ -45,12 +46,12 @@ public class EmailDataTransportEvent
   private final ICommonsList <MailSendDetails> m_aValidUnsent;
   private final ICommonsList <MailSendDetails> m_aInvalid;
 
-  public EmailDataTransportEvent (@Nonnull final ISMTPSettings aSMTPSettings,
-                                  @Nonnull final IEmailData aEmailData,
-                                  @Nonnull final MimeMessage aMimeMessage,
-                                  @Nonnull final Collection <MailSendDetails> aValidSent,
-                                  @Nonnull final Collection <MailSendDetails> aValidUnsent,
-                                  @Nonnull final Collection <MailSendDetails> aInvalid)
+  public EmailDataTransportEvent (@NonNull final ISMTPSettings aSMTPSettings,
+                                  @NonNull final IEmailData aEmailData,
+                                  @NonNull final MimeMessage aMimeMessage,
+                                  @NonNull final Collection <MailSendDetails> aValidSent,
+                                  @NonNull final Collection <MailSendDetails> aValidUnsent,
+                                  @NonNull final Collection <MailSendDetails> aInvalid)
   {
     ValueEnforcer.notNull (aSMTPSettings, "SMTPSettings");
     ValueEnforcer.notNull (aEmailData, "EmailData");
@@ -70,7 +71,7 @@ public class EmailDataTransportEvent
   /**
    * @return The SMTP settings used for this message. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public ISMTPSettings getSMTPSettings ()
   {
     return m_aSMTPSettings;
@@ -80,7 +81,7 @@ public class EmailDataTransportEvent
    * @return The original email data that was (not) sent. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public IEmailData getEmailData ()
   {
     return m_aEmailData;
@@ -90,27 +91,27 @@ public class EmailDataTransportEvent
    * @return The created mime message that was (not) sent. Never
    *         <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public MimeMessage getMimeMessage ()
   {
     return m_aMimeMessage;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <MailSendDetails> getValidSentAddresses ()
   {
     return m_aValidSent.getClone ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <MailSendDetails> getValidUnsentAddresses ()
   {
     return m_aValidUnsent.getClone ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <MailSendDetails> getInvalidAddresses ()
   {

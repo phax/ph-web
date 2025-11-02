@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +55,6 @@ import com.helger.servlet.ServletHelper;
 import com.helger.servlet.spec.IServletContext310To400Migration;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.RequestDispatcher;
@@ -175,8 +175,8 @@ public class MockServletContext implements IServletContext310To400Migration
    *        the path as specified
    * @return the full resource path
    */
-  @Nonnull
-  protected String getResourceLocation (@Nonnull final String sPath)
+  @NonNull
+  protected String getResourceLocation (@NonNull final String sPath)
   {
     return m_aRWLock.readLockedGet ( () -> StringHelper.startsWith (sPath, '/') ? m_sResourceBasePath + sPath
                                                                                 : m_sResourceBasePath + "/" + sPath);
@@ -197,13 +197,13 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   /* This is a Servlet API 2.5 method. */
-  @Nonnull
+  @NonNull
   public String getContextPath ()
   {
     return m_aRWLock.readLockedGet ( () -> m_sContextPath);
   }
 
-  public void registerContext (@Nonnull final String sContextPath, @Nonnull final ServletContext aContext)
+  public void registerContext (@NonNull final String sContextPath, @NonNull final ServletContext aContext)
   {
     ValueEnforcer.notNull (sContextPath, "ContextPath");
     ValueEnforcer.notNull (aContext, "Context");
@@ -233,7 +233,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nullable
-  public String getMimeType (@Nonnull final String sFilename)
+  public String getMimeType (@NonNull final String sFilename)
   {
     return MimeTypeInfoManager.getDefaultInstance ().getPrimaryMimeTypeStringForFilename (sFilename);
   }
@@ -246,7 +246,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nullable
-  public URL getResource (@Nonnull final String sPath) throws MalformedURLException
+  public URL getResource (@NonNull final String sPath) throws MalformedURLException
   {
     final String sLocation = getResourceLocation (sPath);
     final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
@@ -256,7 +256,7 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nullable
-  public InputStream getResourceAsStream (@Nonnull final String sPath)
+  public InputStream getResourceAsStream (@NonNull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
     final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
@@ -265,8 +265,8 @@ public class MockServletContext implements IServletContext310To400Migration
     return aResource.getInputStream ();
   }
 
-  @Nonnull
-  public RequestDispatcher getRequestDispatcher (@Nonnull final String sPath)
+  @NonNull
+  public RequestDispatcher getRequestDispatcher (@NonNull final String sPath)
   {
     if (!StringHelper.startsWith (sPath, '/'))
       throw new IllegalArgumentException ("RequestDispatcher path at ServletContext level must start with '/'");
@@ -281,14 +281,14 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Deprecated (forRemoval = false)
-  @Nonnull
+  @NonNull
   public Enumeration <Servlet> getServlets ()
   {
     return new EmptyEnumeration <> ();
   }
 
   @Deprecated (forRemoval = false)
-  @Nonnull
+  @NonNull
   public Enumeration <String> getServletNames ()
   {
     return new EmptyEnumeration <> ();
@@ -310,8 +310,8 @@ public class MockServletContext implements IServletContext310To400Migration
     LOGGER.info (sMessage, ex);
   }
 
-  @Nonnull
-  public String getRealPath (@Nonnull final String sPath)
+  @NonNull
+  public String getRealPath (@NonNull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
     final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
@@ -323,7 +323,7 @@ public class MockServletContext implements IServletContext310To400Migration
     return aFile.getAbsolutePath ();
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getServerInfo ()
   {
@@ -331,39 +331,39 @@ public class MockServletContext implements IServletContext310To400Migration
   }
 
   @Nullable
-  public String getInitParameter (@Nonnull final String sName)
+  public String getInitParameter (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     return m_aRWLock.readLockedGet ( () -> m_aInitParameters.get (sName));
   }
 
-  public final void addInitParameter (@Nonnull final String sName, @Nonnull final String sValue)
+  public final void addInitParameter (@NonNull final String sName, @NonNull final String sValue)
   {
     ValueEnforcer.notNull (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
     m_aRWLock.writeLocked ( () -> m_aInitParameters.put (sName, sValue));
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getInitParameterNames ()
   {
     return m_aRWLock.readLockedGet ( () -> EnumerationHelper.getEnumeration (m_aInitParameters.keySet ()));
   }
 
   @Nullable
-  public Object getAttribute (@Nonnull final String sName)
+  public Object getAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     return m_aRWLock.readLockedGet ( () -> m_aAttributes.get (sName));
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getAttributeNames ()
   {
     return EnumerationHelper.getEnumeration (m_aRWLock.readLockedGet ( () -> m_aAttributes.keySet ()));
   }
 
-  public final void setAttribute (@Nonnull final String sName, @Nullable final Object aValue)
+  public final void setAttribute (@NonNull final String sName, @Nullable final Object aValue)
   {
     ValueEnforcer.notNull (sName, "Name");
     m_aRWLock.writeLocked ( () -> {
@@ -374,7 +374,7 @@ public class MockServletContext implements IServletContext310To400Migration
     });
   }
 
-  public void removeAttribute (@Nonnull final String sName)
+  public void removeAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     m_aRWLock.writeLocked ( () -> m_aAttributes.remove (sName));
@@ -398,8 +398,8 @@ public class MockServletContext implements IServletContext310To400Migration
    *        Name of the servlet. May neither be <code>null</code> nor empty.
    * @return A new {@link MockServletConfig} object for this servlet context.
    */
-  @Nonnull
-  public MockServletConfig createServletConfig (@Nonnull @Nonempty final String sServletName)
+  @NonNull
+  public MockServletConfig createServletConfig (@NonNull @Nonempty final String sServletName)
   {
     return createServletConfig (sServletName, null);
   }
@@ -413,8 +413,8 @@ public class MockServletContext implements IServletContext310To400Migration
    *        The map with all servlet init parameters. May be <code>null</code> or empty.
    * @return A new {@link MockServletConfig} object for this servlet context.
    */
-  @Nonnull
-  public MockServletConfig createServletConfig (@Nonnull @Nonempty final String sServletName,
+  @NonNull
+  public MockServletConfig createServletConfig (@NonNull @Nonempty final String sServletName,
                                                 @Nullable final Map <String, String> aServletInitParams)
   {
     return new MockServletConfig (this, sServletName, aServletInitParams);
@@ -423,14 +423,14 @@ public class MockServletContext implements IServletContext310To400Migration
   /**
    * @return The servlet pool for registering mock servlets.
    */
-  @Nonnull
+  @NonNull
   public MockServletPool getServletPool ()
   {
     return m_aRWLock.readLockedGet ( () -> m_aServletPool);
   }
 
   @Nullable
-  public MockHttpServletResponse invoke (@Nonnull final HttpServletRequest aHttpRequest)
+  public MockHttpServletResponse invoke (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
@@ -650,7 +650,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create ()
   {
     return create (null, "", null, null);
@@ -664,7 +664,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *        The init parameter. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create (@Nullable final Map <String, String> aInitParams)
   {
     return create (null, "", null, aInitParams);
@@ -678,7 +678,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *        The context path to use. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create (@Nullable final String sContextPath)
   {
     return create (sContextPath, "", null, null);
@@ -694,7 +694,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *        The init parameter. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create (@Nullable final String sContextPath,
                                            @Nullable final Map <String, String> aInitParams)
   {
@@ -711,7 +711,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *        the WAR root directory (should not end with a slash). May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create (@Nullable final String sContextPath,
                                            @Nullable final String sResourceBasePath)
   {
@@ -731,7 +731,7 @@ public class MockServletContext implements IServletContext310To400Migration
    *        Optional map with initialization parameters. May be <code>null</code>.
    * @return The created {@link MockServletContext}
    */
-  @Nonnull
+  @NonNull
   public static MockServletContext create (@Nullable final String sContextPath,
                                            @Nullable final String sResourceBasePath,
                                            @Nullable final IReadableResourceProvider aResourceLoader,

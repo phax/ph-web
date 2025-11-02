@@ -18,6 +18,8 @@ package com.helger.useragent;
 
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +32,6 @@ import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsHashSet;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.CHttpHeader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Central cache for known user agents (see HTTP header field {@link CHttpHeader#USER_AGENT}).
@@ -91,7 +90,7 @@ public final class UserAgentDatabase
     return aUserAgent;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsSet <String> getAllUniqueUserAgents ()
   {

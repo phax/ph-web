@@ -18,11 +18,11 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.base.string.StringHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Interface representing the basic SMTP settings required to login to a user.
@@ -34,7 +34,7 @@ public interface ISMTPSettings
   /**
    * @return The SMTP server host name
    */
-  @Nonnull
+  @NonNull
   String getHostName ();
 
   /**

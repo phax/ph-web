@@ -21,6 +21,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
@@ -35,9 +38,6 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.network.port.NetworkPortHelper;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * HTTP proxy configuration.<br>
@@ -56,23 +56,23 @@ public class HttpProxyConfig implements IProxyConfig
   private final String m_sPassword;
   private final ICommonsList <String> m_aNonProxyHosts = new CommonsArrayList <> ();
 
-  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
-                          @Nonnull @Nonempty final String sHost,
+  public HttpProxyConfig (@NonNull final EHttpProxyType eProxyType,
+                          @NonNull @Nonempty final String sHost,
                           @Nonnegative final int nPort)
   {
     this (eProxyType, sHost, nPort, (String) null, (String) null, (List <String>) null);
   }
 
-  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
-                          @Nonnull @Nonempty final String sHost,
+  public HttpProxyConfig (@NonNull final EHttpProxyType eProxyType,
+                          @NonNull @Nonempty final String sHost,
                           @Nonnegative final int nPort,
                           @Nullable final List <String> aNonProxyHosts)
   {
     this (eProxyType, sHost, nPort, (String) null, (String) null, aNonProxyHosts);
   }
 
-  public HttpProxyConfig (@Nonnull final EHttpProxyType eProxyType,
-                          @Nonnull @Nonempty final String sHost,
+  public HttpProxyConfig (@NonNull final EHttpProxyType eProxyType,
+                          @NonNull @Nonempty final String sHost,
                           @Nonnegative final int nPort,
                           @Nullable final String sUserName,
                           @Nullable final String sPassword,
@@ -92,13 +92,13 @@ public class HttpProxyConfig implements IProxyConfig
           m_aNonProxyHosts.add (sNonProxyHost);
   }
 
-  @Nonnull
+  @NonNull
   public final EHttpProxyType getType ()
   {
     return m_eProxyType;
   }
 
-  @Nonnull
+  @NonNull
   public final String getHost ()
   {
     return m_sHost;
@@ -133,7 +133,7 @@ public class HttpProxyConfig implements IProxyConfig
     return m_sPassword == null ? null : m_sPassword.toCharArray ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public final ICommonsList <String> getNonProxyHosts ()
   {
@@ -176,13 +176,13 @@ public class HttpProxyConfig implements IProxyConfig
     }
   }
 
-  @Nonnull
+  @NonNull
   public InetSocketAddress getAsInetSocketAddress ()
   {
     return new InetSocketAddress (m_sHost, m_nPort);
   }
 
-  @Nonnull
+  @NonNull
   public Proxy getAsProxy ()
   {
     return new Proxy (Proxy.Type.HTTP, getAsInetSocketAddress ());

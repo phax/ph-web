@@ -16,13 +16,13 @@
  */
 package com.helger.jsch.session;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.collection.commons.ICommonsMap;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Proxy;
 import com.jcraft.jsch.UserInfo;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 public abstract class AbstractSessionFactoryBuilder
 {
@@ -59,7 +59,7 @@ public abstract class AbstractSessionFactoryBuilder
    * @return This builder
    * @see com.helger.jsch.session.DefaultSessionFactory#setConfig(ICommonsMap)
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setConfig (@Nullable final ICommonsMap <String, String> aConfig)
   {
     m_aConfig = aConfig;
@@ -73,7 +73,7 @@ public abstract class AbstractSessionFactoryBuilder
    *        The new hostname
    * @return This builder
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setHostname (@Nullable final String sHostname)
   {
     m_sHostname = sHostname;
@@ -87,7 +87,7 @@ public abstract class AbstractSessionFactoryBuilder
    *        The new port
    * @return This builder
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setPort (final int nPort)
   {
     m_nPort = nPort;
@@ -102,7 +102,7 @@ public abstract class AbstractSessionFactoryBuilder
    * @return This builder
    * @see com.helger.jsch.session.DefaultSessionFactory#setProxy(Proxy)
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setProxy (@Nullable final Proxy aProxy)
   {
     m_aProxy = aProxy;
@@ -116,7 +116,7 @@ public abstract class AbstractSessionFactoryBuilder
    *        The new username
    * @return This builder
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setUsername (@Nullable final String sUsername)
   {
     m_sUsername = sUsername;
@@ -130,7 +130,7 @@ public abstract class AbstractSessionFactoryBuilder
    *        The new userInfo
    * @return This builder
    */
-  @Nonnull
+  @NonNull
   public AbstractSessionFactoryBuilder setUserInfo (@Nullable final UserInfo aUserInfo)
   {
     m_aUserInfo = aUserInfo;
@@ -142,6 +142,6 @@ public abstract class AbstractSessionFactoryBuilder
    *
    * @return The built <code>SessionFactory</code>
    */
-  @Nonnull
+  @NonNull
   public abstract ISessionFactory build ();
 }

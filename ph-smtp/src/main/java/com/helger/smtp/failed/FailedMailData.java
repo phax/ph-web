@@ -18,6 +18,9 @@ package com.helger.smtp.failed;
 
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.email.IEmailAddress;
 import com.helger.base.enforce.ValueEnforcer;
@@ -31,9 +34,6 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailTransportError;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This class represents a single email that was tried to be send out but failed.
@@ -60,7 +60,7 @@ public class FailedMailData implements ITypedObject <String>
    * @param aError
    *        The exception that occurred. Never <code>null</code>.
    */
-  public FailedMailData (@Nonnull final ISMTPSettings aSettings, @Nonnull final MailTransportError aError)
+  public FailedMailData (@NonNull final ISMTPSettings aSettings, @NonNull final MailTransportError aError)
   {
     this (aSettings, null, aError);
   }
@@ -73,7 +73,7 @@ public class FailedMailData implements ITypedObject <String>
    * @param aEmailData
    *        The message that failed to send. May not be <code>null</code> in practice.
    */
-  public FailedMailData (@Nonnull final ISMTPSettings aSettings, @Nullable final IMutableEmailData aEmailData)
+  public FailedMailData (@NonNull final ISMTPSettings aSettings, @Nullable final IMutableEmailData aEmailData)
   {
     this (aSettings, aEmailData, (MailTransportError) null);
   }
@@ -89,7 +89,7 @@ public class FailedMailData implements ITypedObject <String>
    * @param aError
    *        The exception that occurred. May be <code>null</code>.
    */
-  public FailedMailData (@Nonnull final ISMTPSettings aSettings,
+  public FailedMailData (@NonNull final ISMTPSettings aSettings,
                          @Nullable final IMutableEmailData aEmailData,
                          @Nullable final MailTransportError aError)
   {
@@ -118,9 +118,9 @@ public class FailedMailData implements ITypedObject <String>
    * @param aError
    *        The exception that occurred. May be <code>null</code>.
    */
-  public FailedMailData (@Nonnull final String sID,
-                         @Nonnull final LocalDateTime aErrorDT,
-                         @Nonnull final ISMTPSettings aSettings,
+  public FailedMailData (@NonNull final String sID,
+                         @NonNull final LocalDateTime aErrorDT,
+                         @NonNull final ISMTPSettings aSettings,
                          @Nullable final LocalDateTime aOriginalSentDT,
                          @Nullable final IMutableEmailData aEmailData,
                          @Nullable final MailTransportError aError)
@@ -135,13 +135,13 @@ public class FailedMailData implements ITypedObject <String>
     m_aError = aError;
   }
 
-  @Nonnull
+  @NonNull
   public ObjectType getObjectType ()
   {
     return TYPE_FAILEDMAIL;
   }
 
-  @Nonnull
+  @NonNull
   public String getID ()
   {
     return m_sID;
@@ -150,7 +150,7 @@ public class FailedMailData implements ITypedObject <String>
   /**
    * @return The date and time when the error occurred.
    */
-  @Nonnull
+  @NonNull
   public LocalDateTime getErrorDateTime ()
   {
     return m_aErrorDT;
@@ -159,7 +159,7 @@ public class FailedMailData implements ITypedObject <String>
   /**
    * @return The original SMTP settings used for sending the mail.
    */
-  @Nonnull
+  @NonNull
   public ISMTPSettings getSMTPSettings ()
   {
     return m_aSettings;
@@ -201,7 +201,7 @@ public class FailedMailData implements ITypedObject <String>
     return m_aError == null ? null : m_aError.getThrowable ();
   }
 
-  @Nonnull
+  @NonNull
   public String getSMTPServerDisplayText ()
   {
     StringBuilder ret = new StringBuilder ().append (m_aSettings.getHostName ());
@@ -217,13 +217,13 @@ public class FailedMailData implements ITypedObject <String>
     return ret.toString ();
   }
 
-  @Nonnull
+  @NonNull
   public String getSenderDisplayText ()
   {
     return m_aEmailData == null ? "" : m_aEmailData.getFrom ().getDisplayName ();
   }
 
-  @Nonnull
+  @NonNull
   public String getRecipientDisplayText ()
   {
     final StringBuilder ret = new StringBuilder ();

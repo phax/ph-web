@@ -19,6 +19,7 @@ package com.helger.servlet.logging;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,6 @@ import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
@@ -90,9 +90,9 @@ public class LoggingFilter extends AbstractHttpServletFilter
       m_sResponsePrefix = sResponsePrefix;
   }
 
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  protected String getRequestDescription (@Nonnull final LoggingHttpServletRequestWrapper aRequestWrapper)
+  protected String getRequestDescription (@NonNull final LoggingHttpServletRequestWrapper aRequestWrapper)
   {
     final LoggingRequest aLoggingRequest = new LoggingRequest ();
     aLoggingRequest.setSender (aRequestWrapper.getLocalAddr ());
@@ -112,9 +112,9 @@ public class LoggingFilter extends AbstractHttpServletFilter
     return aLoggingRequest.getAsJson ().getAsJsonString ();
   }
 
-  @Nonnull
+  @NonNull
   @OverrideOnDemand
-  protected String getResponseDescription (@Nonnull final LoggingHttpServletResponseWrapper responseWrapper)
+  protected String getResponseDescription (@NonNull final LoggingHttpServletResponseWrapper responseWrapper)
   {
     final LoggingResponse aLoggingResponse = new LoggingResponse ();
     aLoggingResponse.setStatus (responseWrapper.getStatus ());
@@ -141,8 +141,8 @@ public class LoggingFilter extends AbstractHttpServletFilter
    * @return <code>true</code> to log, <code>false</code> to not log the request
    */
   @OverrideOnDemand
-  protected boolean isLogRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse)
+  protected boolean isLogRequest (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse)
   {
     boolean bLog = isGloballyEnabled ();
     if (bLog)
@@ -160,9 +160,9 @@ public class LoggingFilter extends AbstractHttpServletFilter
   }
 
   @Override
-  public void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
-                            @Nonnull final HttpServletResponse aHttpResponse,
-                            @Nonnull final FilterChain aFilterChain) throws IOException, ServletException
+  public void doHttpFilter (@NonNull final HttpServletRequest aHttpRequest,
+                            @NonNull final HttpServletResponse aHttpResponse,
+                            @NonNull final FilterChain aFilterChain) throws IOException, ServletException
   {
     if (isLogRequest (aHttpRequest, aHttpResponse))
     {

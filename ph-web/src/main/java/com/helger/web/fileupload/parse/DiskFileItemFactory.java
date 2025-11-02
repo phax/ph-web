@@ -18,6 +18,8 @@ package com.helger.web.fileupload.parse;
 
 import java.io.File;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +34,6 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.io.file.FileIOError;
 import com.helger.io.file.FileOperations;
 import com.helger.web.fileupload.IFileItemFactory;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * <p>
@@ -107,7 +106,7 @@ public class DiskFileItemFactory implements IFileItemFactory
     m_aRepository = aRepository;
   }
 
-  private void _addTempFile (@Nonnull final File aFile)
+  private void _addTempFile (@NonNull final File aFile)
   {
     m_aRWLock.writeLockedBoolean ( () -> m_aTempFiles.add (aFile));
   }
@@ -126,7 +125,7 @@ public class DiskFileItemFactory implements IFileItemFactory
    *        The name of the uploaded file, if any, as supplied by the browser or other client.
    * @return The newly created file item.
    */
-  @Nonnull
+  @NonNull
   public DiskFileItem createItem (@Nullable final String sFieldName,
                                   @Nullable final String sContentType,
                                   final boolean bIsFormField,
@@ -144,7 +143,7 @@ public class DiskFileItemFactory implements IFileItemFactory
     return aFileItem;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <File> getAllTemporaryFiles ()
   {

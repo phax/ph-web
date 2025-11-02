@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,8 +40,6 @@ import com.helger.base.string.StringImplode;
 import com.helger.io.file.FileOperationManager;
 import com.helger.io.file.SimpleFileIO;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
 
 public final class ScpStreamTest extends AbstractScpTestBase
 {
@@ -113,7 +112,7 @@ public final class ScpStreamTest extends AbstractScpTestBase
     return _joinPath (parts);
   }
 
-  @Nonnull
+  @NonNull
   private static String _joinPath (final String... parts)
   {
     return StringImplode.imploder ().source (parts).separator ('/').build ();

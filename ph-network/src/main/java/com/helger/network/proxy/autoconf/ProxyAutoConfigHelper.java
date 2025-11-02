@@ -25,6 +25,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +43,6 @@ import com.helger.io.resource.IReadableResource;
 import com.helger.network.proxy.config.SocksProxyConfig;
 import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Proxy Auto Configuration helper. Requires ph-dns to work.
@@ -89,7 +88,7 @@ public final class ProxyAutoConfigHelper
   private final IReadableResource m_aPACRes;
   private final String m_sPACCode;
 
-  public ProxyAutoConfigHelper (@Nonnull final IReadableResource aPACRes) throws ScriptException
+  public ProxyAutoConfigHelper (@NonNull final IReadableResource aPACRes) throws ScriptException
   {
     m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
     m_sPACCode = null;
@@ -97,7 +96,7 @@ public final class ProxyAutoConfigHelper
       SCRIPT_ENGINE.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
   }
 
-  public ProxyAutoConfigHelper (@Nonnull final String sPACCode) throws ScriptException
+  public ProxyAutoConfigHelper (@NonNull final String sPACCode) throws ScriptException
   {
     m_aPACRes = null;
     m_sPACCode = ValueEnforcer.notNull (sPACCode, "PACCode");
@@ -112,7 +111,7 @@ public final class ProxyAutoConfigHelper
 
   // Cannot be static, because it needs the evaluation in the constructor
   @Nullable
-  public String findProxyForURL (@Nonnull final String sURL, @Nonnull final String sHost) throws ScriptException
+  public String findProxyForURL (@NonNull final String sURL, @NonNull final String sHost) throws ScriptException
   {
     if (SCRIPT_ENGINE == null)
     {
@@ -135,14 +134,14 @@ public final class ProxyAutoConfigHelper
     return aResult.toString ();
   }
 
-  @Nonnull
-  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final URI aURI) throws ScriptException
+  @NonNull
+  public ICommonsList <IProxySettings> getProxyListForURL (@NonNull final URI aURI) throws ScriptException
   {
     return getProxyListForURL (aURI.toString (), aURI.getHost ());
   }
 
-  @Nonnull
-  public ICommonsList <IProxySettings> getProxyListForURL (@Nonnull final String sURL, @Nonnull final String sHost)
+  @NonNull
+  public ICommonsList <IProxySettings> getProxyListForURL (@NonNull final String sURL, @NonNull final String sHost)
                                                                                                                     throws ScriptException
   {
     final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();

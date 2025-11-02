@@ -18,6 +18,7 @@ package com.helger.dns.dnsjava;
 
 import java.net.InetAddress;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.ResolverConfig;
@@ -36,8 +37,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
-import jakarta.annotation.Nonnull;
-
 /**
  * Simplification for setting DnsJava global config providers.
  *
@@ -51,7 +50,7 @@ public final class DnsjavaInit
   private DnsjavaInit ()
   {}
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <ResolverConfigProvider> getDefaultResolverConfigProviders ()
   {
@@ -65,7 +64,7 @@ public final class DnsjavaInit
     return aConfigProviders;
   }
 
-  public static void initWithCustomDNSServers (@Nonnull @Nonempty final ICommonsList <InetAddress> aCustomDNSServers)
+  public static void initWithCustomDNSServers (@NonNull @Nonempty final ICommonsList <InetAddress> aCustomDNSServers)
   {
     ValueEnforcer.notEmptyNoNullValue (aCustomDNSServers, "CustomDNSServers");
 

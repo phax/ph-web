@@ -18,6 +18,8 @@ package com.helger.servlet.mock;
 
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +37,6 @@ import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -61,9 +61,9 @@ public class MockServletPool
     private final String m_sServletPath;
     private final String m_sServletPathRegEx;
 
-    @Nonnull
+    @NonNull
     @Nonempty
-    private static String _getAsRegEx (@Nonnull @Nonempty final String sPath)
+    private static String _getAsRegEx (@NonNull @Nonempty final String sPath)
     {
       String sPathToUse = sPath;
       if (sPathToUse.endsWith ("/*"))
@@ -76,34 +76,34 @@ public class MockServletPool
       return StringReplace.replaceAll (sPathToUse, "*", ".*");
     }
 
-    public ServletItem (@Nonnull final Servlet aServlet, @Nonnull @Nonempty final String sServletPath)
+    public ServletItem (@NonNull final Servlet aServlet, @NonNull @Nonempty final String sServletPath)
     {
       m_aServlet = ValueEnforcer.notNull (aServlet, "Servlet");
       m_sServletPath = ValueEnforcer.notEmpty (sServletPath, "ServletPath");
       m_sServletPathRegEx = _getAsRegEx (sServletPath);
     }
 
-    @Nonnull
+    @NonNull
     public Servlet getServlet ()
     {
       return m_aServlet;
     }
 
-    @Nonnull
+    @NonNull
     @Nonempty
     public String getServletName ()
     {
       return m_aServlet.getServletConfig ().getServletName ();
     }
 
-    @Nonnull
+    @NonNull
     @Nonempty
     public String getServletPath ()
     {
       return m_sServletPath;
     }
 
-    public boolean matchesPath (@Nonnull final String sServletPath)
+    public boolean matchesPath (@NonNull final String sServletPath)
     {
       return RegExHelper.stringMatchesPattern (m_sServletPathRegEx, sServletPath);
     }
@@ -127,7 +127,7 @@ public class MockServletPool
   @GuardedBy ("m_aRWLock")
   private boolean m_bInvalidated = false;
 
-  public MockServletPool (@Nonnull final MockServletContext aSC)
+  public MockServletPool (@NonNull final MockServletContext aSC)
   {
     m_aSC = ValueEnforcer.notNull (aSC, "ServletContext");
   }
@@ -143,9 +143,9 @@ public class MockServletPool
    * @param sServletName
    *        The name of the servlet. May neither be <code>null</code> nor empty.
    */
-  public void registerServlet (@Nonnull final Class <? extends Servlet> aServletClass,
-                               @Nonnull @Nonempty final String sServletPath,
-                               @Nonnull @Nonempty final String sServletName)
+  public void registerServlet (@NonNull final Class <? extends Servlet> aServletClass,
+                               @NonNull @Nonempty final String sServletPath,
+                               @NonNull @Nonempty final String sServletName)
   {
     registerServlet (aServletClass, sServletPath, sServletName, (Map <String, String>) null);
   }
@@ -163,9 +163,9 @@ public class MockServletPool
    * @param aServletInitParams
    *        An optional map of servlet init parameters. May be <code>null</code> or empty.
    */
-  public void registerServlet (@Nonnull final Class <? extends Servlet> aServletClass,
-                               @Nonnull @Nonempty final String sServletPath,
-                               @Nonnull @Nonempty final String sServletName,
+  public void registerServlet (@NonNull final Class <? extends Servlet> aServletClass,
+                               @NonNull @Nonempty final String sServletPath,
+                               @NonNull @Nonempty final String sServletName,
                                @Nullable final Map <String, String> aServletInitParams)
   {
     ValueEnforcer.notNull (aServletClass, "ServletClass");

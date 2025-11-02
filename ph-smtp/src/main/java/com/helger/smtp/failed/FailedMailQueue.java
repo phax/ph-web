@@ -16,6 +16,9 @@
  */
 package com.helger.smtp.failed;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.ELockType;
 import com.helger.annotation.concurrent.GuardedBy;
@@ -32,9 +35,6 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * This is a singleton object that keeps all the mails that could not be send.
@@ -57,13 +57,13 @@ public class FailedMailQueue
   {}
 
   @MustBeLocked (ELockType.WRITE)
-  protected void internalAdd (@Nonnull final FailedMailData aFailedMailData)
+  protected void internalAdd (@NonNull final FailedMailData aFailedMailData)
   {
     m_aMap.put (aFailedMailData.getID (), aFailedMailData);
     STATS_COUNTER_ADD.increment ();
   }
 
-  public void add (@Nonnull final FailedMailData aFailedMailData)
+  public void add (@NonNull final FailedMailData aFailedMailData)
   {
     ValueEnforcer.notNull (aFailedMailData, "FailedMailData");
 
@@ -135,7 +135,7 @@ public class FailedMailQueue
     return m_aRWLock.readLockedInt (this::internalGetFailedMailCount);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   @MustBeLocked (ELockType.READ)
   protected ICommonsList <FailedMailData> internalGetAllFailedMails ()
@@ -143,14 +143,14 @@ public class FailedMailQueue
     return m_aMap.copyOfValues ();
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> getAllFailedMails ()
   {
     return m_aRWLock.readLockedGet (this::internalGetAllFailedMails);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   @MustBeLocked (ELockType.WRITE)
   protected ICommonsList <FailedMailData> internalRemoveAll ()
@@ -169,7 +169,7 @@ public class FailedMailQueue
    *
    * @return All currently available failed mails. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsList <FailedMailData> removeAll ()
   {

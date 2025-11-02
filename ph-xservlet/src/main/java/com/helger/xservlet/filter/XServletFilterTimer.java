@@ -16,14 +16,14 @@
  */
 package com.helger.xservlet.filter;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.timing.StopWatch;
 import com.helger.http.EHttpMethod;
 import com.helger.statistics.api.IMutableStatisticsHandlerKeyedTimer;
 import com.helger.statistics.impl.StatisticsManager;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.AbstractXServlet;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A special filter that performs timing of servlet execution. Each servlet
@@ -37,17 +37,17 @@ public final class XServletFilterTimer implements IXServletHighLevelFilter
   private final IMutableStatisticsHandlerKeyedTimer m_aTimer;
   private StopWatch m_aSW;
 
-  public XServletFilterTimer (@Nonnull final AbstractXServlet aServlet)
+  public XServletFilterTimer (@NonNull final AbstractXServlet aServlet)
   {
     m_aTimer = StatisticsManager.getKeyedTimerHandler (aServlet.getClass ().getName ());
   }
 
-  public void beforeRequest (@Nonnull final IRequestWebScope aRequestScope)
+  public void beforeRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     m_aSW = StopWatch.createdStarted ();
   }
 
-  public void afterRequest (@Nonnull final IRequestWebScope aRequestScope)
+  public void afterRequest (@NonNull final IRequestWebScope aRequestScope)
   {
     // Timer per HTTP method
     final EHttpMethod eMethod = aRequestScope.getHttpMethod ();

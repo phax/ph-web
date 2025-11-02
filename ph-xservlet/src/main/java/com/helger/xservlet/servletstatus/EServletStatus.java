@@ -18,10 +18,10 @@ package com.helger.xservlet.servletstatus;
 
 import java.util.Locale;
 
-import com.helger.text.display.IHasDisplayText;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import com.helger.text.display.IHasDisplayText;
 
 /**
  * Defines the different lifecycle status of a servlet.
@@ -40,18 +40,18 @@ public enum EServletStatus implements IHasDisplayText
 
   private final IHasDisplayText m_aText;
 
-  EServletStatus (@Nonnull final EServletStatusText aText)
+  EServletStatus (@NonNull final EServletStatusText aText)
   {
     m_aText = aText;
   }
 
   @Nullable
-  public String getDisplayText (@Nonnull final Locale aContentLocale)
+  public String getDisplayText (@NonNull final Locale aContentLocale)
   {
     return m_aText.getDisplayText (aContentLocale);
   }
 
-  public static boolean isValidSuccessorOf (@Nullable final EServletStatus eOldStatus, @Nonnull final EServletStatus eNewStatus)
+  public static boolean isValidSuccessorOf (@Nullable final EServletStatus eOldStatus, @NonNull final EServletStatus eNewStatus)
   {
     if (eOldStatus == null)
     {

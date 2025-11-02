@@ -16,9 +16,9 @@
  */
 package com.helger.smtp.data;
 
-import com.helger.mail.datasource.IExtendedDataSource;
+import org.jspecify.annotations.NonNull;
 
-import jakarta.annotation.Nonnull;
+import com.helger.mail.datasource.IExtendedDataSource;
 
 /**
  * {@link IExtendedDataSource} extension for email attachments
@@ -30,6 +30,6 @@ public interface IEmailAttachmentDataSource extends IExtendedDataSource
   /**
    * @return The disposition type to use. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   EEmailAttachmentDisposition getDisposition ();
 }

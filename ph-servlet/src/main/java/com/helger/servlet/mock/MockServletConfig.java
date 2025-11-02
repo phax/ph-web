@@ -19,6 +19,9 @@ package com.helger.servlet.mock;
 import java.util.Enumeration;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
@@ -29,8 +32,6 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.enumeration.EnumerationHelper;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 
@@ -54,7 +55,7 @@ public class MockServletConfig implements ServletConfig
    * @param sServletName
    *        Name of the servlet. May neither be <code>null</code> nor empty.
    */
-  public MockServletConfig (@Nonnull final ServletContext aSC, @Nonnull @Nonempty final String sServletName)
+  public MockServletConfig (@NonNull final ServletContext aSC, @NonNull @Nonempty final String sServletName)
   {
     this (aSC, sServletName, null);
   }
@@ -69,8 +70,8 @@ public class MockServletConfig implements ServletConfig
    * @param aServletInitParams
    *        The map with all servlet init parameters. May be <code>null</code> or empty.
    */
-  public MockServletConfig (@Nonnull final ServletContext aSC,
-                            @Nonnull @Nonempty final String sServletName,
+  public MockServletConfig (@NonNull final ServletContext aSC,
+                            @NonNull @Nonempty final String sServletName,
                             @Nullable final Map <String, String> aServletInitParams)
   {
     m_aSC = ValueEnforcer.notNull (aSC, "ServletContext");
@@ -79,14 +80,14 @@ public class MockServletConfig implements ServletConfig
       m_aServletInitParams.putAll (aServletInitParams);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getServletName ()
   {
     return m_sServletName;
   }
 
-  @Nonnull
+  @NonNull
   public ServletContext getServletContext ()
   {
     return m_aSC;
@@ -98,26 +99,26 @@ public class MockServletConfig implements ServletConfig
     return m_aServletInitParams.get (sName);
   }
 
-  @Nonnull
+  @NonNull
   public Enumeration <String> getInitParameterNames ()
   {
     return EnumerationHelper.getEnumeration (m_aServletInitParams.keySet ());
   }
 
-  public void addInitParameter (@Nonnull @Nonempty final String sName, @Nonnull final String sValue)
+  public void addInitParameter (@NonNull @Nonempty final String sName, @NonNull final String sValue)
   {
     ValueEnforcer.notEmpty (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
     m_aServletInitParams.put (sName, sValue);
   }
 
-  @Nonnull
+  @NonNull
   public EChange removeInitParameter (@Nullable final String sName)
   {
     return EChange.valueOf (m_aServletInitParams.remove (sName) != null);
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   @ReturnsMutableCopy
   public ICommonsOrderedMap <String, String> getAllInitParameters ()

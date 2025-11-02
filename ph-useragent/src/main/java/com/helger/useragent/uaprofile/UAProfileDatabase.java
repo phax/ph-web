@@ -22,6 +22,8 @@ import java.util.StringTokenizer;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +47,6 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.CHttpHeader;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Central cache for known UAProfiles.
@@ -85,14 +84,14 @@ public final class UAProfileDatabase
   }
 
   @Nullable
-  private static String _getExtendedNamespaceValue (@Nonnull final String sOpt)
+  private static String _getExtendedNamespaceValue (@NonNull final String sOpt)
   {
     final Matcher aMatcher = RegExHelper.getMatcher (".+ns=(\\d+).*", sOpt);
     return aMatcher.matches () ? aMatcher.group (1) : null;
   }
 
-  @Nonnull
-  private static String _getUnifiedHeaderName (@Nonnull final String s)
+  @NonNull
+  private static String _getUnifiedHeaderName (@NonNull final String s)
   {
     return s.toLowerCase (Locale.US);
   }
@@ -114,8 +113,8 @@ public final class UAProfileDatabase
     return sValue;
   }
 
-  @Nonnull
-  private static ICommonsMap <Integer, String> _getProfileDiffData (@Nonnull final IUAProfileHeaderProvider aHeaderProvider,
+  @NonNull
+  private static ICommonsMap <Integer, String> _getProfileDiffData (@NonNull final IUAProfileHeaderProvider aHeaderProvider,
                                                                     final String sExtNSValue)
   {
     // Determine the profile diffs to use
@@ -181,7 +180,7 @@ public final class UAProfileDatabase
   }
 
   @Nullable
-  public static UAProfile getUAProfileFromRequest (@Nonnull final IUAProfileHeaderProvider aHeaderProvider)
+  public static UAProfile getUAProfileFromRequest (@NonNull final IUAProfileHeaderProvider aHeaderProvider)
   {
     ValueEnforcer.notNull (aHeaderProvider, "HeaderProvider");
 
@@ -327,8 +326,8 @@ public final class UAProfileDatabase
     return new UAProfile (aProfileData, aProfileDiffs);
   }
 
-  @Nonnull
-  public static UAProfile getParsedUAProfile (@Nonnull final IUAProfileHeaderProvider aHeaderProvider)
+  @NonNull
+  public static UAProfile getParsedUAProfile (@NonNull final IUAProfileHeaderProvider aHeaderProvider)
   {
     // Main extraction
     final UAProfile aUAProfile = getUAProfileFromRequest (aHeaderProvider);
@@ -349,7 +348,7 @@ public final class UAProfileDatabase
     return aUAProfile;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsSet <UAProfile> getAllUniqueUAProfiles ()
   {

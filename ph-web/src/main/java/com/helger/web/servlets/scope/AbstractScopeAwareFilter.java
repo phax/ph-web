@@ -18,12 +18,13 @@ package com.helger.web.servlets.scope;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
+
 import com.helger.base.state.EContinue;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.request.RequestScopeInitializer;
 
-import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,15 +62,15 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
    * @throws ServletException
    *         For non IO errors
    */
-  @Nonnull
-  protected abstract EContinue doHttpFilter (@Nonnull HttpServletRequest aHttpRequest,
-                                             @Nonnull HttpServletResponse aHttpResponse,
-                                             @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
+  @NonNull
+  protected abstract EContinue doHttpFilter (@NonNull HttpServletRequest aHttpRequest,
+                                             @NonNull HttpServletResponse aHttpResponse,
+                                             @NonNull IRequestWebScope aRequestScope) throws IOException, ServletException;
 
   @Override
-  public final void doHttpFilter (@Nonnull final HttpServletRequest aHttpRequest,
-                                  @Nonnull final HttpServletResponse aHttpResponse,
-                                  @Nonnull final FilterChain aChain) throws IOException, ServletException
+  public final void doHttpFilter (@NonNull final HttpServletRequest aHttpRequest,
+                                  @NonNull final HttpServletResponse aHttpResponse,
+                                  @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     // Check if a scope needs to be created
     try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest, aHttpResponse))

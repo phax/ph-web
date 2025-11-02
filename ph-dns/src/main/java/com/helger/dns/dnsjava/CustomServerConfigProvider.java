@@ -21,14 +21,13 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
 
+import org.jspecify.annotations.NonNull;
 import org.xbill.DNS.Name;
 import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.config.ResolverConfigProvider;
 
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.ICommonsList;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * A simple implementation of {@link ResolverConfigProvider} that uses a
@@ -40,7 +39,7 @@ public class CustomServerConfigProvider implements ResolverConfigProvider
 {
   private final ICommonsList <InetSocketAddress> m_aServers;
 
-  public CustomServerConfigProvider (@Nonnull final ICommonsList <InetSocketAddress> aServers)
+  public CustomServerConfigProvider (@NonNull final ICommonsList <InetSocketAddress> aServers)
   {
     ValueEnforcer.notNull (aServers, "Servers");
     m_aServers = aServers.getClone ();
@@ -49,20 +48,20 @@ public class CustomServerConfigProvider implements ResolverConfigProvider
   public void initialize ()
   {}
 
-  @Nonnull
+  @NonNull
   public List <InetSocketAddress> servers ()
   {
     return m_aServers.getClone ();
   }
 
-  @Nonnull
+  @NonNull
   public List <Name> searchPaths ()
   {
     return Collections.emptyList ();
   }
 
-  @Nonnull
-  public static CustomServerConfigProvider createFromInetAddressList (@Nonnull final ICommonsList <InetAddress> aServers)
+  @NonNull
+  public static CustomServerConfigProvider createFromInetAddressList (@NonNull final ICommonsList <InetAddress> aServers)
   {
     ValueEnforcer.notNull (aServers, "Servers");
     return new CustomServerConfigProvider (aServers.getAllMapped (x -> new InetSocketAddress (x, SimpleResolver.DEFAULT_PORT)));

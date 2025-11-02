@@ -16,6 +16,7 @@
  */
 package com.helger.smtp.transport.listener;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,6 @@ import com.helger.diagnostics.error.level.EErrorLevel;
 import com.helger.diagnostics.error.level.IErrorLevel;
 import com.helger.diagnostics.log.LogHelper;
 
-import jakarta.annotation.Nonnull;
 import jakarta.mail.event.ConnectionEvent;
 import jakarta.mail.event.ConnectionListener;
 
@@ -46,28 +46,28 @@ public class LoggingConnectionListener implements ConnectionListener, ICallback
     this (EErrorLevel.INFO);
   }
 
-  public LoggingConnectionListener (@Nonnull final IErrorLevel aErrorLevel)
+  public LoggingConnectionListener (@NonNull final IErrorLevel aErrorLevel)
   {
     m_aErrorLevel = ValueEnforcer.notNull (aErrorLevel, "ErrorLevel");
   }
 
-  @Nonnull
+  @NonNull
   public IErrorLevel getErrorLevel ()
   {
     return m_aErrorLevel;
   }
 
-  public void opened (@Nonnull final ConnectionEvent aEvent)
+  public void opened (@NonNull final ConnectionEvent aEvent)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Connected to SMTP server");
   }
 
-  public void disconnected (@Nonnull final ConnectionEvent aEvent)
+  public void disconnected (@NonNull final ConnectionEvent aEvent)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Disconnected from SMTP server");
   }
 
-  public void closed (@Nonnull final ConnectionEvent aEvent)
+  public void closed (@NonNull final ConnectionEvent aEvent)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Closed connection to SMTP server");
   }

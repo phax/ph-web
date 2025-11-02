@@ -18,6 +18,9 @@ package com.helger.smtp.settings;
 
 import java.nio.charset.Charset;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.misc.ContainsSoftMigration;
 import com.helger.base.charset.CharsetHelper;
 import com.helger.base.string.StringParser;
@@ -26,9 +29,6 @@ import com.helger.smtp.EmailGlobalSettings;
 import com.helger.xml.microdom.IMicroElement;
 import com.helger.xml.microdom.MicroElement;
 import com.helger.xml.microdom.convert.IMicroTypeConverter;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Micro type converter for class {@link SMTPSettings}
@@ -48,10 +48,10 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
   private static final String ATTR_TIMEOUT = "timeout";
   private static final String ATTR_DEBUG_SMTP = "debugsmtp";
 
-  @Nonnull
-  public static IMicroElement convertToMicroElementStatic (@Nonnull final ISMTPSettings aSMTPSettings,
+  @NonNull
+  public static IMicroElement convertToMicroElementStatic (@NonNull final ISMTPSettings aSMTPSettings,
                                                            @Nullable final String sNamespaceURI,
-                                                           @Nonnull final String sTagName)
+                                                           @NonNull final String sTagName)
   {
     final IMicroElement eSMTPSettings = new MicroElement (sNamespaceURI, sTagName);
     eSMTPSettings.setAttribute (ATTR_HOST, aSMTPSettings.getHostName ());
@@ -67,16 +67,16 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
     return eSMTPSettings;
   }
 
-  @Nonnull
-  public IMicroElement convertToMicroElement (@Nonnull final SMTPSettings aSource,
+  @NonNull
+  public IMicroElement convertToMicroElement (@NonNull final SMTPSettings aSource,
                                               @Nullable final String sNamespaceURI,
-                                              @Nonnull final String sTagName)
+                                              @NonNull final String sTagName)
   {
     return convertToMicroElementStatic (aSource, sNamespaceURI, sTagName);
   }
 
-  @Nonnull
-  public static SMTPSettings convertToSMTPSettings (@Nonnull final IMicroElement eSMTPSettings)
+  @NonNull
+  public static SMTPSettings convertToSMTPSettings (@NonNull final IMicroElement eSMTPSettings)
   {
     final String sHost = eSMTPSettings.getAttributeValue (ATTR_HOST);
 
@@ -125,9 +125,9 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
    * The alternative attributes are used to be consistent with old failed mail conversions, as they
    * did the transformation manually!
    */
-  @Nonnull
+  @NonNull
   @ContainsSoftMigration
-  public SMTPSettings convertToNative (@Nonnull final IMicroElement eSMTPSettings)
+  public SMTPSettings convertToNative (@NonNull final IMicroElement eSMTPSettings)
   {
     return convertToSMTPSettings (eSMTPSettings);
   }

@@ -16,15 +16,15 @@
  */
 package com.helger.network.proxy.config;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.id.IHasID;
 import com.helger.base.string.StringParser;
 import com.helger.base.system.SystemProperties;
 import com.helger.url.protocol.IURLProtocol;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
  * Proxy type determination interface.<br>
@@ -37,7 +37,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The URL protocol for which the proxy can be used. May not be <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   IURLProtocol getURLProtocol ();
 
   @Nonnegative
@@ -46,7 +46,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The name of the system property for getting and setting the proxy host
    */
-  @Nonnull
+  @NonNull
   default String getPropertyNameProxyHost ()
   {
     return getID () + ".proxyHost";
@@ -64,7 +64,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The name of the system property for getting and setting the proxy port
    */
-  @Nonnull
+  @NonNull
   default String getPropertyNameProxyPort ()
   {
     return getID () + ".proxyPort";
@@ -83,7 +83,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The name of the system property for getting and setting the proxy user name
    */
-  @Nonnull
+  @NonNull
   default String getPropertyNameProxyUserName ()
   {
     return getID () + ".proxyUser";
@@ -101,7 +101,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The name of the system property for getting and setting the proxy password
    */
-  @Nonnull
+  @NonNull
   default String getPropertyNameProxyPassword ()
   {
     return getID () + ".proxyPassword";
@@ -119,7 +119,7 @@ public interface IProxySettingsPerProtocol extends IHasID <String>
   /**
    * @return The name of the system property for getting and setting the non-proxy hosts
    */
-  @Nonnull
+  @NonNull
   default String getPropertyNameNoProxyHosts ()
   {
     return getID () + ".noProxyHosts";

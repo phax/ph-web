@@ -18,6 +18,7 @@ package com.helger.jsch.session;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +27,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
-import jakarta.annotation.Nonnull;
 
 /**
  * Provides a convenience wrapper to sessions that maintains the session
@@ -53,7 +52,7 @@ public class SessionManager implements AutoCloseable
    * @param sSessionDisplayName
    *        The session display name for logging etc.
    */
-  public SessionManager (@Nonnull final ISessionProvider aSessionFactory, @Nonnull final String sSessionDisplayName)
+  public SessionManager (@NonNull final ISessionProvider aSessionFactory, @NonNull final String sSessionDisplayName)
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
     ValueEnforcer.notNull (sSessionDisplayName, "SessionDisplayName");
@@ -64,7 +63,7 @@ public class SessionManager implements AutoCloseable
   /**
    * @return the session factory used by this manager. Never <code>null</code>.
    */
-  @Nonnull
+  @NonNull
   public final ISessionProvider getSessionFactory ()
   {
     return m_aSessionProvider;
@@ -91,7 +90,7 @@ public class SessionManager implements AutoCloseable
    * @throws JSchException
    *         If unable to connect the session
    */
-  @Nonnull
+  @NonNull
   public Session getSession () throws JSchException
   {
     if (m_aSession == null || !m_aSession.isConnected ())
@@ -111,7 +110,7 @@ public class SessionManager implements AutoCloseable
     return m_aSession;
   }
 
-  @Nonnull
+  @NonNull
   @Nonempty
   public String getAsString ()
   {
@@ -126,8 +125,8 @@ public class SessionManager implements AutoCloseable
                                        .getToString ();
   }
 
-  @Nonnull
-  public static SessionManager create (@Nonnull final ISessionFactory aFactory)
+  @NonNull
+  public static SessionManager create (@NonNull final ISessionFactory aFactory)
   {
     return new SessionManager (aFactory, aFactory.getAsString ());
   }

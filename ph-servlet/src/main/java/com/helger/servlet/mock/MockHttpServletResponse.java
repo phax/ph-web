@@ -23,6 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +48,6 @@ import com.helger.mime.parse.MimeTypeParserException;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.io.AbstractServletOutputStream;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -171,7 +171,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     return m_aCharacterEncoding;
   }
 
-  @Nonnull
+  @NonNull
   public Charset getCharacterEncodingObjOrDefault ()
   {
     Charset ret = getCharacterEncodingObj ();
@@ -180,7 +180,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     return ret;
   }
 
-  @Nonnull
+  @NonNull
   public ServletOutputStream getOutputStream ()
   {
     if (!m_bOutputStreamAccessAllowed)
@@ -189,7 +189,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     return m_aOS;
   }
 
-  @Nonnull
+  @NonNull
   public PrintWriter getWriter ()
   {
     if (!m_bWriterAccessAllowed)
@@ -203,7 +203,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     return m_aWriter;
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public byte [] getContentAsByteArray ()
   {
@@ -211,8 +211,8 @@ public class MockHttpServletResponse implements HttpServletResponse
     return m_aContent.toByteArray ();
   }
 
-  @Nonnull
-  public String getContentAsString (@Nonnull final Charset aCharset)
+  @NonNull
+  public String getContentAsString (@NonNull final Charset aCharset)
   {
     flushBuffer ();
     return m_aContent.getAsString (aCharset);
@@ -323,13 +323,13 @@ public class MockHttpServletResponse implements HttpServletResponse
     return m_aLocale;
   }
 
-  public void addCookie (@Nonnull final Cookie aCookie)
+  public void addCookie (@NonNull final Cookie aCookie)
   {
     ValueEnforcer.notNull (aCookie, "Cookie");
     m_aCookies.add (aCookie);
   }
 
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public Cookie [] getCookies ()
   {
@@ -337,7 +337,7 @@ public class MockHttpServletResponse implements HttpServletResponse
   }
 
   @Nullable
-  public Cookie getCookie (@Nonnull final String sName)
+  public Cookie getCookie (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
     for (final Cookie aCookie : m_aCookies)
@@ -357,7 +357,7 @@ public class MockHttpServletResponse implements HttpServletResponse
    * @return the <code>Set</code> of header name <code>Strings</code>, or an empty <code>Set</code>
    *         if none
    */
-  @Nonnull
+  @NonNull
   @ReturnsMutableCopy
   public ICommonsSet <String> getHeaderNames ()
   {
@@ -387,7 +387,7 @@ public class MockHttpServletResponse implements HttpServletResponse
    *        the name of the header
    * @return the associated header values, or an empty List if none
    */
-  @Nonnull
+  @NonNull
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
     return m_aHeaders.getAllHeaderValues (sName);
@@ -450,7 +450,7 @@ public class MockHttpServletResponse implements HttpServletResponse
     setCommitted (true);
   }
 
-  public void sendRedirect (@Nonnull final String sUrl) throws IOException
+  public void sendRedirect (@NonNull final String sUrl) throws IOException
   {
     if (isCommitted ())
       throw new IllegalStateException ("Cannot send redirect - response is already committed");
@@ -585,7 +585,7 @@ public class MockHttpServletResponse implements HttpServletResponse
    */
   private class ResponsePrintWriter extends PrintWriter
   {
-    public ResponsePrintWriter (@Nonnull final Writer aOut)
+    public ResponsePrintWriter (@NonNull final Writer aOut)
     {
       super (aOut, true);
     }

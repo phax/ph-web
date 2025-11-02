@@ -20,6 +20,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.xbill.DNS.ExtendedResolver;
 import org.xbill.DNS.Resolver;
 import org.xbill.DNS.ResolverConfig;
@@ -31,29 +33,26 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.config.DNSConfig;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 @Immutable
 public final class ResolverHelper
 {
   private ResolverHelper ()
   {}
 
-  public static void defaultCustomizeResolver (@Nonnull final Resolver aResolver)
+  public static void defaultCustomizeResolver (@NonNull final Resolver aResolver)
   {
     // Set the default query timeout
     aResolver.setTimeout (DNSConfig.getResolverTimeout ());
   }
 
-  public static void defaultCustomizeExtendedResolver (@Nonnull final ExtendedResolver aResolver)
+  public static void defaultCustomizeExtendedResolver (@NonNull final ExtendedResolver aResolver)
   {
     defaultCustomizeResolver (aResolver);
     // Set the default retries
     aResolver.setRetries (DNSConfig.getResolverRetryCount ());
   }
 
-  public static void forEachDefaultResolver (@Nonnull final Consumer <? super SimpleResolver> aConsumer)
+  public static void forEachDefaultResolver (@NonNull final Consumer <? super SimpleResolver> aConsumer)
   {
     ValueEnforcer.notNull (aConsumer, "Consumer");
 
@@ -67,7 +66,7 @@ public final class ResolverHelper
   }
 
   public static void forEachResolver (@Nullable final Iterable <? extends InetAddress> aServerAddrs,
-                                      @Nonnull final Consumer <? super SimpleResolver> aConsumer)
+                                      @NonNull final Consumer <? super SimpleResolver> aConsumer)
   {
     if (aServerAddrs != null)
       for (final InetAddress aAddr : aServerAddrs)
@@ -87,7 +86,7 @@ public final class ResolverHelper
     return aResolvers.containsAny (x -> ((SimpleResolver) x).getAddress ().equals (aSearchAddr));
   }
 
-  @Nonnull
+  @NonNull
   public static ExtendedResolver createExtendedResolver (@Nullable final Iterable <? extends InetAddress> aCustomServerAddrs)
   {
     final ICommonsList <Resolver> aResolvers = new CommonsArrayList <> ();

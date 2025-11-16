@@ -61,6 +61,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.0 - 2025-11-16
+* Updated to ph-commons 12.1.0
+* Using JSpecify annotations
+
 v11.1.2 - 2025-10-23
 * Extended `NaptrResolver` to have a custom flags resolver
 * Added new method `StaticServerInfo.clearDefault()`

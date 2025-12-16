@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.1 - work in progress
+* Updated to Apache HttpCore 5.4
+
 v11.2.0 - 2025-11-16
 * Updated to ph-commons 12.1.0
 * Using JSpecify annotations
@@ -158,7 +161,7 @@ v10.1.0 - 2023-02-24
 * Using Eclipse Angus 2.0.1 for mailing
 * Switched all namespaces from `javax.servlet` to `jakarta.servlet`
 
-v10.0.2 - 2025-05-05 [backport]
+v10.0.2 - 2025-05-05 (backport)
 * Updated to Apache HttpClient v5.4.4 to fix CVE-2025-27820
 * Updated to dnsjava 3.6.3
 * Updated to ph-commons 11.2.1

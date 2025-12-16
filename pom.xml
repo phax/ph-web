@@ -67,7 +67,7 @@
     <commons-codec.version>1.19.0</commons-codec.version>
     <dnsjava.version>3.6.3</dnsjava.version>
     <httpclient.version>5.5.1</httpclient.version>
-    <httpcore.version>5.3.6</httpcore.version>
+    <httpcore.version>5.4</httpcore.version>
     <jsch.version>0.1.55</jsch.version>
   </properties>
   
@@ -93,7 +93,7 @@
       <dependency>
         <groupId>com.helger.commons</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>12.1.0</version>
+        <version>12.1.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

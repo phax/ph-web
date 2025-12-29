@@ -18,8 +18,6 @@ package com.helger.dns.naptr;
 
 import java.net.InetAddress;
 import java.time.Duration;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -39,6 +37,7 @@ import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.callback.CallbackList;
 import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.log.ConditionalLogger;
 import com.helger.base.timing.StopWatch;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
@@ -127,16 +126,13 @@ public class NaptrLookup
     // Omit the final dot
     final String sDomainName = m_aDomainName.toString (true);
 
-    final BooleanSupplier aIsEnabled = m_bDebugMode ? LOGGER::isInfoEnabled : LOGGER::isDebugEnabled;
-    final Consumer <String> aLogger = m_bDebugMode ? LOGGER::info : LOGGER::debug;
-
-    if (aIsEnabled.getAsBoolean ())
-      aLogger.accept ("Trying to look up NAPTR on '" +
-                      sDomainName +
-                      "'" +
-                      (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
-                      " using network mode " +
-                      m_eLookupMode);
+    final ConditionalLogger aCondLogger = new ConditionalLogger (LOGGER, m_bDebugMode);
+    aCondLogger.info ( () -> "Trying to look up NAPTR on '" +
+                             sDomainName +
+                             "'" +
+                             (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
+                             " using network mode " +
+                             m_eLookupMode);
 
     final StopWatch aSW = StopWatch.createdStarted ();
     try
@@ -155,8 +151,8 @@ public class NaptrLookup
       Record [] aRecords = null;
       if (m_eLookupMode.isUDP ())
       {
-        if (aIsEnabled.getAsBoolean ())
-          aLogger.accept ("  Trying UDP for NAPTR lookup after " + nLookupRuns + " unsuccessful lopkups");
+        final int nFinalLookupRuns1 = nLookupRuns;
+        aCondLogger.info ( () -> "  Trying UDP for NAPTR lookup after " + nFinalLookupRuns1 + " unsuccessful lookups");
 
         // By default try UDP
         // Stumbled upon an issue, where UDP datagram size was too small for MTU
@@ -165,8 +161,8 @@ public class NaptrLookup
         do
         {
           aRecords = aLookup.run ();
-          if (aIsEnabled.getAsBoolean ())
-            aLogger.accept ("    Result of UDP lookup " + nLookupRuns + ": " + aLookup.getErrorString ());
+          final int nFinalLookupRuns2 = nLookupRuns;
+          aCondLogger.info ( () -> "    Result of UDP lookup " + nFinalLookupRuns2 + ": " + aLookup.getErrorString ());
 
           nLeft--;
           nLookupRuns++;
@@ -176,8 +172,8 @@ public class NaptrLookup
       }
       if (bCanTryAgain && m_eLookupMode.isTCP ())
       {
-        if (aIsEnabled.getAsBoolean ())
-          aLogger.accept ("  Trying TCP for NAPTR lookup after " + nLookupRuns + " unsuccessful lopkups");
+        final int nFinalLookupRuns1 = nLookupRuns;
+        aCondLogger.info ( () -> "  Trying TCP for NAPTR lookup after " + nFinalLookupRuns1 + " unsuccessful lookups");
 
         // Retry with TCP instead of UDP
         aResolver.setTCP (true);
@@ -187,8 +183,8 @@ public class NaptrLookup
         do
         {
           aRecords = aLookup.run ();
-          if (aIsEnabled.getAsBoolean ())
-            aLogger.accept ("    Result of TCP lookup " + nLookupRuns + ": " + aLookup.getErrorString ());
+          final int nFinalLookupRuns2 = nLookupRuns;
+          aCondLogger.info ( () -> "    Result of TCP lookup " + nFinalLookupRuns2 + ": " + aLookup.getErrorString ());
 
           nLeft--;
           nLookupRuns++;
@@ -197,27 +193,26 @@ public class NaptrLookup
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
         // Wrong domain name
-        LOGGER.warn ("Error looking up '" +
-                     sDomainName +
-                     "' [" +
-                     aLookup.getResult () +
-                     "]: " +
-                     aLookup.getErrorString ());
+        aCondLogger.info ( () -> "Error looking up '" +
+                                 sDomainName +
+                                 "' [" +
+                                 aLookup.getResult () +
+                                 "]: " +
+                                 aLookup.getErrorString ());
         return new CommonsArrayList <> ();
       }
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
       for (final Record aRecord : aRecords)
         ret.add ((NAPTRRecord) aRecord);
 
-      if (aIsEnabled.getAsBoolean ())
-        aLogger.accept ("  Returning " +
-                        ret.size () +
-                        " NAPTR record(s) for '" +
-                        sDomainName +
-                        "' after " +
-                        nLookupRuns +
-                        " lookups");
-
+      final int nFinalLookupRuns = nLookupRuns;
+      aCondLogger.info ( () -> "  Returning " +
+                               ret.size () +
+                               " NAPTR record(s) for '" +
+                               sDomainName +
+                               "' after " +
+                               nFinalLookupRuns +
+                               " lookups");
       return ret;
     }
     finally

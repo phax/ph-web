@@ -182,9 +182,11 @@ public class NaptrResolver
     if (aMatchingRecords.isEmpty ())
     {
       // No matching NAPTR present
-      LOGGER.warn ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
       return null;
     }
+
     // Sort by order than by preference according to RFC 2915
     aMatchingRecords.sort ( (x, y) -> {
       int ret = CompareHelper.compare (x.getOrder (), y.getOrder ());
@@ -366,7 +368,9 @@ public class NaptrResolver
 
       if (m_aNaptrRecords.isEmpty ())
       {
-        LOGGER.warn ("No NAPTR records are provided." + (m_bNaptrLookupProvided ? "" : " Using the default lookup."));
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("No NAPTR records are provided." +
+                        (m_bNaptrLookupProvided ? "" : " Using the default lookup."));
 
         // If no NAPTR Records are present and no lookup was yet performed, do a
         // simple default lookup

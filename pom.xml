@@ -66,7 +66,7 @@
     <angus-mail.version>2.0.5</angus-mail.version>
     <commons-codec.version>1.19.0</commons-codec.version>
     <dnsjava.version>3.6.3</dnsjava.version>
-    <httpclient.version>5.5.1</httpclient.version>
+    <httpclient.version>5.6</httpclient.version>
     <httpcore.version>5.4</httpcore.version>
     <jsch.version>0.1.55</jsch.version>
   </properties>

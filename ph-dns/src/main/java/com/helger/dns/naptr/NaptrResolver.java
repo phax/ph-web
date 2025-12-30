@@ -39,7 +39,7 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.naptr.NaptrLookup.NaptrLookupBuilder;
 
 /**
- * Helper class to resolve U-NAPTR DNS records
+ * Helper class to resolve NAPTR DNS records
  *
  * @author Philip Helger
  * @since 5.1.5
@@ -47,6 +47,7 @@ import com.helger.dns.naptr.NaptrLookup.NaptrLookupBuilder;
 @Immutable
 public class NaptrResolver
 {
+  /** By default only "U"-NAPTR records are used */
   public static final String DEFAULT_FLAGS = "U";
   private static final Logger LOGGER = LoggerFactory.getLogger (NaptrResolver.class);
 
@@ -175,7 +176,7 @@ public class NaptrResolver
       if (m_aFlagsMatcher.test (aRecord.getFlags ()) && m_aServiceNameMatcher.test (aRecord.getService ()))
       {
         if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Found a matching U-NAPTR record: " + aRecord);
+          LOGGER.debug ("Found a matching NAPTR record: " + aRecord);
         aMatchingRecords.add (aRecord);
       }
     }
@@ -183,7 +184,7 @@ public class NaptrResolver
     {
       // No matching NAPTR present
       if (LOGGER.isDebugEnabled ())
-        LOGGER.debug ("No matching DNS U-NAPTR records returned for '" + m_sDomainName + "'");
+        LOGGER.debug ("No matching DNS NAPTR records returned for '" + m_sDomainName + "'");
       return null;
     }
 

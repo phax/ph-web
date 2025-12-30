@@ -193,12 +193,12 @@ public class NaptrLookup
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
         // Wrong domain name
-        aCondLogger.info ( () -> "Error looking up '" +
-                                 sDomainName +
-                                 "' [" +
-                                 aLookup.getResult () +
-                                 "]: " +
-                                 aLookup.getErrorString ());
+        LOGGER.warn ("Error looking up '" +
+                     sDomainName +
+                     "' [" +
+                     aLookup.getResult () +
+                     "]: " +
+                     aLookup.getErrorString ());
         return new CommonsArrayList <> ();
       }
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();

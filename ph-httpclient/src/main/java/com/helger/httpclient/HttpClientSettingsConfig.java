@@ -401,10 +401,216 @@ public class HttpClientSettingsConfig
     {
       return _findBoolean ("http.tls.certificate-check.disabled", bDefault);
     }
+
+    @Nullable
+    public static HttpClientConfig create (@NonNull final IConfigWithFallback aConfig,
+                                           @NonNull @Nonempty final String... aPrefixes)
+    {
+      // Either empty or ending with a string
+      final ICommonsOrderedSet <String> aRealPrefixes = new CommonsLinkedHashSet <> (aPrefixes,
+                                                                                     x -> x.isEmpty () ||
+                                                                                          x.endsWith (".") ? x : x +
+                                                                                                                 ".");
+      if (aRealPrefixes.isEmpty ())
+      {
+        LOGGER.warn ("No configuration prefixes provided to configure HTTP client settings. Nothing happens");
+        return null;
+      }
+
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Using prefixes '" + aRealPrefixes + "' to configure HTTP client settings");
+
+      return new HttpClientConfig (aConfig, aRealPrefixes);
+    }
   }
 
   private HttpClientSettingsConfig ()
   {}
+
+  public static void assignConfigValuesForDNS (@NonNull final HttpClientSettings aHCS,
+                                               @NonNull final HttpClientConfig aHCC)
+  {
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eUseDNSClientCache = aHCC.getUseDNSClientCache (aHCS.isUseDNSClientCache ());
+    if (eUseDNSClientCache.isDefined ())
+    {
+      final boolean b = eUseDNSClientCache.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.useDNSClientCache(" + b + ")");
+      aHCS.setUseDNSClientCache (b);
+    }
+  }
+
+  public static void assignConfigValuesForProxy (@NonNull final HttpProxySettings aProxySettings,
+                                                 @NonNull final HttpClientConfig aHCC)
+  {
+    final boolean bDefaultProxyEnabled = false;
+    final ETriState eProxyEnabled = aHCC.getHttpProxyEnabled (bDefaultProxyEnabled);
+    if (eProxyEnabled.isDefined () && eProxyEnabled.getAsBooleanValue ())
+    {
+      final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
+      if (aProxyHost != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
+        aProxySettings.setProxyHost (aProxyHost);
+      }
+
+      final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
+      if (aProxyCredentials != null)
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
+        aProxySettings.setProxyCredentials (aProxyCredentials);
+      }
+
+      final String sNonProxyHosts = aHCC.getNonProxyHosts ();
+      if (StringHelper.isNotEmpty (sNonProxyHosts))
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
+        aProxySettings.setNonProxyHostsFromPipeString (sNonProxyHosts);
+      }
+    }
+  }
+
+  public static void assignConfigValuesForRetry (@NonNull final HttpClientSettings aHCS,
+                                                 @NonNull final HttpClientConfig aHCC)
+  {
+    final int nRetryCount = aHCC.getRetryCount ();
+    if (nRetryCount >= 0)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.retryCount(" + nRetryCount + ")");
+      aHCS.setRetryCount (nRetryCount);
+    }
+
+    final Duration aRetryInterval = aHCC.getRetryInterval ();
+    if (aRetryInterval != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.retryInterval(" + aRetryInterval + ")");
+      aHCS.setRetryInterval (aRetryInterval);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eRetryAlways = aHCC.getRetryAlways (aHCS.isRetryAlways ());
+    if (eRetryAlways.isDefined ())
+    {
+      final boolean b = eRetryAlways.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.retryAlways(" + b + ")");
+      aHCS.setRetryAlways (b);
+    }
+  }
+
+  public static void assignConfigValuesForTimeouts (@NonNull final HttpClientSettings aHCS,
+                                                    @NonNull final HttpClientConfig aHCC)
+  {
+    final Timeout aConnectionRequestTimeout = aHCC.getConnectionRequestTimeout ();
+    if (aConnectionRequestTimeout != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.connectionRequestTimeout(" +
+                      aConnectionRequestTimeout +
+                      ")");
+      aHCS.setConnectionRequestTimeout (aConnectionRequestTimeout);
+    }
+
+    final Timeout aConnectTimeout = aHCC.getConnectTimeout ();
+    if (aConnectTimeout != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.connectTimeout(" + aConnectTimeout + ")");
+      aHCS.setConnectTimeout (aConnectTimeout);
+    }
+
+    final Timeout aResponseTimeout = aHCC.getResponseTimeout ();
+    if (aResponseTimeout != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.responseTimeout(" + aResponseTimeout + ")");
+      aHCS.setResponseTimeout (aResponseTimeout);
+    }
+  }
+
+  public static void assignConfigValuesForTLS (@NonNull final HttpClientSettings aHCS,
+                                               @NonNull final HttpClientConfig aHCC)
+  {
+    final boolean bDefaultDisableTLS = false;
+
+    // The global property
+    final ETriState eDisableTLSChecks = aHCC.getDisableTlsChecks (bDefaultDisableTLS);
+
+    final ETriState eDisableHostnameCheck = aHCC.getDisableHostnameCheck (bDefaultDisableTLS);
+    if ((eDisableHostnameCheck.isDefined () && eDisableHostnameCheck.getAsBooleanValue ()) ||
+        (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.setHostnameVerifierVerifyAll()");
+      aHCS.setHostnameVerifierVerifyAll ();
+      LOGGER.warn ("Disabled the hostname check for SSL/TLS connections. This may be a security risk.");
+    }
+
+    final ETriState eDisableCertificateCheck = aHCC.getDisableCertificateCheck (bDefaultDisableTLS);
+    if ((eDisableCertificateCheck.isDefined () && eDisableCertificateCheck.getAsBooleanValue ()) ||
+        (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
+    {
+      try
+      {
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.setSSLContextTrustAll()");
+        aHCS.setSSLContextTrustAll ();
+        LOGGER.warn ("Disabled the certificate check for SSL/TLS connections. This may be a security risk.");
+      }
+      catch (final GeneralSecurityException ex)
+      {
+        throw new IllegalStateException ("Failed to set SSL Context for TLS connection", ex);
+      }
+    }
+  }
+
+  public static void assignConfigValuesForMisc (@NonNull final HttpClientSettings aHCS,
+                                                @NonNull final HttpClientConfig aHCC)
+  {
+    final String sUserAgent = aHCC.getUserAgent ();
+    if (StringHelper.isNotEmpty (sUserAgent))
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.userAgent(" + sUserAgent + ")");
+      aHCS.setUserAgent (sUserAgent);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eFollowRedirects = aHCC.getFollowRedirects (aHCS.isFollowRedirects ());
+    if (eFollowRedirects.isDefined ())
+    {
+      final boolean b = eFollowRedirects.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.followRedirects(" + b + ")");
+      aHCS.setFollowRedirects (b);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eKeepAlive = aHCC.getUseKeepAlive (aHCS.isUseKeepAlive ());
+    if (eKeepAlive.isDefined ())
+    {
+      final boolean b = eKeepAlive.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.keepAlive(" + b + ")");
+      aHCS.setUseKeepAlive (b);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eProtocolUpgradeEnabled = aHCC.getProtocolUpgradeEnabled (aHCS.isProtocolUpgradeEnabled ());
+    if (eProtocolUpgradeEnabled.isDefined ())
+    {
+      final boolean b = eProtocolUpgradeEnabled.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.protocolUpgradeEnabled(" + b + ")");
+      aHCS.setProtocolUpgradeEnabled (b);
+    }
+  }
 
   /**
    * Assign all settings of {@link HttpClientSettings} from configuration values. This includes:
@@ -429,199 +635,26 @@ public class HttpClientSettingsConfig
     ValueEnforcer.notNull (aConfig, "Config");
     ValueEnforcer.notEmptyNoNullValue (aPrefixes, "Prefixes");
 
-    // Either empty or ending with a string
-    final ICommonsOrderedSet <String> aRealPrefixes = new CommonsLinkedHashSet <> (aPrefixes,
-                                                                                   x -> x.isEmpty () || x.endsWith (".")
-                                                                                                                         ? x
-                                                                                                                         : x +
-                                                                                                                           ".");
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Using prefixes '" + aRealPrefixes + "' to configure HTTP client settings");
-    if (aRealPrefixes.isEmpty ())
+    final HttpClientConfig aHCC = HttpClientConfig.create (aConfig, aPrefixes);
+    if (aHCC != null)
     {
-      LOGGER.warn ("No configuration prefixes provided to configure HTTP client settings. Nothing happens");
-      return;
-    }
+      // DNS stuff
+      assignConfigValuesForDNS (aHCS, aHCC);
 
-    final HttpClientConfig aHCC = new HttpClientConfig (aConfig, aRealPrefixes);
+      // General proxy stuff
+      assignConfigValuesForProxy (aHCS.getGeneralProxy (), aHCC);
 
-    // DNS stuff
-    {
-      // Use existing value as fallback to avoid changing to default
-      final ETriState eUseDNSClientCache = aHCC.getUseDNSClientCache (aHCS.isUseDNSClientCache ());
-      if (eUseDNSClientCache.isDefined ())
-      {
-        final boolean b = eUseDNSClientCache.getAsBooleanValue ();
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.useDNSClientCache(" + b + ")");
-        aHCS.setUseDNSClientCache (b);
-      }
-    }
+      // Retry
+      assignConfigValuesForRetry (aHCS, aHCC);
 
-    // Proxy stuff
-    {
-      final boolean bDefaultProxyEnabled = false;
-      final ETriState eProxyEnabled = aHCC.getHttpProxyEnabled (bDefaultProxyEnabled);
-      if (eProxyEnabled.isDefined () && eProxyEnabled.getAsBooleanValue ())
-      {
-        final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
-        if (aProxyHost != null)
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Setting configured HttpClientSettings.proxyHost(" + aProxyHost + ")");
-          aHCS.getGeneralProxy ().setProxyHost (aProxyHost);
-        }
+      // Timeouts
+      assignConfigValuesForTimeouts (aHCS, aHCC);
 
-        final UsernamePasswordCredentials aProxyCredentials = aHCC.getHttpProxyCredentials ();
-        if (aProxyCredentials != null)
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Setting configured HttpClientSettings.proxyCredentials(" + aProxyCredentials + ")");
-          aHCS.getGeneralProxy ().setProxyCredentials (aProxyCredentials);
-        }
+      // TLS stuff
+      assignConfigValuesForTLS (aHCS, aHCC);
 
-        final String sNonProxyHosts = aHCC.getNonProxyHosts ();
-        if (StringHelper.isNotEmpty (sNonProxyHosts))
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Setting configured HttpClientSettings.nonProxyHosts(" + sNonProxyHosts + ")");
-          aHCS.getGeneralProxy ().setNonProxyHostsFromPipeString (sNonProxyHosts);
-        }
-      }
-    }
-
-    // Retry
-    {
-      final int nRetryCount = aHCC.getRetryCount ();
-      if (nRetryCount >= 0)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.retryCount(" + nRetryCount + ")");
-        aHCS.setRetryCount (nRetryCount);
-      }
-
-      final Duration aRetryInterval = aHCC.getRetryInterval ();
-      if (aRetryInterval != null)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.retryInterval(" + aRetryInterval + ")");
-        aHCS.setRetryInterval (aRetryInterval);
-      }
-
-      // Use existing value as fallback to avoid changing to default
-      final ETriState eRetryAlways = aHCC.getRetryAlways (aHCS.isRetryAlways ());
-      if (eRetryAlways.isDefined ())
-      {
-        final boolean b = eRetryAlways.getAsBooleanValue ();
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.retryAlways(" + b + ")");
-        aHCS.setRetryAlways (b);
-      }
-    }
-
-    // Timeouts
-    {
-      final Timeout aConnectionRequestTimeout = aHCC.getConnectionRequestTimeout ();
-      if (aConnectionRequestTimeout != null)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.connectionRequestTimeout(" +
-                        aConnectionRequestTimeout +
-                        ")");
-        aHCS.setConnectionRequestTimeout (aConnectionRequestTimeout);
-      }
-
-      final Timeout aConnectTimeout = aHCC.getConnectTimeout ();
-      if (aConnectTimeout != null)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.connectTimeout(" + aConnectTimeout + ")");
-        aHCS.setConnectTimeout (aConnectTimeout);
-      }
-
-      final Timeout aResponseTimeout = aHCC.getResponseTimeout ();
-      if (aResponseTimeout != null)
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.responseTimeout(" + aResponseTimeout + ")");
-        aHCS.setResponseTimeout (aResponseTimeout);
-      }
-    }
-
-    // Other stuff
-    {
-      final String sUserAgent = aHCC.getUserAgent ();
-      if (StringHelper.isNotEmpty (sUserAgent))
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.userAgent(" + sUserAgent + ")");
-        aHCS.setUserAgent (sUserAgent);
-      }
-
-      // Use existing value as fallback to avoid changing to default
-      final ETriState eFollowRedirects = aHCC.getFollowRedirects (aHCS.isFollowRedirects ());
-      if (eFollowRedirects.isDefined ())
-      {
-        final boolean b = eFollowRedirects.getAsBooleanValue ();
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.followRedirects(" + b + ")");
-        aHCS.setFollowRedirects (b);
-      }
-
-      // Use existing value as fallback to avoid changing to default
-      final ETriState eKeepAlive = aHCC.getUseKeepAlive (aHCS.isUseKeepAlive ());
-      if (eKeepAlive.isDefined ())
-      {
-        final boolean b = eKeepAlive.getAsBooleanValue ();
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.keepAlive(" + b + ")");
-        aHCS.setUseKeepAlive (b);
-      }
-
-      // Use existing value as fallback to avoid changing to default
-      final ETriState eProtocolUpgradeEnabled = aHCC.getProtocolUpgradeEnabled (aHCS.isProtocolUpgradeEnabled ());
-      if (eProtocolUpgradeEnabled.isDefined ())
-      {
-        final boolean b = eProtocolUpgradeEnabled.getAsBooleanValue ();
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.protocolUpgradeEnabled(" + b + ")");
-        aHCS.setProtocolUpgradeEnabled (b);
-      }
-    }
-
-    // TLS stuff
-    {
-      final boolean bDefaultDisableTLS = false;
-
-      // The global property
-      final ETriState eDisableTLSChecks = aHCC.getDisableTlsChecks (bDefaultDisableTLS);
-
-      final ETriState eDisableHostnameCheck = aHCC.getDisableHostnameCheck (bDefaultDisableTLS);
-      if ((eDisableHostnameCheck.isDefined () && eDisableHostnameCheck.getAsBooleanValue ()) ||
-          (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
-      {
-        if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Setting configured HttpClientSettings.setHostnameVerifierVerifyAll()");
-        aHCS.setHostnameVerifierVerifyAll ();
-        LOGGER.warn ("Disabled the hostname check for SSL/TLS connections. This may be a security risk.");
-      }
-
-      final ETriState eDisableCertificateCheck = aHCC.getDisableCertificateCheck (bDefaultDisableTLS);
-      if ((eDisableCertificateCheck.isDefined () && eDisableCertificateCheck.getAsBooleanValue ()) ||
-          (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
-      {
-        try
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Setting configured HttpClientSettings.setSSLContextTrustAll()");
-          aHCS.setSSLContextTrustAll ();
-          LOGGER.warn ("Disabled the certificate check for SSL/TLS connections. This may be a security risk.");
-        }
-        catch (final GeneralSecurityException ex)
-        {
-          throw new IllegalStateException ("Failed to set SSL Context for TLS connection", ex);
-        }
-      }
+      // Other stuff
+      assignConfigValuesForMisc (aHCS, aHCC);
     }
   }
 }

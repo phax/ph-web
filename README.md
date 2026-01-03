@@ -63,6 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 v11.2.1 - work in progress
 * Updated to Apache HttpCore 5.4
+* Extended the API of `HttpClientSettingsConfig` so that only specific setting parts can be configured
 
 v11.2.0 - 2025-11-16
 * Updated to ph-commons 12.1.0

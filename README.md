@@ -61,9 +61,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.2.1 - work in progress
+v11.2.1 - 2026-01-10
 * Updated to Apache HttpCore 5.4
+* Updated to Apache HttpClient 5.6
 * Extended the API of `HttpClientSettingsConfig` so that only specific setting parts can be configured
+* Less logging in case of failed DNS NAPTR resolution
 
 v11.2.0 - 2025-11-16
 * Updated to ph-commons 12.1.0

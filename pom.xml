@@ -68,7 +68,7 @@
     <dnsjava.version>3.6.4</dnsjava.version>
     <httpclient.version>5.6</httpclient.version>
     <httpcore.version>5.4.1</httpcore.version>
-    <jsch.version>0.1.55</jsch.version>
+    <jsch.version>2.27.8</jsch.version>
   </properties>
   
   <!-- Enable when using a SNAPSHOT version: -->

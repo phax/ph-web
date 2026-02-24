@@ -30,6 +30,7 @@
   <description>Java wrapper around JSch</description>
   <url>https://github.com/phax/ph-web/ph-jsch</url>
   <inceptionYear>2020</inceptionYear>
+  
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -37,10 +38,12 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  
   <organization>
     <name>Philip Helger</name>
     <url>https://www.helger.com</url>
   </organization>
+  
   <developers>
     <developer>
       <id>philip</id>
@@ -49,6 +52,7 @@
       <url>https://www.helger.com</url>
     </developer>
   </developers>
+  
   <dependencies>
     <dependency>
       <groupId>com.helger.commons</groupId>
@@ -58,11 +62,13 @@
       <groupId>com.helger.commons</groupId>
       <artifactId>ph-io</artifactId>
     </dependency>
+    
     <dependency>
-      <groupId>com.jcraft</groupId>
+      <groupId>com.github.mwiede</groupId>
       <artifactId>jsch</artifactId>
       <version>${jsch.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -74,6 +80,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
   <build>
     <plugins>
       <plugin>
@@ -104,11 +111,12 @@
             </signaturesArtifact>
           </signaturesArtifacts>
           <excludes>
-                        <!-- uses ByteArrayOutputStream -->
+            <!-- uses ByteArrayOutputStream -->
             <exclude>**/CommandRunner.class</exclude>
           </excludes>
         </configuration>
-        <!-- local executions are ignored -->      </plugin>
+        <!-- local executions are ignored -->
+      </plugin>
     </plugins>
   </build>
 </project>

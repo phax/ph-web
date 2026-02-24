@@ -34,10 +34,10 @@ import com.helger.base.version.Version;
 public final class ThirdPartyModuleProvider_ph_jsch implements IThirdPartyModuleProviderSPI
 {
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
-                                                                     "JCraft Inc.",
+                                                                     "Matthias Wiedemann",
                                                                      ELicense.BSD,
-                                                                     new Version (0, 1, 55),
-                                                                     "http://www.jcraft.com/jsch/");
+                                                                     new Version (2, 27, 8),
+                                                                     "https://github.com/mwiede/jsch");
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

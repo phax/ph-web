@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.2 - work in progress
+* Updated JSch to the fork from https://github.com/mwiede/jsch
+
 v11.2.1 - 2026-01-10
 * Updated to Apache HttpCore 5.4
 * Updated to Apache HttpClient 5.6

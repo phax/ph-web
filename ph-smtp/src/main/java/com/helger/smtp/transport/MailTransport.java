@@ -32,8 +32,10 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.annotation.concurrent.GuardedBy;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.email.IEmailAddress;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.hashcode.HashCodeGenerator;
@@ -88,6 +90,8 @@ public final class MailTransport
   private static final IMutableStatisticsHandlerCounter STATS_SEND_FAILURE = StatisticsManager.getCounterHandler (MailTransport.class.getName () +
                                                                                                                   "$failed");
   private static final Logger LOGGER = LoggerFactory.getLogger (MailTransport.class);
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
   private static final ICommonsMap <String, String> DEFAULT_MAIL_PROPERTIES = new CommonsHashMap <> ();
   private static final AtomicInteger INSTANCE_COUNT = new AtomicInteger (0);
 
@@ -113,7 +117,7 @@ public final class MailTransport
                    INSTANCE_COUNT.get () +
                    " instance(s) of MailTransport were already created! This has no impact on existing instances!");
 
-    return DEFAULT_MAIL_PROPERTIES.setAll (aMap);
+    return RW_LOCK.writeLockedGet ( () -> DEFAULT_MAIL_PROPERTIES.setAll (aMap));
   }
 
   /**
@@ -202,7 +206,7 @@ public final class MailTransport
     // Create session based on properties
     final Properties aProps = new Properties ();
     // Add default first (always clone)
-    aProps.putAll (DEFAULT_MAIL_PROPERTIES.getClone ());
+    aProps.putAll (RW_LOCK.readLockedGet (DEFAULT_MAIL_PROPERTIES::getClone));
     aProps.putAll (m_aMailProperties);
     m_aSession = Session.getInstance (aProps);
 

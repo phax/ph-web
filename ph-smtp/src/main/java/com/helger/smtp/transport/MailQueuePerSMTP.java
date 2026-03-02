@@ -39,8 +39,8 @@ import com.helger.smtp.failed.FailedMailQueue;
 import com.helger.smtp.settings.ISMTPSettings;
 
 /**
- * This class collects instances of {@link IMutableEmailData} and tries to
- * transmit them using the specified SMTP settings.
+ * This class collects instances of {@link IMutableEmailData} and tries to transmit them using the
+ * specified SMTP settings.
  *
  * @author Philip Helger
  */
@@ -50,7 +50,7 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
   private static final Logger LOGGER = LoggerFactory.getLogger (MailQueuePerSMTP.class);
 
   private final MailTransport m_aTransport;
-  private FailedMailQueue m_aFailedMailQueue;
+  private volatile FailedMailQueue m_aFailedMailQueue;
 
   /**
    * Constructor
@@ -147,9 +147,8 @@ final class MailQueuePerSMTP extends ConcurrentCollectorMultiple <IMutableEmailD
    * Stop this queue
    *
    * @param bStopImmediately
-   *        <code>true</code> if all mails currently in the queue should be
-   *        removed and put in the failed mail queue. Only the emails currently
-   *        in sending are continued to be sent out.
+   *        <code>true</code> if all mails currently in the queue should be removed and put in the
+   *        failed mail queue. Only the emails currently in sending are continued to be sent out.
    * @return {@link ESuccess}
    */
   @NonNull

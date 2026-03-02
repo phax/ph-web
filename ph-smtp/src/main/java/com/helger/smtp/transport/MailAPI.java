@@ -381,8 +381,8 @@ public final class MailAPI
         aQueue.stopQueuingNewObjects (bStopImmediately);
 
       final int nQueues = QUEUE_CACHE.size ();
-      // Subtract 1 for the STOP_MESSAGE
-      final int nQueueLength = _getTotalQueueLength () - 1;
+      // Subtract the stop messages (one per queue)
+      final int nQueueLength = _getTotalQueueLength () - nQueues;
       if (nQueues > 0 || nQueueLength > 0)
         LOGGER.info ("Stopping central mail queues: " +
                      nQueues +

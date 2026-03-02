@@ -89,8 +89,7 @@ public final class WebScopeManager
    * Allow or disallow session passivation
    *
    * @param bSessionPassivationAllowed
-   *        <code>true</code> to enable session passivation, <code>false</code>
-   *        to disable it
+   *        <code>true</code> to enable session passivation, <code>false</code> to disable it
    */
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {
@@ -125,13 +124,13 @@ public final class WebScopeManager
   // --- global scope ---
 
   /**
-   * To be called, when the global web scope is initialized. Most commonly this
-   * is called from within
+   * To be called, when the global web scope is initialized. Most commonly this is called from
+   * within
    * {@link jakarta.servlet.ServletContextListener#contextInitialized(jakarta.servlet.ServletContextEvent)}
    *
    * @param aServletContext
-   *        The source servlet context to be used to retrieve the scope ID. May
-   *        not be <code>null</code>
+   *        The source servlet context to be used to retrieve the scope ID. May not be
+   *        <code>null</code>
    * @return The created global web scope
    */
   @NonNull
@@ -150,8 +149,7 @@ public final class WebScopeManager
   }
 
   /**
-   * @return <code>true</code> if a global scope is defined, <code>false</code>
-   *         if none is defined
+   * @return <code>true</code> if a global scope is defined, <code>false</code> if none is defined
    */
   public static boolean isGlobalScopePresent ()
   {
@@ -159,8 +157,7 @@ public final class WebScopeManager
   }
 
   /**
-   * @return The global scope object or <code>null</code> if no global web scope
-   *         is present.
+   * @return The global scope object or <code>null</code> if no global web scope is present.
    */
   @Nullable
   public static IGlobalWebScope getGlobalScopeOrNull ()
@@ -172,7 +169,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      LOGGER.warn ("Gobal scope object is not a global web scope: " + aGlobalScope, ex);
+      LOGGER.warn ("Global scope object is not a global web scope: " + aGlobalScope, ex);
       return null;
     }
   }
@@ -192,8 +189,7 @@ public final class WebScopeManager
   }
 
   /**
-   * To be called, when the global web scope is destroyed. Most commonly this is
-   * called from within
+   * To be called, when the global web scope is destroyed. Most commonly this is called from within
    * {@link jakarta.servlet.ServletContextListener#contextDestroyed(jakarta.servlet.ServletContextEvent)}
    */
   public static void onGlobalEnd ()
@@ -204,13 +200,11 @@ public final class WebScopeManager
   // --- session scope ---
 
   /**
-   * To be called, when a session web scope is initialized. Most commonly this
-   * is called from within
+   * To be called, when a session web scope is initialized. Most commonly this is called from within
    * {@link jakarta.servlet.http.HttpSessionListener#sessionCreated(jakarta.servlet.http.HttpSessionEvent)}
    *
    * @param aHttpSession
-   *        The source session to base the scope on. May not be
-   *        <code>null</code>
+   *        The source session to base the scope on. May not be <code>null</code>
    * @return The created global session scope
    */
   @NonNull
@@ -239,14 +233,11 @@ public final class WebScopeManager
    * @param aHttpSession
    *        The underlying HTTP session
    * @param bCreateIfNotExisting
-   *        if <code>true</code> if a new session web scope is created, if none
-   *        is present
+   *        if <code>true</code> if a new session web scope is created, if none is present
    * @param bItsOkayToCreateANewScope
-   *        if <code>true</code> no warning is emitted, if a new session scope
-   *        must be created. This is e.g. used when renewing a session or when
-   *        activating a previously passivated session.
-   * @return <code>null</code> if no session scope is present, and
-   *         bCreateIfNotExisting is false
+   *        if <code>true</code> no warning is emitted, if a new session scope must be created. This
+   *        is e.g. used when renewing a session or when activating a previously passivated session.
+   * @return <code>null</code> if no session scope is present, and bCreateIfNotExisting is false
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
@@ -287,8 +278,7 @@ public final class WebScopeManager
   }
 
   /**
-   * Get or create a session scope based on the current request scope. This is
-   * the same as calling
+   * Get or create a session scope based on the current request scope. This is the same as calling
    * <code>getSessionScope({@link ScopeManager#DEFAULT_CREATE_SCOPE})</code>
    *
    * @return Never <code>null</code>.
@@ -303,10 +293,9 @@ public final class WebScopeManager
    * Get the session scope from the current request scope.
    *
    * @param bCreateIfNotExisting
-   *        if <code>true</code> a new session scope (and a new HTTP session if
-   *        required) is created if none is existing so far.
-   * @return <code>null</code> if no session scope is present, and none should
-   *         be created.
+   *        if <code>true</code> a new session scope (and a new HTTP session if required) is created
+   *        if none is existing so far.
+   * @return <code>null</code> if no session scope is present, and none should be created.
    */
   @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
@@ -318,13 +307,12 @@ public final class WebScopeManager
    * Get the session scope from the current request scope.
    *
    * @param bCreateIfNotExisting
-   *        if <code>true</code> a new session scope (and a new HTTP session if
-   *        required) is created if none is existing so far.
+   *        if <code>true</code> a new session scope (and a new HTTP session if required) is created
+   *        if none is existing so far.
    * @param bItsOkayToCreateANewSession
-   *        if <code>true</code> no warning is emitted, if a new session scope
-   *        must be created. This is e.g. used when renewing a session.
-   * @return <code>null</code> if no session scope is present, and none should
-   *         be created.
+   *        if <code>true</code> no warning is emitted, if a new session scope must be created. This
+   *        is e.g. used when renewing a session.
+   * @return <code>null</code> if no session scope is present, and none should be created.
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
@@ -342,13 +330,12 @@ public final class WebScopeManager
    * @param aRequestScope
    *        The request scope it is about. May be <code>null</code>.
    * @param bCreateIfNotExisting
-   *        if <code>true</code> a new session scope (and a new HTTP session if
-   *        required) is created if none is existing so far.
+   *        if <code>true</code> a new session scope (and a new HTTP session if required) is created
+   *        if none is existing so far.
    * @param bItsOkayToCreateANewSession
-   *        if <code>true</code> no warning is emitted, if a new session scope
-   *        must be created. This is e.g. used when renewing a session.
-   * @return <code>null</code> if no session scope is present, and none should
-   *         be created.
+   *        if <code>true</code> no warning is emitted, if a new session scope must be created. This
+   *        is e.g. used when renewing a session.
+   * @return <code>null</code> if no session scope is present, and none should be created.
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
@@ -374,13 +361,11 @@ public final class WebScopeManager
   }
 
   /**
-   * To be called, when a session web scope is destroyed. Most commonly this is
-   * called from within
+   * To be called, when a session web scope is destroyed. Most commonly this is called from within
    * {@link jakarta.servlet.http.HttpSessionListener#sessionDestroyed(jakarta.servlet.http.HttpSessionEvent)}
    *
    * @param aHttpSession
-   *        The source session to destroy the matching scope. May not be
-   *        <code>null</code>
+   *        The source session to destroy the matching scope. May not be <code>null</code>
    */
   public static void onSessionEnd (@NonNull final HttpSession aHttpSession)
   {

@@ -138,8 +138,7 @@ public class ScpConnection implements Closeable
           break;
         aSB.append ((char) c);
       }
-      if (b == 1 || b == 2)
-        throw new IOException (aSB.toString ());
+      throw new IOException (aSB.toString ());
     }
 
     return b;

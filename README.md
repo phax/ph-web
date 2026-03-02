@@ -61,8 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.2.2 - work in progress
+v11.2.2 - 2026-03-02
 * Updated JSch to the fork from https://github.com/mwiede/jsch
+* Changed the default `max-age` of the `Strict-Transport-Security` header to 2 years
 
 v11.2.1 - 2026-01-10
 * Updated to Apache HttpCore 5.4

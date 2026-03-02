@@ -67,7 +67,8 @@ public final class UnifiedResponseDefaultSettings
   {
     // Sensible defaults
     setAllowMimeSniffing (false);
-    setStrictTransportSecurity (CGlobal.SECONDS_PER_HOUR, true);
+    // The best practice is to access the server via https for the next 2 years
+    setStrictTransportSecurity (CGlobal.SECONDS_PER_DAY * 365 * 2, true);
     setXFrameOptions (EXFrameOptionType.DEFAULT, null);
     setReferrerPolicy (EHttpReferrerPolicy.NONE);
   }
@@ -164,9 +165,8 @@ public final class UnifiedResponseDefaultSettings
     }
     else
     {
-      final String sHeaderValue = eType.isURLRequired () ? eType.getID () +
-                                                           " " +
-                                                           aDomain.getAsString () : eType.getID ();
+      final String sHeaderValue = eType.isURLRequired () ? eType.getID () + " " + aDomain.getAsString () : eType
+                                                                                                                .getID ();
       setResponseHeader (CHttpHeader.X_FRAME_OPTIONS, sHeaderValue);
     }
   }

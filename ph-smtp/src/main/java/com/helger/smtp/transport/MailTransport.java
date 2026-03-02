@@ -97,13 +97,12 @@ public final class MailTransport
   private final Session m_aSession;
 
   /**
-   * Set default mail properties that are added all the time. This can e.g. be
-   * used to change the mail transport.
+   * Set default mail properties that are added all the time. This can e.g. be used to change the
+   * mail transport.
    *
    * @param aMap
    *        The map to be set. May be <code>null</code> or empty.
-   * @return {@link EChange#CHANGED} if something changed. Never
-   *         <code>null</code>.
+   * @return {@link EChange#CHANGED} if something changed. Never <code>null</code>.
    * @since 9.5.3
    */
   @NonNull
@@ -133,8 +132,7 @@ public final class MailTransport
   /**
    * @param aSettings
    *        The SMTP settings used as the basis.
-   * @return The properties to be used in the javax.mail Session. Never
-   *         <code>null</code>.
+   * @return The properties to be used in the javax.mail Session. Never <code>null</code>.
    * @since 1.0.1
    */
   @NonNull
@@ -203,8 +201,8 @@ public final class MailTransport
 
     // Create session based on properties
     final Properties aProps = new Properties ();
-    // Add default first
-    aProps.putAll (DEFAULT_MAIL_PROPERTIES);
+    // Add default first (always clone)
+    aProps.putAll (DEFAULT_MAIL_PROPERTIES.getClone ());
     aProps.putAll (m_aMailProperties);
     m_aSession = Session.getInstance (aProps);
 
@@ -299,9 +297,8 @@ public final class MailTransport
               LOGGER.error ("Error send mail - SendFailedException", ex);
 
             /*
-             * Extract all addresses: the valid addresses to which the message
-             * was sent, the valid address to which the message was not sent and
-             * the invalid addresses
+             * Extract all addresses: the valid addresses to which the message was sent, the valid
+             * address to which the message was not sent and the invalid addresses
              */
             final ICommonsSet <String> aValidSent = new CommonsHashSet <> (ex.getValidSentAddresses (),
                                                                            Address::toString);
@@ -314,9 +311,8 @@ public final class MailTransport
             MessagingException bex = ex;
             while ((ex2 = bex.getNextException ()) != null && ex2 instanceof MessagingException)
             {
-              if (ex2 instanceof SMTPAddressFailedException)
+              if (ex2 instanceof final SMTPAddressFailedException ssfe)
               {
-                final SMTPAddressFailedException ssfe = (SMTPAddressFailedException) ex2;
                 aDetails.add (new MailSendDetails (false,
                                                    ssfe.getAddress ().toString (),
                                                    ssfe.getCommand (),
@@ -325,9 +321,8 @@ public final class MailTransport
                                                                                       ESMTPErrorCode.FALLBACK)));
               }
               else
-                if (ex2 instanceof SMTPAddressSucceededException)
+                if (ex2 instanceof final SMTPAddressSucceededException ssfe)
                 {
-                  final SMTPAddressSucceededException ssfe = (SMTPAddressSucceededException) ex2;
                   aDetails.add (new MailSendDetails (true,
                                                      ssfe.getAddress ().toString (),
                                                      ssfe.getCommand (),

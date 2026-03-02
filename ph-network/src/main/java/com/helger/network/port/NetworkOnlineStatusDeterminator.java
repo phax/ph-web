@@ -178,29 +178,31 @@ public final class NetworkOnlineStatusDeterminator
   public static ENetworkOnlineStatus getNetworkStatusNoCache ()
   {
     final LocalDateTime aNow = PDTFactory.getCurrentLocalDateTime ();
-    RW_LOCK.writeLock ().lock ();
-    try
-    {
-      // Check all host names in parallel, if they are reachable
-      final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com",
-                                                                        "www.facebook.com",
-                                                                        "www.microsoft.com");
-      final ExecutorService aES = Executors.newFixedThreadPool (aHostNames.size ());
-      final AtomicInteger aReachable = new AtomicInteger (0);
-      for (final String sHostName : aHostNames)
-        aES.submit ( () -> {
-          // Silent mode, configured timeout
-          if (NetworkPortHelper.checkPortOpen (sHostName, 443, s_nConnectionTimeout, true).isPortOpen ())
-            aReachable.incrementAndGet ();
-        });
-      ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (aES);
-      s_eStatus = aReachable.intValue () > 0 ? ENetworkOnlineStatus.ONLINE : ENetworkOnlineStatus.OFFLINE;
+
+    // Read timeout under read lock
+    final int nConnectionTimeout = RW_LOCK.readLockedInt ( () -> s_nConnectionTimeout);
+
+    // Perform network I/O without any lock held
+    final ICommonsList <String> aHostNames = new CommonsArrayList <> ("www.google.com",
+                                                                      "www.facebook.com",
+                                                                      "www.microsoft.com");
+    final ExecutorService aES = Executors.newFixedThreadPool (aHostNames.size ());
+    final AtomicInteger aReachable = new AtomicInteger (0);
+    for (final String sHostName : aHostNames)
+      aES.submit ( () -> {
+        // Silent mode, configured timeout
+        if (NetworkPortHelper.checkPortOpen (sHostName, 443, nConnectionTimeout, true).isPortOpen ())
+          aReachable.incrementAndGet ();
+      });
+    ExecutorServiceHelper.shutdownAndWaitUntilAllTasksAreFinished (aES);
+
+    // Store result under write lock (very brief)
+    final ENetworkOnlineStatus eResult = aReachable.intValue () > 0 ? ENetworkOnlineStatus.ONLINE
+                                                                    : ENetworkOnlineStatus.OFFLINE;
+    RW_LOCK.writeLocked ( () -> {
+      s_eStatus = eResult;
       s_aLastCheckDT = aNow;
-      return s_eStatus;
-    }
-    finally
-    {
-      RW_LOCK.writeLock ().unlock ();
-    }
+    });
+    return eResult;
   }
 }

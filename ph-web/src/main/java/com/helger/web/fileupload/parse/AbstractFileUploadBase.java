@@ -629,7 +629,7 @@ public abstract class AbstractFileUploadBase
         else
         {
           // Request size is known
-          if (m_nSizeMax >= 0 && nContentLength > m_nSizeMax)
+          if (nContentLength > m_nSizeMax)
           {
             throw new SizeLimitExceededException ("the request was rejected because its size (" +
                                                   nContentLength +

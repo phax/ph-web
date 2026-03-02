@@ -203,13 +203,13 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     m_nSizeThreshold = ValueEnforcer.isGT0 (nSizeThreshold, "SizeThreshold");
     m_aTempDir = aRepository != null ? aRepository : new File (SystemProperties.getTmpDir ());
     if (!FileHelper.existsDir (m_aTempDir))
-      throw new IllegalArgumentException ("The temporay directory for file uploads is not existing: " +
+      throw new IllegalArgumentException ("The temporary directory for file uploads is not existing: " +
                                           m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canRead ())
-      throw new IllegalArgumentException ("The temporay directory for file uploads cannot be read: " +
+      throw new IllegalArgumentException ("The temporary directory for file uploads cannot be read: " +
                                           m_aTempDir.getAbsolutePath ());
     if (!m_aTempDir.canWrite ())
-      throw new IllegalArgumentException ("The temporay directory for file uploads cannot be written: " +
+      throw new IllegalArgumentException ("The temporary directory for file uploads cannot be written: " +
                                           m_aTempDir.getAbsolutePath ());
   }
 

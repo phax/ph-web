@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.base.exception.InitializationException;
 import com.helger.base.string.StringHelper;
 import com.helger.base.string.StringParser;
 import com.helger.base.timing.StopWatch;
@@ -45,7 +44,8 @@ import com.helger.network.proxy.settings.IProxySettings;
 import com.helger.network.proxy.settings.ProxySettings;
 
 /**
- * Proxy Auto Configuration helper. Requires ph-dns to work.
+ * Proxy Auto Configuration helper. Requires ph-dns to work. Each instance has its own
+ * {@link ScriptEngine} to ensure thread-safety and instance isolation.
  *
  * @author Philip Helger
  */
@@ -54,73 +54,84 @@ public final class ProxyAutoConfigHelper
   private static final Logger LOGGER = LoggerFactory.getLogger (ProxyAutoConfigHelper.class);
 
   public static final Charset DEFAULT_SCRIPT_CHARSET = StandardCharsets.ISO_8859_1;
-  // create a Nashorn script engine
-  private static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager ().getEngineByName ("nashorn");
+
+  /** DNS helper function definitions, evaluated once per engine */
+  private static final String DNS_INIT_SCRIPT = "var dnsResolve = function(hostName){ return " +
+                                                DNSResolver.class.getName () +
+                                                ".dnsResolve(hostName); };\n" +
+                                                "var dnsResolveEx = function(hostName){ return " +
+                                                DNSResolver.class.getName () +
+                                                ".dnsResolveEx(hostName); };\n" +
+                                                "var myIpAddress = function(){ return " +
+                                                DNSResolver.class.getName () +
+                                                ".getMyIpAddress(); };";
+
+  /** {@code true} if the Nashorn engine is available in this JVM */
+  private static final boolean NASHORN_AVAILABLE;
 
   static
   {
-    if (SCRIPT_ENGINE == null)
+    final ScriptEngine aProbe = new ScriptEngineManager ().getEngineByName ("nashorn");
+    NASHORN_AVAILABLE = aProbe != null;
+    if (!NASHORN_AVAILABLE)
       LOGGER.warn ("Failed to create Nashorn ScriptEngine");
-    else
-      try
-      {
-        final StopWatch aSW = StopWatch.createdStarted ();
-        SCRIPT_ENGINE.eval ("var dnsResolve = function(hostName){ return " +
-                            DNSResolver.class.getName () +
-                            ".dnsResolve(hostName); }");
-        SCRIPT_ENGINE.eval ("var dnsResolveEx = function(hostName){ return " +
-                            DNSResolver.class.getName () +
-                            ".dnsResolveEx(hostName); }");
-        SCRIPT_ENGINE.eval ("var myIpAddress = function(){ return " +
-                            DNSResolver.class.getName () +
-                            ".getMyIpAddress(); }");
-        SCRIPT_ENGINE.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
-        final long nMS = aSW.stopAndGetMillis ();
-        if (nMS > 100)
-          LOGGER.info ("Initial ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
-      }
-      catch (final ScriptException ex)
-      {
-        throw new InitializationException ("Failed to init ProxyAutoConfig (PAC) Nashorn script!", ex);
-      }
   }
 
-  private final IReadableResource m_aPACRes;
-  private final String m_sPACCode;
+  /** Per-instance script engine — not shared, no synchronization needed */
+  private final ScriptEngine m_aScriptEngine;
+
+  @Nullable
+  private static ScriptEngine _createInitializedEngine () throws ScriptException
+  {
+    if (!NASHORN_AVAILABLE)
+      return null;
+
+    final ScriptEngine aEngine = new ScriptEngineManager ().getEngineByName ("nashorn");
+    if (aEngine == null)
+      return null;
+
+    final StopWatch aSW = StopWatch.createdStarted ();
+    aEngine.eval (DNS_INIT_SCRIPT);
+    aEngine.eval (new ClassPathResource ("proxy-js/pac-utils.js").getReader (DEFAULT_SCRIPT_CHARSET));
+    final long nMS = aSW.stopAndGetMillis ();
+    if (nMS > 100)
+      LOGGER.info ("ProxyAutoConfig (PAC) Nashorn script compilation took " + nMS + " ms");
+
+    return aEngine;
+  }
 
   public ProxyAutoConfigHelper (@NonNull final IReadableResource aPACRes) throws ScriptException
   {
-    m_aPACRes = ValueEnforcer.notNull (aPACRes, "PACResource");
-    m_sPACCode = null;
-    if (SCRIPT_ENGINE != null)
-      SCRIPT_ENGINE.eval (m_aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
+    ValueEnforcer.notNull (aPACRes, "PACResource");
+    m_aScriptEngine = _createInitializedEngine ();
+    if (m_aScriptEngine != null)
+      m_aScriptEngine.eval (aPACRes.getReader (DEFAULT_SCRIPT_CHARSET));
   }
 
   public ProxyAutoConfigHelper (@NonNull final String sPACCode) throws ScriptException
   {
-    m_aPACRes = null;
-    m_sPACCode = ValueEnforcer.notNull (sPACCode, "PACCode");
-    if (SCRIPT_ENGINE != null)
-      SCRIPT_ENGINE.eval (m_sPACCode);
+    ValueEnforcer.notNull (sPACCode, "PACCode");
+    m_aScriptEngine = _createInitializedEngine ();
+    if (m_aScriptEngine != null)
+      m_aScriptEngine.eval (sPACCode);
   }
 
   public static boolean isNashornScriptEngineAvailable ()
   {
-    return SCRIPT_ENGINE != null;
+    return NASHORN_AVAILABLE;
   }
 
-  // Cannot be static, because it needs the evaluation in the constructor
   @Nullable
   public String findProxyForURL (@NonNull final String sURL, @NonNull final String sHost) throws ScriptException
   {
-    if (SCRIPT_ENGINE == null)
+    if (m_aScriptEngine == null)
     {
       LOGGER.warn ("Because no Nashorn ScriptEngine could be created, no proxy can be found");
       return null;
     }
     // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
     // PAC file!
-    final Object aResult = SCRIPT_ENGINE.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
+    final Object aResult = m_aScriptEngine.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
     if (aResult == null)
       return null;
 

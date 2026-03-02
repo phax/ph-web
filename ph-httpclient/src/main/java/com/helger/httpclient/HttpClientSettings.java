@@ -51,12 +51,10 @@ import com.helger.http.tls.TLSConfigurationMode;
 public class HttpClientSettings implements IHttpClientSettings, ICloneable <HttpClientSettings>
 {
   /**
-   * Default configuration modes uses TLS 1.3, TLS 1.2, 1.1 or 1.0 and no specific cipher suites
+   * Default configuration modes uses TLS 1.3 and TLS 1.2 and no specific cipher suites
    */
   public static final ITLSConfigurationMode DEFAULT_TLS_CONFIG_MODE = new TLSConfigurationMode (new ETLSVersion [] { ETLSVersion.TLS_13,
-                                                                                                                     ETLSVersion.TLS_12,
-                                                                                                                     ETLSVersion.TLS_11,
-                                                                                                                     ETLSVersion.TLS_10 },
+                                                                                                                     ETLSVersion.TLS_12 },
                                                                                                 CGlobal.EMPTY_STRING_ARRAY);
   public static final boolean DEFAULT_USE_SYSTEM_PROPERTIES = false;
   public static final boolean DEFAULT_USE_DNS_CACHE = true;

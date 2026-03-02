@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.io.stream.StreamHelper;
 import com.helger.collection.stack.NonBlockingStack;
 import com.helger.jsch.session.ISessionFactory;
@@ -39,8 +40,7 @@ import com.jcraft.jsch.Session;
 
 /**
  * Based on protocol information found
- * <a href="https://blogs.oracle.com/janp/entry/how_the_scp_protocol_works"
- * >here</a>
+ * <a href="https://blogs.oracle.com/janp/entry/how_the_scp_protocol_works" >here</a>
  *
  * @author LTHEISEN
  */
@@ -97,19 +97,12 @@ public class ScpConnection implements Closeable
                                      @Nullable final ECopyMode eCopyMode,
                                      @NonNull final String sPath)
   {
-    final StringBuilder aSB;
-    switch (eScpMode)
+    final StringBuilder aSB = switch (eScpMode)
     {
-      case TO:
-        aSB = new StringBuilder ("scp -tq");
-        break;
-      case FROM:
-        aSB = new StringBuilder ("scp -fq");
-        break;
-      default:
-        throw new IllegalStateException ();
-    }
-
+      case TO -> new StringBuilder ("scp -tq");
+      case FROM -> new StringBuilder ("scp -fq");
+      default -> throw new IllegalStateException ();
+    };
     if (eCopyMode == ECopyMode.RECURSIVE)
       aSB.append ('r');
     return aSB.append (' ').append (sPath).toString ();
@@ -124,8 +117,8 @@ public class ScpConnection implements Closeable
    *   2 for fatal error
    * </pre>
    *
-   * Also throws, IOException if unable to read from the InputStream. If nothing
-   * was thrown, ack was a success.
+   * Also throws, IOException if unable to read from the InputStream. If nothing was thrown, ack was
+   * a success.
    */
   private int _checkAck () throws IOException
   {
@@ -141,6 +134,8 @@ public class ScpConnection implements Closeable
       int c;
       while ((c = m_aIS.read ()) != '\n')
       {
+        if (c == -1)
+          break;
         aSB.append ((char) c);
       }
       if (b == 1 || b == 2)
@@ -194,7 +189,7 @@ public class ScpConnection implements Closeable
     if (m_aEntryStack.isEmpty ())
       return null;
     final ICurrentEntry aEntry = m_aEntryStack.peek ();
-    return aEntry instanceof InputStream ? (InputStream) aEntry : null;
+    return aEntry instanceof final InputStream i ? i : null;
   }
 
   @Nullable
@@ -203,7 +198,7 @@ public class ScpConnection implements Closeable
     if (m_aEntryStack.isEmpty ())
       return null;
     final ICurrentEntry aEntry = m_aEntryStack.peek ();
-    return aEntry instanceof OutputStream ? (OutputStream) aEntry : null;
+    return aEntry instanceof final OutputStream o ? o : null;
   }
 
   @Nullable
@@ -249,8 +244,8 @@ public class ScpConnection implements Closeable
    *     End Directory: E
    * </pre>
    *
-   * @return An ScpEntry for a file (C), directory (D), end of directory (E), or
-   *         null when no more messages are available.
+   * @return An ScpEntry for a file (C), directory (D), end of directory (E), or null when no more
+   *         messages are available.
    * @throws IOException
    */
   @Nullable
@@ -320,16 +315,15 @@ public class ScpConnection implements Closeable
       }
       return;
     }
-    else
-      if (!m_aEntryStack.isEmpty ())
+    if (!m_aEntryStack.isEmpty ())
+    {
+      final ICurrentEntry currentEntry = m_aEntryStack.peek ();
+      if (!currentEntry.isDirectoryEntry ())
       {
-        final ICurrentEntry currentEntry = m_aEntryStack.peek ();
-        if (!currentEntry.isDirectoryEntry ())
-        {
-          // auto close previous file entry
-          closeEntry ();
-        }
+        // auto close previous file entry
+        closeEntry ();
       }
+    }
 
     if (aEntry.isDirectory ())
     {
@@ -344,18 +338,20 @@ public class ScpConnection implements Closeable
   @NonNull
   private String _readMessageSegment () throws IOException
   {
-    final byte [] buffer = new byte [1024];
-    int bytesRead = 0;
-    for (;; bytesRead++)
+    try (final NonBlockingByteArrayOutputStream aBAOS = new NonBlockingByteArrayOutputStream (1024))
     {
-      final byte b = (byte) m_aIS.read ();
-      if (b == -1)
-        return null; // end of stream
-      if (b == ' ' || b == '\n')
-        break;
-      buffer[bytesRead] = b;
+      while (true)
+      {
+        final byte b = (byte) m_aIS.read ();
+        // end of stream
+        if (b == -1)
+          return null;
+        if (b == ' ' || b == '\n')
+          break;
+        aBAOS.write (b);
+      }
+      return aBAOS.getAsString (StandardCharsets.US_ASCII);
     }
-    return new String (buffer, 0, bytesRead, StandardCharsets.US_ASCII);
   }
 
   private void _writeAck () throws IOException
@@ -490,7 +486,8 @@ public class ScpConnection implements Closeable
         return -1;
 
       final int nBytesRead = m_aIS.read (aBuf, nOfs, nLen);
-      _increment (nBytesRead);
+      if (nBytesRead > 0)
+        _increment (nBytesRead);
       return nBytesRead;
     }
   }

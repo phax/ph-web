@@ -39,9 +39,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 /**
- * Provides a convenience wrapper around an <code>exec</code> channel. This
- * implementation offers a simplified interface to executing remote commands and
- * retrieving the results of execution.
+ * Provides a convenience wrapper around an <code>exec</code> channel. This implementation offers a
+ * simplified interface to executing remote commands and retrieving the results of execution.
  *
  * @see com.jcraft.jsch.ChannelExec
  */
@@ -52,8 +51,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
   protected final SessionManager m_aSessionManager;
 
   /**
-   * Creates a new CommandRunner that will use a {@link SessionManager} that
-   * wraps the supplied <code>sessionFactory</code>.
+   * Creates a new CommandRunner that will use a {@link SessionManager} that wraps the supplied
+   * <code>sessionFactory</code>.
    *
    * @param aSessionFactory
    *        The factory used to create a session manager
@@ -74,8 +73,7 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
   }
 
   /**
-   * Returns a new CommandRunner with the same SessionFactory, but will create a
-   * separate session.
+   * Returns a new CommandRunner with the same SessionFactory, but will create a separate session.
    *
    * @return A duplicate CommandRunner with a different session.
    */
@@ -88,12 +86,10 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
   }
 
   /**
-   * Executes <code>command</code> and returns the result. Use this method when
-   * the command you are executing requires no input, writes only UTF-8
-   * compatible text to STDOUT and/or STDERR, and you are comfortable with
-   * buffering up all of that data in memory. Otherwise, use
-   * {@link #open(String)}, which allows you to work with the underlying
-   * streams.
+   * Executes <code>command</code> and returns the result. Use this method when the command you are
+   * executing requires no input, writes only UTF-8 compatible text to STDOUT and/or STDERR, and you
+   * are comfortable with buffering up all of that data in memory. Otherwise, use
+   * {@link #open(String)}, which allows you to work with the underlying streams.
    *
    * @param command
    *        The command to execute
@@ -112,30 +108,33 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     final Session aSession = m_aSessionManager.getSession ();
 
     // Using the synchronized BAOS is okay here
-    try (final ByteArrayOutputStream stdErr = new ByteArrayOutputStream ();
-        final ByteArrayOutputStream stdOut = new ByteArrayOutputStream ())
+    try (final ByteArrayOutputStream aStdErr = new ByteArrayOutputStream ();
+         final ByteArrayOutputStream aStdOut = new ByteArrayOutputStream ())
     {
       int nExitCode;
       ChannelExecWrapper aChannel = null;
       try
       {
-        aChannel = new ChannelExecWrapper (aSession, command, null, stdOut, stdErr);
+        aChannel = new ChannelExecWrapper (aSession, command, null, aStdOut, aStdErr);
       }
       finally
       {
         // Wait until the execution finished
-        nExitCode = aChannel.close ();
+        if (aChannel != null)
+          nExitCode = aChannel.close ();
+        else
+          nExitCode = -1;
       }
 
       return new ExecuteResult (nExitCode,
-                                new String (stdOut.toByteArray (), StandardCharsets.UTF_8),
-                                new String (stdErr.toByteArray (), StandardCharsets.UTF_8));
+                                new String (aStdOut.toByteArray (), StandardCharsets.UTF_8),
+                                new String (aStdErr.toByteArray (), StandardCharsets.UTF_8));
     }
   }
 
   /**
-   * Executes <code>command</code> and returns an execution wrapper that
-   * provides safe access to and management of the underlying streams of data.
+   * Executes <code>command</code> and returns an execution wrapper that provides safe access to and
+   * management of the underlying streams of data.
    *
    * @param sCommand
    *        The command to execute
@@ -186,8 +185,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Returns the text written to STDERR. This will be a UTF-8 decoding of the
-     * actual bytes written to STDERR.
+     * Returns the text written to STDERR. This will be a UTF-8 decoding of the actual bytes written
+     * to STDERR.
      *
      * @return The text written to STDERR
      */
@@ -197,8 +196,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Returns the text written to STDOUT. This will be a UTF-8 decoding of the
-     * actual bytes written to STDOUT.
+     * Returns the text written to STDOUT. This will be a UTF-8 decoding of the actual bytes written
+     * to STDOUT.
      *
      * @return The text written to STDOUT
      */
@@ -209,13 +208,11 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
   }
 
   /**
-   * Wraps the execution of a command to handle the opening and closing of all
-   * the data streams for you. To use this wrapper, you call
-   * <code>getXxxStream()</code> for the streams you want to work with, which
-   * will return an opened stream. Use the stream as needed then call
-   * {@link ChannelExecWrapper#close() close()} on the ChannelExecWrapper
-   * itself, which will return the the exit code from the execution of the
-   * command.
+   * Wraps the execution of a command to handle the opening and closing of all the data streams for
+   * you. To use this wrapper, you call <code>getXxxStream()</code> for the streams you want to work
+   * with, which will return an opened stream. Use the stream as needed then call
+   * {@link ChannelExecWrapper#close() close()} on the ChannelExecWrapper itself, which will return
+   * the the exit code from the execution of the command.
    */
   public static class ChannelExecWrapper
   {
@@ -256,8 +253,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Safely closes all stream, waits for the underlying connection to close,
-     * then returns the exit code from the command execution.
+     * Safely closes all stream, waits for the underlying connection to close, then returns the exit
+     * code from the command execution.
      *
      * @return The exit code from the command execution
      */
@@ -299,9 +296,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Returns the STDERR stream for you to read from. No need to close this
-     * stream independently, instead, when done with all processing, call
-     * {@link #close()};
+     * Returns the STDERR stream for you to read from. No need to close this stream independently,
+     * instead, when done with all processing, call {@link #close()};
      *
      * @return The STDERR stream
      * @throws IOException
@@ -317,9 +313,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Returns the STDOUT stream for you to read from. No need to close this
-     * stream independently, instead, when done with all processing, call
-     * {@link #close()};
+     * Returns the STDOUT stream for you to read from. No need to close this stream independently,
+     * instead, when done with all processing, call {@link #close()};
      *
      * @return The STDOUT stream
      * @throws IOException
@@ -335,9 +330,8 @@ public class CommandRunner implements AutoCloseable, ICloneable <CommandRunner>
     }
 
     /**
-     * Returns the STDIN stream for you to write to. No need to close this
-     * stream independently, instead, when done with all processing, call
-     * {@link #close()};
+     * Returns the STDIN stream for you to write to. No need to close this stream independently,
+     * instead, when done with all processing, call {@link #close()};
      *
      * @return The STDIN stream
      * @throws IOException

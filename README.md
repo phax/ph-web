@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.3 - work in progress
+* Disabled TLS 1.0 and 1.1 for connections in `HttpClientSettings` by default
+
 v11.2.2 - 2026-03-02
 * Updated JSch to the fork from https://github.com/mwiede/jsch
 * Changed the default `max-age` of the `Strict-Transport-Security` header to 2 years

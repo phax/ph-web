@@ -204,7 +204,7 @@ public class FailedMailData implements ITypedObject <String>
   @NonNull
   public String getSMTPServerDisplayText ()
   {
-    StringBuilder ret = new StringBuilder ().append (m_aSettings.getHostName ());
+    final StringBuilder ret = new StringBuilder ().append (m_aSettings.getHostName ());
     if (m_aSettings.hasPort ())
       ret.append (":").append (m_aSettings.getPort ());
     if (m_aSettings.hasUserName ())
@@ -220,7 +220,7 @@ public class FailedMailData implements ITypedObject <String>
   @NonNull
   public String getSenderDisplayText ()
   {
-    return m_aEmailData == null ? "" : m_aEmailData.getFrom ().getDisplayName ();
+    return m_aEmailData == null || m_aEmailData.getFrom () == null ? "" : m_aEmailData.getFrom ().getDisplayName ();
   }
 
   @NonNull
@@ -240,7 +240,7 @@ public class FailedMailData implements ITypedObject <String>
   @Nullable
   public String getTransportThrowableMessage ()
   {
-    return m_aError == null ? null : m_aError.getThrowable ().getMessage ();
+    return m_aError == null || m_aError.getThrowable () == null ? null : m_aError.getThrowable ().getMessage ();
   }
 
   @Override

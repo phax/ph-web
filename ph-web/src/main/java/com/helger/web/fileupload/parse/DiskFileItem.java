@@ -308,7 +308,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   /**
    * @return An {@link InputStream} that can be used to retrieve the contents of the file.
    */
-  @NonNull
+  @Nullable
   public InputStream getInputStream ()
   {
     if (isInMemory ())

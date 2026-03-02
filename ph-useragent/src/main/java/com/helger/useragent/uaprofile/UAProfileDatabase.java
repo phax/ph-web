@@ -341,8 +341,10 @@ public final class UAProfileDatabase
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Found UA-Profile info: " + aUAProfile.toString ());
 
-        if (s_aNewUAProfileCallback != null)
-          s_aNewUAProfileCallback.accept (aUAProfile);
+        RW_LOCK.readLocked ( () -> {
+          if (s_aNewUAProfileCallback != null)
+            s_aNewUAProfileCallback.accept (aUAProfile);
+        });
       }
     }
     return aUAProfile;

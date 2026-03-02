@@ -21,6 +21,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -129,9 +130,17 @@ public final class ProxyAutoConfigHelper
       LOGGER.warn ("Because no Nashorn ScriptEngine could be created, no proxy can be found");
       return null;
     }
-    // Call "findProxyForURL" or "FindProxyForURLEx" that must be defined in the
-    // PAC file!
-    final Object aResult = m_aScriptEngine.eval ("findProxyForURL('" + sURL + "', '" + sHost + "')");
+    // Call "findProxyForURL" that must be defined in the PAC file!
+    // Use Invocable.invokeFunction to safely pass parameters without script injection risk
+    final Object aResult;
+    try
+    {
+      aResult = ((Invocable) m_aScriptEngine).invokeFunction ("findProxyForURL", sURL, sHost);
+    }
+    catch (final NoSuchMethodException ex)
+    {
+      throw new ScriptException ("PAC script does not define function 'findProxyForURL': " + ex.getMessage ());
+    }
     if (aResult == null)
       return null;
 

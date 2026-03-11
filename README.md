@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.4 - work in progress
+* Added new class `ChannelSftpHelper`
+
 v11.2.3 - 2026-03-02
 * Disabled TLS 1.0 and 1.1 for connections in `HttpClientSettings` by default
 * Fixed some minor security issues

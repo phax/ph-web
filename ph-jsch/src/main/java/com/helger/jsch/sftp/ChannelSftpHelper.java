@@ -31,6 +31,7 @@ import com.jcraft.jsch.SftpException;
  * Helper class to perform certain activities with {@link ChannelSftp}
  *
  * @author Philip Helger
+ * @since 11.2.4
  */
 @Immutable
 public final class ChannelSftpHelper
@@ -40,6 +41,15 @@ public final class ChannelSftpHelper
   private ChannelSftpHelper ()
   {}
 
+  /**
+   * Check if a remote directory exists.
+   *
+   * @param aChannel
+   *        Channel to use. May not be <code>null</code>.
+   * @param sDirName
+   *        Directory to check for existence. May not be <code>null</code>.
+   * @return <code>true</code> if it exists, <code>false</code> if not.
+   */
   public static boolean dirExists (@NonNull final ChannelSftp aChannel, @NonNull final String sDirName)
   {
     try
@@ -65,6 +75,17 @@ public final class ChannelSftpHelper
     }
   }
 
+  /**
+   * Create a remote directory. If the directory is absolute it will be used as such, whereas if the
+   * directory is relative, it is applied relative to the current working directory.
+   *
+   * @param aChannel
+   *        The channel to use. May not be <code>null</code>.
+   * @param sDirName
+   *        The directory to create. When starting with "/" it is considered to be an absolute
+   *        directory, otherwise a relative directory.
+   * @return {@link ESuccess}
+   */
   @NonNull
   public static ESuccess mkdir (@NonNull final ChannelSftp aChannel, @NonNull final String sDirName)
   {

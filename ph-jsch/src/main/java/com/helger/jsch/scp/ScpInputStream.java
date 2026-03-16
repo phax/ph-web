@@ -62,9 +62,9 @@ public class ScpInputStream extends InputStream
   @Nullable
   public ScpEntry getNextEntry () throws IOException
   {
-    final ScpEntry entry = m_aConnection.getNextEntry ();
+    final ScpEntry aEntry = m_aConnection.getNextEntry ();
     m_aIS = m_aConnection.getCurrentInputStream ();
-    return entry;
+    return aEntry;
   }
 
   @Override

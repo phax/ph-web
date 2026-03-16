@@ -33,7 +33,8 @@ public class ScpFileInputStream extends InputStream
   private final ScpInputStream m_aIS;
   private final ScpEntry m_aScpEntry;
 
-  ScpFileInputStream (@NonNull final ISessionFactory aSessionFactory, final String sPath) throws JSchException, IOException
+  ScpFileInputStream (@NonNull final ISessionFactory aSessionFactory, final String sPath) throws JSchException,
+                                                                                          IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpInputStream to " + aSessionFactory.getAsString () + " " + sPath);
@@ -57,15 +58,6 @@ public class ScpFileInputStream extends InputStream
   }
 
   @Override
-  public void close () throws IOException
-  {
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("Closing ScpInputStream");
-    m_aIS.closeEntry ();
-    m_aIS.close ();
-  }
-
-  @Override
   public int read () throws IOException
   {
     return m_aIS.read ();
@@ -75,5 +67,14 @@ public class ScpFileInputStream extends InputStream
   public int read (final byte [] aBuf, final int nOfs, final int nLen) throws IOException
   {
     return m_aIS.read (aBuf, nOfs, nLen);
+  }
+
+  @Override
+  public void close () throws IOException
+  {
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("Closing ScpInputStream");
+    m_aIS.closeEntry ();
+    m_aIS.close ();
   }
 }

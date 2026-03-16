@@ -1160,8 +1160,7 @@ public class UnifiedResponse
       ValueEnforcer.notNull (aDomain, "Domain");
 
     if (eType.isURLRequired ())
-      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS,
-                               eType.getID () + " " + aDomain.getAsString ());
+      setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID () + " " + aDomain.getAsString ());
     else
       setCustomResponseHeader (CHttpHeader.X_FRAME_OPTIONS, eType.getID ());
     return this;

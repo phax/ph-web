@@ -997,15 +997,7 @@ public final class RequestHelper
   @Nullable
   public static String getHttpUserAgentStringFromRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
-    // Use non-standard headers first
-    String sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.UA);
-    if (sUserAgent == null)
-    {
-      sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.X_DEVICE_USER_AGENT);
-      if (sUserAgent == null)
-        sUserAgent = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.USER_AGENT);
-    }
-    return sUserAgent;
+    return ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.USER_AGENT);
   }
 
   /**

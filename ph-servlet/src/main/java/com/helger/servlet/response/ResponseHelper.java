@@ -40,8 +40,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Misc. helper methods on {@link HttpServletResponse} objects.<br>
- * Consider using the {@link UnifiedResponse} for easy and consistent HTTP
- * response handling.
+ * Consider using the {@link UnifiedResponse} for easy and consistent HTTP response handling.
  *
  * @author Philip Helger
  */
@@ -55,12 +54,11 @@ public final class ResponseHelper
   {}
 
   /**
-   * Determine the best suitable output stream type for the given request
-   * without actually modifying response data. If the request supports gzip, the
-   * result is a {@link EResponseStreamType#GZIP}, if the request supports
-   * deflate or compress, the result will be a
-   * {@link EResponseStreamType#DEFLATE}. If none of that matches, the regular
-   * value {@link EResponseStreamType#PLAIN} will be returned.
+   * Determine the best suitable output stream type for the given request without actually modifying
+   * response data. If the request supports gzip, the result is a {@link EResponseStreamType#GZIP},
+   * if the request supports deflate or compress, the result will be a
+   * {@link EResponseStreamType#DEFLATE}. If none of that matches, the regular value
+   * {@link EResponseStreamType#PLAIN} will be returned.
    *
    * @param aHttpRequest
    *        request
@@ -101,10 +99,9 @@ public final class ResponseHelper
   }
 
   /**
-   * Get the best suitable output stream for the given combination of request
-   * and response. If the request supports gzip, the result is a
-   * {@link GZIPOutputStream}, if the request supports deflate or compress, the
-   * result will be a {@link ZipOutputStream}. If none of that matches, the
+   * Get the best suitable output stream for the given combination of request and response. If the
+   * request supports gzip, the result is a {@link GZIPOutputStream}, if the request supports
+   * deflate or compress, the result will be a {@link ZipOutputStream}. If none of that matches, the
    * regular response output stream is used
    *
    * @param aHttpRequest
@@ -168,22 +165,23 @@ public final class ResponseHelper
     return nSC == CHttp.HTTP_ACCEPTED ||
            nSC == CHttp.HTTP_NO_CONTENT ||
            nSC == CHttp.HTTP_MOVED_PERMANENTLY ||
-           nSC == CHttp.HTTP_MOVED_TEMPORARY ||
+           nSC == CHttp.HTTP_FOUND ||
            nSC == CHttp.HTTP_SEE_OTHER ||
            nSC == CHttp.HTTP_NOT_MODIFIED;
   }
 
   /**
-   * Set the content length of an HTTP response. If the passed content length is
-   * a valid integer, <code>aHttpResponse.setContentLength</code> is invoked,
-   * else the HTTP header {@link CHttpHeader#CONTENT_LENGTH} is set manually.
+   * Set the content length of an HTTP response. If the passed content length is a valid integer,
+   * <code>aHttpResponse.setContentLength</code> is invoked, else the HTTP header
+   * {@link CHttpHeader#CONTENT_LENGTH} is set manually.
    *
    * @param aHttpResponse
    *        The response to set the content length to
    * @param nContentLength
    *        The content length to set
    */
-  public static void setContentLength (@NonNull final HttpServletResponse aHttpResponse, @Nonnegative final long nContentLength)
+  public static void setContentLength (@NonNull final HttpServletResponse aHttpResponse,
+                                       @Nonnegative final long nContentLength)
   {
     if (nContentLength < Integer.MAX_VALUE)
       aHttpResponse.setContentLength ((int) nContentLength);

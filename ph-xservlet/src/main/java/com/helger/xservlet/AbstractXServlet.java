@@ -81,11 +81,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Abstract HTTP based servlet. Compared to the default
- * {@link jakarta.servlet.http.HttpServlet} this class uses a handler map with
- * {@link EHttpMethod} as the key.<br>
- * The following features are added compared to the default servlet
- * implementation:
+ * Abstract HTTP based servlet. Compared to the default {@link jakarta.servlet.http.HttpServlet}
+ * this class uses a handler map with {@link EHttpMethod} as the key.<br>
+ * The following features are added compared to the default servlet implementation:
  * <ul>
  * <li>It has counting statistics</li>
  * <li>It has timing statistics</li>
@@ -96,8 +94,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * <li>It has custom exception handler</li>
  * <li>It handles Post-Redirect-Get centrally.</li>
  * </ul>
- * Note: it must be derived from {@link HttpServlet} to be usable with
- * annotation based configuration in Jetty (was GenericServlet previously)
+ * Note: it must be derived from {@link HttpServlet} to be usable with annotation based
+ * configuration in Jetty (was GenericServlet previously)
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -106,14 +104,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public abstract class AbstractXServlet extends HttpServlet
 {
   /**
-   * Internal request attribute defining whether a request was handled
-   * asynchronously. If this attribute is not present, it means synchronous
+   * Internal request attribute defining whether a request was handled asynchronously. If this
+   * attribute is not present, it means synchronous
    */
   public static final String REQUEST_ATTR_HANDLED_ASYNC = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "request-is-async";
   /**
-   * Internal request attribute defining whether a request scope was created or
-   * re-used
+   * Internal request attribute defining whether a request scope was created or re-used
    */
   public static final String REQUEST_ATTR_SCOPE_CREATED = ScopeManager.SCOPE_ATTRIBUTE_PREFIX_INTERNAL +
                                                           "request-scope-created";
@@ -190,8 +187,7 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * @return The handler registry for HTTP method to handler registration. Never
-   *         <code>null</code>.
+   * @return The handler registry for HTTP method to handler registration. Never <code>null</code>.
    */
   @NonNull
   @ReturnsMutableObject
@@ -201,8 +197,7 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * @return The internal filter list where custom filters can be added. Never
-   *         <code>null</code>.
+   * @return The internal filter list where custom filters can be added. Never <code>null</code>.
    */
   @NonNull
   @ReturnsMutableObject
@@ -212,8 +207,7 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * @return The internal filter list where custom filters can be added. Never
-   *         <code>null</code>.
+   * @return The internal filter list where custom filters can be added. Never <code>null</code>.
    */
   @NonNull
   @ReturnsMutableObject
@@ -241,8 +235,7 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * @return The servlet status manager stored in the constructor. Never
-   *         <code>null</code>.
+   * @return The servlet status manager stored in the constructor. Never <code>null</code>.
    */
   @NonNull
   protected final ServletStatusManager getServletStatusMgr ()
@@ -370,7 +363,7 @@ public abstract class AbstractXServlet extends HttpServlet
       if (eHttpVersion.is10 ())
       {
         // For HTTP 1.0 send 302
-        aHttpResponse.setStatus (CHttp.HTTP_MOVED_TEMPORARY);
+        aHttpResponse.setStatus (CHttp.HTTP_FOUND);
       }
       else
       {
@@ -415,9 +408,8 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * This method logs errors, in case a HttpServletRequest object is missing
-   * basic information or uses unsupported values for e.g. HTTP version and HTTP
-   * method.
+   * This method logs errors, in case a HttpServletRequest object is missing basic information or
+   * uses unsupported values for e.g. HTTP version and HTTP method.
    *
    * @param sMsg
    *        The concrete message to emit. May not be <code>null</code>.
@@ -431,18 +423,17 @@ public abstract class AbstractXServlet extends HttpServlet
   }
 
   /**
-   * Dispatches client requests to the protected <code>service</code> method.
-   * There's no need to override this method.
+   * Dispatches client requests to the protected <code>service</code> method. There's no need to
+   * override this method.
    *
    * @param aHttpRequest
-   *        the {@link HttpServletRequest} object that contains the request the
-   *        client made of the servlet
+   *        the {@link HttpServletRequest} object that contains the request the client made of the
+   *        servlet
    * @param aHttpResponse
-   *        the {@link HttpServletResponse} object that contains the response
-   *        the servlet returns to the client
+   *        the {@link HttpServletResponse} object that contains the response the servlet returns to
+   *        the client
    * @exception IOException
-   *            if an input or output error occurs while the servlet is handling
-   *            the HTTP request
+   *            if an input or output error occurs while the servlet is handling the HTTP request
    * @exception ServletException
    *            if the HTTP request cannot be handled
    * @see jakarta.servlet.Servlet#service

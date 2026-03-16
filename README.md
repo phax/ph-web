@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.2.4 - work in progress
+v11.2.4 - 2026-03-16
 * Added new class `ChannelSftpHelper`
 
 v11.2.3 - 2026-03-02

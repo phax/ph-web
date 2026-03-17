@@ -1,9 +1,9 @@
 # ph-web
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.helger.web/ph-web-parent-pom)](https://img.shields.io/maven-central/v/com.helger.web/ph-web-parent-pom)
-[![javadoc](https://javadoc.io/badge2/com.helger.web/ph-web/javadoc.svg)](https://javadoc.io/doc/com.helger.web/ph-web)
-[![CodeCov](https://codecov.io/gh/phax/ph-web/branch/master/graph/badge.svg)](https://codecov.io/gh/phax/ph-web)
-
+<!-- ph-badge-start -->
+[![Sonatype Central](https://maven-badges.sml.io/sonatype-central/com.helger.web/ph-web-parent-pom/badge.svg)](https://maven-badges.sml.io/sonatype-central/com.helger.web/ph-web-parent-pom/)
+[![javadoc](https://javadoc.io/badge2/com.helger.web/ph-dns/javadoc.svg)](https://javadoc.io/doc/com.helger.web/ph-dns)
+<!-- ph-badge-end -->
 
 Java library with common web stuff. It contains the following sub-projects:
 * ph-dns (since v9.2.1)

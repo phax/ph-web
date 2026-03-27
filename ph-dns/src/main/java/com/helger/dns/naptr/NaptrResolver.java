@@ -255,7 +255,7 @@ public class NaptrResolver
     @NonNull
     public final Builder domainName (@Nullable final Name a)
     {
-      return domainName (a == null ? null : a.toString (false));
+      return domainName (a == null ? null : a.toString (true));
     }
 
     @NonNull

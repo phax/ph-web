@@ -54,10 +54,15 @@ public class LoggingNaptrLookupTimeExceededCallback implements INaptrLookupTimeE
   }
 
   public void onLookupTimeExceeded (@NonNull final String sMsg,
-                                    @NonNull final Duration aExecutionMillis,
-                                    @NonNull final Duration aLimitMillis)
+                                    @NonNull final Duration aExecutionDuration,
+                                    @NonNull final Duration aLimitDuration)
   {
-    LOGGER.warn (sMsg + " took " + aExecutionMillis.toMillis () + "ms (limit is " + aLimitMillis.toMillis () + " ms)",
+    LOGGER.warn (sMsg +
+                 " took " +
+                 aExecutionDuration.toMillis () +
+                 "ms (limit is " +
+                 aLimitDuration.toMillis () +
+                 " ms)",
                  m_bEmitStackTrace ? new Exception () : null);
   }
 

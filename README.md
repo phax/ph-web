@@ -61,6 +61,12 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.5 - 2026-03-27
+* Fixed double retry issue in `NaptrLookup` - retries are now only handled by the `ExtendedResolver`, avoiding multiplicative retry behavior
+* Changed `NaptrLookup` TCP fallback to trigger on any non-successful UDP result, not just `TRY_AGAIN`
+* Fixed domain name trailing dot inconsistency in `NaptrResolver.Builder.domainName(Name)`
+* Improved error message for invalid domain names in `NaptrResolver.Builder`
+
 v11.2.4 - 2026-03-16
 * Added new class `ChannelSftpHelper`
 

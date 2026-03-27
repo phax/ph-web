@@ -54,7 +54,7 @@ public class NaptrLookup
 {
   public enum ELookupNetworkMode
   {
-    /** First UDP than TCP */
+    /** First UDP then TCP */
     UDP_TCP (true, true),
     /** Only UDP */
     UDP (true, false),
@@ -151,44 +151,30 @@ public class NaptrLookup
       Record [] aRecords = null;
       if (m_eLookupMode.isUDP ())
       {
-        final int nFinalLookupRuns1 = nLookupRuns;
-        aCondLogger.info ( () -> "  Trying UDP for NAPTR lookup after " + nFinalLookupRuns1 + " unsuccessful lookups");
+        aCondLogger.info ( () -> "  Trying UDP for NAPTR lookup");
 
         // By default try UDP
         // Stumbled upon an issue, where UDP datagram size was too small for MTU
         // size of 1500
-        int nLeft = m_nMaxRetries;
-        do
-        {
-          aRecords = aLookup.run ();
-          final int nFinalLookupRuns2 = nLookupRuns;
-          aCondLogger.info ( () -> "    Result of UDP lookup " + nFinalLookupRuns2 + ": " + aLookup.getErrorString ());
+        // Retries are handled internally by the ExtendedResolver
+        aRecords = aLookup.run ();
+        nLookupRuns++;
+        aCondLogger.info ( () -> "    Result of UDP lookup: " + aLookup.getErrorString ());
 
-          nLeft--;
-          nLookupRuns++;
-        } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
-        if (aLookup.getResult () != Lookup.TRY_AGAIN)
+        if (aLookup.getResult () == Lookup.SUCCESSFUL)
           bCanTryAgain = false;
       }
       if (bCanTryAgain && m_eLookupMode.isTCP ())
       {
-        final int nFinalLookupRuns1 = nLookupRuns;
-        aCondLogger.info ( () -> "  Trying TCP for NAPTR lookup after " + nFinalLookupRuns1 + " unsuccessful lookups");
+        final int nFinalLookupRuns = nLookupRuns;
+        aCondLogger.info ( () -> "  Trying TCP for NAPTR lookup after " + nFinalLookupRuns + " unsuccessful UDP lookup(s)");
 
         // Retry with TCP instead of UDP
+        // Retries are handled internally by the ExtendedResolver
         aResolver.setTCP (true);
-
-        // Restore max retries for TCP
-        int nLeft = m_nMaxRetries;
-        do
-        {
-          aRecords = aLookup.run ();
-          final int nFinalLookupRuns2 = nLookupRuns;
-          aCondLogger.info ( () -> "    Result of TCP lookup " + nFinalLookupRuns2 + ": " + aLookup.getErrorString ());
-
-          nLeft--;
-          nLookupRuns++;
-        } while (aLookup.getResult () == Lookup.TRY_AGAIN && nLeft >= 0);
+        aRecords = aLookup.run ();
+        nLookupRuns++;
+        aCondLogger.info ( () -> "    Result of TCP lookup: " + aLookup.getErrorString ());
       }
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {

@@ -725,6 +725,7 @@ public class UnifiedResponse
    *
    * @return this for chaining
    */
+  @SuppressWarnings ("deprecation")
   @NonNull
   public final UnifiedResponse removeCaching ()
   {
@@ -742,6 +743,7 @@ public class UnifiedResponse
    *
    * @return this
    */
+  @SuppressWarnings ("deprecation")
   @NonNull
   public final UnifiedResponse disableCaching ()
   {
@@ -781,6 +783,7 @@ public class UnifiedResponse
    *        The number of seconds caching is allowed. Must be &gt; 0.
    * @return this
    */
+  @SuppressWarnings ("deprecation")
   @NonNull
   public final UnifiedResponse enableCaching (@Nonnegative final int nSeconds)
   {

@@ -117,8 +117,8 @@ public final class DNSResolver
    *
    * @param sHostName
    *        The host name.
-   * @return The resolved IP address as String or <code>null</code> if the host
-   *         name could not be resolved.
+   * @return The resolved IP address as String or <code>null</code> if the host name could not be
+   *         resolved.
    */
   @Nullable
   public static String dnsResolve (@NonNull final String sHostName)
@@ -134,8 +134,8 @@ public final class DNSResolver
    *
    * @param sHostName
    *        The host name.
-   * @return The resolved IP addresses as String or <code>null</code> if the
-   *         host name could not be resolved.
+   * @return The resolved IP addresses as String or <code>null</code> if the host name could not be
+   *         resolved.
    */
   @NonNull
   public static String dnsResolveEx (final String sHostName)

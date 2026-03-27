@@ -139,6 +139,8 @@ public class NaptrLookup
     {
       // Use the default (static) cache that is used by default
       final ExtendedResolver aResolver = ResolverHelper.createExtendedResolver (m_aCustomDNSServers);
+
+      // Retries are handled internally by the ExtendedResolver
       aResolver.setRetries (m_nMaxRetries);
       if (m_aTimeout != null)
         aResolver.setTimeout (m_aTimeout);
@@ -149,6 +151,7 @@ public class NaptrLookup
       int nLookupRuns = 0;
       boolean bCanTryAgain = true;
       Record [] aRecords = null;
+
       if (m_eLookupMode.isUDP ())
       {
         aCondLogger.info ( () -> "  Trying UDP for NAPTR lookup");
@@ -156,7 +159,6 @@ public class NaptrLookup
         // By default try UDP
         // Stumbled upon an issue, where UDP datagram size was too small for MTU
         // size of 1500
-        // Retries are handled internally by the ExtendedResolver
         aRecords = aLookup.run ();
         nLookupRuns++;
         aCondLogger.info ( () -> "    Result of UDP lookup: " + aLookup.getErrorString ());
@@ -164,18 +166,21 @@ public class NaptrLookup
         if (aLookup.getResult () == Lookup.SUCCESSFUL)
           bCanTryAgain = false;
       }
+
       if (bCanTryAgain && m_eLookupMode.isTCP ())
       {
         final int nFinalLookupRuns = nLookupRuns;
-        aCondLogger.info ( () -> "  Trying TCP for NAPTR lookup after " + nFinalLookupRuns + " unsuccessful UDP lookup(s)");
+        aCondLogger.info ( () -> "  Trying TCP for NAPTR lookup after " +
+                                 nFinalLookupRuns +
+                                 " unsuccessful UDP lookup(s)");
 
         // Retry with TCP instead of UDP
-        // Retries are handled internally by the ExtendedResolver
         aResolver.setTCP (true);
         aRecords = aLookup.run ();
         nLookupRuns++;
         aCondLogger.info ( () -> "    Result of TCP lookup: " + aLookup.getErrorString ());
       }
+
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
         // Wrong domain name
@@ -187,6 +192,7 @@ public class NaptrLookup
                      aLookup.getErrorString ());
         return new CommonsArrayList <> ();
       }
+
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
       for (final Record aRecord : aRecords)
         ret.add ((NAPTRRecord) aRecord);

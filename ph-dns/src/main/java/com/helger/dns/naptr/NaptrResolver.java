@@ -378,11 +378,11 @@ public class NaptrResolver
         if (!m_bNaptrLookupProvided)
           try
           {
-            naptrRecords (NaptrLookup.builder ().domainName (m_sDomainName));
+            naptrRecords (NaptrLookup.builder ().domainName (m_sDomainName).build ().lookup ());
           }
           catch (final TextParseException ex)
           {
-            LOGGER.error ("Creepy domain found", ex);
+            LOGGER.error ("Creepy domain name '" + m_sDomainName + "' used", ex);
           }
       }
 

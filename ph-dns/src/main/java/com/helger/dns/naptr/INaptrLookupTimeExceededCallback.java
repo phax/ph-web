@@ -23,8 +23,7 @@ import org.jspecify.annotations.NonNull;
 import com.helger.base.callback.ICallback;
 
 /**
- * Callback interface to be used to notify interested parties when a NAPTR
- * lookup takes too long.
+ * Callback interface to be used to notify interested parties when a NAPTR lookup takes too long.
  *
  * @author Philip Helger
  * @since 9.5.0
@@ -40,8 +39,10 @@ public interface INaptrLookupTimeExceededCallback extends ICallback
    * @param aExecutionDuration
    *        The duration the execution took. Always &gt; 0.
    * @param aLimitDuration
-   *        The duration the execution should not exceed. So the maximum
-   *        configured execution time. Always &gt; 0.
+   *        The duration the execution should not exceed. So the maximum configured execution time.
+   *        Always &gt; 0.
    */
-  void onLookupTimeExceeded (@NonNull String sMsg, @NonNull Duration aExecutionDuration, @NonNull Duration aLimitDuration);
+  void onLookupTimeExceeded (@NonNull String sMsg,
+                             @NonNull Duration aExecutionDuration,
+                             @NonNull Duration aLimitDuration);
 }

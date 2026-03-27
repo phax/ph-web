@@ -30,8 +30,8 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.ICommonsList;
 
 /**
- * A simple implementation of {@link ResolverConfigProvider} that uses a
- * constant list of {@link InetSocketAddress} as the server list.
+ * A simple implementation of {@link ResolverConfigProvider} that uses a constant list of
+ * {@link InetSocketAddress} as the server list.
  *
  * @author Philip Helger
  */
@@ -64,6 +64,7 @@ public class CustomServerConfigProvider implements ResolverConfigProvider
   public static CustomServerConfigProvider createFromInetAddressList (@NonNull final ICommonsList <InetAddress> aServers)
   {
     ValueEnforcer.notNull (aServers, "Servers");
-    return new CustomServerConfigProvider (aServers.getAllMapped (x -> new InetSocketAddress (x, SimpleResolver.DEFAULT_PORT)));
+    return new CustomServerConfigProvider (aServers.getAllMapped (x -> new InetSocketAddress (x,
+                                                                                              SimpleResolver.DEFAULT_PORT)));
   }
 }

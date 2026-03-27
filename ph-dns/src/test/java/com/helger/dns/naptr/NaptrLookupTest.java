@@ -89,20 +89,14 @@ public class NaptrLookupTest
   public void testBuilderMaxRetries () throws TextParseException
   {
     // Should build successfully
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .maxRetries (5)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").maxRetries (5).build ();
     assertNotNull (aLookup);
   }
 
   @Test
   public void testBuilderNoRetries () throws TextParseException
   {
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .noRetries ()
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").noRetries ().build ();
     assertNotNull (aLookup);
   }
 
@@ -110,19 +104,16 @@ public class NaptrLookupTest
   public void testBuilderTimeout () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .timeout (Duration.ofSeconds (5))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .timeout (Duration.ofSeconds (5))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
   @Test
   public void testBuilderTimeoutMS () throws TextParseException
   {
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .timeoutMS (5000)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").timeoutMS (5000).build ();
     assertNotNull (aLookup);
   }
 
@@ -130,20 +121,14 @@ public class NaptrLookupTest
   public void testBuilderTimeoutMSNegative () throws TextParseException
   {
     // Negative timeout -> null timeout
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .timeoutMS (-1)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").timeoutMS (-1).build ();
     assertNotNull (aLookup);
   }
 
   @Test
   public void testBuilderTimeoutNull () throws TextParseException
   {
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .timeout (null)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").timeout (null).build ();
     assertNotNull (aLookup);
   }
 
@@ -152,10 +137,7 @@ public class NaptrLookupTest
   {
     for (final ELookupNetworkMode eMode : ELookupNetworkMode.values ())
     {
-      final NaptrLookup aLookup = NaptrLookup.builder ()
-                                              .domainName ("example.org")
-                                              .lookupMode (eMode)
-                                              .build ();
+      final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").lookupMode (eMode).build ();
       assertNotNull (aLookup);
     }
   }
@@ -164,9 +146,9 @@ public class NaptrLookupTest
   public void testBuilderExecutionDurationWarn () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .executionDurationWarn (Duration.ofSeconds (2))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .executionDurationWarn (Duration.ofSeconds (2))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -174,9 +156,9 @@ public class NaptrLookupTest
   public void testBuilderExecutionDurationWarnMS () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .executionDurationWarnMS (2000)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .executionDurationWarnMS (2000)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -184,30 +166,21 @@ public class NaptrLookupTest
   public void testBuilderExecutionDurationWarnMSNegative () throws TextParseException
   {
     // Negative -> null (disables warning)
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .executionDurationWarnMS (-1)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").executionDurationWarnMS (-1).build ();
     assertNotNull (aLookup);
   }
 
   @Test
   public void testBuilderExecutionDurationWarnNull () throws TextParseException
   {
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .executionDurationWarn (null)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").executionDurationWarn (null).build ();
     assertNotNull (aLookup);
   }
 
   @Test
   public void testBuilderDebugMode () throws TextParseException
   {
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .debugMode (true)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").debugMode (true).build ();
     assertNotNull (aLookup);
   }
 
@@ -215,9 +188,9 @@ public class NaptrLookupTest
   public void testBuilderAddExecutionTimeExceededHandler () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addExecutionTimeExceededHandler (new LoggingNaptrLookupTimeExceededCallback (true))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addExecutionTimeExceededHandler (new LoggingNaptrLookupTimeExceededCallback (true))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -226,9 +199,9 @@ public class NaptrLookupTest
   {
     // null handler should be silently ignored
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addExecutionTimeExceededHandler (null)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addExecutionTimeExceededHandler (null)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -236,9 +209,9 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServer () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServer (InetAddress.getByName ("8.8.8.8"))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .customDNSServer (InetAddress.getByName ("8.8.8.8"))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -246,10 +219,7 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServerNull () throws TextParseException
   {
     // Null clears custom DNS servers
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServer (null)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").customDNSServer (null).build ();
     assertNotNull (aLookup);
   }
 
@@ -257,10 +227,10 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServersArray () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServers (InetAddress.getByName ("8.8.8.8"),
-                                                               InetAddress.getByName ("8.8.4.4"))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .customDNSServers (InetAddress.getByName ("8.8.8.8"),
+                                                              InetAddress.getByName ("8.8.4.4"))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -268,9 +238,9 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServersArrayNull () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServers ((InetAddress []) null)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .customDNSServers ((InetAddress []) null)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -278,9 +248,9 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServersIterable () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServers (new CommonsArrayList <> (InetAddress.getByName ("8.8.8.8")))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .customDNSServers (new CommonsArrayList <> (InetAddress.getByName ("8.8.8.8")))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -288,9 +258,9 @@ public class NaptrLookupTest
   public void testBuilderCustomDNSServersIterableNull () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .customDNSServers ((Iterable <InetAddress>) null)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .customDNSServers ((Iterable <InetAddress>) null)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -298,9 +268,9 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServer () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServer (InetAddress.getByName ("8.8.8.8"))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addCustomDNSServer (InetAddress.getByName ("8.8.8.8"))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -308,10 +278,7 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServerNull () throws TextParseException
   {
     // null is silently ignored
-    final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServer (null)
-                                            .build ();
+    final NaptrLookup aLookup = NaptrLookup.builder ().domainName ("example.org").addCustomDNSServer (null).build ();
     assertNotNull (aLookup);
   }
 
@@ -319,10 +286,10 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServersArray () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServers (InetAddress.getByName ("8.8.8.8"),
-                                                                  InetAddress.getByName ("8.8.4.4"))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addCustomDNSServers (InetAddress.getByName ("8.8.8.8"),
+                                                                 InetAddress.getByName ("8.8.4.4"))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -330,9 +297,9 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServersArrayNull () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServers ((InetAddress []) null)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addCustomDNSServers ((InetAddress []) null)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -340,9 +307,9 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServersIterable () throws Exception
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServers (new CommonsArrayList <> (InetAddress.getByName ("8.8.8.8")))
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addCustomDNSServers (new CommonsArrayList <> (InetAddress.getByName ("8.8.8.8")))
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -350,9 +317,9 @@ public class NaptrLookupTest
   public void testBuilderAddCustomDNSServersIterableNull () throws TextParseException
   {
     final NaptrLookup aLookup = NaptrLookup.builder ()
-                                            .domainName ("example.org")
-                                            .addCustomDNSServers ((Iterable <InetAddress>) null)
-                                            .build ();
+                                           .domainName ("example.org")
+                                           .addCustomDNSServers ((Iterable <InetAddress>) null)
+                                           .build ();
     assertNotNull (aLookup);
   }
 
@@ -375,10 +342,7 @@ public class NaptrLookupTest
   {
     try
     {
-      NaptrLookup.builder ()
-                  .domainName (Name.root)
-                  .maxRetries (-1)
-                  .build ();
+      NaptrLookup.builder ().domainName (Name.root).maxRetries (-1).build ();
       fail ("Expected IllegalStateException");
     }
     catch (final IllegalStateException ex)
@@ -392,10 +356,7 @@ public class NaptrLookupTest
   {
     try
     {
-      NaptrLookup.builder ()
-                  .domainName (Name.root)
-                  .lookupMode (null)
-                  .build ();
+      NaptrLookup.builder ().domainName (Name.root).lookupMode (null).build ();
       fail ("Expected IllegalStateException");
     }
     catch (final IllegalStateException ex)

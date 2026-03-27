@@ -79,7 +79,8 @@ public final class ResolverHelper
         }
   }
 
-  private static boolean _isContained (final ICommonsList <Resolver> aResolvers, final SimpleResolver aResolver)
+  private static boolean _isContained (@NonNull final ICommonsList <Resolver> aResolvers,
+                                       @NonNull final SimpleResolver aResolver)
   {
     // SimpleResolver doesn't have equals
     final InetSocketAddress aSearchAddr = aResolver.getAddress ();
@@ -90,18 +91,22 @@ public final class ResolverHelper
   public static ExtendedResolver createExtendedResolver (@Nullable final Iterable <? extends InetAddress> aCustomServerAddrs)
   {
     final ICommonsList <Resolver> aResolvers = new CommonsArrayList <> ();
+
     // Add optional custom servers first
     forEachResolver (aCustomServerAddrs, x -> {
       if (!_isContained (aResolvers, x))
         aResolvers.add (x);
     });
+
     // Add default servers as fallbacks
     forEachDefaultResolver (x -> {
       if (!_isContained (aResolvers, x))
         aResolvers.add (x);
     });
+
     // This overrides the timeout of all contained resolvers
     final ExtendedResolver ret = new ExtendedResolver (aResolvers);
+
     // And now apply the default customization
     defaultCustomizeExtendedResolver (ret);
     return ret;

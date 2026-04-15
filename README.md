@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.6 - 2026-04-15
+* Added `CapturingTlsSocketStrategy` to capture remote TLS peer certificates after HTTPS requests via `HttpContext` attributes
+
 v11.2.5 - 2026-03-27
 * Fixed double retry issue in `NaptrLookup` - retries are now only handled by the `ExtendedResolver`, avoiding multiplicative retry behavior
 * Changed `NaptrLookup` TCP fallback to trigger on any non-successful UDP result, not just `TRY_AGAIN`

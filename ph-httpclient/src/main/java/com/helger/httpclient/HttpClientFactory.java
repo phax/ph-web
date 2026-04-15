@@ -78,6 +78,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.enforce.ValueEnforcer;
+import com.helger.httpclient.security.CapturingTlsSocketStrategy;
 import com.helger.base.id.factory.GlobalIDFactory;
 import com.helger.base.state.EHandled;
 import com.helger.collection.commons.ICommonsSet;
@@ -616,7 +617,7 @@ public class HttpClientFactory implements IHttpClientProvider
       throw new IllegalStateException ("Failed to create TlsSocketStrategy");
 
     final SchemePortResolver aSchemePortResolver = createSchemePortResolver ();
-    final HttpClientConnectionManager aConnMgr = createConnectionManager (aTlsSocketStrategy);
+    final HttpClientConnectionManager aConnMgr = createConnectionManager (new CapturingTlsSocketStrategy (aTlsSocketStrategy));
     final ConnectionReuseStrategy aConnectionReuseStrategy = createConnectionReuseStrategy ();
     final RequestConfig aRequestConfig = createRequestConfig ();
 

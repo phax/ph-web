@@ -46,7 +46,7 @@ import com.helger.collection.commons.ICommonsList;
  * <pre>
  * HttpClientContext aCtx = HttpClientContext.create ();
  * String sResponse = aHCMgr.execute (new HttpGet ("https://example.com"), aCtx, aRH);
- * ICommonsList <X509Certificate> aCerts = CapturingTlsSocketStrategy.getRemoteTLSCertificates (aCtx);
+ * ICommonsList &lt;X509Certificate&gt; aCerts = CapturingTlsSocketStrategy.getRemoteTLSCertificates (aCtx);
  * </pre>
  *
  * @author Philip Helger

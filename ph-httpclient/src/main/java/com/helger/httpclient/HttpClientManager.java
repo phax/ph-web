@@ -27,6 +27,7 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import com.helger.annotation.misc.ChangeNextMajorRelease;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.stream.StreamHelper;
 
@@ -59,9 +60,8 @@ public class HttpClientManager implements AutoCloseable
   }
 
   /**
-   * @return <code>true</code> if this manager is already closed, and no further
-   *         requests can be executed, <code>false</code> if this manager is not
-   *         yet closed.
+   * @return <code>true</code> if this manager is already closed, and no further requests can be
+   *         executed, <code>false</code> if this manager is not yet closed.
    * @since 8.8.2
    */
   public final boolean isClosed ()
@@ -76,17 +76,15 @@ public class HttpClientManager implements AutoCloseable
   }
 
   /**
-   * Execute the provided request without any special context. The response
-   * handler is invoked as a callback. This method automatically cleans up all
-   * used resources and as such is preferred over the execute methods returning
-   * the CloseableHttpResponse.
+   * Execute the provided request without any special context. The response handler is invoked as a
+   * callback. This method automatically cleans up all used resources and as such is preferred over
+   * the execute methods returning the CloseableHttpResponse.
    *
    * @param aRequest
    *        The request to be executed. May not be <code>null</code>.
    * @param aResponseHandler
    *        The response handler to be executed. May not be <code>null</code>.
-   * @return The evaluated response of the response handler. May be
-   *         <code>null</code>.
+   * @return The evaluated response of the response handler. May be <code>null</code>.
    * @throws IOException
    *         In case of error
    * @throws IllegalStateException
@@ -98,23 +96,21 @@ public class HttpClientManager implements AutoCloseable
   public <T> T execute (@NonNull final HttpUriRequest aRequest,
                         @NonNull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
-    return execute (aRequest, (HttpClientContext) null, aResponseHandler);
+    return execute (aRequest, HttpClientContext.create (), aResponseHandler);
   }
 
   /**
-   * Execute the provided request with an optional special context. The response
-   * handler is invoked as a callback. This method automatically cleans up all
-   * used resources and as such is preferred over the execute methods returning
-   * the CloseableHttpResponse.
+   * Execute the provided request with an optional special context. The response handler is invoked
+   * as a callback. This method automatically cleans up all used resources and as such is preferred
+   * over the execute methods returning the CloseableHttpResponse.
    *
    * @param aRequest
    *        The request to be executed. May not be <code>null</code>.
-   * @param aHttpContext
-   *        The optional context to be used. May be <code>null</code> to
+   * @param aHttpClientContext
+   *        The optional client context to be used. May be <code>null</code> to
    * @param aResponseHandler
    *        The response handler to be executed. May not be <code>null</code>.
-   * @return The evaluated response of the response handler. May be
-   *         <code>null</code>.
+   * @return The evaluated response of the response handler. May be <code>null</code>.
    * @throws IOException
    *         In case of error
    * @throws IllegalStateException
@@ -123,17 +119,18 @@ public class HttpClientManager implements AutoCloseable
    *        return type
    */
   @Nullable
+  @ChangeNextMajorRelease ("Change 'HttpContext' to 'HttpClientContext'")
   public <T> T execute (@NonNull final ClassicHttpRequest aRequest,
-                        @Nullable final HttpContext aHttpContext,
+                        @Nullable final HttpContext aHttpClientContext,
                         @NonNull final HttpClientResponseHandler <? extends T> aResponseHandler) throws IOException
   {
     checkIfClosed ();
-    HttpDebugger.beforeRequest (aRequest, aHttpContext);
+    HttpDebugger.beforeRequest (aRequest, aHttpClientContext);
     T ret = null;
     Exception aCaughtException = null;
     try
     {
-      ret = m_aHttpClient.execute (aRequest, aHttpContext, aResponseHandler);
+      ret = m_aHttpClient.execute (aRequest, aHttpClientContext, aResponseHandler);
       return ret;
     }
     catch (final RuntimeException | IOException ex)

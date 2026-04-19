@@ -140,7 +140,7 @@ public class HttpClientSettingsConfig
         {
           // Add configPrefix to all values
           final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
-          ret = m_aConfig.getAsIntOrFallback (sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
+          ret = m_aConfig.getAsIntOrFallback (sConfigPrefix + sLocalKey, nDefault, aRealSubKeys);
         }
         if (ret != nDefault)
           return ret;
@@ -159,7 +159,7 @@ public class HttpClientSettingsConfig
 
       // Add configPrefix to all values
       final String [] aRealSubKeys = _copyAndMap (aLocalSubKeys, x -> sConfigPrefix + x);
-      return m_aConfig.getAsLongOrFallback (sConfigPrefix + sLocalKey, nDefault, nDefault, aRealSubKeys);
+      return m_aConfig.getAsLongOrFallback (sConfigPrefix + sLocalKey, nDefault, aRealSubKeys);
     }
 
     @CheckForSigned

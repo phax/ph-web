@@ -61,6 +61,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.2.7 - work in progress
+* Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`
+* `HttpClientFactory` now builds a PKIX revocation-enabled `SSLContext` when a revocation check mode other than `NONE` is configured
+* Added configuration properties `http.tls.revocation.mode` and `http.tls.revocation.soft-fail` to `HttpClientSettingsConfig`
+
 v11.2.6 - 2026-04-15
 * Added `CapturingTlsSocketStrategy` to capture remote TLS peer certificates after HTTPS requests via `HttpContext` attributes
 

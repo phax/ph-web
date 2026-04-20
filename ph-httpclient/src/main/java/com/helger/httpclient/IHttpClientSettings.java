@@ -28,6 +28,7 @@ import org.jspecify.annotations.Nullable;
 import com.helger.annotation.Nonnegative;
 import com.helger.base.string.StringHelper;
 import com.helger.http.tls.ITLSConfigurationMode;
+import com.helger.security.revocation.ERevocationCheckMode;
 
 /**
  * Read-only interface for {@link HttpClientSettings}
@@ -177,4 +178,19 @@ public interface IHttpClientSettings
    * @since 10.5.0
    */
   boolean isProtocolUpgradeEnabled ();
+
+  /**
+   * @return The certificate revocation check mode to use during TLS handshake. Never
+   *         <code>null</code>. Default is {@link ERevocationCheckMode#NONE}.
+   * @since 11.2.7
+   */
+  @NonNull
+  ERevocationCheckMode getRevocationCheckMode ();
+
+  /**
+   * @return <code>true</code> if the revocation check should soft-fail (i.e. continue on network
+   *         errors when contacting CRL/OCSP endpoints), <code>false</code> for hard failure.
+   * @since 11.2.7
+   */
+  boolean isRevocationCheckSoftFail ();
 }

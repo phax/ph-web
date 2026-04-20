@@ -38,6 +38,7 @@ import com.helger.collection.commons.CommonsLinkedHashSet;
 import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.config.IConfig;
 import com.helger.config.fallback.IConfigWithFallback;
+import com.helger.security.revocation.ERevocationCheckMode;
 import com.helger.typeconvert.impl.TypeConverter;
 
 /**
@@ -384,6 +385,29 @@ public class HttpClientSettingsConfig
       return _findBoolean ("http.protocol-upgrade.enabled", bDefault);
     }
 
+    /**
+     * @return The revocation check mode name from configuration. May be <code>null</code> if not
+     *         configured.
+     * @since 11.2.7
+     */
+    @Nullable
+    public String getRevocationCheckMode ()
+    {
+      return _findString ("http.tls.revocation.mode");
+    }
+
+    /**
+     * @param bDefault
+     *        The default value to be used.
+     * @return The revocation check soft-fail setting.
+     * @since 11.2.7
+     */
+    @NonNull
+    public ETriState getRevocationCheckSoftFail (final boolean bDefault)
+    {
+      return _findBoolean ("http.tls.revocation.soft-fail", bDefault);
+    }
+
     @NonNull
     public ETriState getDisableTlsChecks (final boolean bDefault)
     {
@@ -570,6 +594,46 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign revocation check configuration values.
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   * @since 11.2.7
+   */
+  public static void assignConfigValuesForRevocation (@NonNull final HttpClientSettings aHCS,
+                                                      @NonNull final HttpClientConfig aHCC)
+  {
+    final String sMode = aHCC.getRevocationCheckMode ();
+    if (StringHelper.isNotEmpty (sMode))
+    {
+      try
+      {
+        // TODO use getFromIDOrNull when present
+        final ERevocationCheckMode eMode = ERevocationCheckMode.valueOf (sMode);
+        if (LOGGER.isDebugEnabled ())
+          LOGGER.debug ("Setting configured HttpClientSettings.revocationCheckMode(" + eMode + ")");
+        aHCS.setRevocationCheckMode (eMode);
+      }
+      catch (final IllegalArgumentException ex)
+      {
+        LOGGER.warn ("Invalid revocation check mode '" + sMode + "' configured. Ignoring it.");
+      }
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eSoftFail = aHCC.getRevocationCheckSoftFail (aHCS.isRevocationCheckSoftFail ());
+    if (eSoftFail.isDefined ())
+    {
+      final boolean b = eSoftFail.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.revocationCheckSoftFail(" + b + ")");
+      aHCS.setRevocationCheckSoftFail (b);
+    }
+  }
+
   public static void assignConfigValuesForMisc (@NonNull final HttpClientSettings aHCS,
                                                 @NonNull final HttpClientConfig aHCC)
   {
@@ -652,6 +716,9 @@ public class HttpClientSettingsConfig
 
       // TLS stuff
       assignConfigValuesForTLS (aHCS, aHCC);
+
+      // Certificate revocation
+      assignConfigValuesForRevocation (aHCS, aHCC);
 
       // Other stuff
       assignConfigValuesForMisc (aHCS, aHCC);

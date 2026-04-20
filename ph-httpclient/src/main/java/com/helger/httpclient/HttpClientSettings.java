@@ -40,6 +40,7 @@ import com.helger.http.security.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.http.tls.TLSConfigurationMode;
+import com.helger.security.revocation.ERevocationCheckMode;
 
 /**
  * All the easily configurable settings for an {@link HttpClientFactory}
@@ -68,6 +69,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
+  public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
+  public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;
 
   private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -95,6 +98,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private boolean m_bFollowRedirects = DEFAULT_FOLLOW_REDIRECTS;
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
   private boolean m_bProtocolUpgradeEnabled = DEFAULT_PROTOCOL_UPGRADE_ENABLED;
+  private ERevocationCheckMode m_eRevocationCheckMode = DEFAULT_REVOCATION_CHECK_MODE;
+  private boolean m_bRevocationCheckSoftFail = DEFAULT_REVOCATION_CHECK_SOFT_FAIL;
 
   /**
    * Default constructor.
@@ -141,6 +146,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setFollowRedirects (aSource.isFollowRedirects ());
     setUseKeepAlive (aSource.isUseKeepAlive ());
     setProtocolUpgradeEnabled (aSource.isProtocolUpgradeEnabled ());
+    setRevocationCheckMode (aSource.getRevocationCheckMode ());
+    setRevocationCheckSoftFail (aSource.isRevocationCheckSoftFail ());
     return this;
   }
 
@@ -499,6 +506,50 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   @NonNull
+  public final ERevocationCheckMode getRevocationCheckMode ()
+  {
+    return m_eRevocationCheckMode;
+  }
+
+  /**
+   * Set the certificate revocation check mode to use during TLS handshake. By default no revocation
+   * checking is performed.
+   *
+   * @param eRevocationCheckMode
+   *        The revocation check mode to use. May not be <code>null</code>.
+   * @return this for chaining
+   * @since 11.2.7
+   */
+  @NonNull
+  public final HttpClientSettings setRevocationCheckMode (@NonNull final ERevocationCheckMode eRevocationCheckMode)
+  {
+    ValueEnforcer.notNull (eRevocationCheckMode, "RevocationCheckMode");
+    m_eRevocationCheckMode = eRevocationCheckMode;
+    return this;
+  }
+
+  public final boolean isRevocationCheckSoftFail ()
+  {
+    return m_bRevocationCheckSoftFail;
+  }
+
+  /**
+   * Enable or disable soft-fail for certificate revocation checking. If enabled, the TLS handshake
+   * will succeed even if CRL/OCSP endpoints cannot be reached.
+   *
+   * @param bRevocationCheckSoftFail
+   *        <code>true</code> to soft-fail, <code>false</code> to hard-fail.
+   * @return this for chaining
+   * @since 11.2.7
+   */
+  @NonNull
+  public final HttpClientSettings setRevocationCheckSoftFail (final boolean bRevocationCheckSoftFail)
+  {
+    m_bRevocationCheckSoftFail = bRevocationCheckSoftFail;
+    return this;
+  }
+
+  @NonNull
   @ReturnsMutableCopy
   public HttpClientSettings getClone ()
   {
@@ -526,6 +577,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("FollowRedirects", m_bFollowRedirects)
                                        .append ("UseKeepAlive", m_bUseKeepAlive)
                                        .append ("ProtocolUpgradeEnabled", m_bProtocolUpgradeEnabled)
+                                       .append ("RevocationCheckMode", m_eRevocationCheckMode)
+                                       .append ("RevocationCheckSoftFail", m_bRevocationCheckSoftFail)
                                        .getToString ();
   }
 }

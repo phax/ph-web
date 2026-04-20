@@ -17,11 +17,23 @@
 package com.helger.httpclient;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.cert.CertPathBuilder;
+import java.security.cert.PKIXBuilderParameters;
+import java.security.cert.PKIXRevocationChecker;
+import java.security.cert.X509CertSelector;
+import java.util.EnumSet;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import javax.net.ssl.CertPathTrustManagerParameters;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.hc.client5.http.DnsResolver;
 import org.apache.hc.client5.http.HttpRequestRetryStrategy;
@@ -78,11 +90,12 @@ import org.slf4j.LoggerFactory;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.httpclient.security.CapturingTlsSocketStrategy;
 import com.helger.base.id.factory.GlobalIDFactory;
 import com.helger.base.state.EHandled;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
+import com.helger.httpclient.security.CapturingTlsSocketStrategy;
+import com.helger.security.revocation.ERevocationCheckMode;
 
 /**
  * A factory for creating {@link CloseableHttpClient} that is e.g. to be used in the
@@ -271,6 +284,108 @@ public class HttpClientFactory implements IHttpClientProvider
   }
 
   @Nullable
+  protected static KeyStore loadSystemDefaultTrustStore ()
+  {
+    try
+    {
+      // Try the "javax.net.ssl.trustStore" system property first
+      final String sTrustStorePath = System.getProperty ("javax.net.ssl.trustStore");
+      if (sTrustStorePath != null)
+      {
+        final String sTrustStoreType = System.getProperty ("javax.net.ssl.trustStoreType", KeyStore.getDefaultType ());
+        final char [] aTrustStorePassword = System.getProperty ("javax.net.ssl.trustStorePassword", "changeit")
+                                                  .toCharArray ();
+
+        LOGGER.info ("Trying to load system default trust store '" +
+                     sTrustStorePath +
+                     "' of type '" +
+                     sTrustStoreType +
+                     "'");
+
+        final KeyStore aKeyStore = KeyStore.getInstance (sTrustStoreType);
+        try (final InputStream aIS = Files.newInputStream (Path.of (sTrustStorePath)))
+        {
+          aKeyStore.load (aIS, aTrustStorePassword);
+        }
+        return aKeyStore;
+      }
+
+      // Fall back to the default JRE cacerts
+      LOGGER.info ("Trying to load system default JRE cacerts");
+      final KeyStore aKeyStore = KeyStore.getInstance (KeyStore.getDefaultType ());
+      final Path aCacertsPath = Path.of (System.getProperty ("java.home"), "lib", "security", "cacerts");
+      try (final InputStream aIS = Files.newInputStream (aCacertsPath))
+      {
+        aKeyStore.load (aIS, "changeit".toCharArray ());
+      }
+      return aKeyStore;
+    }
+    catch (final Exception ex)
+    {
+      LOGGER.error ("Failed to load default trust store for revocation checking", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Create an {@link SSLContext} that performs certificate revocation checking (CRL and/or OCSP)
+   * during the TLS handshake using the JSSE PKIX trust manager.
+   *
+   * @return An {@link SSLContext} with revocation checking enabled, or <code>null</code> if
+   *         revocation checking is disabled or if creation fails.
+   * @since 11.2.7
+   */
+  @Nullable
+  protected SSLContext createRevocationSSLContext ()
+  {
+    final ERevocationCheckMode eMode = m_aSettings.getRevocationCheckMode ();
+    if (eMode.isNone ())
+      return null;
+
+    try
+    {
+      // Load the default trust store (JRE cacerts or custom via system property)
+      final KeyStore aDefaultTS = loadSystemDefaultTrustStore ();
+      if (aDefaultTS == null)
+      {
+        LOGGER.warn ("Cannot create revocation-enabled SSLContext because the default trust store could not be loaded");
+        return null;
+      }
+
+      // Build a PKIXRevocationChecker with the desired options
+      final CertPathBuilder aCPB = CertPathBuilder.getInstance ("PKIX");
+      final PKIXRevocationChecker aRevChecker = (PKIXRevocationChecker) aCPB.getRevocationChecker ();
+
+      final EnumSet <PKIXRevocationChecker.Option> aOptions = EnumSet.noneOf (PKIXRevocationChecker.Option.class);
+      eMode.addAllOptionsTo (aOptions);
+      if (m_aSettings.isRevocationCheckSoftFail ())
+        aOptions.add (PKIXRevocationChecker.Option.SOFT_FAIL);
+      aRevChecker.setOptions (aOptions);
+
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Creating revocation-enabled SSLContext with mode " + eMode + " and options " + aOptions);
+
+      // Configure PKIX parameters with revocation enabled
+      final PKIXBuilderParameters aPKIXParams = new PKIXBuilderParameters (aDefaultTS, new X509CertSelector ());
+      aPKIXParams.setRevocationEnabled (true);
+      aPKIXParams.addCertPathChecker (aRevChecker);
+
+      // Initialize TrustManagerFactory with PKIX parameters
+      final TrustManagerFactory aTMF = TrustManagerFactory.getInstance ("PKIX");
+      aTMF.init (new CertPathTrustManagerParameters (aPKIXParams));
+
+      final SSLContext aSSLContext = SSLContext.getInstance ("TLS");
+      aSSLContext.init (null, aTMF.getTrustManagers (), null);
+      return aSSLContext;
+    }
+    catch (final GeneralSecurityException ex)
+    {
+      LOGGER.error ("Failed to create SSLContext with revocation checking enabled", ex);
+      return null;
+    }
+  }
+
+  @Nullable
   protected DefaultClientTlsStrategy createCustomTlsSocketStrategy ()
   {
     DefaultClientTlsStrategy ret = null;
@@ -317,32 +432,69 @@ public class HttpClientFactory implements IHttpClientProvider
   public DefaultClientTlsStrategy createTlsSocketStrategy ()
   {
     DefaultClientTlsStrategy ret = createCustomTlsSocketStrategy ();
-
-    if (ret == null)
+    if (ret != null)
     {
-      // No custom SSL context present - use system defaults
+      // Custom SSLContext was provided by the user
+      if (!m_aSettings.getRevocationCheckMode ().isNone ())
+      {
+        LOGGER.warn ("Revocation check mode '" +
+                     m_aSettings.getRevocationCheckMode () +
+                     "' is configured, but a custom SSLContext is also set. " +
+                     "The custom SSLContext takes precedence; revocation checking is NOT applied.");
+      }
+      return ret;
+    }
+
+    // No custom SSL context - check if revocation checking is requested
+    final SSLContext aRevocationCtx = createRevocationSSLContext ();
+    if (aRevocationCtx != null)
+    {
+      // Build strategy from revocation-aware SSLContext
+      ITLSConfigurationMode aTLSConfigMode = m_aSettings.getTLSConfigurationMode ();
+      if (aTLSConfigMode == null)
+        aTLSConfigMode = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
+
+      HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
+      if (aHostnameVerifier == null)
+        aHostnameVerifier = HttpsSupport.getDefaultHostnameVerifier ();
+
+      if (LOGGER.isDebugEnabled ())
+      {
+        LOGGER.debug ("Using revocation-enabled SSLContext with TLS versions: " +
+                      aTLSConfigMode.getAllTLSVersionIDs ());
+        LOGGER.debug ("Using revocation-enabled SSLContext with hostname verifier: " + aHostnameVerifier);
+      }
+
+      ret = new DefaultClientTlsStrategy (aRevocationCtx,
+                                          aTLSConfigMode.getAllTLSVersionIDsAsArray (),
+                                          aTLSConfigMode.getAllCipherSuitesAsArray (),
+                                          SSLBufferMode.STATIC,
+                                          aHostnameVerifier);
+      return ret;
+    }
+
+    // No revocation checking - use system defaults
+    try
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Trying DefaultClientTlsStrategy.createSystemDefault ()");
+      ret = DefaultClientTlsStrategy.createSystemDefault ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Using SSL socket factory with an SSL context based on system properties as described in JSSE Reference Guide.");
+    }
+    catch (final SSLInitializationException ex)
+    {
       try
       {
         if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Trying DefaultClientTlsStrategy.createSystemDefault ()");
-        ret = DefaultClientTlsStrategy.createSystemDefault ();
+          LOGGER.debug ("Trying DefaultClientTlsStrategy.createDefault ()");
+        ret = DefaultClientTlsStrategy.createDefault ();
         if (LOGGER.isDebugEnabled ())
-          LOGGER.debug ("Using SSL socket factory with an SSL context based on system propertiesas described in JSSE Reference Guide.");
+          LOGGER.debug ("Using SSL socket factory with an SSL context based on the standard JSSE trust material (cacerts file in the security properties directory). System properties are not taken into consideration.");
       }
-      catch (final SSLInitializationException ex)
+      catch (final SSLInitializationException ex2)
       {
-        try
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Trying DefaultClientTlsStrategy.createDefault ()");
-          ret = DefaultClientTlsStrategy.createDefault ();
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Using SSL socket factory with an SSL context based on the standard JSSE trust material (cacerts file in the security properties directory).System properties are not taken into consideration.");
-        }
-        catch (final SSLInitializationException ex2)
-        {
-          // Fall through
-        }
+        // Fall through
       }
     }
     return ret;

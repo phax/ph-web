@@ -65,6 +65,10 @@ v11.2.7 - work in progress
 * Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`
 * `HttpClientFactory` now builds a PKIX revocation-enabled `SSLContext` when a revocation check mode other than `NONE` is configured
 * Added configuration properties `http.tls.revocation.mode` and `http.tls.revocation.soft-fail` to `HttpClientSettingsConfig`
+* Added `ObjectInputFilter` deserialization protection to `SessionWebScopeActivator` and `DiskFileItem`
+* Deprecated `IFileItem.getName()` and `IFileItemStream.getName()` — use `getNameSecure()` instead
+* `getNameSecure()` now also strips path components (both `/` and `\`) in addition to replacing invalid characters
+* Reduced default `MAX_REQUEST_SIZE` for multipart uploads from 5 GB to 100 MB
 
 v11.2.6 - 2026-04-15
 * Added `CapturingTlsSocketStrategy` to capture remote TLS peer certificates after HTTPS requests via `HttpContext` attributes

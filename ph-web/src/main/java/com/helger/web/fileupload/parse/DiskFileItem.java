@@ -363,6 +363,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     return m_sFilename;
   }
 
+  @Deprecated (since = "11.2.7", forRemoval = false)
   @Nullable
   public String getName ()
   {
@@ -372,7 +373,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   @Nullable
   public String getNameSecure ()
   {
-    final String sSecureName = FilenameHelper.getAsSecureValidFilename (m_sFilename);
+    final String sSecureName = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (m_sFilename));
     if (!EqualsHelper.equals (sSecureName, m_sFilename))
       LOGGER.info ("FileItem filename was changed from '" + m_sFilename + "' to '" + sSecureName + "'");
     return sSecureName;

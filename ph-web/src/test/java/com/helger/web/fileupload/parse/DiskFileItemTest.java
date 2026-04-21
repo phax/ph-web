@@ -53,34 +53,32 @@ public final class DiskFileItemTest
   private static final int THRESHOLD = 16;
 
   /**
-   * Test creation of a field for which the amount of data falls below the
-   * configured threshold.
+   * Test creation of a field for which the amount of data falls below the configured threshold.
    */
   @Test
   public void testBelowThreshold ()
   {
-
     // Create the FileItem
-    final byte [] testFieldValueBytes = _createContentBytes (THRESHOLD - 1);
-    final IFileItem item = _createFileItem (testFieldValueBytes);
+    final byte [] aTestFieldValueBytes = _createContentBytes (THRESHOLD - 1);
+    final IFileItem aItem = _createFileItem (aTestFieldValueBytes);
 
     // Check state is as expected
-    assertTrue ("Initial: in memory", item.isInMemory ());
-    assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
+    assertTrue ("Initial: in memory", aItem.isInMemory ());
+    assertEquals ("Initial: size", aItem.getSize (), aTestFieldValueBytes.length);
+    _compareBytes ("Initial", aItem.directGet (), aTestFieldValueBytes);
 
     // Serialize & Deserialize
     if (false)
       try
       {
-        final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
+        final IFileItem newItem = (IFileItem) _serializeDeserialize (aItem);
 
         // Test deserialized content is as expected
         assertTrue ("Check in memory", newItem.isInMemory ());
-        _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
+        _compareBytes ("Check", aTestFieldValueBytes, newItem.directGet ());
 
         // Compare FileItem's (except byte[])
-        _compareFileItems (item, newItem);
+        _compareFileItems (aItem, newItem);
 
       }
       catch (final Exception e)
@@ -90,33 +88,32 @@ public final class DiskFileItemTest
   }
 
   /**
-   * Test creation of a field for which the amount of data equals the configured
-   * threshold.
+   * Test creation of a field for which the amount of data equals the configured threshold.
    */
   @Test
   public void testThreshold ()
   {
     // Create the FileItem
-    final byte [] testFieldValueBytes = _createContentBytes (THRESHOLD);
-    final IFileItem item = _createFileItem (testFieldValueBytes);
+    final byte [] aTestFieldValueBytes = _createContentBytes (THRESHOLD);
+    final IFileItem aItem = _createFileItem (aTestFieldValueBytes);
 
     // Check state is as expected
-    assertTrue ("Initial: in memory", item.isInMemory ());
-    assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
+    assertTrue ("Initial: in memory", aItem.isInMemory ());
+    assertEquals ("Initial: size", aItem.getSize (), aTestFieldValueBytes.length);
+    _compareBytes ("Initial", aItem.directGet (), aTestFieldValueBytes);
 
     // Serialize & Deserialize
     if (false)
       try
       {
-        final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
+        final IFileItem aNewItem = (IFileItem) _serializeDeserialize (aItem);
 
         // Test deserialized content is as expected
-        assertTrue ("Check in memory", newItem.isInMemory ());
-        _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
+        assertTrue ("Check in memory", aNewItem.isInMemory ());
+        _compareBytes ("Check", aTestFieldValueBytes, aNewItem.directGet ());
 
         // Compare FileItem's (except byte[])
-        _compareFileItems (item, newItem);
+        _compareFileItems (aItem, aNewItem);
 
       }
       catch (final Exception e)
@@ -126,40 +123,73 @@ public final class DiskFileItemTest
   }
 
   /**
-   * Test creation of a field for which the amount of data falls above the
-   * configured threshold.
+   * Test creation of a field for which the amount of data falls above the configured threshold.
    */
   @Test
   public void testAboveThreshold ()
   {
-
     // Create the FileItem
-    final byte [] testFieldValueBytes = _createContentBytes (THRESHOLD + 1);
-    final IFileItem item = _createFileItem (testFieldValueBytes);
+    final byte [] aTestFieldValueBytes = _createContentBytes (THRESHOLD + 1);
+    final IFileItem aItem = _createFileItem (aTestFieldValueBytes);
 
     // Check state is as expected
-    assertFalse ("Initial: in memory", item.isInMemory ());
-    assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    _compareBytes ("Initial", item.directGet (), testFieldValueBytes);
+    assertFalse ("Initial: in memory", aItem.isInMemory ());
+    assertEquals ("Initial: size", aItem.getSize (), aTestFieldValueBytes.length);
+    _compareBytes ("Initial", aItem.directGet (), aTestFieldValueBytes);
 
     // Serialize & Deserialize
     if (false)
       try
       {
-        final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
+        final IFileItem newItem = (IFileItem) _serializeDeserialize (aItem);
 
         // Test deserialized content is as expected
         assertFalse ("Check in memory", newItem.isInMemory ());
-        _compareBytes ("Check", testFieldValueBytes, newItem.directGet ());
+        _compareBytes ("Check", aTestFieldValueBytes, newItem.directGet ());
 
         // Compare FileItem's (except byte[])
-        _compareFileItems (item, newItem);
+        _compareFileItems (aItem, newItem);
 
       }
       catch (final Exception e)
       {
         fail ("Error Serializing/Deserializing: " + e);
       }
+  }
+
+  @Test
+  public void testGetNameSecureStripsPathTraversal ()
+  {
+    final IFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);
+    final IFileItem aItem = aFactory.createItem ("field", CT_TEXT, false, "../../etc/passwd");
+    // getNameSecure must strip path components
+    final String sSecure = aItem.getNameSecure ();
+    assertNotNull (sSecure);
+    assertFalse ("getNameSecure must not contain '..'", sSecure.contains (".."));
+    assertFalse ("getNameSecure must not contain '/'", sSecure.contains ("/"));
+    assertEquals ("passwd", sSecure);
+  }
+
+  @Test
+  public void testGetNameSecureStripsWindowsPath ()
+  {
+    final IFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);
+    final IFileItem aItem = aFactory.createItem ("field",
+                                                 CT_TEXT,
+                                                 false,
+                                                 "C:\\Users\\evil\\..\\..\\Windows\\system.ini");
+    final String sSecure = aItem.getNameSecure ();
+    assertNotNull (sSecure);
+    assertFalse ("getNameSecure must not contain '\\'", sSecure.contains ("\\"));
+    assertEquals ("system.ini", sSecure);
+  }
+
+  @Test
+  public void testGetNameSecureNormalFilename ()
+  {
+    final IFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);
+    final IFileItem aItem = aFactory.createItem ("field", CT_TEXT, false, "report.pdf");
+    assertEquals ("report.pdf", aItem.getNameSecure ());
   }
 
   /**
@@ -171,88 +201,88 @@ public final class DiskFileItemTest
     CommonsAssert.assertEquals ("Compare: is Form Field", aOrigItem.isFormField (), aNewItem.isFormField ());
     assertEquals ("Compare: Field Name", aOrigItem.getFieldName (), aNewItem.getFieldName ());
     assertEquals ("Compare: Content Type", aOrigItem.getContentType (), aNewItem.getContentType ());
-    assertEquals ("Compare: File Name", aOrigItem.getName (), aNewItem.getName ());
+    assertEquals ("Compare: File Name", aOrigItem.getNameSecure (), aNewItem.getNameSecure ());
   }
 
   /**
    * Compare content bytes.
    */
-  private void _compareBytes (final String text, final byte [] origBytes, final byte [] newBytes)
+  private static void _compareBytes (final String sText, final byte [] aOrigBytes, final byte [] aNewBytes)
   {
-    assertNotNull (origBytes);
-    assertNotNull (newBytes);
-    assertEquals (text + " byte[] length", origBytes.length, newBytes.length);
-    for (int i = 0; i < origBytes.length; i++)
-    {
-      assertEquals (text + " byte[" + i + "]", origBytes[i], newBytes[i]);
-    }
+    assertNotNull (aOrigBytes);
+    assertNotNull (aNewBytes);
+    assertEquals (sText + " byte[] length", aOrigBytes.length, aNewBytes.length);
+    for (int i = 0; i < aOrigBytes.length; i++)
+      assertEquals (sText + " byte[" + i + "]", aOrigBytes[i], aNewBytes[i]);
   }
 
   /**
    * Create content bytes of a specified size.
    */
-  private static byte [] _createContentBytes (final int size)
+  private static byte [] _createContentBytes (final int nSize)
   {
-    final StringBuilder buffer = new StringBuilder (size);
-    byte count = 0;
-    for (int i = 0; i < size; i++)
+    final StringBuilder aSB = new StringBuilder (nSize);
+    byte nCount = 0;
+    for (int i = 0; i < nSize; i++)
     {
-      buffer.append (count);
-      count++;
-      if (count > 9)
-        count = 0;
+      aSB.append (nCount);
+      nCount++;
+      if (nCount > 9)
+        nCount = 0;
     }
-    return buffer.toString ().getBytes (StandardCharsets.ISO_8859_1);
+    return aSB.toString ().getBytes (StandardCharsets.ISO_8859_1);
   }
 
   /**
    * Create a FileItem with the specified content bytes.
    */
-  private IFileItem _createFileItem (final byte [] contentBytes)
+  private static IFileItem _createFileItem (final byte [] aContentBytes)
   {
-    final IFileItemFactory factory = new DiskFileItemFactory (THRESHOLD);
-    final String textFieldName = "textField";
+    final IFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);
+    final String sTextFieldName = "textField";
 
-    final IFileItem item = factory.createItem (textFieldName, CT_TEXT, true, "My File Name");
-    try (final OutputStream os = item.getOutputStream ())
+    final IFileItem aItem = aFactory.createItem (sTextFieldName, CT_TEXT, true, "My File Name");
+    try (final OutputStream aOS = aItem.getOutputStream ())
     {
-      os.write (contentBytes);
+      aOS.write (aContentBytes);
     }
     catch (final IOException e)
     {
       fail ("Unexpected IOException" + e);
     }
-    return item;
+    return aItem;
   }
 
   /**
    * Do serialization and deserialization.
    */
-  private Object _serializeDeserialize (final Object target)
+  private Object _serializeDeserialize (final Object aTarget)
   {
     // Serialize the test object
-    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-    try (final ObjectOutputStream oos = new ObjectOutputStream (baos))
+    try (final NonBlockingByteArrayOutputStream aBaos = new NonBlockingByteArrayOutputStream ())
     {
-      oos.writeObject (target);
-      oos.flush ();
-    }
-    catch (final Exception e)
-    {
-      fail ("Exception during serialization: " + e);
-    }
+      try (final ObjectOutputStream aOos = new ObjectOutputStream (aBaos))
+      {
+        aOos.writeObject (aTarget);
+        aOos.flush ();
+      }
+      catch (final Exception e)
+      {
+        fail ("Exception during serialization: " + e);
+      }
 
-    // Deserialize the test object
-    Object result = null;
-    try (final NonBlockingByteArrayInputStream bais = new NonBlockingByteArrayInputStream (baos.toByteArray ());
-        final ObjectInputStream ois = new ObjectInputStream (bais))
-    {
-      result = ois.readObject ();
+      // Deserialize the test object
+      Object ret = null;
+      try (final NonBlockingByteArrayInputStream aBais = new NonBlockingByteArrayInputStream (aBaos.toByteArray ());
+           final ObjectInputStream aOis = new ObjectInputStream (aBais))
+      {
+        ret = aOis.readObject ();
+      }
+      catch (final Exception e)
+      {
+        fail ("Exception during deserialization: " + e);
+      }
+      return ret;
     }
-    catch (final Exception e)
-    {
-      fail ("Exception during deserialization: " + e);
-    }
-    return result;
   }
 }

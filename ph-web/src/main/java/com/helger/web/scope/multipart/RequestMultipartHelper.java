@@ -48,15 +48,11 @@ import jakarta.servlet.http.HttpServletRequest;
 public final class RequestMultipartHelper
 {
   /**
-   * The maximum size of a single file (in bytes) that will be handled. May not
-   * be larger than 2 GB as browsers cannot handle more than 2GB. See e.g.
-   * http://www.motobit.com/help/ScptUtl/pa33.htm or
-   * https://bugzilla.mozilla.org/show_bug.cgi?id=215450 Extensive analysis:
-   * <a href=
-   * "http://tomcat.10.n6.nabble.com/Problems-uploading-huge-files-gt-2GB-to-Tomcat-app-td4730850.html"
-   * >here</a>
+   * The maximum size of a single upload request (in bytes). Applications that
+   * need to accept larger uploads should configure their own limit via
+   * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#setSizeMax(long)}.
    */
-  public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
+  public static final long MAX_REQUEST_SIZE = 100 * CGlobal.BYTES_PER_MEGABYTE;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestMultipartHelper.class);
   private static final IFileItemFactoryProviderSPI PROVIDER;

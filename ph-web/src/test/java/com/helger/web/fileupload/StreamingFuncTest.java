@@ -215,8 +215,8 @@ public final class StreamingFuncTest
 
   @NonNull
   @ReturnsMutableCopy
-  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream,
-                                                       final int pLength) throws FileUploadException
+  private ICommonsList <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength)
+                                                                                                     throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -260,7 +260,7 @@ public final class StreamingFuncTest
   private static byte [] _newShortRequest () throws IOException
   {
     try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-        final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
+         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
       osw.write (_getHeader ("field"));
       osw.write ("123");
@@ -274,7 +274,7 @@ public final class StreamingFuncTest
   private static byte [] _newRequest () throws IOException
   {
     try (final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-        final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
+         final OutputStreamWriter osw = new OutputStreamWriter (baos, StandardCharsets.US_ASCII))
     {
       int nAdd = 16;
       int nNum = 0;
@@ -304,6 +304,7 @@ public final class StreamingFuncTest
    * @throws Exception
    *         In case of error
    */
+  @SuppressWarnings ("deprecation")
   @Test
   public void testInvalidFileNameException () throws Exception
   {
@@ -334,11 +335,11 @@ public final class StreamingFuncTest
                             "-----1234--\r\n";
     final byte [] aReqBytes = aRequest.getBytes (StandardCharsets.US_ASCII);
 
-    final IFileItemIterator fileItemIter = _parseUploadToIterator (aReqBytes);
-    final IFileItemStream fileItemStream = fileItemIter.next ();
+    final IFileItemIterator aFileItemIter = _parseUploadToIterator (aReqBytes);
+    final IFileItemStream aFileItemStream = aFileItemIter.next ();
     try
     {
-      fileItemStream.getName ();
+      aFileItemStream.getName ();
       fail ("Expected exception");
     }
     catch (final InvalidFileNameException e)
@@ -347,13 +348,13 @@ public final class StreamingFuncTest
       assertEquals (-1, e.getMessage ().indexOf (sFilename));
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") >= 0);
     }
-    assertEquals ("foo.exe", fileItemStream.getNameSecure ());
+    assertEquals ("foo.exe", aFileItemStream.getNameSecure ());
 
     final ICommonsList <IFileItem> fileItems = _parseUploadToList (aReqBytes);
-    final IFileItem fileItem = fileItems.getFirstOrNull ();
+    final IFileItem aFileItem = fileItems.getFirstOrNull ();
     try
     {
-      fileItem.getName ();
+      aFileItem.getName ();
       fail ("Expected exception");
     }
     catch (final InvalidFileNameException e)
@@ -362,6 +363,6 @@ public final class StreamingFuncTest
       assertEquals (e.getMessage ().indexOf (sFilename), -1);
       assertNotEquals (e.getMessage ().indexOf ("foo.exe\\0.png"), -1);
     }
-    assertEquals ("foo.exe", fileItem.getNameSecure ());
+    assertEquals ("foo.exe", aFileItem.getNameSecure ());
   }
 }

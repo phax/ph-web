@@ -91,7 +91,11 @@ public interface IFileItem extends DataSource, IHasInputStream
    *         The file name contains a NUL character, which might be an indicator
    *         of a security attack. If you intend to use the file name anyways,
    *         catch the exception and use InvalidFileNameException#getName().
+   * @deprecated Use {@link #getNameSecure()} instead, which also strips path
+   *             separators and replaces invalid characters. This method only
+   *             checks for NUL bytes.
    */
+  @Deprecated (since = "11.2.7", forRemoval = false)
   @Nullable
   String getName ();
 

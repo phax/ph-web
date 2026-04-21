@@ -175,6 +175,7 @@ public class FileItemStream implements IFileItemStream, Closeable
     return m_sFieldName;
   }
 
+  @Deprecated (since = "11.2.7", forRemoval = false)
   @Nullable
   public String getName ()
   {
@@ -184,7 +185,7 @@ public class FileItemStream implements IFileItemStream, Closeable
   @Nullable
   public String getNameSecure ()
   {
-    return FilenameHelper.getAsSecureValidFilename (m_sName);
+    return FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (m_sName));
   }
 
   @Nullable

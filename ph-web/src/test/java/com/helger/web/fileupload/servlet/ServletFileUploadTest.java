@@ -67,7 +67,7 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
     assertFalse (file.isFormField ());
     assertEquals ("This is the content of the file\n", file.getString ());
     assertEquals ("text/whatever", file.getContentType ());
-    assertEquals ("foo.tab", file.getName ());
+    assertEquals ("foo.tab", file.getNameSecure ());
 
     final IFileItem field = fileItems.get (1);
     assertEquals ("field", field.getFieldName ());
@@ -99,36 +99,36 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
 
     final IFileItem file = fileItems.get (0);
     assertEquals ("FiLe", file.getFieldName ());
-    assertEquals ("FOO.tab", file.getName ());
+    assertEquals ("FOO.tab", file.getNameSecure ());
   }
 
   /**
-   * This is what the browser does if you submit the form without choosing a
-   * file.
+   * This is what the browser does if you submit the form without choosing a file.
    *
    * @throws FileUploadException
    *         In case of error
    */
+  @SuppressWarnings ("deprecation")
   @Test
   public void testEmptyFile () throws FileUploadException
   {
-    final List <IFileItem> fileItems = parseUpload ("-----1234\r\n" +
-                                                    "Content-Disposition: form-data; name=\"file\"; filename=\"\"\r\n" +
-                                                    "\r\n" +
-                                                    "\r\n" +
-                                                    "-----1234--\r\n");
-    assertEquals (1, fileItems.size ());
+    final List <IFileItem> aFileItems = parseUpload ("-----1234\r\n" +
+                                                     "Content-Disposition: form-data; name=\"file\"; filename=\"\"\r\n" +
+                                                     "\r\n" +
+                                                     "\r\n" +
+                                                     "-----1234--\r\n");
+    assertEquals (1, aFileItems.size ());
 
-    final IFileItem file = fileItems.get (0);
-    assertFalse (file.isFormField ());
-    assertEquals ("", file.getString ());
-    assertEquals ("", file.getName ());
+    final IFileItem aItem = aFileItems.get (0);
+    assertFalse (aItem.isFormField ());
+    assertEquals ("", aItem.getString ());
+    assertEquals ("", aItem.getName ());
+    assertNull (aItem.getNameSecure ());
   }
 
   /**
-   * Internet Explorer 5 for the Mac has a bug where the carriage return is
-   * missing on any boundary line immediately preceding an input with
-   * type=image. (type=submit does not have the bug.)
+   * Internet Explorer 5 for the Mac has a bug where the carriage return is missing on any boundary
+   * line immediately preceding an input with type=image. (type=submit does not have the bug.)
    *
    * @throws FileUploadException
    *         In case of error
@@ -180,9 +180,7 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
   }
 
   /**
-   * Test for
-   * <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-62">FILEUPLOAD-62
-   * </a>
+   * Test for <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-62">FILEUPLOAD-62 </a>
    *
    * @throws Exception
    *         In case of error
@@ -216,22 +214,20 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
     assertEquals (3, fileItems.size ());
     final IFileItem item0 = fileItems.get (0);
     assertEquals ("field1", item0.getFieldName ());
-    assertNull (item0.getName ());
+    assertNull (item0.getNameSecure ());
     assertEquals ("Joe Blow", new String (item0.directGet (), StandardCharsets.ISO_8859_1));
     final IFileItem item1 = fileItems.get (1);
     assertEquals ("pics", item1.getFieldName ());
-    assertEquals ("file1.txt", item1.getName ());
+    assertEquals ("file1.txt", item1.getNameSecure ());
     assertEquals ("... contents of file1.txt ...", new String (item1.directGet (), StandardCharsets.ISO_8859_1));
     final IFileItem item2 = fileItems.get (2);
     assertEquals ("pics", item2.getFieldName ());
-    assertEquals ("file2.gif", item2.getName ());
+    assertEquals ("file2.gif", item2.getNameSecure ());
     assertEquals ("...contents of file2.gif...", new String (item2.directGet (), StandardCharsets.ISO_8859_1));
   }
 
   /**
-   * Test for
-   * <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-111">FILEUPLOAD
-   * -111</a>
+   * Test for <a href="http://issues.apache.org/jira/browse/FILEUPLOAD-111">FILEUPLOAD -111</a>
    *
    * @throws FileUploadException
    *         In case of error
@@ -267,7 +263,7 @@ public final class ServletFileUploadTest extends AbstractFileUploadTestCase
     assertFalse (file.isFormField ());
     assertEquals ("This is the content of the file\n", file.getString ());
     assertEquals ("text/whatever", file.getContentType ());
-    assertEquals ("foo.tab", file.getName ());
+    assertEquals ("foo.tab", file.getNameSecure ());
 
     final IFileItem field = fileItems.get (1);
     assertEquals ("field", field.getFieldName ());

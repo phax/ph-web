@@ -19,6 +19,7 @@ package com.helger.web.fileupload.parse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -238,6 +239,15 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   }
 
   /**
+   * Deserialization filter restricting allowed types to well-known JDK and
+   * DiskFileItem field types only.
+   */
+  private static final ObjectInputFilter DESER_FILTER = ObjectInputFilter.Config.createFilter (
+      "java.io.**;java.lang.**;java.util.**;" +
+      "com.helger.web.fileupload.**;" +
+      "maxdepth=10;maxarray=10000;!*");
+
+  /**
    * Reads the state of this object during deserialization.
    *
    * @param aOIS
@@ -249,6 +259,9 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    */
   private void readObject (@NonNull final ObjectInputStream aOIS) throws IOException, ClassNotFoundException
   {
+    // Apply deserialization filter before reading fields
+    aOIS.setObjectInputFilter (DESER_FILTER);
+
     // read values
     aOIS.defaultReadObject ();
     try (final OutputStream aOS = getOutputStream ())

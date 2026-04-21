@@ -17,6 +17,7 @@
 package com.helger.web.scope.session;
 
 import java.io.IOException;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -94,11 +95,22 @@ public final class SessionWebScopeActivator implements
                    ScopeHelper.getDebugException ());
   }
 
+  /**
+   * Deserialization filter limiting graph depth and array sizes to mitigate
+   * known Java deserialization gadget chains. Since session attributes can be
+   * any application-defined Serializable, a strict class allowlist is not
+   * feasible at the library level.
+   */
+  private static final ObjectInputFilter DESER_FILTER = ObjectInputFilter.Config.createFilter ("maxdepth=20;maxarray=10000");
+
   @SuppressWarnings ("unchecked")
   private void readObject (@NonNull final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     if (m_aSessionWebScope != null)
       throw new IllegalStateException ("Another SessionWebScope is already present: " + m_aSessionWebScope.toString ());
+
+    // Apply deserialization filter to limit gadget chain depth/array size
+    in.setObjectInputFilter (DESER_FILTER);
 
     // Read session attributes
     m_aAttrs = (ICommonsMap <String, Object>) in.readObject ();

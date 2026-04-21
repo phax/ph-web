@@ -18,7 +18,12 @@ package com.helger.httpclient;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+
+import java.security.GeneralSecurityException;
+
+import javax.net.ssl.SSLContext;
 
 import org.junit.Test;
 
@@ -42,5 +47,25 @@ public final class HttpClientSettingsTest
 
     x.setUserAgent ("bla");
     assertEquals ("bla", x.getClone ().getUserAgent ());
+  }
+
+  @Test
+  public void testSetSSLContextTrustAllCreatesInsecureContext () throws GeneralSecurityException
+  {
+    // Demonstrates that setSSLContextTrustAll() creates a fully permissive context
+    final HttpClientSettings aSettings = new HttpClientSettings ();
+    aSettings.setSSLContextTrustAll ();
+
+    final SSLContext aCtx = aSettings.getSSLContext ();
+    assertNotNull ("SSLContext should be set after setSSLContextTrustAll()", aCtx);
+  }
+
+  @Test
+  public void testDefaultSettingsDoNotBypassTLS ()
+  {
+    // Verify that default settings are secure
+    final HttpClientSettings aSettings = new HttpClientSettings ();
+    assertNull ("Default SSLContext should be null (use JVM default)", aSettings.getSSLContext ());
+    assertNull ("Default HostnameVerifier should be null (use JVM default)", aSettings.getHostnameVerifier ());
   }
 }

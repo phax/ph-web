@@ -61,6 +61,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.3.1 - work in progress
+* Removed OSGI bundling
+
 v11.3.0 - 2026-04-22
 * Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`
 * `HttpClientFactory` now builds a PKIX revocation-enabled `SSLContext` when a revocation check mode other than `NONE` is configured

@@ -611,8 +611,7 @@ public class HttpClientSettingsConfig
     {
       try
       {
-        // TODO use getFromIDOrNull when present
-        final ERevocationCheckMode eMode = ERevocationCheckMode.valueOf (sMode);
+        final ERevocationCheckMode eMode = ERevocationCheckMode.getFromIDOrNull (sMode);
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Setting configured HttpClientSettings.revocationCheckMode(" + eMode + ")");
         aHCS.setRevocationCheckMode (eMode);

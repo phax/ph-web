@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.3.1 - work in progress
+v11.4.0 - work in progress
 * Removed OSGI bundling
 * Updated to ph-commons 12.2.5
 * `HttpClientSettings` now derives the default for `revocationCheckSoftFail` from `CertificateRevocationCheckerDefaults.isAllowSoftFail()` instead of a hardcoded `false`; the constant `DEFAULT_REVOCATION_CHECK_SOFT_FAIL` is deprecated
@@ -70,6 +70,8 @@ v11.3.1 - work in progress
 * `HttpClientFactory.createRevocationSSLContext()` now throws `IllegalArgumentException` (via `ValueEnforcer`) when called with `RevocationCheckMode.NONE`; previously it returned `null`. Callers (including subclasses) must check `RevocationCheckMode` before invoking
 * `HttpClientSettingsConfig` duration/timeout keys (`http.retry.interval`, `http.timeout.connectionrequest`, `http.timeout.connect`, `http.timeout.response`) now accept a unit-less value parsed via `IConfig.getAsConfigDuration` (e.g. `21s`, `34m`, `2h`, `2d 5m 23ms`).
 * The per-unit-suffix variants of those keys (`.millis`, `.seconds`, `.minutes`, `.hours`) are still read but now log a deprecation warning when used. They will be removed in a future major version
+* Added `ENaptrLookupStatus` enum and `NaptrLookupResult` class so callers of `NaptrLookup` can distinguish between "no NAPTR record exists" (NXDOMAIN / NODATA — `isFunctionalNotFound()`) and "DNS infrastructure failure" (SERVFAIL / network error — `isTechnicalFailure()` / `isRetryable()`). Resolves [#6](https://github.com/phax/ph-web/issues/6) - thx @wildhai
+* Added `NaptrLookup.lookupResult()` and `NaptrLookupBuilder.lookupResult()` returning `NaptrLookupResult`. The existing `lookup()` method is unchanged — it now delegates to `lookupResult().getRecords()`
 
 v11.3.0 - 2026-04-22
 * Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`

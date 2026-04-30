@@ -372,4 +372,22 @@ public class NaptrLookupTest
     assertEquals (Duration.ofSeconds (1), NaptrLookupBuilder.DEFAULT_EXECUTION_DURATION_WARN);
     assertEquals (ELookupNetworkMode.UDP_TCP, NaptrLookupBuilder.DEFAULT_LOOKUP_MODE);
   }
+
+  @Test
+  public void testLookupResultUnreachableDnsServerYieldsTechnicalFailure () throws Exception
+  {
+    // Use TEST-NET-1 (RFC 5737) as a deliberately unreachable DNS server with a short timeout to
+    // force a technical failure deterministically (no public DNS dependency).
+    final NaptrLookupResult aResult = NaptrLookup.builder ()
+                                                 .domainName ("example.org")
+                                                 .customDNSServer (InetAddress.getByName ("192.0.2.1"))
+                                                 .timeout (Duration.ofMillis (500))
+                                                 .noRetries ()
+                                                 .lookupMode (ELookupNetworkMode.UDP)
+                                                 .lookupResult ();
+    assertNotNull (aResult);
+    assertFalse (aResult.isSuccess ());
+    assertTrue (aResult.isTechnicalFailure ());
+    assertFalse (aResult.isFunctionalNotFound ());
+  }
 }

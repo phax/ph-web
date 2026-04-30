@@ -116,12 +116,29 @@ public class NaptrLookup
   }
 
   /**
-   * Perform the DNS lookup based on the parameters provided in the constructor.
+   * Perform the DNS lookup based on the parameters provided in the constructor and return only the
+   * records list. Note: this method cannot distinguish between "no NAPTR record exists" and "DNS
+   * infrastructure failure" — both return an empty list. For that distinction use
+   * {@link #lookupResult()}.
    *
    * @return A never <code>null</code> but maybe empty list of records.
+   * @see #lookupResult()
    */
   @NonNull
   public ICommonsList <NAPTRRecord> lookup ()
+  {
+    return lookupResult ().getRecords ();
+  }
+
+  /**
+   * Perform the DNS lookup based on the parameters provided in the constructor.
+   *
+   * @return A {@link NaptrLookupResult} carrying the status, the records (possibly empty), and an
+   *         optional error message. Never <code>null</code>.
+   * @since 11.4.0
+   */
+  @NonNull
+  public NaptrLookupResult lookupResult ()
   {
     // Omit the final dot
     final String sDomainName = m_aDomainName.toString (true);
@@ -183,14 +200,14 @@ public class NaptrLookup
 
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
-        // Wrong domain name
+        final ENaptrLookupStatus eStatus = ENaptrLookupStatus.fromDnsJavaResultCode (aLookup.getResult ());
         LOGGER.warn ("Error looking up '" +
                      sDomainName +
                      "' [" +
                      aLookup.getResult () +
                      "]: " +
                      aLookup.getErrorString ());
-        return new CommonsArrayList <> ();
+        return NaptrLookupResult.failure (eStatus, aLookup.getErrorString ());
       }
 
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
@@ -205,7 +222,7 @@ public class NaptrLookup
                                "' after " +
                                nFinalLookupRuns +
                                " lookups");
-      return ret;
+      return NaptrLookupResult.success (ret);
     }
     finally
     {
@@ -423,6 +440,18 @@ public class NaptrLookup
     public ICommonsList <NAPTRRecord> lookup ()
     {
       return build ().lookup ();
+    }
+
+    /**
+     * Build and execute the lookup, returning a {@link NaptrLookupResult}.
+     *
+     * @return Never <code>null</code>.
+     * @since 11.4.0
+     */
+    @NonNull
+    public NaptrLookupResult lookupResult ()
+    {
+      return build ().lookupResult ();
     }
   }
 }

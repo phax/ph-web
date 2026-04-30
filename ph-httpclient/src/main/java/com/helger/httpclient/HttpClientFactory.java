@@ -79,6 +79,7 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.io.CloseMode;
 import org.apache.hc.core5.reactor.ConnectionInitiator;
 import org.apache.hc.core5.reactor.ssl.SSLBufferMode;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.ssl.SSLInitializationException;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
@@ -333,14 +334,13 @@ public class HttpClientFactory implements IHttpClientProvider
    *
    * @return An {@link SSLContext} with revocation checking enabled, or <code>null</code> if
    *         revocation checking is disabled or if creation fails.
-   * @since 11.2.7
+   * @since 11.3.0
    */
   @Nullable
   protected SSLContext createRevocationSSLContext ()
   {
     final ERevocationCheckMode eMode = m_aSettings.getRevocationCheckMode ();
-    if (eMode.isNone ())
-      return null;
+    ValueEnforcer.isFalse (eMode.isNone (), "RevocationCheckMode None is not acceptable here");
 
     try
     {
@@ -388,44 +388,82 @@ public class HttpClientFactory implements IHttpClientProvider
   @Nullable
   protected DefaultClientTlsStrategy createCustomTlsSocketStrategy ()
   {
-    DefaultClientTlsStrategy ret = null;
-
     try
     {
+      ERevocationCheckMode eRevCheckMode = m_aSettings.getRevocationCheckMode ();
+
       // First try with a custom SSL context
-      final SSLContext aSSLContext = m_aSettings.getSSLContext ();
+      SSLContext aSSLContext = m_aSettings.getSSLContext ();
       if (aSSLContext != null)
       {
-        // Choose correct TLS configuration mode
-        ITLSConfigurationMode aTLSConfigMode = m_aSettings.getTLSConfigurationMode ();
-        if (aTLSConfigMode == null)
-          aTLSConfigMode = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
-
-        // Custom hostname verifier preferred
-        HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
-        if (aHostnameVerifier == null)
-          aHostnameVerifier = HttpsSupport.getDefaultHostnameVerifier ();
-
-        if (LOGGER.isDebugEnabled ())
+        // Custom SSLContext was provided by the user
+        if (!eRevCheckMode.isNone ())
         {
-          LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
-          LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
-          LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
+          LOGGER.warn ("Revocation check mode '" +
+                       eRevCheckMode +
+                       "' is configured, but a custom SSLContext is also set. " +
+                       "The custom SSLContext takes precedence; revocation checking is NOT applied.");
+        }
+      }
+      else
+      {
+        // Create a new SSL Context
+        if (!eRevCheckMode.isNone ())
+        {
+          // Create a new one with revocation check enabled - may fail with GeneralSecurityException
+          aSSLContext = createRevocationSSLContext ();
+          if (aSSLContext == null)
+          {
+            LOGGER.warn ("Revocation check mode '" +
+                         eRevCheckMode +
+                         "' was requested, but creating the revocation-enabled SSLContext failed. " +
+                         "Falling back to the system default SSLContext - revocation checking is NOT applied.");
+
+            // Just for logging
+            eRevCheckMode = ERevocationCheckMode.NONE;
+          }
         }
 
-        ret = new DefaultClientTlsStrategy (aSSLContext,
-                                            aTLSConfigMode.getAllTLSVersionIDsAsArray (),
-                                            aTLSConfigMode.getAllCipherSuitesAsArray (),
-                                            SSLBufferMode.STATIC,
-                                            aHostnameVerifier);
+        if (aSSLContext == null)
+        {
+          // No custom SSLContext and no (successful) revocation context - use system default
+          aSSLContext = SSLContexts.createSystemDefault ();
+        }
       }
+
+      // Choose correct TLS configuration mode
+      ITLSConfigurationMode aTLSConfigMode = m_aSettings.getTLSConfigurationMode ();
+      if (aTLSConfigMode == null)
+        aTLSConfigMode = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
+
+      // Custom hostname verifier preferred
+      HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
+      if (aHostnameVerifier == null)
+        aHostnameVerifier = HttpsSupport.getDefaultHostnameVerifier ();
+
+      if (LOGGER.isDebugEnabled ())
+      {
+        LOGGER.debug ("Using the following TLS versions: " + aTLSConfigMode.getAllTLSVersionIDs ());
+        LOGGER.debug ("Using the following TLS cipher suites: " + aTLSConfigMode.getAllCipherSuites ());
+        LOGGER.debug ("Using the following hostname verifier: " + aHostnameVerifier);
+        LOGGER.debug ("Using the following revocation check mode: configured=" +
+                      m_aSettings.getRevocationCheckMode () +
+                      ", applied=" +
+                      eRevCheckMode);
+      }
+
+      return new DefaultClientTlsStrategy (aSSLContext,
+                                           aTLSConfigMode.getAllTLSVersionIDsAsArray (),
+                                           aTLSConfigMode.getAllCipherSuitesAsArray (),
+                                           SSLBufferMode.STATIC,
+                                           aHostnameVerifier);
     }
     catch (final SSLInitializationException ex)
     {
       // Fall through
-      LOGGER.warn ("Failed to init custom TlsSocketStrategy - falling back to default TlsSocketStrategy", ex);
+      LOGGER.warn ("Failed to init custom DefaultClientTlsStrategy - falling back to default TlsSocketStrategy", ex);
     }
-    return ret;
+    return null;
   }
 
   @Nullable
@@ -433,47 +471,9 @@ public class HttpClientFactory implements IHttpClientProvider
   {
     DefaultClientTlsStrategy ret = createCustomTlsSocketStrategy ();
     if (ret != null)
-    {
-      // Custom SSLContext was provided by the user
-      if (!m_aSettings.getRevocationCheckMode ().isNone ())
-      {
-        LOGGER.warn ("Revocation check mode '" +
-                     m_aSettings.getRevocationCheckMode () +
-                     "' is configured, but a custom SSLContext is also set. " +
-                     "The custom SSLContext takes precedence; revocation checking is NOT applied.");
-      }
       return ret;
-    }
 
-    // No custom SSL context - check if revocation checking is requested
-    final SSLContext aRevocationCtx = createRevocationSSLContext ();
-    if (aRevocationCtx != null)
-    {
-      // Build strategy from revocation-aware SSLContext
-      ITLSConfigurationMode aTLSConfigMode = m_aSettings.getTLSConfigurationMode ();
-      if (aTLSConfigMode == null)
-        aTLSConfigMode = HttpClientSettings.DEFAULT_TLS_CONFIG_MODE;
-
-      HostnameVerifier aHostnameVerifier = m_aSettings.getHostnameVerifier ();
-      if (aHostnameVerifier == null)
-        aHostnameVerifier = HttpsSupport.getDefaultHostnameVerifier ();
-
-      if (LOGGER.isDebugEnabled ())
-      {
-        LOGGER.debug ("Using revocation-enabled SSLContext with TLS versions: " +
-                      aTLSConfigMode.getAllTLSVersionIDs ());
-        LOGGER.debug ("Using revocation-enabled SSLContext with hostname verifier: " + aHostnameVerifier);
-      }
-
-      ret = new DefaultClientTlsStrategy (aRevocationCtx,
-                                          aTLSConfigMode.getAllTLSVersionIDsAsArray (),
-                                          aTLSConfigMode.getAllCipherSuitesAsArray (),
-                                          SSLBufferMode.STATIC,
-                                          aHostnameVerifier);
-      return ret;
-    }
-
-    // No revocation checking - use system defaults
+    // We received a SSLInitializationException - use system defaults
     try
     {
       if (LOGGER.isDebugEnabled ())

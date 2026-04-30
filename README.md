@@ -63,6 +63,13 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 v11.3.1 - work in progress
 * Removed OSGI bundling
+* Updated to ph-commons 12.2.5
+* `HttpClientSettings` now derives the default for `revocationCheckSoftFail` from `CertificateRevocationCheckerDefaults.isAllowSoftFail()` instead of a hardcoded `false`; the constant `DEFAULT_REVOCATION_CHECK_SOFT_FAIL` is deprecated
+* `HttpClientSettingsConfig` now parses the `http.tls.revocation.mode` property via `ERevocationCheckMode.getFromIDOrNull(...)` instead of `valueOf(...)`
+* `HttpClientFactory.createTlsSocketStrategy()` now consistently honors `tlsConfigurationMode` and `hostnameVerifier` when no custom `SSLContext` and no revocation check are configured; previously these settings were silently ignored on that path and `DefaultClientTlsStrategy.createSystemDefault()` defaults were used instead
+* `HttpClientFactory.createRevocationSSLContext()` now throws `IllegalArgumentException` (via `ValueEnforcer`) when called with `RevocationCheckMode.NONE`; previously it returned `null`. Callers (including subclasses) must check `RevocationCheckMode` before invoking
+* `HttpClientSettingsConfig` duration/timeout keys (`http.retry.interval`, `http.timeout.connectionrequest`, `http.timeout.connect`, `http.timeout.response`) now accept a unit-less value parsed via `IConfig.getAsConfigDuration` (e.g. `21s`, `34m`, `2h`, `2d 5m 23ms`).
+* The per-unit-suffix variants of those keys (`.millis`, `.seconds`, `.minutes`, `.hours`) are still read but now log a deprecation warning when used. They will be removed in a future major version
 
 v11.3.0 - 2026-04-22
 * Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`

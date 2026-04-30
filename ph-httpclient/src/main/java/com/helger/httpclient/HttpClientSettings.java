@@ -40,6 +40,7 @@ import com.helger.http.security.TrustManagerTrustAll;
 import com.helger.http.tls.ETLSVersion;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.http.tls.TLSConfigurationMode;
+import com.helger.security.revocation.CertificateRevocationCheckerDefaults;
 import com.helger.security.revocation.ERevocationCheckMode;
 
 /**
@@ -70,7 +71,6 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
   public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
-  public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;
 
   private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -99,7 +99,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private boolean m_bUseKeepAlive = DEFAULT_USE_KEEP_ALIVE;
   private boolean m_bProtocolUpgradeEnabled = DEFAULT_PROTOCOL_UPGRADE_ENABLED;
   private ERevocationCheckMode m_eRevocationCheckMode = DEFAULT_REVOCATION_CHECK_MODE;
-  private boolean m_bRevocationCheckSoftFail = DEFAULT_REVOCATION_CHECK_SOFT_FAIL;
+  private boolean m_bRevocationCheckSoftFail = CertificateRevocationCheckerDefaults.isAllowSoftFail ();
 
   /**
    * Default constructor.

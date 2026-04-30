@@ -71,7 +71,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
   public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
-  @Deprecated (forRemoval = true, since = "11.3.1")
+  @Deprecated (forRemoval = true, since = "11.4.0")
   public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;
 
   private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;

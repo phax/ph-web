@@ -105,6 +105,91 @@ public final class HttpClientSettingsConfigTest
     assertNotNull (aHCS.getSSLContext ());
   }
 
+  @NonNull
+  private static IConfigWithFallback _createConfigUnitless ()
+  {
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("test10.http.retry.interval", "5432ms");
+    aMap.put ("test10.http.timeout.connectionrequest", "4321ms");
+    aMap.put ("test10.http.timeout.connect", "21s");
+    aMap.put ("test10.http.timeout.response", "34m");
+    return new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+  }
+
+  @Test
+  public void testUnitlessDurationFormat ()
+  {
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, _createConfigUnitless (), "test10");
+
+    assertEquals (Duration.ofMillis (5432), aHCS.getRetryInterval ());
+    assertEquals (Timeout.ofMilliseconds (4321), aHCS.getConnectionRequestTimeout ());
+    assertEquals (Timeout.ofSeconds (21), aHCS.getConnectTimeout ());
+    assertEquals (Timeout.ofMinutes (34), aHCS.getResponseTimeout ());
+  }
+
+  @Test
+  public void testUnitlessDurationCompoundFormat ()
+  {
+    // Verify the parser supports compound formats too
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.timeout.response", "1h 30m");
+    aMap.put ("p.http.retry.interval", "2d 5m 23ms");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertEquals (Timeout.of (Duration.ofHours (1).plusMinutes (30)), aHCS.getResponseTimeout ());
+    assertEquals (Duration.ofDays (2).plusMinutes (5).plusMillis (23), aHCS.getRetryInterval ());
+  }
+
+  @Test
+  public void testUnitlessTakesPrecedenceOverLegacy ()
+  {
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    // Both formats configured for the same logical key - the unit-less form must win
+    aMap.put ("p.http.timeout.connect", "10s");
+    aMap.put ("p.http.timeout.connect.millis", "9999");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertEquals (Timeout.ofSeconds (10), aHCS.getConnectTimeout ());
+  }
+
+  @Test
+  public void testUnitlessFallbackAlias ()
+  {
+    // Use the deprecated aliases (http.connection-timeout, http.read-timeout) in the new unit-less form
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.connection-timeout", "21s");
+    aMap.put ("p.http.read-timeout", "34m");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertEquals (Timeout.ofSeconds (21), aHCS.getConnectTimeout ());
+    assertEquals (Timeout.ofMinutes (34), aHCS.getResponseTimeout ());
+  }
+
+  @Test
+  public void testUnitlessMalformedValueIsIgnored ()
+  {
+    // A malformed unit-less value must not produce a Timeout/Duration; the setter should remain at default (null)
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.timeout.connect", "not-a-duration");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    // Default value of HttpClientSettings.getConnectTimeout()
+    assertEquals (HttpClientSettings.DEFAULT_CONNECT_TIMEOUT, aHCS.getConnectTimeout ());
+  }
+
   @Test
   public void testWithDifferentPrefixes ()
   {

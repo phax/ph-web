@@ -277,37 +277,95 @@ public class HttpClientSettingsConfig
     }
 
     @Nullable
+    private Duration _findConfigDuration (@NonNull final String sFullKey)
+    {
+      return m_aConfig.getAsConfigDuration (sFullKey,
+                                            sErr -> LOGGER.warn ("Invalid duration value for configuration key '" +
+                                                                 sFullKey +
+                                                                 "': " +
+                                                                 sErr));
+    }
+
+    private static void _logLegacyDeprecation (@NonNull final String sFullKeyWithoutSuffix,
+                                               @NonNull final String sSuffix)
+    {
+      LOGGER.warn ("Configuration key '" +
+                   sFullKeyWithoutSuffix +
+                   "." +
+                   sSuffix +
+                   "' uses the deprecated per-unit-suffix format. Please migrate to the unit-less form '" +
+                   sFullKeyWithoutSuffix +
+                   "' with values like '5ms', '21s', '34m' or '2h'. Per-unit-suffix keys will be removed in a future major version.");
+    }
+
+    @Nullable
+    private Duration _findLegacyPerUnitDuration (@NonNull final String sConfigPrefix,
+                                                 @NonNull final String sLocalKey,
+                                                 @NonNull final String [] aLocalSubKeys)
+    {
+      final long nMillis = _findSingleLong (sConfigPrefix,
+                                            sLocalKey + ".millis",
+                                            -1,
+                                            _copyAndMap (aLocalSubKeys, x -> x + ".millis"));
+      if (nMillis > 0)
+      {
+        _logLegacyDeprecation (sConfigPrefix + sLocalKey, "millis");
+        return Duration.ofMillis (nMillis);
+      }
+
+      final long nSeconds = _findSingleLong (sConfigPrefix,
+                                             sLocalKey + ".seconds",
+                                             -1,
+                                             _copyAndMap (aLocalSubKeys, x -> x + ".seconds"));
+      if (nSeconds > 0)
+      {
+        _logLegacyDeprecation (sConfigPrefix + sLocalKey, "seconds");
+        return Duration.ofSeconds (nSeconds);
+      }
+
+      final long nMinutes = _findSingleLong (sConfigPrefix,
+                                             sLocalKey + ".minutes",
+                                             -1,
+                                             _copyAndMap (aLocalSubKeys, x -> x + ".minutes"));
+      if (nMinutes > 0)
+      {
+        _logLegacyDeprecation (sConfigPrefix + sLocalKey, "minutes");
+        return Duration.ofMinutes (nMinutes);
+      }
+
+      final long nHours = _findSingleLong (sConfigPrefix,
+                                           sLocalKey + ".hours",
+                                           -1,
+                                           _copyAndMap (aLocalSubKeys, x -> x + ".hours"));
+      if (nHours > 0)
+      {
+        _logLegacyDeprecation (sConfigPrefix + sLocalKey, "hours");
+        return Duration.ofHours (nHours);
+      }
+      return null;
+    }
+
+    @Nullable
     private Duration _findDuration (@NonNull final String sLocalKey, @Nullable final String... aLocalSubKeys)
     {
       for (final String sConfigPrefix : m_aConfigPrefixes)
       {
-        final long nMillis = _findSingleLong (sConfigPrefix,
-                                              sLocalKey + ".millis",
-                                              -1,
-                                              _copyAndMap (aLocalSubKeys, x -> x + ".millis"));
-        if (nMillis > 0)
-          return Duration.ofMillis (nMillis);
+        // 1. New unit-less form via IConfig.getAsConfigDuration: primary key, then fallback aliases
+        Duration aDur = _findConfigDuration (sConfigPrefix + sLocalKey);
+        if (aDur != null)
+          return aDur;
 
-        final long nSeconds = _findSingleLong (sConfigPrefix,
-                                               sLocalKey + ".seconds",
-                                               -1,
-                                               _copyAndMap (aLocalSubKeys, x -> x + ".seconds"));
-        if (nSeconds > 0)
-          return Duration.ofSeconds (nSeconds);
+        for (final String sSubKey : aLocalSubKeys)
+        {
+          aDur = _findConfigDuration (sConfigPrefix + sSubKey);
+          if (aDur != null)
+            return aDur;
+        }
 
-        final long nMinutes = _findSingleLong (sConfigPrefix,
-                                               sLocalKey + ".minutes",
-                                               -1,
-                                               _copyAndMap (aLocalSubKeys, x -> x + ".minutes"));
-        if (nMinutes > 0)
-          return Duration.ofMinutes (nMinutes);
-
-        final long nHours = _findSingleLong (sConfigPrefix,
-                                             sLocalKey + ".hours",
-                                             -1,
-                                             _copyAndMap (aLocalSubKeys, x -> x + ".hours"));
-        if (nHours > 0)
-          return Duration.ofHours (nHours);
+        // 2. Legacy per-unit-suffix form (.millis / .seconds / .minutes / .hours) - deprecated
+        aDur = _findLegacyPerUnitDuration (sConfigPrefix, sLocalKey, aLocalSubKeys);
+        if (aDur != null)
+          return aDur;
       }
       return null;
     }
@@ -388,7 +446,7 @@ public class HttpClientSettingsConfig
     /**
      * @return The revocation check mode name from configuration. May be <code>null</code> if not
      *         configured.
-     * @since 11.2.7
+     * @since 11.3.0
      */
     @Nullable
     public String getRevocationCheckMode ()
@@ -400,7 +458,7 @@ public class HttpClientSettingsConfig
      * @param bDefault
      *        The default value to be used.
      * @return The revocation check soft-fail setting.
-     * @since 11.2.7
+     * @since 11.3.0
      */
     @NonNull
     public ETriState getRevocationCheckSoftFail (final boolean bDefault)
@@ -601,7 +659,7 @@ public class HttpClientSettingsConfig
    *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
    * @param aHCC
    *        The configuration source. May not be <code>null</code>.
-   * @since 11.2.7
+   * @since 11.3.0
    */
   public static void assignConfigValuesForRevocation (@NonNull final HttpClientSettings aHCS,
                                                       @NonNull final HttpClientConfig aHCC)

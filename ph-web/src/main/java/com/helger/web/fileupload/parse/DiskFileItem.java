@@ -363,7 +363,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     return m_sFilename;
   }
 
-  @Deprecated (since = "11.2.7", forRemoval = false)
+  @Deprecated (since = "11.3.0", forRemoval = false)
   @Nullable
   public String getName ()
   {

@@ -95,7 +95,7 @@ public interface IFileItem extends DataSource, IHasInputStream
    *             separators and replaces invalid characters. This method only
    *             checks for NUL bytes.
    */
-  @Deprecated (since = "11.2.7", forRemoval = false)
+  @Deprecated (since = "11.3.0", forRemoval = false)
   @Nullable
   String getName ();
 

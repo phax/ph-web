@@ -71,6 +71,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
   public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
+  @Deprecated (forRemoval = true, since = "11.3.1")
+  public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;
 
   private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -518,7 +520,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @param eRevocationCheckMode
    *        The revocation check mode to use. May not be <code>null</code>.
    * @return this for chaining
-   * @since 11.2.7
+   * @since 11.3.0
    */
   @NonNull
   public final HttpClientSettings setRevocationCheckMode (@NonNull final ERevocationCheckMode eRevocationCheckMode)
@@ -540,7 +542,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
    * @param bRevocationCheckSoftFail
    *        <code>true</code> to soft-fail, <code>false</code> to hard-fail.
    * @return this for chaining
-   * @since 11.2.7
+   * @since 11.3.0
    */
   @NonNull
   public final HttpClientSettings setRevocationCheckSoftFail (final boolean bRevocationCheckSoftFail)

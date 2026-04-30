@@ -175,7 +175,7 @@ public class FileItemStream implements IFileItemStream, Closeable
     return m_sFieldName;
   }
 
-  @Deprecated (since = "11.2.7", forRemoval = false)
+  @Deprecated (since = "11.3.0", forRemoval = false)
   @Nullable
   public String getName ()
   {

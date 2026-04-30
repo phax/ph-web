@@ -182,7 +182,7 @@ public interface IHttpClientSettings
   /**
    * @return The certificate revocation check mode to use during TLS handshake. Never
    *         <code>null</code>. Default is {@link ERevocationCheckMode#NONE}.
-   * @since 11.2.7
+   * @since 11.3.0
    */
   @NonNull
   ERevocationCheckMode getRevocationCheckMode ();
@@ -190,7 +190,7 @@ public interface IHttpClientSettings
   /**
    * @return <code>true</code> if the revocation check should soft-fail (i.e. continue on network
    *         errors when contacting CRL/OCSP endpoints), <code>false</code> for hard failure.
-   * @since 11.2.7
+   * @since 11.3.0
    */
   boolean isRevocationCheckSoftFail ();
 }

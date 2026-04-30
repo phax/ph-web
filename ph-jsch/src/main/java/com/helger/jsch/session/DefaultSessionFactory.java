@@ -18,15 +18,19 @@ package com.helger.jsch.session;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.annotation.CheckForSigned;
+import com.helger.annotation.WillClose;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
@@ -93,7 +97,9 @@ public class DefaultSessionFactory implements ISessionFactory
    * @param port
    *        The port
    */
-  public DefaultSessionFactory (final String username, final String hostname, final int port)
+  public DefaultSessionFactory (@Nullable final String username,
+                                @Nullable final String hostname,
+                                @CheckForSigned final int port)
   {
     JSchInit.init ();
     m_aJSch = new JSch ();
@@ -202,7 +208,6 @@ public class DefaultSessionFactory implements ISessionFactory
     m_aConfig.put (key, value);
   }
 
-  @Override
   public String getHostname ()
   {
     return m_sHostname;
@@ -233,7 +238,6 @@ public class DefaultSessionFactory implements ISessionFactory
     m_sPassword = password;
   }
 
-  @Override
   public int getPort ()
   {
     return m_nPort;
@@ -250,7 +254,6 @@ public class DefaultSessionFactory implements ISessionFactory
     m_nPort = port;
   }
 
-  @Override
   public Proxy getProxy ()
   {
     return m_aProxy;
@@ -262,13 +265,12 @@ public class DefaultSessionFactory implements ISessionFactory
    * @param proxy
    *        The proxy
    */
-  public void setProxy (final Proxy proxy)
+  public void setProxy (@Nullable final Proxy proxy)
   {
     m_aProxy = proxy;
   }
 
-  @Override
-  public String getUsername ()
+  public @Nullable String getUsername ()
   {
     return m_sUsername;
   }
@@ -276,16 +278,15 @@ public class DefaultSessionFactory implements ISessionFactory
   /**
    * Sets the username.
    *
-   * @param username
+   * @param sUsername
    *        The username
    */
-  public void setUsername (final String username)
+  public void setUsername (final @Nullable String sUsername)
   {
-    m_sUsername = username;
+    m_sUsername = sUsername;
   }
 
-  @Override
-  public UserInfo getUserInfo ()
+  public @Nullable UserInfo getUserInfo ()
   {
     return m_aUserInfo;
   }
@@ -294,56 +295,54 @@ public class DefaultSessionFactory implements ISessionFactory
    * Sets the {@code UserInfo} for use with {@code keyboard-interactive} authentication. This may be
    * useful, however, setting the password with {@link #setPassword(String)} is likely sufficient.
    *
-   * @param userInfo
+   * @param aUserInfo
    *        User info
    * @see <a href= "http://www.jcraft.com/jsch/examples/UserAuthKI.java.html">Keyboard Interactive
    *      Authentication Example</a>
    */
-  public void setUserInfo (final UserInfo userInfo)
+  public void setUserInfo (@Nullable final UserInfo aUserInfo)
   {
-    m_aUserInfo = userInfo;
+    m_aUserInfo = aUserInfo;
   }
 
   private void _setDefaultKnownHosts () throws JSchException
   {
-    final String knownHosts = System.getProperty (PROPERTY_JSCH_KNOWN_HOSTS_FILE);
-    if (knownHosts != null && !knownHosts.isEmpty ())
+    final String sKnownHosts = System.getProperty (PROPERTY_JSCH_KNOWN_HOSTS_FILE);
+    if (StringHelper.isNotEmpty (sKnownHosts))
     {
-      setKnownHosts (knownHosts);
+      setKnownHosts (sKnownHosts);
     }
     else
     {
-      final File knownHostsFile = new File (_dotSshDir (), "known_hosts");
-      if (knownHostsFile.exists ())
-      {
-        setKnownHosts (knownHostsFile.getAbsolutePath ());
-      }
+      final File aKnownHostsFile = new File (_dotSshDir (), "known_hosts");
+      if (aKnownHostsFile.exists ())
+        setKnownHosts (aKnownHostsFile.getAbsolutePath ());
     }
   }
 
   private void _setDefaultIdentities () throws JSchException
   {
-    boolean identitiesSet = false;
-    if (!identitiesSet)
+    boolean bIdentitiesSet = false;
+    if (!bIdentitiesSet)
     {
-      final String privateKeyFilesString = System.getProperty (PROPERTY_JSCH_PRIVATE_KEY_FILES);
-      if (StringHelper.isNotEmpty (privateKeyFilesString))
+      final String sPrivateKeyFilesString = System.getProperty (PROPERTY_JSCH_PRIVATE_KEY_FILES);
+      if (StringHelper.isNotEmpty (sPrivateKeyFilesString))
       {
-        LOGGER.info ("Using local identities from " + PROPERTY_JSCH_PRIVATE_KEY_FILES + ": " + privateKeyFilesString);
-        setIdentitiesFromPrivateKeys (StringHelper.getExploded (',', privateKeyFilesString));
-        identitiesSet = true;
+        LOGGER.info ("Using local identities from " + PROPERTY_JSCH_PRIVATE_KEY_FILES + ": " + sPrivateKeyFilesString);
+        setIdentitiesFromPrivateKeys (StringHelper.getExploded (',', sPrivateKeyFilesString));
+        bIdentitiesSet = true;
       }
     }
-    if (!identitiesSet)
+    if (!bIdentitiesSet)
     {
-      final List <String> privateKeyFiles = new ArrayList <> ();
+      final List <String> aPrivateKeyFiles = new ArrayList <> ();
       for (final File file : new File [] { new File (_dotSshDir (), "id_rsa"),
                                            new File (_dotSshDir (), "id_dsa"),
                                            new File (_dotSshDir (), "id_ecdsa") })
         if (file.exists ())
-          privateKeyFiles.add (file.getAbsolutePath ());
-      LOGGER.info ("Using local identities: " + privateKeyFiles);
-      setIdentitiesFromPrivateKeys (privateKeyFiles);
+          aPrivateKeyFiles.add (file.getAbsolutePath ());
+      LOGGER.info ("Using local identities: " + aPrivateKeyFiles);
+      setIdentitiesFromPrivateKeys (aPrivateKeyFiles);
     }
   }
 
@@ -352,15 +351,18 @@ public class DefaultSessionFactory implements ISessionFactory
    * private key should be the path to a private key file in OpenSSH format. Clears out the current
    * {@link IdentityRepository} before adding this key.
    *
-   * @param privateKey
+   * @param sPrivateKey
    *        Path to a private key file
    * @throws JSchException
    *         If the key is invalid
    */
-  public void setIdentityFromPrivateKey (final String privateKey) throws JSchException
+  public void setIdentityFromPrivateKey (@Nullable final String sPrivateKey) throws JSchException
   {
-    _clearIdentityRepository ();
-    m_aJSch.addIdentity (privateKey);
+    if (sPrivateKey != null)
+    {
+      _clearIdentityRepository ();
+      m_aJSch.addIdentity (sPrivateKey);
+    }
   }
 
   /**
@@ -368,17 +370,21 @@ public class DefaultSessionFactory implements ISessionFactory
    * pass phrase. The private key should be the path to a private key file in OpenSSH format. Clears
    * out the current {@link IdentityRepository} before adding this key.
    *
-   * @param privateKey
+   * @param sPrivateKey
    *        Path to a private key file
-   * @param passPhrase
+   * @param sPassPhrase
    *        Pass phrase for private key
    * @throws JSchException
    *         If the key is invalid
    */
-  public void setIdentityFromPrivateKey (final String privateKey, final String passPhrase) throws JSchException
+  public void setIdentityFromPrivateKey (@Nullable final String sPrivateKey, @Nullable final String sPassPhrase)
+                                                                                                                 throws JSchException
   {
-    _clearIdentityRepository ();
-    m_aJSch.addIdentity (privateKey, passPhrase);
+    if (sPrivateKey != null)
+    {
+      _clearIdentityRepository ();
+      m_aJSch.addIdentity (sPrivateKey, sPassPhrase == null ? null : sPassPhrase.getBytes (StandardCharsets.UTF_8));
+    }
   }
 
   /**
@@ -391,7 +397,7 @@ public class DefaultSessionFactory implements ISessionFactory
    * @throws JSchException
    *         If one (or more) of the keys are invalid
    */
-  public void setIdentitiesFromPrivateKeys (final List <String> privateKeys) throws JSchException
+  public void setIdentitiesFromPrivateKeys (@NonNull final List <String> privateKeys) throws JSchException
   {
     _clearIdentityRepository ();
     for (final String privateKey : privateKeys)
@@ -405,65 +411,66 @@ public class DefaultSessionFactory implements ISessionFactory
    * IdentityRepository, so you should be sure to call this before any of the
    * <code>setIdentit(y|ies)Xxx</code> if you plan on using both.
    *
-   * @param identityRepository
+   * @param aIdentityRepository
    *        The identity repository
    * @see JSch#setIdentityRepository(IdentityRepository)
    */
-  public void setIdentityRepository (final IdentityRepository identityRepository)
+  public void setIdentityRepository (final IdentityRepository aIdentityRepository)
   {
-    m_aJSch.setIdentityRepository (identityRepository);
+    m_aJSch.setIdentityRepository (aIdentityRepository);
   }
 
   /**
    * Sets the known hosts from the stream. Mostly useful if you distribute your known_hosts in the
    * jar for your application rather than allowing users to manage their own known hosts.
    *
-   * @param knownHosts
+   * @param aKnownHosts
    *        A stream of known hosts
    * @throws JSchException
    *         If an I/O error occurs
    * @see JSch#setKnownHosts(InputStream)
    */
-  public void setKnownHosts (final InputStream knownHosts) throws JSchException
+  public void setKnownHosts (@NonNull @WillClose final InputStream aKnownHosts) throws JSchException
   {
-    m_aJSch.setKnownHosts (knownHosts);
+    m_aJSch.setKnownHosts (aKnownHosts);
   }
 
   /**
    * Sets the known hosts from a file at path <code>knownHosts</code>.
    *
-   * @param knownHosts
+   * @param sKnownHosts
    *        The path to a known hosts file
    * @throws JSchException
    *         If an I/O error occurs
    * @see JSch#setKnownHosts(String)
    */
-  public void setKnownHosts (final String knownHosts) throws JSchException
+  public void setKnownHosts (@Nullable final String sKnownHosts) throws JSchException
   {
-    m_aJSch.setKnownHosts (knownHosts);
+    if (sKnownHosts != null)
+      m_aJSch.setKnownHosts (sKnownHosts);
   }
 
-  @Override
+  @NonNull
   public Session createSession () throws JSchException
   {
-    final Session session = m_aJSch.getSession (m_sUsername, m_sHostname, m_nPort);
+    final Session ret = m_aJSch.getSession (m_sUsername, m_sHostname, m_nPort);
     if (m_aConfig != null)
       for (final Map.Entry <String, String> aEntry : m_aConfig.entrySet ())
-        session.setConfig (aEntry.getKey (), aEntry.getValue ());
+        ret.setConfig (aEntry.getKey (), aEntry.getValue ());
 
     if (m_aProxy != null)
-      session.setProxy (m_aProxy);
+      ret.setProxy (m_aProxy);
 
     if (m_sPassword != null)
-      session.setPassword (m_sPassword);
+      ret.setPassword (m_sPassword.getBytes (StandardCharsets.UTF_8));
 
     if (m_aUserInfo != null)
-      session.setUserInfo (m_aUserInfo);
+      ret.setUserInfo (m_aUserInfo);
 
-    return session;
+    return ret;
   }
 
-  @Override
+  @NonNull
   public AbstractSessionFactoryBuilder newSessionFactoryBuilder ()
   {
     return new AbstractSessionFactoryBuilder (m_aJSch,

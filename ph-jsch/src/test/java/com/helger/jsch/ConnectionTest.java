@@ -19,9 +19,6 @@ package com.helger.jsch;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -41,39 +38,24 @@ public final class ConnectionTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (ConnectionTest.class);
 
-  private static String hostname;
-  private static int port;
-  private static String username;
-  private static String correctPassword;
-  private static String incorrectPassword;
+  private static String s_sUsername;
+  private static String s_sCorrectPassword;
+  private static String s_sIncorrectPassword;
 
   @BeforeClass
   public static void initializeClass ()
   {
-    NonBlockingProperties properties = null;
-    try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
-    {
-      Assume.assumeNotNull (inputStream);
-      properties = new NonBlockingProperties ();
-      properties.load (inputStream);
-    }
-    catch (final IOException e)
-    {
-      LOGGER.warn ("cant find properties file (tests will be skipped)", e);
-      Assume.assumeNoException (e);
-    }
+    final NonBlockingProperties aProperties = JSchTestHelper.loadTestConfig ();
+    Assume.assumeNotNull (aProperties);
 
-    username = properties.getProperty ("scp.out.test.username");
-    hostname = properties.getProperty ("scp.out.test.host");
-    correctPassword = properties.getProperty ("scp.out.test.password");
-    port = Integer.parseInt (properties.getProperty ("scp.out.test.port"));
-
-    incorrectPassword = correctPassword + ".";
+    s_sUsername = aProperties.getProperty ("scp.out.test.username");
+    s_sCorrectPassword = aProperties.getProperty ("scp.out.test.password");
+    s_sIncorrectPassword = s_sCorrectPassword == null ? null : s_sCorrectPassword + ".";
   }
 
   private ISessionFactory _getKeyboardInteractiveAuthenticatingSessionFactory (final String password)
   {
-    final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
+    final DefaultSessionFactory defaultSessionFactory = JSchTestHelper.createSessionFactoryFromConfig ();
     defaultSessionFactory.setConfig ("PreferredAuthentications", "keyboard-interactive");
     defaultSessionFactory.setUserInfo (new MockUserInfo (password));
     return defaultSessionFactory;
@@ -81,7 +63,7 @@ public final class ConnectionTest
 
   private ISessionFactory _getPasswordAuthenticatingSessionFactory (final String password)
   {
-    final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
+    final DefaultSessionFactory defaultSessionFactory = JSchTestHelper.createSessionFactoryFromConfig ();
     defaultSessionFactory.setConfig ("PreferredAuthentications", "password");
     defaultSessionFactory.setPassword (password);
     return defaultSessionFactory;
@@ -128,10 +110,10 @@ public final class ConnectionTest
   public void testKeyboardInteractiveConnectionWithCorrectPassword ()
   {
     // Doesnt seem to work with cygwin
-    Assume.assumeNotNull (username, correctPassword);
+    Assume.assumeNotNull (s_sUsername, s_sCorrectPassword);
     try
     {
-      _testKeyboardInteractiveConnectionWithPassword (correctPassword);
+      _testKeyboardInteractiveConnectionWithPassword (s_sCorrectPassword);
     }
     catch (final Exception e)
     {
@@ -144,10 +126,10 @@ public final class ConnectionTest
   public void testKeyboardInteractiveConnectionWithIncorrectPassword ()
   {
     // Doesnt seem to work with cygwin
-    Assume.assumeNotNull (username, incorrectPassword);
+    Assume.assumeNotNull (s_sUsername, s_sIncorrectPassword);
     try
     {
-      _testKeyboardInteractiveConnectionWithPassword (incorrectPassword);
+      _testKeyboardInteractiveConnectionWithPassword (s_sIncorrectPassword);
     }
     catch (final JSchException e)
     {
@@ -162,10 +144,10 @@ public final class ConnectionTest
   @Test
   public void testPasswordConnectionWithCorrectPassword ()
   {
-    Assume.assumeNotNull (username, correctPassword);
+    Assume.assumeNotNull (s_sUsername, s_sCorrectPassword);
     try
     {
-      _testPasswordConnectionWithPassword (correctPassword);
+      _testPasswordConnectionWithPassword (s_sCorrectPassword);
     }
     catch (final Exception e)
     {
@@ -176,10 +158,10 @@ public final class ConnectionTest
   @Test
   public void testPasswordConnectionWithIncorrectPassword ()
   {
-    Assume.assumeNotNull (username, incorrectPassword);
+    Assume.assumeNotNull (s_sUsername, s_sIncorrectPassword);
     try
     {
-      _testPasswordConnectionWithPassword (incorrectPassword);
+      _testPasswordConnectionWithPassword (s_sIncorrectPassword);
     }
     catch (final JSchException e)
     {

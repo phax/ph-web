@@ -19,7 +19,6 @@ package com.helger.jsch.tunnel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -38,15 +37,14 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.io.stream.StreamHelper;
 import com.helger.base.rt.NonBlockingProperties;
-import com.helger.jsch.session.DefaultSessionFactory;
+import com.helger.jsch.JSchTestHelper;
 import com.helger.jsch.session.ISessionFactory;
-import com.jcraft.jsch.JSchException;
 
 public final class TunnelConnectionTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (TunnelConnectionTest.class);
-  private static ISessionFactory sessionFactory;
-  private static NonBlockingProperties properties;
+  private static ISessionFactory s_aSessionFactory;
+  private static NonBlockingProperties s_aProperties;
 
   private final String expected = "This will be amazing if it works";
   // Must be a StringBuffer
@@ -64,37 +62,7 @@ public final class TunnelConnectionTest
   @BeforeClass
   public static void initializeClass ()
   {
-    try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
-    {
-      Assume.assumeNotNull (inputStream);
-      properties = new NonBlockingProperties ();
-      properties.load (inputStream);
-    }
-    catch (final IOException e)
-    {
-      LOGGER.warn ("cant find properties file (tests will be skipped)", e);
-      properties = null;
-      return;
-    }
-
-    final String knownHosts = properties.getProperty ("ssh.knownHosts");
-    final String privateKey = properties.getProperty ("ssh.privateKey");
-    final String username = properties.getProperty ("scp.out.test.username");
-    final String hostname = "localhost";
-    final int port = Integer.parseInt (properties.getProperty ("scp.out.test.port"));
-
-    final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
-    try
-    {
-      defaultSessionFactory.setKnownHosts (knownHosts);
-      defaultSessionFactory.setIdentityFromPrivateKey (privateKey);
-    }
-    catch (final JSchException e)
-    {
-      LOGGER.error ("Failed to configure default session, skipping tests", e);
-      Assume.assumeNoException (e);
-    }
-    sessionFactory = defaultSessionFactory;
+    s_aSessionFactory = JSchTestHelper.createSessionFactoryFromConfig (x -> s_aProperties = x);
   }
 
   @After
@@ -107,7 +75,7 @@ public final class TunnelConnectionTest
   public void beforeTest () throws InterruptedException
   {
     // skip tests if properties not set
-    Assume.assumeNotNull (properties);
+    Assume.assumeNotNull (s_aProperties);
 
     serviceBuffer = new StringBuffer ();
     serviceThread = new Thread ( () -> {
@@ -166,7 +134,7 @@ public final class TunnelConnectionTest
   public void testConnection ()
   {
     final int tunnelPort1 = 59701;
-    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory,
+    try (TunnelConnection tunnelConnection = new TunnelConnection (s_aSessionFactory,
                                                                    new Tunnel (tunnelPort1, "localhost", servicePort)))
     {
       tunnelConnection.open ();
@@ -184,7 +152,8 @@ public final class TunnelConnectionTest
   public void testDynamicPortConnection ()
   {
     final String hostname = "localhost";
-    try (TunnelConnection tunnelConnection = new TunnelConnection (sessionFactory, new Tunnel (hostname, servicePort)))
+    try (TunnelConnection tunnelConnection = new TunnelConnection (s_aSessionFactory,
+                                                                   new Tunnel (hostname, servicePort)))
     {
       tunnelConnection.open ();
 

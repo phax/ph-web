@@ -19,21 +19,15 @@ package com.helger.jsch.command;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.base.rt.NonBlockingProperties;
+import com.helger.jsch.JSchTestHelper;
 import com.helger.jsch.command.CommandRunner.ExecuteResult;
 import com.helger.jsch.proxy.SshProxyTest;
-import com.helger.jsch.session.DefaultSessionFactory;
 import com.helger.jsch.session.ISessionFactory;
-import com.jcraft.jsch.JSchException;
 
 public final class CommandRunnerTest
 {
@@ -41,40 +35,11 @@ public final class CommandRunnerTest
   private static final String EXPECTED = "there is absolutely no chance this is gonna work!";
 
   private static ISessionFactory s_aSessionFactory;
-  private static NonBlockingProperties s_aProperties;
 
   @BeforeClass
   public static void initializeClass ()
   {
-    try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream ("configuration.properties"))
-    {
-      Assume.assumeNotNull (inputStream);
-      s_aProperties = new NonBlockingProperties ();
-      s_aProperties.load (inputStream);
-    }
-    catch (final IOException e)
-    {
-      LOGGER.warn ("cant find properties file (tests will be skipped)", e);
-      s_aProperties = null;
-      return;
-    }
-    final String knownHosts = s_aProperties.getProperty ("ssh.knownHosts");
-    final String privateKey = s_aProperties.getProperty ("ssh.privateKey");
-    final String username = s_aProperties.getProperty ("scp.out.test.username");
-    final String hostname = "localhost";
-    final int port = Integer.parseInt (s_aProperties.getProperty ("scp.out.test.port"));
-
-    final DefaultSessionFactory defaultSessionFactory = new DefaultSessionFactory (username, hostname, port);
-    try
-    {
-      defaultSessionFactory.setKnownHosts (knownHosts);
-      defaultSessionFactory.setIdentityFromPrivateKey (privateKey);
-    }
-    catch (final JSchException e)
-    {
-      Assume.assumeNoException (e);
-    }
-    s_aSessionFactory = defaultSessionFactory;
+    s_aSessionFactory = JSchTestHelper.createSessionFactoryFromConfig ();
   }
 
   @Test

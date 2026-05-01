@@ -287,10 +287,10 @@ public abstract class AbstractFileUploadBase
                                            ex.getMessage (),
                                            ex);
         }
-        if (aFileItem instanceof IFileItemHeadersSupport)
+        if (aFileItem instanceof final IFileItemHeadersSupport aFIHS)
         {
           final IFileItemHeaders aFileItemHeaders = aFileItemStream.getHeaders ();
-          ((IFileItemHeadersSupport) aFileItem).setHeaders (aFileItemHeaders);
+          aFIHS.setHeaders (aFileItemHeaders);
         }
       }
       bSuccessful = true;
@@ -454,9 +454,8 @@ public abstract class AbstractFileUploadBase
     {
       int nEnd = _parseEndOfLine (sHeaderPart, nStart);
       if (nStart == nEnd)
-      {
         break;
-      }
+
       final StringBuilder aHeader = new StringBuilder (sHeaderPart.substring (nStart, nEnd));
       nStart = nEnd + 2;
       while (nStart < nLen)

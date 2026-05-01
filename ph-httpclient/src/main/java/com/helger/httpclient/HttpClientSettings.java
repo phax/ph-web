@@ -30,6 +30,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.annotation.misc.ChangeNextMajorRelease;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.CGlobal;
 import com.helger.base.clone.ICloneable;
@@ -70,6 +71,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final boolean DEFAULT_USE_KEEP_ALIVE = true;
   // Default from Apache HttpClient since v5.4
   public static final boolean DEFAULT_PROTOCOL_UPGRADE_ENABLED = true;
+  // Set default to none for backwards compatibility to pre 11.3.0
+  @ChangeNextMajorRelease ("Set default to CertificateRevocationCheckerDefaults.getRevocationCheckMode and remove constant")
   public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
   @Deprecated (forRemoval = true, since = "11.4.0")
   public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;

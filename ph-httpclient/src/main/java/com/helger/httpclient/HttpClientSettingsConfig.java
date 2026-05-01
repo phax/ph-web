@@ -57,6 +57,17 @@ public class HttpClientSettingsConfig
     private final IConfigWithFallback m_aConfig;
     private final ICommonsOrderedSet <String> m_aConfigPrefixes;
 
+    /**
+     * Constructor.
+     *
+     * @param aConfig
+     *        The {@link IConfigWithFallback} object to be used as the source of the values. May not
+     *        be <code>null</code>.
+     * @param aConfigPrefixes
+     *        The configuration prefixes to be used in order. The prefixes are tried in iteration
+     *        order until a matching configuration value is found. May neither be <code>null</code>
+     *        nor empty.
+     */
     public HttpClientConfig (@NonNull final IConfigWithFallback aConfig,
                              @NonNull @Nonempty final ICommonsOrderedSet <String> aConfigPrefixes)
     {
@@ -177,12 +188,25 @@ public class HttpClientSettingsConfig
       return nDefault;
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether to use the DNS client cache. Reads <code>http.dnsclientcache.use</code> (or
+     *         the legacy alias <code>http.useDNSClientCache</code>). Never <code>null</code>; may
+     *         be {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getUseDNSClientCache (final boolean bDefault)
     {
       return _findBoolean ("http.dnsclientcache.use", bDefault, "http.useDNSClientCache");
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether the HTTP proxy support is enabled. Reads <code>http.proxy.enabled</code>.
+     *         Never <code>null</code>; may be {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getHttpProxyEnabled (final boolean bDefault)
     {
@@ -199,7 +223,7 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return The HTTP proxy port to be used, or <code>0</code> in case it is not found.
+     * @return The HTTP proxy port to be used, or <code>-1</code> in case it is not found.
      */
     @CheckForSigned
     public int getHttpProxyPort ()
@@ -269,6 +293,11 @@ public class HttpClientSettingsConfig
       return _findString ("http.proxy.nonProxyHosts", "http.nonProxyHosts", "http.proxy.non-proxy");
     }
 
+    /**
+     * @return The configured retry count. Reads <code>http.retry.count</code>. A return value of
+     *         <code>-1</code> means that the value is not configured (and the default should be
+     *         kept).
+     */
     @CheckForSigned
     public int getRetryCount ()
     {
@@ -380,6 +409,13 @@ public class HttpClientSettingsConfig
       return _findDuration ("http.retry.interval");
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether retries should always be performed (also for non-idempotent requests). Reads
+     *         <code>http.retry.always</code>. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getRetryAlways (final boolean bDefault)
     {
@@ -393,36 +429,65 @@ public class HttpClientSettingsConfig
       return aDuration == null ? null : Timeout.of (aDuration);
     }
 
+    /**
+     * @return The connection request timeout. Reads <code>http.timeout.connectionrequest</code>.
+     *         May be <code>null</code> if not configured.
+     */
     @Nullable
     public Timeout getConnectionRequestTimeout ()
     {
       return _findTimeout ("http.timeout.connectionrequest");
     }
 
+    /**
+     * @return The connect timeout. Reads <code>http.timeout.connect</code> (or the legacy alias
+     *         <code>http.connection-timeout</code>). May be <code>null</code> if not configured.
+     */
     @Nullable
     public Timeout getConnectTimeout ()
     {
       return _findTimeout ("http.timeout.connect", "http.connection-timeout");
     }
 
+    /**
+     * @return The response timeout. Reads <code>http.timeout.response</code> (or the legacy alias
+     *         <code>http.read-timeout</code>). May be <code>null</code> if not configured.
+     */
     @Nullable
     public Timeout getResponseTimeout ()
     {
       return _findTimeout ("http.timeout.response", "http.read-timeout");
     }
 
+    /**
+     * @return The HTTP <code>User-Agent</code> header value to be used. Reads
+     *         <code>http.useragent</code>. May be <code>null</code> if not configured.
+     */
     @Nullable
     public String getUserAgent ()
     {
       return _findString ("http.useragent");
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether HTTP redirects should be followed automatically. Reads
+     *         <code>http.follow-redirects</code>. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getFollowRedirects (final boolean bDefault)
     {
       return _findBoolean ("http.follow-redirects", bDefault);
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether HTTP keep-alive should be used. Reads <code>http.keep-alive</code>. Never
+     *         <code>null</code>; may be {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getUseKeepAlive (final boolean bDefault)
     {
@@ -466,24 +531,61 @@ public class HttpClientSettingsConfig
       return _findBoolean ("http.tls.revocation.soft-fail", bDefault);
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether all TLS checks (both hostname and certificate) should be disabled. Reads
+     *         <code>http.tls.checks.disabled</code>. Disabling TLS checks is a security risk and
+     *         should only be used for testing. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getDisableTlsChecks (final boolean bDefault)
     {
       return _findBoolean ("http.tls.checks.disabled", bDefault);
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether the TLS hostname verification should be disabled. Reads
+     *         <code>http.tls.hostname-check.disabled</code>. Disabling the hostname check is a
+     *         security risk and should only be used for testing. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getDisableHostnameCheck (final boolean bDefault)
     {
       return _findBoolean ("http.tls.hostname-check.disabled", bDefault);
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether the TLS certificate verification should be disabled. Reads
+     *         <code>http.tls.certificate-check.disabled</code>. Disabling the certificate check is
+     *         a security risk and should only be used for testing. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     */
     @NonNull
     public ETriState getDisableCertificateCheck (final boolean bDefault)
     {
       return _findBoolean ("http.tls.certificate-check.disabled", bDefault);
     }
 
+    /**
+     * Factory method that creates a new {@link HttpClientConfig} for the provided prefixes. Each
+     * prefix is normalized to end with a trailing dot (unless it is the empty string).
+     *
+     * @param aConfig
+     *        The {@link IConfigWithFallback} object to be used as the source of the values. May not
+     *        be <code>null</code>.
+     * @param aPrefixes
+     *        The configuration prefixes to be used in order. May neither be <code>null</code> nor
+     *        empty.
+     * @return The new {@link HttpClientConfig} object or <code>null</code> if no usable prefixes
+     *         were provided.
+     */
     @Nullable
     public static HttpClientConfig create (@NonNull final IConfigWithFallback aConfig,
                                            @NonNull @Nonempty final String... aPrefixes)
@@ -509,6 +611,17 @@ public class HttpClientSettingsConfig
   private HttpClientSettingsConfig ()
   {}
 
+  /**
+   * Assign DNS related configuration values. The primary configuration parameters consumed are:
+   * <ul>
+   * <li><code>http.dnsclientcache.use</code> - whether to use the DNS client cache (boolean)</li>
+   * </ul>
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   */
   public static void assignConfigValuesForDNS (@NonNull final HttpClientSettings aHCS,
                                                @NonNull final HttpClientConfig aHCC)
   {
@@ -523,6 +636,24 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign proxy related configuration values. The values are only applied if
+   * <code>http.proxy.enabled</code> resolves to <code>true</code>. The primary configuration
+   * parameters consumed are:
+   * <ul>
+   * <li><code>http.proxy.enabled</code> - whether HTTP proxy support is enabled (boolean)</li>
+   * <li><code>http.proxy.host</code> - HTTP proxy host name</li>
+   * <li><code>http.proxy.port</code> - HTTP proxy port</li>
+   * <li><code>http.proxy.username</code> - HTTP proxy user name</li>
+   * <li><code>http.proxy.password</code> - HTTP proxy password</li>
+   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts</li>
+   * </ul>
+   *
+   * @param aProxySettings
+   *        The {@link HttpProxySettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   */
   public static void assignConfigValuesForProxy (@NonNull final HttpProxySettings aProxySettings,
                                                  @NonNull final HttpClientConfig aHCC)
   {
@@ -556,6 +687,19 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign retry related configuration values. The primary configuration parameters consumed are:
+   * <ul>
+   * <li><code>http.retry.count</code> - number of retries (int)</li>
+   * <li><code>http.retry.interval</code> - interval between retries (duration)</li>
+   * <li><code>http.retry.always</code> - whether retries should always be performed (boolean)</li>
+   * </ul>
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   */
   public static void assignConfigValuesForRetry (@NonNull final HttpClientSettings aHCS,
                                                  @NonNull final HttpClientConfig aHCC)
   {
@@ -586,6 +730,19 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign timeout related configuration values. The primary configuration parameters consumed are:
+   * <ul>
+   * <li><code>http.timeout.connectionrequest</code> - connection request timeout (duration)</li>
+   * <li><code>http.timeout.connect</code> - connect timeout (duration)</li>
+   * <li><code>http.timeout.response</code> - response/read timeout (duration)</li>
+   * </ul>
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   */
   public static void assignConfigValuesForTimeouts (@NonNull final HttpClientSettings aHCS,
                                                     @NonNull final HttpClientConfig aHCC)
   {
@@ -616,6 +773,25 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign TLS related configuration values. The primary configuration parameters consumed are:
+   * <ul>
+   * <li><code>http.tls.checks.disabled</code> - disable both hostname and certificate checks
+   * (boolean)</li>
+   * <li><code>http.tls.hostname-check.disabled</code> - disable TLS hostname verification
+   * (boolean)</li>
+   * <li><code>http.tls.certificate-check.disabled</code> - disable TLS certificate verification
+   * (boolean)</li>
+   * </ul>
+   * Disabling TLS checks is a security risk and should only be used for testing.
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   * @throws IllegalStateException
+   *         If setting up the trust-all SSL context fails.
+   */
   public static void assignConfigValuesForTLS (@NonNull final HttpClientSettings aHCS,
                                                @NonNull final HttpClientConfig aHCC)
   {
@@ -654,6 +830,12 @@ public class HttpClientSettingsConfig
 
   /**
    * Assign revocation check configuration values.
+   * <ul>
+   * <li><code>http.tls.revocation.mode</code> - revocation check mode (see
+   * {@link ERevocationCheckMode})</li>
+   * <li><code>http.tls.revocation.soft-fail</code> - whether revocation checks soft-fail
+   * (boolean)</li>
+   * </ul>
    *
    * @param aHCS
    *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
@@ -689,6 +871,21 @@ public class HttpClientSettingsConfig
     }
   }
 
+  /**
+   * Assign miscellaneous configuration values. The primary configuration parameters consumed are:
+   * <ul>
+   * <li><code>http.useragent</code> - the User-Agent HTTP header value</li>
+   * <li><code>http.follow-redirects</code> - whether HTTP redirects are followed (boolean)</li>
+   * <li><code>http.keep-alive</code> - whether HTTP keep-alive is used (boolean)</li>
+   * <li><code>http.protocol-upgrade.enabled</code> - whether HTTP protocol upgrade is enabled
+   * (boolean)</li>
+   * </ul>
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   */
   public static void assignConfigValuesForMisc (@NonNull final HttpClientSettings aHCS,
                                                 @NonNull final HttpClientConfig aHCC)
   {

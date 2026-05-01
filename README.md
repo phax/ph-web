@@ -61,7 +61,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.4.0 - work in progress
+v11.4.0 - 2026-05-01
 * Removed OSGI bundling
 * Updated to ph-commons 12.2.5
 * `HttpClientSettings` now derives the default for `revocationCheckSoftFail` from `CertificateRevocationCheckerDefaults.isAllowSoftFail()` instead of a hardcoded `false`; the constant `DEFAULT_REVOCATION_CHECK_SOFT_FAIL` is deprecated

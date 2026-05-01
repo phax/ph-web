@@ -667,16 +667,14 @@ public class HttpClientSettingsConfig
     final String sMode = aHCC.getRevocationCheckMode ();
     if (StringHelper.isNotEmpty (sMode))
     {
-      try
+      final ERevocationCheckMode eMode = ERevocationCheckMode.getFromIDOrNull (sMode);
+      if (eMode == null)
+        LOGGER.warn ("Invalid revocation check mode '" + sMode + "' configured. Ignoring it.");
+      else
       {
-        final ERevocationCheckMode eMode = ERevocationCheckMode.getFromIDOrNull (sMode);
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Setting configured HttpClientSettings.revocationCheckMode(" + eMode + ")");
         aHCS.setRevocationCheckMode (eMode);
-      }
-      catch (final IllegalArgumentException ex)
-      {
-        LOGGER.warn ("Invalid revocation check mode '" + sMode + "' configured. Ignoring it.");
       }
     }
 
@@ -734,9 +732,66 @@ public class HttpClientSettingsConfig
   }
 
   /**
-   * Assign all settings of {@link HttpClientSettings} from configuration values. This includes:
+   * Assign all settings of {@link HttpClientSettings} from configuration values. The primary
+   * configuration parameters consumed by this method are (each key is implicitly prefixed with the
+   * configured prefixes; legacy alias keys are accepted but not listed here):
    * <ul>
-   * <li>http.useDNSClientCache - use the DNS client cache by default</li>
+   * <li>DNS:
+   * <ul>
+   * <li><code>http.dnsclientcache.use</code> - whether to use the DNS client cache (boolean)</li>
+   * </ul>
+   * </li>
+   * <li>Proxy (only applied when proxy is enabled):
+   * <ul>
+   * <li><code>http.proxy.enabled</code> - whether HTTP proxy support is enabled (boolean)</li>
+   * <li><code>http.proxy.host</code> - HTTP proxy host name</li>
+   * <li><code>http.proxy.port</code> - HTTP proxy port</li>
+   * <li><code>http.proxy.username</code> - HTTP proxy user name</li>
+   * <li><code>http.proxy.password</code> - HTTP proxy password</li>
+   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts</li>
+   * </ul>
+   * </li>
+   * <li>Retry:
+   * <ul>
+   * <li><code>http.retry.count</code> - number of retries (int)</li>
+   * <li><code>http.retry.interval</code> - interval between retries (duration)</li>
+   * <li><code>http.retry.always</code> - whether to always retry (boolean)</li>
+   * </ul>
+   * </li>
+   * <li>Timeouts:
+   * <ul>
+   * <li><code>http.timeout.connectionrequest</code> - connection request timeout (duration)</li>
+   * <li><code>http.timeout.connect</code> - connect timeout (duration)</li>
+   * <li><code>http.timeout.response</code> - response/read timeout (duration)</li>
+   * </ul>
+   * </li>
+   * <li>TLS:
+   * <ul>
+   * <li><code>http.tls.checks.disabled</code> - disable both hostname and certificate checks
+   * (boolean)</li>
+   * <li><code>http.tls.hostname-check.disabled</code> - disable TLS hostname verification
+   * (boolean)</li>
+   * <li><code>http.tls.certificate-check.disabled</code> - disable TLS certificate verification
+   * (boolean)</li>
+   * </ul>
+   * </li>
+   * <li>Certificate revocation:
+   * <ul>
+   * <li><code>http.tls.revocation.mode</code> - revocation check mode (see
+   * {@link ERevocationCheckMode})</li>
+   * <li><code>http.tls.revocation.soft-fail</code> - whether revocation checks soft-fail
+   * (boolean)</li>
+   * </ul>
+   * </li>
+   * <li>Miscellaneous:
+   * <ul>
+   * <li><code>http.useragent</code> - the User-Agent HTTP header value</li>
+   * <li><code>http.follow-redirects</code> - whether HTTP redirects are followed (boolean)</li>
+   * <li><code>http.keep-alive</code> - whether HTTP keep-alive is used (boolean)</li>
+   * <li><code>http.protocol-upgrade.enabled</code> - whether HTTP protocol upgrade is enabled
+   * (boolean)</li>
+   * </ul>
+   * </li>
    * </ul>
    *
    * @param aHCS

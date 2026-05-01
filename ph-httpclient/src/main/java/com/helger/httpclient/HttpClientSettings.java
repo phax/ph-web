@@ -494,7 +494,8 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   }
 
   /**
-   * Enable or disable if use of the HTTP Connection "Keep-alive".
+   * Determines whether the client server should automatically attempt to upgrade to a safer or a
+   * newer version of the protocol, whenever possible.
    *
    * @param bProtocolUpgradeEnabled
    *        <code>true</code> to enable protocol upgrade, <code>false</code> to disable it.

@@ -201,12 +201,12 @@ public class NaptrLookup
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
       {
         final ENaptrLookupStatus eStatus = ENaptrLookupStatus.fromDnsJavaResultCode (aLookup.getResult ());
-        LOGGER.warn ("Error looking up '" +
-                     sDomainName +
-                     "' [" +
-                     aLookup.getResult () +
-                     "]: " +
-                     aLookup.getErrorString ());
+        aCondLogger.warn ( () -> "Error looking up '" +
+                                 sDomainName +
+                                 "' [" +
+                                 aLookup.getResult () +
+                                 "]: " +
+                                 aLookup.getErrorString ());
         return NaptrLookupResult.failure (eStatus, aLookup.getErrorString ());
       }
 

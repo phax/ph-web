@@ -191,6 +191,110 @@ public final class HttpClientSettingsConfigTest
   }
 
   @Test
+  public void testProxyEnabledByDefaultWhenHostAndPortPresent ()
+  {
+    // Only host + port are configured. "http.proxy.enabled" is intentionally NOT set.
+    // The proxy must still be applied because host + port are sufficient.
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.proxy.host", "1.2.3.4");
+    aMap.put ("p.http.proxy.port", "8080");
+    aMap.put ("p.http.proxy.username", "user");
+    aMap.put ("p.http.proxy.password", "pw");
+    aMap.put ("p.http.proxy.nonProxyHosts", "5.5.5.5|6.6.6.6");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNotNull (aHCS.getGeneralProxy ().getProxyHost ());
+    assertEquals ("1.2.3.4", aHCS.getGeneralProxy ().getProxyHost ().getHostName ());
+    assertEquals (8080, aHCS.getGeneralProxy ().getProxyHost ().getPort ());
+    assertNotNull (aHCS.getGeneralProxy ().getProxyCredentials ());
+    assertEquals (new CommonsLinkedHashSet <> ("5.5.5.5", "6.6.6.6"), aHCS.getGeneralProxy ().nonProxyHosts ());
+  }
+
+  @Test
+  public void testProxyExplicitlyDisabledOverridesHostAndPort ()
+  {
+    // "http.proxy.enabled=false" must forcibly disable the proxy even when host + port are configured.
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.proxy.enabled", "false");
+    aMap.put ("p.http.proxy.host", "1.2.3.4");
+    aMap.put ("p.http.proxy.port", "8080");
+    aMap.put ("p.http.proxy.username", "user");
+    aMap.put ("p.http.proxy.password", "pw");
+    aMap.put ("p.http.proxy.nonProxyHosts", "5.5.5.5|6.6.6.6");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNull (aHCS.getGeneralProxy ().getProxyHost ());
+    assertNull (aHCS.getGeneralProxy ().getProxyCredentials ());
+    assertEquals (new CommonsLinkedHashSet <> (), aHCS.getGeneralProxy ().nonProxyHosts ());
+  }
+
+  @Test
+  public void testProxyExplicitlyEnabledWithHostAndPort ()
+  {
+    // "http.proxy.enabled=true" with host + port behaves as before (backward compat).
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.proxy.enabled", "true");
+    aMap.put ("p.http.proxy.host", "1.2.3.4");
+    aMap.put ("p.http.proxy.port", "8080");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNotNull (aHCS.getGeneralProxy ().getProxyHost ());
+    assertEquals ("1.2.3.4", aHCS.getGeneralProxy ().getProxyHost ().getHostName ());
+    assertEquals (8080, aHCS.getGeneralProxy ().getProxyHost ().getPort ());
+  }
+
+  @Test
+  public void testProxyNotActivatedWithoutHostAndPort ()
+  {
+    // Neither "http.proxy.enabled" nor host/port are set => no proxy host configured.
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNull (aHCS.getGeneralProxy ().getProxyHost ());
+    assertNull (aHCS.getGeneralProxy ().getProxyCredentials ());
+  }
+
+  @Test
+  public void testProxyEnabledTrueButHostMissing ()
+  {
+    // "http.proxy.enabled=true" alone (no host/port) must not result in a proxy host being set.
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.proxy.enabled", "true");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNull (aHCS.getGeneralProxy ().getProxyHost ());
+  }
+
+  @Test
+  public void testProxyEnabledMissingPortDoesNotActivate ()
+  {
+    // Host without a positive port must not produce a proxy host (matches getHttpProxyObject contract).
+    final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
+    aMap.put ("p.http.proxy.host", "1.2.3.4");
+    final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
+
+    final HttpClientSettings aHCS = new HttpClientSettings ();
+    HttpClientSettingsConfig.assignConfigValues (aHCS, aConfig, "p");
+
+    assertNull (aHCS.getGeneralProxy ().getProxyHost ());
+  }
+
+  @Test
   public void testWithDifferentPrefixes ()
   {
     final HttpClientSettings aHCS = new HttpClientSettings ();

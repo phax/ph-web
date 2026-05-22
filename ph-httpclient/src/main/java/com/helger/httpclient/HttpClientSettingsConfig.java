@@ -637,11 +637,16 @@ public class HttpClientSettingsConfig
   }
 
   /**
-   * Assign proxy related configuration values. The values are only applied if
-   * <code>http.proxy.enabled</code> resolves to <code>true</code>. The primary configuration
+   * Assign proxy related configuration values. The presence of a non-empty
+   * <code>http.proxy.host</code> together with a valid <code>http.proxy.port</code> is sufficient
+   * to activate the proxy. The <code>http.proxy.enabled</code> property is only used as an
+   * explicit kill-switch: if it resolves to <code>false</code>, no proxy settings are applied. If
+   * <code>http.proxy.enabled</code> is not configured (undefined) or resolves to
+   * <code>true</code>, the remaining proxy properties are evaluated. The primary configuration
    * parameters consumed are:
    * <ul>
-   * <li><code>http.proxy.enabled</code> - whether HTTP proxy support is enabled (boolean)</li>
+   * <li><code>http.proxy.enabled</code> - explicit kill-switch; only checked for an explicit
+   * <code>false</code> value (boolean)</li>
    * <li><code>http.proxy.host</code> - HTTP proxy host name</li>
    * <li><code>http.proxy.port</code> - HTTP proxy port</li>
    * <li><code>http.proxy.username</code> - HTTP proxy user name</li>
@@ -657,9 +662,10 @@ public class HttpClientSettingsConfig
   public static void assignConfigValuesForProxy (@NonNull final HttpProxySettings aProxySettings,
                                                  @NonNull final HttpClientConfig aHCC)
   {
-    final boolean bDefaultProxyEnabled = false;
-    final ETriState eProxyEnabled = aHCC.getHttpProxyEnabled (bDefaultProxyEnabled);
-    if (eProxyEnabled.isDefined () && eProxyEnabled.getAsBooleanValue ())
+    // The proxy is considered active unless "http.proxy.enabled" is explicitly set to false.
+    // Having "http.proxy.host" and "http.proxy.port" alone is sufficient to enable it.
+    final ETriState eProxyEnabled = aHCC.getHttpProxyEnabled (true);
+    if (!eProxyEnabled.isDefined () || eProxyEnabled.getAsBooleanValue ())
     {
       final HttpHost aProxyHost = aHCC.getHttpProxyObject ();
       if (aProxyHost != null)
@@ -938,9 +944,11 @@ public class HttpClientSettingsConfig
    * <li><code>http.dnsclientcache.use</code> - whether to use the DNS client cache (boolean)</li>
    * </ul>
    * </li>
-   * <li>Proxy (only applied when proxy is enabled):
+   * <li>Proxy (host + port are sufficient to activate the proxy; only skipped if
+   * <code>http.proxy.enabled</code> is explicitly <code>false</code>):
    * <ul>
-   * <li><code>http.proxy.enabled</code> - whether HTTP proxy support is enabled (boolean)</li>
+   * <li><code>http.proxy.enabled</code> - explicit kill-switch; only checked for an explicit
+   * <code>false</code> value (boolean)</li>
    * <li><code>http.proxy.host</code> - HTTP proxy host name</li>
    * <li><code>http.proxy.port</code> - HTTP proxy port</li>
    * <li><code>http.proxy.username</code> - HTTP proxy user name</li>

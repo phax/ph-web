@@ -61,6 +61,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.1 - 2026-05-22
+* `HttpClientSettingsConfig.assignConfigValuesForProxy(...)` no longer requires `http.proxy.enabled=true` to apply the proxy configuration. 
+  The presence of `http.proxy.host` and `http.proxy.port` is now sufficient to activate the proxy; 
+  `http.proxy.enabled` is only honored as an explicit kill-switch when set to `false`
+
 v11.4.0 - 2026-05-01
 * Removed OSGI bundling
 * Updated to ph-commons 12.2.5

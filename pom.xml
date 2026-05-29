@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.5</version>
   </parent>
   <groupId>com.helger.web</groupId>
   <artifactId>ph-web-parent-pom</artifactId>
@@ -65,7 +65,7 @@
   <properties>
     <angus-mail.version>2.0.5</angus-mail.version>
     <commons-codec.version>1.19.0</commons-codec.version>
-    <dnsjava.version>3.6.4</dnsjava.version>
+    <dnsjava.version>3.6.5</dnsjava.version>
     <httpclient.version>5.6.1</httpclient.version>
     <httpcore.version>5.4.2</httpcore.version>
     <jsch.version>2.28.2</jsch.version>

@@ -36,7 +36,7 @@ public final class ThirdPartyModuleProvider_ph_jsch implements IThirdPartyModule
   public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
                                                                      "Matthias Wiedemann",
                                                                      ELicense.BSD,
-                                                                     new Version (2, 28, 3),
+                                                                     new Version (2, 28, 4),
                                                                      "https://github.com/mwiede/jsch");
 
   @Nullable

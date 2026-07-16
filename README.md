@@ -64,6 +64,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v11.4.2 - work in progress
+* `HttpClientSettingsConfig` now logs the deprecation warning for a legacy per-unit-suffix configuration key (`.millis`/`.seconds`/`.minutes`/`.hours`) only once per key, instead of on every access.
 
 v11.4.1 - 2026-05-22
 * `HttpClientSettingsConfig.assignConfigValuesForProxy(...)` no longer requires `http.proxy.enabled=true` to apply the proxy configuration. 

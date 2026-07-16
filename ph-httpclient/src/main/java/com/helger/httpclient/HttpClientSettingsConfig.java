@@ -18,6 +18,8 @@ package com.helger.httpclient;
 
 import java.security.GeneralSecurityException;
 import java.time.Duration;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
@@ -54,6 +56,10 @@ public class HttpClientSettingsConfig
 
   public static final class HttpClientConfig
   {
+    // Remember the legacy keys for which a deprecation warning was already logged, so it is emitted
+    // only once per key
+    private static final Set <String> WARNED_DEPRECATED_KEYS = ConcurrentHashMap.newKeySet ();
+
     private final IConfigWithFallback m_aConfig;
     private final ICommonsOrderedSet <String> m_aConfigPrefixes;
 
@@ -318,13 +324,14 @@ public class HttpClientSettingsConfig
     private static void _logLegacyDeprecation (@NonNull final String sFullKeyWithoutSuffix,
                                                @NonNull final String sSuffix)
     {
-      LOGGER.warn ("Configuration key '" +
-                   sFullKeyWithoutSuffix +
-                   "." +
-                   sSuffix +
-                   "' uses the deprecated per-unit-suffix format. Please migrate to the unit-less form '" +
-                   sFullKeyWithoutSuffix +
-                   "' with values like '5ms', '21s', '34m' or '2h'. Per-unit-suffix keys will be removed in a future major version.");
+      // Only log the deprecation warning once per legacy key
+      final String sKey = sFullKeyWithoutSuffix + "." + sSuffix;
+      if (WARNED_DEPRECATED_KEYS.add (sKey))
+        LOGGER.warn ("Configuration key '" +
+                     sKey +
+                     "' uses the deprecated per-unit-suffix format. Please migrate to the unit-less form '" +
+                     sFullKeyWithoutSuffix +
+                     "' with values like '5ms', '21s', '34m' or '2h'. Per-unit-suffix keys will be removed in a future major version.");
     }
 
     @Nullable
@@ -639,11 +646,11 @@ public class HttpClientSettingsConfig
   /**
    * Assign proxy related configuration values. The presence of a non-empty
    * <code>http.proxy.host</code> together with a valid <code>http.proxy.port</code> is sufficient
-   * to activate the proxy. The <code>http.proxy.enabled</code> property is only used as an
-   * explicit kill-switch: if it resolves to <code>false</code>, no proxy settings are applied. If
-   * <code>http.proxy.enabled</code> is not configured (undefined) or resolves to
-   * <code>true</code>, the remaining proxy properties are evaluated. The primary configuration
-   * parameters consumed are:
+   * to activate the proxy. The <code>http.proxy.enabled</code> property is only used as an explicit
+   * kill-switch: if it resolves to <code>false</code>, no proxy settings are applied. If
+   * <code>http.proxy.enabled</code> is not configured (undefined) or resolves to <code>true</code>,
+   * the remaining proxy properties are evaluated. The primary configuration parameters consumed
+   * are:
    * <ul>
    * <li><code>http.proxy.enabled</code> - explicit kill-switch; only checked for an explicit
    * <code>false</code> value (boolean)</li>

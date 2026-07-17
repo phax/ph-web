@@ -59,6 +59,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v10.5.2 - 2026-07-17
+* Updated to BouncyCastle 1.85
+* Updated to Apache HttpCore 5.4.3 and HttpClient 5.6.2
+
 v10.5.1 - 2025-08-12
 * Added new classes `HttpForwardedHeaderHop` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`
 

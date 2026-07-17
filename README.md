@@ -142,6 +142,10 @@ v11.0.0 - 2025-08-25
 * Submodule `ph-http` was moved to `ph-commons` (with the change group ID `com.helger.commons`!)
 * Removed all code marked as deprecated for removal
 
+v10.5.2 - 2026-07-17 [backport]
+* Updated to BouncyCastle 1.85
+* Updated to Apache HttpCore 5.4.3 and HttpClient 5.6.2
+
 v10.5.1 - 2025-08-12
 * Added new classes `HttpForwardedHeaderHop` and `HttpForwardedHeaderParser` to deal with RFC 7239 HTTP header `Forwarded`
 

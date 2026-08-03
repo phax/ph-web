@@ -99,7 +99,9 @@ public final class ServletHelper
    *        Attribute name. May not be <code>null</code>.
    * @param aAttrValue
    *        Attribute value. May be <code>null</code>.
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   public static void setRequestAttribute (@NonNull final ServletRequest aServletRequest,
                                           @NonNull final String sAttrName,
                                           @Nullable final Object aAttrValue)
@@ -116,6 +118,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static Object getRequestAttribute (@NonNull final ServletRequest aServletRequest,
                                             @NonNull final String sAttrName)
@@ -135,6 +138,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static <T> T getRequestAttributeAs (@NonNull final ServletRequest aServletRequest,
                                              @NonNull final String sAttrName)
@@ -142,6 +146,7 @@ public final class ServletHelper
     return GenericReflection.uncheckedCast (getRequestAttribute (aServletRequest, sAttrName));
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <String> getRequestHeaderNames (@NonNull final HttpServletRequest aServletRequest)
@@ -161,6 +166,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <String> getRequestHeaders (@NonNull final HttpServletRequest aServletRequest,
@@ -181,6 +187,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestHeader (@NonNull final HttpServletRequest aServletRequest,
                                          @NonNull final String sHeaderName)
@@ -200,6 +207,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @CheckForSigned
   public static long getRequestDateHeader (@NonNull final HttpServletRequest aServletRequest,
                                            @NonNull final String sHeaderName)
@@ -234,7 +242,9 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or a String specifying the portion of the
    *         request URI that indicates the context of the request
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -260,7 +270,9 @@ public final class ServletHelper
    * @return Empty string if request is <code>null</code> or a String specifying the portion of the
    *         request URI that indicates the context of the request
    * @since 9.1.10
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static String getRequestContextPath (@Nullable final HttpServletRequest aHttpRequest,
                                               @Nullable final String sFallback)
@@ -294,7 +306,9 @@ public final class ServletHelper
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or a the path info.
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static String getRequestPathInfo (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -334,7 +348,9 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return <code>null</code> if request is <code>null</code> or if no query string could be
    *         determined, or if none is present
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestQueryString (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -362,7 +378,9 @@ public final class ServletHelper
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or the request URI.
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static String getRequestRequestURI (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -390,7 +408,9 @@ public final class ServletHelper
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
    * @return Empty {@link StringBuffer} if request is <code>null</code> or the request URL.
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static StringBuffer getRequestRequestURL (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -416,7 +436,9 @@ public final class ServletHelper
    *        Source request. May be <code>null</code>.
    * @return Empty string if request is <code>null</code> or the servlet path.
    * @since 8.8.0
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @NonNull
   public static String getRequestServletPath (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -456,7 +478,9 @@ public final class ServletHelper
    * @param aHttpRequest
    *        Source request. May be <code>null</code>.
    * @return getRequestCookies
+   * @deprecated Since 11.4.3; wrap the request with {@link SafeHttpServletRequest} instead
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static Cookie [] getRequestCookies (@Nullable final HttpServletRequest aHttpRequest)
   {
@@ -484,6 +508,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   public static void setRequestCharacterEncoding (@NonNull final HttpServletRequest aHttpRequest,
                                                   @Nullable final Charset aCharset)
   {
@@ -499,6 +524,7 @@ public final class ServletHelper
    *        Character set to use. May be <code>null</code>.
    * @since 9.1.9
    */
+  @Deprecated (forRemoval = true, since = "11.4.3")
   public static void setRequestCharacterEncoding (@NonNull final HttpServletRequest aHttpRequest,
                                                   @Nullable final String sCharset)
   {
@@ -537,6 +563,7 @@ public final class ServletHelper
     return sPath;
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @CheckForSigned
   public static long getRequestContentLength (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -554,6 +581,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestContentType (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -570,6 +598,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestMethod (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -586,6 +615,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestProtocol (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -602,6 +632,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestScheme (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -618,6 +649,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static String getRequestServerName (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -634,6 +666,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @CheckForSigned
   public static int getRequestServerPort (@NonNull final HttpServletRequest aHttpRequest)
   {
@@ -650,6 +683,7 @@ public final class ServletHelper
     }
   }
 
+  @Deprecated (forRemoval = true, since = "11.4.3")
   @Nullable
   public static HttpSession getRequestSession (@NonNull final HttpServletRequest aHttpRequest, final boolean bCreate)
   {

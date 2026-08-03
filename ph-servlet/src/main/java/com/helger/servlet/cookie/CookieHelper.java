@@ -29,8 +29,8 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsOrderedMap;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.servlet.ServletHelper;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,8 +58,10 @@ public final class CookieHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final ICommonsOrderedMap <String, Cookie> ret = new CommonsLinkedHashMap <> ();
-    ret.putAllMapped (ServletHelper.getRequestCookies (aHttpRequest), Cookie::getName, Function.identity ());
+    ret.putAllMapped (aSafeHttpRequest.getCookies (), Cookie::getName, Function.identity ());
     return ret;
   }
 
@@ -69,7 +71,9 @@ public final class CookieHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (sCookieName, "CookieName");
 
-    final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final Cookie [] aCookies = aSafeHttpRequest.getCookies ();
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
         if (aCookie.getName ().equals (sCookieName))

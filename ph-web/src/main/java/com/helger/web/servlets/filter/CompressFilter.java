@@ -24,7 +24,7 @@ import com.helger.annotation.OverridingMethodsMustInvokeSuper;
 import com.helger.http.CHttpHeader;
 import com.helger.http.header.specific.AcceptEncodingList;
 import com.helger.scope.mgr.ScopeManager;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelperSettings;
@@ -41,9 +41,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * This is a generic filter that first tries to find whether "GZip" is
- * supported, and if this fails, whether "Deflate" is supported. If none is
- * supported, no compression will happen in this filter.
+ * This is a generic filter that first tries to find whether "GZip" is supported, and if this fails,
+ * whether "Deflate" is supported. If none is supported, no compression will happen in this filter.
  *
  * @author Philip Helger
  */
@@ -101,16 +100,17 @@ public class CompressFilter extends AbstractHttpServletFilter
                             @NonNull final HttpServletResponse aHttpResponse,
                             @NonNull final FilterChain aChain) throws IOException, ServletException
   {
-    if (CompressFilterSettings.isResponseCompressionEnabled () &&
-        ServletHelper.getRequestAttribute (aHttpRequest, REQUEST_ATTR) == null)
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    if (CompressFilterSettings.isResponseCompressionEnabled () && aSafeHttpRequest.getAttribute (REQUEST_ATTR) == null)
     {
-      ServletHelper.setRequestAttribute (aHttpRequest, REQUEST_ATTR, Boolean.TRUE);
+      aSafeHttpRequest.setAttribute (REQUEST_ATTR, Boolean.TRUE);
 
       // Inform caches that responses may vary according to
       // Accept-Encoding
       aHttpResponse.setHeader (CHttpHeader.VARY, CHttpHeader.ACCEPT_ENCODING);
 
-      final AcceptEncodingList aAEL = RequestHelper.getAcceptEncodings (aHttpRequest);
+      final AcceptEncodingList aAEL = RequestHelper.getAcceptEncodings (aSafeHttpRequest);
 
       AbstractCompressedResponseWrapper aCompressedResponse = null;
 
@@ -118,7 +118,7 @@ public class CompressFilter extends AbstractHttpServletFilter
       if (sGZIPEncoding != null && CompressFilterSettings.isResponseGzipEnabled ())
       {
         // Use gzip
-        aCompressedResponse = new GZIPResponse (aHttpRequest, aHttpResponse, sGZIPEncoding);
+        aCompressedResponse = new GZIPResponse (aSafeHttpRequest, aHttpResponse, sGZIPEncoding);
       }
       else
       {
@@ -126,13 +126,13 @@ public class CompressFilter extends AbstractHttpServletFilter
         if (sDeflateEncoding != null && CompressFilterSettings.isResponseDeflateEnabled ())
         {
           // Use deflate
-          aCompressedResponse = new DeflateResponse (aHttpRequest, aHttpResponse, sDeflateEncoding);
+          aCompressedResponse = new DeflateResponse (aSafeHttpRequest, aHttpResponse, sDeflateEncoding);
         }
       }
 
       if (aCompressedResponse != null)
       {
-        _performCompressed (aHttpRequest, aChain, aHttpResponse, aCompressedResponse);
+        _performCompressed (aSafeHttpRequest, aChain, aHttpResponse, aCompressedResponse);
         return;
       }
 
@@ -141,6 +141,6 @@ public class CompressFilter extends AbstractHttpServletFilter
     }
 
     // Perform as is
-    aChain.doFilter (aHttpRequest, aHttpResponse);
+    aChain.doFilter (aSafeHttpRequest, aHttpResponse);
   }
 }

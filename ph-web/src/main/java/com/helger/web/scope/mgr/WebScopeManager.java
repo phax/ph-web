@@ -37,6 +37,7 @@ import com.helger.scope.IRequestScope;
 import com.helger.scope.ISessionScope;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.scope.mgr.ScopeSessionManager;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.web.scope.IGlobalWebScope;
 import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.ISessionWebScope;
@@ -387,7 +388,7 @@ public final class WebScopeManager
       // a previous invocation are invalidated on Tomcat restart
 
       // Ensure that session.invalidate can not be called recursively
-      final boolean bCanInvalidateSession = RW_LOCK.writeLockedBoolean ( () -> SESSION_IN_INVALIDATION.add (sSessionID));
+      final boolean bCanInvalidateSession = RW_LOCK.writeLockedBoolean (() -> SESSION_IN_INVALIDATION.add (sSessionID));
       if (bCanInvalidateSession)
       {
         try
@@ -402,7 +403,7 @@ public final class WebScopeManager
         finally
         {
           // Remove from "in invalidation" list
-          RW_LOCK.writeLocked ( () -> SESSION_IN_INVALIDATION.remove (sSessionID));
+          RW_LOCK.writeLocked (() -> SESSION_IN_INVALIDATION.remove (sSessionID));
         }
       }
     }
@@ -422,7 +423,12 @@ public final class WebScopeManager
                                                                @NonNull final HttpServletResponse aHttpResponse,
                                                                @NonNull final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, T> aFactory)
   {
-    final T aRequestScope = aFactory.apply (aHttpRequest, aHttpResponse);
+    // Wrap the request to guard against "recycled facade" errors that can occur
+    // when the request is accessed after the request handling already finished
+    // (e.g. from the long running request monitor thread). See
+    // SafeHttpServletRequest.
+    final SafeHttpServletRequest aSafeRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+    final T aRequestScope = aFactory.apply (aSafeRequest, aHttpResponse);
     ScopeManager.internalSetAndInitRequestScope (aRequestScope);
     return aRequestScope;
   }

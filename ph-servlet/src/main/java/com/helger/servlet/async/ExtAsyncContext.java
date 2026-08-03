@@ -21,7 +21,7 @@ import org.jspecify.annotations.Nullable;
 
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -85,15 +85,17 @@ public class ExtAsyncContext
   @NonNull
   public HttpServletRequest getRequest ()
   {
-    final HttpServletRequest ret = (HttpServletRequest) m_aAsyncContext.getRequest ();
+    // Wrap to be safe against "recycled facade" errors (see
+    // SafeHttpServletRequest)
+    final SafeHttpServletRequest ret = SafeHttpServletRequest.wrap ((HttpServletRequest) m_aAsyncContext.getRequest ());
     if (!m_bSetAttrs)
       if (false)
       {
-        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
-        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
-        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
-        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
-        ServletHelper.setRequestAttribute (ret, AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
+        ret.setAttribute (AsyncContext.ASYNC_CONTEXT_PATH, m_sContextPath);
+        ret.setAttribute (AsyncContext.ASYNC_PATH_INFO, m_sPathInfo);
+        ret.setAttribute (AsyncContext.ASYNC_QUERY_STRING, m_sQueryString);
+        ret.setAttribute (AsyncContext.ASYNC_REQUEST_URI, m_sRequestURI);
+        ret.setAttribute (AsyncContext.ASYNC_SERVLET_PATH, m_sServletPath);
         m_bSetAttrs = true;
       }
     return ret;
@@ -122,15 +124,17 @@ public class ExtAsyncContext
                                         @NonNull final EHttpMethod eHttpMethod,
                                         @NonNull final ServletAsyncSpec aAsyncSpec)
   {
-    final AsyncContext aAsyncContext = aHttpRequest.startAsync (aHttpRequest, aHttpResponse);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final AsyncContext aAsyncContext = aSafeHttpRequest.startAsync (aSafeHttpRequest, aHttpResponse);
     aAsyncSpec.applyToAsyncContext (aAsyncContext);
     return new ExtAsyncContext (aAsyncContext,
                                 eHttpVersion,
                                 eHttpMethod,
-                                ServletHelper.getRequestContextPath (aHttpRequest),
-                                ServletHelper.getRequestPathInfo (aHttpRequest),
-                                ServletHelper.getRequestQueryString (aHttpRequest),
-                                ServletHelper.getRequestRequestURI (aHttpRequest),
-                                ServletHelper.getRequestServletPath (aHttpRequest));
+                                aSafeHttpRequest.getContextPath (),
+                                aSafeHttpRequest.getPathInfo (),
+                                aSafeHttpRequest.getQueryString (),
+                                aSafeHttpRequest.getRequestURI (),
+                                aSafeHttpRequest.getServletPath ());
   }
 }

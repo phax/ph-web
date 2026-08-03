@@ -52,6 +52,7 @@ import com.helger.http.header.specific.AcceptMimeTypeList;
 import com.helger.network.port.CNetworkPort;
 import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletHelper;
 import com.helger.url.ISimpleURL;
@@ -216,14 +217,16 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
     // Avoid exception on shutdown
     final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPath (), "");
 
-    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+    final String sServletPath = aSafeHttpRequest.getServletPath ();
     // Lacks the information about percent encoding
-    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
+    final String sPathInfo = aSafeHttpRequest.getPathInfo ();
 
     final String sRequestURI = sContextPath + sServletPath + sPathInfo;
     if (sRequestURI.length () == 0)
@@ -265,14 +268,16 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
     // Avoid exception on shutdown
     final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPathOrNull (), "");
 
-    final String sRequestContextPath = ServletHelper.getRequestContextPath (aHttpRequest, "");
+    final String sRequestContextPath = aSafeHttpRequest.getContextPath ("");
     // Maintain the encoding
-    String sRealRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
+    String sRealRequestURI = aSafeHttpRequest.getRequestURI ();
     // Strip "real" leading context path, so that the one from
     // ServletContextPathHolder can be used instead
     if (sRequestContextPath.length () > 0 && sRealRequestURI.startsWith (sRequestContextPath))
@@ -299,7 +304,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sPathInfo = ServletHelper.getRequestPathInfo (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final String sPathInfo = aSafeHttpRequest.getPathInfo ();
     if (StringHelper.isEmpty (sPathInfo))
       return sPathInfo;
 
@@ -339,8 +346,10 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aHttpRequest) : getRequestURIDecoded (
-                                                                                                             aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aSafeHttpRequest) : getRequestURIDecoded (
+                                                                                                                 aSafeHttpRequest);
     if (StringHelper.isEmpty (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"
@@ -401,8 +410,10 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final String sPathWithinApp = getPathWithinServletContext (aHttpRequest, bUseEncodedPath);
-    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+    final String sServletPath = aSafeHttpRequest.getServletPath ();
     if (sPathWithinApp.startsWith (sServletPath))
       return sPathWithinApp.substring (sServletPath.length ());
 
@@ -488,9 +499,11 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final StringBuilder ret = getRequestURLDecoded (aHttpRequest);
     // query string
-    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    final String sQueryString = aSafeHttpRequest.getQueryString ();
     if (StringHelper.isNotEmpty (sQueryString))
       ret.append (CURL.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
@@ -517,9 +530,11 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final StringBuilder ret = getRequestURLEncoded (aHttpRequest);
     // query string
-    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    final String sQueryString = aSafeHttpRequest.getQueryString ();
     if (StringHelper.isNotEmpty (sQueryString))
       ret.append (CURL.QUESTIONMARK).append (sQueryString);
     return ret.toString ();
@@ -545,9 +560,11 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final String sReqUrl = getRequestURIDecoded (aHttpRequest);
     // d=789&x=y
-    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    final String sQueryString = aSafeHttpRequest.getQueryString ();
     if (StringHelper.isNotEmpty (sQueryString))
       return sReqUrl + CURL.QUESTIONMARK + sQueryString;
     return sReqUrl;
@@ -573,9 +590,11 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final String sReqUrl = getRequestURIEncoded (aHttpRequest);
     // d=789&x=y
-    final String sQueryString = ServletHelper.getRequestQueryString (aHttpRequest);
+    final String sQueryString = aSafeHttpRequest.getQueryString ();
     if (StringHelper.isNotEmpty (sQueryString))
       return sReqUrl + CURL.QUESTIONMARK + sQueryString;
     return sReqUrl;
@@ -601,9 +620,12 @@ public final class RequestHelper
   public static StringBuilder getFullServerName (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
-    return getFullServerName (ServletHelper.getRequestScheme (aHttpRequest),
-                              ServletHelper.getRequestServerName (aHttpRequest),
-                              ServletHelper.getRequestServerPort (aHttpRequest));
+
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    return getFullServerName (aSafeHttpRequest.getScheme (),
+                              aSafeHttpRequest.getServerName (),
+                              aSafeHttpRequest.getServerPort ());
   }
 
   @NonNull
@@ -648,7 +670,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.REFERER);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    return aSafeHttpRequest.getHeader (CHttpHeader.REFERER);
   }
 
   /**
@@ -663,7 +687,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sProtocol = ServletHelper.getRequestProtocol (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final String sProtocol = aSafeHttpRequest.getProtocol ();
     return EHttpVersion.getFromNameOrNull (sProtocol);
   }
 
@@ -696,7 +722,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sMethod = ServletHelper.getRequestMethod (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final String sMethod = aSafeHttpRequest.getMethod ();
     final EHttpMethod ret = EHttpMethod.getFromNameOrNull (sMethod);
     if (ret != null)
       return ret;
@@ -720,8 +748,10 @@ public final class RequestHelper
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
     ValueEnforcer.notNull (aConsumer, "Consumer");
 
-    for (final String sName : ServletHelper.getRequestHeaderNames (aHttpRequest))
-      for (final String sValue : ServletHelper.getRequestHeaders (aHttpRequest, sName))
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    for (final String sName : aSafeHttpRequest.getHeaderNamesAsList ())
+      for (final String sValue : aSafeHttpRequest.getHeadersAsList (sName))
         aConsumer.accept (sName, sValue);
   }
 
@@ -748,13 +778,14 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Check if a value is cached in the HTTP request
-    IRequestParamMap aValue = ServletHelper.getRequestAttributeAs (aHttpRequest,
-                                                                   SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP);
+    IRequestParamMap aValue = aSafeHttpRequest.getAttributeAs (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP);
     if (aValue == null)
     {
-      aValue = RequestParamMap.createFromRequest (aHttpRequest);
-      ServletHelper.setRequestAttribute (aHttpRequest, SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP, aValue);
+      aValue = RequestParamMap.createFromRequest (aSafeHttpRequest);
+      aSafeHttpRequest.setAttribute (SCOPE_ATTR_REQUESTHELP_REQUESTPARAMMAP, aValue);
     }
     return aValue;
   }

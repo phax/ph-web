@@ -29,7 +29,7 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.base.string.StringParser;
 import com.helger.mime.EMimeContentType;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -141,27 +141,29 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
   }
 
   @Override
-  public void doHttpFilter (@NonNull final HttpServletRequest aRequest,
-                            @NonNull final HttpServletResponse aResponse,
+  public void doHttpFilter (@NonNull final HttpServletRequest aHttpRequest,
+                            @NonNull final HttpServletResponse aHttpResponse,
                             @NonNull final FilterChain aChain) throws IOException, ServletException
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Avoid double filtering
     boolean bPerform;
-    if (ServletHelper.getRequestAttributeAs (aRequest, REQUEST_ATTR) == null)
+    if (aSafeHttpRequest.getAttribute (REQUEST_ATTR) == null)
     {
       bPerform = true;
-      ServletHelper.setRequestAttribute (aRequest, REQUEST_ATTR, Boolean.TRUE);
+      aSafeHttpRequest.setAttribute (REQUEST_ATTR, Boolean.TRUE);
     }
     else
       bPerform = false;
     if (bPerform)
     {
-      final String sOldRequestEncoding = aRequest.getCharacterEncoding ();
+      final String sOldRequestEncoding = aSafeHttpRequest.getCharacterEncoding ();
       // We need this for all form data etc.
       if (sOldRequestEncoding == null || m_bForceRequestEncoding)
       {
-        ServletHelper.setRequestCharacterEncoding (aRequest, m_sEncoding);
-        if (aRequest.getCharacterEncoding () == null)
+        aSafeHttpRequest.setCharacterEncoding (m_sEncoding);
+        if (aSafeHttpRequest.getCharacterEncoding () == null)
         {
           LOGGER.error ("Failed to set the request character encoding to '" + m_sEncoding + "'");
         }
@@ -176,21 +178,21 @@ public class CharacterEncodingFilter extends AbstractHttpServletFilter
       }
     }
     // Next filter in the chain
-    aChain.doFilter (aRequest, aResponse);
+    aChain.doFilter (aSafeHttpRequest, aHttpResponse);
     if (bPerform)
     {
       // Maybe null e.g. for HTTP 304
-      final String sContentType = aResponse.getContentType ();
+      final String sContentType = aHttpResponse.getContentType ();
 
       // Only apply to "text/" MIME types
       final boolean bCanApplyCharset = sContentType != null && EMimeContentType.TEXT.isTypeOf (sContentType);
       if (bCanApplyCharset)
       {
-        final String sOldResponseEncoding = aResponse.getCharacterEncoding ();
+        final String sOldResponseEncoding = aHttpResponse.getCharacterEncoding ();
         if (sOldResponseEncoding == null || m_bForceResponseEncoding)
         {
-          aResponse.setCharacterEncoding (m_sEncoding);
-          if (aResponse.getCharacterEncoding () == null)
+          aHttpResponse.setCharacterEncoding (m_sEncoding);
+          if (aHttpResponse.getCharacterEncoding () == null)
           {
             LOGGER.error ("Failed to set the response character encoding to '" + m_sEncoding + "'");
           }

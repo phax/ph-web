@@ -64,8 +64,10 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v11.4.3 - work in progress
-* Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods. Use `SafeHttpServletRequest.wrap (...)` to wrap incoming requests without double wrapping.
-* Incoming requests are now wrapped in a `SafeHttpServletRequest` when a request web scope is created (`WebScopeManager.onRequestBegin`) and when re-obtained from the async context (`ExtAsyncContext.getRequest`). This avoids "The request object has been recycled" errors e.g. from the long running request monitor.
+* Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods.
+  Use `SafeHttpServletRequest.wrap (...)` to wrap incoming requests without double wrapping.
+* Incoming requests are now wrapped in a `SafeHttpServletRequest` when a request web scope is created (`WebScopeManager.onRequestBegin`) and when re-obtained from the async context (`ExtAsyncContext.getRequest`).
+  This avoids "The request object has been recycled" errors e.g. from the long running request monitor.
 * Deprecated the `ServletHelper.getRequestXXX` / `setRequestAttribute` workaround methods in favor of `SafeHttpServletRequest`.
 * Migrated all internal direct `HttpServletRequest` accessor usages (`RequestHelper`, `RequestLogger`, `RequestParamMap`, `SessionHelper`, `UAServletHelper`, the file-upload `ServletRequestContext`, the gzip response wrappers, and the XServlet handlers/filters) to route through `SafeHttpServletRequest`.
 
@@ -84,11 +86,15 @@ v11.4.0 - 2026-05-01
 * `HttpClientSettings` now derives the default for `revocationCheckSoftFail` from `CertificateRevocationCheckerDefaults.isAllowSoftFail()` instead of a hardcoded `false`; the constant `DEFAULT_REVOCATION_CHECK_SOFT_FAIL` is deprecated
 * `HttpClientSettingsConfig` now parses the `http.tls.revocation.mode` property via `ERevocationCheckMode.getFromIDOrNull(...)` instead of `valueOf(...)`
 * `HttpClientFactory.createTlsSocketStrategy()` now consistently honors `tlsConfigurationMode` and `hostnameVerifier` when no custom `SSLContext` and no revocation check are configured; previously these settings were silently ignored on that path and `DefaultClientTlsStrategy.createSystemDefault()` defaults were used instead
-* `HttpClientFactory.createRevocationSSLContext()` now throws `IllegalArgumentException` (via `ValueEnforcer`) when called with `RevocationCheckMode.NONE`; previously it returned `null`. Callers (including subclasses) must check `RevocationCheckMode` before invoking
+* `HttpClientFactory.createRevocationSSLContext()` now throws `IllegalArgumentException` (via `ValueEnforcer`) when called with `RevocationCheckMode.NONE`; previously it returned `null`.
+  Callers (including subclasses) must check `RevocationCheckMode` before invoking
 * `HttpClientSettingsConfig` duration/timeout keys (`http.retry.interval`, `http.timeout.connectionrequest`, `http.timeout.connect`, `http.timeout.response`) now accept a unit-less value parsed via `IConfig.getAsConfigDuration` (e.g. `21s`, `34m`, `2h`, `2d 5m 23ms`).
-* The per-unit-suffix variants of those keys (`.millis`, `.seconds`, `.minutes`, `.hours`) are still read but now log a deprecation warning when used. They will be removed in a future major version
-* Added `ENaptrLookupStatus` enum and `NaptrLookupResult` class so callers of `NaptrLookup` can distinguish between "no NAPTR record exists" (NXDOMAIN / NODATA — `isFunctionalNotFound()`) and "DNS infrastructure failure" (SERVFAIL / network error — `isTechnicalFailure()` / `isRetryable()`). Resolves [#6](https://github.com/phax/ph-web/issues/6) - thx @wildhai
-* Added `NaptrLookup.lookupResult()` and `NaptrLookupBuilder.lookupResult()` returning `NaptrLookupResult`. The existing `lookup()` method is unchanged — it now delegates to `lookupResult().getRecords()`
+* The per-unit-suffix variants of those keys (`.millis`, `.seconds`, `.minutes`, `.hours`) are still read but now log a deprecation warning when used.
+  They will be removed in a future major version
+* Added `ENaptrLookupStatus` enum and `NaptrLookupResult` class so callers of `NaptrLookup` can distinguish between "no NAPTR record exists" (NXDOMAIN / NODATA — `isFunctionalNotFound()`) and "DNS infrastructure failure" (SERVFAIL / network error — `isTechnicalFailure()` / `isRetryable()`).
+  Resolves [#6](https://github.com/phax/ph-web/issues/6) - thx @wildhai
+* Added `NaptrLookup.lookupResult()` and `NaptrLookupBuilder.lookupResult()` returning `NaptrLookupResult`.
+  The existing `lookup()` method is unchanged — it now delegates to `lookupResult().getRecords()`
 
 v11.3.0 - 2026-04-22
 * Added certificate revocation checking (CRL/OCSP) support to `HttpClientSettings` via `setRevocationCheckMode(ERevocationCheckMode)` and `setRevocationCheckSoftFail(boolean)`

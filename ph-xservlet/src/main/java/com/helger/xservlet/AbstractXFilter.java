@@ -170,7 +170,8 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     // Create a wrapper around the Servlet Response that saves the status code
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
-    final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory = m_bIsMultipartEnabled ? RequestWebScopeMultipart::new : RequestWebScope::new;
+    final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory = m_bIsMultipartEnabled ? RequestWebScopeMultipart::new
+                                                                                                                                  : RequestWebScope::new;
 
     // Create request scope
     try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,

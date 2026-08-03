@@ -46,8 +46,10 @@ import com.helger.http.header.HttpHeaderMap;
 import com.helger.scope.AbstractScope;
 import com.helger.scope.ScopeHelper;
 import com.helger.scope.mgr.ScopeManager;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletSettings;
+import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.request.RequestParamMap;
@@ -156,6 +158,9 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     super (_createScopeID (aHttpRequest));
 
+    ValueEnforcer.isTrue (aHttpRequest instanceof SafeHttpServletRequest ||
+                          aHttpRequest instanceof MockHttpServletRequest,
+                          () -> "Must be a wrapped HttpServletRequest but is a " + aHttpRequest.getClass ().getName ());
     ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
 
     m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();

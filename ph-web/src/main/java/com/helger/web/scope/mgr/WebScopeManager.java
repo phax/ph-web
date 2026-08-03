@@ -428,6 +428,7 @@ public final class WebScopeManager
     // (e.g. from the long running request monitor thread). See
     // SafeHttpServletRequest.
     final SafeHttpServletRequest aSafeRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final T aRequestScope = aFactory.apply (aSafeRequest, aHttpResponse);
     ScopeManager.internalSetAndInitRequestScope (aRequestScope);
     return aRequestScope;

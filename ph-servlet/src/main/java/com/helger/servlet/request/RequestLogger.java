@@ -70,7 +70,7 @@ public final class RequestLogger
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     // Note: use the original request here, because the offline marker annotation
     // is bound to its concrete class (a wrapper would hide it)
-    if (IS_OFFLINE_CACHE.hasAnnotation (aHttpRequest))
+    if (IS_OFFLINE_CACHE.hasAnnotation (aSafeHttpRequest.getRequest ()))
     {
       // Special handling, because otherwise exceptions would be thrown
       ret.put ("Offline", "true");
@@ -144,16 +144,8 @@ public final class RequestLogger
     final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
 
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
-    try
-    {
-      for (final Map.Entry <String, String []> aEntry : CollectionSort.getSortedByKey (aSafeHttpRequest.getParameterMap ())
-                                                                      .entrySet ())
-        ret.put (aEntry.getKey (), StringImplode.getImploded (", ", aEntry.getValue ()));
-    }
-    catch (final RuntimeException ex)
-    {
-      // Ignore
-    }
+    for (final var aEntry : CollectionSort.getSortedByKey (aSafeHttpRequest.getParameterMap ()).entrySet ())
+      ret.put (aEntry.getKey (), StringImplode.imploder ().separator (", ").source (aEntry.getValue ()).build ());
     return ret;
   }
 

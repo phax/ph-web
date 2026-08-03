@@ -54,7 +54,6 @@ import com.helger.network.port.NetworkPortHelper;
 import com.helger.network.port.SchemeDefaultPortMapper;
 import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.servlet.ServletHelper;
 import com.helger.url.ISimpleURL;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -800,11 +799,14 @@ public final class RequestHelper
    * @return -1 if no or an invalid content length is set in the header
    */
   @CheckForSigned
+  @Deprecated (forRemoval = true, since = "11.4.3")
   public static long getContentLength (@NonNull final HttpServletRequest aHttpRequest)
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    return ServletHelper.getRequestContentLength (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    return aSafeHttpRequest.getContentLengthLong ();
   }
 
   @Nullable
@@ -814,7 +816,9 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final Object aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, sAttrName);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    final Object aValue = aSafeHttpRequest.getAttributeAs (sAttrName);
     if (aValue == null)
     {
       // No client certificates present
@@ -894,7 +898,7 @@ public final class RequestHelper
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
-    return isMultipartContent (ServletHelper.getRequestContentType (aHttpRequest));
+    return isMultipartContent (SafeHttpServletRequest.wrap (aHttpRequest).getContentType ());
   }
 
   /**
@@ -923,19 +927,21 @@ public final class RequestHelper
     if (getHttpMethod (aHttpRequest) != EHttpMethod.POST)
       return false;
 
-    return isMultipartFormDataContent (ServletHelper.getRequestContentType (aHttpRequest));
+    return isMultipartFormDataContent (SafeHttpServletRequest.wrap (aHttpRequest).getContentType ());
   }
 
   @NonNull
   public static AcceptCharsetList getAcceptCharsets (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Check if a value is cached in the HTTP request
-    AcceptCharsetList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptCharsetList.class.getName ());
+    AcceptCharsetList aValue = aSafeHttpRequest.getAttributeAs (AcceptCharsetList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptCharset = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_CHARSET);
+      final String sAcceptCharset = aSafeHttpRequest.getHeader (CHttpHeader.ACCEPT_CHARSET);
       aValue = AcceptCharsetHandler.getAcceptCharsets (sAcceptCharset);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptCharsetList.class.getName (), aValue);
+      aSafeHttpRequest.setAttribute (AcceptCharsetList.class.getName (), aValue);
     }
     return aValue;
   }
@@ -943,13 +949,15 @@ public final class RequestHelper
   @NonNull
   public static AcceptEncodingList getAcceptEncodings (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Check if a value is cached in the HTTP request
-    AcceptEncodingList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptEncodingList.class.getName ());
+    AcceptEncodingList aValue = aSafeHttpRequest.getAttributeAs (AcceptEncodingList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptEncoding = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_ENCODING);
+      final String sAcceptEncoding = aSafeHttpRequest.getHeader (CHttpHeader.ACCEPT_ENCODING);
       aValue = AcceptEncodingHandler.getAcceptEncodings (sAcceptEncoding);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptEncodingList.class.getName (), aValue);
+      aSafeHttpRequest.setAttribute (AcceptEncodingList.class.getName (), aValue);
     }
     return aValue;
   }
@@ -957,13 +965,15 @@ public final class RequestHelper
   @NonNull
   public static AcceptLanguageList getAcceptLanguages (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Check if a value is cached in the HTTP request
-    AcceptLanguageList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptLanguageList.class.getName ());
+    AcceptLanguageList aValue = aSafeHttpRequest.getAttributeAs (AcceptLanguageList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptLanguage = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT_LANGUAGE);
+      final String sAcceptLanguage = aSafeHttpRequest.getHeader (CHttpHeader.ACCEPT_LANGUAGE);
       aValue = AcceptLanguageHandler.getAcceptLanguages (sAcceptLanguage);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptLanguageList.class.getName (), aValue);
+      aSafeHttpRequest.setAttribute (AcceptLanguageList.class.getName (), aValue);
     }
     return aValue;
   }
@@ -971,13 +981,15 @@ public final class RequestHelper
   @NonNull
   public static AcceptMimeTypeList getAcceptMimeTypes (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Check if a value is cached in the HTTP request
-    AcceptMimeTypeList aValue = ServletHelper.getRequestAttributeAs (aHttpRequest, AcceptMimeTypeList.class.getName ());
+    AcceptMimeTypeList aValue = aSafeHttpRequest.getAttributeAs (AcceptMimeTypeList.class.getName ());
     if (aValue == null)
     {
-      final String sAcceptMimeTypes = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.ACCEPT);
+      final String sAcceptMimeTypes = aSafeHttpRequest.getHeader (CHttpHeader.ACCEPT);
       aValue = AcceptMimeTypeHandler.getAcceptMimeTypes (sAcceptMimeTypes);
-      ServletHelper.setRequestAttribute (aHttpRequest, AcceptMimeTypeList.class.getName (), aValue);
+      aSafeHttpRequest.setAttribute (AcceptMimeTypeList.class.getName (), aValue);
     }
     return aValue;
   }
@@ -996,7 +1008,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.AUTHORIZATION);
+    final String sHeaderValue = SafeHttpServletRequest.wrap (aHttpRequest).getHeader (CHttpHeader.AUTHORIZATION);
     return HttpBasicAuth.getBasicAuthClientCredentials (sHeaderValue);
   }
 
@@ -1014,7 +1026,7 @@ public final class RequestHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    final String sHeaderValue = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.AUTHORIZATION);
+    final String sHeaderValue = SafeHttpServletRequest.wrap (aHttpRequest).getHeader (CHttpHeader.AUTHORIZATION);
     return HttpDigestAuth.getDigestAuthClientCredentials (sHeaderValue);
   }
 
@@ -1028,7 +1040,7 @@ public final class RequestHelper
   @Nullable
   public static String getHttpUserAgentStringFromRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
-    return ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.USER_AGENT);
+    return SafeHttpServletRequest.wrap (aHttpRequest).getHeader (CHttpHeader.USER_AGENT);
   }
 
   /**

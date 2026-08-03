@@ -32,7 +32,7 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsMap;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.CWeb;
@@ -48,8 +48,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public final class RequestMultipartHelper
 {
   /**
-   * The maximum size of a single upload request (in bytes). Applications that
-   * need to accept larger uploads should configure their own limit via
+   * The maximum size of a single upload request (in bytes). Applications that need to accept larger
+   * uploads should configure their own limit via
    * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#setSizeMax(long)}.
    */
   public static final long MAX_REQUEST_SIZE = 100 * CGlobal.BYTES_PER_MEGABYTE;
@@ -73,15 +73,15 @@ public final class RequestMultipartHelper
   {}
 
   /**
-   * Parse the provided servlet request as multipart, if the Content-Type starts
-   * with <code>multipart/form-data</code>.
+   * Parse the provided servlet request as multipart, if the Content-Type starts with
+   * <code>multipart/form-data</code>.
    *
    * @param aHttpRequest
-   *        Source HTTP request from which multipart/form-data (aka file
-   *        uploads) should be extracted.
+   *        Source HTTP request from which multipart/form-data (aka file uploads) should be
+   *        extracted.
    * @param aConsumer
-   *        A consumer that takes either {@link IFileItem} or
-   *        {@link IFileItem}[] or {@link String} or {@link String}[].
+   *        A consumer that takes either {@link IFileItem} or {@link IFileItem}[] or {@link String}
+   *        or {@link String}[].
    * @return {@link EChange#CHANGED} if something was added
    */
   @NonNull
@@ -99,6 +99,9 @@ public final class RequestMultipartHelper
       // It's not a multipart request
       return EChange.UNCHANGED;
     }
+
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // It is a multipart request!
     // Note: this handles only POST parameters!
     boolean bAddedFileUploadItems = false;
@@ -112,7 +115,7 @@ public final class RequestMultipartHelper
       if (aProgressListener != null)
         aUpload.setProgressListener (aProgressListener);
 
-      ServletHelper.setRequestCharacterEncoding (aHttpRequest, CWeb.CHARSET_REQUEST_OBJ);
+      aSafeHttpRequest.setCharacterEncoding (CWeb.CHARSET_REQUEST_OBJ);
 
       // Group all items with the same name together
       final ICommonsMap <String, ICommonsList <String>> aFormFields = new CommonsHashMap <> ();
@@ -135,8 +138,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (String or String[])
         final ICommonsList <String> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull ()
-                                                   : ArrayHelper.createArray (aValues, String.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull () : ArrayHelper.createArray (aValues,
+                                                                                                          String.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
       // set all form files (potentially overwriting form fields with the same
@@ -145,8 +148,8 @@ public final class RequestMultipartHelper
       {
         // Convert list of String to value (IFileItem or IFileItem[])
         final ICommonsList <IFileItem> aValues = aEntry.getValue ();
-        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull ()
-                                                   : ArrayHelper.createArray (aValues, IFileItem.class);
+        final Object aValue = aValues.size () == 1 ? aValues.getFirstOrNull () : ArrayHelper.createArray (aValues,
+                                                                                                          IFileItem.class);
         aConsumer.accept (aEntry.getKey (), aValue);
       }
       // Parsing complex file upload succeeded -> do not use standard scan for

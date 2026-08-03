@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.helger.http.EHttpMethod;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 
 /**
  * Test class for class {@link MockHttpServletRequest}.
@@ -39,26 +39,28 @@ public final class MockHttpServletRequestTest
     try
     {
       final MockHttpServletRequest c = new MockHttpServletRequest (aSC, EHttpMethod.GET);
-
       c.setAllPaths (sContextPath + "/servlet?x=y");
-      assertNull (c.getScheme ());
-      assertNull (c.getServerName ());
-      assertEquals (-1, c.getServerPort ());
-      assertEquals (sContextPath, ServletHelper.getRequestContextPath (c));
-      assertEquals ("/servlet", ServletHelper.getRequestServletPath (c));
-      assertEquals ("", ServletHelper.getRequestPathInfo (c));
-      assertEquals (sContextPath + "/servlet", ServletHelper.getRequestRequestURI (c));
-      assertEquals ("x=y", ServletHelper.getRequestQueryString (c));
+
+      final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (c);
+
+      assertNull (aSafeHttpRequest.getScheme ());
+      assertNull (aSafeHttpRequest.getServerName ());
+      assertEquals (-1, aSafeHttpRequest.getServerPort ());
+      assertEquals (sContextPath, aSafeHttpRequest.getContextPath ());
+      assertEquals ("/servlet", aSafeHttpRequest.getServletPath ());
+      assertEquals ("", aSafeHttpRequest.getPathInfo ());
+      assertEquals (sContextPath + "/servlet", aSafeHttpRequest.getRequestURI ());
+      assertEquals ("x=y", aSafeHttpRequest.getQueryString ());
 
       c.setAllPaths (sContextPath + "/servlet/path/in/servlet#anchor");
       assertNull (c.getScheme ());
       assertNull (c.getServerName ());
       assertEquals (-1, c.getServerPort ());
-      assertEquals (sContextPath, ServletHelper.getRequestContextPath (c));
-      assertEquals ("/servlet", ServletHelper.getRequestServletPath (c));
-      assertEquals ("/path/in/servlet", ServletHelper.getRequestPathInfo (c));
-      assertEquals (sContextPath + "/servlet/path/in/servlet", ServletHelper.getRequestRequestURI (c));
-      assertNull (ServletHelper.getRequestQueryString (c));
+      assertEquals (sContextPath, aSafeHttpRequest.getContextPath ());
+      assertEquals ("/servlet", aSafeHttpRequest.getServletPath ());
+      assertEquals ("/path/in/servlet", aSafeHttpRequest.getPathInfo ());
+      assertEquals (sContextPath + "/servlet/path/in/servlet", aSafeHttpRequest.getRequestURI ());
+      assertNull (aSafeHttpRequest.getQueryString ());
     }
     finally
     {

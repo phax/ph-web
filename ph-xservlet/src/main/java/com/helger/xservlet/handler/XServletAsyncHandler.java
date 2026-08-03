@@ -27,6 +27,7 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
 import com.helger.servlet.async.IAsyncServletRunner;
@@ -162,7 +163,7 @@ public final class XServletAsyncHandler implements IXServletHandler
                          @NonNull final EHttpMethod eHttpMethod,
                          @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
-    if (m_aAsyncSpec.isAsynchronous () && aHttpRequest.isAsyncSupported ())
+    if (m_aAsyncSpec.isAsynchronous () && SafeHttpServletRequest.wrap (aHttpRequest).isAsyncSupported ())
     {
       // Run asynchronously
 

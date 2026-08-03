@@ -20,8 +20,9 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,26 +40,26 @@ public class UAProfileHeaderProviderHttpServletRequest implements IUAProfileHead
 
   public UAProfileHeaderProviderHttpServletRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
-    m_aHttpRequest = aHttpRequest;
+    m_aHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
   }
 
   @NonNull
   @ReturnsMutableCopy
   public ICommonsList <String> getAllHeaderNames ()
   {
-    return ServletHelper.getRequestHeaderNames (m_aHttpRequest);
+    return new CommonsArrayList <> (m_aHttpRequest.getHeaderNames ());
   }
 
   @NonNull
   @ReturnsMutableCopy
   public ICommonsList <String> getHeaders (@Nullable final String sName)
   {
-    return ServletHelper.getRequestHeaders (m_aHttpRequest, sName);
+    return new CommonsArrayList <> (m_aHttpRequest.getHeaders (sName));
   }
 
   @Nullable
   public String getHeaderValue (@Nullable final String sHeader)
   {
-    return ServletHelper.getRequestHeader (m_aHttpRequest, sHeader);
+    return m_aHttpRequest.getHeader (sHeader);
   }
 }

@@ -41,7 +41,6 @@ import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.http.EHttpMethod;
 import com.helger.mime.CMimeType;
-import com.helger.servlet.ServletHelper;
 
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -198,7 +197,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     final String sContentType = getContentType ();
     return sContentType != null &&
            sContentType.contains (FORM_CONTENT_TYPE) &&
-           METHOD_POST.equalsIgnoreCase (ServletHelper.getRequestMethod (this));
+           METHOD_POST.equalsIgnoreCase (getMethod ());
   }
 
   private static class ParamNameEnumeration implements Enumeration <String>

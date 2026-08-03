@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.useragent.IUserAgent;
 import com.helger.useragent.UserAgent;
@@ -60,7 +60,8 @@ public final class UAServletHelper
   @Nullable
   public static IUserAgent getUserAgent (@NonNull final HttpServletRequest aHttpRequest)
   {
-    final Object aAttr = ServletHelper.getRequestAttribute (aHttpRequest, IUserAgent.class.getName ());
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+    final Object aAttr = aSafeHttpRequest.getAttribute (IUserAgent.class.getName ());
     try
     {
       IUserAgent aUserAgent = (IUserAgent) aAttr;
@@ -75,7 +76,7 @@ public final class UAServletHelper
             LOGGER.debug ("No user agent was passed in the request!");
           aUserAgent = new UserAgent ("", new UserAgentElementList ());
         }
-        ServletHelper.setRequestAttribute (aHttpRequest, IUserAgent.class.getName (), aUserAgent);
+        aSafeHttpRequest.setAttribute (IUserAgent.class.getName (), aUserAgent);
       }
       return aUserAgent;
     }
@@ -113,12 +114,14 @@ public final class UAServletHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
-    UAProfile aUAProfile = ServletHelper.getRequestAttributeAs (aHttpRequest, UAProfile.class.getName ());
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
+    UAProfile aUAProfile = aSafeHttpRequest.getAttributeAs (UAProfile.class.getName ());
     if (aUAProfile == null)
     {
       // Extract HTTP header from request
       aUAProfile = UAProfileDatabase.getParsedUAProfile (new UAProfileHeaderProviderHttpServletRequest (aHttpRequest));
-      ServletHelper.setRequestAttribute (aHttpRequest, UAProfile.class.getName (), aUAProfile);
+      aSafeHttpRequest.setAttribute (UAProfile.class.getName (), aUAProfile);
     }
     return aUAProfile;
   }

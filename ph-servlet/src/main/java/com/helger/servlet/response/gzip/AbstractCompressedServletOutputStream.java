@@ -29,7 +29,7 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.http.CHttpHeader;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.io.AbstractServletOutputStream;
 import com.helger.servlet.response.ResponseHelper;
 
@@ -64,7 +64,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
                                                 final long nContentLength,
                                                 @Nonnegative final long nMinCompressSize) throws IOException
   {
-    m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    m_aHttpRequest = SafeHttpServletRequest.wrap (ValueEnforcer.notNull (aHttpRequest, "HttpRequest"));
     m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
     m_sContentEncoding = ValueEnforcer.notEmpty (sContentEncoding, "ContentEncoding");
     m_nContentLength = nContentLength;
@@ -180,8 +180,7 @@ public abstract class AbstractCompressedServletOutputStream extends AbstractServ
   {
     if (!m_bClosed)
     {
-      final Object aIncluded = ServletHelper.getRequestAttribute (m_aHttpRequest,
-                                                                  RequestDispatcher.INCLUDE_REQUEST_URI);
+      final Object aIncluded = m_aHttpRequest.getAttribute (RequestDispatcher.INCLUDE_REQUEST_URI);
       if (aIncluded != null)
       {
         if (CompressFilterSettings.isDebugModeEnabled ())

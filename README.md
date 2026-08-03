@@ -67,6 +67,7 @@ v11.4.3 - work in progress
 * Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods. Use `SafeHttpServletRequest.wrap (...)` to wrap incoming requests without double wrapping.
 * Incoming requests are now wrapped in a `SafeHttpServletRequest` when a request web scope is created (`WebScopeManager.onRequestBegin`) and when re-obtained from the async context (`ExtAsyncContext.getRequest`). This avoids "The request object has been recycled" errors e.g. from the long running request monitor.
 * Deprecated the `ServletHelper.getRequestXXX` / `setRequestAttribute` workaround methods in favor of `SafeHttpServletRequest`.
+* Migrated all internal direct `HttpServletRequest` accessor usages (`RequestHelper`, `RequestLogger`, `RequestParamMap`, `SessionHelper`, `UAServletHelper`, the file-upload `ServletRequestContext`, the gzip response wrappers, and the XServlet handlers/filters) to route through `SafeHttpServletRequest`.
 
 v11.4.2 - 2026-07-17
 * Updated to httpclient 5.6.2

@@ -33,7 +33,6 @@ import com.helger.http.EHttpVersion;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.scope.IRequestScope;
 import com.helger.scope.mgr.ScopeManager;
-import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.IRequestParamMap;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.url.ISimpleURL;
@@ -113,7 +112,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @CheckForSigned
   default long getContentLength ()
   {
-    return RequestHelper.getContentLength (getRequest ());
+    return getRequest ().getContentLengthLong ();
   }
 
   /**
@@ -291,7 +290,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default Cookie [] getCookies ()
   {
-    return ServletHelper.getRequestCookies (getRequest ());
+    return getRequest ().getCookies ();
   }
 
   /**
@@ -303,7 +302,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    */
   default String getMethod ()
   {
-    return ServletHelper.getRequestMethod (getRequest ());
+    return getRequest ().getMethod ();
   }
 
   /**
@@ -372,7 +371,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    */
   default String getQueryString ()
   {
-    return ServletHelper.getRequestQueryString (getRequest ());
+    return getRequest ().getQueryString ();
   }
 
   /**
@@ -546,7 +545,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @NonNull
   default String getServletPath ()
   {
-    return ServletHelper.getRequestServletPath (getRequest ());
+    return getRequest ().getServletPath ();
   }
 
   /**
@@ -570,7 +569,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   @Nullable
   default HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return ServletHelper.getRequestSession (getRequest (), bCreateIfNotExisting);
+    return getRequest ().getSession (bCreateIfNotExisting);
   }
 
   /**

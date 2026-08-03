@@ -33,7 +33,7 @@ import com.helger.http.CHttp;
 import com.helger.http.CHttpHeader;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.response.UnifiedResponse;
 import com.helger.statistics.api.IMutableStatisticsHandlerCounter;
 import com.helger.statistics.impl.StatisticsManager;
@@ -110,14 +110,15 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
                                  @NonNull final IRequestWebScopeWithoutResponse aRequestScope,
                                  @NonNull final UnifiedResponse aUnifiedResponse)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final LocalDateTime aLastModification = m_aSimpleHandler.getLastModificationDateTime (aRequestScope);
     if (aLastModification != null)
     {
       m_aStatsHasLastModification.increment ();
 
       // Get the If-Modified-Since date header
-      final long nRequestIfModifiedSince = ServletHelper.getRequestDateHeader (aHttpRequest,
-                                                                               CHttpHeader.IF_MODIFIED_SINCE);
+      final long nRequestIfModifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_MODIFIED_SINCE);
       if (nRequestIfModifiedSince >= 0)
       {
         final LocalDateTime aRequestIfModifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfModifiedSince);
@@ -133,8 +134,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         m_aStatsModifiedIfModifiedSince.increment ();
       }
       // Get the If-Unmodified-Since date header
-      final long nRequestIfUnmodifiedSince = ServletHelper.getRequestDateHeader (aHttpRequest,
-                                                                                 CHttpHeader.IF_UNMODIFIED_SINCE);
+      final long nRequestIfUnmodifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_UNMODIFIED_SINCE);
       if (nRequestIfUnmodifiedSince >= 0)
       {
         final LocalDateTime aRequestIfUnmodifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfUnmodifiedSince);
@@ -160,7 +160,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
       m_aStatsHasETag.increment ();
 
       // get the request ETag
-      final String sRequestETags = ServletHelper.getRequestHeader (aHttpRequest, CHttpHeader.IF_NON_MATCH);
+      final String sRequestETags = aSafeHttpRequest.getHeader (CHttpHeader.IF_NON_MATCH);
       if (StringHelper.isNotEmpty (sRequestETags))
       {
         // Request header may contain several ETag values

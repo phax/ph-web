@@ -33,8 +33,8 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.helper.CollectionSort;
 import com.helger.http.header.HttpHeaderMap;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.servlet.ServletHelper;
 import com.helger.servlet.annotation.IsOffline;
 
 import jakarta.servlet.http.Cookie;
@@ -65,7 +65,11 @@ public final class RequestLogger
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
+    // Note: use the original request here, because the offline marker annotation
+    // is bound to its concrete class (a wrapper would hide it)
     if (IS_OFFLINE_CACHE.hasAnnotation (aHttpRequest))
     {
       // Special handling, because otherwise exceptions would be thrown
@@ -75,36 +79,36 @@ public final class RequestLogger
     {
       try
       {
-        ret.put ("AuthType", aHttpRequest.getAuthType ());
-        ret.put ("CharacterEncoding", aHttpRequest.getCharacterEncoding ());
-        ret.put ("ContentLength", Long.toString (RequestHelper.getContentLength (aHttpRequest)));
-        ret.put ("ContentType", aHttpRequest.getContentType ());
-        ret.put ("ContextPath", ServletHelper.getRequestContextPath (aHttpRequest));
+        ret.put ("AuthType", aSafeHttpRequest.getAuthType ());
+        ret.put ("CharacterEncoding", aSafeHttpRequest.getCharacterEncoding ());
+        ret.put ("ContentLength", Long.toString (aSafeHttpRequest.getContentLength ()));
+        ret.put ("ContentType", aSafeHttpRequest.getContentType ());
+        ret.put ("ContextPath", aSafeHttpRequest.getContextPath ());
         ret.put ("ContextPath2", ServletContextPathHolder.getContextPathOrNull ());
-        ret.put ("LocalAddr", aHttpRequest.getLocalAddr ());
-        ret.put ("LocalName", aHttpRequest.getLocalName ());
-        ret.put ("LocalPort", Integer.toString (aHttpRequest.getLocalPort ()));
-        ret.put ("Method", ServletHelper.getRequestMethod (aHttpRequest));
-        ret.put ("PathInfo", ServletHelper.getRequestPathInfo (aHttpRequest));
+        ret.put ("LocalAddr", aSafeHttpRequest.getLocalAddr ());
+        ret.put ("LocalName", aSafeHttpRequest.getLocalName ());
+        ret.put ("LocalPort", Integer.toString (aSafeHttpRequest.getLocalPort ()));
+        ret.put ("Method", aSafeHttpRequest.getMethod ());
+        ret.put ("PathInfo", aSafeHttpRequest.getPathInfo ());
         ret.put ("PathInfo2", RequestHelper.getPathInfo (aHttpRequest));
-        ret.put ("PathTranslated", aHttpRequest.getPathTranslated ());
-        ret.put ("Protocol", ServletHelper.getRequestProtocol (aHttpRequest));
-        ret.put ("QueryString", ServletHelper.getRequestQueryString (aHttpRequest));
-        ret.put ("RemoteAddr", aHttpRequest.getRemoteAddr ());
-        ret.put ("RemoteHost", aHttpRequest.getRemoteHost ());
-        ret.put ("RemotePort", Integer.toString (aHttpRequest.getRemotePort ()));
-        ret.put ("RemoteUser", aHttpRequest.getRemoteUser ());
-        ret.put ("RequestedSessionId", aHttpRequest.getRequestedSessionId ());
-        ret.put ("RequestURI", ServletHelper.getRequestRequestURI (aHttpRequest));
+        ret.put ("PathTranslated", aSafeHttpRequest.getPathTranslated ());
+        ret.put ("Protocol", aSafeHttpRequest.getProtocol ());
+        ret.put ("QueryString", aSafeHttpRequest.getQueryString ());
+        ret.put ("RemoteAddr", aSafeHttpRequest.getRemoteAddr ());
+        ret.put ("RemoteHost", aSafeHttpRequest.getRemoteHost ());
+        ret.put ("RemotePort", Integer.toString (aSafeHttpRequest.getRemotePort ()));
+        ret.put ("RemoteUser", aSafeHttpRequest.getRemoteUser ());
+        ret.put ("RequestedSessionId", aSafeHttpRequest.getRequestedSessionId ());
+        ret.put ("RequestURI", aSafeHttpRequest.getRequestURI ());
         ret.put ("RequestURI2", RequestHelper.getRequestURIDecoded (aHttpRequest));
         ret.put ("RequestURI3", RequestHelper.getRequestURIEncoded (aHttpRequest));
-        ret.put ("RequestURL", ServletHelper.getRequestRequestURL (aHttpRequest).toString ());
+        ret.put ("RequestURL", aSafeHttpRequest.getRequestURL ().toString ());
         ret.put ("RequestURL2", RequestHelper.getRequestURLDecoded (aHttpRequest).toString ());
         ret.put ("RequestURL3", RequestHelper.getRequestURLEncoded (aHttpRequest).toString ());
-        ret.put ("Scheme", ServletHelper.getRequestScheme (aHttpRequest));
-        ret.put ("ServerName", ServletHelper.getRequestServerName (aHttpRequest));
-        ret.put ("ServerPort", Integer.toString (ServletHelper.getRequestServerPort (aHttpRequest)));
-        ret.put ("ServletPath", ServletHelper.getRequestServletPath (aHttpRequest));
+        ret.put ("Scheme", aSafeHttpRequest.getScheme ());
+        ret.put ("ServerName", aSafeHttpRequest.getServerName ());
+        ret.put ("ServerPort", Integer.toString (aSafeHttpRequest.getServerPort ()));
+        ret.put ("ServletPath", aSafeHttpRequest.getServletPath ());
       }
       catch (final RuntimeException ex)
       {
@@ -113,7 +117,7 @@ public final class RequestLogger
       }
     }
 
-    final HttpSession aSession = ServletHelper.getRequestSession (aHttpRequest, false);
+    final HttpSession aSession = aSafeHttpRequest.getSession (false);
     if (aSession != null)
       ret.put ("SessionID", aSession.getId ());
     return ret;
@@ -137,10 +141,12 @@ public final class RequestLogger
   @NonNull
   public static ICommonsOrderedMap <String, String> getRequestParameterMap (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final ICommonsOrderedMap <String, String> ret = new CommonsLinkedHashMap <> ();
     try
     {
-      for (final Map.Entry <String, String []> aEntry : CollectionSort.getSortedByKey (aHttpRequest.getParameterMap ())
+      for (final Map.Entry <String, String []> aEntry : CollectionSort.getSortedByKey (aSafeHttpRequest.getParameterMap ())
                                                                       .entrySet ())
         ret.put (aEntry.getKey (), StringImplode.getImploded (", ", aEntry.getValue ()));
     }
@@ -180,7 +186,8 @@ public final class RequestLogger
                                                 @NonNull final StringBuilder aSB)
   {
     aSB.append ("Cookies:\n");
-    final Cookie [] aCookies = ServletHelper.getRequestCookies (aHttpRequest);
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+    final Cookie [] aCookies = aSafeHttpRequest.getCookies ();
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
         aSB.append ("  ").append (aCookie.getName ()).append (" = ").append (getCookieValue (aCookie)).append ('\n');

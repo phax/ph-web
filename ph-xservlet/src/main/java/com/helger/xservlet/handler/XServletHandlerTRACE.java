@@ -26,7 +26,7 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.mime.EMimeContentType;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.scope.IRequestWebScope;
 
@@ -56,11 +56,12 @@ public class XServletHandlerTRACE implements IXServletHandler
                          @NonNull final EHttpMethod eHTTPMethod,
                          @NonNull final IRequestWebScope aRequestScope) throws ServletException, IOException
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
     final StringBuilder aSB = new StringBuilder ().append (EHttpMethod.TRACE.getName ())
                                                   .append (' ')
-                                                  .append (ServletHelper.getRequestRequestURI (aHttpRequest))
+                                                  .append (aSafeHttpRequest.getRequestURI ())
                                                   .append (' ')
-                                                  .append (aHttpRequest.getProtocol ())
+                                                  .append (aSafeHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);
     RequestHelper.forEachRequestHeader (aHttpRequest,
                                         (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)

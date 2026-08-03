@@ -32,7 +32,7 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.http.CHttpHeader;
 import com.helger.http.header.specific.AcceptEncodingHandler;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.response.ResponseHelper;
 import com.helger.servlet.response.StatusAwareHttpResponseWrapper;
 
@@ -65,7 +65,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
                                             @NonNull @Nonempty final String sContentEncoding)
   {
     super (aHttpResponse);
-    m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    m_aHttpRequest = SafeHttpServletRequest.wrap (ValueEnforcer.notNull (aHttpRequest, "HttpRequest"));
     m_sContentEncoding = ValueEnforcer.notEmpty (sContentEncoding, "ContentEncoding");
   }
 
@@ -314,7 +314,7 @@ public abstract class AbstractCompressedResponseWrapper extends StatusAwareHttpR
                    ", " +
                    m_nMinCompressSize +
                    ") on " +
-                   ServletHelper.getRequestRequestURI (m_aHttpRequest));
+                   m_aHttpRequest.getRequestURI ());
 
     return createCompressedOutputStream (m_aHttpRequest,
                                          (HttpServletResponse) getResponse (),

@@ -19,6 +19,7 @@ package com.helger.servlet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.reflection.GenericReflection;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
@@ -96,7 +98,19 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   protected SafeHttpServletRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
     super (aHttpRequest);
+    ValueEnforcer.isFalse (() -> aHttpRequest instanceof SafeHttpServletRequest,
+                           "The wrapped HttpServletRequest must nor be a Safe one");
     m_aSrc = aHttpRequest;
+  }
+
+  /**
+   * Access the internally wrapped {@link HttpServletRequest}.
+   */
+  @Override
+  @NonNull
+  public HttpServletRequest getRequest ()
+  {
+    return m_aSrc;
   }
 
   private static void _warn (@NonNull final String sMsg, @NonNull final RuntimeException ex)
@@ -1128,6 +1142,12 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     {
       _warn ("Failed to set character encoding '" + sEncoding + "' of HTTP request", ex);
     }
+  }
+
+  public void setCharacterEncoding (@Nullable final Charset aCharset)
+  {
+    if (aCharset != null)
+      setCharacterEncoding (aCharset.name ());
   }
 
   @Override

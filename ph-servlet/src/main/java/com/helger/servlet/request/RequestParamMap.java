@@ -36,6 +36,7 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.commons.ICommonsOrderedSet;
+import com.helger.servlet.SafeHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -336,7 +337,7 @@ public class RequestParamMap implements IRequestParamMap
   public static IRequestParamMap create (@NonNull final Map <String, Object> aAttrCont)
   {
     final RequestParamMap ret = new RequestParamMap ();
-    for (final Map.Entry <String, Object> aEntry : aAttrCont.entrySet ())
+    for (final var aEntry : aAttrCont.entrySet ())
       ret.put (aEntry.getKey (), aEntry.getValue ());
     return ret;
   }
@@ -344,8 +345,10 @@ public class RequestParamMap implements IRequestParamMap
   @NonNull
   public static IRequestParamMap createFromRequest (@NonNull final HttpServletRequest aHttpRequest)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     final RequestParamMap ret = new RequestParamMap ();
-    for (final Map.Entry <String, String []> aEntry : aHttpRequest.getParameterMap ().entrySet ())
+    for (final var aEntry : aSafeHttpRequest.getParameterMap ().entrySet ())
       if (aEntry.getValue ().length > 0)
         ret.put (aEntry.getKey (), aEntry.getValue ()[0]);
     return ret;

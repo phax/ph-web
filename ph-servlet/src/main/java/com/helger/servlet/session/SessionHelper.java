@@ -29,7 +29,7 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.reflection.GenericReflection;
 import com.helger.base.state.EChange;
 import com.helger.collection.base.EmptyEnumeration;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -114,8 +114,10 @@ public final class SessionHelper
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Is there any existing session?
-    final HttpSession aSession = ServletHelper.getRequestSession (aHttpRequest, false);
+    final HttpSession aSession = aSafeHttpRequest.getSession (false);
     if (aSession != null)
     {
       try
@@ -131,6 +133,6 @@ public final class SessionHelper
     }
 
     // Create the new session
-    return ServletHelper.getRequestSession (aHttpRequest, true);
+    return aSafeHttpRequest.getSession (true);
   }
 }

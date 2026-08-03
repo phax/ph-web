@@ -65,7 +65,6 @@ import com.helger.http.header.HttpHeaderMap;
 import com.helger.http.header.specific.AcceptCharsetHandler;
 import com.helger.mime.IMimeType;
 import com.helger.network.port.SchemeDefaultPortMapper;
-import com.helger.servlet.ServletHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.text.locale.IHasLocale;
 import com.helger.url.SimpleURLHelper;
@@ -1005,7 +1004,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public StringBuffer getRequestURL ()
   {
     return new StringBuffer ().append (RequestHelper.getFullServerName (m_sScheme, m_sServerName, m_nServerPort))
-                              .append (ServletHelper.getRequestRequestURI (this));
+                              .append (getRequestURI ());
   }
 
   @NonNull

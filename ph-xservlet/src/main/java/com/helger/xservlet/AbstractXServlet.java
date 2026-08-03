@@ -41,7 +41,7 @@ import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.mgr.ScopeManager;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.StaticServerInfo;
 import com.helger.servlet.http.CountingOnlyHttpServletResponse;
@@ -448,8 +448,11 @@ public abstract class AbstractXServlet extends HttpServlet
     // Increase per servlet invocation
     m_aStatusMgr.onServletInvocation (getClass ());
 
+    // Wrap to guard against "recycled facade" errors
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Ensure a valid HTTP version is provided
-    final String sProtocol = aHttpRequest.getProtocol ();
+    final String sProtocol = aSafeHttpRequest.getProtocol ();
     final EHttpVersion eHttpVersion = EHttpVersion.getFromNameOrNull (sProtocol);
     if (eHttpVersion == null)
     {
@@ -461,7 +464,7 @@ public abstract class AbstractXServlet extends HttpServlet
     m_aCounterRequestsPerVersionAccepted.increment (eHttpVersion.getName ());
 
     // Ensure a valid HTTP method is provided
-    final String sMethod = ServletHelper.getRequestMethod (aHttpRequest);
+    final String sMethod = aSafeHttpRequest.getMethod ();
     final EHttpMethod eHttpMethod = EHttpMethod.getFromNameOrNull (sMethod);
     if (eHttpMethod == null)
     {
@@ -478,9 +481,9 @@ public abstract class AbstractXServlet extends HttpServlet
     if (FIRST_REQUEST.getAndSet (false) && !StaticServerInfo.isSet ())
     {
       // First set the default web server info
-      StaticServerInfo.init (aHttpRequest.getScheme (),
-                             aHttpRequest.getServerName (),
-                             aHttpRequest.getServerPort (),
+      StaticServerInfo.init (aSafeHttpRequest.getScheme (),
+                             aSafeHttpRequest.getServerName (),
+                             aSafeHttpRequest.getServerPort (),
                              ServletContextPathHolder.getContextPath ());
     }
     // Create a wrapper around the Servlet Response that saves the status code

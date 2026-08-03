@@ -24,7 +24,7 @@ import org.jspecify.annotations.Nullable;
 import com.helger.annotation.CheckForSigned;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
-import com.helger.servlet.request.RequestHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.web.fileupload.IRequestContext;
 
 import jakarta.servlet.ServletInputStream;
@@ -32,8 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- * Provides access to the request information needed for a request made to an
- * HTTP servlet.
+ * Provides access to the request information needed for a request made to an HTTP servlet.
  * </p>
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
@@ -51,12 +50,12 @@ public class ServletRequestContext implements IRequestContext
    * Construct a context for this request.
    *
    * @param aHttpRequest
-   *        The request to which this context applies. May not be
-   *        <code>null</code>.
+   *        The request to which this context applies. May not be <code>null</code>.
    */
   public ServletRequestContext (@NonNull final HttpServletRequest aHttpRequest)
   {
-    m_aHttpRequest = ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
+    m_aHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
   }
 
   @Nullable
@@ -74,7 +73,7 @@ public class ServletRequestContext implements IRequestContext
   @CheckForSigned
   public long getContentLength ()
   {
-    return RequestHelper.getContentLength (m_aHttpRequest);
+    return m_aHttpRequest.getContentLengthLong ();
   }
 
   @NonNull

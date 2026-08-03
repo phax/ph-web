@@ -51,7 +51,7 @@ import com.helger.io.resource.IReadableResource;
 import com.helger.io.resourceprovider.DefaultResourceProvider;
 import com.helger.io.resourceprovider.IReadableResourceProvider;
 import com.helger.servlet.ServletContextPathHolder;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.spec.IServletContext310To400Migration;
 import com.helger.xml.util.mime.MimeTypeInfoManager;
 
@@ -434,8 +434,10 @@ public class MockServletContext implements IServletContext310To400Migration
   {
     ValueEnforcer.notNull (aHttpRequest, "HttpRequest");
 
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
+
     // Find matching servlet
-    final String sServletPath = ServletHelper.getRequestServletPath (aHttpRequest);
+    final String sServletPath = aSafeHttpRequest.getServletPath ();
     final Servlet aServlet = m_aServletPool.getServletOfPath (sServletPath);
     if (aServlet == null)
     {

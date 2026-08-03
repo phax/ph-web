@@ -29,7 +29,7 @@ import com.helger.base.string.StringHelper;
 import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsHashSet;
 import com.helger.collection.commons.ICommonsSet;
-import com.helger.servlet.ServletHelper;
+import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.filter.AbstractHttpServletFilter;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.servlet.response.ResponseHelper;
@@ -94,10 +94,11 @@ public class LoggingFilter extends AbstractHttpServletFilter
   @OverrideOnDemand
   protected String getRequestDescription (@NonNull final LoggingHttpServletRequestWrapper aRequestWrapper)
   {
+    final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aRequestWrapper);
     final LoggingRequest aLoggingRequest = new LoggingRequest ();
-    aLoggingRequest.setSender (aRequestWrapper.getLocalAddr ());
-    aLoggingRequest.setMethod (ServletHelper.getRequestMethod (aRequestWrapper));
-    aLoggingRequest.setPath (ServletHelper.getRequestRequestURI (aRequestWrapper));
+    aLoggingRequest.setSender (aSafeHttpRequest.getLocalAddr ());
+    aLoggingRequest.setMethod (aSafeHttpRequest.getMethod ());
+    aLoggingRequest.setPath (aSafeHttpRequest.getRequestURI ());
     aLoggingRequest.setParams (aRequestWrapper.isFormPost () ? null : aRequestWrapper.getParameters ());
     aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (aRequestWrapper));
     final String sContent = aRequestWrapper.getContent ();
@@ -148,7 +149,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
     if (bLog)
     {
       // Check for excluded path
-      final String sRequestURI = ServletHelper.getRequestRequestURI (aHttpRequest);
+      final String sRequestURI = SafeHttpServletRequest.wrap (aHttpRequest).getRequestURI ();
       for (final String sExcludedPath : m_aExcludedPaths)
         if (sRequestURI.startsWith (sExcludedPath))
         {

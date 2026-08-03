@@ -212,8 +212,10 @@
           </signaturesArtifacts>
           <excludes>
             <!-- uses BufferedReader as return type -->
+            <exclude>**/SafeHttpServletRequest.class</exclude>
             <exclude>**/LoggingHttpServletRequestWrapper.class</exclude>
             <exclude>**/MockHttpServletRequest.class</exclude>
+            
             <exclude>**/MailTransport.class</exclude>
             <exclude>**/samples/*</exclude>
             <!-- uses reflection -->

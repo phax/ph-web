@@ -86,7 +86,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   private static final Logger LOGGER = LoggerFactory.getLogger (SafeHttpServletRequest.class);
 
   /** The wrapped request, typed as HttpServletRequest to avoid repeated casts. */
-  private final HttpServletRequest m_aSrc;
+  private final HttpServletRequest m_aDelegate;
 
   /**
    * Constructor. Consider using {@link #wrap(HttpServletRequest)} instead, to avoid double
@@ -100,7 +100,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     super (aHttpRequest);
     ValueEnforcer.isFalse (() -> aHttpRequest instanceof SafeHttpServletRequest,
                            "The wrapped HttpServletRequest must nor be a Safe one");
-    m_aSrc = aHttpRequest;
+    m_aDelegate = aHttpRequest;
   }
 
   /**
@@ -110,7 +110,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   @NonNull
   public HttpServletRequest getRequest ()
   {
-    return m_aSrc;
+    return m_aDelegate;
   }
 
   private static void _warn (@NonNull final String sMsg, @NonNull final RuntimeException ex)
@@ -138,7 +138,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getAttribute (sName);
+      return m_aDelegate.getAttribute (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -159,7 +159,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getAttributeNames ();
+      return m_aDelegate.getAttributeNames ();
     }
     catch (final RuntimeException ex)
     {
@@ -174,7 +174,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getCharacterEncoding ();
+      return m_aDelegate.getCharacterEncoding ();
     }
     catch (final RuntimeException ex)
     {
@@ -189,7 +189,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getContentLength ();
+      return m_aDelegate.getContentLength ();
     }
     catch (final RuntimeException ex)
     {
@@ -205,7 +205,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     try
     {
       // Support > 2GB!!!
-      return m_aSrc.getContentLengthLong ();
+      return m_aDelegate.getContentLengthLong ();
     }
     catch (final RuntimeException ex)
     {
@@ -220,7 +220,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getContentType ();
+      return m_aDelegate.getContentType ();
     }
     catch (final RuntimeException ex)
     {
@@ -235,7 +235,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getParameter (sName);
+      return m_aDelegate.getParameter (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -250,7 +250,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getParameterNames ();
+      return m_aDelegate.getParameterNames ();
     }
     catch (final RuntimeException ex)
     {
@@ -265,7 +265,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getParameterValues (sName);
+      return m_aDelegate.getParameterValues (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -280,7 +280,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getParameterMap ();
+      return m_aDelegate.getParameterMap ();
     }
     catch (final RuntimeException ex)
     {
@@ -295,7 +295,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getProtocol ();
+      return m_aDelegate.getProtocol ();
     }
     catch (final RuntimeException ex)
     {
@@ -310,7 +310,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getScheme ();
+      return m_aDelegate.getScheme ();
     }
     catch (final RuntimeException ex)
     {
@@ -325,7 +325,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getServerName ();
+      return m_aDelegate.getServerName ();
     }
     catch (final RuntimeException ex)
     {
@@ -340,7 +340,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getServerPort ();
+      return m_aDelegate.getServerPort ();
     }
     catch (final RuntimeException ex)
     {
@@ -355,7 +355,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRemoteAddr ();
+      return m_aDelegate.getRemoteAddr ();
     }
     catch (final RuntimeException ex)
     {
@@ -370,7 +370,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRemoteHost ();
+      return m_aDelegate.getRemoteHost ();
     }
     catch (final RuntimeException ex)
     {
@@ -384,7 +384,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      m_aSrc.setAttribute (sName, aValue);
+      m_aDelegate.setAttribute (sName, aValue);
     }
     catch (final RuntimeException ex)
     {
@@ -398,7 +398,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      m_aSrc.removeAttribute (sName);
+      m_aDelegate.removeAttribute (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -412,7 +412,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getLocale ();
+      return m_aDelegate.getLocale ();
     }
     catch (final RuntimeException ex)
     {
@@ -427,7 +427,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getLocales ();
+      return m_aDelegate.getLocales ();
     }
     catch (final RuntimeException ex)
     {
@@ -441,7 +441,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isSecure ();
+      return m_aDelegate.isSecure ();
     }
     catch (final RuntimeException ex)
     {
@@ -456,7 +456,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRemotePort ();
+      return m_aDelegate.getRemotePort ();
     }
     catch (final RuntimeException ex)
     {
@@ -471,7 +471,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getLocalName ();
+      return m_aDelegate.getLocalName ();
     }
     catch (final RuntimeException ex)
     {
@@ -486,7 +486,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getLocalAddr ();
+      return m_aDelegate.getLocalAddr ();
     }
     catch (final RuntimeException ex)
     {
@@ -501,7 +501,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getLocalPort ();
+      return m_aDelegate.getLocalPort ();
     }
     catch (final RuntimeException ex)
     {
@@ -516,7 +516,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getServletContext ();
+      return m_aDelegate.getServletContext ();
     }
     catch (final RuntimeException ex)
     {
@@ -530,7 +530,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isAsyncStarted ();
+      return m_aDelegate.isAsyncStarted ();
     }
     catch (final RuntimeException ex)
     {
@@ -544,7 +544,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isAsyncSupported ();
+      return m_aDelegate.isAsyncSupported ();
     }
     catch (final RuntimeException ex)
     {
@@ -559,7 +559,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getAsyncContext ();
+      return m_aDelegate.getAsyncContext ();
     }
     catch (final RuntimeException ex)
     {
@@ -574,7 +574,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getDispatcherType ();
+      return m_aDelegate.getDispatcherType ();
     }
     catch (final RuntimeException ex)
     {
@@ -589,7 +589,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRequestId ();
+      return m_aDelegate.getRequestId ();
     }
     catch (final RuntimeException ex)
     {
@@ -604,7 +604,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getProtocolRequestId ();
+      return m_aDelegate.getProtocolRequestId ();
     }
     catch (final RuntimeException ex)
     {
@@ -619,7 +619,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getServletConnection ();
+      return m_aDelegate.getServletConnection ();
     }
     catch (final RuntimeException ex)
     {
@@ -636,7 +636,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getAuthType ();
+      return m_aDelegate.getAuthType ();
     }
     catch (final RuntimeException ex)
     {
@@ -651,7 +651,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getCookies ();
+      return m_aDelegate.getCookies ();
     }
     catch (final RuntimeException ex)
     {
@@ -667,7 +667,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getDateHeader (sName);
+      return m_aDelegate.getDateHeader (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -682,7 +682,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getHeader (sName);
+      return m_aDelegate.getHeader (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -697,7 +697,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getHeaders (sName);
+      return m_aDelegate.getHeaders (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -718,7 +718,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getHeaderNames ();
+      return m_aDelegate.getHeaderNames ();
     }
     catch (final RuntimeException ex)
     {
@@ -740,7 +740,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getIntHeader (sName);
+      return m_aDelegate.getIntHeader (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -755,7 +755,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getHttpServletMapping ();
+      return m_aDelegate.getHttpServletMapping ();
     }
     catch (final RuntimeException ex)
     {
@@ -770,7 +770,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getMethod ();
+      return m_aDelegate.getMethod ();
     }
     catch (final RuntimeException ex)
     {
@@ -787,10 +787,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     try
     {
       // They may return null!
-      if (m_aSrc.isAsyncSupported () && m_aSrc.isAsyncStarted ())
+      if (m_aDelegate.isAsyncSupported () && m_aDelegate.isAsyncStarted ())
         ret = _getAttrAsString (AsyncContext.ASYNC_PATH_INFO);
       else
-        ret = m_aSrc.getPathInfo ();
+        ret = m_aDelegate.getPathInfo ();
     }
     catch (final UnsupportedOperationException ex)
     {
@@ -809,7 +809,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getPathTranslated ();
+      return m_aDelegate.getPathTranslated ();
     }
     catch (final RuntimeException ex)
     {
@@ -831,10 +831,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     String ret = null;
     try
     {
-      if (m_aSrc.isAsyncSupported () && m_aSrc.isAsyncStarted ())
+      if (m_aDelegate.isAsyncSupported () && m_aDelegate.isAsyncStarted ())
         ret = _getAttrAsString (AsyncContext.ASYNC_CONTEXT_PATH);
       else
-        ret = m_aSrc.getContextPath ();
+        ret = m_aDelegate.getContextPath ();
     }
     catch (final RuntimeException ex)
     {
@@ -855,10 +855,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     String ret = null;
     try
     {
-      if (m_aSrc.isAsyncSupported () && m_aSrc.isAsyncStarted ())
+      if (m_aDelegate.isAsyncSupported () && m_aDelegate.isAsyncStarted ())
         ret = _getAttrAsString (AsyncContext.ASYNC_QUERY_STRING);
       else
-        ret = m_aSrc.getQueryString ();
+        ret = m_aDelegate.getQueryString ();
     }
     catch (final RuntimeException ex)
     {
@@ -873,7 +873,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRemoteUser ();
+      return m_aDelegate.getRemoteUser ();
     }
     catch (final RuntimeException ex)
     {
@@ -887,7 +887,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isUserInRole (sRole);
+      return m_aDelegate.isUserInRole (sRole);
     }
     catch (final RuntimeException ex)
     {
@@ -902,7 +902,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getUserPrincipal ();
+      return m_aDelegate.getUserPrincipal ();
     }
     catch (final RuntimeException ex)
     {
@@ -917,7 +917,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getRequestedSessionId ();
+      return m_aDelegate.getRequestedSessionId ();
     }
     catch (final RuntimeException ex)
     {
@@ -933,10 +933,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     String ret = "";
     try
     {
-      if (m_aSrc.isAsyncSupported () && m_aSrc.isAsyncStarted ())
+      if (m_aDelegate.isAsyncSupported () && m_aDelegate.isAsyncStarted ())
         ret = _getAttrAsString (AsyncContext.ASYNC_REQUEST_URI);
       else
-        ret = m_aSrc.getRequestURI ();
+        ret = m_aDelegate.getRequestURI ();
     }
     catch (final RuntimeException ex)
     {
@@ -952,7 +952,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     StringBuffer ret = null;
     try
     {
-      ret = m_aSrc.getRequestURL ();
+      ret = m_aDelegate.getRequestURL ();
     }
     catch (final RuntimeException ex)
     {
@@ -968,10 +968,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
     String ret = "";
     try
     {
-      if (m_aSrc.isAsyncSupported () && m_aSrc.isAsyncStarted ())
+      if (m_aDelegate.isAsyncSupported () && m_aDelegate.isAsyncStarted ())
         ret = _getAttrAsString (AsyncContext.ASYNC_SERVLET_PATH);
       else
-        ret = m_aSrc.getServletPath ();
+        ret = m_aDelegate.getServletPath ();
     }
     catch (final UnsupportedOperationException ex)
     {
@@ -990,7 +990,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getSession (bCreate);
+      return m_aDelegate.getSession (bCreate);
     }
     catch (final RuntimeException ex)
     {
@@ -1012,7 +1012,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.changeSessionId ();
+      return m_aDelegate.changeSessionId ();
     }
     catch (final RuntimeException ex)
     {
@@ -1026,7 +1026,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isRequestedSessionIdValid ();
+      return m_aDelegate.isRequestedSessionIdValid ();
     }
     catch (final RuntimeException ex)
     {
@@ -1040,7 +1040,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isRequestedSessionIdFromCookie ();
+      return m_aDelegate.isRequestedSessionIdFromCookie ();
     }
     catch (final RuntimeException ex)
     {
@@ -1054,7 +1054,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isRequestedSessionIdFromURL ();
+      return m_aDelegate.isRequestedSessionIdFromURL ();
     }
     catch (final RuntimeException ex)
     {
@@ -1069,7 +1069,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getTrailerFields ();
+      return m_aDelegate.getTrailerFields ();
     }
     catch (final RuntimeException ex)
     {
@@ -1083,7 +1083,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.isTrailerFieldsReady ();
+      return m_aDelegate.isTrailerFieldsReady ();
     }
     catch (final RuntimeException ex)
     {
@@ -1103,7 +1103,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getInputStream ();
+      return m_aDelegate.getInputStream ();
     }
     catch (final RuntimeException ex)
     {
@@ -1118,7 +1118,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getReader ();
+      return m_aDelegate.getReader ();
     }
     catch (final RuntimeException ex)
     {
@@ -1132,7 +1132,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      m_aSrc.setCharacterEncoding (sEncoding);
+      m_aDelegate.setCharacterEncoding (sEncoding);
     }
     catch (final UnsupportedEncodingException ex)
     {
@@ -1155,7 +1155,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.authenticate (aResponse);
+      return m_aDelegate.authenticate (aResponse);
     }
     catch (final RuntimeException ex)
     {
@@ -1169,7 +1169,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      m_aSrc.login (sUsername, sPassword);
+      m_aDelegate.login (sUsername, sPassword);
     }
     catch (final RuntimeException ex)
     {
@@ -1182,7 +1182,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      m_aSrc.logout ();
+      m_aDelegate.logout ();
     }
     catch (final RuntimeException ex)
     {
@@ -1196,7 +1196,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getParts ();
+      return m_aDelegate.getParts ();
     }
     catch (final RuntimeException ex)
     {
@@ -1211,7 +1211,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.getPart (sName);
+      return m_aDelegate.getPart (sName);
     }
     catch (final RuntimeException ex)
     {
@@ -1226,7 +1226,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     try
     {
-      return m_aSrc.upgrade (aHandlerClass);
+      return m_aDelegate.upgrade (aHandlerClass);
     }
     catch (final RuntimeException ex)
     {

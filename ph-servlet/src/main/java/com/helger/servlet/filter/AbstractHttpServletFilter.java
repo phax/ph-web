@@ -28,9 +28,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * An abstract {@link jakarta.servlet.Filter} implementation that only works
- * with {@link HttpServletRequest} and {@link HttpServletResponse}. All other
- * request and response types are not handled.
+ * An abstract {@link jakarta.servlet.Filter} implementation that only works with
+ * {@link HttpServletRequest} and {@link HttpServletResponse}. All other request and response types
+ * are not handled.
  *
  * @author Philip Helger
  * @since 8.8.0
@@ -59,10 +59,8 @@ public abstract class AbstractHttpServletFilter extends AbstractServletFilter
                               @NonNull final ServletResponse aResponse,
                               @NonNull final FilterChain aChain) throws IOException, ServletException
   {
-    if (aRequest instanceof HttpServletRequest && aResponse instanceof HttpServletResponse)
+    if (aRequest instanceof final HttpServletRequest aHttpRequest && aResponse instanceof final HttpServletResponse aHttpResponse)
     {
-      final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-      final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
       doHttpFilter (aHttpRequest, aHttpResponse, aChain);
     }
     else

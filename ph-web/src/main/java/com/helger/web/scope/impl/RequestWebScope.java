@@ -124,7 +124,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   @Nullable
   public static IParamValueCleanser getParamValueCleanser ()
   {
-    return RW_LOCK.readLockedGet ( () -> s_aParamValueCleanser);
+    return RW_LOCK.readLockedGet (() -> s_aParamValueCleanser);
   }
 
   /**
@@ -139,7 +139,7 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
    */
   public static void setParamValueCleanser (@Nullable final IParamValueCleanser aParamValueCleanser)
   {
-    RW_LOCK.writeLocked ( () -> s_aParamValueCleanser = aParamValueCleanser);
+    RW_LOCK.writeLocked (() -> s_aParamValueCleanser = aParamValueCleanser);
   }
 
   @NonNull
@@ -156,9 +156,11 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     super (_createScopeID (aHttpRequest));
 
+    ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
+
     m_aCreationDT = PDTFactory.getCurrentLocalDateTime ();
     m_aHttpRequest = aHttpRequest;
-    m_aHttpResponse = ValueEnforcer.notNull (aHttpResponse, "HttpResponse");
+    m_aHttpResponse = aHttpResponse;
 
     // done initialization
     if (ScopeHelper.isDebugRequestScopeLifeCycle ())

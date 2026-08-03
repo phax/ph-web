@@ -16,8 +16,6 @@
  */
 package com.helger.xservlet.handler.specific;
 
-import java.util.Map;
-
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,15 +69,15 @@ public class RedirectAbsoluteXServletHandler implements IXServletSimpleHandler
     final URLBuilder aTargetURL = URLBuilder.of (m_aTargetURL);
 
     // Add all parameters
-    for (final Map.Entry <String, Object> aEntry : aRequestScope.params ().entrySet ())
+    for (final var aEntry : aRequestScope.params ().entrySet ())
     {
       final String sKey = aEntry.getKey ();
       final Object aValue = aEntry.getValue ();
-      if (aValue instanceof String)
-        aTargetURL.addParam (sKey, (String) aValue);
+      if (aValue instanceof final String sValue)
+        aTargetURL.addParam (sKey, sValue);
       else
-        if (aValue instanceof String [])
-          for (final String sValue : (String []) aValue)
+        if (aValue instanceof final String [] aValues)
+          for (final String sValue : aValues)
             aTargetURL.addParam (sKey, sValue);
     }
 

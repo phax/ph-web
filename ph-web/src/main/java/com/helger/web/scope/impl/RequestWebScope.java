@@ -365,8 +365,8 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
   {
     // Delete all temporary files (if any)
     for (final Object o : params ().values ())
-      if (o instanceof IFileItem)
-        ((IFileItem) o).onEndOfRequest ();
+      if (o instanceof final IFileItem aFileItem)
+        aFileItem.onEndOfRequest ();
 
     if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),

@@ -131,9 +131,8 @@ public class MainMonitor
       boolean supportsIdle = false;
       try
       {
-        if (folder instanceof IMAPFolder)
+        if (folder instanceof final IMAPFolder f)
         {
-          final IMAPFolder f = (IMAPFolder) folder;
           f.idle ();
           supportsIdle = true;
         }
@@ -148,9 +147,8 @@ public class MainMonitor
       }
       for (;;)
       {
-        if (supportsIdle && folder instanceof IMAPFolder)
+        if (supportsIdle && folder instanceof final IMAPFolder f)
         {
-          final IMAPFolder f = (IMAPFolder) folder;
           f.idle ();
           System.out.println ("IDLE done");
         }

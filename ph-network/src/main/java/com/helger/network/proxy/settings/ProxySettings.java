@@ -101,7 +101,7 @@ public class ProxySettings implements IProxySettings
     return switch (m_eProxyType)
     {
       case DIRECT -> aAddr == null;
-      case HTTP, SOCKS -> aAddr instanceof InetSocketAddress && hasInetSocketAddress ((InetSocketAddress) aAddr);
+      case HTTP, SOCKS -> aAddr instanceof final InetSocketAddress aISA && hasInetSocketAddress (aISA);
       default -> throw new IllegalStateException ("Unsupported proxy type: " + m_eProxyType);
     };
   }

@@ -38,8 +38,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 /**
- * An implementation of {@link IEmailDataTransportListener} that logs stuff to a
- * logger.
+ * An implementation of {@link IEmailDataTransportListener} that logs stuff to a logger.
  *
  * @author Philip Helger
  */
@@ -87,15 +86,17 @@ public class LoggingTransportListener implements IEmailDataTransportListener
   {
     if (aMsg == null)
       return "null";
-    if (aMsg instanceof MimeMessage)
+
+    if (aMsg instanceof final MimeMessage aMimeMsg)
       try
       {
-        return "MIME-Msg " + ((MimeMessage) aMsg).getMessageID ();
+        return "MIME-Msg " + aMimeMsg.getMessageID ();
       }
       catch (final MessagingException ex)
       {
         return "MIME-Msg " + ex.getClass ().getName () + " - " + ex.getMessage ();
       }
+
     return ClassHelper.getClassLocalName (aMsg.getClass ());
   }
 

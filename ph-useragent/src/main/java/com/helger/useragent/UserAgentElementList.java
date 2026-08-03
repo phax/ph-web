@@ -78,12 +78,10 @@ public class UserAgentElementList
   public String getPairValue (@Nullable final String sKey)
   {
     for (final Object aObj : m_aList)
-      if (aObj instanceof UsetAgentKeyValuePair)
-      {
-        final UsetAgentKeyValuePair aPair = (UsetAgentKeyValuePair) aObj;
+      if (aObj instanceof final UsetAgentKeyValuePair aPair)
         if (EqualsHelper.equals (aPair.getKey (), sKey))
           return aPair.getValue ();
-      }
+
     return null;
   }
 
@@ -100,8 +98,8 @@ public class UserAgentElementList
   public String getListItemStartingWith (@Nullable final String sPrefix)
   {
     for (final Object aObj : m_aList)
-      if (aObj instanceof List <?>)
-        for (final Object aListItem : (List <?>) aObj)
+      if (aObj instanceof final List <?> aList)
+        for (final Object aListItem : aList)
           if (((String) aListItem).startsWith (sPrefix))
             return (String) aListItem;
     return null;
@@ -110,8 +108,8 @@ public class UserAgentElementList
   public boolean containsString (@Nullable final String sString)
   {
     for (final Object aObj : m_aList)
-      if (aObj instanceof String)
-        if (((String) aObj).equals (sString))
+      if (aObj instanceof final String s)
+        if (s.equals (sString))
           return true;
     return false;
   }
@@ -122,11 +120,12 @@ public class UserAgentElementList
     int nIdx1 = -1;
     int nIdx = 0;
     for (final Object aObj : m_aList)
-      if (aObj instanceof String)
+      if (aObj instanceof final String s)
       {
         if (nIdx1 >= 0 && nIdx == nIdx1 + 1)
-          return (String) aObj;
-        if (((String) aObj).equals (sString))
+          return s;
+
+        if (s.equals (sString))
           nIdx1 = nIdx;
         nIdx++;
       }

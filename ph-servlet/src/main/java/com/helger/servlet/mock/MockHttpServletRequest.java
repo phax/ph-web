@@ -1049,8 +1049,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public MockHttpServletRequest setSession (@Nullable final HttpSession aHttpSession)
   {
     m_aSession = aHttpSession;
-    if (aHttpSession instanceof MockHttpSession)
-      ((MockHttpSession) aHttpSession).doAccess ();
+    if (aHttpSession instanceof final MockHttpSession aMockSession)
+      aMockSession.doAccess ();
     return this;
   }
 
@@ -1060,7 +1060,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     checkActive ();
 
     // Reset session if invalidated.
-    if (m_aSession instanceof MockHttpSession && ((MockHttpSession) m_aSession).isInvalid ())
+    if (m_aSession instanceof final MockHttpSession aMockSession && aMockSession.isInvalid ())
       m_aSession = null;
 
     // Create new session if necessary.
@@ -1068,8 +1068,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       m_aSession = new MockHttpSession (getServletContext (), m_sSessionID);
 
     // Update last access time
-    if (m_aSession instanceof MockHttpSession)
-      ((MockHttpSession) m_aSession).doAccess ();
+    if (m_aSession instanceof final MockHttpSession aMockSession)
+      aMockSession.doAccess ();
 
     return m_aSession;
   }

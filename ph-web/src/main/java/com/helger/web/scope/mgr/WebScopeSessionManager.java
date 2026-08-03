@@ -48,13 +48,13 @@ public final class WebScopeSessionManager
   {}
 
   /**
-   * Get the web session scope with the specified ID. If no such scope exists,
-   * <code>null</code> is returned.
+   * Get the web session scope with the specified ID. If no such scope exists, <code>null</code> is
+   * returned.
    *
    * @param sScopeID
    *        The ID to be resolved.
-   * @return <code>null</code> if no such scope exists or if the passed scope is
-   *         not a session web scopes.
+   * @return <code>null</code> if no such scope exists or if the passed scope is not a session web
+   *         scopes.
    */
   @Nullable
   public static ISessionWebScope getSessionWebScopeOfID (@Nullable final String sScopeID)
@@ -62,12 +62,11 @@ public final class WebScopeSessionManager
     final ISessionScope aSessionScope = ScopeSessionManager.getInstance ().getSessionScopeOfID (sScopeID);
     if (aSessionScope == null)
       return null;
-    if (!(aSessionScope instanceof ISessionWebScope))
-    {
-      LOGGER.warn ("The passed scope ID '" + sScopeID + "' is not a session web scope: " + aSessionScope.toString ());
-      return null;
-    }
-    return (ISessionWebScope) aSessionScope;
+    if (aSessionScope instanceof final ISessionWebScope aSWS)
+      return aSWS;
+
+    LOGGER.warn ("The passed scope ID '" + sScopeID + "' is not a session web scope: " + aSessionScope.toString ());
+    return null;
   }
 
   /**
@@ -75,8 +74,8 @@ public final class WebScopeSessionManager
    *
    * @param aHttpSession
    *        The HTTP session to get the scope from. May be <code>null</code>.
-   * @return <code>null</code> if either the HTTP session is <code>null</code>
-   *         or if no such scope exists.
+   * @return <code>null</code> if either the HTTP session is <code>null</code> or if no such scope
+   *         exists.
    */
   @Nullable
   public static ISessionWebScope getSessionWebScopeOfSession (@Nullable final HttpSession aHttpSession)
@@ -85,8 +84,7 @@ public final class WebScopeSessionManager
   }
 
   /**
-   * @return A non-<code>null</code>, mutable copy of all managed session web
-   *         scopes.
+   * @return A non-<code>null</code>, mutable copy of all managed session web scopes.
    */
   @NonNull
   @ReturnsMutableCopy

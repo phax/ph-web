@@ -77,28 +77,19 @@ public final class HttpClientHelper
   @NonNull
   public static HttpUriRequestBase createRequest (@NonNull final EHttpMethod eHTTPMethod, @NonNull final String sURI)
   {
-    switch (eHTTPMethod)
+    return switch (eHTTPMethod)
     {
-      case DELETE:
-        return new HttpDelete (sURI);
-      case GET:
-        return new HttpGet (sURI);
-      case HEAD:
-        return new HttpHead (sURI);
-      case OPTIONS:
-        return new HttpOptions (sURI);
-      case TRACE:
-        return new HttpTrace (sURI);
-      case PATCH:
-        return new HttpPatch (sURI);
-      case POST:
-        return new HttpPost (sURI);
-      case PUT:
-        return new HttpPut (sURI);
-      case CONNECT:
-      default:
-        throw new IllegalStateException ("Unsupported HTTP method: " + eHTTPMethod);
-    }
+      case DELETE -> new HttpDelete (sURI);
+      case GET -> new HttpGet (sURI);
+      case HEAD -> new HttpHead (sURI);
+      case OPTIONS -> new HttpOptions (sURI);
+      case TRACE -> new HttpTrace (sURI);
+      case PATCH -> new HttpPatch (sURI);
+      case POST -> new HttpPost (sURI);
+      case PUT -> new HttpPut (sURI);
+      case CONNECT -> throw new IllegalStateException ("Unsupported HTTP method: " + eHTTPMethod);
+      default -> throw new IllegalStateException ("Unsupported HTTP method: " + eHTTPMethod);
+    };
   }
 
   @Nullable
@@ -126,13 +117,9 @@ public final class HttpClientHelper
   public static HttpHost createHttpHost (@Nullable final Proxy aProxy)
   {
     if (aProxy != null && aProxy.type () == Proxy.Type.HTTP)
-    {
-      if (aProxy.address () instanceof InetSocketAddress)
-      {
-        final InetSocketAddress aISA = (InetSocketAddress) aProxy.address ();
+      if (aProxy.address () instanceof final InetSocketAddress aISA)
         return new HttpHost (aISA.getHostName (), aISA.getPort ());
-      }
-    }
+
     return null;
   }
 

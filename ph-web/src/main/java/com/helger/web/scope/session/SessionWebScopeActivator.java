@@ -41,8 +41,8 @@ import jakarta.servlet.http.HttpSessionActivationListener;
 import jakarta.servlet.http.HttpSessionEvent;
 
 /**
- * This class is responsible for passivating and activating session web scopes.
- * Important: this object itself may NOT be passivated!
+ * This class is responsible for passivating and activating session web scopes. Important: this
+ * object itself may NOT be passivated!
  *
  * @author Philip Helger
  */
@@ -96,10 +96,9 @@ public final class SessionWebScopeActivator implements
   }
 
   /**
-   * Deserialization filter limiting graph depth and array sizes to mitigate
-   * known Java deserialization gadget chains. Since session attributes can be
-   * any application-defined Serializable, a strict class allowlist is not
-   * feasible at the library level.
+   * Deserialization filter limiting graph depth and array sizes to mitigate known Java
+   * deserialization gadget chains. Since session attributes can be any application-defined
+   * Serializable, a strict class allowlist is not feasible at the library level.
    */
   private static final ObjectInputFilter DESER_FILTER = ObjectInputFilter.Config.createFilter ("maxdepth=20;maxarray=10000");
 
@@ -131,8 +130,8 @@ public final class SessionWebScopeActivator implements
     if (m_aSessionWebScope != null)
     {
       for (final Object aValue : m_aSessionWebScope.attrs ().values ())
-        if (aValue instanceof ISessionWebScopePassivationHandler)
-          ((ISessionWebScopePassivationHandler) aValue).onSessionWillPassivate (m_aSessionWebScope);
+        if (aValue instanceof final ISessionWebScopePassivationHandler aHdl)
+          aHdl.onSessionWillPassivate (m_aSessionWebScope);
 
       if (ScopeHelper.isDebugSessionScopeLifeCycle ())
         LOGGER.info ("Successfully passivated session web scope '" +
@@ -164,9 +163,10 @@ public final class SessionWebScopeActivator implements
     // Invoke callbacks on all attributes
     {
       for (final Object aValue : aSessionWebScope.attrs ().values ())
-        if (aValue instanceof ISessionWebScopeActivationHandler)
-          ((ISessionWebScopeActivationHandler) aValue).onSessionDidActivate (aSessionWebScope);
+        if (aValue instanceof final ISessionWebScopeActivationHandler aHdl)
+          aHdl.onSessionDidActivate (aSessionWebScope);
     }
+
     if (ScopeHelper.isDebugSessionScopeLifeCycle ())
       LOGGER.info ("Successfully activated session web scope '" +
                    aSessionWebScope.getID () +

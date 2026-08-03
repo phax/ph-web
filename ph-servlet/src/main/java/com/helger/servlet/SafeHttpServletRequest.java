@@ -1251,8 +1251,10 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     if (aHttpRequest == null)
       return null;
+
     if (aHttpRequest instanceof final SafeHttpServletRequest aSafeReq)
       return aSafeReq;
+
     return new SafeHttpServletRequest (aHttpRequest);
   }
 }

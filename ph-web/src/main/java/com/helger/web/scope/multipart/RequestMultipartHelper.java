@@ -120,7 +120,7 @@ public final class RequestMultipartHelper
       // Group all items with the same name together
       final ICommonsMap <String, ICommonsList <String>> aFormFields = new CommonsHashMap <> ();
       final ICommonsMap <String, ICommonsList <IFileItem>> aFormFiles = new CommonsHashMap <> ();
-      final ICommonsList <IFileItem> aFileItems = aUpload.parseRequest (aHttpRequest);
+      final ICommonsList <IFileItem> aFileItems = aUpload.parseRequest (aSafeHttpRequest);
       for (final IFileItem aFileItem : aFileItems)
       {
         if (aFileItem.isFormField ())

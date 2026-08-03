@@ -46,8 +46,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Abstract HTTP based filter. It is aligned with {@link AbstractXServlet} and
- * should bring similar abstraction level.
+ * Abstract HTTP based filter. It is aligned with {@link AbstractXServlet} and should bring similar
+ * abstraction level.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -91,8 +91,8 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   }
 
   /**
-   * @return <code>true</code> if multipart handling is enabled (default),
-   *         <code>false</code> if not.
+   * @return <code>true</code> if multipart handling is enabled (default), <code>false</code> if
+   *         not.
    * @since 9.1.1
    */
   protected final boolean isMultipartEnabled ()
@@ -101,9 +101,9 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
   }
 
   /**
-   * Enable/disable multipart handling in this filter (works only if the request
-   * scope is created here)
-   * 
+   * Enable/disable multipart handling in this filter (works only if the request scope is created
+   * here)
+   *
    * @param bMultipartEnabled
    *        <code>true</code> to enable, <code>false</code> to disable
    * @since 9.1.1
@@ -122,8 +122,8 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
    *        The HTTP response. Never <code>null</code>.
    * @param aRequestScope
    *        Current request scope. Never <code>null</code>.
-   * @return {@link EContinue#CONTINUE} to continue processing the request,
-   *         {@link EContinue#BREAK} otherwise.
+   * @return {@link EContinue#CONTINUE} to continue processing the request, {@link EContinue#BREAK}
+   *         otherwise.
    * @throws IOException
    *         In case of IO error
    * @throws ServletException
@@ -170,9 +170,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
     // Create a wrapper around the Servlet Response that saves the status code
     final StatusAwareHttpResponseWrapper aHttpResponseWrapper = StatusAwareHttpResponseWrapper.wrap (aHttpResponse);
 
-    // Create request scope
-    final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory;
-    aFactory = m_bIsMultipartEnabled ? RequestWebScopeMultipart::new : RequestWebScope::new;
+    final BiFunction <? super HttpServletRequest, ? super HttpServletResponse, IRequestWebScope> aFactory = m_bIsMultipartEnabled ? RequestWebScopeMultipart::new : RequestWebScope::new;
 
     // Create request scope
     try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (aHttpRequest,
@@ -205,10 +203,10 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
           LOGGER.error ("Filter exception propagated to the outside", ex);
 
           // Ensure only exceptions with the correct type are propagated
-          if (ex instanceof IOException)
-            throw (IOException) ex;
-          if (ex instanceof ServletException)
-            throw (ServletException) ex;
+          if (ex instanceof final IOException aIOEx)
+            throw aIOEx;
+          if (ex instanceof final ServletException aServletExt)
+            throw aServletExt;
           throw new ServletException ("Wrapped " + ex.getClass ().getName (), ex);
         }
       }

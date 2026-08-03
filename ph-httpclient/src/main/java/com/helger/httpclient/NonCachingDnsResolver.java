@@ -41,8 +41,8 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
 /**
- * A special implementation of {@link DnsResolver} that tries to disable caching
- * of DNS resolution as much as possible.
+ * A special implementation of {@link DnsResolver} that tries to disable caching of DNS resolution
+ * as much as possible.
  *
  * @author Philip Helger
  * @since 8.8.0
@@ -129,10 +129,10 @@ public class NonCachingDnsResolver implements DnsResolver
         if (aRecordConsumer != null)
           aRecordConsumer.accept (aRecord);
 
-        if (aRecord instanceof CNAMERecord)
+        if (aRecord instanceof final CNAMERecord aCName)
         {
           // It's a CName - so a name pointing to a name
-          final String sNextLevel = ((CNAMERecord) aRecord).getTarget ().toString ();
+          final String sNextLevel = aCName.getTarget ().toString ();
           if (sNextLevel.equals (sRealHost))
           {
             LOGGER.warn ("Target record is the same as the request '" + sNextLevel + "' - avoid endless recursion");
@@ -146,10 +146,10 @@ public class NonCachingDnsResolver implements DnsResolver
           }
         }
         else
-          if (aRecord instanceof ARecord)
+          if (aRecord instanceof final ARecord aA)
           {
             // It's an address record
-            final InetAddress aInetAddress = ((ARecord) aRecord).getAddress ();
+            final InetAddress aInetAddress = aA.getAddress ();
             aAddrs.add (aInetAddress);
           }
           else

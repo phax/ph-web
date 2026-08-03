@@ -40,16 +40,14 @@ import jakarta.activation.DataSource;
  * After retrieving an instance of this class from a
  * {@link com.helger.web.fileupload.parse.FileUpload FileUpload} instance (see
  * {@link com.helger.web.fileupload.servlet.ServletFileUpload#parseRequest(jakarta.servlet.http.HttpServletRequest)}
- * ), you may either request all contents of the file at once using
- * {@link #directGet()} or request an {@link java.io.InputStream InputStream}
- * with {@link #getInputStream()} and process the file without attempting to
- * load it into memory, which may come handy with large files.
+ * ), you may either request all contents of the file at once using {@link #directGet()} or request
+ * an {@link java.io.InputStream InputStream} with {@link #getInputStream()} and process the file
+ * without attempting to load it into memory, which may come handy with large files.
  * <p>
- * While this interface does not extend <code>javax.activation.DataSource</code>
- * per se (to avoid a seldom used dependency), several of the defined methods
- * are specifically defined with the same signatures as methods in that
- * interface. This allows an implementation of this interface to also implement
- * <code>javax.activation.DataSource</code> with minimal additional work.
+ * While this interface does not extend <code>javax.activation.DataSource</code> per se (to avoid a
+ * seldom used dependency), several of the defined methods are specifically defined with the same
+ * signatures as methods in that interface. This allows an implementation of this interface to also
+ * implement <code>javax.activation.DataSource</code> with minimal additional work.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
@@ -60,66 +58,57 @@ import jakarta.activation.DataSource;
 public interface IFileItem extends DataSource, IHasInputStream
 {
   /**
-   * @return An {@link InputStream} that can be used to retrieve the contents of
-   *         the file.
+   * @return An {@link InputStream} that can be used to retrieve the contents of the file.
    */
   @NonNull
   InputStream getInputStream ();
 
   /**
-   * @return An {@link OutputStream} that can be used for storing the contents
-   *         of the file.
+   * @return An {@link OutputStream} that can be used for storing the contents of the file.
    */
   @NonNull
   OutputStream getOutputStream ();
 
   /**
-   * @return The content type passed by the user agent or <code>null</code> if
-   *         not defined.
+   * @return The content type passed by the user agent or <code>null</code> if not defined.
    */
   @Nullable
   String getContentType ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information.
    *
    * @return The original filename in the client's filesystem.
    * @throws InvalidFileNameException
-   *         The file name contains a NUL character, which might be an indicator
-   *         of a security attack. If you intend to use the file name anyways,
-   *         catch the exception and use InvalidFileNameException#getName().
-   * @deprecated Use {@link #getNameSecure()} instead, which also strips path
-   *             separators and replaces invalid characters. This method only
-   *             checks for NUL bytes.
+   *         The file name contains a NUL character, which might be an indicator of a security
+   *         attack. If you intend to use the file name anyways, catch the exception and use
+   *         InvalidFileNameException#getName().
+   * @deprecated Use {@link #getNameSecure()} instead, which also strips path separators and
+   *             replaces invalid characters. This method only checks for NUL bytes.
    */
   @Deprecated (since = "11.3.0", forRemoval = false)
   @Nullable
   String getName ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information. Compared to
-   * {@link #getName()} this method automatically removes everything and
-   * including a NUL byte and therefore does not throw an
-   * {@link InvalidFileNameException}.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information. Compared to
+   * {@link #getName()} this method automatically removes everything and including a NUL byte and
+   * therefore does not throw an {@link InvalidFileNameException}.
    *
-   * @return The original filename in the client's filesystem without invalid
-   *         characters.
+   * @return The original filename in the client's filesystem without invalid characters.
    * @since 6.1.0
    */
   @Nullable
   String getNameSecure ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information.
    *
    * @return The original filename in the client's filesystem.
    * @since 6.1.0
@@ -128,11 +117,10 @@ public interface IFileItem extends DataSource, IHasInputStream
   String getNameUnchecked ();
 
   /**
-   * Provides a hint as to whether or not the file contents will be read from
-   * memory.
+   * Provides a hint as to whether or not the file contents will be read from memory.
    *
-   * @return <code>true</code> if the file contents will be read from memory;
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if the file contents will be read from memory; <code>false</code>
+   *         otherwise.
    */
   boolean isInMemory ();
 
@@ -148,9 +136,8 @@ public interface IFileItem extends DataSource, IHasInputStream
   byte [] directGet ();
 
   /**
-   * Returns the contents of the file item as a String, using the specified
-   * encoding. This method uses {@link #directGet()} to retrieve the contents of
-   * the item.
+   * Returns the contents of the file item as a String, using the specified encoding. This method
+   * uses {@link #directGet()} to retrieve the contents of the item.
    *
    * @param aEncoding
    *        The character encoding to use.
@@ -163,9 +150,9 @@ public interface IFileItem extends DataSource, IHasInputStream
   }
 
   /**
-   * Returns the contents of the file item as a String, using the default
-   * character encoding (if one provided, it is used). This method uses
-   * {@link #directGet()} to retrieve the contents of the item.
+   * Returns the contents of the file item as a String, using the default character encoding (if one
+   * provided, it is used). This method uses {@link #directGet()} to retrieve the contents of the
+   * item.
    *
    * @return The contents of the item, as a string.
    */
@@ -173,15 +160,13 @@ public interface IFileItem extends DataSource, IHasInputStream
   String getString ();
 
   /**
-   * A convenience method to write an uploaded item to disk. The client code is
-   * not concerned with whether or not the item is stored in memory, or on disk
-   * in a temporary location. They just want to write the uploaded item to a
-   * file.
+   * A convenience method to write an uploaded item to disk. The client code is not concerned with
+   * whether or not the item is stored in memory, or on disk in a temporary location. They just want
+   * to write the uploaded item to a file.
    * <p>
-   * This method is not guaranteed to succeed if called more than once for the
-   * same item. This allows a particular implementation to use, for example,
-   * file renaming, where possible, rather than copying all of the underlying
-   * data, thus gaining a significant performance benefit.
+   * This method is not guaranteed to succeed if called more than once for the same item. This
+   * allows a particular implementation to use, for example, file renaming, where possible, rather
+   * than copying all of the underlying data, thus gaining a significant performance benefit.
    *
    * @param aDstFile
    *        The <code>File</code> into which the uploaded item should be stored.
@@ -193,17 +178,15 @@ public interface IFileItem extends DataSource, IHasInputStream
   ISuccessIndicator write (@NonNull File aDstFile) throws FileUploadException;
 
   /**
-   * Deletes the underlying storage for a file item, including deleting any
-   * associated temporary disk file. Although this storage will be deleted
-   * automatically when the <code>FileItem</code> instance is garbage collected,
-   * this method can be used to ensure that this is done at an earlier time,
-   * thus preserving system resources.
+   * Deletes the underlying storage for a file item, including deleting any associated temporary
+   * disk file. Although this storage will be deleted automatically when the <code>FileItem</code>
+   * instance is garbage collected, this method can be used to ensure that this is done at an
+   * earlier time, thus preserving system resources.
    */
   void delete ();
 
   /**
-   * Returns the name of the field in the multipart form corresponding to this
-   * file item.
+   * Returns the name of the field in the multipart form corresponding to this file item.
    *
    * @return The name of the form field.
    */
@@ -218,29 +201,26 @@ public interface IFileItem extends DataSource, IHasInputStream
   void setFieldName (String sFieldName);
 
   /**
-   * Determines whether or not a <code>FileItem</code> instance represents a
-   * simple form field.
+   * Determines whether or not a <code>FileItem</code> instance represents a simple form field.
    *
-   * @return <code>true</code> if the instance represents a simple form field;
-   *         <code>false</code> if it represents an uploaded file.
+   * @return <code>true</code> if the instance represents a simple form field; <code>false</code> if
+   *         it represents an uploaded file.
    */
   boolean isFormField ();
 
   /**
-   * Specifies whether or not a <code>FileItem</code> instance represents a
-   * simple form field.
+   * Specifies whether or not a <code>FileItem</code> instance represents a simple form field.
    *
    * @param bIsFormField
-   *        <code>true</code> if the instance represents a simple form field;
-   *        <code>false</code> if it represents an uploaded file.
+   *        <code>true</code> if the instance represents a simple form field; <code>false</code> if
+   *        it represents an uploaded file.
    */
   void setFormField (boolean bIsFormField);
 
   /**
-   * This method is called after the request processing is finalized. The user
-   * of this class must make sure that it is called. This method is a
-   * replacement of the finalize method that was previously present, but
-   * deprecated since Java 9.
+   * This method is called after the request processing is finalized. The user of this class must
+   * make sure that it is called. This method is a replacement of the finalize method that was
+   * previously present, but deprecated since Java 9.
    *
    * @since 10.0.0
    */

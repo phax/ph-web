@@ -97,10 +97,10 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     if (m_aSimpleHandler.onException (aRequestScope, aUnifiedResponse, t).isContinue ())
     {
       // Propagate exception
-      if (t instanceof IOException)
-        throw (IOException) t;
-      if (t instanceof ServletException)
-        throw (ServletException) t;
+      if (t instanceof final IOException aIOEx)
+        throw aIOEx;
+      if (t instanceof final ServletException aServletEx)
+        throw aServletEx;
       throw new ServletException (t);
     }
   }

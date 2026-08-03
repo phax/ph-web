@@ -57,8 +57,8 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
     for (final Map.Entry <String, Object> aEntry : entrySet ())
     {
       final Object aAttrValue = aEntry.getValue ();
-      if (aAttrValue instanceof IFileItem)
-        ret.put (aEntry.getKey (), (IFileItem) aAttrValue);
+      if (aAttrValue instanceof final IFileItem aFileItem)
+        ret.put (aEntry.getKey (), aFileItem);
     }
     return ret;
   }
@@ -75,11 +75,11 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
     {
       final String sAttrName = aEntry.getKey ();
       final Object aAttrValue = aEntry.getValue ();
-      if (aAttrValue instanceof IFileItem)
-        ret.put (sAttrName, new IFileItem [] { (IFileItem) aAttrValue });
+      if (aAttrValue instanceof final IFileItem aFileItem)
+        ret.put (sAttrName, new IFileItem [] { aFileItem });
       else
-        if (aAttrValue instanceof IFileItem [])
-          ret.put (sAttrName, ArrayHelper.getCopy ((IFileItem []) aAttrValue));
+        if (aAttrValue instanceof final IFileItem [] aFileItems)
+          ret.put (sAttrName, ArrayHelper.getCopy (aFileItems));
     }
     return ret;
   }
@@ -95,11 +95,11 @@ public interface IRequestParamContainer extends IAttributeContainerAny <String>
     final ICommonsList <IFileItem> ret = new CommonsArrayList <> ();
     for (final Object aAttrValue : values ())
     {
-      if (aAttrValue instanceof IFileItem)
-        ret.add ((IFileItem) aAttrValue);
+      if (aAttrValue instanceof final IFileItem aFileItem)
+        ret.add (aFileItem);
       else
-        if (aAttrValue instanceof IFileItem [])
-          Collections.addAll (ret, (IFileItem []) aAttrValue);
+        if (aAttrValue instanceof final IFileItem [] aFileItems)
+          Collections.addAll (ret, aFileItems);
     }
     return ret;
   }

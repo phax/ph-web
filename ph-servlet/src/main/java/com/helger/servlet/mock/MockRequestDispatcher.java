@@ -74,8 +74,8 @@ public class MockRequestDispatcher implements RequestDispatcher
   }
 
   /**
-   * Obtain the underlying MockHttpServletResponse, unwrapping
-   * {@link HttpServletResponseWrapper} decorators if necessary.
+   * Obtain the underlying MockHttpServletResponse, unwrapping {@link HttpServletResponseWrapper}
+   * decorators if necessary.
    *
    * @param aResponse
    *        Original response
@@ -84,10 +84,11 @@ public class MockRequestDispatcher implements RequestDispatcher
   @NonNull
   protected MockHttpServletResponse getMockHttpServletResponse (@NonNull final ServletResponse aResponse)
   {
-    if (aResponse instanceof MockHttpServletResponse)
-      return (MockHttpServletResponse) aResponse;
-    if (aResponse instanceof HttpServletResponseWrapper)
-      return getMockHttpServletResponse (((HttpServletResponseWrapper) aResponse).getResponse ());
+    if (aResponse instanceof final MockHttpServletResponse aMockResponse)
+      return aMockResponse;
+
+    if (aResponse instanceof final HttpServletResponseWrapper aResponseWrapper)
+      return getMockHttpServletResponse (aResponseWrapper.getResponse ());
 
     throw new IllegalArgumentException ("MockRequestDispatcher requires MockHttpServletResponse");
   }

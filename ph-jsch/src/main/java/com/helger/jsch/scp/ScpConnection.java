@@ -188,7 +188,7 @@ public class ScpConnection implements Closeable
     if (m_aEntryStack.isEmpty ())
       return null;
     final ICurrentEntry aEntry = m_aEntryStack.peek ();
-    return aEntry instanceof final InputStream i ? i : null;
+    return aEntry instanceof final InputStream aIS ? aIS : null;
   }
 
   @Nullable
@@ -197,7 +197,7 @@ public class ScpConnection implements Closeable
     if (m_aEntryStack.isEmpty ())
       return null;
     final ICurrentEntry aEntry = m_aEntryStack.peek ();
-    return aEntry instanceof final OutputStream o ? o : null;
+    return aEntry instanceof final OutputStream aOS ? aOS : null;
   }
 
   @Nullable

@@ -17,7 +17,6 @@
 package com.helger.servlet.mock;
 
 import java.util.Enumeration;
-import java.util.Map;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -172,8 +171,8 @@ public class MockHttpSession implements HttpSession
     if (aValue != null)
     {
       m_aAttributes.put (sName, aValue);
-      if (aValue instanceof HttpSessionBindingListener)
-        ((HttpSessionBindingListener) aValue).valueBound (new HttpSessionBindingEvent (this, sName, aValue));
+      if (aValue instanceof final HttpSessionBindingListener aHSBL)
+        aHSBL.valueBound (new HttpSessionBindingEvent (this, sName, aValue));
     }
     else
     {
@@ -192,8 +191,8 @@ public class MockHttpSession implements HttpSession
     ValueEnforcer.notNull (sName, "Name");
 
     final Object aValue = m_aAttributes.remove (sName);
-    if (aValue instanceof HttpSessionBindingListener)
-      ((HttpSessionBindingListener) aValue).valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
+    if (aValue instanceof final HttpSessionBindingListener aHSBL)
+      aHSBL.valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
   }
 
   @Deprecated (forRemoval = false)
@@ -207,12 +206,12 @@ public class MockHttpSession implements HttpSession
    */
   public void clearAttributes ()
   {
-    for (final Map.Entry <String, Object> entry : m_aAttributes.entrySet ())
+    for (final var entry : m_aAttributes.entrySet ())
     {
       final String sName = entry.getKey ();
       final Object aValue = entry.getValue ();
-      if (aValue instanceof HttpSessionBindingListener)
-        ((HttpSessionBindingListener) aValue).valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
+      if (aValue instanceof final HttpSessionBindingListener aHSBL)
+        aHSBL.valueUnbound (new HttpSessionBindingEvent (this, sName, aValue));
     }
     m_aAttributes.clear ();
   }

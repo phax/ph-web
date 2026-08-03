@@ -40,8 +40,8 @@ import com.helger.http.CHttpHeader;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
 import com.helger.scope.mgr.ScopeManager;
-import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.SafeHttpServletRequest;
+import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.ServletSettings;
 import com.helger.servlet.StaticServerInfo;
 import com.helger.servlet.http.CountingOnlyHttpServletResponse;
@@ -551,10 +551,10 @@ public abstract class AbstractXServlet extends HttpServlet
       log ("Servlet exception propagated to the outside", ex);
 
       // Ensure only exceptions with the correct type are propagated
-      if (ex instanceof IOException)
-        throw (IOException) ex;
-      if (ex instanceof ServletException)
-        throw (ServletException) ex;
+      if (ex instanceof final IOException aIOEx)
+        throw aIOEx;
+      if (ex instanceof final ServletException aServletExt)
+        throw aServletExt;
       throw new ServletException ("Wrapped " + ex.getClass ().getName (), ex);
     }
     finally

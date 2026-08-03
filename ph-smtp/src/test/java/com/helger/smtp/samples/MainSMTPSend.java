@@ -374,50 +374,46 @@ public class MainSMTPSend
       /*
        * Handle SMTP-specific exceptions.
        */
-      if (e instanceof SendFailedException)
+      if (e instanceof final SendFailedException aSendFailedEx)
       {
-        MessagingException sfe = (MessagingException) e;
-        if (sfe instanceof SMTPSendFailedException)
+        if (aSendFailedEx instanceof final SMTPSendFailedException aFailedEx)
         {
-          final SMTPSendFailedException ssfe = (SMTPSendFailedException) sfe;
           System.out.println ("SMTP SEND FAILED:");
           if (verbose)
-            System.out.println (ssfe.toString ());
-          System.out.println ("  Command: " + ssfe.getCommand ());
-          System.out.println ("  RetCode: " + ssfe.getReturnCode ());
-          System.out.println ("  Response: " + ssfe.getMessage ());
+            System.out.println (aFailedEx.toString ());
+          System.out.println ("  Command: " + aFailedEx.getCommand ());
+          System.out.println ("  RetCode: " + aFailedEx.getReturnCode ());
+          System.out.println ("  Response: " + aFailedEx.getMessage ());
         }
         else
         {
           if (verbose)
-            System.out.println ("Send failed: " + sfe.toString ());
+            System.out.println ("Send failed: " + aSendFailedEx.toString ());
         }
-        Exception ne;
-        while ((ne = sfe.getNextException ()) != null && ne instanceof MessagingException)
+        Exception aNextEx;
+        while ((aNextEx = aSendFailedEx.getNextException ()) != null &&
+               aNextEx instanceof final MessagingException aMsgEx)
         {
-          sfe = (MessagingException) ne;
-          if (sfe instanceof SMTPAddressFailedException)
+          if (aMsgEx instanceof final SMTPAddressFailedException aFailedEx)
           {
-            final SMTPAddressFailedException ssfe = (SMTPAddressFailedException) sfe;
             System.out.println ("ADDRESS FAILED:");
             if (verbose)
-              System.out.println (ssfe.toString ());
-            System.out.println ("  Address: " + ssfe.getAddress ());
-            System.out.println ("  Command: " + ssfe.getCommand ());
-            System.out.println ("  RetCode: " + ssfe.getReturnCode ());
-            System.out.println ("  Response: " + ssfe.getMessage ());
+              System.out.println (aFailedEx.toString ());
+            System.out.println ("  Address: " + aFailedEx.getAddress ());
+            System.out.println ("  Command: " + aFailedEx.getCommand ());
+            System.out.println ("  RetCode: " + aFailedEx.getReturnCode ());
+            System.out.println ("  Response: " + aFailedEx.getMessage ());
           }
           else
-            if (sfe instanceof SMTPAddressSucceededException)
+            if (aMsgEx instanceof final SMTPAddressSucceededException aSuccessEx)
             {
               System.out.println ("ADDRESS SUCCEEDED:");
-              final SMTPAddressSucceededException ssfe = (SMTPAddressSucceededException) sfe;
               if (verbose)
-                System.out.println (ssfe.toString ());
-              System.out.println ("  Address: " + ssfe.getAddress ());
-              System.out.println ("  Command: " + ssfe.getCommand ());
-              System.out.println ("  RetCode: " + ssfe.getReturnCode ());
-              System.out.println ("  Response: " + ssfe.getMessage ());
+                System.out.println (aSuccessEx.toString ());
+              System.out.println ("  Address: " + aSuccessEx.getAddress ());
+              System.out.println ("  Command: " + aSuccessEx.getCommand ());
+              System.out.println ("  RetCode: " + aSuccessEx.getReturnCode ());
+              System.out.println ("  Response: " + aSuccessEx.getMessage ());
             }
         }
       }

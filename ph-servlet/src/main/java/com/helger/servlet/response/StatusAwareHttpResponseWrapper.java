@@ -156,8 +156,9 @@ public class StatusAwareHttpResponseWrapper extends HttpServletResponseWrapper
   @NonNull
   public static StatusAwareHttpResponseWrapper wrap (@NonNull final HttpServletResponse aHttpResponse)
   {
-    if (aHttpResponse instanceof StatusAwareHttpResponseWrapper)
-      return (StatusAwareHttpResponseWrapper) aHttpResponse;
+    if (aHttpResponse instanceof final StatusAwareHttpResponseWrapper aWrapper)
+      return aWrapper;
+
     return new StatusAwareHttpResponseWrapper (aHttpResponse);
   }
 }

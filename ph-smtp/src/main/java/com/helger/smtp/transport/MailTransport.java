@@ -315,23 +315,23 @@ public final class MailTransport
             MessagingException bex = ex;
             while ((ex2 = bex.getNextException ()) != null && ex2 instanceof MessagingException)
             {
-              if (ex2 instanceof final SMTPAddressFailedException ssfe)
+              if (ex2 instanceof final SMTPAddressFailedException aFailedEx)
               {
                 aDetails.add (new MailSendDetails (false,
-                                                   ssfe.getAddress ().toString (),
-                                                   ssfe.getCommand (),
-                                                   ssfe.getMessage ().trim (),
-                                                   ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
+                                                   aFailedEx.getAddress ().toString (),
+                                                   aFailedEx.getCommand (),
+                                                   aFailedEx.getMessage ().trim (),
+                                                   ESMTPErrorCode.getFromIDOrDefault (aFailedEx.getReturnCode (),
                                                                                       ESMTPErrorCode.FALLBACK)));
               }
               else
-                if (ex2 instanceof final SMTPAddressSucceededException ssfe)
+                if (ex2 instanceof final SMTPAddressSucceededException aSuccessEx)
                 {
                   aDetails.add (new MailSendDetails (true,
-                                                     ssfe.getAddress ().toString (),
-                                                     ssfe.getCommand (),
-                                                     ssfe.getMessage ().trim (),
-                                                     ESMTPErrorCode.getFromIDOrDefault (ssfe.getReturnCode (),
+                                                     aSuccessEx.getAddress ().toString (),
+                                                     aSuccessEx.getCommand (),
+                                                     aSuccessEx.getMessage ().trim (),
+                                                     ESMTPErrorCode.getFromIDOrDefault (aSuccessEx.getReturnCode (),
                                                                                         ESMTPErrorCode.FALLBACK)));
                 }
               bex = (MessagingException) ex2;

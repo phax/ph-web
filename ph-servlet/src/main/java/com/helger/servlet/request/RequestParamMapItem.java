@@ -33,8 +33,8 @@ import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsOrderedMap;
 
 /**
- * Represents a single item in a {@link RequestParamMap}. It consists of a
- * String value and optional children.
+ * Represents a single item in a {@link RequestParamMap}. It consists of a String value and optional
+ * children.
  *
  * @author Philip Helger
  */
@@ -122,21 +122,21 @@ public final class RequestParamMapItem
   @Nullable
   public static RequestParamMapItem create (@Nullable final Object o)
   {
-    if (o instanceof RequestParamMapItem)
+    if (o instanceof final RequestParamMapItem aItem)
     {
       // Create a copy
-      return new RequestParamMapItem ((RequestParamMapItem) o);
+      return new RequestParamMapItem (aItem);
     }
-    if (o instanceof String)
+    if (o instanceof final String s)
     {
       final RequestParamMapItem ret = new RequestParamMapItem ();
-      ret.m_sValue = (String) o;
+      ret.m_sValue = s;
       return ret;
     }
-    if (o instanceof Map <?, ?>)
+    if (o instanceof final Map <?, ?> aMap)
     {
       final RequestParamMapItem ret = new RequestParamMapItem ();
-      for (final Map.Entry <?, ?> aEntry : ((Map <?, ?>) o).entrySet ())
+      for (final var aEntry : aMap.entrySet ())
       {
         // Recursive create function
         final RequestParamMapItem aChildItem = RequestParamMapItem.create (aEntry.getValue ());

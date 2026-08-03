@@ -214,8 +214,9 @@ public class FileItemStream implements IFileItemStream, Closeable
   @NonNull
   public InputStream openStream () throws IOException
   {
-    if (m_aIS instanceof ICloseable && ((ICloseable) m_aIS).isClosed ())
+    if (m_aIS instanceof final ICloseable aCloseable && aCloseable.isClosed ())
       throw new MultipartItemSkippedException ();
+
     return m_aIS;
   }
 

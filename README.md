@@ -63,7 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.4.3 - work in progress
+v11.4.3 - 2026-08-03
 * Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods.
   Use `SafeHttpServletRequest.wrap (...)` to wrap incoming requests without double wrapping.
 * Incoming requests are now wrapped in a `SafeHttpServletRequest` when a request web scope is created (`WebScopeManager.onRequestBegin`) and when re-obtained from the async context (`ExtAsyncContext.getRequest`).

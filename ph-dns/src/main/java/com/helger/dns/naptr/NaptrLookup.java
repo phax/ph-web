@@ -38,6 +38,7 @@ import com.helger.base.builder.IBuilder;
 import com.helger.base.callback.CallbackList;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.string.StringImplode;
 import com.helger.base.timing.StopWatch;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
@@ -149,7 +150,13 @@ public class NaptrLookup
                              "'" +
                              (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
                              " using network mode " +
-                             m_eLookupMode);
+                             m_eLookupMode +
+                             (m_aCustomDNSServers.isNotEmpty () ? " and the custom DNS server(s) " +
+                                                                  StringImplode.imploder ()
+                                                                               .separator (", ")
+                                                                               .source (m_aCustomDNSServers,
+                                                                                        InetAddress::getHostAddress)
+                                                                               .build () : ""));
 
     final StopWatch aSW = StopWatch.createdStarted ();
     try

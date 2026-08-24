@@ -63,6 +63,9 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.4 - work in progress
+* `NaptrLookup.lookupResult` now also logs the configured custom DNS servers, if any are present.
+
 v11.4.3 - 2026-08-03
 * Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods.
   Use `SafeHttpServletRequest.wrap (...)` to wrap incoming requests without double wrapping.

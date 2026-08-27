@@ -413,6 +413,20 @@ public class UnifiedResponse
   }
 
   /**
+   * Utility method to set content and charset at once.
+   *
+   * @param sContent
+   *        The response content string. May not be <code>null</code>.
+   * @return this
+   * @since 11.4.4
+   */
+  @NonNull
+  public final UnifiedResponse setContentUtf8 (@NonNull final String sContent)
+  {
+    return setContentAndCharset (sContent, StandardCharsets.UTF_8);
+  }
+
+  /**
    * Set the response content. To return an empty response pass in a new empty array, but not
    * <code>null</code>.
    *
@@ -1344,8 +1358,8 @@ public class UnifiedResponse
     // Source:
     // http://joshua.perina.com/africa/gambia/fajara/post/internet-explorer-css-file-size-limit
     if (m_aMimeType != null &&
-        m_aMimeType.equals (CMimeType.TEXT_CSS) &&
-        nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
+      m_aMimeType.equals (CMimeType.TEXT_CSS) &&
+      nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
     {
       logWarn ("Internet Explorer has problems handling CSS files > " +
                MAX_CSS_KB_FOR_IE +
@@ -1563,7 +1577,7 @@ public class UnifiedResponse
       }
 
       if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
-          !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
+        !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
       {
         logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
                  CHttpHeader.WWW_AUTHENTICATE +

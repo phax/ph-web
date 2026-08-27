@@ -65,6 +65,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 v11.4.4 - work in progress
 * `NaptrLookup.lookupResult` now also logs the configured custom DNS servers, if any are present.
+* Added method `UnifiedResponse.setContentUtf8`
 
 v11.4.3 - 2026-08-03
 * Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods.

@@ -64,8 +64,13 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v11.4.4 - work in progress
+* Updated to httpclient 5.6.4
+* Updated to JSch 2.28.7
 * `NaptrLookup.lookupResult` now also logs the configured custom DNS servers, if any are present.
 * Added method `UnifiedResponse.setContentUtf8`
+* Added new static method `HttpProxySettings.forEachNonProxyHostsFromPipeString (String, Consumer)` to parse a piped non-proxy host string like `127.0.0.1 | localhost` into an arbitrary consumer.
+  `HttpProxySettings.addNonProxyHostsFromPipeString` now delegates to it
+* `HttpClientSettingsConfig.getHttpProxyObject` now also treats an empty proxy host name as "no proxy", instead of only a `null` one
 
 v11.4.3 - 2026-08-03
 * Added new class `SafeHttpServletRequest` as an `HttpServletRequestWrapper` that catches the "recycled facade" runtime exceptions on all accessor methods.

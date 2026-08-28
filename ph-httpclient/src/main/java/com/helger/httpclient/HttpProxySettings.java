@@ -16,6 +16,8 @@
  */
 package com.helger.httpclient;
 
+import java.util.function.Consumer;
+
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.core5.http.HttpHost;
 import org.jspecify.annotations.NonNull;
@@ -140,6 +142,26 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
   }
 
   /**
+   * Generic parse method for the piped string of non-proxy hosts
+   *
+   * @param sDefinition
+   *        The definition String. May be <code>null</code>.
+   * @param aHostConsumer
+   *        The consumer to be invoked for every found host.
+   * @since 11.4.4
+   */
+  public static void forEachNonProxyHostsFromPipeString (@Nullable final String sDefinition,
+                                                         @NonNull final Consumer <String> aHostConsumer)
+  {
+    if (StringHelper.isNotEmpty (sDefinition))
+      StringHelper.explode ('|', sDefinition, sHost -> {
+        final String sTrimmedHost = sHost.trim ();
+        if (StringHelper.isNotEmpty (sTrimmedHost))
+          aHostConsumer.accept (sTrimmedHost);
+      });
+  }
+
+  /**
    * Add all non-proxy hosts from a piped string as in <code>127.0.0.1 | localhost</code>. Every
    * entry must be separated by a pipe, and the values are trimmed.
    *
@@ -151,12 +173,7 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
   @NonNull
   public final HttpProxySettings addNonProxyHostsFromPipeString (@Nullable final String sDefinition)
   {
-    if (StringHelper.isNotEmpty (sDefinition))
-      StringHelper.explode ('|', sDefinition, sHost -> {
-        final String sTrimmedHost = sHost.trim ();
-        if (StringHelper.isNotEmpty (sTrimmedHost))
-          m_aNonProxyHosts.add (sTrimmedHost);
-      });
+    forEachNonProxyHostsFromPipeString (sDefinition, m_aNonProxyHosts::add);
     return this;
   }
 

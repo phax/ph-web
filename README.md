@@ -63,7 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.4.4 - work in progress
+v11.4.4 - 2026-08-30
 * Updated to httpclient 5.6.4
 * Updated to JSch 2.28.7
 * `NaptrLookup.lookupResult` now also logs the configured custom DNS servers, if any are present.

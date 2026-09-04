@@ -63,6 +63,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.5 - work in progress
+* `HttpClientFactory` now caches the system default trust store (JRE `cacerts` or `javax.net.ssl.trustStore`) in memory, instead of loading it for each created HTTP client with revocation checking enabled.
+  The cache is automatically invalidated if the trust store source (path, type, password, file modification date or file size) changes
+* Added new static methods `HttpClientFactory.getSystemDefaultTrustStore ()` and `HttpClientFactory.clearSystemDefaultTrustStoreCache ()`
+
 v11.4.4 - 2026-08-30
 * Updated to httpclient 5.6.4
 * Updated to JSch 2.28.7

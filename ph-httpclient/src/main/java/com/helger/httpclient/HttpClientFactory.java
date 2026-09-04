@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.cert.CertPathBuilder;
@@ -89,10 +90,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.annotation.Nonnegative;
+import com.helger.annotation.concurrent.GuardedBy;
+import com.helger.annotation.concurrent.Immutable;
 import com.helger.annotation.concurrent.NotThreadSafe;
+import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.enforce.ValueEnforcer;
+import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.id.factory.GlobalIDFactory;
+import com.helger.base.state.EChange;
 import com.helger.base.state.EHandled;
+import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.ICommonsSet;
 import com.helger.http.tls.ITLSConfigurationMode;
 import com.helger.httpclient.security.CapturingTlsSocketStrategy;
@@ -237,7 +244,112 @@ public class HttpClientFactory implements IHttpClientProvider
     }
   }
 
+  /**
+   * This class contains all the data that identifies the source of the system default trust store.
+   * It is used as the key of the in-memory trust store cache, so that modifications of the
+   * underlying file are detected.
+   *
+   * @author Philip Helger
+   */
+  @Immutable
+  private static final class TrustStoreSource
+  {
+    private final Path m_aPath;
+    private final String m_sType;
+    private final String m_sPassword;
+    private final long m_nLastModifiedMillis;
+    private final long m_nSize;
+
+    private TrustStoreSource (@NonNull final Path aPath,
+                              @NonNull final String sType,
+                              @NonNull final String sPassword,
+                              final long nLastModifiedMillis,
+                              final long nSize)
+    {
+      m_aPath = aPath;
+      m_sType = sType;
+      m_sPassword = sPassword;
+      m_nLastModifiedMillis = nLastModifiedMillis;
+      m_nSize = nSize;
+    }
+
+    /**
+     * Load the trust store from this source.
+     *
+     * @return <code>null</code> if loading failed.
+     */
+    @Nullable
+    private KeyStore _loadTrustStore ()
+    {
+      LOGGER.info ("Trying to load the system default trust store '" +
+                   m_aPath.toString () +
+                   "' of type '" +
+                   m_sType +
+                   "'");
+      try
+      {
+        final KeyStore aKeyStore = KeyStore.getInstance (m_sType);
+        try (final InputStream aIS = Files.newInputStream (m_aPath))
+        {
+          aKeyStore.load (aIS, m_sPassword.toCharArray ());
+        }
+        return aKeyStore;
+      }
+      catch (final GeneralSecurityException | IOException ex)
+      {
+        LOGGER.error ("Failed to load the system default trust store '" + m_aPath.toString () + "'", ex);
+        return null;
+      }
+    }
+
+    @Override
+    public boolean equals (final Object o)
+    {
+      if (o == this)
+        return true;
+      if (o == null || !getClass ().equals (o.getClass ()))
+        return false;
+      final TrustStoreSource rhs = (TrustStoreSource) o;
+      return m_aPath.equals (rhs.m_aPath) &&
+             m_sType.equals (rhs.m_sType) &&
+             m_sPassword.equals (rhs.m_sPassword) &&
+             m_nLastModifiedMillis == rhs.m_nLastModifiedMillis &&
+             m_nSize == rhs.m_nSize;
+    }
+
+    @Override
+    public int hashCode ()
+    {
+      return new HashCodeGenerator (this).append (m_aPath)
+                                         .append (m_sType)
+                                         .append (m_sPassword)
+                                         .append (m_nLastModifiedMillis)
+                                         .append (m_nSize)
+                                         .getHashCode ();
+    }
+
+    @Override
+    public String toString ()
+    {
+      return new ToStringGenerator (null).append ("Path", m_aPath)
+                                         .append ("Type", m_sType)
+                                         .appendPassword ("Password")
+                                         .append ("LastModifiedMillis", m_nLastModifiedMillis)
+                                         .append ("Size", m_nSize)
+                                         .getToString ();
+    }
+  }
+
+  /** The default password of the JRE "cacerts" trust store */
+  private static final String DEFAULT_TRUST_STORE_PASSWORD = "changeit";
+
   private static final Logger LOGGER = LoggerFactory.getLogger (HttpClientFactory.class);
+
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static TrustStoreSource s_aTrustStoreSource;
+  @GuardedBy ("RW_LOCK")
+  private static KeyStore s_aTrustStore;
 
   private final HttpClientSettings m_aSettings;
 
@@ -284,48 +396,127 @@ public class HttpClientFactory implements IHttpClientProvider
     return DefaultSchemePortResolver.INSTANCE;
   }
 
+  /**
+   * Determine the source of the system default trust store: the "javax.net.ssl.trustStore*" system
+   * properties are preferred, with a fallback to the JRE "cacerts" file. Additionally the file
+   * attributes are read, so that modifications of the underlying file can be detected. Reading the
+   * file attributes is very cheap compared to loading the trust store.
+   *
+   * @return <code>null</code> if the file attributes of the trust store could not be read.
+   */
+  @Nullable
+  private static TrustStoreSource _getCurrentTrustStoreSource ()
+  {
+    final Path aPath;
+    final String sType;
+    final String sPassword;
+
+    // Try the "javax.net.ssl.trustStore" system property first
+    final String sTrustStorePath = System.getProperty ("javax.net.ssl.trustStore");
+    if (sTrustStorePath != null)
+    {
+      aPath = Path.of (sTrustStorePath);
+      sType = System.getProperty ("javax.net.ssl.trustStoreType", KeyStore.getDefaultType ());
+      sPassword = System.getProperty ("javax.net.ssl.trustStorePassword", DEFAULT_TRUST_STORE_PASSWORD);
+    }
+    else
+    {
+      // Fall back to the default JRE cacerts
+      aPath = Path.of (System.getProperty ("java.home"), "lib", "security", "cacerts");
+      sType = KeyStore.getDefaultType ();
+      sPassword = DEFAULT_TRUST_STORE_PASSWORD;
+    }
+
+    try
+    {
+      final BasicFileAttributes aAttrs = Files.readAttributes (aPath, BasicFileAttributes.class);
+      return new TrustStoreSource (aPath, sType, sPassword, aAttrs.lastModifiedTime ().toMillis (), aAttrs.size ());
+    }
+    catch (final IOException ex)
+    {
+      LOGGER.error ("Failed to read the file attributes of the system default trust store '" + aPath.toString () + "'",
+                    ex);
+      return null;
+    }
+  }
+
+  /**
+   * Load the system default trust store from the underlying source, ignoring any cached value. See
+   * {@link #getSystemDefaultTrustStore()} for the cached version that should usually be preferred.
+   *
+   * @return <code>null</code> if the trust store could not be loaded.
+   */
   @Nullable
   protected static KeyStore loadSystemDefaultTrustStore ()
   {
-    try
-    {
-      // Try the "javax.net.ssl.trustStore" system property first
-      final String sTrustStorePath = System.getProperty ("javax.net.ssl.trustStore");
-      if (sTrustStorePath != null)
-      {
-        final String sTrustStoreType = System.getProperty ("javax.net.ssl.trustStoreType", KeyStore.getDefaultType ());
-        final char [] aTrustStorePassword = System.getProperty ("javax.net.ssl.trustStorePassword", "changeit")
-                                                  .toCharArray ();
-
-        LOGGER.info ("Trying to load system default trust store '" +
-                     sTrustStorePath +
-                     "' of type '" +
-                     sTrustStoreType +
-                     "'");
-
-        final KeyStore aKeyStore = KeyStore.getInstance (sTrustStoreType);
-        try (final InputStream aIS = Files.newInputStream (Path.of (sTrustStorePath)))
-        {
-          aKeyStore.load (aIS, aTrustStorePassword);
-        }
-        return aKeyStore;
-      }
-
-      // Fall back to the default JRE cacerts
-      LOGGER.info ("Trying to load system default JRE cacerts");
-      final KeyStore aKeyStore = KeyStore.getInstance (KeyStore.getDefaultType ());
-      final Path aCacertsPath = Path.of (System.getProperty ("java.home"), "lib", "security", "cacerts");
-      try (final InputStream aIS = Files.newInputStream (aCacertsPath))
-      {
-        aKeyStore.load (aIS, "changeit".toCharArray ());
-      }
-      return aKeyStore;
-    }
-    catch (final Exception ex)
-    {
-      LOGGER.error ("Failed to load default trust store for revocation checking", ex);
+    final TrustStoreSource aSource = _getCurrentTrustStoreSource ();
+    if (aSource == null)
       return null;
+    return aSource._loadTrustStore ();
+  }
+
+  /**
+   * Get the system default trust store. Because loading a trust store is a rather expensive
+   * operation, and because the trust store rarely changes at runtime, the loaded trust store is
+   * cached in memory. The cache is automatically invalidated, if the source of the trust store
+   * (path, type, password, file modification date or file size) changes. Use
+   * {@link #clearSystemDefaultTrustStoreCache()} to explicitly drop the cached trust store.<br>
+   * Note: the returned trust store is shared between all callers and may therefore not be modified.
+   *
+   * @return <code>null</code> if the trust store could not be loaded.
+   * @since 11.4.5
+   */
+  @Nullable
+  public static KeyStore getSystemDefaultTrustStore ()
+  {
+    final TrustStoreSource aSource = _getCurrentTrustStoreSource ();
+    if (aSource == null)
+      return null;
+
+    // Check if the cached trust store still matches the current source
+    final KeyStore aCached = RW_LOCK.readLockedGet ( () -> aSource.equals (s_aTrustStoreSource) ? s_aTrustStore : null);
+    if (aCached != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Reusing the cached system default trust store " + aSource.toString ());
+      return aCached;
     }
+
+    return RW_LOCK.writeLockedGet ( () -> {
+      // Check again in write lock
+      if (aSource.equals (s_aTrustStoreSource))
+        return s_aTrustStore;
+
+      final KeyStore aKeyStore = aSource._loadTrustStore ();
+      // Don't cache load failures
+      s_aTrustStoreSource = aKeyStore == null ? null : aSource;
+      s_aTrustStore = aKeyStore;
+      return aKeyStore;
+    });
+  }
+
+  /**
+   * Remove the cached system default trust store, so that the next call to
+   * {@link #getSystemDefaultTrustStore()} loads it again from the underlying source.
+   *
+   * @return {@link EChange#CHANGED} if a cached trust store was removed, {@link EChange#UNCHANGED}
+   *         if no trust store was cached. Never <code>null</code>.
+   * @since 11.4.5
+   */
+  @NonNull
+  public static EChange clearSystemDefaultTrustStoreCache ()
+  {
+    return RW_LOCK.writeLockedGet ( () -> {
+      if (s_aTrustStore == null)
+        return EChange.UNCHANGED;
+
+      s_aTrustStoreSource = null;
+      s_aTrustStore = null;
+
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("The cached system default trust store was removed");
+      return EChange.CHANGED;
+    });
   }
 
   /**
@@ -344,8 +535,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
     try
     {
-      // Load the default trust store (JRE cacerts or custom via system property)
-      final KeyStore aDefaultTS = loadSystemDefaultTrustStore ();
+      // Load the default trust store (JRE cacerts or custom via system property) - cached in memory
+      final KeyStore aDefaultTS = getSystemDefaultTrustStore ();
       if (aDefaultTS == null)
       {
         LOGGER.warn ("Cannot create revocation-enabled SSLContext because the default trust store could not be loaded");

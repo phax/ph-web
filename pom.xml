@@ -73,7 +73,6 @@
   
   <!-- Enable when using a SNAPSHOT version: -->
   <!--
-  -->
   <repositories>
     <repository>
       <name>Central Portal Snapshots</name>
@@ -87,6 +86,7 @@
       </snapshots>
     </repository>
   </repositories>
+  -->
   
   <dependencyManagement>
     <dependencies>

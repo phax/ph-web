@@ -582,9 +582,8 @@ public abstract class AbstractXServlet extends HttpServlet
 
   // Avoid overloading in sub classes
   @Override
-  public final void service (@NonNull final ServletRequest req, @NonNull final ServletResponse res)
-                                                                                                    throws ServletException,
-                                                                                                    IOException
+  public final void service (@NonNull final ServletRequest req,
+                             @NonNull final ServletResponse res) throws ServletException, IOException
   {
     super.service (req, res);
   }

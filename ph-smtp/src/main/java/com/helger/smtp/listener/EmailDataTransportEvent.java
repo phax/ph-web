@@ -78,8 +78,7 @@ public class EmailDataTransportEvent
   }
 
   /**
-   * @return The original email data that was (not) sent. Never
-   *         <code>null</code>.
+   * @return The original email data that was (not) sent. Never <code>null</code>.
    */
   @NonNull
   public IEmailData getEmailData ()
@@ -88,8 +87,7 @@ public class EmailDataTransportEvent
   }
 
   /**
-   * @return The created mime message that was (not) sent. Never
-   *         <code>null</code>.
+   * @return The created mime message that was (not) sent. Never <code>null</code>.
    */
   @NonNull
   public MimeMessage getMimeMessage ()

@@ -22,16 +22,15 @@ import com.helger.base.codec.IByteArrayCodec;
 import com.helger.base.id.IHasID;
 
 /**
- * Base interface for a content transfer encoding. See
- * {@link EContentTransferEncoding} for predefined ones.
+ * Base interface for a content transfer encoding. See {@link EContentTransferEncoding} for
+ * predefined ones.
  *
  * @author Philip Helger
  */
 public interface IContentTransferEncoding extends IHasID <String>
 {
   /**
-   * @return A new encoder for this Content Transfer Encoding. May not be
-   *         <code>null</code>.
+   * @return A new encoder for this Content Transfer Encoding. May not be <code>null</code>.
    * @since 9.0.5
    */
   @NonNull

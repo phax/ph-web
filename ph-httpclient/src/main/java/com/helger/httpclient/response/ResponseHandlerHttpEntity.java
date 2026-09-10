@@ -28,8 +28,7 @@ import org.jspecify.annotations.Nullable;
 import com.helger.http.CHttp;
 
 /**
- * Base response handler that checks the status code and handles only status
- * codes &lt; 300.
+ * Base response handler that checks the status code and handles only status codes &lt; 300.
  *
  * @author Philip Helger
  * @since 8.7.2

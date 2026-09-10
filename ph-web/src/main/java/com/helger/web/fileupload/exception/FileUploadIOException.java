@@ -19,8 +19,8 @@ package com.helger.web.fileupload.exception;
 import java.io.IOException;
 
 /**
- * This exception is thrown for hiding an inner {@link FileUploadException} in
- * an {@link IOException}.
+ * This exception is thrown for hiding an inner {@link FileUploadException} in an
+ * {@link IOException}.
  */
 public class FileUploadIOException extends IOException
 {

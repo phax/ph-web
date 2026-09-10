@@ -33,8 +33,8 @@ import jakarta.servlet.ServletException;
 public interface IXServletHighLevelFilter
 {
   /**
-   * Invoked before an XServlet request is handled. Exceptions occurring in this
-   * method will be caught by the exception handler registered in the XServlet.
+   * Invoked before an XServlet request is handled. Exceptions occurring in this method will be
+   * caught by the exception handler registered in the XServlet.
    *
    * @param aRequestScope
    *        Request scope. Never <code>null</code>.
@@ -46,9 +46,9 @@ public interface IXServletHighLevelFilter
   void beforeRequest (@NonNull IRequestWebScope aRequestScope) throws ServletException, IOException;
 
   /**
-   * Invoked after an XServlet request was handled. After is always called, even
-   * if before request was canceled (in a finally)! Exceptions occurring in this
-   * method will be logged but ignored otherwise!
+   * Invoked after an XServlet request was handled. After is always called, even if before request
+   * was canceled (in a finally)! Exceptions occurring in this method will be logged but ignored
+   * otherwise!
    *
    * @param aRequestScope
    *        Request scope. Never <code>null</code>.

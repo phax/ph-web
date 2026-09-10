@@ -102,7 +102,7 @@ public final class MailAPI
   @NonNull
   public static FailedMailQueue getFailedMailQueue ()
   {
-    return RW_LOCK.readLockedGet ( () -> s_aFailedMailQueue);
+    return RW_LOCK.readLockedGet (() -> s_aFailedMailQueue);
   }
 
   /**
@@ -115,7 +115,7 @@ public final class MailAPI
   {
     ValueEnforcer.notNull (aFailedMailQueue, "FailedMailQueue");
 
-    RW_LOCK.writeLocked ( () -> {
+    RW_LOCK.writeLocked (() -> {
       s_aFailedMailQueue = aFailedMailQueue;
 
       // Update all existing queues

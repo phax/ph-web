@@ -22,8 +22,7 @@ package com.helger.web.fileupload.exception;
 public class InvalidContentTypeException extends FileUploadException
 {
   /**
-   * Constructs an <code>InvalidContentTypeException</code> with the specified
-   * detail message.
+   * Constructs an <code>InvalidContentTypeException</code> with the specified detail message.
    *
    * @param sMsg
    *        The detail message.

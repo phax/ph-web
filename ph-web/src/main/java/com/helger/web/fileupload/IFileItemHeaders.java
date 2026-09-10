@@ -26,8 +26,8 @@ import com.helger.collection.commons.ICommonsList;
 
 /**
  * <p>
- * This class provides support for accessing the headers for a file or form item
- * that was received within a <code>multipart/form-data</code> POST request.
+ * This class provides support for accessing the headers for a file or form item that was received
+ * within a <code>multipart/form-data</code> POST request.
  * </p>
  *
  * @author Michael C. Macaluso
@@ -36,17 +36,15 @@ import com.helger.collection.commons.ICommonsList;
 public interface IFileItemHeaders
 {
   /**
-   * Returns the value of the specified part header as a <code>String</code>. If
-   * the part did not include a header of the specified name, this method return
-   * <code>null</code>. If there are multiple headers with the same name, this
-   * method returns the first header in the item. The header name is case
-   * insensitive.
+   * Returns the value of the specified part header as a <code>String</code>. If the part did not
+   * include a header of the specified name, this method return <code>null</code>. If there are
+   * multiple headers with the same name, this method returns the first header in the item. The
+   * header name is case insensitive.
    *
    * @param sName
    *        a <code>String</code> specifying the header name
-   * @return a <code>String</code> containing the value of the requested header,
-   *         or <code>null</code> if the item does not have a header of that
-   *         name
+   * @return a <code>String</code> containing the value of the requested header, or
+   *         <code>null</code> if the item does not have a header of that name
    */
   @Nullable
   String getHeader (@NonNull String sName);
@@ -62,20 +60,18 @@ public interface IFileItemHeaders
 
   /**
    * <p>
-   * Returns all the values of the specified item header as an
-   * <code>Iterator</code> of <code>String</code> objects.
+   * Returns all the values of the specified item header as an <code>Iterator</code> of
+   * <code>String</code> objects.
    * </p>
    * <p>
-   * If the item did not include any headers of the specified name, this method
-   * returns an empty <code>Iterator</code>. The header name is case
-   * insensitive.
+   * If the item did not include any headers of the specified name, this method returns an empty
+   * <code>Iterator</code>. The header name is case insensitive.
    * </p>
    *
    * @param sName
    *        a <code>String</code> specifying the header name
-   * @return an <code>Enumeration</code> containing the values of the requested
-   *         header. If the item does not have any headers of that name, return
-   *         an empty <code>Iterator</code>
+   * @return an <code>Enumeration</code> containing the values of the requested header. If the item
+   *         does not have any headers of that name, return an empty <code>Iterator</code>
    */
   @NonNull
   Iterator <String> getHeaders (@NonNull String sName);
@@ -85,8 +81,8 @@ public interface IFileItemHeaders
    * Returns an <code>Iterator</code> of all the header names.
    * </p>
    *
-   * @return an <code>Enumeration</code> containing the headers. If the item
-   *         does not have any headers return an empty <code>Iterator</code>
+   * @return an <code>Enumeration</code> containing the headers. If the item does not have any
+   *         headers return an empty <code>Iterator</code>
    */
   @NonNull
   Iterator <String> getHeaderNames ();
@@ -96,9 +92,8 @@ public interface IFileItemHeaders
    * Returns a <code>List</code> of all the header names.
    * </p>
    *
-   * @return an <code>List</code> containing the values of the requested header.
-   *         If the item does not have any headers of that name return an empty
-   *         <code>Enumeration</code>
+   * @return an <code>List</code> containing the values of the requested header. If the item does
+   *         not have any headers of that name return an empty <code>Enumeration</code>
    */
   @NonNull
   @ReturnsMutableCopy

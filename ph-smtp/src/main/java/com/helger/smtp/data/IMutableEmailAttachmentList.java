@@ -24,8 +24,8 @@ import com.helger.base.state.EChange;
 import com.helger.base.state.IClearable;
 
 /**
- * This interface represents attachments to be added to a mail message. Messages
- * with attachments are always send as MIME messages.
+ * This interface represents attachments to be added to a mail message. Messages with attachments
+ * are always send as MIME messages.
  *
  * @author Philip Helger
  */
@@ -37,8 +37,7 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    * @param sFilename
    *        The ID/filename of the attachment. May not be <code>null</code>.
    * @param aISS
-   *        The {@link IHasInputStream} representing the data. May not be
-   *        <code>null</code>.
+   *        The {@link IHasInputStream} representing the data. May not be <code>null</code>.
    */
   default void addAttachment (@NonNull final String sFilename, @NonNull final IHasInputStream aISS)
   {
@@ -85,8 +84,7 @@ public interface IMutableEmailAttachmentList extends IEmailAttachmentList, IClea
    * Remove the passed attachment.
    *
    * @param sFilename
-   *        The file name of the attachment to be removed. The file name is case
-   *        sensitive.
+   *        The file name of the attachment to be removed. The file name is case sensitive.
    * @return {@link EChange}
    */
   @NonNull

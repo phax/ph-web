@@ -30,8 +30,7 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 
 /**
- * Small tool to list all TCP and UDP ports that are currently in use on this
- * machine.
+ * Small tool to list all TCP and UDP ports that are currently in use on this machine.
  *
  * @author Philip Helger
  */

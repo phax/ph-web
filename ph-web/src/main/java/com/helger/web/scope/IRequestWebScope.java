@@ -24,8 +24,8 @@ import org.jspecify.annotations.NonNull;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Interface for a single web request scope object that also offers access to
- * the HTTP servlet response.
+ * Interface for a single web request scope object that also offers access to the HTTP servlet
+ * response.
  *
  * @author Philip Helger
  */

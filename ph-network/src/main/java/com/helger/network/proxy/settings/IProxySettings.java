@@ -138,7 +138,7 @@ public interface IProxySettings
     final String sProxyPassword = getProxyPassword ();
     // Constructor does not take null password!
     return new PasswordAuthentication (getProxyUserName (),
-                                       sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY : sProxyPassword
-                                                                                                         .toCharArray ());
+                                       sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY
+                                                              : sProxyPassword.toCharArray ());
   }
 }

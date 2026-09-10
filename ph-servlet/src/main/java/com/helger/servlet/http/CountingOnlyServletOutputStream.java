@@ -50,7 +50,9 @@ public class CountingOnlyServletOutputStream extends AbstractServletOutputStream
   }
 
   @Override
-  public void write (@NonNull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public void write (@NonNull final byte [] aBuf,
+                     @Nonnegative final int nOfs,
+                     @Nonnegative final int nLen) throws IOException
   {
     ValueEnforcer.isArrayOfsLen (aBuf, nOfs, nLen);
     m_nContentLength += nLen;

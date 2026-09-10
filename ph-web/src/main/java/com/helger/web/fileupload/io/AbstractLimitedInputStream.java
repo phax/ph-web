@@ -27,8 +27,8 @@ import com.helger.base.io.stream.WrappedInputStream;
 import com.helger.base.state.ICloseable;
 
 /**
- * An input stream, which limits its data size. This stream is used, if the
- * content length is unknown.
+ * An input stream, which limits its data size. This stream is used, if the content length is
+ * unknown.
  */
 public abstract class AbstractLimitedInputStream extends WrappedInputStream implements ICloseable
 {
@@ -51,8 +51,7 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
    * @param aIS
    *        The input stream, which shall be limited.
    * @param nSizeMax
-   *        The limit; no more than this number of bytes shall be returned by
-   *        the source stream.
+   *        The limit; no more than this number of bytes shall be returned by the source stream.
    */
   public AbstractLimitedInputStream (@NonNull final InputStream aIS, @Nonnegative final long nSizeMax)
   {
@@ -85,17 +84,15 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
   }
 
   /**
-   * Reads the next byte of data from this input stream. The value byte is
-   * returned as an <code>int</code> in the range <code>0</code> to
-   * <code>255</code>. If no byte is available because the end of the stream has
-   * been reached, the value <code>-1</code> is returned. This method blocks
-   * until input data is available, the end of the stream is detected, or an
-   * exception is thrown.
+   * Reads the next byte of data from this input stream. The value byte is returned as an
+   * <code>int</code> in the range <code>0</code> to <code>255</code>. If no byte is available
+   * because the end of the stream has been reached, the value <code>-1</code> is returned. This
+   * method blocks until input data is available, the end of the stream is detected, or an exception
+   * is thrown.
    * <p>
    * This method simply performs <code>in.read()</code> and returns the result.
    *
-   * @return the next byte of data, or <code>-1</code> if the end of the stream
-   *         is reached.
+   * @return the next byte of data, or <code>-1</code> if the end of the stream is reached.
    * @exception IOException
    *            if an I/O error occurs.
    * @see java.io.FilterInputStream
@@ -113,13 +110,11 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
   }
 
   /**
-   * Reads up to <code>len</code> bytes of data from this input stream into an
-   * array of bytes. If <code>len</code> is not zero, the method blocks until
-   * some input is available; otherwise, no bytes are read and <code>0</code> is
-   * returned.
+   * Reads up to <code>len</code> bytes of data from this input stream into an array of bytes. If
+   * <code>len</code> is not zero, the method blocks until some input is available; otherwise, no
+   * bytes are read and <code>0</code> is returned.
    * <p>
-   * This method simply performs <code>in.read(b, off, len)</code> and returns
-   * the result.
+   * This method simply performs <code>in.read(b, off, len)</code> and returns the result.
    *
    * @param b
    *        the buffer into which the data is read.
@@ -127,18 +122,19 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
    *        The start offset in the destination array <code>b</code>.
    * @param nLen
    *        the maximum number of bytes read.
-   * @return the total number of bytes read into the buffer, or <code>-1</code>
-   *         if there is no more data because the end of the stream has been
-   *         reached.
+   * @return the total number of bytes read into the buffer, or <code>-1</code> if there is no more
+   *         data because the end of the stream has been reached.
    * @exception IndexOutOfBoundsException
-   *            If <code>off</code> is negative, <code>len</code> is negative,
-   *            or <code>len</code> is greater than <code>b.length - off</code>
+   *            If <code>off</code> is negative, <code>len</code> is negative, or <code>len</code>
+   *            is greater than <code>b.length - off</code>
    * @exception IOException
    *            if an I/O error occurs.
    * @see java.io.FilterInputStream
    */
   @Override
-  public int read (@NonNull final byte [] b, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public int read (@NonNull final byte [] b,
+                   @Nonnegative final int nOfs,
+                   @Nonnegative final int nLen) throws IOException
   {
     ValueEnforcer.isArrayOfsLen (b, nOfs, nLen);
     final int res = super.read (b, nOfs, nLen);
@@ -163,8 +159,8 @@ public abstract class AbstractLimitedInputStream extends WrappedInputStream impl
   }
 
   /**
-   * Closes this input stream and releases any system resources associated with
-   * the stream. This method simply performs <code>in.close()</code>.
+   * Closes this input stream and releases any system resources associated with the stream. This
+   * method simply performs <code>in.close()</code>.
    *
    * @exception IOException
    *            if an I/O error occurs.

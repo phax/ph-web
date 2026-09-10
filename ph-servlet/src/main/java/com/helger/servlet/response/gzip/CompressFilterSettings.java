@@ -54,12 +54,11 @@ public final class CompressFilterSettings
   {}
 
   /**
-   * @return <code>true</code> if the filter is loaded, <code>false</code> if
-   *         not
+   * @return <code>true</code> if the filter is loaded, <code>false</code> if not
    */
   public static boolean isFilterLoaded ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bFilterLoaded);
+    return RW_LOCK.readLockedBoolean (() -> s_bFilterLoaded);
   }
 
   /**
@@ -67,17 +66,16 @@ public final class CompressFilterSettings
    */
   public static void markFilterLoaded ()
   {
-    RW_LOCK.writeLockedBoolean ( () -> s_bFilterLoaded = true);
+    RW_LOCK.writeLockedBoolean (() -> s_bFilterLoaded = true);
     LOGGER.info ("CompressFilter is loaded");
   }
 
   /**
-   * @return <code>true</code> if overall compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if overall compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseCompressionEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseCompressionEnabled);
   }
 
   /**
@@ -90,7 +88,7 @@ public final class CompressFilterSettings
   @NonNull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
@@ -102,12 +100,11 @@ public final class CompressFilterSettings
   }
 
   /**
-   * @return <code>true</code> if GZip compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if GZip compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseGzipEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseGzipEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -121,7 +118,7 @@ public final class CompressFilterSettings
   @NonNull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
@@ -133,12 +130,11 @@ public final class CompressFilterSettings
   }
 
   /**
-   * @return <code>true</code> if Deflate compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if Deflate compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseDeflateEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -152,7 +148,7 @@ public final class CompressFilterSettings
   @NonNull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
@@ -184,12 +180,11 @@ public final class CompressFilterSettings
   }
 
   /**
-   * @return <code>true</code> if debugMode is enabled, <code>false</code> if
-   *         not
+   * @return <code>true</code> if debugMode is enabled, <code>false</code> if not
    */
   public static boolean isDebugModeEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bDebugModeEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bDebugModeEnabled);
   }
 
   /**
@@ -202,7 +197,7 @@ public final class CompressFilterSettings
   @NonNull
   public static EChange setDebugModeEnabled (final boolean bDebugModeEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bDebugModeEnabled == bDebugModeEnabled)
         return EChange.UNCHANGED;
       s_bDebugModeEnabled = bDebugModeEnabled;

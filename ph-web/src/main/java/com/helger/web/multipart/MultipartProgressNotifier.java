@@ -56,7 +56,8 @@ public class MultipartProgressNotifier
    * @param nContentLength
    *        The expected content length.
    */
-  public MultipartProgressNotifier (@Nullable final IProgressListener aListener, @CheckForSigned final long nContentLength)
+  public MultipartProgressNotifier (@Nullable final IProgressListener aListener,
+                                    @CheckForSigned final long nContentLength)
   {
     if (aListener != null && LOGGER.isDebugEnabled ())
       LOGGER.debug ("setting progress listener " + aListener);
@@ -83,8 +84,7 @@ public class MultipartProgressNotifier
   {
     ValueEnforcer.isGE0 (nBytes, "Bytes");
     /*
-     * Indicates, that the given number of bytes have been read from the input
-     * stream.
+     * Indicates, that the given number of bytes have been read from the input stream.
      */
     m_nBytesRead += nBytes;
     _notifyListener ();

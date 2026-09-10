@@ -44,11 +44,10 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
   private final String m_sHeaderValue;
 
   /**
-   * The X-Frame-Options HTTP response header can be used to indicate whether or
-   * not a browser should be allowed to render a page in a &lt;frame&gt;,
-   * &lt;iframe&gt; or &lt;object&gt; . Sites can use this to avoid clickjacking
-   * attacks, by ensuring that their content is not embedded into other sites.
-   * Example:
+   * The X-Frame-Options HTTP response header can be used to indicate whether or not a browser
+   * should be allowed to render a page in a &lt;frame&gt;, &lt;iframe&gt; or &lt;object&gt; . Sites
+   * can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into
+   * other sites. Example:
    *
    * <pre>
    * X-Frame-Options: DENY
@@ -59,10 +58,10 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
    * @param eType
    *        The X-Frame-Options type to be set. May not be <code>null</code>.
    * @param aDomain
-   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code>
-   *        for the other cases.
+   *        The domain URL to be used in "ALLOW-FROM". May be <code>null</code> for the other cases.
    */
-  public XServletFilterSecurityXFrameOptions (@NonNull final EXFrameOptionType eType, @Nullable final ISimpleURL aDomain)
+  public XServletFilterSecurityXFrameOptions (@NonNull final EXFrameOptionType eType,
+                                              @Nullable final ISimpleURL aDomain)
   {
     ValueEnforcer.notNull (eType, "Type");
     if (eType.isURLRequired ())
@@ -77,8 +76,7 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
   }
 
   /**
-   * @return The X-Frame-Options type provided in the constructor. Never
-   *         <code>null</code>.
+   * @return The X-Frame-Options type provided in the constructor. Never <code>null</code>.
    * @since 9.3.2
    */
   @NonNull
@@ -88,9 +86,8 @@ public class XServletFilterSecurityXFrameOptions implements IXServletLowLevelFil
   }
 
   /**
-   * @return The domain passed in the constructor. May be <code>null</code>. Is
-   *         not <code>null</code> if the {@link #getXFrameOptionsType()}
-   *         requires a URL.
+   * @return The domain passed in the constructor. May be <code>null</code>. Is not
+   *         <code>null</code> if the {@link #getXFrameOptionsType()} requires a URL.
    * @since 9.3.2
    */
   @Nullable

@@ -28,9 +28,8 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 
 /**
- * Provides a convenience wrapper around an <code>sftp</code> channel. This
- * implementation offers a simplified interface that manages the resources
- * needed to issue <code>sftp</code> commands.
+ * Provides a convenience wrapper around an <code>sftp</code> channel. This implementation offers a
+ * simplified interface that manages the resources needed to issue <code>sftp</code> commands.
  *
  * @see com.jcraft.jsch.ChannelSftp
  */
@@ -42,8 +41,8 @@ public class SftpRunner implements AutoCloseable
   private final SessionManager m_aSessionManager;
 
   /**
-   * Creates a new SftpRunner that will use a {@link SessionManager} that wraps
-   * the supplied <code>sessionFactory</code>.
+   * Creates a new SftpRunner that will use a {@link SessionManager} that wraps the supplied
+   * <code>sessionFactory</code>.
    *
    * @param aSessionFactory
    *        The factory used to create a session manager
@@ -54,9 +53,8 @@ public class SftpRunner implements AutoCloseable
   }
 
   /**
-   * Executes the <code>sftp</code> callback providing it an open
-   * {@link ChannelSftp}. SFTP callback implementations should <i>NOT</i> close
-   * the channel.
+   * Executes the <code>sftp</code> callback providing it an open {@link ChannelSftp}. SFTP callback
+   * implementations should <i>NOT</i> close the channel.
    *
    * @param aSftp
    *        A callback to invoke with the {@link ChannelSftp}

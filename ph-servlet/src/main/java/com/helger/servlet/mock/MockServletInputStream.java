@@ -28,8 +28,8 @@ import com.helger.servlet.io.AbstractServletInputStream;
 import jakarta.servlet.ServletInputStream;
 
 /**
- * A {@link ServletInputStream} for testing based on a predefined byte array or
- * an existing {@link InputStream}.
+ * A {@link ServletInputStream} for testing based on a predefined byte array or an existing
+ * {@link InputStream}.
  *
  * @author Philip Helger
  */

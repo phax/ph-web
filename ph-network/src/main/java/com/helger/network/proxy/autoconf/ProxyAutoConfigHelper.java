@@ -161,8 +161,8 @@ public final class ProxyAutoConfigHelper
   }
 
   @NonNull
-  public ICommonsList <IProxySettings> getProxyListForURL (@NonNull final String sURL, @NonNull final String sHost)
-                                                                                                                    throws ScriptException
+  public ICommonsList <IProxySettings> getProxyListForURL (@NonNull final String sURL,
+                                                           @NonNull final String sHost) throws ScriptException
   {
     final ICommonsList <IProxySettings> ret = new CommonsArrayList <> ();
     String sProxyCode = findProxyForURL (sURL, sHost);

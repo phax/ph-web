@@ -22,8 +22,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 /**
- * An interface for creating {@link Session} objects. This is a base interface
- * for {@link ISessionFactory}.
+ * An interface for creating {@link Session} objects. This is a base interface for
+ * {@link ISessionFactory}.
  *
  * @since 9.7.2
  */

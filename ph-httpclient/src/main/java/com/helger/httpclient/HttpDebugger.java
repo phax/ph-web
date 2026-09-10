@@ -29,8 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.annotation.concurrent.Immutable;
 
 /**
- * Some debugging for HTTP requests. Currently used in
- * {@link HttpClientManager}.
+ * Some debugging for HTTP requests. Currently used in {@link HttpClientManager}.
  *
  * @author Philip Helger
  */
@@ -74,11 +73,10 @@ public final class HttpDebugger
    * Call after an invocation.
    *
    * @param aRequest
-   *        The source request. May not be modified internally. May not be
-   *        <code>null</code>.
+   *        The source request. May not be modified internally. May not be <code>null</code>.
    * @param aResponse
-   *        The response object retrieved. May be anything including
-   *        <code>null</code> (e.g. in case of exception).
+   *        The response object retrieved. May be anything including <code>null</code> (e.g. in case
+   *        of exception).
    * @param aCaughtException
    *        The caught exception. May be <code>null</code>.
    * @since 8.8.2

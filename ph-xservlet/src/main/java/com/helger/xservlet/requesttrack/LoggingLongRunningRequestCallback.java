@@ -30,8 +30,7 @@ import com.helger.diagnostics.log.LogHelper;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
- * A simple implementation of {@link ILongRunningRequestCallback} simply logging
- * such events.
+ * A simple implementation of {@link ILongRunningRequestCallback} simply logging such events.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -55,8 +54,7 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   }
 
   /**
-   * @return The error level as provided in the constructor. Never
-   *         <code>null</code>.
+   * @return The error level as provided in the constructor. Never <code>null</code>.
    */
   @NonNull
   public final IErrorLevel getErrorLevel ()
@@ -101,6 +99,8 @@ public class LoggingLongRunningRequestCallback implements ILongRunningRequestCal
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel).append ("LogRemoteAddr", m_bLogRemoteAddr).getToString ();
+    return new ToStringGenerator (this).append ("ErrorLevel", m_aErrorLevel)
+                                       .append ("LogRemoteAddr", m_bLogRemoteAddr)
+                                       .getToString ();
   }
 }

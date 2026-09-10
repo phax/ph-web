@@ -34,8 +34,8 @@ public class FileSizeLimitExceededException extends AbstractSizeException
   private final String m_sFilename;
 
   /**
-   * Constructs a <code>SizeExceededException</code> with the specified detail
-   * message, and actual and permitted sizes.
+   * Constructs a <code>SizeExceededException</code> with the specified detail message, and actual
+   * and permitted sizes.
    *
    * @param sMsg
    *        The detail message.

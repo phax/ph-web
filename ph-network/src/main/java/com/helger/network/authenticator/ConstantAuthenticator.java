@@ -27,10 +27,9 @@ import com.helger.base.string.StringHelper;
 import com.helger.base.tostring.ToStringGenerator;
 
 /**
- * A simple implementation of the abstract {@link Authenticator} class using a
- * static user name and password for all requested sites.<br>
- * Call to enable:
- * <code>Authenticator.setDefault (new ConstantAuthenticator (user, pw));</code>
+ * A simple implementation of the abstract {@link Authenticator} class using a static user name and
+ * password for all requested sites.<br>
+ * Call to enable: <code>Authenticator.setDefault (new ConstantAuthenticator (user, pw));</code>
  *
  * @author Philip Helger
  */
@@ -41,7 +40,9 @@ public class ConstantAuthenticator extends Authenticator
   private final String m_sUserName;
   private final String m_sPassword;
 
-  public ConstantAuthenticator (@Nullable final String sDomain, @NonNull final String sUserName, @NonNull final String sPassword)
+  public ConstantAuthenticator (@Nullable final String sDomain,
+                                @NonNull final String sUserName,
+                                @NonNull final String sPassword)
   {
     this (StringHelper.getConcatenatedOnDemand (sDomain, DOMAIN_SEPARATOR, sUserName), sPassword);
   }
@@ -53,8 +54,8 @@ public class ConstantAuthenticator extends Authenticator
   }
 
   /**
-   * @return The provided user name, including an eventually present domain.
-   *         Never <code>null</code>.
+   * @return The provided user name, including an eventually present domain. Never
+   *         <code>null</code>.
    */
   @NonNull
   public String getUserName ()

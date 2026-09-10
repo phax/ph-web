@@ -61,10 +61,10 @@ public class TunnelConnection implements Closeable
   }
 
   /**
-   * Creates a TunnelConnection using the the <code>sessionFactory</code> to
-   * obtain its ssh connection with a single tunnel defined by
-   * {@link com.helger.jsch.tunnel.Tunnel#Tunnel(int, String, int)
-   * Tunnel(localPort, destinationHostname, destinationPort)}.
+   * Creates a TunnelConnection using the the <code>sessionFactory</code> to obtain its ssh
+   * connection with a single tunnel defined by
+   * {@link com.helger.jsch.tunnel.Tunnel#Tunnel(int, String, int) Tunnel(localPort,
+   * destinationHostname, destinationPort)}.
    *
    * @param sessionFactory
    *        The sessionFactory
@@ -84,9 +84,8 @@ public class TunnelConnection implements Closeable
   }
 
   /**
-   * Creates a TunnelConnection using the the <code>sessionFactory</code> to
-   * obtain its ssh connection with a list of
-   * {@link com.helger.jsch.tunnel.Tunnel Tunnel's}.
+   * Creates a TunnelConnection using the the <code>sessionFactory</code> to obtain its ssh
+   * connection with a list of {@link com.helger.jsch.tunnel.Tunnel Tunnel's}.
    *
    * @param sessionFactory
    *        The sessionFactory
@@ -99,9 +98,8 @@ public class TunnelConnection implements Closeable
   }
 
   /**
-   * Creates a TunnelConnection using the the <code>sessionFactory</code> to
-   * obtain its ssh connection with a list of
-   * {@link com.helger.jsch.tunnel.Tunnel Tunnel's}.
+   * Creates a TunnelConnection using the the <code>sessionFactory</code> to obtain its ssh
+   * connection with a list of {@link com.helger.jsch.tunnel.Tunnel Tunnel's}.
    *
    * @param sessionFactory
    *        The sessionFactory
@@ -137,8 +135,8 @@ public class TunnelConnection implements Closeable
   }
 
   /**
-   * Returns the tunnel matching the supplied values, or <code>null</code> if
-   * there isn't one that matches.
+   * Returns the tunnel matching the supplied values, or <code>null</code> if there isn't one that
+   * matches.
    *
    * @param destinationHostname
    *        The tunnels destination hostname
@@ -204,8 +202,8 @@ public class TunnelConnection implements Closeable
   }
 
   /**
-   * Closes, and re-opens the session and all its tunnels. Effectively calls
-   * {@link #close()} followed by a call to {@link #open()}.
+   * Closes, and re-opens the session and all its tunnels. Effectively calls {@link #close()}
+   * followed by a call to {@link #open()}.
    *
    * @throws JSchException
    *         If unable to connect

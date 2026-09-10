@@ -27,9 +27,8 @@ import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 
 /**
- * A default implementation of a web scope aware {@link ServletContextListener}
- * and {@link HttpSessionListener}. Manages global web scopes and session web
- * scopes.
+ * A default implementation of a web scope aware {@link ServletContextListener} and
+ * {@link HttpSessionListener}. Manages global web scopes and session web scopes.
  *
  * @author Philip Helger
  */

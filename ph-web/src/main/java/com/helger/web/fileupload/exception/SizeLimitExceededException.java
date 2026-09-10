@@ -24,8 +24,8 @@ package com.helger.web.fileupload.exception;
 public class SizeLimitExceededException extends AbstractSizeException
 {
   /**
-   * Constructs a <code>SizeExceededException</code> with the specified detail
-   * message, and actual and permitted sizes.
+   * Constructs a <code>SizeExceededException</code> with the specified detail message, and actual
+   * and permitted sizes.
    *
    * @param sMessage
    *        The detail message.

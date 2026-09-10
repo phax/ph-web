@@ -39,8 +39,7 @@ import jakarta.servlet.http.HttpSessionListener;
 
 /**
  * This class holds the different listeners ({@link ServletContextListener},
- * {@link HttpSessionListener} and {@link ServletRequestListener}) used by
- * {@link MockHttpListener}
+ * {@link HttpSessionListener} and {@link ServletRequestListener}) used by {@link MockHttpListener}
  *
  * @author Philip Helger
  */
@@ -75,7 +74,7 @@ public class MockEventListenerList
     // Get all listeners to assign
     final ICommonsList <EventListener> aOtherListeners = aList.getAllListeners ();
 
-    return m_aRWLock.writeLockedGet ( () -> {
+    return m_aRWLock.writeLockedGet (() -> {
       if (m_aListener.isEmpty () && aOtherListeners.isEmpty ())
         return EChange.UNCHANGED;
 
@@ -105,7 +104,7 @@ public class MockEventListenerList
                    aListener.getClass ());
     }
 
-    return EChange.valueOf (m_aRWLock.writeLockedBoolean ( () -> m_aListener.add (aListener)));
+    return EChange.valueOf (m_aRWLock.writeLockedBoolean (() -> m_aListener.add (aListener)));
   }
 
   @NonNull
@@ -114,7 +113,7 @@ public class MockEventListenerList
     if (aListenerClass == null)
       return EChange.UNCHANGED;
 
-    return m_aRWLock.writeLockedGet ( () -> {
+    return m_aRWLock.writeLockedGet (() -> {
       EChange ret = EChange.UNCHANGED;
       // Create a copy of the list
       for (final EventListener aListener : m_aListener.getClone ())
@@ -141,21 +140,21 @@ public class MockEventListenerList
   @ReturnsMutableCopy
   public ICommonsList <ServletContextListener> getAllServletContextListeners ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (ServletContextListener.class));
+    return m_aRWLock.readLockedGet (() -> m_aListener.getAllInstanceOf (ServletContextListener.class));
   }
 
   @NonNull
   @ReturnsMutableCopy
   public ICommonsList <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (HttpSessionListener.class));
+    return m_aRWLock.readLockedGet (() -> m_aListener.getAllInstanceOf (HttpSessionListener.class));
   }
 
   @NonNull
   @ReturnsMutableCopy
   public ICommonsList <ServletRequestListener> getAllServletRequestListeners ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_aListener.getAllInstanceOf (ServletRequestListener.class));
+    return m_aRWLock.readLockedGet (() -> m_aListener.getAllInstanceOf (ServletRequestListener.class));
   }
 
   @Override

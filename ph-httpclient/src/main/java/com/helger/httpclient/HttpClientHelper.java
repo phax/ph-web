@@ -208,8 +208,8 @@ public final class HttpClientHelper
   }
 
   @Nullable
-  public static String entityToString (@NonNull final HttpEntity aEntity, @NonNull final Charset aCharset)
-                                                                                                           throws IOException
+  public static String entityToString (@NonNull final HttpEntity aEntity,
+                                       @NonNull final Charset aCharset) throws IOException
   {
     final byte [] ret = EntityUtils.toByteArray (aEntity);
     return ret == null ? null : new String (ret, aCharset);

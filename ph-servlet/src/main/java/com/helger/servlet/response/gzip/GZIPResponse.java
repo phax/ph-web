@@ -54,7 +54,9 @@ public final class GZIPResponse extends AbstractCompressedResponseWrapper
 
   private static final IMutableStatisticsHandlerCounter STATS_COUNTER_GZIP = StatisticsManager.getCounterHandler (GZIPResponse.class);
 
-  public GZIPResponse (final HttpServletRequest aHttpRequest, final HttpServletResponse aHttpResponse, final String sContentEncoding)
+  public GZIPResponse (final HttpServletRequest aHttpRequest,
+                       final HttpServletResponse aHttpResponse,
+                       final String sContentEncoding)
   {
     super (aHttpRequest, aHttpResponse, sContentEncoding);
     STATS_COUNTER_GZIP.increment ();
@@ -68,6 +70,10 @@ public final class GZIPResponse extends AbstractCompressedResponseWrapper
                                                                   final long nContentLength,
                                                                   @Nonnegative final long nMinCompressSize) throws IOException
   {
-    return new GZIPServletOutputStream (aHttpRequest, aHttpResponse, sContentEncoding, nContentLength, nMinCompressSize);
+    return new GZIPServletOutputStream (aHttpRequest,
+                                        aHttpResponse,
+                                        sContentEncoding,
+                                        nContentLength,
+                                        nMinCompressSize);
   }
 }

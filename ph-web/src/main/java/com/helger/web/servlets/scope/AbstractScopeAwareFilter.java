@@ -31,12 +31,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Abstract HTTP servlet filter implementation using the correct scope handling.
- * The scope initialization happens before the main action is executed, and the
- * scope destruction happens after <b>all</b> the whole filter chain finished!
- * If more than one scope aware filter are present in the filter chain, only the
- * filter invoked first creates the request scope. Succeeding scope aware
- * filters wont create a request scope.
+ * Abstract HTTP servlet filter implementation using the correct scope handling. The scope
+ * initialization happens before the main action is executed, and the scope destruction happens
+ * after <b>all</b> the whole filter chain finished! If more than one scope aware filter are present
+ * in the filter chain, only the filter invoked first creates the request scope. Succeeding scope
+ * aware filters wont create a request scope.
  *
  * @author Philip Helger
  */
@@ -54,9 +53,9 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
    *        The HTTP response. Never <code>null</code>.
    * @param aRequestScope
    *        The request scope to be used.
-   * @return {@link EContinue#CONTINUE} to indicate that the next filter is to
-   *         be called or {@link EContinue#BREAK} to indicate that the next
-   *         filter does not need to be called! Never return <code>null</code>!
+   * @return {@link EContinue#CONTINUE} to indicate that the next filter is to be called or
+   *         {@link EContinue#BREAK} to indicate that the next filter does not need to be called!
+   *         Never return <code>null</code>!
    * @throws IOException
    *         In case of an IO error
    * @throws ServletException
@@ -73,7 +72,8 @@ public abstract class AbstractScopeAwareFilter extends AbstractHttpServletFilter
                                   @NonNull final FilterChain aChain) throws IOException, ServletException
   {
     // Check if a scope needs to be created
-    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest, aHttpResponse))
+    try (final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.createMultipart (aHttpRequest,
+                                                                                                           aHttpResponse))
     {
       // Apply any optional filter
       if (doHttpFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())

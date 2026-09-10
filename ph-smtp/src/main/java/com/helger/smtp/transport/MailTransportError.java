@@ -26,8 +26,8 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 
 /**
- * This class encapsulates the error that occurs for a single mail sending. It
- * is a {@link Throwable} and an optional list of {@link MailSendDetails}.
+ * This class encapsulates the error that occurs for a single mail sending. It is a
+ * {@link Throwable} and an optional list of {@link MailSendDetails}.
  *
  * @author Philip Helger
  */
@@ -42,7 +42,8 @@ public class MailTransportError
     this (aThrowable, null);
   }
 
-  public MailTransportError (@NonNull final Throwable aThrowable, @Nullable final Iterable <? extends MailSendDetails> aDetails)
+  public MailTransportError (@NonNull final Throwable aThrowable,
+                             @Nullable final Iterable <? extends MailSendDetails> aDetails)
   {
     m_aThrowable = ValueEnforcer.notNull (aThrowable, "Throwable");
     m_aDetails.addAll (aDetails);
@@ -68,6 +69,8 @@ public class MailTransportError
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Throwable", m_aThrowable).append ("Details", m_aDetails).getToString ();
+    return new ToStringGenerator (this).append ("Throwable", m_aThrowable)
+                                       .append ("Details", m_aDetails)
+                                       .getToString ();
   }
 }

@@ -66,8 +66,8 @@ public final class HttpClientFactoryProxyRoutePlannerTest
    * Helper method to extract the proxy determination from a route planner. Uses reflection to call
    * the protected determineProxy method.
    */
-  private static HttpHost _getProxyForTarget (@NonNull final HttpRoutePlanner aPlanner, @NonNull final HttpHost aTarget)
-                                                                                                                         throws Exception
+  private static HttpHost _getProxyForTarget (@NonNull final HttpRoutePlanner aPlanner,
+                                              @NonNull final HttpHost aTarget) throws Exception
   {
     if (aPlanner instanceof DefaultProxyRoutePlanner)
     {

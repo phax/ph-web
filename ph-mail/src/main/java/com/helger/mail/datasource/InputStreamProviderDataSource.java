@@ -31,8 +31,7 @@ import com.helger.mime.IMimeType;
 import jakarta.activation.DataSource;
 
 /**
- * A special {@link DataSource} implementation based on data from
- * {@link IHasInputStream}.
+ * A special {@link DataSource} implementation based on data from {@link IHasInputStream}.
  *
  * @author Philip Helger
  */

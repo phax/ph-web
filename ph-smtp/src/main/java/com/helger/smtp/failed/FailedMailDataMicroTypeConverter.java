@@ -87,7 +87,8 @@ public class FailedMailDataMicroTypeConverter implements IMicroTypeConverter <Fa
     final MailTransportError aTransportError = aFailedMail.getTransportError ();
     if (aTransportError != null)
     {
-      eFailedMail.addElementNS (sNamespaceURI, ELEMENT_ERROR_MSG).addText (aTransportError.getThrowable ().getMessage ());
+      eFailedMail.addElementNS (sNamespaceURI, ELEMENT_ERROR_MSG)
+                 .addText (aTransportError.getThrowable ().getMessage ());
       for (final MailSendDetails aDetails : aTransportError.getAllDetails ())
       {
         eFailedMail.addElementNS (sNamespaceURI, ELEMENT_DETAILS)

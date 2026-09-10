@@ -58,9 +58,8 @@ public final class MailAPITest
   public void testBasic ()
   {
     /*
-     * This file might not be present, as it contains the real-life SMTP
-     * settings. It should reside in src/test/resource and is SVN ignored by
-     * name
+     * This file might not be present, as it contains the real-life SMTP settings. It should reside
+     * in src/test/resource and is SVN ignored by name
      */
     final IReadableResource aRes = new ClassPathResource ("smtp-settings.xml");
     if (aRes.exists ())
@@ -77,7 +76,8 @@ public final class MailAPITest
         EmailGlobalSettings.addEmailDataTransportListener (new LoggingTransportListener ());
         EmailGlobalSettings.addEmailDataTransportListener (new LoggingTransportListener (EErrorLevel.WARN));
 
-        final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes).getDocumentElement (),
+        final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
+                                                                                          .getDocumentElement (),
                                                                                SMTPSettings.class);
         final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
         aMailData.to ().add (new EmailAddress ("ph@helger.com"));
@@ -89,8 +89,7 @@ public final class MailAPITest
         MailAPI.stop ();
 
         /*
-         * try to queue again after MailAPI was stopped - should end up in
-         * failed mail queue
+         * try to queue again after MailAPI was stopped - should end up in failed mail queue
          */
         assertEquals (0, MailAPI.getFailedMailQueue ().size ());
         MailAPI.queueMail (aSMTPSettings, aMailData);
@@ -109,14 +108,14 @@ public final class MailAPITest
   public void testStopImmediately ()
   {
     /*
-     * This file might not be present, as it contains the real-life SMTP
-     * settings. It should reside in src/test/resource and is SVN ignored by
-     * name
+     * This file might not be present, as it contains the real-life SMTP settings. It should reside
+     * in src/test/resource and is SVN ignored by name
      */
     final IReadableResource aRes = new ClassPathResource ("smtp-settings.xml");
     if (aRes.exists ())
     {
-      final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes).getDocumentElement (),
+      final SMTPSettings aSMTPSettings = MicroTypeConverter.convertToNative (MicroReader.readMicroXML (aRes)
+                                                                                        .getDocumentElement (),
                                                                              SMTPSettings.class);
       final IMutableEmailData aMailData = new EmailData (EEmailType.TEXT);
       aMailData.to ().add (new EmailAddress ("ph@helger.com"));

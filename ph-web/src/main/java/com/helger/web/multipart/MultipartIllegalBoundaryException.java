@@ -24,8 +24,7 @@ import java.io.IOException;
 public class MultipartIllegalBoundaryException extends IOException
 {
   /**
-   * Constructs an <code>IllegalBoundaryException</code> with the specified
-   * detail message.
+   * Constructs an <code>IllegalBoundaryException</code> with the specified detail message.
    *
    * @param sMsg
    *        The detail message.

@@ -40,8 +40,7 @@ import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.collection.commons.ICommonsOrderedSet;
 
 /**
- * This is the default implementation of the {@link IMutableEmailAttachmentList}
- * interface.
+ * This is the default implementation of the {@link IMutableEmailAttachmentList} interface.
  *
  * @author Philip Helger
  */

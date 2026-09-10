@@ -25,9 +25,9 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
 /**
- * An interface for creating {@link Session} objects from a common
- * configuration. Also supports creation of other SessionFactory instances that
- * are initialized from the same configuration and can be modified as necessary.
+ * An interface for creating {@link Session} objects from a common configuration. Also supports
+ * creation of other SessionFactory instances that are initialized from the same configuration and
+ * can be modified as necessary.
  */
 public interface ISessionFactory extends ISessionProvider
 {
@@ -44,8 +44,8 @@ public interface ISessionFactory extends ISessionProvider
   int getPort ();
 
   /**
-   * @return the proxy that sessions built by this factory will connect through,
-   *         if any. If none was configured, <code>null</code> will be returned.
+   * @return the proxy that sessions built by this factory will connect through, if any. If none was
+   *         configured, <code>null</code> will be returned.
    */
   @Nullable
   Proxy getProxy ();
@@ -61,8 +61,8 @@ public interface ISessionFactory extends ISessionProvider
   UserInfo getUserInfo ();
 
   /**
-   * Returns a builder for another session factory pre-initialized with the
-   * configuration for this session factory.
+   * Returns a builder for another session factory pre-initialized with the configuration for this
+   * session factory.
    *
    * @return A builder for a session factory
    */

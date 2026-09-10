@@ -35,8 +35,7 @@ import com.helger.useragent.uaprofile.UAProfileDatabase;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Helper class to retrieve user agent information from
- * {@link HttpServletRequest} with caching.
+ * Helper class to retrieve user agent information from {@link HttpServletRequest} with caching.
  *
  * @author Philip Helger
  * @since 10.3.0
@@ -54,8 +53,8 @@ public final class UAServletHelper
    *
    * @param aHttpRequest
    *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object or <code>null</code> in
-   *         case of an internal inconsistency.
+   * @return A non-<code>null</code> user agent object or <code>null</code> in case of an internal
+   *         inconsistency.
    */
   @Nullable
   public static IUserAgent getUserAgent (@NonNull final HttpServletRequest aHttpRequest)

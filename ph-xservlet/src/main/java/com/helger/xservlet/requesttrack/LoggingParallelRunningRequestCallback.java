@@ -31,8 +31,7 @@ import com.helger.diagnostics.error.level.IErrorLevel;
 import com.helger.diagnostics.log.LogHelper;
 
 /**
- * A simple implementation of {@link IParallelRunningRequestCallback} simply
- * logging such events.
+ * A simple implementation of {@link IParallelRunningRequestCallback} simply logging such events.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -66,7 +65,8 @@ public class LoggingParallelRunningRequestCallback implements IParallelRunningRe
     return this;
   }
 
-  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests, @NonNull @Nonempty final List <TrackedRequest> aRequests)
+  public void onParallelRunningRequests (@Nonnegative final int nParallelRequests,
+                                         @NonNull @Nonempty final List <TrackedRequest> aRequests)
   {
     LogHelper.log (LOGGER, m_aErrorLevel, "Currently " + nParallelRequests + " parallel requests are active!");
   }

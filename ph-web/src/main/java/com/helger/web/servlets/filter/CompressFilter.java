@@ -73,8 +73,7 @@ public class CompressFilter extends AbstractHttpServletFilter
   private static void _performCompressed (@NonNull final HttpServletRequest aRequest,
                                           @NonNull final FilterChain aChain,
                                           @NonNull final HttpServletResponse aHttpResponse,
-                                          @NonNull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException,
-                                                                                                                ServletException
+                                          @NonNull final AbstractCompressedResponseWrapper aCompressedResponse) throws IOException, ServletException
   {
     boolean bException = true;
     try

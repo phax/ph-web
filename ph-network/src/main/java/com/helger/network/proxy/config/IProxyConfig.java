@@ -36,8 +36,8 @@ public interface IProxyConfig
   void activateGlobally ();
 
   /**
-   * @return This proxy configuration as standard {@link java.net.Proxy} object.
-   *         May be <code>null</code> if no adequate object can be created.
+   * @return This proxy configuration as standard {@link java.net.Proxy} object. May be
+   *         <code>null</code> if no adequate object can be created.
    */
   @Nullable
   Proxy getAsProxy ();

@@ -162,7 +162,8 @@ public final class HttpClientSettingsConfigTest
   @Test
   public void testUnitlessFallbackAlias ()
   {
-    // Use the deprecated aliases (http.connection-timeout, http.read-timeout) in the new unit-less form
+    // Use the deprecated aliases (http.connection-timeout, http.read-timeout) in the new unit-less
+    // form
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
     aMap.put ("p.http.connection-timeout", "21s");
     aMap.put ("p.http.read-timeout", "34m");
@@ -178,7 +179,8 @@ public final class HttpClientSettingsConfigTest
   @Test
   public void testUnitlessMalformedValueIsIgnored ()
   {
-    // A malformed unit-less value must not produce a Timeout/Duration; the setter should remain at default (null)
+    // A malformed unit-less value must not produce a Timeout/Duration; the setter should remain at
+    // default (null)
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
     aMap.put ("p.http.timeout.connect", "not-a-duration");
     final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
@@ -216,7 +218,8 @@ public final class HttpClientSettingsConfigTest
   @Test
   public void testProxyExplicitlyDisabledOverridesHostAndPort ()
   {
-    // "http.proxy.enabled=false" must forcibly disable the proxy even when host + port are configured.
+    // "http.proxy.enabled=false" must forcibly disable the proxy even when host + port are
+    // configured.
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
     aMap.put ("p.http.proxy.enabled", "false");
     aMap.put ("p.http.proxy.host", "1.2.3.4");
@@ -283,7 +286,8 @@ public final class HttpClientSettingsConfigTest
   @Test
   public void testProxyEnabledMissingPortDoesNotActivate ()
   {
-    // Host without a positive port must not produce a proxy host (matches getHttpProxyObject contract).
+    // Host without a positive port must not produce a proxy host (matches getHttpProxyObject
+    // contract).
     final ICommonsMap <String, String> aMap = new CommonsHashMap <> ();
     aMap.put ("p.http.proxy.host", "1.2.3.4");
     final IConfigWithFallback aConfig = new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));

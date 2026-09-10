@@ -19,20 +19,19 @@ package com.helger.servlet.spec;
 import jakarta.servlet.ServletRequest;
 
 /**
- * Dummy interface with all ServletRequest default methods for new methods in
- * Servlet Spec 3.1.0 compared to 3.0.0
+ * Dummy interface with all ServletRequest default methods for new methods in Servlet Spec 3.1.0
+ * compared to 3.0.0
  *
  * @author Philip Helger
  */
 public interface IServletRequest300To310Migration extends ServletRequest
 {
   /**
-   * Returns the length, in bytes, of the request body and made available by the
-   * input stream, or -1 if the length is not known. For HTTP servlets, same as
-   * the value of the CGI variable CONTENT_LENGTH.
+   * Returns the length, in bytes, of the request body and made available by the input stream, or -1
+   * if the length is not known. For HTTP servlets, same as the value of the CGI variable
+   * CONTENT_LENGTH.
    *
-   * @return a long containing the length of the request body or -1L if the
-   *         length is not known
+   * @return a long containing the length of the request body or -1L if the length is not known
    * @since Servlet 3.1
    */
   default long getContentLengthLong ()

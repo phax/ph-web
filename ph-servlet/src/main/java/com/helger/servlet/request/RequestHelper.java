@@ -347,8 +347,8 @@ public final class RequestHelper
 
     final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aHttpRequest);
 
-    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aSafeHttpRequest) : getRequestURIDecoded (
-                                                                                                                 aSafeHttpRequest);
+    final String sRequestURI = bUseEncodedPath ? getRequestURIEncoded (aSafeHttpRequest)
+                                               : getRequestURIDecoded (aSafeHttpRequest);
     if (StringHelper.isEmpty (sRequestURI))
     {
       // Can e.g. happen for "Request(GET //localhost:90/)"

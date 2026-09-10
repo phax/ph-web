@@ -76,7 +76,9 @@ public class ScpInputStream extends InputStream
   }
 
   @Override
-  public int read (@NonNull final byte [] aBuf, @Nonnegative final int nOfs, @Nonnegative final int nLen) throws IOException
+  public int read (@NonNull final byte [] aBuf,
+                   @Nonnegative final int nOfs,
+                   @Nonnegative final int nLen) throws IOException
   {
     if (m_aIS == null)
       throw new IllegalStateException ("no current entry, cannot read");

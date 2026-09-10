@@ -30,9 +30,8 @@ import jakarta.servlet.http.HttpSession;
 public interface ISessionWebScope extends ISessionScope, IWebScope
 {
   /**
-   * Get the underlying HTTP session. Important: do not use it to access the
-   * attributes within the session. Use only the scope API for this, so that the
-   * synchronization is consistent!
+   * Get the underlying HTTP session. Important: do not use it to access the attributes within the
+   * session. Use only the scope API for this, so that the synchronization is consistent!
    *
    * @return The underlying HTTP session. Never <code>null</code>.
    */

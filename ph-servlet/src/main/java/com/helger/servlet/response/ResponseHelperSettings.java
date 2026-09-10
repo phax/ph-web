@@ -45,8 +45,8 @@ public final class ResponseHelperSettings
   public static final String EXPIRES_NEVER_STRING = PDTWebDateHelper.getAsStringRFC822 (EXPIRES_NEVER_DATETIME);
 
   /**
-   * Expires in at least 2 days (which is the minimum to be accepted for real
-   * caching in Yahoo Guidelines).
+   * Expires in at least 2 days (which is the minimum to be accepted for real caching in Yahoo
+   * Guidelines).
    */
   public static final int DEFAULT_EXPIRATION_SECONDS = 7 * CGlobal.SECONDS_PER_DAY;
 
@@ -69,12 +69,11 @@ public final class ResponseHelperSettings
   {}
 
   /**
-   * @return <code>true</code> if overall compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if overall compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseCompressionEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseCompressionEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseCompressionEnabled);
   }
 
   /**
@@ -87,7 +86,7 @@ public final class ResponseHelperSettings
   @NonNull
   public static EChange setResponseCompressionEnabled (final boolean bResponseCompressionEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseCompressionEnabled == bResponseCompressionEnabled)
         return EChange.UNCHANGED;
       s_bResponseCompressionEnabled = bResponseCompressionEnabled;
@@ -99,12 +98,11 @@ public final class ResponseHelperSettings
   }
 
   /**
-   * @return <code>true</code> if GZip compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if GZip compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseGzipEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseGzipEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseGzipEnabled);
   }
 
   /**
@@ -118,7 +116,7 @@ public final class ResponseHelperSettings
   @NonNull
   public static EChange setResponseGzipEnabled (final boolean bResponseGzipEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseGzipEnabled == bResponseGzipEnabled)
         return EChange.UNCHANGED;
       s_bResponseGzipEnabled = bResponseGzipEnabled;
@@ -130,12 +128,11 @@ public final class ResponseHelperSettings
   }
 
   /**
-   * @return <code>true</code> if Deflate compression is enabled,
-   *         <code>false</code> if not
+   * @return <code>true</code> if Deflate compression is enabled, <code>false</code> if not
    */
   public static boolean isResponseDeflateEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bResponseDeflateEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bResponseDeflateEnabled);
   }
 
   /**
@@ -149,7 +146,7 @@ public final class ResponseHelperSettings
   @NonNull
   public static EChange setResponseDeflateEnabled (final boolean bResponseDeflateEnabled)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_bResponseDeflateEnabled == bResponseDeflateEnabled)
         return EChange.UNCHANGED;
       s_bResponseDeflateEnabled = bResponseDeflateEnabled;
@@ -185,12 +182,11 @@ public final class ResponseHelperSettings
    */
   public static int getExpirationSeconds ()
   {
-    return RW_LOCK.readLockedInt ( () -> s_nExpirationSeconds);
+    return RW_LOCK.readLockedInt (() -> s_nExpirationSeconds);
   }
 
   /**
-   * Set the default expiration settings to be used for objects that should use
-   * HTTP caching
+   * Set the default expiration settings to be used for objects that should use HTTP caching
    *
    * @param nExpirationSeconds
    *        The number of seconds for which the response should be cached
@@ -199,7 +195,7 @@ public final class ResponseHelperSettings
   @NonNull
   public static EChange setExpirationSeconds (final int nExpirationSeconds)
   {
-    final EChange ret = RW_LOCK.writeLockedGet ( () -> {
+    final EChange ret = RW_LOCK.writeLockedGet (() -> {
       if (s_nExpirationSeconds == nExpirationSeconds)
         return EChange.UNCHANGED;
       s_nExpirationSeconds = nExpirationSeconds;

@@ -24,16 +24,14 @@ import com.helger.datetime.domain.IHasCreationDateTime;
 import com.helger.scope.IScope;
 
 /**
- * Base interface for web scopes. This is only a marker interface and offers no
- * additional logic.
+ * Base interface for web scopes. This is only a marker interface and offers no additional logic.
  *
  * @author Philip Helger
  */
 public interface IWebScope extends IScope, IHasCreationDateTime
 {
   /**
-   * @return The date and time when this web scope was created. Never
-   *         <code>null</code>.
+   * @return The date and time when this web scope was created. Never <code>null</code>.
    * @since 9.1.2
    */
   @NonNull

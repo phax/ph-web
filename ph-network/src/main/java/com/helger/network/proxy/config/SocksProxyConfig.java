@@ -46,8 +46,7 @@ public class SocksProxyConfig implements IProxyConfig
   private final int m_nPort;
 
   /**
-   * Create a SOCKS proxy config object based on the default port
-   * {@link #DEFAULT_SOCKS_PROXY_PORT}.
+   * Create a SOCKS proxy config object based on the default port {@link #DEFAULT_SOCKS_PROXY_PORT}.
    *
    * @param sHost
    *        The SOCKS proxy host. May not be <code>null</code>.
@@ -86,8 +85,7 @@ public class SocksProxyConfig implements IProxyConfig
   }
 
   /**
-   * @return The current proxy host for SOCKS proxy type. May be
-   *         <code>null</code>.
+   * @return The current proxy host for SOCKS proxy type. May be <code>null</code>.
    */
   @Nullable
   public String getProxyHost ()
@@ -96,8 +94,7 @@ public class SocksProxyConfig implements IProxyConfig
   }
 
   /**
-   * @return The current proxy port for SOCKS proxy type. May be
-   *         <code>null</code>.
+   * @return The current proxy port for SOCKS proxy type. May be <code>null</code>.
    */
   @Nullable
   public String getProxyPort ()

@@ -108,7 +108,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
   {
     ValueEnforcer.notNull (eNewStatus, "NewStatus");
 
-    m_aRWLock.writeLocked ( () -> _getOrCreateServletStatus (aServletClass).internalSetCurrentStatus (eNewStatus));
+    m_aRWLock.writeLocked (() -> _getOrCreateServletStatus (aServletClass).internalSetCurrentStatus (eNewStatus));
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Servlet status of " + aServletClass + " changed to " + eNewStatus);
@@ -149,7 +149,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
    */
   public void onServletInvocation (@NonNull final Class <? extends GenericServlet> aServletClass)
   {
-    m_aRWLock.writeLocked ( () -> _getOrCreateServletStatus (aServletClass).internalIncrementInvocationCount ());
+    m_aRWLock.writeLocked (() -> _getOrCreateServletStatus (aServletClass).internalIncrementInvocationCount ());
   }
 
   public void onServletDestroy (@NonNull final Class <? extends GenericServlet> aServletClass)
@@ -164,7 +164,7 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
       return null;
 
     final String sKey = _getKey (aServletClass);
-    return m_aRWLock.readLockedGet ( () -> m_aMap.get (sKey));
+    return m_aRWLock.readLockedGet (() -> m_aMap.get (sKey));
   }
 
   @NonNull
@@ -175,8 +175,8 @@ public final class ServletStatusManager extends AbstractGlobalSingleton
   }
 
   /**
-   * Static utility method that checks the {@link ServletContext} whether the
-   * passed servlet class is registered or not.
+   * Static utility method that checks the {@link ServletContext} whether the passed servlet class
+   * is registered or not.
    *
    * @param aServletClass
    *        The servlet class to be checked. May not be <code>null</code>.

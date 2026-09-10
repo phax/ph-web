@@ -37,9 +37,8 @@ public abstract class AbstractServletFilter implements Filter
   private FilterConfig m_aFilterConfig;
 
   /**
-   * @return The {@link FilterConfig} object used in the initialization. May
-   *         only be <code>null</code> before {@link #init(FilterConfig)} is
-   *         called.
+   * @return The {@link FilterConfig} object used in the initialization. May only be
+   *         <code>null</code> before {@link #init(FilterConfig)} is called.
    */
   @Nullable
   public final FilterConfig getFilterConfig ()

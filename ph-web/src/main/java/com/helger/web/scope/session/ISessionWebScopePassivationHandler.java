@@ -21,8 +21,7 @@ import org.jspecify.annotations.NonNull;
 import com.helger.web.scope.ISessionWebScope;
 
 /**
- * Interface for session attributes that are notified during session
- * passivation.
+ * Interface for session attributes that are notified during session passivation.
  *
  * @author Philip Helger
  */

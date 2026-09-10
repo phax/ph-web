@@ -27,8 +27,8 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
 
 /**
- * Represents a wrapper around a single request value. It allows gathering the
- * current value, optionally using a default value.
+ * Represents a wrapper around a single request value. It allows gathering the current value,
+ * optionally using a default value.
  *
  * @author Philip Helger
  * @see RequestFieldDataMultiValue for multi value data
@@ -42,8 +42,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    * Copy constructor
    *
    * @param aRF
-   *        The request field to copy the values from. May not be
-   *        <code>null</code>.
+   *        The request field to copy the values from. May not be <code>null</code>.
    */
   public RequestFieldData (@NonNull final RequestFieldData aRF)
   {
@@ -67,8 +66,7 @@ public class RequestFieldData extends AbstractRequestFieldData
    * @param sFieldName
    *        The field name to use. May neither be <code>null</code> nor empty.
    * @param sDefaultValue
-   *        The default value to use, if no value is present in the request
-   *        scope.
+   *        The default value to use, if no value is present in the request scope.
    */
   public RequestFieldData (@NonNull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
   {
@@ -77,9 +75,8 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * @return The default value to be used if no request parameter is present. Is
-   *         never <code>null</code> but an empty string if no default value is
-   *         available.
+   * @return The default value to be used if no request parameter is present. Is never
+   *         <code>null</code> but an empty string if no default value is available.
    */
   @NonNull
   @OverrideOnDemand
@@ -89,8 +86,7 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * Helper method to get the request value without falling back to the provided
-   * default value.
+   * Helper method to get the request value without falling back to the provided default value.
    *
    * @return <code>null</code> if no such request value is present
    */
@@ -101,8 +97,8 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * Get the value of the request - optionally falling back to the provided
-   * default value if no such request parameter is present
+   * Get the value of the request - optionally falling back to the provided default value if no such
+   * request parameter is present
    *
    * @return A single request value as string.
    */
@@ -113,13 +109,12 @@ public class RequestFieldData extends AbstractRequestFieldData
   }
 
   /**
-   * Utility method that checks if the passed expected value matches the request
-   * parameter (considering the fallback mechanism)
+   * Utility method that checks if the passed expected value matches the request parameter
+   * (considering the fallback mechanism)
    *
    * @param sExpectedValue
    *        The expected value. May not be <code>null</code>.
-   * @return <code>true</code> if the passed value equals the actual request
-   *         value
+   * @return <code>true</code> if the passed value equals the actual request value
    */
   public final boolean hasRequestValue (@NonNull final String sExpectedValue)
   {

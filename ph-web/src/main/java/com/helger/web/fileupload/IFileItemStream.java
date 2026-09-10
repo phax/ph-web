@@ -25,20 +25,18 @@ import com.helger.web.fileupload.exception.InvalidFileNameException;
 
 /**
  * <p>
- * This interface provides access to a file or form item that was received
- * within a <code>multipart/form-data</code> POST request. The items contents
- * are retrieved by calling {@link #openStream()}.
+ * This interface provides access to a file or form item that was received within a
+ * <code>multipart/form-data</code> POST request. The items contents are retrieved by calling
+ * {@link #openStream()}.
  * </p>
  * <p>
  * Instances of this class are created by accessing the iterator, returned by
- * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#getItemIterator(IRequestContext)}
- * .
+ * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#getItemIterator(IRequestContext)} .
  * </p>
  * <p>
- * <em>Note</em>: There is an interaction between the iterator and its
- * associated instances of {@link IFileItemStream}: By invoking
- * {@link java.util.Iterator#hasNext()} on the iterator, you discard all data,
- * which hasn't been read so far from the previous data.
+ * <em>Note</em>: There is an interaction between the iterator and its associated instances of
+ * {@link IFileItemStream}: By invoking {@link java.util.Iterator#hasNext()} on the iterator, you
+ * discard all data, which hasn't been read so far from the previous data.
  * </p>
  */
 public interface IFileItemStream extends IFileItemHeadersSupport
@@ -48,48 +46,42 @@ public interface IFileItemStream extends IFileItemHeadersSupport
    *
    * @return The input stream, from which the items data may be read.
    * @throws IllegalStateException
-   *         The method was already invoked on this item. It is not possible to
-   *         recreate the data stream.
+   *         The method was already invoked on this item. It is not possible to recreate the data
+   *         stream.
    * @throws IOException
    *         An I/O error occurred.
    */
   InputStream openStream () throws IOException;
 
   /**
-   * Returns the content type passed by the browser or <code>null</code> if not
-   * defined.
+   * Returns the content type passed by the browser or <code>null</code> if not defined.
    *
-   * @return The content type passed by the browser or <code>null</code> if not
-   *         defined.
+   * @return The content type passed by the browser or <code>null</code> if not defined.
    */
   String getContentType ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information.
    *
    * @return The original filename in the client's filesystem.
    * @throws InvalidFileNameException
-   *         The file name contains a NUL character, which might be an indicator
-   *         of a security attack. If you intend to use the file name anyways,
-   *         catch the exception and use InvalidFileNameException#getName().
-   * @deprecated Use {@link #getNameSecure()} instead, which also strips path
-   *             separators and replaces invalid characters. This method only
-   *             checks for NUL bytes.
+   *         The file name contains a NUL character, which might be an indicator of a security
+   *         attack. If you intend to use the file name anyways, catch the exception and use
+   *         InvalidFileNameException#getName().
+   * @deprecated Use {@link #getNameSecure()} instead, which also strips path separators and
+   *             replaces invalid characters. This method only checks for NUL bytes.
    */
   @Deprecated (since = "11.3.0", forRemoval = false)
   String getName ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information. Compared to
-   * {@link #getName()} this method automatically removes everything and
-   * including a NUL byte and therefore does not throw an
-   * {@link InvalidFileNameException}.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information. Compared to
+   * {@link #getName()} this method automatically removes everything and including a NUL byte and
+   * therefore does not throw an {@link InvalidFileNameException}.
    *
    * @return The original filename in the client's filesystem.
    * @since 6.1.0
@@ -97,10 +89,9 @@ public interface IFileItemStream extends IFileItemHeadersSupport
   String getNameSecure ();
 
   /**
-   * Returns the original filename in the client's filesystem, as provided by
-   * the browser (or other client software). In most cases, this will be the
-   * base file name, without path information. However, some clients, such as
-   * the Opera browser, do include path information.
+   * Returns the original filename in the client's filesystem, as provided by the browser (or other
+   * client software). In most cases, this will be the base file name, without path information.
+   * However, some clients, such as the Opera browser, do include path information.
    *
    * @return The original filename in the client's filesystem.
    * @since 6.1.0
@@ -109,19 +100,17 @@ public interface IFileItemStream extends IFileItemHeadersSupport
   String getNameUnchecked ();
 
   /**
-   * Returns the name of the field in the multipart form corresponding to this
-   * file item.
+   * Returns the name of the field in the multipart form corresponding to this file item.
    *
    * @return The name of the form field.
    */
   String getFieldName ();
 
   /**
-   * Determines whether or not a <code>FileItem</code> instance represents a
-   * simple form field.
+   * Determines whether or not a <code>FileItem</code> instance represents a simple form field.
    *
-   * @return <code>true</code> if the instance represents a simple form field;
-   *         <code>false</code> if it represents an uploaded file.
+   * @return <code>true</code> if the instance represents a simple form field; <code>false</code> if
+   *         it represents an uploaded file.
    */
   boolean isFormField ();
 }

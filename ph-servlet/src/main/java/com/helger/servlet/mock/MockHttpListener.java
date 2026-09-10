@@ -29,9 +29,8 @@ import jakarta.servlet.ServletRequestListener;
 import jakarta.servlet.http.HttpSessionListener;
 
 /**
- * This class globally holds the HTTP listeners ({@link ServletContextListener}
- * , {@link HttpSessionListener} and {@link ServletRequestListener}) that are
- * triggered in tests.
+ * This class globally holds the HTTP listeners ({@link ServletContextListener} ,
+ * {@link HttpSessionListener} and {@link ServletRequestListener}) that are triggered in tests.
  *
  * @author Philip Helger
  */

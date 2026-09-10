@@ -26,8 +26,7 @@ import com.helger.base.state.EContinue;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
- * Logging implementation of {@link IXServletExceptionHandler}. Registered by
- * default.
+ * Logging implementation of {@link IXServletExceptionHandler}. Registered by default.
  *
  * @author Philip Helger
  * @since 9.0.0

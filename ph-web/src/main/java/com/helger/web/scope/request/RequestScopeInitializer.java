@@ -50,8 +50,8 @@ public final class RequestScopeInitializer implements AutoCloseable
    * @param aRequestScope
    *        The request scope to be used. May not be <code>null</code>.
    * @param bCreatedIt
-   *        <code>true</code> if the request scope was newly created,
-   *        <code>false</code> if an existing request web scope is reused.
+   *        <code>true</code> if the request scope was newly created, <code>false</code> if an
+   *        existing request web scope is reused.
    */
   private RequestScopeInitializer (@NonNull final IRequestWebScope aRequestScope, final boolean bCreatedIt)
   {

@@ -17,8 +17,7 @@
 package com.helger.web.scope.singleton;
 
 /**
- * Marker interface for web singletons to easily differentiate them from non-web
- * singletons.
+ * Marker interface for web singletons to easily differentiate them from non-web singletons.
  *
  * @author Philip Helger
  */

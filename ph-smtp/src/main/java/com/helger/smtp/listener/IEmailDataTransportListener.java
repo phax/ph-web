@@ -23,9 +23,8 @@ import com.helger.smtp.data.IMutableEmailData;
 import com.helger.smtp.settings.ISMTPSettings;
 
 /**
- * An interface similar to javax.mail.event.TransportListener but specific
- * relations to out internal object types {@link ISMTPSettings} and
- * {@link IMutableEmailData}.
+ * An interface similar to javax.mail.event.TransportListener but specific relations to out internal
+ * object types {@link ISMTPSettings} and {@link IMutableEmailData}.
  *
  * @author Philip Helger
  */
@@ -35,8 +34,7 @@ public interface IEmailDataTransportListener extends ICallback
    * Invoked when a Message is successfully delivered.
    *
    * @param aEvent
-   *        The data transport event with all the details. Never
-   *        <code>null</code>.
+   *        The data transport event with all the details. Never <code>null</code>.
    */
   void messageDelivered (@NonNull EmailDataTransportEvent aEvent);
 
@@ -44,8 +42,7 @@ public interface IEmailDataTransportListener extends ICallback
    * Invoked when a Message is not delivered.
    *
    * @param aEvent
-   *        The data transport event with all the details. Never
-   *        <code>null</code>.
+   *        The data transport event with all the details. Never <code>null</code>.
    */
   void messageNotDelivered (@NonNull EmailDataTransportEvent aEvent);
 }

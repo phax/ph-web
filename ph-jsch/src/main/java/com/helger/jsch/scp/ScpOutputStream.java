@@ -29,8 +29,7 @@ import com.jcraft.jsch.JSchException;
 
 /**
  * Based upon information found
- * <a href="https://blogs.oracle.com/janp/entry/how_the_scp_protocol_works"
- * >here</a>.
+ * <a href="https://blogs.oracle.com/janp/entry/how_the_scp_protocol_works" >here</a>.
  *
  * @author ltheisen
  */

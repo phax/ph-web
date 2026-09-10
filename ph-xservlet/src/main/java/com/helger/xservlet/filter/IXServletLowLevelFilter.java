@@ -38,9 +38,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface IXServletLowLevelFilter
 {
   /**
-   * Invoked before an XServlet request is handled. This method is created
-   * before the request is created! Exceptions occurring in this method will be
-   * propagated to the outside, so be careful :)
+   * Invoked before an XServlet request is handled. This method is created before the request is
+   * created! Exceptions occurring in this method will be propagated to the outside, so be careful
+   * :)
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -50,9 +50,9 @@ public interface IXServletLowLevelFilter
    *        HTTP version. Never <code>null</code>.
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
-   * @return {@link EContinue#CONTINUE} to continue processing, or
-   *         {@link EContinue#BREAK} if this request should not be processed, in
-   *         which case the HttpServletResponse must contain a valid response!
+   * @return {@link EContinue#CONTINUE} to continue processing, or {@link EContinue#BREAK} if this
+   *         request should not be processed, in which case the HttpServletResponse must contain a
+   *         valid response!
    * @exception ServletException
    *            in case of business logic error.
    * @throws IOException
@@ -65,12 +65,11 @@ public interface IXServletLowLevelFilter
                            @NonNull EHttpMethod eHttpMethod) throws ServletException, IOException;
 
   /**
-   * Invoked after an XServlet request was handled. After is always called, even
-   * if before request was canceled (in a finally)! Exceptions occurring in this
-   * method will be propagated to the outside, so be careful :)<br>
-   * Note: the response cannot be modified in implementations of this method -
-   * they should be considered read-only. Also HTTP headers can usually NOT be
-   * modified in this method.
+   * Invoked after an XServlet request was handled. After is always called, even if before request
+   * was canceled (in a finally)! Exceptions occurring in this method will be propagated to the
+   * outside, so be careful :)<br>
+   * Note: the response cannot be modified in implementations of this method - they should be
+   * considered read-only. Also HTTP headers can usually NOT be modified in this method.
    *
    * @param aHttpRequest
    *        HTTP servlet request. Never <code>null</code>.
@@ -81,13 +80,12 @@ public interface IXServletLowLevelFilter
    * @param eHttpMethod
    *        HTTP method. Never <code>null</code>.
    * @param bInvokeHandler
-   *        <code>true</code> if the main handler was invoked,
-   *        <code>false</code> if
+   *        <code>true</code> if the main handler was invoked, <code>false</code> if
    *        {@link #beforeRequest(HttpServletRequest, HttpServletResponse, EHttpVersion, EHttpMethod)}
    *        avoided the execution of the request.
    * @param aCaughtException
-   *        An optionally caught exception. May be <code>null</code>. The
-   *        exception was already logged, so please don't log it again!
+   *        An optionally caught exception. May be <code>null</code>. The exception was already
+   *        logged, so please don't log it again!
    * @param bIsHandledAsync
    *        <code>true</code> if the request is handled asynchronously
    * @exception ServletException

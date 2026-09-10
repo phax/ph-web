@@ -27,8 +27,8 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.requesttrack.RequestTracker;
 
 /**
- * A special filter that tracks the request. Each servlet request requires it's
- * own instance of this class!
+ * A special filter that tracks the request. Each servlet request requires it's own instance of this
+ * class!
  *
  * @author Philip Helger
  * @since 9.0.0

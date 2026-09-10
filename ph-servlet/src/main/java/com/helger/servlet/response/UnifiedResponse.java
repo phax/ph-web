@@ -1358,8 +1358,8 @@ public class UnifiedResponse
     // Source:
     // http://joshua.perina.com/africa/gambia/fajara/post/internet-explorer-css-file-size-limit
     if (m_aMimeType != null &&
-      m_aMimeType.equals (CMimeType.TEXT_CSS) &&
-      nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
+        m_aMimeType.equals (CMimeType.TEXT_CSS) &&
+        nContentLength > (MAX_CSS_KB_FOR_IE * CGlobal.BYTES_PER_KILOBYTE_LONG))
     {
       logWarn ("Internet Explorer has problems handling CSS files > " +
                MAX_CSS_KB_FOR_IE +
@@ -1369,8 +1369,8 @@ public class UnifiedResponse
     }
   }
 
-  private void _applyContent (@NonNull final HttpServletResponse aHttpResponse, final boolean bStatusCodeWasAlreadySet)
-                                                                                                                        throws IOException
+  private void _applyContent (@NonNull final HttpServletResponse aHttpResponse,
+                              final boolean bStatusCodeWasAlreadySet) throws IOException
   {
     if (m_aContentArray != null)
     {
@@ -1577,7 +1577,7 @@ public class UnifiedResponse
       }
 
       if (m_nStatusCode == HttpServletResponse.SC_UNAUTHORIZED &&
-        !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
+          !m_aResponseHeaderMap.containsHeaders (CHttpHeader.WWW_AUTHENTICATE))
       {
         logWarn ("Status code UNAUTHORIZED (401) is returned, but no " +
                  CHttpHeader.WWW_AUTHENTICATE +

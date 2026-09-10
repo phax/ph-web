@@ -44,8 +44,7 @@ public class XServletFilterSecurityHttpReferrerPolicy implements IXServletLowLev
   }
 
   /**
-   * @return The "Referrer-Policy" as provided in the constructor. Never
-   *         <code>null</code>.
+   * @return The "Referrer-Policy" as provided in the constructor. Never <code>null</code>.
    */
   @NonNull
   public final EHttpReferrerPolicy getHttpReferrerPolicy ()

@@ -54,7 +54,10 @@ public class ScpEntry
     return sMode;
   }
 
-  private ScpEntry (@Nullable final String sName, final long nSize, @Nullable final String sMode, final EType eType) throws IOException
+  private ScpEntry (@Nullable final String sName,
+                    final long nSize,
+                    @Nullable final String sMode,
+                    final EType eType) throws IOException
   {
     m_sName = sName;
     m_nSize = nSize;

@@ -26,8 +26,8 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.xservlet.AbstractXServlet;
 
 /**
- * A special filter that performs timing of servlet execution. Each servlet
- * request requires it's own instance of this class!
+ * A special filter that performs timing of servlet execution. Each servlet request requires it's
+ * own instance of this class!
  *
  * @author Philip Helger
  * @since 9.0.0

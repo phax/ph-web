@@ -21,13 +21,12 @@ import com.helger.io.resource.ClassPathResource;
 import jakarta.activation.MimetypesFileTypeMap;
 
 /**
- * A special file type map, that contains all entries from the
- * "META-INF/mime.types" file in this project. This is basically to work around
- * a class loader issue. By using this class, the classloader of this class is
- * used and therefore the correct "META-INF/mime.types" will be loaded.<br>
- * Use as
- * <code>FileTypeMap.setDefaultFileTypeMap(new PhMimetypesFileTypeMap());</code>
- * to the file from this project as the default.
+ * A special file type map, that contains all entries from the "META-INF/mime.types" file in this
+ * project. This is basically to work around a class loader issue. By using this class, the
+ * classloader of this class is used and therefore the correct "META-INF/mime.types" will be
+ * loaded.<br>
+ * Use as <code>FileTypeMap.setDefaultFileTypeMap(new PhMimetypesFileTypeMap());</code> to the file
+ * from this project as the default.
  *
  * @author Philip Helger
  * @since 9.1.5

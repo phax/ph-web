@@ -77,9 +77,8 @@ public class BrowserInfo implements IHasDisplayText
   @OverrideOnDemand
   public String getDisplayText (@NonNull final Locale aContentLocale)
   {
-    return m_eBrowserType == null ? null : (m_eBrowserType.getDisplayText (aContentLocale) +
-                                            " " +
-                                            m_aVersion.getAsString ());
+    return m_eBrowserType == null ? null
+                                  : (m_eBrowserType.getDisplayText (aContentLocale) + " " + m_aVersion.getAsString ());
   }
 
   @NonNull

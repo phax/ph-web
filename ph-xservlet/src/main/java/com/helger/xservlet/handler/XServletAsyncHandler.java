@@ -42,8 +42,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * A special {@link IXServletHandler} that allows to run requests
- * asynchronously.
+ * A special {@link IXServletHandler} that allows to run requests asynchronously.
  *
  * @author Philip Helger
  * @since 9.0.0

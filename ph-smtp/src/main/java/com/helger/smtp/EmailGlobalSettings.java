@@ -94,7 +94,7 @@ public final class EmailGlobalSettings
   @Nonnegative
   public static int getMaxMailQueueLength ()
   {
-    return RW_LOCK.readLockedInt ( () -> s_nMaxMailQueueLen);
+    return RW_LOCK.readLockedInt (() -> s_nMaxMailQueueLen);
   }
 
   /**
@@ -104,7 +104,7 @@ public final class EmailGlobalSettings
   @Nonnegative
   public static int getMaxMailSendCount ()
   {
-    return RW_LOCK.readLockedInt ( () -> s_nMaxMailSendCount);
+    return RW_LOCK.readLockedInt (() -> s_nMaxMailSendCount);
   }
 
   /**
@@ -130,7 +130,7 @@ public final class EmailGlobalSettings
                                 nMaxMailSendCount +
                                 ")");
 
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (nMaxMailQueueLen == s_nMaxMailQueueLen && nMaxMailSendCount == s_nMaxMailSendCount)
         return EChange.UNCHANGED;
       s_nMaxMailQueueLen = nMaxMailQueueLen;
@@ -144,7 +144,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isUseSSL ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bUseSSL);
+    return RW_LOCK.readLockedBoolean (() -> s_bUseSSL);
   }
 
   /**
@@ -157,7 +157,7 @@ public final class EmailGlobalSettings
   @NonNull
   public static EChange setUseSSL (final boolean bUseSSL)
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_bUseSSL == bUseSSL)
         return EChange.UNCHANGED;
       s_bUseSSL = bUseSSL;
@@ -170,7 +170,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isUseSTARTTLS ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bUseSTARTTLS);
+    return RW_LOCK.readLockedBoolean (() -> s_bUseSTARTTLS);
   }
 
   /**
@@ -183,7 +183,7 @@ public final class EmailGlobalSettings
   @NonNull
   public static EChange setUseSTARTTLS (final boolean bUseSTARTTLS)
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_bUseSTARTTLS == bUseSTARTTLS)
         return EChange.UNCHANGED;
       s_bUseSTARTTLS = bUseSTARTTLS;
@@ -199,7 +199,7 @@ public final class EmailGlobalSettings
   @CheckForSigned
   public static long getConnectionTimeoutMilliSecs ()
   {
-    return RW_LOCK.readLockedLong ( () -> s_nConnectionTimeoutMilliSecs);
+    return RW_LOCK.readLockedLong (() -> s_nConnectionTimeoutMilliSecs);
   }
 
   /**
@@ -213,7 +213,7 @@ public final class EmailGlobalSettings
   @NonNull
   public static EChange setConnectionTimeoutMilliSecs (final long nMilliSecs)
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_nConnectionTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -231,7 +231,7 @@ public final class EmailGlobalSettings
   @CheckForSigned
   public static long getTimeoutMilliSecs ()
   {
-    return RW_LOCK.readLockedLong ( () -> s_nTimeoutMilliSecs);
+    return RW_LOCK.readLockedLong (() -> s_nTimeoutMilliSecs);
   }
 
   /**
@@ -245,7 +245,7 @@ public final class EmailGlobalSettings
   @NonNull
   public static EChange setTimeoutMilliSecs (final long nMilliSecs)
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_nTimeoutMilliSecs == nMilliSecs)
         return EChange.UNCHANGED;
       if (nMilliSecs <= 0)
@@ -261,7 +261,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isDebugSMTP ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bDebugSMTP);
+    return RW_LOCK.readLockedBoolean (() -> s_bDebugSMTP);
   }
 
   /**
@@ -273,7 +273,7 @@ public final class EmailGlobalSettings
   @NonNull
   public static EChange setDebugSMTP (final boolean bDebugSMTP)
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_bDebugSMTP == bDebugSMTP)
         return EChange.UNCHANGED;
       s_bDebugSMTP = bDebugSMTP;
@@ -291,7 +291,7 @@ public final class EmailGlobalSettings
   public static void addConnectionListener (@NonNull final ConnectionListener aConnectionListener)
   {
     ValueEnforcer.notNull (aConnectionListener, "ConnectionListener");
-    RW_LOCK.writeLockedBoolean ( () -> s_aConnectionListeners.add (aConnectionListener));
+    RW_LOCK.writeLockedBoolean (() -> s_aConnectionListeners.add (aConnectionListener));
   }
 
   /**
@@ -308,7 +308,7 @@ public final class EmailGlobalSettings
     if (aConnectionListener == null)
       return EChange.UNCHANGED;
 
-    return RW_LOCK.writeLockedGet ( () -> s_aConnectionListeners.removeObject (aConnectionListener));
+    return RW_LOCK.writeLockedGet (() -> s_aConnectionListeners.removeObject (aConnectionListener));
   }
 
   /**
@@ -354,7 +354,7 @@ public final class EmailGlobalSettings
   public static void addEmailDataTransportListener (@NonNull final IEmailDataTransportListener aEmailDataTransportListener)
   {
     ValueEnforcer.notNull (aEmailDataTransportListener, "EmailDataTransportListener");
-    RW_LOCK.writeLockedBoolean ( () -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
+    RW_LOCK.writeLockedBoolean (() -> s_aEmailDataTransportListeners.add (aEmailDataTransportListener));
   }
 
   /**
@@ -371,7 +371,7 @@ public final class EmailGlobalSettings
     if (aEmailDataTransportListener == null)
       return EChange.UNCHANGED;
 
-    return RW_LOCK.writeLockedGet ( () -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
+    return RW_LOCK.writeLockedGet (() -> s_aEmailDataTransportListeners.removeObject (aEmailDataTransportListener));
   }
 
   /**
@@ -418,10 +418,8 @@ public final class EmailGlobalSettings
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
     java.util.logging.Logger.getLogger ("com.sun.mail.smtp.protocol").setLevel (bDebug ? Level.FINEST : Level.INFO);
     SystemProperties.setPropertyValue ("mail.socket.debug", bDebug);
-    SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVA_SECURITY_DEBUG,
-                                       bDebug ? "certpath" : null);
-    SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVAX_NET_DEBUG,
-                                       bDebug ? "trustmanager" : null);
+    SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVA_SECURITY_DEBUG, bDebug ? "certpath" : null);
+    SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVAX_NET_DEBUG, bDebug ? "trustmanager" : null);
   }
 
   /**
@@ -439,7 +437,7 @@ public final class EmailGlobalSettings
    */
   public static void setToDefault ()
   {
-    RW_LOCK.writeLocked ( () -> {
+    RW_LOCK.writeLocked (() -> {
       s_nMaxMailQueueLen = DEFAULT_MAX_QUEUE_LENGTH;
       s_nMaxMailSendCount = DEFAULT_MAX_SEND_COUNT;
       s_bUseSSL = DEFAULT_USE_SSL;

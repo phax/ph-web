@@ -117,7 +117,7 @@ public final class MailTransport
                    INSTANCE_COUNT.get () +
                    " instance(s) of MailTransport were already created! This has no impact on existing instances!");
 
-    return RW_LOCK.writeLockedGet ( () -> DEFAULT_MAIL_PROPERTIES.setAll (aMap));
+    return RW_LOCK.writeLockedGet (() -> DEFAULT_MAIL_PROPERTIES.setAll (aMap));
   }
 
   /**

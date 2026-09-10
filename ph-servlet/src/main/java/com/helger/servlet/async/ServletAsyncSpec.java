@@ -34,8 +34,7 @@ import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncListener;
 
 /**
- * This class encapsulates all the parameters necessary to handle asynchronous
- * servlet requests.
+ * This class encapsulates all the parameters necessary to handle asynchronous servlet requests.
  *
  * @author Philip Helger
  * @since 8.8.0
@@ -46,7 +45,9 @@ public class ServletAsyncSpec
   /** The constant defining "no timeout defined" */
   public static final long NO_TIMEOUT = 0L;
   /** The constant for synchronous invocations */
-  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false, NO_TIMEOUT, (Iterable <? extends AsyncListener>) null);
+  public static final ServletAsyncSpec SYNC_SPEC = new ServletAsyncSpec (false,
+                                                                         NO_TIMEOUT,
+                                                                         (Iterable <? extends AsyncListener>) null);
 
   private final boolean m_bAsynchronous;
   private final long m_nTimeoutMillis;
@@ -56,13 +57,12 @@ public class ServletAsyncSpec
    * Constructor
    *
    * @param bAsynchronous
-   *        <code>true</code> for asynchronous stuff, <code>false</code> for
-   *        synchronous spec.
+   *        <code>true</code> for asynchronous stuff, <code>false</code> for synchronous spec.
    * @param nTimeoutMillis
    *        The timeout in milliseconds. Must be &le; 0 for synchronous usage.
    * @param aAsyncListeners
-   *        {@link AsyncListener}s to be added to the AsyncContext. Must be
-   *        <code>null</code> for synchronous usage.
+   *        {@link AsyncListener}s to be added to the AsyncContext. Must be <code>null</code> for
+   *        synchronous usage.
    */
   protected ServletAsyncSpec (final boolean bAsynchronous,
                               @CheckForSigned final long nTimeoutMillis,
@@ -79,8 +79,8 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return The timeout in milliseconds. Only value &gt; 0 are defined. Values
-   *         &le; 0 must be ignored.
+   * @return The timeout in milliseconds. Only value &gt; 0 are defined. Values &le; 0 must be
+   *         ignored.
    */
   @CheckForSigned
   public long getTimeoutMillis ()
@@ -89,8 +89,8 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return <code>true</code> if a timeout is defined, <code>false</code>
-   *         otherwise. Only asynchronous definitions can have timeouts.
+   * @return <code>true</code> if a timeout is defined, <code>false</code> otherwise. Only
+   *         asynchronous definitions can have timeouts.
    */
   public boolean hasTimeoutMillis ()
   {
@@ -98,8 +98,7 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return <code>true</code> for asynchronous, <code>false</code> for
-   *         synchronous.
+   * @return <code>true</code> for asynchronous, <code>false</code> for synchronous.
    */
   public boolean isAsynchronous ()
   {
@@ -107,8 +106,8 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return A copy of the list of all {@link AsyncListener}. Only contains
-   *         items if this is an asynchronous spec.
+   * @return A copy of the list of all {@link AsyncListener}. Only contains items if this is an
+   *         asynchronous spec.
    */
   @NonNull
   @ReturnsMutableCopy
@@ -118,8 +117,7 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return <code>true</code> if any async listener is present,
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if any async listener is present, <code>false</code> otherwise.
    */
   public boolean hasAsyncListeners ()
   {
@@ -147,8 +145,8 @@ public class ServletAsyncSpec
   }
 
   /**
-   * @return A synchronous spec. This always returns the constant value
-   *         {@link #SYNC_SPEC}. Never <code>null</code>.
+   * @return A synchronous spec. This always returns the constant value {@link #SYNC_SPEC}. Never
+   *         <code>null</code>.
    */
   @NonNull
   public static ServletAsyncSpec getSync ()
@@ -173,15 +171,15 @@ public class ServletAsyncSpec
   }
 
   /**
-   * Create an async spec with 999999 (debug mode) or 30 (production) seconds
-   * timeout and no async listeners.
+   * Create an async spec with 999999 (debug mode) or 30 (production) seconds timeout and no async
+   * listeners.
    *
    * @return A new {@link ServletAsyncSpec} and never <code>null</code>.
    */
   @NonNull
   public static ServletAsyncSpec createAsyncDefault ()
   {
-    return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND : 30 * CGlobal.MILLISECONDS_PER_SECOND,
-                        null);
+    return createAsync (GlobalDebug.isDebugMode () ? 999_999 * CGlobal.MILLISECONDS_PER_SECOND
+                                                   : 30 * CGlobal.MILLISECONDS_PER_SECOND, null);
   }
 }

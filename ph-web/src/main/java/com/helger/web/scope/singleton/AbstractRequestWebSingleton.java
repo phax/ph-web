@@ -25,9 +25,8 @@ import com.helger.web.scope.IRequestWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * This is the base class for singleton objects that reside in the request
- * scope. This class can be used for web scopes and non-web scopes as it handled
- * in the same object.
+ * This is the base class for singleton objects that reside in the request scope. This class can be
+ * used for web scopes and non-web scopes as it handled in the same object.
  *
  * @see com.helger.web.scope.mgr.EWebScope#REQUEST
  * @author Philip Helger
@@ -39,8 +38,8 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
 
   /**
    * @param bMustBePresent
-   *        if <code>true</code> the scope must be present, <code>false</code>
-   *        if it may be <code>null</code>.
+   *        if <code>true</code> the scope must be present, <code>false</code> if it may be
+   *        <code>null</code>.
    * @return The scope to be used for this type of singleton.
    */
   @NonNull
@@ -50,14 +49,14 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Get the singleton object in the current request web scope, using the passed
-   * class. If the singleton is not yet instantiated, a new instance is created.
+   * Get the singleton object in the current request web scope, using the passed class. If the
+   * singleton is not yet instantiated, a new instance is created.
    *
    * @param <T>
    *        The type to be returned
    * @param aClass
-   *        The class to be used. May not be <code>null</code>. The class must
-   *        be public as needs to have a public no-argument constructor.
+   *        The class to be used. May not be <code>null</code>. The class must be public as needs to
+   *        have a public no-argument constructor.
    * @return The singleton object and never <code>null</code>.
    */
   @NonNull
@@ -67,15 +66,15 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Get the singleton object if it is already instantiated inside the current
-   * request web scope or <code>null</code> if it is not instantiated.
+   * Get the singleton object if it is already instantiated inside the current request web scope or
+   * <code>null</code> if it is not instantiated.
    *
    * @param <T>
    *        The type to be returned
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
-   * @return The singleton for the specified class is already instantiated,
-   *         <code>null</code> otherwise.
+   * @return The singleton for the specified class is already instantiated, <code>null</code>
+   *         otherwise.
    */
   @Nullable
   public static final <T extends AbstractRequestWebSingleton> T getRequestSingletonIfInstantiated (@NonNull final Class <T> aClass)
@@ -84,13 +83,12 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Check if a singleton is already instantiated inside the current request web
-   * scope
+   * Check if a singleton is already instantiated inside the current request web scope
    *
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
-   * @return <code>true</code> if the singleton for the specified class is
-   *         already instantiated, <code>false</code> otherwise.
+   * @return <code>true</code> if the singleton for the specified class is already instantiated,
+   *         <code>false</code> otherwise.
    */
   public static final boolean isRequestSingletonInstantiated (@NonNull final Class <? extends AbstractRequestWebSingleton> aClass)
   {
@@ -100,8 +98,8 @@ public abstract class AbstractRequestWebSingleton extends AbstractSingleton impl
   /**
    * Get all singleton objects registered in the current request web scope.
    *
-   * @return A non-<code>null</code> list with all instances of this class in
-   *         the current request web scope.
+   * @return A non-<code>null</code> list with all instances of this class in the current request
+   *         web scope.
    */
   @NonNull
   public static final ICommonsList <AbstractRequestWebSingleton> getAllRequestSingletons ()

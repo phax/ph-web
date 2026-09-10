@@ -28,8 +28,7 @@ import com.helger.network.port.DefaultNetworkPorts;
 import com.helger.network.port.ENetworkProtocol;
 
 /**
- * Small tool to list all TCP and UDP ports that are currently in use on this
- * machine.
+ * Small tool to list all TCP and UDP ports that are currently in use on this machine.
  *
  * @author Philip Helger
  */

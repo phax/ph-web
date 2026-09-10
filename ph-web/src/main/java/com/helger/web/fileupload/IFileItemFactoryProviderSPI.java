@@ -21,8 +21,7 @@ import org.jspecify.annotations.NonNull;
 import com.helger.annotation.style.IsSPIInterface;
 
 /**
- * SPI for a provider of a custom file item factory that should be used instead
- * of the default one.
+ * SPI for a provider of a custom file item factory that should be used instead of the default one.
  *
  * @author boris
  */
@@ -30,8 +29,7 @@ import com.helger.annotation.style.IsSPIInterface;
 public interface IFileItemFactoryProviderSPI
 {
   /**
-   * @return Retrieves the file item factory implementation, may not be
-   *         <code>null</code>
+   * @return Retrieves the file item factory implementation, may not be <code>null</code>
    */
   @NonNull
   IFileItemFactory getFileItemFactory ();

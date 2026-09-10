@@ -35,10 +35,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Called by the server (via the <code>service</code> method) to allow a servlet
- * to handle a TRACE request. A TRACE returns the headers sent with the TRACE
- * request to the client, so that they can be used in debugging. There's no need
- * to override this method.
+ * Called by the server (via the <code>service</code> method) to allow a servlet to handle a TRACE
+ * request. A TRACE returns the headers sent with the TRACE request to the client, so that they can
+ * be used in debugging. There's no need to override this method.
  *
  * @author Servlet Spec 3.1
  * @since 9.0.0
@@ -66,7 +65,8 @@ public class XServletHandlerTRACE implements IXServletHandler
     RequestHelper.forEachRequestHeader (aHttpRequest,
                                         (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)
                                                                           .append (": ")
-                                                                          .append (HttpHeaderMap.getUnifiedValue (sHeaderValue, true))
+                                                                          .append (HttpHeaderMap.getUnifiedValue (sHeaderValue,
+                                                                                                                  true))
                                                                           .append (CHttp.EOL));
 
     aHttpResponse.setContentType (CONTENT_TYPE);

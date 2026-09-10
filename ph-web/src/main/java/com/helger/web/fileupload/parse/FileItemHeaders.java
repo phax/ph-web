@@ -65,7 +65,7 @@ public class FileItemHeaders implements IFileItemHeaders
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet (() -> m_aHeaderNameToValueListMap.get (sNameLower));
     return aHeaderValueList == null ? null : aHeaderValueList.getFirstOrNull ();
   }
 
@@ -94,7 +94,7 @@ public class FileItemHeaders implements IFileItemHeaders
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet ( () -> m_aHeaderNameToValueListMap.get (sNameLower));
+    final ICommonsList <String> aHeaderValueList = m_aRWLock.readLockedGet (() -> m_aHeaderNameToValueListMap.get (sNameLower));
     return IteratorHelper.getIterator (aHeaderValueList);
   }
 
@@ -125,7 +125,7 @@ public class FileItemHeaders implements IFileItemHeaders
 
     final String sNameLower = sName.toLowerCase (Locale.US);
 
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       ICommonsList <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
       if (aHeaderValueList == null)
       {

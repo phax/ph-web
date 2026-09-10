@@ -91,8 +91,8 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   /**
-   * This method triggers the initialization of the {@link MockHttpListener}. It
-   * is called before the main servlet context is created.
+   * This method triggers the initialization of the {@link MockHttpListener}. It is called before
+   * the main servlet context is created.
    */
   @OverrideOnDemand
   protected void initListener ()
@@ -110,8 +110,7 @@ public class WebScopeTestRule extends ExternalResource
    * @param sContextPath
    *        The context path to use. May be <code>null</code>.
    * @param aInitParams
-   *        The initialization context parameters to use. May be
-   *        <code>null</code>.
+   *        The initialization context parameters to use. May be <code>null</code>.
    * @return Never <code>null</code>.
    */
   @NonNull
@@ -127,8 +126,8 @@ public class WebScopeTestRule extends ExternalResource
    *
    * @param aServletContext
    *        The servlet context to use. Never <code>null</code>.
-   * @return May be <code>null</code> to indicate that the request is added
-   *         manually - this is helpful for servlet testing.
+   * @return May be <code>null</code> to indicate that the request is added manually - this is
+   *         helpful for servlet testing.
    */
   @Nullable
   @OverrideOnDemand
@@ -165,8 +164,8 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   /**
-   * @return The created {@link MockServletContext} or <code>null</code> if non
-   *         has been created yet.
+   * @return The created {@link MockServletContext} or <code>null</code> if non has been created
+   *         yet.
    */
   @Nullable
   public final MockServletContext getServletContext ()
@@ -175,8 +174,8 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   /**
-   * @return The {@link MockServletPool} of the {@link MockServletContext} or
-   *         <code>null</code> if no servlet context has been created yet.
+   * @return The {@link MockServletPool} of the {@link MockServletContext} or <code>null</code> if
+   *         no servlet context has been created yet.
    */
   @Nullable
   public final MockServletPool getServletPool ()
@@ -185,8 +184,8 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   /**
-   * @return The created {@link MockHttpServletRequest} or <code>null</code> if
-   *         non has been created yet.
+   * @return The created {@link MockHttpServletRequest} or <code>null</code> if non has been created
+   *         yet.
    */
   @Nullable
   public final MockHttpServletRequest getRequest ()
@@ -196,10 +195,10 @@ public class WebScopeTestRule extends ExternalResource
 
   /**
    * @param bCreateIfNotExisting
-   *        <code>true</code> to create a new session, if non is existing yet.
-   *        This has only an effect if a request is present.
-   * @return The {@link HttpSession} or <code>null</code> if no session was
-   *         created or if no request is present.
+   *        <code>true</code> to create a new session, if non is existing yet. This has only an
+   *        effect if a request is present.
+   * @return The {@link HttpSession} or <code>null</code> if no session was created or if no request
+   *         is present.
    */
   @Nullable
   public final HttpSession getSession (final boolean bCreateIfNotExisting)

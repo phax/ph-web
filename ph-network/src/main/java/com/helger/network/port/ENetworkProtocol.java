@@ -43,7 +43,9 @@ public enum ENetworkProtocol implements IHasID <String>
     {
       if (nPort >= CNetworkPort.MINIMUM_PORT_NUMBER)
         try (final ServerSocket aSocket = ServerSocketFactory.getDefault ()
-                                                             .createServerSocket (nPort, 1, InetAddress.getByName ("localhost")))
+                                                             .createServerSocket (nPort,
+                                                                                  1,
+                                                                                  InetAddress.getByName ("localhost")))
         {
           aSocket.setReuseAddress (true);
           return true;
@@ -83,20 +85,17 @@ public enum ENetworkProtocol implements IHasID <String>
   }
 
   /**
-   * Determine if the specified port for this type is currently available on
-   * localhost.
+   * Determine if the specified port for this type is currently available on localhost.
    *
    * @param nPort
    *        The port to check. Must be &gt; 0 and &lt; 0xffff
-   * @return <code>true</code> if the port is available, <code>false</code> if
-   *         not.
+   * @return <code>true</code> if the port is available, <code>false</code> if not.
    * @see #isPortUsed(int)
    */
   public abstract boolean isPortAvailable (int nPort);
 
   /**
-   * Determine if the specified port for this type is currently used on
-   * localhost.
+   * Determine if the specified port for this type is currently used on localhost.
    *
    * @param nPort
    *        The port to check. Must be &gt; 0 and &lt; 0xffff

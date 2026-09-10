@@ -19,8 +19,8 @@ package com.helger.servlet.spec;
 import jakarta.servlet.ServletContext;
 
 /**
- * Dummy interface with all ServletContext default methods for new methods in
- * Servlet Spec 3.1.0 compared to 3.0.0
+ * Dummy interface with all ServletContext default methods for new methods in Servlet Spec 3.1.0
+ * compared to 3.0.0
  *
  * @author Philip Helger
  */

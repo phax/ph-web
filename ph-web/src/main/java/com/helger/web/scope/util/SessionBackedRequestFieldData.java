@@ -25,9 +25,8 @@ import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * A specialized request field that uses a value stored in the session as the
- * default, in case no parameter is passed. If no value is in the session either
- * the hard coded default value is used.
+ * A specialized request field that uses a value stored in the session as the default, in case no
+ * parameter is passed. If no value is in the session either the hard coded default value is used.
  *
  * @author Philip Helger
  */
@@ -46,8 +45,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
   }
 
   /**
-   * @return The name of the session scope variable that contains the stored
-   *         value.
+   * @return The name of the session scope variable that contains the stored value.
    */
   @NonNull
   @Nonempty
@@ -74,6 +72,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     final String sSuperDefaultValue = super.getDefaultValue ();
     // Get session scope only if it already exists - don't create one here!
     final IScope aSessionScope = WebScopeManager.getSessionScope (false);
-    return aSessionScope == null ? sSuperDefaultValue : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);
+    return aSessionScope == null ? sSuperDefaultValue
+                                 : aSessionScope.attrs ().getAsString (getSessionFieldName (), sSuperDefaultValue);
   }
 }

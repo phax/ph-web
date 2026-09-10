@@ -24,8 +24,7 @@ import org.jspecify.annotations.NonNull;
 import jakarta.activation.DataSource;
 
 /**
- * An implementation of AbstractStreamingDataHandler using {@link DataSource} as
- * the source.
+ * An implementation of AbstractStreamingDataHandler using {@link DataSource} as the source.
  *
  * @author Philip Helger
  */

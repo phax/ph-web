@@ -27,8 +27,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Auto closable wrapper around
- * {@link WebScopeManager#onRequestBegin( HttpServletRequest, HttpServletResponse)}
- * and {@link WebScopeManager#onRequestEnd()}
+ * {@link WebScopeManager#onRequestBegin( HttpServletRequest, HttpServletResponse)} and
+ * {@link WebScopeManager#onRequestEnd()}
  *
  * @author Philip Helger
  * @since 9.0.0

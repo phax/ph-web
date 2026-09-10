@@ -31,9 +31,9 @@ import com.helger.base.enforce.ValueEnforcer;
 import jakarta.servlet.ServletContext;
 
 /**
- * Helper class to hold the current servlet context path. In certain cases it is
- * necessary to overwrite the context path (custom context path) if an
- * application is run behind a reverse proxy but needs to emit absolute URLs.
+ * Helper class to hold the current servlet context path. In certain cases it is necessary to
+ * overwrite the context path (custom context path) if an application is run behind a reverse proxy
+ * but needs to emit absolute URLs.
  *
  * @author Philip Helger
  */
@@ -107,16 +107,14 @@ public final class ServletContextPathHolder
   }
 
   /**
-   * Manually change the context path to be used. Normally there is no need to
-   * call the method, because the context path is automatically determined from
-   * the {@link ServletContext} or from the underlying request. This method is
-   * only needed, if a web application is proxied by e.g. an Apache httpd and
-   * the context path between httpd and Java web application server is
-   * different!
+   * Manually change the context path to be used. Normally there is no need to call the method,
+   * because the context path is automatically determined from the {@link ServletContext} or from
+   * the underlying request. This method is only needed, if a web application is proxied by e.g. an
+   * Apache httpd and the context path between httpd and Java web application server is different!
    *
    * @param sCustomContextPath
-   *        The context path of the web application, or "" for the default
-   *        (root) context. May not be <code>null</code>.
+   *        The context path of the web application, or "" for the default (root) context. May not
+   *        be <code>null</code>.
    */
   public static void setCustomContextPath (@NonNull final String sCustomContextPath)
   {
@@ -162,8 +160,7 @@ public final class ServletContextPathHolder
   }
 
   /**
-   * @return <code>true</code> if either custom context path or servlet context
-   *         path are present.
+   * @return <code>true</code> if either custom context path or servlet context path are present.
    * @since 9.1.2
    */
   public static boolean hasContextPath ()
@@ -174,20 +171,18 @@ public final class ServletContextPathHolder
   /**
    * Returns the context path of the web application.
    * <p>
-   * The context path is the portion of the request URI that is used to select
-   * the context of the request. The context path always comes first in a
-   * request URI. The path starts with a "/" character but does not end with a
-   * "/" character. For servlets in the default (root) context, this method
-   * returns "".
+   * The context path is the portion of the request URI that is used to select the context of the
+   * request. The context path always comes first in a request URI. The path starts with a "/"
+   * character but does not end with a "/" character. For servlets in the default (root) context,
+   * this method returns "".
    * <p>
-   * It is possible that a servlet container may match a context by more than
-   * one context path. In such cases the context path will return the actual
-   * context path used by the request and it may differ from the path returned
-   * by this method. The context path returned by this method should be
-   * considered as the prime or preferred context path of the application.
+   * It is possible that a servlet container may match a context by more than one context path. In
+   * such cases the context path will return the actual context path used by the request and it may
+   * differ from the path returned by this method. The context path returned by this method should
+   * be considered as the prime or preferred context path of the application.
    *
-   * @return The context path of the web application, or "" for the default
-   *         (root) context or <code>null</code> if none of them is set.
+   * @return The context path of the web application, or "" for the default (root) context or
+   *         <code>null</code> if none of them is set.
    * @see #getCustomContextPath()
    * @see #getServletContextPath()
    * @since 9.1.0
@@ -204,20 +199,17 @@ public final class ServletContextPathHolder
   /**
    * Returns the context path of the web application.
    * <p>
-   * The context path is the portion of the request URI that is used to select
-   * the context of the request. The context path always comes first in a
-   * request URI. The path starts with a "/" character but does not end with a
-   * "/" character. For servlets in the default (root) context, this method
-   * returns "".
+   * The context path is the portion of the request URI that is used to select the context of the
+   * request. The context path always comes first in a request URI. The path starts with a "/"
+   * character but does not end with a "/" character. For servlets in the default (root) context,
+   * this method returns "".
    * <p>
-   * It is possible that a servlet container may match a context by more than
-   * one context path. In such cases the context path will return the actual
-   * context path used by the request and it may differ from the path returned
-   * by this method. The context path returned by this method should be
-   * considered as the prime or preferred context path of the application.
+   * It is possible that a servlet container may match a context by more than one context path. In
+   * such cases the context path will return the actual context path used by the request and it may
+   * differ from the path returned by this method. The context path returned by this method should
+   * be considered as the prime or preferred context path of the application.
    *
-   * @return The context path of the web application, or "" for the default
-   *         (root) context
+   * @return The context path of the web application, or "" for the default (root) context
    * @throws IllegalStateException
    *         if neither a custom context path nor a servlet context path is set
    * @see #getCustomContextPath()

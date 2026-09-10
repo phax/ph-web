@@ -59,7 +59,8 @@ public abstract class AbstractHttpServletFilter extends AbstractServletFilter
                               @NonNull final ServletResponse aResponse,
                               @NonNull final FilterChain aChain) throws IOException, ServletException
   {
-    if (aRequest instanceof final HttpServletRequest aHttpRequest && aResponse instanceof final HttpServletResponse aHttpResponse)
+    if (aRequest instanceof final HttpServletRequest aHttpRequest &&
+        aResponse instanceof final HttpServletResponse aHttpResponse)
     {
       doHttpFilter (aHttpRequest, aHttpResponse, aChain);
     }

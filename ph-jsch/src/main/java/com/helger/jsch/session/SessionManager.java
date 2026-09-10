@@ -29,10 +29,9 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 /**
- * Provides a convenience wrapper to sessions that maintains the session
- * connection for you. Every time you obtain your session through a call to
- * {@link #getSession()} the current session will have its connection verified,
- * and will reconnect if necessary.
+ * Provides a convenience wrapper to sessions that maintains the session connection for you. Every
+ * time you obtain your session through a call to {@link #getSession()} the current session will
+ * have its connection verified, and will reconnect if necessary.
  */
 public class SessionManager implements AutoCloseable
 {
@@ -83,8 +82,7 @@ public class SessionManager implements AutoCloseable
   }
 
   /**
-   * Returns a connected session. Gets or creates from the underlying session
-   * factory
+   * Returns a connected session. Gets or creates from the underlying session factory
    *
    * @return A connected session
    * @throws JSchException

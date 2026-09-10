@@ -39,7 +39,9 @@ public class ScpFile
   private final String [] m_aPath;
   private final ISessionFactory m_aSessionFactory;
 
-  public ScpFile (@NonNull final ISessionFactory aSessionFactory, @NonNull final EDestinationOS eOS, final String... aPath)
+  public ScpFile (@NonNull final ISessionFactory aSessionFactory,
+                  @NonNull final EDestinationOS eOS,
+                  final String... aPath)
   {
     ValueEnforcer.notNull (aSessionFactory, "SessionFactory");
     ValueEnforcer.notNull (eOS, "OS");
@@ -57,7 +59,8 @@ public class ScpFile
   public void copyFrom (@NonNull final File file, @Nullable final String mode) throws IOException, JSchException
   {
     try (final FileInputStream from = new FileInputStream (file);
-         final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ()) : getOutputStream (file.length (), mode))
+         final ScpFileOutputStream to = mode == null ? getOutputStream (file.length ())
+                                                     : getOutputStream (file.length (), mode))
     {
       StreamHelper.copyInputStreamToOutputStream (from, to);
     }
@@ -138,7 +141,8 @@ public class ScpFile
   }
 
   @NonNull
-  public ScpFileOutputStream getOutputStream (final long size, @Nullable final String mode) throws JSchException, IOException
+  public ScpFileOutputStream getOutputStream (final long size,
+                                              @Nullable final String mode) throws JSchException, IOException
   {
     return _getOutputStream (ScpEntry.newFile (getFilename (), size, mode));
   }

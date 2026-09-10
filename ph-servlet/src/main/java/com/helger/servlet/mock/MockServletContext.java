@@ -178,13 +178,13 @@ public class MockServletContext implements IServletContext310To400Migration
   @NonNull
   protected String getResourceLocation (@NonNull final String sPath)
   {
-    return m_aRWLock.readLockedGet ( () -> StringHelper.startsWith (sPath, '/') ? m_sResourceBasePath + sPath
-                                                                                : m_sResourceBasePath + "/" + sPath);
+    return m_aRWLock.readLockedGet (() -> StringHelper.startsWith (sPath, '/') ? m_sResourceBasePath + sPath
+                                                                               : m_sResourceBasePath + "/" + sPath);
   }
 
   public final void setContextPath (@Nullable final String sContextPath)
   {
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       if (StringHelper.isEmpty (sContextPath))
         m_sContextPath = "";
       else
@@ -200,20 +200,20 @@ public class MockServletContext implements IServletContext310To400Migration
   @NonNull
   public String getContextPath ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_sContextPath);
+    return m_aRWLock.readLockedGet (() -> m_sContextPath);
   }
 
   public void registerContext (@NonNull final String sContextPath, @NonNull final ServletContext aContext)
   {
     ValueEnforcer.notNull (sContextPath, "ContextPath");
     ValueEnforcer.notNull (aContext, "Context");
-    m_aRWLock.writeLocked ( () -> m_aContexts.put (sContextPath, aContext));
+    m_aRWLock.writeLocked (() -> m_aContexts.put (sContextPath, aContext));
   }
 
   @Nullable
   public ServletContext getContext (@Nullable final String sContextPath)
   {
-    return m_aRWLock.readLockedGet ( () -> {
+    return m_aRWLock.readLockedGet (() -> {
       if (m_sContextPath.equals (sContextPath))
         return this;
       return m_aContexts.get (sContextPath);
@@ -249,7 +249,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public URL getResource (@NonNull final String sPath) throws MalformedURLException
   {
     final String sLocation = getResourceLocation (sPath);
-    final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
+    final IReadableResource aResource = m_aRWLock.readLockedGet (() -> m_aResourceProvider.getReadableResource (sLocation));
     if (!aResource.exists ())
       return null;
     return aResource.getAsURL ();
@@ -259,7 +259,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public InputStream getResourceAsStream (@NonNull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
-    final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
+    final IReadableResource aResource = m_aRWLock.readLockedGet (() -> m_aResourceProvider.getReadableResource (sLocation));
     if (!aResource.exists ())
       return null;
     return aResource.getInputStream ();
@@ -314,7 +314,7 @@ public class MockServletContext implements IServletContext310To400Migration
   public String getRealPath (@NonNull final String sPath)
   {
     final String sLocation = getResourceLocation (sPath);
-    final IReadableResource aResource = m_aRWLock.readLockedGet ( () -> m_aResourceProvider.getReadableResource (sLocation));
+    final IReadableResource aResource = m_aRWLock.readLockedGet (() -> m_aResourceProvider.getReadableResource (sLocation));
     if (aResource == null)
       throw new IllegalStateException ("Failed to get real path of '" + sPath + "'");
     final File aFile = aResource.getAsFile ();
@@ -334,39 +334,39 @@ public class MockServletContext implements IServletContext310To400Migration
   public String getInitParameter (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return m_aRWLock.readLockedGet ( () -> m_aInitParameters.get (sName));
+    return m_aRWLock.readLockedGet (() -> m_aInitParameters.get (sName));
   }
 
   public final void addInitParameter (@NonNull final String sName, @NonNull final String sValue)
   {
     ValueEnforcer.notNull (sName, "Name");
     ValueEnforcer.notNull (sValue, "Value");
-    m_aRWLock.writeLocked ( () -> m_aInitParameters.put (sName, sValue));
+    m_aRWLock.writeLocked (() -> m_aInitParameters.put (sName, sValue));
   }
 
   @NonNull
   public Enumeration <String> getInitParameterNames ()
   {
-    return m_aRWLock.readLockedGet ( () -> EnumerationHelper.getEnumeration (m_aInitParameters.keySet ()));
+    return m_aRWLock.readLockedGet (() -> EnumerationHelper.getEnumeration (m_aInitParameters.keySet ()));
   }
 
   @Nullable
   public Object getAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    return m_aRWLock.readLockedGet ( () -> m_aAttributes.get (sName));
+    return m_aRWLock.readLockedGet (() -> m_aAttributes.get (sName));
   }
 
   @NonNull
   public Enumeration <String> getAttributeNames ()
   {
-    return EnumerationHelper.getEnumeration (m_aRWLock.readLockedGet ( () -> m_aAttributes.keySet ()));
+    return EnumerationHelper.getEnumeration (m_aRWLock.readLockedGet (() -> m_aAttributes.keySet ()));
   }
 
   public final void setAttribute (@NonNull final String sName, @Nullable final Object aValue)
   {
     ValueEnforcer.notNull (sName, "Name");
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       if (aValue != null)
         m_aAttributes.put (sName, aValue);
       else
@@ -377,18 +377,18 @@ public class MockServletContext implements IServletContext310To400Migration
   public void removeAttribute (@NonNull final String sName)
   {
     ValueEnforcer.notNull (sName, "Name");
-    m_aRWLock.writeLocked ( () -> m_aAttributes.remove (sName));
+    m_aRWLock.writeLocked (() -> m_aAttributes.remove (sName));
   }
 
   public void setServletContextName (@Nullable final String sServletContextName)
   {
-    m_aRWLock.writeLocked ( () -> m_sServletContextName = sServletContextName);
+    m_aRWLock.writeLocked (() -> m_sServletContextName = sServletContextName);
   }
 
   @Nullable
   public String getServletContextName ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_sServletContextName);
+    return m_aRWLock.readLockedGet (() -> m_sServletContextName);
   }
 
   /**
@@ -426,7 +426,7 @@ public class MockServletContext implements IServletContext310To400Migration
   @NonNull
   public MockServletPool getServletPool ()
   {
-    return m_aRWLock.readLockedGet ( () -> m_aServletPool);
+    return m_aRWLock.readLockedGet (() -> m_aServletPool);
   }
 
   @Nullable
@@ -459,7 +459,7 @@ public class MockServletContext implements IServletContext310To400Migration
 
   public void invalidate ()
   {
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       if (m_bInvalidated)
         throw new IllegalStateException ("Servlet context already invalidated!");
       m_bInvalidated = true;

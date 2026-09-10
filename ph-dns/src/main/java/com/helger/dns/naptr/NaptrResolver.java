@@ -189,7 +189,7 @@ public class NaptrResolver
     }
 
     // Sort by order than by preference according to RFC 2915
-    aMatchingRecords.sort ( (x, y) -> {
+    aMatchingRecords.sort ((x, y) -> {
       int ret = CompareHelper.compare (x.getOrder (), y.getOrder ());
       if (ret == 0)
         ret = CompareHelper.compare (x.getPreference (), y.getPreference ());

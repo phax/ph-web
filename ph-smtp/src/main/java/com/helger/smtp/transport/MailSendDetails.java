@@ -50,9 +50,8 @@ public class MailSendDetails
   }
 
   /**
-   * @return <code>true</code> if the address is valid, <code>false</code>
-   *         otherwise. This does not state anything about whether the mail was
-   *         sent or not!
+   * @return <code>true</code> if the address is valid, <code>false</code> otherwise. This does not
+   *         state anything about whether the mail was sent or not!
    */
   public boolean isAddressValid ()
   {
@@ -69,8 +68,7 @@ public class MailSendDetails
   }
 
   /**
-   * @return The issued RFC 821 command. For techies only. Never
-   *         <code>null</code>-.
+   * @return The issued RFC 821 command. For techies only. Never <code>null</code>-.
    */
   @NonNull
   public String getCommand ()
@@ -79,8 +77,7 @@ public class MailSendDetails
   }
 
   /**
-   * @return The error message returned from the server. Never <code>null</code>
-   *         .
+   * @return The error message returned from the server. Never <code>null</code> .
    */
   @NonNull
   public String getErrorMessage ()

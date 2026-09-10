@@ -29,9 +29,8 @@ import com.helger.scope.mgr.ScopeManager;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * A specialized request field that uses a value stored in the session as the
- * default, in case no parameter is passed. If no value is in the session either
- * the hard coded default value is used.
+ * A specialized request field that uses a value stored in the session as the default, in case no
+ * parameter is passed. If no value is in the session either the hard coded default value is used.
  *
  * @author Philip Helger
  * @since 9.0.2
@@ -44,15 +43,15 @@ public class SessionBackedRequestFieldDataMultiValue extends RequestFieldDataMul
     _init ();
   }
 
-  public SessionBackedRequestFieldDataMultiValue (@NonNull final String sFieldName, @Nullable final Collection <String> aDefaultValues)
+  public SessionBackedRequestFieldDataMultiValue (@NonNull final String sFieldName,
+                                                  @Nullable final Collection <String> aDefaultValues)
   {
     super (sFieldName, aDefaultValues);
     _init ();
   }
 
   /**
-   * @return The name of the session scope variable that contains the stored
-   *         value.
+   * @return The name of the session scope variable that contains the stored value.
    */
   @NonNull
   @Nonempty

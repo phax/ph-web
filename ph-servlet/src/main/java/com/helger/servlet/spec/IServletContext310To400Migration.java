@@ -21,8 +21,8 @@ import jakarta.servlet.ServletRegistration;
 import jakarta.servlet.ServletRegistration.Dynamic;
 
 /**
- * Dummy interface with all ServletContext default methods for new methods in
- * Servlet Spec 4.0.0 compared to 3.1.0
+ * Dummy interface with all ServletContext default methods for new methods in Servlet Spec 4.0.0
+ * compared to 3.1.0
  *
  * @author Philip Helger
  */
@@ -31,22 +31,20 @@ public interface IServletContext310To400Migration extends IServletContext300To31
   /**
    * Adds the servlet with the given jsp file to this servlet context.
    * <p>
-   * The registered servlet may be further configured via the returned
-   * {@link ServletRegistration} object.
+   * The registered servlet may be further configured via the returned {@link ServletRegistration}
+   * object.
    * <p>
-   * If this ServletContext already contains a preliminary ServletRegistration
-   * for a servlet with the given <code>servletName</code>, it will be completed
-   * (by assigning the given <code>jspFile</code> to it) and returned.
+   * If this ServletContext already contains a preliminary ServletRegistration for a servlet with
+   * the given <code>servletName</code>, it will be completed (by assigning the given
+   * <code>jspFile</code> to it) and returned.
    *
    * @param sServletName
    *        the name of the servlet
    * @param sJspFile
-   *        the full path to a JSP file within the web application beginning
-   *        with a `/'.
-   * @return a ServletRegistration object that may be used to further configure
-   *         the registered servlet, or <code>null</code> if this ServletContext
-   *         already contains a complete ServletRegistration for a servlet with
-   *         the given <code>servletName</code>
+   *        the full path to a JSP file within the web application beginning with a `/'.
+   * @return a ServletRegistration object that may be used to further configure the registered
+   *         servlet, or <code>null</code> if this ServletContext already contains a complete
+   *         ServletRegistration for a servlet with the given <code>servletName</code>
    * @throws IllegalStateException
    *         if this ServletContext has already been initialized
    * @throws IllegalArgumentException
@@ -54,9 +52,9 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default Dynamic addJspFile (final String sServletName, final String sJspFile)
@@ -68,14 +66,14 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * Gets the session timeout in minutes that are supported by default for this
    * <code>ServletContext</code>.
    *
-   * @return the session timeout in minutes that are supported by default for
-   *         this <code>ServletContext</code>
+   * @return the session timeout in minutes that are supported by default for this
+   *         <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default int getSessionTimeout ()
@@ -93,9 +91,9 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setSessionTimeout (final int nSessionTimeout)
@@ -105,19 +103,18 @@ public interface IServletContext310To400Migration extends IServletContext300To31
 
   /**
    * Gets the request character encoding that are supported by default for this
-   * <code>ServletContext</code>. This method returns null if no request
-   * encoding character encoding has been specified in deployment descriptor or
-   * container specific configuration (for all web applications in the
-   * container).
+   * <code>ServletContext</code>. This method returns null if no request encoding character encoding
+   * has been specified in deployment descriptor or container specific configuration (for all web
+   * applications in the container).
    *
-   * @return the request character encoding that are supported by default for
-   *         this <code>ServletContext</code>
+   * @return the request character encoding that are supported by default for this
+   *         <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default String getRequestCharacterEncoding ()
@@ -135,9 +132,9 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setRequestCharacterEncoding (final String sEncoding)
@@ -147,19 +144,18 @@ public interface IServletContext310To400Migration extends IServletContext300To31
 
   /**
    * Gets the response character encoding that are supported by default for this
-   * <code>ServletContext</code>. This method returns null if no response
-   * encoding character encoding has been specified in deployment descriptor or
-   * container specific configuration (for all web applications in the
-   * container).
+   * <code>ServletContext</code>. This method returns null if no response encoding character
+   * encoding has been specified in deployment descriptor or container specific configuration (for
+   * all web applications in the container).
    *
-   * @return the request character encoding that are supported by default for
-   *         this <code>ServletContext</code>
+   * @return the request character encoding that are supported by default for this
+   *         <code>ServletContext</code>
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default String getResponseCharacterEncoding ()
@@ -177,9 +173,9 @@ public interface IServletContext310To400Migration extends IServletContext300To31
    * @throws UnsupportedOperationException
    *         if this ServletContext was passed to the
    *         {@link ServletContextListener#contextInitialized} method of a
-   *         {@link ServletContextListener} that was neither declared in
-   *         <code>web.xml</code> or <code>web-fragment.xml</code>, nor
-   *         annotated with {@link jakarta.servlet.annotation.WebListener}
+   *         {@link ServletContextListener} that was neither declared in <code>web.xml</code> or
+   *         <code>web-fragment.xml</code>, nor annotated with
+   *         {@link jakarta.servlet.annotation.WebListener}
    * @since Servlet 4.0
    */
   default void setResponseCharacterEncoding (final String sEncoding)

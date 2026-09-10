@@ -61,10 +61,9 @@ public class TunnelConnectionManager implements Closeable
   private ICommonsList <TunnelConnection> m_aTunnelConnections;
 
   /**
-   * Creates a TunnelConnectionManager that will use the
-   * <code>baseSessionFactory</code> to obtain its session connections. Because
-   * this constructor does not set the tunnel connections for you, you will need
-   * to call {@link #setTunnelConnections(Iterable)}.
+   * Creates a TunnelConnectionManager that will use the <code>baseSessionFactory</code> to obtain
+   * its session connections. Because this constructor does not set the tunnel connections for you,
+   * you will need to call {@link #setTunnelConnections(Iterable)}.
    *
    * @param baseSessionFactory
    *        The session factory
@@ -80,39 +79,37 @@ public class TunnelConnectionManager implements Closeable
   }
 
   /**
-   * Creates a TunnelConnectionManager that will use the
-   * <code>baseSessionFactory</code> to obtain its session connections and
-   * provide the tunnels specified.
+   * Creates a TunnelConnectionManager that will use the <code>baseSessionFactory</code> to obtain
+   * its session connections and provide the tunnels specified.
    *
    * @param baseSessionFactory
    *        The session factory
    * @param pathAndSpecList
-   *        A list of {@link #setTunnelConnections(Iterable) path and spec}
-   *        strings
+   *        A list of {@link #setTunnelConnections(Iterable) path and spec} strings
    * @throws JSchException
    *         For connection failures
    * @see #setTunnelConnections(Iterable)
    */
-  public TunnelConnectionManager (final ISessionFactory baseSessionFactory, final String... pathAndSpecList) throws JSchException
+  public TunnelConnectionManager (final ISessionFactory baseSessionFactory,
+                                  final String... pathAndSpecList) throws JSchException
   {
     this (baseSessionFactory, Arrays.asList (pathAndSpecList));
   }
 
   /**
-   * Creates a TunnelConnectionManager that will use the
-   * <code>baseSessionFactory</code> to obtain its session connections and
-   * provide the tunnels specified.
+   * Creates a TunnelConnectionManager that will use the <code>baseSessionFactory</code> to obtain
+   * its session connections and provide the tunnels specified.
    *
    * @param baseSessionFactory
    *        The session factory
    * @param pathAndSpecList
-   *        A list of {@link #setTunnelConnections(Iterable) path and spec}
-   *        strings
+   *        A list of {@link #setTunnelConnections(Iterable) path and spec} strings
    * @throws JSchException
    *         For connection failures
    * @see #setTunnelConnections(Iterable)
    */
-  public TunnelConnectionManager (final ISessionFactory baseSessionFactory, final Iterable <String> pathAndSpecList) throws JSchException
+  public TunnelConnectionManager (final ISessionFactory baseSessionFactory,
+                                  final Iterable <String> pathAndSpecList) throws JSchException
   {
     this (baseSessionFactory);
     setTunnelConnections (pathAndSpecList);
@@ -144,8 +141,8 @@ public class TunnelConnectionManager implements Closeable
   }
 
   /**
-   * Returns the tunnel matching the supplied values, or <code>null</code> if
-   * there isn't one that matches.
+   * Returns the tunnel matching the supplied values, or <code>null</code> if there isn't one that
+   * matches.
    *
    * @param destinationHostname
    *        The tunnels destination hostname
@@ -181,10 +178,9 @@ public class TunnelConnectionManager implements Closeable
   }
 
   /**
-   * Creates a set of tunnel connections based upon the contents of
-   * <code>tunnelsConfig</code>. The format of this file is one path and tunnel
-   * per line. Comments and empty lines are allowed and are excluded using the
-   * pattern <code>^\s*(?:#.*)?$</code>.
+   * Creates a set of tunnel connections based upon the contents of <code>tunnelsConfig</code>. The
+   * format of this file is one path and tunnel per line. Comments and empty lines are allowed and
+   * are excluded using the pattern <code>^\s*(?:#.*)?$</code>.
    *
    * @param tunnelsConfig
    *        A file containing tunnel configuration
@@ -195,10 +191,12 @@ public class TunnelConnectionManager implements Closeable
    * @throws JSchException
    *         For connection failures
    */
-  public void setTunnelConnectionsFromFile (final File tunnelsConfig, @NonNull final Charset aCharset) throws IOException, JSchException
+  public void setTunnelConnectionsFromFile (final File tunnelsConfig,
+                                            @NonNull final Charset aCharset) throws IOException, JSchException
   {
     final List <String> aLines = new ArrayList <> ();
-    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig, aCharset)))
+    try (final NonBlockingBufferedReader reader = new NonBlockingBufferedReader (FileHelper.getReader (tunnelsConfig,
+                                                                                                       aCharset)))
     {
       String sLine;
       while ((sLine = reader.readLine ()) != null)
@@ -212,10 +210,9 @@ public class TunnelConnectionManager implements Closeable
   }
 
   /**
-   * Creates a set of tunnel connections based upon the pathAndTunnels. Each
-   * entry of pathAndTunnels must be of the form (in
-   * <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form"
-   * >EBNF</a>):
+   * Creates a set of tunnel connections based upon the pathAndTunnels. Each entry of pathAndTunnels
+   * must be of the form (in
+   * <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form" >EBNF</a>):
    *
    * <pre>
    * path and tunnels = path and tunnel, {new line, path and tunnel}
@@ -243,12 +240,10 @@ public class TunnelConnectionManager implements Closeable
    * </p>
    * <p>
    * Says open an ssh connection as user <code>jimhenson</code> to host
-   * <code>admin.muppets.com</code>. Then, through that connection, open a
-   * connection as user <code>animal</code> to host
-   * <code>drteethandtheelectricmahem.muppets.com</code>. Then map local port
-   * <code>8080</code> on the interface with alias <code>drteeth</code> through
-   * the two-hop tunnel to port <code>80</code> on
-   * <code>drteeth.muppets.com</code>.
+   * <code>admin.muppets.com</code>. Then, through that connection, open a connection as user
+   * <code>animal</code> to host <code>drteethandtheelectricmahem.muppets.com</code>. Then map local
+   * port <code>8080</code> on the interface with alias <code>drteeth</code> through the two-hop
+   * tunnel to port <code>80</code> on <code>drteeth.muppets.com</code>.
    * </p>
    *
    * @param aPathAndSpecList
@@ -270,13 +265,14 @@ public class TunnelConnectionManager implements Closeable
     for (final Map.Entry <String, ICommonsSet <Tunnel>> aEntry : aMap.entrySet ())
     {
       final String path = aEntry.getKey ();
-      m_aTunnelConnections.add (new TunnelConnection (sessionFactoryCache.getSessionFactory (path), aEntry.getValue ().getCopyAsList ()));
+      m_aTunnelConnections.add (new TunnelConnection (sessionFactoryCache.getSessionFactory (path),
+                                                      aEntry.getValue ().getCopyAsList ()));
     }
   }
 
   /*
-   * Used to ensure duplicate paths are not created which will minimize the
-   * number of connections needed.
+   * Used to ensure duplicate paths are not created which will minimize the number of connections
+   * needed.
    */
   static class SessionFactoryCache
   {

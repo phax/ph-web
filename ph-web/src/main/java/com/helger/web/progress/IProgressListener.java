@@ -20,8 +20,7 @@ import com.helger.annotation.CheckForSigned;
 import com.helger.annotation.Nonnegative;
 
 /**
- * The {@link IProgressListener} may be used to display a progress bar or do
- * stuff like that.
+ * The {@link IProgressListener} may be used to display a progress bar or do stuff like that.
  */
 @FunctionalInterface
 public interface IProgressListener
@@ -30,14 +29,12 @@ public interface IProgressListener
    * Updates the listeners status information.
    *
    * @param nBytesRead
-   *        The total number of bytes, which have been read so far. Always &ge;
-   *        0.
+   *        The total number of bytes, which have been read so far. Always &ge; 0.
    * @param nContentLength
-   *        The total number of bytes, which are being read. May be -1, if this
-   *        number is unknown.
+   *        The total number of bytes, which are being read. May be -1, if this number is unknown.
    * @param nItems
-   *        The number of the field, which is currently being read. (0 = no item
-   *        so far, 1 = first item is being read, ...)
+   *        The number of the field, which is currently being read. (0 = no item so far, 1 = first
+   *        item is being read, ...)
    */
   void update (@Nonnegative long nBytesRead, @CheckForSigned long nContentLength, @Nonnegative int nItems);
 }

@@ -34,32 +34,28 @@ import com.helger.base.io.stream.StreamHelper;
 import com.helger.io.file.FileHelper;
 
 /**
- * An output stream which will retain data in memory until a specified threshold
- * is reached, and only then commit it to disk. If the stream is closed before
- * the threshold is reached, the data will not be written to disk at all.
+ * An output stream which will retain data in memory until a specified threshold is reached, and
+ * only then commit it to disk. If the stream is closed before the threshold is reached, the data
+ * will not be written to disk at all.
  * <p>
- * This class originated in FileUpload processing. In this use case, you do not
- * know in advance the size of the file being uploaded. If the file is small you
- * want to store it in memory (for speed), but if the file is large you want to
- * store it to file (to avoid memory issues).
+ * This class originated in FileUpload processing. In this use case, you do not know in advance the
+ * size of the file being uploaded. If the file is small you want to store it in memory (for speed),
+ * but if the file is large you want to store it to file (to avoid memory issues).
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @author gaxzerow
- * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z
- *          niallp $
+ * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z niallp $
  */
 public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
 {
   /**
-   * The output stream to which data will be written prior to the threshold
-   * being reached.
+   * The output stream to which data will be written prior to the threshold being reached.
    */
   private NonBlockingByteArrayOutputStream m_aMemoryOS;
 
   /**
-   * The output stream to which data will be written at any given time. This
-   * will always be one of <code>memoryOutputStream</code> or
-   * <code>diskOutputStream</code>.
+   * The output stream to which data will be written at any given time. This will always be one of
+   * <code>memoryOutputStream</code> or <code>diskOutputStream</code>.
    */
   private OutputStream m_aCurrentOS;
 
@@ -74,8 +70,8 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   private boolean m_bClosed = false;
 
   /**
-   * Constructs an instance of this class which will trigger an event at the
-   * specified threshold, and save data to a file beyond that point.
+   * Constructs an instance of this class which will trigger an event at the specified threshold,
+   * and save data to a file beyond that point.
    *
    * @param nThreshold
    *        The number of bytes at which to trigger an event.
@@ -92,8 +88,8 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Returns the current output stream. This may be memory based or disk based,
-   * depending on the current state with respect to the threshold.
+   * Returns the current output stream. This may be memory based or disk based, depending on the
+   * current state with respect to the threshold.
    *
    * @return The underlying output stream.
    * @exception IOException
@@ -106,10 +102,9 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Switches the underlying output stream from a memory based stream to one
-   * that is backed by disk. This is the point at which we realise that too much
-   * data is being written to keep in memory, so we elect to switch to
-   * disk-based storage.
+   * Switches the underlying output stream from a memory based stream to one that is backed by disk.
+   * This is the point at which we realise that too much data is being written to keep in memory, so
+   * we elect to switch to disk-based storage.
    *
    * @exception IOException
    *            if an error occurs.
@@ -142,11 +137,9 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Determines whether or not the data for this output stream has been retained
-   * in memory.
+   * Determines whether or not the data for this output stream has been retained in memory.
    *
-   * @return <code>true</code> if the data is available in memory;
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if the data is available in memory; <code>false</code> otherwise.
    */
   public boolean isInMemory ()
   {
@@ -154,12 +147,10 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Returns the data for this output stream as an array of bytes, assuming that
-   * the data has been retained in memory. If the data was written to disk, this
-   * method returns <code>null</code>.
+   * Returns the data for this output stream as an array of bytes, assuming that the data has been
+   * retained in memory. If the data was written to disk, this method returns <code>null</code>.
    *
-   * @return The data for this output stream, or <code>null</code> if no such
-   *         data is available.
+   * @return The data for this output stream, or <code>null</code> if no such data is available.
    * @see #isInMemory()
    */
   @Nullable
@@ -172,12 +163,12 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Returns the length of the data for this output stream as number of bytes,
-   * assuming that the data has been retained in memory. If the data was written
-   * to disk, this method returns <code>0</code>.
+   * Returns the length of the data for this output stream as number of bytes, assuming that the
+   * data has been retained in memory. If the data was written to disk, this method returns
+   * <code>0</code>.
    *
-   * @return The length of the data for this output stream, or <code>0</code> if
-   *         no such data is available.
+   * @return The length of the data for this output stream, or <code>0</code> if no such data is
+   *         available.
    * @see #isInMemory()
    */
   @Nonnegative
@@ -189,18 +180,17 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Returns either the output file specified in the constructor or the
-   * temporary file created or null.
+   * Returns either the output file specified in the constructor or the temporary file created or
+   * null.
    * <p>
-   * If the constructor specifying the file is used then it returns that same
-   * output file, even when threshold has not been reached.
+   * If the constructor specifying the file is used then it returns that same output file, even when
+   * threshold has not been reached.
    * <p>
-   * If constructor specifying a temporary file prefix/suffix is used then the
-   * temporary file created once the threshold is reached is returned If the
-   * threshold was not reached then <code>null</code> is returned.
+   * If constructor specifying a temporary file prefix/suffix is used then the temporary file
+   * created once the threshold is reached is returned If the threshold was not reached then
+   * <code>null</code> is returned.
    *
-   * @return The file for this output stream, or <code>null</code> if no such
-   *         file exists.
+   * @return The file for this output stream, or <code>null</code> if no such file exists.
    */
   @NonNull
   public File getFile ()
@@ -222,8 +212,8 @@ public class DeferredFileOutputStream extends AbstractThresholdingOutputStream
   }
 
   /**
-   * Writes the data from this output stream to the specified output stream,
-   * after it has been closed.
+   * Writes the data from this output stream to the specified output stream, after it has been
+   * closed.
    *
    * @param aOS
    *        output stream to write to.

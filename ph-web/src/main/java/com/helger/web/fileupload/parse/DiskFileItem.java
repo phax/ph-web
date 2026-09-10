@@ -239,13 +239,12 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   }
 
   /**
-   * Deserialization filter restricting allowed types to well-known JDK and
-   * DiskFileItem field types only.
+   * Deserialization filter restricting allowed types to well-known JDK and DiskFileItem field types
+   * only.
    */
-  private static final ObjectInputFilter DESER_FILTER = ObjectInputFilter.Config.createFilter (
-      "java.io.**;java.lang.**;java.util.**;" +
-      "com.helger.web.fileupload.**;" +
-      "maxdepth=10;maxarray=10000;!*");
+  private static final ObjectInputFilter DESER_FILTER = ObjectInputFilter.Config.createFilter ("java.io.**;java.lang.**;java.util.**;" +
+                                                                                               "com.helger.web.fileupload.**;" +
+                                                                                               "maxdepth=10;maxarray=10000;!*");
 
   /**
    * Reads the state of this object during deserialization.

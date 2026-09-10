@@ -64,7 +64,7 @@ public final class ProxySettingsManager
   public static void registerProvider (@NonNull final IProxySettingsProvider aProvider)
   {
     ValueEnforcer.notNull (aProvider, "Provider");
-    RW_LOCK.writeLocked ( () -> LIST.add (aProvider));
+    RW_LOCK.writeLocked (() -> LIST.add (aProvider));
 
     LOGGER.info ("Registered proxy settings provider " + aProvider);
   }
@@ -75,7 +75,7 @@ public final class ProxySettingsManager
     if (aProvider == null)
       return EChange.UNCHANGED;
 
-    final EChange eChange = RW_LOCK.writeLockedGet ( () -> LIST.removeObject (aProvider));
+    final EChange eChange = RW_LOCK.writeLockedGet (() -> LIST.removeObject (aProvider));
     if (eChange.isChanged ())
       LOGGER.info ("Unregistered proxy settings provider " + aProvider);
     return eChange;
@@ -95,8 +95,8 @@ public final class ProxySettingsManager
    *
    * @param aURI
    *        Destination URI
-   * @return A non-<code>null</code> set with all matching proxy settings. A set
-   *         is used to avoid that the same settings are used more than once.
+   * @return A non-<code>null</code> set with all matching proxy settings. A set is used to avoid
+   *         that the same settings are used more than once.
    * @see #findAllProxySettings(String, String, int)
    */
   @NonNull
@@ -115,8 +115,8 @@ public final class ProxySettingsManager
    *        Destination host name
    * @param nPort
    *        Destination port
-   * @return A non-<code>null</code> set with all matching proxy settings. A set
-   *         is used to avoid that the same settings are used more than once.
+   * @return A non-<code>null</code> set with all matching proxy settings. A set is used to avoid
+   *         that the same settings are used more than once.
    */
   @NonNull
   @ReturnsMutableCopy

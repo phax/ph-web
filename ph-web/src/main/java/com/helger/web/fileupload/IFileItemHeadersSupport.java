@@ -19,9 +19,8 @@ package com.helger.web.fileupload;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Interface that will indicate that {@link IFileItem} or
- * {@link IFileItemStream} implementations will accept the headers read for the
- * item.
+ * Interface that will indicate that {@link IFileItem} or {@link IFileItemStream} implementations
+ * will accept the headers read for the item.
  *
  * @author Michael C. Macaluso
  * @since 1.3
@@ -39,10 +38,9 @@ public interface IFileItemHeadersSupport
   IFileItemHeaders getHeaders ();
 
   /**
-   * Sets the headers read from within an item. Implementations of
-   * {@link IFileItem} or {@link IFileItemStream} should implement this
-   * interface to be able to get the raw headers found within the item header
-   * block.
+   * Sets the headers read from within an item. Implementations of {@link IFileItem} or
+   * {@link IFileItemStream} should implement this interface to be able to get the raw headers found
+   * within the item header block.
    *
    * @param aHeaders
    *        the instance that holds onto the headers for this instance.

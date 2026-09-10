@@ -75,12 +75,12 @@ public final class UAProfileDatabase
   @Nullable
   public static Consumer <? super UAProfile> getNewUAProfileCallback ()
   {
-    return RW_LOCK.readLockedGet ( () -> s_aNewUAProfileCallback);
+    return RW_LOCK.readLockedGet (() -> s_aNewUAProfileCallback);
   }
 
   public static void setNewUAProfileCallback (@Nullable final Consumer <? super UAProfile> aCallback)
   {
-    RW_LOCK.writeLocked ( () -> s_aNewUAProfileCallback = aCallback);
+    RW_LOCK.writeLocked (() -> s_aNewUAProfileCallback = aCallback);
   }
 
   @Nullable
@@ -335,13 +335,13 @@ public final class UAProfileDatabase
       return UAProfile.EMPTY;
     if (aUAProfile.isSet ())
     {
-      final boolean bAdded = RW_LOCK.writeLockedBoolean ( () -> UNIQUE_UA_PROFILES.add (aUAProfile));
+      final boolean bAdded = RW_LOCK.writeLockedBoolean (() -> UNIQUE_UA_PROFILES.add (aUAProfile));
       if (bAdded)
       {
         if (LOGGER.isDebugEnabled ())
           LOGGER.debug ("Found UA-Profile info: " + aUAProfile.toString ());
 
-        RW_LOCK.readLocked ( () -> {
+        RW_LOCK.readLocked (() -> {
           if (s_aNewUAProfileCallback != null)
             s_aNewUAProfileCallback.accept (aUAProfile);
         });

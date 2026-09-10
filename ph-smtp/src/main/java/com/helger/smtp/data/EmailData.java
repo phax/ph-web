@@ -35,9 +35,9 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.typeconvert.collection.StringMap;
 
 /**
- * Default implementation of the {@link IMutableEmailData} interface. Note: the
- * attribute container may only contain String values, otherwise the
- * serialization and deserialization will result in different results!
+ * Default implementation of the {@link IMutableEmailData} interface. Note: the attribute container
+ * may only contain String values, otherwise the serialization and deserialization will result in
+ * different results!
  *
  * @author Philip Helger
  */
@@ -231,8 +231,7 @@ public class EmailData implements IMutableEmailData
   }
 
   /**
-   * Utility method for converting different fields to a single
-   * {@link IMutableEmailData}.
+   * Utility method for converting different fields to a single {@link IMutableEmailData}.
    *
    * @param eEmailType
    *        The type of the email.

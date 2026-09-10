@@ -30,8 +30,7 @@ public class MultipartMalformedStreamException extends IOException
   {}
 
   /**
-   * Constructs an <code>MalformedStreamException</code> with the specified
-   * detail message.
+   * Constructs an <code>MalformedStreamException</code> with the specified detail message.
    *
    * @param sMsg
    *        The detail message.
@@ -42,8 +41,7 @@ public class MultipartMalformedStreamException extends IOException
   }
 
   /**
-   * Constructs an <code>MalformedStreamException</code> with the specified
-   * detail message.
+   * Constructs an <code>MalformedStreamException</code> with the specified detail message.
    *
    * @param sMsg
    *        The detail message.

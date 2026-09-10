@@ -22,8 +22,7 @@ import org.jspecify.annotations.Nullable;
 import com.helger.web.scope.IWebScope;
 
 /**
- * This enumeration defines all the possible web scopes including some utility
- * methods on it.
+ * This enumeration defines all the possible web scopes including some utility methods on it.
  *
  * @author Philip Helger
  */
@@ -51,9 +50,8 @@ public enum EWebScope
    *
    * @param bCreateIfNotExisting
    *        if <code>true</code> the scope is created if it is not existing.
-   * @return <code>null</code> if the scope is not existing yet and should not
-   *         be created. Always non-<code>null</code> if the parameter is
-   *         <code>true</code>.
+   * @return <code>null</code> if the scope is not existing yet and should not be created. Always
+   *         non-<code>null</code> if the parameter is <code>true</code>.
    */
   @Nullable
   public IWebScope getScope (final boolean bCreateIfNotExisting)
@@ -62,18 +60,15 @@ public enum EWebScope
   }
 
   /**
-   * Resolve the currently matching web scope of the given {@link EWebScope}
-   * value.
+   * Resolve the currently matching web scope of the given {@link EWebScope} value.
    *
    * @param eWebScope
-   *        The web scope to resolve to a real scope. May not be
-   *        <code>null</code>.
+   *        The web scope to resolve to a real scope. May not be <code>null</code>.
    * @param bCreateIfNotExisting
-   *        if <code>false</code> and the scope is not existing,
-   *        <code>null</code> will be returned. This parameter is only used in
-   *        application, session and session application scopes.
-   * @return The matching {@link IWebScope} or <code>null</code> if
-   *         bCreateIfNotExisting is <code>false</code> and no scope is present
+   *        if <code>false</code> and the scope is not existing, <code>null</code> will be returned.
+   *        This parameter is only used in application, session and session application scopes.
+   * @return The matching {@link IWebScope} or <code>null</code> if bCreateIfNotExisting is
+   *         <code>false</code> and no scope is present
    * @throws IllegalArgumentException
    *         If an illegal enumeration value is passed.
    */

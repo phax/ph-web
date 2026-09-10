@@ -33,9 +33,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Called by the server (via the <code>service</code> method) to allow a servlet
- * to handle a OPTIONS request. An OPTIONS request returns the allowed HTTP
- * methods supported by the servlet in the ALLOW HTTP response header.
+ * Called by the server (via the <code>service</code> method) to allow a servlet to handle a OPTIONS
+ * request. An OPTIONS request returns the allowed HTTP methods supported by the servlet in the
+ * ALLOW HTTP response header.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -48,8 +48,8 @@ public class XServletHandlerOPTIONS implements IXServletHandler
    * Constructor
    *
    * @param aAllowProvider
-   *        The supplier to use. Must be a supplier, because the underlying
-   *        "Allow" string can change at runtime!
+   *        The supplier to use. Must be a supplier, because the underlying "Allow" string can
+   *        change at runtime!
    */
   public XServletHandlerOPTIONS (@NonNull final Supplier <String> aAllowProvider)
   {

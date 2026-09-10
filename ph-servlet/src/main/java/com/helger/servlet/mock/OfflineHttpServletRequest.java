@@ -24,9 +24,8 @@ import com.helger.servlet.annotation.IsOffline;
 import jakarta.servlet.ServletContext;
 
 /**
- * A special {@link MockHttpServletRequest} that throws
- * {@link UnsupportedOperationException} exceptions for server or path related
- * queries. So it is "offline" only :)
+ * A special {@link MockHttpServletRequest} that throws {@link UnsupportedOperationException}
+ * exceptions for server or path related queries. So it is "offline" only :)
  *
  * @author Philip Helger
  */

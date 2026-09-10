@@ -25,9 +25,8 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.callback.ICallback;
 
 /**
- * Callback interface to be implemented to get notified when a certain amount of
- * parallel requests are present. requests. See {@link RequestTracker} for
- * registration.
+ * Callback interface to be implemented to get notified when a certain amount of parallel requests
+ * are present. requests. See {@link RequestTracker} for registration.
  *
  * @author Philip Helger
  * @since 9.0.0
@@ -40,14 +39,14 @@ public interface IParallelRunningRequestCallback extends ICallback
    * @param nParallelRequests
    *        The number of parallel requests. Always &gt; 0.
    * @param aRequests
-   *        The list of requests currently running. The size should be identical
-   *        to the number of parallel requests. Never <code>null</code>.
+   *        The list of requests currently running. The size should be identical to the number of
+   *        parallel requests. Never <code>null</code>.
    */
-  void onParallelRunningRequests (@Nonnegative int nParallelRequests, @NonNull @Nonempty List <TrackedRequest> aRequests);
+  void onParallelRunningRequests (@Nonnegative int nParallelRequests,
+                                  @NonNull @Nonempty List <TrackedRequest> aRequests);
 
   /**
-   * This method is only called after the threshold was exceeded, when it is
-   * back to normal.
+   * This method is only called after the threshold was exceeded, when it is back to normal.
    *
    * @since 4.0.2
    */

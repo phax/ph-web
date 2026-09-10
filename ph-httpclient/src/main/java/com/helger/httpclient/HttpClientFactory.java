@@ -143,8 +143,9 @@ public class HttpClientFactory implements IHttpClientProvider
       return m_aConnMgr.lease (id, route, state);
     }
 
-    public void connect (final ConnectionEndpoint endpoint, final TimeValue connectTimeout, final HttpContext context)
-                                                                                                                       throws IOException
+    public void connect (final ConnectionEndpoint endpoint,
+                         final TimeValue connectTimeout,
+                         final HttpContext context) throws IOException
     {
       LOGGER.info (m_sPrefix + "connect(" + endpoint + ", " + connectTimeout + ", " + context + ")");
       m_aConnMgr.connect (endpoint, connectTimeout, context);
@@ -474,7 +475,7 @@ public class HttpClientFactory implements IHttpClientProvider
       return null;
 
     // Check if the cached trust store still matches the current source
-    final KeyStore aCached = RW_LOCK.readLockedGet ( () -> aSource.equals (s_aTrustStoreSource) ? s_aTrustStore : null);
+    final KeyStore aCached = RW_LOCK.readLockedGet (() -> aSource.equals (s_aTrustStoreSource) ? s_aTrustStore : null);
     if (aCached != null)
     {
       if (LOGGER.isDebugEnabled ())
@@ -482,7 +483,7 @@ public class HttpClientFactory implements IHttpClientProvider
       return aCached;
     }
 
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       // Check again in write lock
       if (aSource.equals (s_aTrustStoreSource))
         return s_aTrustStore;
@@ -506,7 +507,7 @@ public class HttpClientFactory implements IHttpClientProvider
   @NonNull
   public static EChange clearSystemDefaultTrustStoreCache ()
   {
-    return RW_LOCK.writeLockedGet ( () -> {
+    return RW_LOCK.writeLockedGet (() -> {
       if (s_aTrustStore == null)
         return EChange.UNCHANGED;
 
@@ -888,8 +889,8 @@ public class HttpClientFactory implements IHttpClientProvider
     return new DefaultRoutePlanner (aSchemePortResolver)
     {
       @Override
-      protected HttpHost determineProxy (@NonNull final HttpHost aTarget, @NonNull final HttpContext aContext)
-                                                                                                               throws HttpException
+      protected HttpHost determineProxy (@NonNull final HttpHost aTarget,
+                                         @NonNull final HttpContext aContext) throws HttpException
       {
         final String sSchemeName = aTarget.getSchemeName ();
         final String sHostName = aTarget.getHostName ();

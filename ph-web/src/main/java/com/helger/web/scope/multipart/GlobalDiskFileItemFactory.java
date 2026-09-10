@@ -33,8 +33,8 @@ import com.helger.web.fileupload.parse.DiskFileItemFactory;
 import com.helger.web.scope.singleton.AbstractGlobalWebSingleton;
 
 /**
- * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning up,
- * when the servlet context is destroyed.
+ * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning up, when the servlet
+ * context is destroyed.
  *
  * @author Philip Helger
  */

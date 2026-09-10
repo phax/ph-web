@@ -27,8 +27,8 @@ import com.helger.servlet.mock.MockServletPool;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Base class for JUnit tests where the initialization of the scopes happens
- * before each test execution.
+ * Base class for JUnit tests where the initialization of the scopes happens before each test
+ * execution.
  *
  * @author Philip Helger
  */

@@ -22,8 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Abstract layer to customize the handling of running a servlet request
- * asynchronously.
+ * Abstract layer to customize the handling of running a servlet request asynchronously.
  *
  * @author Philip Helger
  * @since 8.8.0
@@ -40,8 +39,7 @@ public interface IAsyncServletRunner
    * @param aAsyncContext
    *        The async execution context. Never <code>null</code>.
    * @param aRunnable
-   *        The main runner that does the heavy lifting. Never
-   *        <code>null</code>.
+   *        The main runner that does the heavy lifting. Never <code>null</code>.
    */
   void runAsync (@NonNull HttpServletRequest aOriginalHttpRequest,
                  @NonNull HttpServletResponse aOriginalHttpResponse,

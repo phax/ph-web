@@ -33,8 +33,8 @@ public class ScpFileInputStream extends InputStream
   private final ScpInputStream m_aIS;
   private final ScpEntry m_aScpEntry;
 
-  ScpFileInputStream (@NonNull final ISessionFactory aSessionFactory, final String sPath) throws JSchException,
-                                                                                          IOException
+  ScpFileInputStream (@NonNull final ISessionFactory aSessionFactory,
+                      final String sPath) throws JSchException, IOException
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Opening ScpInputStream to " + aSessionFactory.getAsString () + " " + sPath);

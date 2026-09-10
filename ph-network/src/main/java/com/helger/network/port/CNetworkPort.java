@@ -28,8 +28,7 @@ import com.helger.annotation.style.PresentForCodeCoverage;
 public final class CNetworkPort
 {
   /**
-   * Invalid valid port number - should be the same as the default port number
-   * in the URL class
+   * Invalid valid port number - should be the same as the default port number in the URL class
    */
   public static final int INVALID_PORT_NUMBER = -1;
   /** Smallest valid port number */

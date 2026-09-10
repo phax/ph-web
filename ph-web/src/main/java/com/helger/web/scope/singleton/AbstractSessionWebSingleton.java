@@ -30,8 +30,7 @@ import com.helger.web.scope.ISessionWebScope;
 import com.helger.web.scope.mgr.WebScopeManager;
 
 /**
- * This is the base class for singleton objects that reside in the session web
- * scope.
+ * This is the base class for singleton objects that reside in the session web scope.
  *
  * @see com.helger.web.scope.mgr.EWebScope#SESSION
  * @author Philip Helger
@@ -54,8 +53,8 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
 
   /**
    * @param bCreateIfNotExisting
-   *        if <code>true</code> the scope will be created if it is not
-   *        existing, <code>false</code> if not.
+   *        if <code>true</code> the scope will be created if it is not existing, <code>false</code>
+   *        if not.
    * @return The scope to be used for this type of singleton.
    */
   @NonNull
@@ -65,14 +64,14 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Get the singleton object in the current session web scope, using the passed
-   * class. If the singleton is not yet instantiated, a new instance is created.
+   * Get the singleton object in the current session web scope, using the passed class. If the
+   * singleton is not yet instantiated, a new instance is created.
    *
    * @param <T>
    *        The type to be returned
    * @param aClass
-   *        The class to be used. May not be <code>null</code>. The class must
-   *        be public as needs to have a public no-argument constructor.
+   *        The class to be used. May not be <code>null</code>. The class must be public as needs to
+   *        have a public no-argument constructor.
    * @return The singleton object and never <code>null</code>.
    */
   @NonNull
@@ -82,15 +81,15 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Get the singleton object if it is already instantiated inside the current
-   * session web scope or <code>null</code> if it is not instantiated.
+   * Get the singleton object if it is already instantiated inside the current session web scope or
+   * <code>null</code> if it is not instantiated.
    *
    * @param <T>
    *        The type to be returned
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
-   * @return The singleton for the specified class is already instantiated,
-   *         <code>null</code> otherwise.
+   * @return The singleton for the specified class is already instantiated, <code>null</code>
+   *         otherwise.
    */
   @Nullable
   public static final <T extends AbstractSessionWebSingleton> T getSessionSingletonIfInstantiated (@NonNull final Class <T> aClass)
@@ -99,13 +98,12 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Check if a singleton is already instantiated inside the current session web
-   * scope
+   * Check if a singleton is already instantiated inside the current session web scope
    *
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
-   * @return <code>true</code> if the singleton for the specified class is
-   *         already instantiated, <code>false</code> otherwise.
+   * @return <code>true</code> if the singleton for the specified class is already instantiated,
+   *         <code>false</code> otherwise.
    */
   public static final boolean isSessionSingletonInstantiated (@NonNull final Class <? extends AbstractSessionWebSingleton> aClass)
   {
@@ -115,8 +113,8 @@ public abstract class AbstractSessionWebSingleton extends AbstractSingleton impl
   /**
    * Get all singleton objects registered in the current session web scope.
    *
-   * @return A non-<code>null</code> list with all instances of this class in
-   *         the current session web scope.
+   * @return A non-<code>null</code> list with all instances of this class in the current session
+   *         web scope.
    */
   @NonNull
   public static final ICommonsList <AbstractSessionWebSingleton> getAllSessionSingletons ()

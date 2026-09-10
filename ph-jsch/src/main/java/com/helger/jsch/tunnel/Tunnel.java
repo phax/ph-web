@@ -26,8 +26,7 @@ import com.helger.base.string.StringHelper;
 import com.helger.base.tostring.ToStringGenerator;
 
 /**
- * Tunnel stores all the information needed to define an ssh port-forwarding
- * tunnel.
+ * Tunnel stores all the information needed to define an ssh port-forwarding tunnel.
  *
  * @see <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a>
  */
@@ -41,12 +40,11 @@ public class Tunnel
   private int m_nAssignedLocalPort;
 
   /**
-   * Creates a Tunnel from a <code>spec</code> string. For details on this
-   * string, see {@link #getSpec()}.
+   * Creates a Tunnel from a <code>spec</code> string. For details on this string, see
+   * {@link #getSpec()}.
    * <p>
-   * Both <code>localAlias</code> and <code>localPort</code> are optional, in
-   * which case they default to <code>localhost</code> and <code>0</code>
-   * respectively.
+   * Both <code>localAlias</code> and <code>localPort</code> are optional, in which case they
+   * default to <code>localhost</code> and <code>0</code> respectively.
    * </p>
    * <p>
    * Examples:
@@ -95,9 +93,8 @@ public class Tunnel
   }
 
   /**
-   * Creates a Tunnel to <code>destinationPort</code> on
-   * <code>destinationHostname</code> from a dynamically assigned port on
-   * <code>localhost</code>. Simply calls
+   * Creates a Tunnel to <code>destinationPort</code> on <code>destinationHostname</code> from a
+   * dynamically assigned port on <code>localhost</code>. Simply calls
    *
    * @param destinationHostname
    *        The hostname to tunnel to
@@ -112,9 +109,8 @@ public class Tunnel
   }
 
   /**
-   * Creates a Tunnel to <code>destinationPort</code> on
-   * <code>destinationHostname</code> from <code>localPort</code> on
-   * <code>localhost</code>.
+   * Creates a Tunnel to <code>destinationPort</code> on <code>destinationHostname</code> from
+   * <code>localPort</code> on <code>localhost</code>.
    *
    * @param localPort
    *        The local port to bind to
@@ -131,20 +127,17 @@ public class Tunnel
   }
 
   /**
-   * Creates a Tunnel to <code>destinationPort</code> on
-   * <code>destinationHostname</code> from <code>localPort</code> on
-   * <code>localAlias</code>.
+   * Creates a Tunnel to <code>destinationPort</code> on <code>destinationHostname</code> from
+   * <code>localPort</code> on <code>localAlias</code>.
    * <p>
-   * This is similar in behavior to the <code>-L</code> option in ssh, with the
-   * exception that you can specify <code>0</code> for the local port in which
-   * case the port will be dynamically allocated and you can
-   * {@link #getAssignedLocalPort()} after the tunnel has been started.
+   * This is similar in behavior to the <code>-L</code> option in ssh, with the exception that you
+   * can specify <code>0</code> for the local port in which case the port will be dynamically
+   * allocated and you can {@link #getAssignedLocalPort()} after the tunnel has been started.
    * </p>
    * <p>
-   * A common use case for <code>localAlias</code> might be to link your
-   * loopback interfaces to names via an entries in <code>/etc/hosts</code>
-   * which would allow you to use the same port number for more than one tunnel.
-   * For example:
+   * A common use case for <code>localAlias</code> might be to link your loopback interfaces to
+   * names via an entries in <code>/etc/hosts</code> which would allow you to use the same port
+   * number for more than one tunnel. For example:
    *
    * <pre>
    * 127.0.0.2 foo
@@ -169,7 +162,10 @@ public class Tunnel
    * @see com.jcraft.jsch.Session#setPortForwardingL(String, int, String, int)
    * @see <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a>
    */
-  public Tunnel (final String localAlias, final int localPort, final String destinationHostname, final int destinationPort)
+  public Tunnel (final String localAlias,
+                 final int localPort,
+                 final String destinationHostname,
+                 final int destinationPort)
   {
     m_sLocalAlias = localAlias;
     m_nLocalPort = localPort;
@@ -178,9 +174,9 @@ public class Tunnel
   }
 
   /**
-   * Returns the local port currently bound to. If <code>0</code> was specified
-   * as the port to bind to, this will return the dynamically allocated port,
-   * otherwise it will return the port specified.
+   * Returns the local port currently bound to. If <code>0</code> was specified as the port to bind
+   * to, this will return the dynamically allocated port, otherwise it will return the port
+   * specified.
    *
    * @return The local port currently bound to
    */
@@ -211,8 +207,8 @@ public class Tunnel
 
   /**
    * Returns the local alias bound to. See
-   * <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a> for
-   * details on acceptible values.
+   * <a href="http://tools.ietf.org/html/rfc4254#section-7">rfc4254</a> for details on acceptible
+   * values.
    *
    * @return The local alias bound to
    */
@@ -222,8 +218,8 @@ public class Tunnel
   }
 
   /**
-   * Returns the port this tunnel was configured with. If you want to get the
-   * runtime port, use {@link #getAssignedLocalPort()}.
+   * Returns the port this tunnel was configured with. If you want to get the runtime port, use
+   * {@link #getAssignedLocalPort()}.
    *
    * @return The port this tunnel was configured with
    */
@@ -235,8 +231,7 @@ public class Tunnel
   /**
    * Returns the spec string (either calculated or specified) for this tunnel.
    * <p>
-   * A spec string is composed of 4 parts separated by a colon (<code>:</code>
-   * ):
+   * A spec string is composed of 4 parts separated by a colon (<code>:</code> ):
    * <ol>
    * <li><code>localAlias</code> (<i>optional</i>)</li>
    * <li><code>localPort</code> (<i>optional</i>)</li>

@@ -25,22 +25,19 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 
 /**
- * An output stream which triggers an event when a specified number of bytes of
- * data have been written to it. The event can be used, for example, to throw an
- * exception if a maximum has been reached, or to switch the underlying stream
- * type when the threshold is exceeded.
+ * An output stream which triggers an event when a specified number of bytes of data have been
+ * written to it. The event can be used, for example, to throw an exception if a maximum has been
+ * reached, or to switch the underlying stream type when the threshold is exceeded.
  * <p>
- * This class overrides all <code>OutputStream</code> methods. However, these
- * overrides ultimately call the corresponding methods in the underlying output
- * stream implementation.
+ * This class overrides all <code>OutputStream</code> methods. However, these overrides ultimately
+ * call the corresponding methods in the underlying output stream implementation.
  * <p>
- * NOTE: This implementation may trigger the event <em>before</em> the threshold
- * is actually reached, since it triggers when a pending write operation would
- * cause the threshold to be exceeded.
+ * NOTE: This implementation may trigger the event <em>before</em> the threshold is actually
+ * reached, since it triggers when a pending write operation would cause the threshold to be
+ * exceeded.
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
- * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z
- *          niallp $
+ * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z niallp $
  */
 public abstract class AbstractThresholdingOutputStream extends OutputStream
 {
@@ -60,8 +57,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   private boolean m_bThresholdExceeded;
 
   /**
-   * Constructs an instance of this class which will trigger an event at the
-   * specified threshold.
+   * Constructs an instance of this class which will trigger an event at the specified threshold.
    *
    * @param nThreshold
    *        The number of bytes at which to trigger an event.
@@ -88,8 +84,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Writes <code>b.length</code> bytes from the specified byte array to this
-   * output stream.
+   * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
    *
    * @param b
    *        The array of bytes to be written.
@@ -105,8 +100,8 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Writes <code>len</code> bytes from the specified byte array starting at
-   * offset <code>off</code> to this output stream.
+   * Writes <code>len</code> bytes from the specified byte array starting at offset <code>off</code>
+   * to this output stream.
    *
    * @param b
    *        The byte array from which the data will be written.
@@ -118,7 +113,9 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (@NonNull final byte [] b, @Nonnegative final int off, @Nonnegative final int len) throws IOException
+  public void write (@NonNull final byte [] b,
+                     @Nonnegative final int off,
+                     @Nonnegative final int len) throws IOException
   {
     checkThreshold (len);
     getStream ().write (b, off, len);
@@ -126,8 +123,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Flushes this output stream and forces any buffered output bytes to be
-   * written out.
+   * Flushes this output stream and forces any buffered output bytes to be written out.
    *
    * @exception IOException
    *            if an error occurs.
@@ -139,8 +135,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Closes this output stream and releases any system resources associated with
-   * this stream.
+   * Closes this output stream and releases any system resources associated with this stream.
    *
    * @exception IOException
    *            if an error occurs.
@@ -181,11 +176,9 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Determines whether or not the configured threshold has been exceeded for
-   * this output stream.
+   * Determines whether or not the configured threshold has been exceeded for this output stream.
    *
-   * @return <code>true</code> if the threshold has been reached;
-   *         <code>false</code> otherwise.
+   * @return <code>true</code> if the threshold has been reached; <code>false</code> otherwise.
    */
   public boolean isThresholdExceeded ()
   {
@@ -193,13 +186,11 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Checks to see if writing the specified number of bytes would cause the
-   * configured threshold to be exceeded. If so, triggers an event to allow a
-   * concrete implementation to take action on
+   * Checks to see if writing the specified number of bytes would cause the configured threshold to
+   * be exceeded. If so, triggers an event to allow a concrete implementation to take action on
    *
    * @param nCount
-   *        The number of bytes about to be written to the underlying output
-   *        stream.
+   *        The number of bytes about to be written to the underlying output stream.
    * @exception IOException
    *            if an error occurs.
    */
@@ -213,8 +204,8 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Resets the byteCount to zero. You can call this from
-   * {@link #onThresholdReached()} if you want the event to be triggered again.
+   * Resets the byteCount to zero. You can call this from {@link #onThresholdReached()} if you want
+   * the event to be triggered again.
    */
   protected void resetByteCount ()
   {
@@ -223,8 +214,8 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   }
 
   /**
-   * Returns the underlying output stream, to which the corresponding
-   * <code>OutputStream</code> methods in this class will ultimately delegate.
+   * Returns the underlying output stream, to which the corresponding <code>OutputStream</code>
+   * methods in this class will ultimately delegate.
    *
    * @return The underlying output stream.
    * @exception IOException
@@ -234,9 +225,9 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   protected abstract OutputStream getStream () throws IOException;
 
   /**
-   * Indicates that the configured threshold has been reached, and that a
-   * subclass should take whatever action necessary on this event. This may
-   * include changing the underlying output stream.
+   * Indicates that the configured threshold has been reached, and that a subclass should take
+   * whatever action necessary on this event. This may include changing the underlying output
+   * stream.
    *
    * @exception IOException
    *            if an error occurs.

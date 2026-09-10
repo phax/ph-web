@@ -45,9 +45,8 @@ public class ForcedRedirectException extends RuntimeException
    * @param aRedirectTargetURL
    *        The redirect target URL. May not be <code>null</code>.
    * @param aContent
-   *        The additional content to be displayed upon the next get. May be
-   *        <code>null</code>. Usually this is an <code>IHCNode</code> but this
-   *        class is not accessible from here!
+   *        The additional content to be displayed upon the next get. May be <code>null</code>.
+   *        Usually this is an <code>IHCNode</code> but this class is not accessible from here!
    */
   public ForcedRedirectException (@NonNull @Nonempty final String sSourceMenuItemID,
                                   @NonNull final ISimpleURL aRedirectTargetURL,
@@ -59,8 +58,8 @@ public class ForcedRedirectException extends RuntimeException
   }
 
   /**
-   * @return The source menu item ID that triggered the PRG as specified in the
-   *         constructor. Never <code>null</code>.
+   * @return The source menu item ID that triggered the PRG as specified in the constructor. Never
+   *         <code>null</code>.
    */
   @NonNull
   @Nonempty
@@ -70,8 +69,7 @@ public class ForcedRedirectException extends RuntimeException
   }
 
   /**
-   * @return The redirect target URL as specified in the constructor. Never
-   *         <code>null</code>.
+   * @return The redirect target URL as specified in the constructor. Never <code>null</code>.
    */
   @NonNull
   public ISimpleURL getRedirectTargetURL ()
@@ -80,9 +78,8 @@ public class ForcedRedirectException extends RuntimeException
   }
 
   /**
-   * @return The content to be displayed when the GET is executed. May be
-   *         <code>null</code>. Usually this is an <code>IHCNode</code> but this
-   *         class is not accessible from here!
+   * @return The content to be displayed when the GET is executed. May be <code>null</code>. Usually
+   *         this is an <code>IHCNode</code> but this class is not accessible from here!
    */
   @Nullable
   public Object getContent ()

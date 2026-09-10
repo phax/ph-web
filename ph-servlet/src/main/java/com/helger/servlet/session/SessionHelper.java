@@ -55,8 +55,8 @@ public final class SessionHelper
    *
    * @param aSession
    *        The session to be invalidated. May be <code>null</code>.
-   * @return {@link EChange#CHANGED} if the session was invalidated,
-   *         {@link EChange#UNCHANGED} otherwise.
+   * @return {@link EChange#CHANGED} if the session was invalidated, {@link EChange#UNCHANGED}
+   *         otherwise.
    */
   @NonNull
   public static EChange safeInvalidateSession (@Nullable final HttpSession aSession)
@@ -102,8 +102,7 @@ public final class SessionHelper
   }
 
   /**
-   * Invalidate the session of the specified request (if any) and create a new
-   * session.
+   * Invalidate the session of the specified request (if any) and create a new session.
    *
    * @param aHttpRequest
    *        The HTTP request to use. May not be <code>null</code>.

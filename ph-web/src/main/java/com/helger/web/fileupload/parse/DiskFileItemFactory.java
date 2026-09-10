@@ -108,7 +108,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   private void _addTempFile (@NonNull final File aFile)
   {
-    m_aRWLock.writeLockedBoolean ( () -> m_aTempFiles.add (aFile));
+    m_aRWLock.writeLockedBoolean (() -> m_aTempFiles.add (aFile));
   }
 
   /**
@@ -152,7 +152,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 
   public void deleteAllTemporaryFiles ()
   {
-    final ICommonsList <File> aTempFiles = m_aRWLock.writeLockedGet ( () -> {
+    final ICommonsList <File> aTempFiles = m_aRWLock.writeLockedGet (() -> {
       final ICommonsList <File> ret = m_aTempFiles.getClone ();
       m_aTempFiles.clear ();
       return ret;

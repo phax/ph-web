@@ -29,8 +29,7 @@ import jakarta.activation.DataSource;
 import jakarta.mail.EncodingAware;
 
 /**
- * Extension interface for {@link DataSource} that includes
- * {@link EncodingAware}.
+ * Extension interface for {@link DataSource} that includes {@link EncodingAware}.
  *
  * @author Philip Helger
  */

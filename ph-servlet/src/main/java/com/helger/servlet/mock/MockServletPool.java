@@ -171,7 +171,7 @@ public class MockServletPool
     ValueEnforcer.notNull (aServletClass, "ServletClass");
     ValueEnforcer.notEmpty (sServletPath, "ServletPath");
 
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       for (final ServletItem aItem : m_aServlets)
       {
         // Check path uniqueness
@@ -222,7 +222,7 @@ public class MockServletPool
   @Nullable
   public Servlet getServletOfPath (@Nullable final String sPath)
   {
-    return m_aRWLock.readLockedGet ( () -> {
+    return m_aRWLock.readLockedGet (() -> {
       final ICommonsList <ServletItem> aMatchingItems = new CommonsArrayList <> ();
       if (StringHelper.isNotEmpty (sPath))
         m_aServlets.findAll (aItem -> aItem.matchesPath (sPath), aMatchingItems::add);
@@ -241,7 +241,7 @@ public class MockServletPool
    */
   public void invalidate ()
   {
-    m_aRWLock.writeLocked ( () -> {
+    m_aRWLock.writeLocked (() -> {
       if (m_bInvalidated)
         throw new IllegalArgumentException ("Servlet pool already invalidated!");
       m_bInvalidated = true;

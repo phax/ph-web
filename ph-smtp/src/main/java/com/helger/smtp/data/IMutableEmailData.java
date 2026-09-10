@@ -51,9 +51,8 @@ public interface IMutableEmailData extends IEmailData
   IMutableEmailAttachmentList getAttachments ();
 
   /**
-   * Specify a set of attachments to be send together with the mail. Pass
-   * <code>null</code> to indicate that no attachments are desired (this is the
-   * default).
+   * Specify a set of attachments to be send together with the mail. Pass <code>null</code> to
+   * indicate that no attachments are desired (this is the default).
    *
    * @param aAttachments
    *        The attachments to be used. May be <code>null</code> or empty.

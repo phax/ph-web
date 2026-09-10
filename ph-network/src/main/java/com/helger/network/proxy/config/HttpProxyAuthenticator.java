@@ -63,8 +63,8 @@ public class HttpProxyAuthenticator extends Authenticator
           final String sProxyUser = m_eProxyType.getProxyUserName ();
           final String sProxyPassword = m_eProxyType.getProxyPassword ();
           return new PasswordAuthentication (sProxyUser,
-                                             sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY : sProxyPassword
-                                                                                                               .toCharArray ());
+                                             sProxyPassword == null ? CGlobal.EMPTY_CHAR_ARRAY
+                                                                    : sProxyPassword.toCharArray ());
         }
       }
     }

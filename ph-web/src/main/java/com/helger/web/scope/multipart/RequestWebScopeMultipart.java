@@ -27,8 +27,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * The default request web scope that also tries to parse multi part requests if
- * the Content-Type matches .
+ * The default request web scope that also tries to parse multi part requests if the Content-Type
+ * matches .
  *
  * @author Philip Helger
  */
@@ -55,8 +55,8 @@ public class RequestWebScopeMultipart extends RequestWebScope
   }
 
   /**
-   * @return <code>true</code> if this request scope was parsed as multipart,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if this request scope was parsed as multipart, <code>false</code> if
+   *         not.
    * @since 9.1.1
    */
   public final boolean isMultipartRequest ()

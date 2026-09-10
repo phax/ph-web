@@ -26,9 +26,9 @@ import com.helger.annotation.CheckForSigned;
 
 /**
  * <p>
- * Abstracts access to the request information needed for file uploads. This
- * interfsace should be implemented for each type of request that may be handled
- * by FileUpload, such as servlets and portlets.
+ * Abstracts access to the request information needed for file uploads. This interfsace should be
+ * implemented for each type of request that may be handled by FileUpload, such as servlets and
+ * portlets.
  * </p>
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
@@ -56,8 +56,7 @@ public interface IRequestContext
   /**
    * Retrieve the content length of the request.
    *
-   * @return The content length of the request. My be -1 to indicate an unknown
-   *         content length.
+   * @return The content length of the request. My be -1 to indicate an unknown content length.
    */
   @CheckForSigned
   long getContentLength ();

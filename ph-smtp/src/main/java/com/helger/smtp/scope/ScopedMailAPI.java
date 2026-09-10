@@ -33,8 +33,8 @@ import com.helger.smtp.settings.ISMTPSettings;
 import com.helger.smtp.transport.MailAPI;
 
 /**
- * Scope aware wrapper around {@link MailAPI} class so that it is gracefully
- * stopped when the global scope is stopped.
+ * Scope aware wrapper around {@link MailAPI} class so that it is gracefully stopped when the global
+ * scope is stopped.
  *
  * @author Philip Helger
  */
@@ -98,8 +98,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    *        The SMTP settings to be used.
    * @param aMailDataList
    *        The mail messages to queue. May not be <code>null</code>.
-   * @return The number of queued emails. Always &ge; 0. Maximum value is the
-   *         number of {@link IMutableEmailData} objects in the argument.
+   * @return The number of queued emails. Always &ge; 0. Maximum value is the number of
+   *         {@link IMutableEmailData} objects in the argument.
    */
   @Nonnegative
   public int queueMails (@NonNull final ISMTPSettings aSMTPSettings,
@@ -115,9 +115,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
   }
 
   /**
-   * @return <code>true</code> if all mails currently in the queue should be
-   *         removed and put in the failed mail queue. Only the emails currently
-   *         in sending are continued to be sent out.
+   * @return <code>true</code> if all mails currently in the queue should be removed and put in the
+   *         failed mail queue. Only the emails currently in sending are continued to be sent out.
    */
   public boolean isStopImmediately ()
   {
@@ -128,9 +127,8 @@ public final class ScopedMailAPI extends AbstractGlobalSingleton
    * Determine whether to stop immediately or not
    *
    * @param bStopImmediately
-   *        <code>true</code> if all mails currently in the queue should be
-   *        removed and put in the failed mail queue. Only the emails currently
-   *        in sending are continued to be sent out.
+   *        <code>true</code> if all mails currently in the queue should be removed and put in the
+   *        failed mail queue. Only the emails currently in sending are continued to be sent out.
    */
   public void setStopImmediatly (final boolean bStopImmediately)
   {

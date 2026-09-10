@@ -28,10 +28,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /**
- * A response that includes no body, for use in (dumb) "HEAD" support. This just
- * swallows that body, counting the bytes in order to set the content length
- * appropriately. All other methods delegate directly to the wrapped HTTP
- * Servlet Response object.
+ * A response that includes no body, for use in (dumb) "HEAD" support. This just swallows that body,
+ * counting the bytes in order to set the content length appropriately. All other methods delegate
+ * directly to the wrapped HTTP Servlet Response object.
  *
  * @author Servlet Spec 3.1
  * @since 8.8.0

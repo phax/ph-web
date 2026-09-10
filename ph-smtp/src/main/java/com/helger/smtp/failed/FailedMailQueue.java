@@ -67,7 +67,7 @@ public class FailedMailQueue
   {
     ValueEnforcer.notNull (aFailedMailData, "FailedMailData");
 
-    m_aRWLock.writeLocked ( () -> internalAdd (aFailedMailData));
+    m_aRWLock.writeLocked (() -> internalAdd (aFailedMailData));
   }
 
   @Nullable
@@ -93,7 +93,7 @@ public class FailedMailQueue
     if (StringHelper.isEmpty (sID))
       return null;
 
-    return m_aRWLock.writeLockedGet ( () -> internalRemove (sID));
+    return m_aRWLock.writeLockedGet (() -> internalRemove (sID));
   }
 
   @Nonnegative
@@ -119,7 +119,7 @@ public class FailedMailQueue
   @Nullable
   public FailedMailData getFailedMailOfID (@Nullable final String sID)
   {
-    return m_aRWLock.readLockedGet ( () -> internalGetFailedMailOfID (sID));
+    return m_aRWLock.readLockedGet (() -> internalGetFailedMailOfID (sID));
   }
 
   @Nonnegative

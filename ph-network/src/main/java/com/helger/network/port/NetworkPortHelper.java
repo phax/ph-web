@@ -48,13 +48,12 @@ public final class NetworkPortHelper
   {}
 
   /**
-   * Check of the passed port number is theoretically valid. Valid ports must be
-   * in the range of 0-65535.
+   * Check of the passed port number is theoretically valid. Valid ports must be in the range of
+   * 0-65535.
    *
    * @param nPort
    *        The port number to be tested.
-   * @return <code>true</code> if the port number is valid, <code>false</code>
-   *         otherwise.
+   * @return <code>true</code> if the port number is valid, <code>false</code> otherwise.
    */
   public static boolean isValidPort (final int nPort)
   {
@@ -106,7 +105,13 @@ public final class NetworkPortHelper
     ValueEnforcer.isGE0 (nTimeoutMillisecs, "TimeoutMillisecs");
 
     if (!bSilentMode)
-      LOGGER.info ("Checking TCP port status for " + sHostName + ":" + nPort + " with timeouf of " + nTimeoutMillisecs + " ms");
+      LOGGER.info ("Checking TCP port status for " +
+                   sHostName +
+                   ":" +
+                   nPort +
+                   " with timeouf of " +
+                   nTimeoutMillisecs +
+                   " ms");
 
     ENetworkPortStatus ret;
     try (final Socket aSocket = new Socket ())

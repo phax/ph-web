@@ -140,7 +140,7 @@ public class StaticServerInfo
 
   public static boolean isSet ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_aDefault != null);
+    return RW_LOCK.readLockedBoolean (() -> s_aDefault != null);
   }
 
   @NonNull
@@ -154,7 +154,7 @@ public class StaticServerInfo
 
     final StaticServerInfo aDefault = new StaticServerInfo (sScheme, sServerName, nServerPort, sContextPath);
     LOGGER.info ("Static server information set: " + aDefault.toString ());
-    RW_LOCK.writeLocked ( () -> s_aDefault = aDefault);
+    RW_LOCK.writeLocked (() -> s_aDefault = aDefault);
     return aDefault;
   }
 
@@ -162,7 +162,7 @@ public class StaticServerInfo
   {
     if (isSet ())
     {
-      RW_LOCK.writeLocked ( () -> s_aDefault = null);
+      RW_LOCK.writeLocked (() -> s_aDefault = null);
       LOGGER.info ("Static server information was reset");
     }
   }
@@ -170,7 +170,7 @@ public class StaticServerInfo
   @NonNull
   public static StaticServerInfo getInstance ()
   {
-    final StaticServerInfo ret = RW_LOCK.readLockedGet ( () -> s_aDefault);
+    final StaticServerInfo ret = RW_LOCK.readLockedGet (() -> s_aDefault);
     if (ret == null)
       throw new IllegalStateException ("No default web server info present!");
     return ret;

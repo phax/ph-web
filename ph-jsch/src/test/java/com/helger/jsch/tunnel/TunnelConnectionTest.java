@@ -78,7 +78,7 @@ public final class TunnelConnectionTest
     Assume.assumeNotNull (s_aProperties);
 
     serviceBuffer = new StringBuffer ();
-    serviceThread = new Thread ( () -> {
+    serviceThread = new Thread (() -> {
       serviceLock.lock ();
       try (final ServerSocket serverSocket = new ServerSocket (servicePort))
       {

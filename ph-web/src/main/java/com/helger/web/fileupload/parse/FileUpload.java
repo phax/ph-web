@@ -25,13 +25,12 @@ import com.helger.web.fileupload.IFileItemFactory;
  * High level API for processing file uploads.
  * </p>
  * <p>
- * This class handles multiple files per single HTML widget, sent using
- * <code>multipart/mixed</code> encoding type, as specified by
- * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
+ * This class handles multiple files per single HTML widget, sent using <code>multipart/mixed</code>
+ * encoding type, as specified by <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.
  * </p>
  * <p>
- * How the data for individual parts is stored is determined by the factory used
- * to create them; a given part may be in memory, on disk, or somewhere else.
+ * How the data for individual parts is stored is determined by the factory used to create them; a
+ * given part may be in memory, on disk, or somewhere else.
  * </p>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -50,8 +49,8 @@ public class FileUpload extends AbstractFileUploadBase
   private final IFileItemFactory m_aFileItemFactory;
 
   /**
-   * Constructs an instance of this class which uses the supplied factory to
-   * create <code>FileItem</code> instances.
+   * Constructs an instance of this class which uses the supplied factory to create
+   * <code>FileItem</code> instances.
    *
    * @param aFileItemFactory
    *        The factory to use for creating file items.

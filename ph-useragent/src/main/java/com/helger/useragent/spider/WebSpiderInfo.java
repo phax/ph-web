@@ -105,7 +105,11 @@ public class WebSpiderInfo implements IHasID <String>
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_sID).append (m_sName).append (m_eType).append (m_sInfo).getHashCode ();
+    return new HashCodeGenerator (this).append (m_sID)
+                                       .append (m_sName)
+                                       .append (m_eType)
+                                       .append (m_sInfo)
+                                       .getHashCode ();
   }
 
   @Override

@@ -30,9 +30,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.base.enforce.ValueEnforcer;
 
 /**
- * A private key strategy that select the key details from the provided alias.
- * The matching of the alias is case insensitive (so that the expected alias
- * <code>ABC</code> matches the keystore alias <code>Abc</code>).
+ * A private key strategy that select the key details from the provided alias. The matching of the
+ * alias is case insensitive (so that the expected alias <code>ABC</code> matches the keystore alias
+ * <code>Abc</code>).
  *
  * @author Philip Helger
  * @since 9.1.9
@@ -51,8 +51,7 @@ public class PrivateKeyStrategyFromAliasCaseInsensitive implements PrivateKeyStr
   }
 
   /**
-   * @return The name of the expected alias as provided in the constructor.
-   *         Never <code>null</code>.
+   * @return The name of the expected alias as provided in the constructor. Never <code>null</code>.
    */
   @NonNull
   public final String getExpectedAlias ()

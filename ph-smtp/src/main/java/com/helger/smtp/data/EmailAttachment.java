@@ -51,7 +51,9 @@ public class EmailAttachment implements IEmailAttachment
     this (sFilename, aContent, (Charset) null);
   }
 
-  public EmailAttachment (@NonNull @Nonempty final String sFilename, @NonNull final byte [] aContent, @Nullable final Charset aCharset)
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final byte [] aContent,
+                          @Nullable final Charset aCharset)
   {
     this (sFilename, aContent, aCharset, DEFAULT_DISPOSITION);
   }
@@ -73,7 +75,8 @@ public class EmailAttachment implements IEmailAttachment
     this (sFilename, new ByteArrayInputStreamProvider (aContent), aCharset, sContentType, eDisposition);
   }
 
-  public EmailAttachment (@NonNull @Nonempty final String sFilename, @NonNull final IHasInputStream aInputStreamProvider)
+  public EmailAttachment (@NonNull @Nonempty final String sFilename,
+                          @NonNull final IHasInputStream aInputStreamProvider)
   {
     this (sFilename, aInputStreamProvider, (Charset) null);
   }
@@ -90,7 +93,11 @@ public class EmailAttachment implements IEmailAttachment
                           @Nullable final Charset aCharset,
                           @NonNull final EEmailAttachmentDisposition eDisposition)
   {
-    this (sFilename, aInputStreamProvider, aCharset, FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename), eDisposition);
+    this (sFilename,
+          aInputStreamProvider,
+          aCharset,
+          FileTypeMap.getDefaultFileTypeMap ().getContentType (sFilename),
+          eDisposition);
   }
 
   public EmailAttachment (@NonNull @Nonempty final String sFilename,

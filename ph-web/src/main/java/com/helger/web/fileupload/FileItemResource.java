@@ -34,8 +34,7 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.io.resource.IReadableResource;
 
 /**
- * Implementation of the {@link IReadableResource} interface for uploaded
- * {@link IFileItem} objects.
+ * Implementation of the {@link IReadableResource} interface for uploaded {@link IFileItem} objects.
  *
  * @author Philip Helger
  */

@@ -26,9 +26,8 @@ import com.helger.collection.commons.ICommonsList;
 
 /**
  * <p>
- * A factory interface for creating {@link IFileItem} instances. Factories can
- * provide their own custom configuration, over and above that provided by the
- * default file upload implementation.
+ * A factory interface for creating {@link IFileItem} instances. Factories can provide their own
+ * custom configuration, over and above that provided by the default file upload implementation.
  * </p>
  *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
@@ -45,23 +44,24 @@ public interface IFileItemFactory
   void setRepository (@Nullable File aRepository);
 
   /**
-   * Create a new {@link IFileItem} instance from the supplied parameters and
-   * any local factory configuration.
+   * Create a new {@link IFileItem} instance from the supplied parameters and any local factory
+   * configuration.
    *
    * @param sFieldName
    *        The name of the form field.
    * @param sContentType
    *        The content type of the form field.
    * @param bIsFormField
-   *        <code>true</code> if this is a plain form field; <code>false</code>
-   *        otherwise.
+   *        <code>true</code> if this is a plain form field; <code>false</code> otherwise.
    * @param sFileName
-   *        The name of the uploaded file, if any, as supplied by the browser or
-   *        other client.
+   *        The name of the uploaded file, if any, as supplied by the browser or other client.
    * @return The newly created file item.
    */
   @NonNull
-  IFileItem createItem (@Nullable String sFieldName, @Nullable String sContentType, boolean bIsFormField, @Nullable String sFileName);
+  IFileItem createItem (@Nullable String sFieldName,
+                        @Nullable String sContentType,
+                        boolean bIsFormField,
+                        @Nullable String sFileName);
 
   @NonNull
   @ReturnsMutableCopy

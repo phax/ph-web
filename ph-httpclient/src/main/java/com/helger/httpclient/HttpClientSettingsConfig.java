@@ -600,7 +600,8 @@ public class HttpClientSettingsConfig
       // Either empty or ending with a string
       final ICommonsOrderedSet <String> aRealPrefixes = new CommonsLinkedHashSet <> (aPrefixes,
                                                                                      x -> x.isEmpty () ||
-                                                                                       x.endsWith (".") ? x : x + ".");
+                                                                                          x.endsWith (".") ? x
+                                                                                                           : x + ".");
       if (aRealPrefixes.isEmpty ())
       {
         LOGGER.warn ("No configuration prefixes provided to configure HTTP client settings. Nothing happens");
@@ -814,7 +815,7 @@ public class HttpClientSettingsConfig
 
     final ETriState eDisableHostnameCheck = aHCC.getDisableHostnameCheck (bDefaultDisableTLS);
     if ((eDisableHostnameCheck.isDefined () && eDisableHostnameCheck.getAsBooleanValue ()) ||
-      (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
+        (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
     {
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Setting configured HttpClientSettings.setHostnameVerifierVerifyAll()");
@@ -824,7 +825,7 @@ public class HttpClientSettingsConfig
 
     final ETriState eDisableCertificateCheck = aHCC.getDisableCertificateCheck (bDefaultDisableTLS);
     if ((eDisableCertificateCheck.isDefined () && eDisableCertificateCheck.getAsBooleanValue ()) ||
-      (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
+        (eDisableTLSChecks.isDefined () && eDisableTLSChecks.getAsBooleanValue ()))
     {
       try
       {

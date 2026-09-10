@@ -377,8 +377,8 @@ public class DefaultSessionFactory implements ISessionFactory
    * @throws JSchException
    *         If the key is invalid
    */
-  public void setIdentityFromPrivateKey (@Nullable final String sPrivateKey, @Nullable final String sPassPhrase)
-                                                                                                                 throws JSchException
+  public void setIdentityFromPrivateKey (@Nullable final String sPrivateKey,
+                                         @Nullable final String sPassPhrase) throws JSchException
   {
     if (sPrivateKey != null)
     {

@@ -28,8 +28,7 @@ import com.helger.useragent.uaprofile.IUAProfileHeaderProvider;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Special implementation of {@link IUAProfileHeaderProvider} for
- * {@link HttpServletRequest}.
+ * Special implementation of {@link IUAProfileHeaderProvider} for {@link HttpServletRequest}.
  *
  * @author Philip Helger
  * @since 10.3.0

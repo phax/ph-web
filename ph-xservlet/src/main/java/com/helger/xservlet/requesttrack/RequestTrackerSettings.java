@@ -23,8 +23,7 @@ import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.enforce.ValueEnforcer;
 
 /**
- * Settings class for the Request tracker. Must be set before the first
- * invocation.
+ * Settings class for the Request tracker. Must be set before the first invocation.
  *
  * @author Philip Helger
  * @since 9.6.1
@@ -35,10 +34,11 @@ public final class RequestTrackerSettings
   /** By default the long running checks are enabled */
   public static final boolean DEFAULT_LONG_RUNNING_CHECK_ENABLED = true;
   /** By default the long running checks are executed every 2 seconds */
-  public static final long DEFAULT_LONG_RUNNING_REQUESTS_CHECK_INTERVAL_MILLISECONDS = 2 * CGlobal.MILLISECONDS_PER_SECOND;
+  public static final long DEFAULT_LONG_RUNNING_REQUESTS_CHECK_INTERVAL_MILLISECONDS = 2 *
+                                                                                       CGlobal.MILLISECONDS_PER_SECOND;
   /**
-   * The number of a seconds a request needs to run before it is considered
-   * "long running". Defaults to 30.
+   * The number of a seconds a request needs to run before it is considered "long running". Defaults
+   * to 30.
    */
   public static final long DEFAULT_LONG_RUNNING_NOTIFICATION_MILLISECONDS = 30 * CGlobal.MILLISECONDS_PER_SECOND;
 
@@ -59,79 +59,77 @@ public final class RequestTrackerSettings
   {}
 
   /**
-   * @return <code>true</code> if long running checks are enabled,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if long running checks are enabled, <code>false</code> if not.
    */
   public static boolean isLongRunningRequestsCheckEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bLRCheckEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bLRCheckEnabled);
   }
 
   public static void setLongRunningRequestsCheckEnabled (final boolean bEnabled)
   {
-    RW_LOCK.writeLocked ( () -> s_bLRCheckEnabled = bEnabled);
+    RW_LOCK.writeLocked (() -> s_bLRCheckEnabled = bEnabled);
   }
 
   /**
-   * @return The interval in milliseconds, in which the system should check for
-   *         long running requests. Always &gt; 0.
+   * @return The interval in milliseconds, in which the system should check for long running
+   *         requests. Always &gt; 0.
    */
   @Nonnegative
   public static long getLongRunningRequestCheckIntervalMilliseconds ()
   {
-    return RW_LOCK.readLockedLong ( () -> s_nLRCheckMilliseconds);
+    return RW_LOCK.readLockedLong (() -> s_nLRCheckMilliseconds);
   }
 
   public static void setLongRunningRequestCheckIntervalMilliseconds (@Nonnegative final long nSeconds)
   {
     ValueEnforcer.isGT0 (nSeconds, "Seconds");
-    RW_LOCK.writeLocked ( () -> s_nLRCheckMilliseconds = nSeconds);
+    RW_LOCK.writeLocked (() -> s_nLRCheckMilliseconds = nSeconds);
   }
 
   /**
-   * @return The milliseconds that need to pass by, before a request is
-   *         considered "long running".
+   * @return The milliseconds that need to pass by, before a request is considered "long running".
    */
   @Nonnegative
   public static long getLongRunningRequestWarnDurationMillis ()
   {
-    return RW_LOCK.readLockedLong ( () -> s_nLRMinDurationMilliseconds);
+    return RW_LOCK.readLockedLong (() -> s_nLRMinDurationMilliseconds);
   }
 
   public static void setLongRunningRequestWarnDurationMillis (@Nonnegative final long nMilliseconds)
   {
     ValueEnforcer.isGT0 (nMilliseconds, "Milliseconds");
-    RW_LOCK.writeLocked ( () -> s_nLRMinDurationMilliseconds = nMilliseconds);
+    RW_LOCK.writeLocked (() -> s_nLRMinDurationMilliseconds = nMilliseconds);
   }
 
   /**
-   * @return <code>true</code> if the check for parallel requests is enabled,
-   *         <code>false</code> if not.
+   * @return <code>true</code> if the check for parallel requests is enabled, <code>false</code> if
+   *         not.
    */
   public static boolean isParallelRunningRequestsCheckEnabled ()
   {
-    return RW_LOCK.readLockedBoolean ( () -> s_bPRCheckEnabled);
+    return RW_LOCK.readLockedBoolean (() -> s_bPRCheckEnabled);
   }
 
   public static void setParallelRunningRequestsCheckEnabled (final boolean bEnabled)
   {
-    RW_LOCK.writeLocked ( () -> s_bPRCheckEnabled = bEnabled);
+    RW_LOCK.writeLocked (() -> s_bPRCheckEnabled = bEnabled);
   }
 
   /**
-   * @return The minimum number of parallel requests that need to be exceeded,
-   *         before a "parallel requests" warning is emitted. Always &gt; 0.
+   * @return The minimum number of parallel requests that need to be exceeded, before a "parallel
+   *         requests" warning is emitted. Always &gt; 0.
    */
   @Nonnegative
   public static int getParallelRunningRequestBarrier ()
   {
-    return RW_LOCK.readLockedInt ( () -> s_nParallelRunningRequestBarrier);
+    return RW_LOCK.readLockedInt (() -> s_nParallelRunningRequestBarrier);
   }
 
   public static void setParallelRunningRequestBarrier (@Nonnegative final int nParallelRunningRequestBarrier)
   {
     ValueEnforcer.isGT0 (nParallelRunningRequestBarrier, "ParallelRunningRequestBarrier");
 
-    RW_LOCK.writeLocked ( () -> s_nParallelRunningRequestBarrier = nParallelRunningRequestBarrier);
+    RW_LOCK.writeLocked (() -> s_nParallelRunningRequestBarrier = nParallelRunningRequestBarrier);
   }
 }

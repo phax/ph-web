@@ -24,8 +24,8 @@ import com.helger.base.callback.ICallback;
 import com.helger.web.scope.IRequestWebScope;
 
 /**
- * Callback interface to be implemented to get notified on long running
- * requests. See {@link RequestTracker} for registration.
+ * Callback interface to be implemented to get notified on long running requests. See
+ * {@link RequestTracker} for registration.
  *
  * @author Philip Helger
  * @since 9.0.0

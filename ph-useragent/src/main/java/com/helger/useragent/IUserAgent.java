@@ -37,8 +37,8 @@ public interface IUserAgent
   String getAsString ();
 
   /**
-   * @return The information about the matching browser or <code>null</code> if
-   *         no known browser was detected.
+   * @return The information about the matching browser or <code>null</code> if no known browser was
+   *         detected.
    */
   @Nullable
   BrowserInfo getBrowserInfo ();
@@ -98,8 +98,7 @@ public interface IUserAgent
   BrowserInfo getInfoGeckoBased ();
 
   /**
-   * @return Information about WebKit based browsers in this user agent (e.g.
-   *         Chrome, Vivaldi etc.)
+   * @return Information about WebKit based browsers in this user agent (e.g. Chrome, Vivaldi etc.)
    */
   @NonNull
   BrowserInfo getInfoWebKitBased ();

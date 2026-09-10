@@ -32,7 +32,9 @@ public final class WebSpiderManagerTest
   @Test
   public void testAll ()
   {
-    for (final WebSpiderInfo aWSI : WebSpiderManager.getInstance ().getAllKnownSpiders ().getSorted (IHasID.getComparatorID ()))
+    for (final WebSpiderInfo aWSI : WebSpiderManager.getInstance ()
+                                                    .getAllKnownSpiders ()
+                                                    .getSorted (IHasID.getComparatorID ()))
     {
       assertNotNull (aWSI);
       assertNotNull (aWSI.getID ());

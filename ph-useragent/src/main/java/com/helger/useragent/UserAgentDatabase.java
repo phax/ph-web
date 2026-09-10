@@ -64,7 +64,7 @@ public final class UserAgentDatabase
    */
   public static void setUserAgentCallback (@Nullable final Consumer <? super IUserAgent> aCallback)
   {
-    RW_LOCK.writeLocked ( () -> s_aNewUserAgentCallback = aCallback);
+    RW_LOCK.writeLocked (() -> s_aNewUserAgentCallback = aCallback);
   }
 
   @Nullable
@@ -76,13 +76,13 @@ public final class UserAgentDatabase
     // Decrypt outside the lock
     final IUserAgent aUserAgent = UserAgentDecryptor.decryptUserAgentString (sUserAgent);
 
-    final boolean bAdded = RW_LOCK.writeLockedBoolean ( () -> UNIQUE_USER_AGENTS.add (sUserAgent));
+    final boolean bAdded = RW_LOCK.writeLockedBoolean (() -> UNIQUE_USER_AGENTS.add (sUserAgent));
     if (bAdded)
     {
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Found new UserAgent '" + sUserAgent + "'");
 
-      RW_LOCK.readLocked ( () -> {
+      RW_LOCK.readLocked (() -> {
         if (s_aNewUserAgentCallback != null)
           s_aNewUserAgentCallback.accept (aUserAgent);
       });

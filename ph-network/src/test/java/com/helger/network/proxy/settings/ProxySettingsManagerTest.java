@@ -55,7 +55,7 @@ public final class ProxySettingsManagerTest
     final IProxySettingsProvider aPSP = (sProtocol, sHost, nPort) -> new CommonsArrayList <> (a);
     ProxySettingsManager.registerProvider (aPSP);
     assertEquals (1, ProxySettingsManager.getAllProviders ().size ());
-    ProxySettingsManager.registerProvider ( (sProtocol, sHost, nPort) -> new CommonsArrayList <> (a));
+    ProxySettingsManager.registerProvider ((sProtocol, sHost, nPort) -> new CommonsArrayList <> (a));
     assertEquals (2, ProxySettingsManager.getAllProviders ().size ());
     assertTrue (ProxySettingsManager.unregisterProvider (aPSP).isChanged ());
     assertEquals (1, ProxySettingsManager.getAllProviders ().size ());

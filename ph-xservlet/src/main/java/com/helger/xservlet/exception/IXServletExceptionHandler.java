@@ -32,19 +32,16 @@ import com.helger.web.scope.IRequestWebScope;
 public interface IXServletExceptionHandler extends ICallback
 {
   /**
-   * Invoked upon an exception. This handler can stop the propagation of an
-   * exception e.g by creating a "clean" HTML response instead of showing the
-   * stack trace. In this case the unified response provided as a parameter must
-   * be filled.
+   * Invoked upon an exception. This handler can stop the propagation of an exception e.g by
+   * creating a "clean" HTML response instead of showing the stack trace. In this case the unified
+   * response provided as a parameter must be filled.
    * 
    * @param aRequestScope
-   *        Current request scope incl. http response object. Never
-   *        <code>null</code>.
+   *        Current request scope incl. http response object. Never <code>null</code>.
    * @param t
    *        The thrown exception. Never <code>null</code>.
-   * @return {@link EContinue#CONTINUE} if further exception handlers should be
-   *         invoked, {@link EContinue#BREAK} if the exception was finally
-   *         handled.
+   * @return {@link EContinue#CONTINUE} if further exception handlers should be invoked,
+   *         {@link EContinue#BREAK} if the exception was finally handled.
    */
   @NonNull
   EContinue onException (@NonNull IRequestWebScope aRequestScope, @NonNull Throwable t);

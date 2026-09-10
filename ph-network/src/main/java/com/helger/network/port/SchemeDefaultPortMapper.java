@@ -73,7 +73,7 @@ public final class SchemeDefaultPortMapper
     ValueEnforcer.notEmpty (sSchemeName, "SchemeName");
     ValueEnforcer.isTrue (NetworkPortHelper.isValidPort (nPort), "Invalid port provided");
 
-    RW_LOCK.writeLocked ( () -> {
+    RW_LOCK.writeLocked (() -> {
       if (MAP.containsKey (sSchemeName))
         throw new IllegalArgumentException ("A default port for scheme '" + sSchemeName + "' is already registered!");
       MAP.put (sSchemeName, Integer.valueOf (nPort));
@@ -84,7 +84,7 @@ public final class SchemeDefaultPortMapper
   {
     if (StringHelper.isNotEmpty (sSchemeName))
     {
-      final Integer aDefaultPort = RW_LOCK.readLockedGet ( () -> MAP.get (sSchemeName));
+      final Integer aDefaultPort = RW_LOCK.readLockedGet (() -> MAP.get (sSchemeName));
       if (aDefaultPort != null)
         return aDefaultPort.intValue ();
     }

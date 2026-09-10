@@ -75,8 +75,8 @@ public final class EmailAddressValidator
    *
    * @param sHostName
    *        The host name to check.
-   * @return <code>true</code> if an MX record was found, <code>false</code> if
-   *         not (or if an exception occurred)
+   * @return <code>true</code> if an MX record was found, <code>false</code> if not (or if an
+   *         exception occurred)
    */
   private static boolean _hasMXRecord (@NonNull final String sHostName)
   {
@@ -100,15 +100,13 @@ public final class EmailAddressValidator
   }
 
   /**
-   * Checks if a value is a valid e-mail address. Depending on the global value
-   * for the MX record check the check is performed incl. the MX record check or
-   * without.
+   * Checks if a value is a valid e-mail address. Depending on the global value for the MX record
+   * check the check is performed incl. the MX record check or without.
    *
    * @param sEmail
-   *        The value validation is being performed on. A <code>null</code>
-   *        value is considered invalid.
-   * @return <code>true</code> if the email address is valid, <code>false</code>
-   *         otherwise.
+   *        The value validation is being performed on. A <code>null</code> value is considered
+   *        invalid.
+   * @return <code>true</code> if the email address is valid, <code>false</code> otherwise.
    * @see #isPerformMXRecordCheck()
    * @see #setPerformMXRecordCheck(boolean)
    */
@@ -118,15 +116,13 @@ public final class EmailAddressValidator
   }
 
   /**
-   * Checks if a value is a valid e-mail address according to a complex regular
-   * expression. Additionally an MX record lookup is performed to see whether
-   * this host provides SMTP services.
+   * Checks if a value is a valid e-mail address according to a complex regular expression.
+   * Additionally an MX record lookup is performed to see whether this host provides SMTP services.
    *
    * @param sEmail
-   *        The value validation is being performed on. A <code>null</code>
-   *        value is considered invalid.
-   * @return <code>true</code> if the email address is valid, <code>false</code>
-   *         otherwise.
+   *        The value validation is being performed on. A <code>null</code> value is considered
+   *        invalid.
+   * @return <code>true</code> if the email address is valid, <code>false</code> otherwise.
    */
   public static boolean isValidWithMXCheck (@Nullable final String sEmail)
   {

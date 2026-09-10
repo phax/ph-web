@@ -63,14 +63,14 @@ public final class ProxySelectorProxySettingsManagerTest
   @Test
   public void testSimpleResolver ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   8080)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (new ProxySettings (
+                                                                                                                        Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv",
+                                                                                                                        8080)));
 
     // Will choose the proxy
-    final List <Proxy> aProxies = ProxySelector.getDefault ().select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
+    final List <Proxy> aProxies = ProxySelector.getDefault ()
+                                               .select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
     assertNotNull (aProxies);
     assertEquals (1, aProxies.size ());
     assertNotNull (aProxies.get (0));
@@ -82,12 +82,11 @@ public final class ProxySelectorProxySettingsManagerTest
   @Test
   public void testDifferentProtocol ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   "http".equals (sProtocol) ? 8080
-                                                                                                                             : 8443)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (new ProxySettings (
+                                                                                                                        Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv",
+                                                                                                                        "http".equals (sProtocol) ? 8080
+                                                                                                                                                  : 8443)));
 
     // Will choose the http port
     List <Proxy> aProxies = ProxySelector.getDefault ().select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
@@ -111,12 +110,11 @@ public final class ProxySelectorProxySettingsManagerTest
   @Test
   public void testDifferentHost ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (sHostName.contains (".orf.at") ? ProxySettings.createNoProxySettings ()
-                                                                                                               : new ProxySettings (Proxy.Type.HTTP,
-                                                                                                                                    "http://proxysrv",
-                                                                                                                                    8080)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (sHostName
+                                                                                                              .contains (".orf.at") ? ProxySettings.createNoProxySettings ()
+                                                                                                                                    : new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                                                         "http://proxysrv",
+                                                                                                                                                         8080)));
 
     // Will choose the http proxy
     List <Proxy> aProxies = ProxySelector.getDefault ().select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
@@ -138,16 +136,17 @@ public final class ProxySelectorProxySettingsManagerTest
   @Test
   public void testMultipleProxies ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol, sHostName, nPort) -> new CommonsArrayList <> (
-                                                                                                      new ProxySettings (Proxy.Type.HTTP,
-                                                                                                                         "http://proxysrv",
-                                                                                                                         8080),
-                                                                                                      new ProxySettings (Proxy.Type.HTTP,
-                                                                                                                         "http://proxysrv2",
-                                                                                                                         8080)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (new ProxySettings (
+                                                                                                                        Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv",
+                                                                                                                        8080),
+                                                                                                     new ProxySettings (Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv2",
+                                                                                                                        8080)));
 
     // Will choose the http proxy
-    final List <Proxy> aProxies = ProxySelector.getDefault ().select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
+    final List <Proxy> aProxies = ProxySelector.getDefault ()
+                                               .select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
     assertNotNull (aProxies);
     assertEquals (2, aProxies.size ());
     assertNotNull (aProxies.get (0));
@@ -164,19 +163,18 @@ public final class ProxySelectorProxySettingsManagerTest
   @Test
   public void testMultipleProviders ()
   {
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv",
-                                                                                                   8080)));
-    ProxySettingsManager.registerProvider ( (sProtocol,
-                                             sHostName,
-                                             nPort) -> new CommonsArrayList <> (new ProxySettings (Proxy.Type.HTTP,
-                                                                                                   "http://proxysrv2",
-                                                                                                   8080)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (new ProxySettings (
+                                                                                                                        Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv",
+                                                                                                                        8080)));
+    ProxySettingsManager.registerProvider ((sProtocol, sHostName, nPort) -> new CommonsArrayList <> (new ProxySettings (
+                                                                                                                        Proxy.Type.HTTP,
+                                                                                                                        "http://proxysrv2",
+                                                                                                                        8080)));
 
     // Will choose the http proxy
-    final List <Proxy> aProxies = ProxySelector.getDefault ().select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
+    final List <Proxy> aProxies = ProxySelector.getDefault ()
+                                               .select (URLHelper.getAsURI ("http://www.helger.com/blafoo"));
     assertNotNull (aProxies);
     assertEquals (2, aProxies.size ());
     assertNotNull (aProxies.get (0));

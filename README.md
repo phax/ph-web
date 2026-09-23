@@ -63,7 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.4.6 - work in progress
+v11.4.6 - 2026-09-23
 * `NaptrLookup.lookupResult` now only retries a lookup via TCP, if the UDP lookup ended in a transient failure (see `ENaptrLookupStatus.isRetryable`).
   Previously every non-successful UDP result - including the definitive `HOST_NOT_FOUND` and `TYPE_NOT_FOUND` - lead to a second lookup via TCP, which effectively doubled the runtime of every unresolvable lookup.
   Note: a truncated UDP response is already retried via TCP by dnsjava itself, inside `SimpleResolver`

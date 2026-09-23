@@ -167,7 +167,11 @@ public class NaptrLookup
       // Retries are handled internally by the ExtendedResolver
       aResolver.setRetries (m_nMaxRetries);
       if (m_aTimeout != null)
-        aResolver.setTimeout (m_aTimeout);
+      {
+        // Note: ExtendedResolver.setTimeout alone would only alter the timeout
+        // of the ExtendedResolver but not the one of the contained resolvers
+        ResolverHelper.setTimeout (aResolver, m_aTimeout);
+      }
 
       final Lookup aLookup = new Lookup (m_aDomainName, Type.NAPTR);
       aLookup.setResolver (aResolver);
@@ -187,8 +191,12 @@ public class NaptrLookup
         nLookupRuns++;
         aCondLogger.info (() -> "    Result of UDP lookup: " + aLookup.getErrorString ());
 
-        if (aLookup.getResult () == Lookup.SUCCESSFUL)
-          bCanTryAgain = false;
+        // Only a transient failure is worth a retry via TCP. All the definitive
+        // results (SUCCESSFUL, HOST_NOT_FOUND, TYPE_NOT_FOUND and UNRECOVERABLE)
+        // are not improved by asking the very same servers again via TCP.
+        // Note: a truncated UDP response is already retried via TCP by dnsjava
+        // itself, inside SimpleResolver
+        bCanTryAgain = ENaptrLookupStatus.fromDnsJavaResultCode (aLookup.getResult ()).isRetryable ();
       }
 
       if (bCanTryAgain && m_eLookupMode.isTCP ())

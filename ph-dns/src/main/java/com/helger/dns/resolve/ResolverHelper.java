@@ -18,6 +18,7 @@ package com.helger.dns.resolve;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
@@ -36,6 +37,18 @@ import com.helger.dns.config.DNSConfig;
 @Immutable
 public final class ResolverHelper
 {
+  /**
+   * The divisor to derive the timeout of a single resolver contained in an {@link ExtendedResolver}
+   * from the overall timeout of that {@link ExtendedResolver}. dnsjava requires the timeout of the
+   * {@link ExtendedResolver} to be larger than the timeout of the contained resolvers - if they are
+   * equal, the overall timeout is already reached when the first resolver times out, so that no
+   * second resolver and no retry is ever tried. The value matches the ratio of the dnsjava defaults
+   * {@link ExtendedResolver#DEFAULT_TIMEOUT} and {@link ExtendedResolver#DEFAULT_RESOLVER_TIMEOUT}.
+   *
+   * @since 11.4.6
+   */
+  public static final int SINGLE_RESOLVER_TIMEOUT_DIVISOR = 2;
+
   private ResolverHelper ()
   {}
 
@@ -45,9 +58,52 @@ public final class ResolverHelper
     aResolver.setTimeout (DNSConfig.getResolverTimeout ());
   }
 
+  /**
+   * Get the timeout to be used for a single resolver contained in an {@link ExtendedResolver}, based
+   * on the overall timeout of that {@link ExtendedResolver}.
+   *
+   * @param aOverallTimeout
+   *        The overall timeout of the {@link ExtendedResolver}. May not be <code>null</code>.
+   * @return The timeout to be used for each contained resolver. Never <code>null</code>.
+   * @since 11.4.6
+   */
+  @NonNull
+  public static Duration getSingleResolverTimeout (@NonNull final Duration aOverallTimeout)
+  {
+    ValueEnforcer.notNull (aOverallTimeout, "OverallTimeout");
+    return aOverallTimeout.dividedBy (SINGLE_RESOLVER_TIMEOUT_DIVISOR);
+  }
+
+  /**
+   * Set the overall timeout of the provided {@link ExtendedResolver} as well as the timeout of all
+   * the resolvers contained within. This method is needed, because
+   * {@link ExtendedResolver#setTimeout(Duration)} only alters the timeout of the
+   * {@link ExtendedResolver} itself and deliberately does not propagate it to the contained
+   * resolvers.
+   *
+   * @param aResolver
+   *        The extended resolver to set the timeout of. May not be <code>null</code>.
+   * @param aOverallTimeout
+   *        The overall timeout to be used. May not be <code>null</code>.
+   * @see #getSingleResolverTimeout(Duration)
+   * @since 11.4.6
+   */
+  public static void setTimeout (@NonNull final ExtendedResolver aResolver, @NonNull final Duration aOverallTimeout)
+  {
+    ValueEnforcer.notNull (aResolver, "Resolver");
+    ValueEnforcer.notNull (aOverallTimeout, "OverallTimeout");
+
+    final Duration aSingleTimeout = getSingleResolverTimeout (aOverallTimeout);
+    for (final Resolver aSingleResolver : aResolver.getResolvers ())
+      aSingleResolver.setTimeout (aSingleTimeout);
+    aResolver.setTimeout (aOverallTimeout);
+  }
+
   public static void defaultCustomizeExtendedResolver (@NonNull final ExtendedResolver aResolver)
   {
-    defaultCustomizeResolver (aResolver);
+    // Set the default query timeout on the ExtendedResolver AND on all the
+    // contained resolvers
+    setTimeout (aResolver, DNSConfig.getResolverTimeout ());
     // Set the default retries
     aResolver.setRetries (DNSConfig.getResolverRetryCount ());
   }
@@ -104,7 +160,8 @@ public final class ResolverHelper
         aResolvers.add (x);
     });
 
-    // This overrides the timeout of all contained resolvers
+    // Note: this constructor deliberately does NOT alter the timeout of the
+    // contained resolvers - that is done by the customization below
     final ExtendedResolver ret = new ExtendedResolver (aResolvers);
 
     // And now apply the default customization

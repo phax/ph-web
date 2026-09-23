@@ -63,6 +63,16 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.6 - work in progress
+* `NaptrLookup.lookupResult` now only retries a lookup via TCP, if the UDP lookup ended in a transient failure (see `ENaptrLookupStatus.isRetryable`).
+  Previously every non-successful UDP result - including the definitive `HOST_NOT_FOUND` and `TYPE_NOT_FOUND` - lead to a second lookup via TCP, which effectively doubled the runtime of every unresolvable lookup.
+  Note: a truncated UDP response is already retried via TCP by dnsjava itself, inside `SimpleResolver`
+* `NaptrLookup.lookupResult` now applies the configured timeout to the resolvers contained in the `ExtendedResolver` as well.
+  Previously only the timeout of the `ExtendedResolver` itself was altered, because `ExtendedResolver.setTimeout` deliberately does not propagate to the contained resolvers
+* `ResolverHelper.createExtendedResolver` now assigns a smaller timeout to each contained resolver than to the `ExtendedResolver` itself, as required by dnsjava.
+  Previously both used the same value, so that the overall timeout was already reached when the first contained resolver timed out - neither a second DNS server nor a retry was ever tried
+* Added new static methods `ResolverHelper.setTimeout (ExtendedResolver, Duration)` and `ResolverHelper.getSingleResolverTimeout (Duration)` as well as the new constant `ResolverHelper.SINGLE_RESOLVER_TIMEOUT_DIVISOR`
+
 v11.4.5 - 2026-09-04
 * `HttpClientFactory` now caches the system default trust store (JRE `cacerts` or `javax.net.ssl.trustStore`) in memory, instead of loading it for each created HTTP client with revocation checking enabled.
   The cache is automatically invalidated if the trust store source (path, type, password, file modification date or file size) changes

@@ -59,8 +59,8 @@ public final class ResolverHelper
   }
 
   /**
-   * Get the timeout to be used for a single resolver contained in an {@link ExtendedResolver}, based
-   * on the overall timeout of that {@link ExtendedResolver}.
+   * Get the timeout to be used for a single resolver contained in an {@link ExtendedResolver},
+   * based on the overall timeout of that {@link ExtendedResolver}.
    *
    * @param aOverallTimeout
    *        The overall timeout of the {@link ExtendedResolver}. May not be <code>null</code>.

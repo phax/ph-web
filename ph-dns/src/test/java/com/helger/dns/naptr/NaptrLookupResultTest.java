@@ -29,6 +29,7 @@ import org.xbill.DNS.NAPTRRecord;
 
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
+import com.helger.dns.dnssec.EDnsSecValidationStatus;
 
 /**
  * Test class for {@link NaptrLookupResult}.
@@ -129,5 +130,29 @@ public class NaptrLookupResultTest
     assertNotNull (NaptrLookupResult.success (new CommonsArrayList <> ()).toString ());
     assertNotNull (NaptrLookupResult.failure (ENaptrLookupStatus.TRY_AGAIN, "msg").toString ());
     assertNotNull (NaptrLookupResult.failure (ENaptrLookupStatus.TRY_AGAIN, null).toString ());
+  }
+
+  @Test
+  public void testDNSSECStatus ()
+  {
+    // Default for the legacy factory methods
+    assertSame (EDnsSecValidationStatus.NOT_VALIDATED,
+                NaptrLookupResult.success (new CommonsArrayList <> ()).getDnsSecStatus ());
+    assertSame (EDnsSecValidationStatus.NOT_VALIDATED,
+                NaptrLookupResult.failure (ENaptrLookupStatus.TRY_AGAIN, null).getDnsSecStatus ());
+
+    final NaptrLookupResult aSecure = NaptrLookupResult.success (new CommonsArrayList <> (),
+                                                                 EDnsSecValidationStatus.SECURE);
+    assertSame (EDnsSecValidationStatus.SECURE, aSecure.getDnsSecStatus ());
+    assertTrue (aSecure.isSuccess ());
+    assertFalse (aSecure.equals (NaptrLookupResult.success (new CommonsArrayList <> ())));
+
+    final NaptrLookupResult aBogus = NaptrLookupResult.failure (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED,
+                                                                "bogus",
+                                                                EDnsSecValidationStatus.BOGUS);
+    assertSame (EDnsSecValidationStatus.BOGUS, aBogus.getDnsSecStatus ());
+    assertTrue (aBogus.isTechnicalFailure ());
+    assertFalse (aBogus.isRetryable ());
+    assertFalse (aBogus.isFunctionalNotFound ());
   }
 }

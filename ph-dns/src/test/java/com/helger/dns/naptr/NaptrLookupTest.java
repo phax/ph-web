@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -389,5 +390,31 @@ public class NaptrLookupTest
     assertFalse (aResult.isSuccess ());
     assertTrue (aResult.isTechnicalFailure ());
     assertFalse (aResult.isFunctionalNotFound ());
+  }
+
+  @Test
+  public void testBuilderDNSSEC () throws TextParseException
+  {
+    assertNotNull (NaptrLookup.builder ().domainName ("example.org").dnssecValidation (true).build ());
+    // null trust anchors fall back to the default
+    assertNotNull (NaptrLookup.builder ()
+                              .domainName ("example.org")
+                              .dnssecValidation (true)
+                              .dnssecTrustAnchors (null)
+                              .build ());
+  }
+
+  @Test
+  public void testDNSSECInvalidTrustAnchors () throws TextParseException
+  {
+    // Fails before any DNS query is sent
+    final NaptrLookupResult aResult = NaptrLookup.builder ()
+                                                 .domainName ("example.org")
+                                                 .dnssecValidation (true)
+                                                 .dnssecTrustAnchors ("example.org. IN A 192.0.2.1")
+                                                 .lookupResult ();
+    assertSame (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED, aResult.getStatus ());
+    assertTrue (aResult.isTechnicalFailure ());
+    assertNotNull (aResult.getErrorMessage ());
   }
 }

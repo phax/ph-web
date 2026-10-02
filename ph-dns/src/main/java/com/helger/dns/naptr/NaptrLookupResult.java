@@ -28,6 +28,7 @@ import com.helger.base.hashcode.HashCodeGenerator;
 import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
+import com.helger.dns.dnssec.EDnsSecValidationStatus;
 
 /**
  * The outcome of a {@link NaptrLookup#lookupResult()} call: a status code, the (possibly empty)
@@ -44,17 +45,41 @@ public class NaptrLookupResult
   private final ENaptrLookupStatus m_eStatus;
   private final ICommonsList <NAPTRRecord> m_aRecords;
   private final String m_sErrorMessage;
+  private final EDnsSecValidationStatus m_eDnsSecStatus;
 
   public NaptrLookupResult (@NonNull final ENaptrLookupStatus eStatus,
                             @NonNull final ICommonsList <NAPTRRecord> aRecords,
                             @Nullable final String sErrorMessage)
   {
+    this (eStatus, aRecords, sErrorMessage, EDnsSecValidationStatus.NOT_VALIDATED);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param eStatus
+   *        The lookup status. May not be <code>null</code>.
+   * @param aRecords
+   *        The NAPTR records. May not be <code>null</code>.
+   * @param sErrorMessage
+   *        The error message. May be <code>null</code>.
+   * @param eDnsSecStatus
+   *        The DNSSEC validation status. May not be <code>null</code>.
+   * @since 11.4.7
+   */
+  public NaptrLookupResult (@NonNull final ENaptrLookupStatus eStatus,
+                            @NonNull final ICommonsList <NAPTRRecord> aRecords,
+                            @Nullable final String sErrorMessage,
+                            @NonNull final EDnsSecValidationStatus eDnsSecStatus)
+  {
     ValueEnforcer.notNull (eStatus, "Status");
     ValueEnforcer.notNull (aRecords, "Records");
+    ValueEnforcer.notNull (eDnsSecStatus, "DNSSECStatus");
 
     m_eStatus = eStatus;
     m_aRecords = aRecords;
     m_sErrorMessage = sErrorMessage;
+    m_eDnsSecStatus = eDnsSecStatus;
   }
 
   /**
@@ -84,6 +109,17 @@ public class NaptrLookupResult
   public String getErrorMessage ()
   {
     return m_sErrorMessage;
+  }
+
+  /**
+   * @return The DNSSEC validation status. {@link EDnsSecValidationStatus#NOT_VALIDATED} if DNSSEC
+   *         validation was not enabled. Never <code>null</code>.
+   * @since 11.4.7
+   */
+  @NonNull
+  public EDnsSecValidationStatus getDnsSecStatus ()
+  {
+    return m_eDnsSecStatus;
   }
 
   /**
@@ -128,13 +164,18 @@ public class NaptrLookupResult
     final NaptrLookupResult rhs = (NaptrLookupResult) o;
     return m_eStatus.equals (rhs.m_eStatus) &&
            m_aRecords.equals (rhs.m_aRecords) &&
-           EqualsHelper.equals (m_sErrorMessage, rhs.m_sErrorMessage);
+           EqualsHelper.equals (m_sErrorMessage, rhs.m_sErrorMessage) &&
+           m_eDnsSecStatus.equals (rhs.m_eDnsSecStatus);
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_eStatus).append (m_aRecords).append (m_sErrorMessage).getHashCode ();
+    return new HashCodeGenerator (this).append (m_eStatus)
+                                       .append (m_aRecords)
+                                       .append (m_sErrorMessage)
+                                       .append (m_eDnsSecStatus)
+                                       .getHashCode ();
   }
 
   @Override
@@ -143,6 +184,7 @@ public class NaptrLookupResult
     return new ToStringGenerator (this).append ("Status", m_eStatus)
                                        .append ("Records", m_aRecords)
                                        .appendIfNotNull ("ErrorMessage", m_sErrorMessage)
+                                       .append ("DnsSecStatus", m_eDnsSecStatus)
                                        .getToString ();
   }
 
@@ -157,7 +199,25 @@ public class NaptrLookupResult
   @NonNull
   public static NaptrLookupResult success (@NonNull final ICommonsList <NAPTRRecord> aRecords)
   {
-    return new NaptrLookupResult (ENaptrLookupStatus.SUCCESSFUL, aRecords, null);
+    return success (aRecords, EDnsSecValidationStatus.NOT_VALIDATED);
+  }
+
+  /**
+   * Build a successful result.
+   *
+   * @param aRecords
+   *        The NAPTR records returned by the lookup. May not be <code>null</code>, but may be
+   *        empty.
+   * @param eDNSSECStatus
+   *        The DNSSEC validation status. May not be <code>null</code>.
+   * @return A {@link NaptrLookupResult} with status {@link ENaptrLookupStatus#SUCCESSFUL}.
+   * @since 11.4.7
+   */
+  @NonNull
+  public static NaptrLookupResult success (@NonNull final ICommonsList <NAPTRRecord> aRecords,
+                                           @NonNull final EDnsSecValidationStatus eDNSSECStatus)
+  {
+    return new NaptrLookupResult (ENaptrLookupStatus.SUCCESSFUL, aRecords, null, eDNSSECStatus);
   }
 
   /**
@@ -174,8 +234,29 @@ public class NaptrLookupResult
   public static NaptrLookupResult failure (@NonNull final ENaptrLookupStatus eStatus,
                                            @Nullable final String sErrorMessage)
   {
+    return failure (eStatus, sErrorMessage, EDnsSecValidationStatus.NOT_VALIDATED);
+  }
+
+  /**
+   * Build a failure result.
+   *
+   * @param eStatus
+   *        The non-success status. May not be <code>null</code> or
+   *        {@link ENaptrLookupStatus#SUCCESSFUL}.
+   * @param sErrorMessage
+   *        The error message. May be <code>null</code>.
+   * @param eDnsSecStatus
+   *        The DNSSEC validation status. May not be <code>null</code>.
+   * @return A {@link NaptrLookupResult} with the given status and an empty records list.
+   * @since 11.4.7
+   */
+  @NonNull
+  public static NaptrLookupResult failure (@NonNull final ENaptrLookupStatus eStatus,
+                                           @Nullable final String sErrorMessage,
+                                           @NonNull final EDnsSecValidationStatus eDnsSecStatus)
+  {
     ValueEnforcer.notNull (eStatus, "Status");
     ValueEnforcer.isFalse (eStatus.isSuccess (), "Status SUCCESSFUL is not allowed for failure ()");
-    return new NaptrLookupResult (eStatus, new CommonsArrayList <> (), sErrorMessage);
+    return new NaptrLookupResult (eStatus, new CommonsArrayList <> (), sErrorMessage, eDnsSecStatus);
   }
 }

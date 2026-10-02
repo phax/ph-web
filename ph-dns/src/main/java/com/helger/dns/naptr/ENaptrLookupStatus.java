@@ -25,7 +25,8 @@ import org.xbill.DNS.Lookup;
  * Outcome of a DNS NAPTR lookup. The values mirror the result codes of dnsjava's
  * {@link org.xbill.DNS.Lookup} but expose semantic groupings via convenience predicates so that
  * callers can distinguish a missing DNS entry ("addressee is not registered") from a technical DNS
- * problem ("DNS infrastructure is currently unreachable").
+ * problem ("DNS infrastructure is currently unreachable"). Additionally
+ * {@link #DNSSEC_VALIDATION_FAILED} is used if DNSSEC validation was requested but failed.
  *
  * @author Philip Helger
  * @since 11.4.0
@@ -44,7 +45,21 @@ public enum ENaptrLookupStatus
   /** The host does not exist (NXDOMAIN). The addressee is not registered in DNS. */
   HOST_NOT_FOUND (Lookup.HOST_NOT_FOUND),
   /** The host exists, but no NAPTR records are associated with it (NODATA). */
-  TYPE_NOT_FOUND (Lookup.TYPE_NOT_FOUND);
+  TYPE_NOT_FOUND (Lookup.TYPE_NOT_FOUND),
+  /**
+   * DNSSEC validation was requested, but the response was not validated as secure (bogus or
+   * unsigned). This has no dnsjava equivalent. Repeating the lookup is unlikely to help.
+   *
+   * @since 11.4.7
+   */
+  DNSSEC_VALIDATION_FAILED (ENaptrLookupStatus.NO_DNSJAVA_RESULT_CODE);
+
+  /**
+   * The pseudo dnsjava result code for statuses that have no dnsjava equivalent.
+   *
+   * @since 11.4.7
+   */
+  public static final int NO_DNSJAVA_RESULT_CODE = -1;
 
   private static final Logger LOGGER = LoggerFactory.getLogger (ENaptrLookupStatus.class);
   private final int m_nDnsJavaCode;
@@ -55,7 +70,8 @@ public enum ENaptrLookupStatus
   }
 
   /**
-   * @return The raw dnsjava result code this status maps to. See {@link org.xbill.DNS.Lookup}.
+   * @return The raw dnsjava result code this status maps to. See {@link org.xbill.DNS.Lookup}. For
+   *         {@link #DNSSEC_VALIDATION_FAILED} this is {@link #NO_DNSJAVA_RESULT_CODE}.
    */
   public int getDnsJavaResultCode ()
   {
@@ -81,14 +97,24 @@ public enum ENaptrLookupStatus
   }
 
   /**
-   * @return <code>true</code> for {@link #TRY_AGAIN} or {@link #UNRECOVERABLE}. These indicate a
-   *         technical DNS infrastructure problem rather than the absence of a NAPTR record. The
-   *         caller should not interpret this as "addressee not registered".
+   * @return <code>true</code> for {@link #TRY_AGAIN}, {@link #UNRECOVERABLE} or
+   *         {@link #DNSSEC_VALIDATION_FAILED}. These indicate a technical DNS infrastructure
+   *         problem rather than the absence of a NAPTR record. The caller should not interpret this
+   *         as "addressee not registered".
    * @see #isRetryable()
    */
   public boolean isTechnicalFailure ()
   {
-    return this == TRY_AGAIN || this == UNRECOVERABLE;
+    return this == TRY_AGAIN || this == UNRECOVERABLE || this == DNSSEC_VALIDATION_FAILED;
+  }
+
+  /**
+   * @return <code>true</code> only for {@link #DNSSEC_VALIDATION_FAILED}.
+   * @since 11.4.7
+   */
+  public boolean isDNSSECValidationFailed ()
+  {
+    return this == DNSSEC_VALIDATION_FAILED;
   }
 
   /**
@@ -114,7 +140,7 @@ public enum ENaptrLookupStatus
   public static ENaptrLookupStatus fromDnsJavaResultCode (final int nCode)
   {
     for (final ENaptrLookupStatus e : values ())
-      if (e.m_nDnsJavaCode == nCode)
+      if (e.m_nDnsJavaCode == nCode && e.m_nDnsJavaCode != NO_DNSJAVA_RESULT_CODE)
         return e;
     LOGGER.warn ("The DNSJava result code " + nCode + " is unknown and is mapped to UNRECOVERABLE");
     return UNRECOVERABLE;

@@ -63,6 +63,13 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.7 - work in progress
+* Added optional DNSSEC validation for NAPTR lookups via `NaptrLookupBuilder.dnssecValidation (boolean)` (disabled by default).
+  If enabled, the chain of trust is validated locally with dnsjava's `ValidatingResolver`, starting at the IANA root trust anchors (KSK-2017 and KSK-2024), and every response that is not validated as secure results in the new status `ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED`.
+  Custom trust anchors can be provided via `NaptrLookupBuilder.dnssecTrustAnchors (String)`
+* Added `NaptrLookupResult.getDNSSECStatus ()` with the new enum `EDNSSECValidationStatus`
+* Added the new package `com.helger.dns.dnssec` with `DNSSECHelper` and `DNSSECStatusRecordingResolver`
+
 v11.4.6 - 2026-09-23
 * `NaptrLookup.lookupResult` now only retries a lookup via TCP, if the UDP lookup ended in a transient failure (see `ENaptrLookupStatus.isRetryable`).
   Previously every non-successful UDP result - including the definitive `HOST_NOT_FOUND` and `TYPE_NOT_FOUND` - lead to a second lookup via TCP, which effectively doubled the runtime of every unresolvable lookup.

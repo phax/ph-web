@@ -87,14 +87,14 @@ public class ENaptrLookupStatusTest
   }
 
   @Test
-  public void testDNSSECValidationFailed ()
+  public void testDnsSecValidationFailed ()
   {
     final ENaptrLookupStatus e = ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED;
     assertFalse (e.isSuccess ());
     assertFalse (e.isFunctionalNotFound ());
     assertTrue (e.isTechnicalFailure ());
     assertFalse (e.isRetryable ());
-    assertTrue (e.isDNSSECValidationFailed ());
+    assertTrue (e.isDnsSecValidationFailed ());
     assertEquals (ENaptrLookupStatus.NO_DNSJAVA_RESULT_CODE, e.getDnsJavaResultCode ());
     // Must never be returned for a dnsjava result code
     assertSame (ENaptrLookupStatus.UNRECOVERABLE,

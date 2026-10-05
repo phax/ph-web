@@ -74,7 +74,7 @@ public class NaptrLookupResult
   {
     ValueEnforcer.notNull (eStatus, "Status");
     ValueEnforcer.notNull (aRecords, "Records");
-    ValueEnforcer.notNull (eDnsSecStatus, "DNSSECStatus");
+    ValueEnforcer.notNull (eDnsSecStatus, "DnsSecStatus");
 
     m_eStatus = eStatus;
     m_aRecords = aRecords;
@@ -208,16 +208,16 @@ public class NaptrLookupResult
    * @param aRecords
    *        The NAPTR records returned by the lookup. May not be <code>null</code>, but may be
    *        empty.
-   * @param eDNSSECStatus
+   * @param eDnsSecStatus
    *        The DNSSEC validation status. May not be <code>null</code>.
    * @return A {@link NaptrLookupResult} with status {@link ENaptrLookupStatus#SUCCESSFUL}.
    * @since 11.4.7
    */
   @NonNull
   public static NaptrLookupResult success (@NonNull final ICommonsList <NAPTRRecord> aRecords,
-                                           @NonNull final EDnsSecValidationStatus eDNSSECStatus)
+                                           @NonNull final EDnsSecValidationStatus eDnsSecStatus)
   {
-    return new NaptrLookupResult (ENaptrLookupStatus.SUCCESSFUL, aRecords, null, eDNSSECStatus);
+    return new NaptrLookupResult (ENaptrLookupStatus.SUCCESSFUL, aRecords, null, eDnsSecStatus);
   }
 
   /**

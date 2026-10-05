@@ -112,7 +112,7 @@ public enum ENaptrLookupStatus
    * @return <code>true</code> only for {@link #DNSSEC_VALIDATION_FAILED}.
    * @since 11.4.7
    */
-  public boolean isDNSSECValidationFailed ()
+  public boolean isDnsSecValidationFailed ()
   {
     return this == DNSSEC_VALIDATION_FAILED;
   }

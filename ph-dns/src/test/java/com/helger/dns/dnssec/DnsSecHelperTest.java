@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import org.junit.Test;
 import org.xbill.DNS.SimpleResolver;
@@ -70,6 +71,48 @@ public final class DnsSecHelperTest
       fail ();
     }
     catch (final IOException ex)
+    {
+      // expected
+    }
+  }
+
+  @Test
+  public void testInvalidKeyCacheMaxTtl () throws IOException
+  {
+    try
+    {
+      DnsSecHelper.createValidatingResolver (new SimpleResolver (),
+                                             DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS,
+                                             Duration.ofMillis (500));
+      fail ();
+    }
+    catch (final IllegalArgumentException ex)
+    {
+      // expected
+    }
+  }
+
+  @Test
+  public void testRecordingResolverIsReadOnly () throws IOException
+  {
+    final DnsSecStatusRecordingResolver aResolver = new DnsSecStatusRecordingResolver (DnsSecHelper.createValidatingResolver (new SimpleResolver (),
+                                                                                                                              DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS));
+    assertEquals (EDnsSecValidationStatus.NOT_VALIDATED, aResolver.getValidationStatus ());
+    try
+    {
+      aResolver.setTCP (true);
+      fail ();
+    }
+    catch (final UnsupportedOperationException ex)
+    {
+      // expected
+    }
+    try
+    {
+      aResolver.setTimeout (Duration.ofSeconds (1));
+      fail ();
+    }
+    catch (final UnsupportedOperationException ex)
     {
       // expected
     }

@@ -393,25 +393,25 @@ public class NaptrLookupTest
   }
 
   @Test
-  public void testBuilderDNSSEC () throws TextParseException
+  public void testBuilderDnsSec () throws TextParseException
   {
-    assertNotNull (NaptrLookup.builder ().domainName ("example.org").dnssecValidation (true).build ());
+    assertNotNull (NaptrLookup.builder ().domainName ("example.org").dnsSecValidation (true).build ());
     // null trust anchors fall back to the default
     assertNotNull (NaptrLookup.builder ()
                               .domainName ("example.org")
-                              .dnssecValidation (true)
-                              .dnssecTrustAnchors (null)
+                              .dnsSecValidation (true)
+                              .dnsSecTrustAnchors (null)
                               .build ());
   }
 
   @Test
-  public void testDNSSECInvalidTrustAnchors () throws TextParseException
+  public void testDnsSecInvalidTrustAnchors () throws TextParseException
   {
     // Fails before any DNS query is sent
     final NaptrLookupResult aResult = NaptrLookup.builder ()
                                                  .domainName ("example.org")
-                                                 .dnssecValidation (true)
-                                                 .dnssecTrustAnchors ("example.org. IN A 192.0.2.1")
+                                                 .dnsSecValidation (true)
+                                                 .dnsSecTrustAnchors ("example.org. IN A 192.0.2.1")
                                                  .lookupResult ();
     assertSame (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED, aResult.getStatus ());
     assertTrue (aResult.isTechnicalFailure ());

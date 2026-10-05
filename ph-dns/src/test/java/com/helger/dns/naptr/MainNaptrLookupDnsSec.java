@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xbill.DNS.Name;
 
+import com.helger.base.timing.StopWatch;
+import com.helger.dns.config.DNSConfig;
+
 /**
  * Manual test for DNSSEC validating NAPTR lookups. Requires network access - therefore not a unit
  * test.
@@ -35,13 +38,18 @@ public final class MainNaptrLookupDnsSec
     // Signed zone without NAPTR records - expect TYPE_NOT_FOUND / SECURE
     // Unsigned zone - expect DNSSEC_VALIDATION_FAILED / INSECURE
     // Deliberately broken signatures - expect DNSSEC_VALIDATION_FAILED / BOGUS
-    for (final String sDomain : new String [] { "example.com", "helger.com", "dnssec-failed.org" })
-    {
-      final NaptrLookupResult aResult = NaptrLookup.builder ()
-                                                   .domainName (Name.fromString (sDomain, Name.root))
-                                                   .dnssecValidation (true)
-                                                   .lookupResult ();
-      LOGGER.info (sDomain + ": " + aResult);
-    }
+    // The second round reuses the cached validating resolver and should therefore be a lot faster
+    for (int nRound = 0; nRound < 2; ++nRound)
+      for (final String sDomain : new String [] { "example.com", "helger.com", "dnssec-failed.org" })
+      {
+        final StopWatch aSW = StopWatch.createdStarted ();
+        final NaptrLookupResult aResult = NaptrLookup.builder ()
+                                                     .domainName (Name.fromString (sDomain, Name.root))
+                                                     // The DNS server must forward the DNSSEC records
+                                                     .customDNSServer (DNSConfig.DNS_CLOUDFLARE_1)
+                                                     .dnsSecValidation (true)
+                                                     .lookupResult ();
+        LOGGER.info ("[" + nRound + "] " + sDomain + " (" + aSW.stopAndGetMillis () + " ms): " + aResult);
+      }
   }
 }

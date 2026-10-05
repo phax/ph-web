@@ -133,7 +133,7 @@ public class NaptrLookupResultTest
   }
 
   @Test
-  public void testDNSSECStatus ()
+  public void testDnsSecStatus ()
   {
     // Default for the legacy factory methods
     assertSame (EDnsSecValidationStatus.NOT_VALIDATED,

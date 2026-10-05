@@ -47,7 +47,10 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.dns.dnssec.DnsSecHelper;
 import com.helger.dns.dnssec.DnsSecStatusRecordingResolver;
+import com.helger.dns.dnssec.DnsSecValidatingResolverCache;
+import com.helger.dns.dnssec.DnsSecValidatingResolverKey;
 import com.helger.dns.dnssec.EDnsSecValidationStatus;
+import com.helger.dns.dnssec.IDnsSecValidatingResolverCache;
 import com.helger.dns.resolve.ResolverHelper;
 
 /**
@@ -98,8 +101,10 @@ public class NaptrLookup
   private final Duration m_aExecutionDurationWarn;
   private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers;
   private final boolean m_bDebugMode;
-  private final boolean m_bDNSSECValidation;
-  private final String m_sDNSSECTrustAnchors;
+  private final boolean m_bDnsSecValidation;
+  private final String m_sDnsSecTrustAnchors;
+  private final Duration m_aDnsSecKeyCacheMaxTtl;
+  private final IDnsSecValidatingResolverCache m_aDnsSecResolverCache;
 
   public NaptrLookup (@NonNull final Name aDomainName,
                       @Nullable final ICommonsList <InetAddress> aCustomDNSServers,
@@ -119,7 +124,9 @@ public class NaptrLookup
           aExecutionTimeExceededHandlers,
           bDebugMode,
           false,
-          DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS);
+          DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS,
+          DnsSecHelper.DEFAULT_KEY_CACHE_MAX_TTL,
+          null);
   }
 
   /**
@@ -142,11 +149,17 @@ public class NaptrLookup
    *        <code>null</code>.
    * @param bDebugMode
    *        <code>true</code> to enable debug logging.
-   * @param bDNSSECValidation
+   * @param bDnsSecValidation
    *        <code>true</code> to require a DNSSEC validated (secure) response.
-   * @param sDNSSECTrustAnchors
+   * @param sDnsSecTrustAnchors
    *        The DNSSEC trust anchors in DNS master file format. May neither be <code>null</code> nor
    *        empty.
+   * @param aDnsSecKeyCacheMaxTtl
+   *        The maximum time to cache validated DNSSEC keys. May not be <code>null</code>.
+   * @param aDnsSecResolverCache
+   *        The cache for the DNSSEC validating resolvers. May be <code>null</code> to use the
+   *        global default from {@link DnsSecValidatingResolverCache#getDefaultInstance()} at the
+   *        time of the lookup.
    * @since 11.4.7
    */
   public NaptrLookup (@NonNull final Name aDomainName,
@@ -157,13 +170,16 @@ public class NaptrLookup
                       @Nullable final Duration aExecutionDurationWarn,
                       @Nullable final CallbackList <INaptrLookupTimeExceededCallback> aExecutionTimeExceededHandlers,
                       final boolean bDebugMode,
-                      final boolean bDNSSECValidation,
-                      @NonNull @Nonempty final String sDNSSECTrustAnchors)
+                      final boolean bDnsSecValidation,
+                      @NonNull @Nonempty final String sDnsSecTrustAnchors,
+                      @NonNull final Duration aDnsSecKeyCacheMaxTtl,
+                      @Nullable final IDnsSecValidatingResolverCache aDnsSecResolverCache)
   {
     ValueEnforcer.notNull (aDomainName, "DomainName");
     ValueEnforcer.isGE0 (nMaxRetries, "MaxRetries");
     ValueEnforcer.notNull (eLookupMode, "LookupMode");
-    ValueEnforcer.notEmpty (sDNSSECTrustAnchors, "DNSSECTrustAnchors");
+    ValueEnforcer.notEmpty (sDnsSecTrustAnchors, "DnsSecTrustAnchors");
+    ValueEnforcer.notNull (aDnsSecKeyCacheMaxTtl, "DnsSecKeyCacheMaxTtl");
 
     m_aDomainName = aDomainName;
     m_aCustomDNSServers = new CommonsArrayList <> (aCustomDNSServers);
@@ -173,8 +189,25 @@ public class NaptrLookup
     m_aExecutionDurationWarn = aExecutionDurationWarn;
     m_aExecutionTimeExceededHandlers = new CallbackList <> (aExecutionTimeExceededHandlers);
     m_bDebugMode = bDebugMode;
-    m_bDNSSECValidation = bDNSSECValidation;
-    m_sDNSSECTrustAnchors = sDNSSECTrustAnchors;
+    m_bDnsSecValidation = bDnsSecValidation;
+    m_sDnsSecTrustAnchors = sDnsSecTrustAnchors;
+    m_aDnsSecKeyCacheMaxTtl = aDnsSecKeyCacheMaxTtl;
+    m_aDnsSecResolverCache = aDnsSecResolverCache;
+  }
+
+  @NonNull
+  private DnsSecStatusRecordingResolver _getDnsSecResolver (final boolean bTcp) throws IOException
+  {
+    final IDnsSecValidatingResolverCache aCache = m_aDnsSecResolverCache != null ? m_aDnsSecResolverCache
+                                                                                : DnsSecValidatingResolverCache.getDefaultInstance ();
+    final DnsSecValidatingResolverKey aKey = new DnsSecValidatingResolverKey (m_aCustomDNSServers,
+                                                                              m_nMaxRetries,
+                                                                              m_aTimeout,
+                                                                              bTcp,
+                                                                              m_sDnsSecTrustAnchors,
+                                                                              m_aDnsSecKeyCacheMaxTtl);
+    // One recording resolver per lookup, around the shared validating resolver
+    return new DnsSecStatusRecordingResolver (aCache.getValidatingResolver (aKey));
   }
 
   /**
@@ -195,7 +228,9 @@ public class NaptrLookup
   /**
    * Perform the DNS lookup based on the parameters provided in the constructor.<br>
    * If DNSSEC validation is enabled, the DNSSEC chain of trust is validated locally, starting at
-   * the configured trust anchors, and the shared dnsjava cache is not used. Every response that is
+   * the configured trust anchors, and the shared dnsjava cache is not used. The validating
+   * resolvers, including the validated keys, are reused via an
+   * {@link IDnsSecValidatingResolverCache}. Every response that is
    * not validated as secure (bogus or unsigned) leads to
    * {@link ENaptrLookupStatus#DNSSEC_VALIDATION_FAILED}. This also applies to "not found"
    * responses.
@@ -217,7 +252,7 @@ public class NaptrLookup
                             (m_nMaxRetries > 0 ? " with " + m_nMaxRetries + " retries" : "") +
                             " using network mode " +
                             m_eLookupMode +
-                            (m_bDNSSECValidation ? " with DNSSEC validation" : "") +
+                            (m_bDnsSecValidation ? " with DNSSEC validation" : "") +
                             (m_aCustomDNSServers.isNotEmpty () ? " and the custom DNS server(s) " +
                                                                  StringImplode.imploder ()
                                                                               .separator (", ")
@@ -228,39 +263,33 @@ public class NaptrLookup
     final StopWatch aSW = StopWatch.createdStarted ();
     try
     {
-      // Use the default (static) cache that is used by default
-      final ExtendedResolver aResolver = ResolverHelper.createExtendedResolver (m_aCustomDNSServers);
-
-      // Retries are handled internally by the ExtendedResolver
-      aResolver.setRetries (m_nMaxRetries);
-      if (m_aTimeout != null)
-      {
-        // Note: ExtendedResolver.setTimeout alone would only alter the timeout
-        // of the ExtendedResolver but not the one of the contained resolvers
-        ResolverHelper.setTimeout (aResolver, m_aTimeout);
-      }
-
       final Lookup aLookup = new Lookup (m_aDomainName, Type.NAPTR);
-      DnsSecStatusRecordingResolver aDNSSECResolver = null;
-      if (m_bDNSSECValidation)
+
+      // Only used without DNSSEC validation
+      ExtendedResolver aResolver = null;
+      // Only used with DNSSEC validation
+      DnsSecStatusRecordingResolver aDnsSecResolver = null;
+      if (m_bDnsSecValidation)
       {
-        try
-        {
-          aDNSSECResolver = new DnsSecStatusRecordingResolver (DnsSecHelper.createValidatingResolver (aResolver,
-                                                                                                    m_sDNSSECTrustAnchors));
-        }
-        catch (final IOException ex)
-        {
-          LOGGER.error ("Failed to load the DNSSEC trust anchors: " + ex.getMessage ());
-          return NaptrLookupResult.failure (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED,
-                                            "Failed to load the DNSSEC trust anchors: " + ex.getMessage ());
-        }
-        aLookup.setResolver (aDNSSECResolver);
-        // Use a temporary cache, as the shared cache may contain records that were not validated
+        // Use a temporary cache, as the shared cache may contain records that were not validated.
+        // Additionally a cache hit would not pass the resolver and could therefore not be validated
         aLookup.setCache (null);
       }
       else
+      {
+        // Use the default (static) cache that is used by default
+        aResolver = ResolverHelper.createExtendedResolver (m_aCustomDNSServers);
+
+        // Retries are handled internally by the ExtendedResolver
+        aResolver.setRetries (m_nMaxRetries);
+        if (m_aTimeout != null)
+        {
+          // Note: ExtendedResolver.setTimeout alone would only alter the timeout
+          // of the ExtendedResolver but not the one of the contained resolvers
+          ResolverHelper.setTimeout (aResolver, m_aTimeout);
+        }
         aLookup.setResolver (aResolver);
+      }
 
       int nLookupRuns = 0;
       boolean bCanTryAgain = true;
@@ -269,6 +298,12 @@ public class NaptrLookup
       if (m_eLookupMode.isUDP ())
       {
         aCondLogger.info (() -> "  Trying UDP for NAPTR lookup");
+
+        if (m_bDnsSecValidation)
+        {
+          aDnsSecResolver = _getDnsSecResolver (false);
+          aLookup.setResolver (aDnsSecResolver);
+        }
 
         // By default try UDP
         // Stumbled upon an issue, where UDP datagram size was too small for MTU
@@ -285,7 +320,7 @@ public class NaptrLookup
         bCanTryAgain = ENaptrLookupStatus.fromDnsJavaResultCode (aLookup.getResult ()).isRetryable ();
 
         // A bogus response is reported as SERVFAIL - asking again via TCP does not help
-        if (aDNSSECResolver != null && aDNSSECResolver.getValidationStatus ().isBogus ())
+        if (aDnsSecResolver != null && aDnsSecResolver.getValidationStatus ().isBogus ())
           bCanTryAgain = false;
       }
 
@@ -297,29 +332,34 @@ public class NaptrLookup
                                 " unsuccessful UDP lookup(s)");
 
         // Retry with TCP instead of UDP
-        aResolver.setTCP (true);
-        if (aDNSSECResolver != null)
-          aDNSSECResolver.reset ();
+        if (m_bDnsSecValidation)
+        {
+          // The shared validating resolver must not be modified - use the TCP one instead
+          aDnsSecResolver = _getDnsSecResolver (true);
+          aLookup.setResolver (aDnsSecResolver);
+        }
+        else
+          aResolver.setTCP (true);
         aRecords = aLookup.run ();
         nLookupRuns++;
         aCondLogger.info (() -> "    Result of TCP lookup: " + aLookup.getErrorString ());
       }
 
-      final EDnsSecValidationStatus eDNSSECStatus = aDNSSECResolver == null ? EDnsSecValidationStatus.NOT_VALIDATED
-                                                                            : aDNSSECResolver.getValidationStatus ();
+      final EDnsSecValidationStatus eDnsSecStatus = aDnsSecResolver == null ? EDnsSecValidationStatus.NOT_VALIDATED
+                                                                            : aDnsSecResolver.getValidationStatus ();
       // NOT_VALIDATED means that no response was received at all - that is a technical failure
-      if (aDNSSECResolver != null &&
-          !eDNSSECStatus.isSecure () &&
-          (eDNSSECStatus != EDnsSecValidationStatus.NOT_VALIDATED || aLookup.getResult () == Lookup.SUCCESSFUL))
+      if (aDnsSecResolver != null &&
+          !eDnsSecStatus.isSecure () &&
+          (eDnsSecStatus != EDnsSecValidationStatus.NOT_VALIDATED || aLookup.getResult () == Lookup.SUCCESSFUL))
       {
-        final String sBogusReason = aDNSSECResolver.getBogusReason ();
+        final String sBogusReason = aDnsSecResolver.getBogusReason ();
         final String sErrorMessage = "DNSSEC validation of '" +
                                      sDomainName +
                                      "' failed with status " +
-                                     eDNSSECStatus +
+                                     eDnsSecStatus +
                                      (sBogusReason != null ? ": " + sBogusReason : "");
         LOGGER.warn (sErrorMessage);
-        return NaptrLookupResult.failure (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED, sErrorMessage, eDNSSECStatus);
+        return NaptrLookupResult.failure (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED, sErrorMessage, eDnsSecStatus);
       }
 
       if (aLookup.getResult () != Lookup.SUCCESSFUL)
@@ -331,7 +371,7 @@ public class NaptrLookup
                                 aLookup.getResult () +
                                 "]: " +
                                 aLookup.getErrorString ());
-        return NaptrLookupResult.failure (eStatus, aLookup.getErrorString (), eDNSSECStatus);
+        return NaptrLookupResult.failure (eStatus, aLookup.getErrorString (), eDnsSecStatus);
       }
 
       final ICommonsList <NAPTRRecord> ret = new CommonsArrayList <> ();
@@ -346,7 +386,14 @@ public class NaptrLookup
                               "' after " +
                               nFinalLookupRuns +
                               " lookups");
-      return NaptrLookupResult.success (ret, eDNSSECStatus);
+      return NaptrLookupResult.success (ret, eDnsSecStatus);
+    }
+    catch (final IOException ex)
+    {
+      // Can only happen when creating the DNSSEC validating resolver
+      LOGGER.error ("Failed to create the DNSSEC validating resolver: " + ex.getMessage ());
+      return NaptrLookupResult.failure (ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED,
+                                        "Failed to create the DNSSEC validating resolver: " + ex.getMessage ());
     }
     finally
     {
@@ -394,8 +441,10 @@ public class NaptrLookup
     private final CallbackList <INaptrLookupTimeExceededCallback> m_aExecutionTimeExceededHandlers = new CallbackList <> ();
     private ELookupNetworkMode m_eLookupMode = DEFAULT_LOOKUP_MODE;
     private boolean m_bDebugMode;
-    private boolean m_bDNSSECValidation = DEFAULT_DNSSEC_VALIDATION;
-    private String m_sDNSSECTrustAnchors = DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS;
+    private boolean m_bDnsSecValidation = DEFAULT_DNSSEC_VALIDATION;
+    private String m_sDnsSecTrustAnchors = DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS;
+    private Duration m_aDnsSecKeyCacheMaxTtl = DnsSecHelper.DEFAULT_KEY_CACHE_MAX_TTL;
+    private IDnsSecValidatingResolverCache m_aDnsSecResolverCache;
 
     public NaptrLookupBuilder ()
     {
@@ -554,9 +603,9 @@ public class NaptrLookup
      * @since 11.4.7
      */
     @NonNull
-    public final NaptrLookupBuilder dnssecValidation (final boolean b)
+    public final NaptrLookupBuilder dnsSecValidation (final boolean b)
     {
-      m_bDNSSECValidation = b;
+      m_bDnsSecValidation = b;
       return this;
     }
 
@@ -571,9 +620,43 @@ public class NaptrLookup
      * @since 11.4.7
      */
     @NonNull
-    public final NaptrLookupBuilder dnssecTrustAnchors (@Nullable final String s)
+    public final NaptrLookupBuilder dnsSecTrustAnchors (@Nullable final String s)
     {
-      m_sDNSSECTrustAnchors = s;
+      m_sDnsSecTrustAnchors = s;
+      return this;
+    }
+
+    /**
+     * Set the maximum time to cache the validated DNSSEC keys of a zone. The effective time is the
+     * minimum of this value and the TTL of the keys. Only relevant if DNSSEC validation is enabled.
+     *
+     * @param a
+     *        The maximum time. May be <code>null</code> to use the default.
+     * @return this for chaining
+     * @see DnsSecHelper#DEFAULT_KEY_CACHE_MAX_TTL
+     * @since 11.4.7
+     */
+    @NonNull
+    public final NaptrLookupBuilder dnsSecKeyCacheMaxTtl (@Nullable final Duration a)
+    {
+      m_aDnsSecKeyCacheMaxTtl = a;
+      return this;
+    }
+
+    /**
+     * Set the cache for the DNSSEC validating resolvers to be used. Only relevant if DNSSEC
+     * validation is enabled.
+     *
+     * @param a
+     *        The cache to use. May be <code>null</code> to use the global default from
+     *        {@link DnsSecValidatingResolverCache#getDefaultInstance()}.
+     * @return this for chaining
+     * @since 11.4.7
+     */
+    @NonNull
+    public final NaptrLookupBuilder dnsSecResolverCache (@Nullable final IDnsSecValidatingResolverCache a)
+    {
+      m_aDnsSecResolverCache = a;
       return this;
     }
 
@@ -595,9 +678,12 @@ public class NaptrLookup
                               m_aExecutionDurationWarn,
                               m_aExecutionTimeExceededHandlers,
                               m_bDebugMode,
-                              m_bDNSSECValidation,
-                              StringHelper.isNotEmpty (m_sDNSSECTrustAnchors) ? m_sDNSSECTrustAnchors
-                                                                              : DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS);
+                              m_bDnsSecValidation,
+                              StringHelper.isNotEmpty (m_sDnsSecTrustAnchors) ? m_sDnsSecTrustAnchors
+                                                                              : DnsSecHelper.DEFAULT_ROOT_TRUST_ANCHORS,
+                              m_aDnsSecKeyCacheMaxTtl != null ? m_aDnsSecKeyCacheMaxTtl
+                                                              : DnsSecHelper.DEFAULT_KEY_CACHE_MAX_TTL,
+                              m_aDnsSecResolverCache);
     }
 
     @NonNull

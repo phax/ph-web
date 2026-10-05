@@ -217,6 +217,8 @@
             <exclude>**/MockHttpServletRequest.class</exclude>
             
             <exclude>**/MailTransport.class</exclude>
+            <!-- dnsjava ValidatingResolver.init requires java.util.Properties -->
+            <exclude>**/DnsSecHelper.class</exclude>
             <exclude>**/samples/*</exclude>
             <!-- uses reflection -->
             <exclude>**/HttpClientFactoryProxyRoutePlannerTest.class</exclude>

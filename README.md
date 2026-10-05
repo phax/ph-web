@@ -64,11 +64,15 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v11.4.7 - work in progress
-* Added optional DNSSEC validation for NAPTR lookups via `NaptrLookupBuilder.dnssecValidation (boolean)` (disabled by default).
+* Added optional DNSSEC validation for NAPTR lookups via `NaptrLookupBuilder.dnsSecValidation (boolean)` (disabled by default).
   If enabled, the chain of trust is validated locally with dnsjava's `ValidatingResolver`, starting at the IANA root trust anchors (KSK-2017 and KSK-2024), and every response that is not validated as secure results in the new status `ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED`.
-  Custom trust anchors can be provided via `NaptrLookupBuilder.dnssecTrustAnchors (String)`
-* Added `NaptrLookupResult.getDNSSECStatus ()` with the new enum `EDNSSECValidationStatus`
-* Added the new package `com.helger.dns.dnssec` with `DNSSECHelper` and `DNSSECStatusRecordingResolver`
+  Custom trust anchors can be provided via `NaptrLookupBuilder.dnsSecTrustAnchors (String)`.
+  Note: the used DNS servers must forward the DNSSEC records - otherwise every lookup fails
+* The DNSSEC validating resolvers, including the validated keys, are reused via the new `IDnsSecValidatingResolverCache`.
+  The global default `DnsSecValidatingResolverCache.getDefaultInstance ()` can be replaced, or a specific cache can be set via `NaptrLookupBuilder.dnsSecResolverCache (...)`.
+  Validated keys are cached for at most 1 hour (and never longer than their TTL), configurable via `NaptrLookupBuilder.dnsSecKeyCacheMaxTtl (Duration)`
+* Added `NaptrLookupResult.getDnsSecStatus ()` with the new enum `EDnsSecValidationStatus`
+* Added the new package `com.helger.dns.dnssec` with `DnsSecHelper`, `DnsSecStatusRecordingResolver`, `DnsSecValidatingResolverKey`, `IDnsSecValidatingResolverCache` and `DnsSecValidatingResolverCache`
 
 v11.4.6 - 2026-09-23
 * `NaptrLookup.lookupResult` now only retries a lookup via TCP, if the UDP lookup ended in a transient failure (see `ENaptrLookupStatus.isRetryable`).

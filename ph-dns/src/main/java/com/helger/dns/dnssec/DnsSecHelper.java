@@ -18,6 +18,8 @@ package com.helger.dns.dnssec;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.Properties;
 
 import org.jspecify.annotations.NonNull;
 import org.xbill.DNS.Resolver;
@@ -45,13 +47,24 @@ public final class DnsSecHelper
   public static final String DEFAULT_ROOT_TRUST_ANCHORS = ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D\n" +
                                                           ". IN DS 38696 8 2 683D2D0ACB8C9B712A1948B27F741219298D0A450D612C483AF444A4C0FB2B16\n";
 
+  /**
+   * The default maximum time to cache the validated DNSSEC keys of a zone. The effective time is the
+   * minimum of this value and the TTL of the keys.
+   */
+  public static final Duration DEFAULT_KEY_CACHE_MAX_TTL = Duration.ofHours (1);
+
+  /**
+   * The name of the dnsjava configuration property for the maximum key cache TTL in seconds. Taken
+   * from the package private dnsjava class <code>KeyCache</code>.
+   */
+  private static final String KEY_CACHE_MAX_TTL_PROPERTY = "dnsjava.dnssec.keycache.max_ttl";
+
   private DnsSecHelper ()
   {}
 
   /**
-   * Create a new DNSSEC validating resolver on top of the provided resolver. The provided resolver
-   * must point to recursive DNS servers. The validating resolver requests the DNSSEC records itself
-   * and performs the validation locally - the AD flag of the upstream server is not trusted.
+   * Create a new DNSSEC validating resolver on top of the provided resolver, using
+   * {@link #DEFAULT_KEY_CACHE_MAX_TTL}.
    *
    * @param aHeadResolver
    *        The resolver to send the DNS queries to. May not be <code>null</code>.
@@ -61,15 +74,55 @@ public final class DnsSecHelper
    * @return The new validating resolver. Never <code>null</code>.
    * @throws IOException
    *         If the trust anchors could not be parsed
+   * @see #createValidatingResolver(Resolver, String, Duration)
    */
   @NonNull
   public static ValidatingResolver createValidatingResolver (@NonNull final Resolver aHeadResolver,
                                                              @NonNull @Nonempty final String sTrustAnchors) throws IOException
   {
+    return createValidatingResolver (aHeadResolver, sTrustAnchors, DEFAULT_KEY_CACHE_MAX_TTL);
+  }
+
+  /**
+   * Create a new DNSSEC validating resolver on top of the provided resolver. The provided resolver
+   * must point to recursive DNS servers. The validating resolver requests the DNSSEC records itself
+   * and performs the validation locally - the AD flag of the upstream server is not trusted.<br>
+   * The validated keys are cached inside the returned resolver, so it should be reused for multiple
+   * lookups - see {@link IDnsSecValidatingResolverCache}.
+   *
+   * @param aHeadResolver
+   *        The resolver to send the DNS queries to. May not be <code>null</code>.
+   * @param sTrustAnchors
+   *        The trust anchors in DNS master file format (DS or DNSKEY records). May neither be
+   *        <code>null</code> nor empty. Usually {@link #DEFAULT_ROOT_TRUST_ANCHORS}.
+   * @param aKeyCacheMaxTtl
+   *        The maximum time to cache validated keys. The effective time is the minimum of this value
+   *        and the TTL of the keys. May not be <code>null</code> and must be at least 1 second.
+   * @return The new validating resolver. Never <code>null</code>.
+   * @throws IOException
+   *         If the trust anchors could not be parsed
+   */
+  @NonNull
+  public static ValidatingResolver createValidatingResolver (@NonNull final Resolver aHeadResolver,
+                                                             @NonNull @Nonempty final String sTrustAnchors,
+                                                             @NonNull final Duration aKeyCacheMaxTtl) throws IOException
+  {
     ValueEnforcer.notNull (aHeadResolver, "HeadResolver");
     ValueEnforcer.notEmpty (sTrustAnchors, "TrustAnchors");
+    ValueEnforcer.notNull (aKeyCacheMaxTtl, "KeyCacheMaxTtl");
+    ValueEnforcer.isGT0 (aKeyCacheMaxTtl.toSeconds (), "KeyCacheMaxTtl.Seconds");
 
     final ValidatingResolver ret = new ValidatingResolver (aHeadResolver);
+
+    // The constructor initialized from the system properties. Re-initialize with the same values
+    // but the custom key cache TTL. The trust anchor file property is excluded, because the
+    // constructor already loaded that file
+    final Properties aConfig = new Properties ();
+    aConfig.putAll (System.getProperties ());
+    aConfig.remove (ValidatingResolver.TRUST_ANCHOR_FILE_PROPERTY);
+    aConfig.setProperty (KEY_CACHE_MAX_TTL_PROPERTY, Long.toString (aKeyCacheMaxTtl.toSeconds ()));
+    ret.init (aConfig);
+
     ret.loadTrustAnchors (new NonBlockingByteArrayInputStream (sTrustAnchors.getBytes (StandardCharsets.US_ASCII)));
     if (ret.getTrustAnchors ().items ().isEmpty ())
       throw new IOException ("No DNSSEC trust anchor could be read from the provided string");

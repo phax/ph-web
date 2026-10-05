@@ -47,7 +47,10 @@ import com.helger.base.string.StringImplode;
  * responses (SERVFAIL) to the same result as transient network errors.<br>
  * The aggregated status is the worst status of all recorded responses, so when using this with a
  * {@link org.xbill.DNS.Lookup}, absolute domain names should be used to avoid queries for search
- * path entries.
+ * path entries.<br>
+ * The wrapped validating resolver is usually shared between lookups (see
+ * {@link IDnsSecValidatingResolverCache}), therefore all modifying methods throw an
+ * {@link UnsupportedOperationException}. Create one instance of this class per lookup.
  *
  * @author Philip Helger
  * @since 11.4.7
@@ -55,6 +58,8 @@ import com.helger.base.string.StringImplode;
 @ThreadSafe
 public class DnsSecStatusRecordingResolver implements Resolver
 {
+  private static final String READ_ONLY_MSG = "The shared validating resolver must not be modified";
+
   private final ValidatingResolver m_aValidatingResolver;
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   @GuardedBy ("m_aRWLock")
@@ -137,17 +142,17 @@ public class DnsSecStatusRecordingResolver implements Resolver
 
   public void setPort (final int nPort)
   {
-    m_aValidatingResolver.setPort (nPort);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public void setTCP (final boolean bFlag)
   {
-    m_aValidatingResolver.setTCP (bFlag);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public void setIgnoreTruncation (final boolean bFlag)
   {
-    m_aValidatingResolver.setIgnoreTruncation (bFlag);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public void setEDNS (final int nVersion,
@@ -155,17 +160,17 @@ public class DnsSecStatusRecordingResolver implements Resolver
                        final int nFlags,
                        @Nullable final List <EDNSOption> aOptions)
   {
-    m_aValidatingResolver.setEDNS (nVersion, nPayloadSize, nFlags, aOptions);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public void setTSIGKey (@Nullable final TSIG aKey)
   {
-    m_aValidatingResolver.setTSIGKey (aKey);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public void setTimeout (@NonNull final Duration aTimeout)
   {
-    m_aValidatingResolver.setTimeout (aTimeout);
+    throw new UnsupportedOperationException (READ_ONLY_MSG);
   }
 
   public Duration getTimeout ()

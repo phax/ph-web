@@ -17,7 +17,6 @@
 package com.helger.dns.dnssec;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jspecify.annotations.NonNull;
@@ -30,6 +29,8 @@ import com.helger.annotation.concurrent.ThreadSafe;
 import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.tostring.ToStringGenerator;
+import com.helger.collection.commons.CommonsLinkedHashMap;
+import com.helger.collection.commons.ICommonsOrderedMap;
 import com.helger.dns.resolve.ResolverHelper;
 
 /**
@@ -54,7 +55,7 @@ public class DnsSecValidatingResolverCache implements IDnsSecValidatingResolverC
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   private final int m_nMaxSize;
   @GuardedBy ("m_aRWLock")
-  private final Map <DnsSecValidatingResolverKey, ValidatingResolver> m_aMap;
+  private final ICommonsOrderedMap <DnsSecValidatingResolverKey, ValidatingResolver> m_aMap;
 
   public DnsSecValidatingResolverCache ()
   {
@@ -66,7 +67,7 @@ public class DnsSecValidatingResolverCache implements IDnsSecValidatingResolverC
     ValueEnforcer.isGT0 (nMaxSize, "MaxSize");
     m_nMaxSize = nMaxSize;
     // Access order for LRU behaviour
-    m_aMap = new LinkedHashMap <> (16, 0.75f, true)
+    m_aMap = new CommonsLinkedHashMap <> (16, 0.75f, true)
     {
       @Override
       protected boolean removeEldestEntry (final Map.Entry <DnsSecValidatingResolverKey, ValidatingResolver> aEldest)

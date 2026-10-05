@@ -25,6 +25,7 @@ import org.jspecify.annotations.Nullable;
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.Nonnegative;
 import com.helger.annotation.concurrent.Immutable;
+import com.helger.annotation.style.MustImplementEqualsAndHashcode;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.equals.EqualsHelper;
@@ -42,6 +43,7 @@ import com.helger.collection.commons.ICommonsList;
  * @since 11.4.7
  */
 @Immutable
+@MustImplementEqualsAndHashcode
 public final class DnsSecValidatingResolverKey
 {
   private final ICommonsList <InetAddress> m_aCustomDnsServers;

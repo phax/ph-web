@@ -32,7 +32,7 @@ public enum EDnsSecValidationStatus
   /** All DNS responses were validated successfully along the chain of trust. */
   SECURE,
   /**
-   * At least one DNS response was provably unsigned (e.g. the zone is not signed), but no response
+   * At least one DNS response was probably unsigned (e.g. the zone is not signed), but no response
    * was bogus.
    */
   INSECURE,

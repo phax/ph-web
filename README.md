@@ -63,7 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.4.7 - work in progress
+v11.4.7 - 2026-10-08
 * Added optional DNSSEC validation for NAPTR lookups via `NaptrLookupBuilder.dnsSecValidation (boolean)` (disabled by default).
   If enabled, the chain of trust is validated locally with dnsjava's `ValidatingResolver`, starting at the IANA root trust anchors (KSK-2017 and KSK-2024), and every response that is not validated as secure results in the new status `ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED`.
   Custom trust anchors can be provided via `NaptrLookupBuilder.dnsSecTrustAnchors (String)`.

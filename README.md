@@ -63,6 +63,11 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.4.8 - work in progress
+* `UnifiedResponse` now also sends the `Cache-Control` header for non-error status codes without content (e.g. `304 Not Modified` or `204 No Content`).
+  Previously it was silently dropped, but RFC 9110 requires a `304` to carry the same `Cache-Control` as the respective `200` response.
+  Error status codes (>= 400) without content are unchanged.
+
 v11.4.7 - 2026-10-08
 * Added optional DNSSEC validation for NAPTR lookups via `NaptrLookupBuilder.dnsSecValidation (boolean)` (disabled by default).
   If enabled, the chain of trust is validated locally with dnsjava's `ValidatingResolver`, starting at the IANA root trust anchors (KSK-2017 and KSK-2024), and every response that is not validated as secure results in the new status `ENaptrLookupStatus.DNSSEC_VALIDATION_FAILED`.

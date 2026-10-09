@@ -1369,6 +1369,18 @@ public class UnifiedResponse
     }
   }
 
+  private void _applyCacheControl (@NonNull final HttpServletResponse aHttpResponse)
+  {
+    if (m_aCacheControl != null)
+    {
+      final String sCacheControlValue = m_aCacheControl.getAsHTTPHeaderValue ();
+      if (StringHelper.isNotEmpty (sCacheControlValue))
+        aHttpResponse.setHeader (CHttpHeader.CACHE_CONTROL, sCacheControlValue);
+      else
+        logWarn ("An empty Cache-Control was provided!");
+    }
+  }
+
   private void _applyContent (@NonNull final HttpServletResponse aHttpResponse,
                               final boolean bStatusCodeWasAlreadySet) throws IOException
   {
@@ -1562,10 +1574,12 @@ public class UnifiedResponse
     {
       if (bIsRedirect)
         logWarn ("Overriding provided redirect because a status code is specified!");
+      // Non-error status codes like 304 (Not Modified) must still carry the Cache-Control header
+      final boolean bIsErrorStatusCode = m_nStatusCode >= HttpServletResponse.SC_BAD_REQUEST;
       if (!m_bAllowContentOnStatusCode)
       {
-        if (m_aCacheControl != null)
-          logInfo ("Ignoring provided Cache-Control because a status code is specified!");
+        if (m_aCacheControl != null && bIsErrorStatusCode)
+          logInfo ("Ignoring provided Cache-Control because an error status code is specified!");
         if (m_sContentDispositionFilename != null)
           logWarn ("Ignoring provided Content-Dispostion filename because a status code is specified!");
         if (m_aMimeType != null)
@@ -1599,6 +1613,12 @@ public class UnifiedResponse
         // header, preserving cookies and other headers.
         aHttpResponse.setStatus (m_nStatusCode);
       }
+      if (!m_bAllowContentOnStatusCode || !hasContent ())
+      {
+        // No content follows, so the Cache-Control header is not applied below
+        if (!bIsErrorStatusCode)
+          _applyCacheControl (aHttpResponse);
+      }
       if (!m_bAllowContentOnStatusCode)
         return;
       if (!hasContent ())
@@ -1611,14 +1631,7 @@ public class UnifiedResponse
     }
     // Verify only if is a response with content
     _verifyCachingIntegrity ();
-    if (m_aCacheControl != null)
-    {
-      final String sCacheControlValue = m_aCacheControl.getAsHTTPHeaderValue ();
-      if (StringHelper.isNotEmpty (sCacheControlValue))
-        aHttpResponse.setHeader (CHttpHeader.CACHE_CONTROL, sCacheControlValue);
-      else
-        logWarn ("An empty Cache-Control was provided!");
-    }
+    _applyCacheControl (aHttpResponse);
     if (m_sContentDispositionFilename != null)
     {
       final StringBuilder aSB = new StringBuilder ();

@@ -18,6 +18,7 @@ package com.helger.servlet.response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -25,6 +26,9 @@ import org.junit.Test;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.http.CHttpHeader;
 import com.helger.servlet.mock.MockHttpServletRequest;
+import com.helger.servlet.mock.MockHttpServletResponse;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Test class for class {@link UnifiedResponse}.
@@ -90,5 +94,51 @@ public final class UnifiedResponseTest
       aResponse.removeCustomResponseHeaders (sName);
       assertFalse (aResponse.responseHeaderMap ().containsHeaders (sName));
     }
+  }
+
+  @Test
+  public void testCacheControlOnNotModified () throws Exception
+  {
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
+    aResponse.enableCaching (60);
+    aResponse.setETag ("\"abc\"");
+    aResponse.setStatus (HttpServletResponse.SC_NOT_MODIFIED);
+
+    final MockHttpServletResponse aHttpResponse = new MockHttpServletResponse ();
+    aResponse.applyToResponse (aHttpResponse);
+    assertEquals (HttpServletResponse.SC_NOT_MODIFIED, aHttpResponse.getStatus ());
+    // Both the validator and the Cache-Control must be present on a 304
+    assertEquals ("\"abc\"", aHttpResponse.getHeader (CHttpHeader.ETAG));
+    final String sCacheControl = aHttpResponse.getHeader (CHttpHeader.CACHE_CONTROL);
+    assertTrue (sCacheControl, sCacheControl.contains ("max-age=60"));
+    assertTrue (sCacheControl, sCacheControl.contains ("public"));
+  }
+
+  @Test
+  public void testCacheControlOnNoContent () throws Exception
+  {
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
+    aResponse.disableCaching ();
+    aResponse.setStatus (HttpServletResponse.SC_NO_CONTENT);
+
+    final MockHttpServletResponse aHttpResponse = new MockHttpServletResponse ();
+    aResponse.applyToResponse (aHttpResponse);
+    assertEquals (HttpServletResponse.SC_NO_CONTENT, aHttpResponse.getStatus ());
+    final String sCacheControl = aHttpResponse.getHeader (CHttpHeader.CACHE_CONTROL);
+    assertTrue (sCacheControl, sCacheControl.contains ("no-store"));
+  }
+
+  @Test
+  public void testNoCacheControlOnErrorWithoutContent () throws Exception
+  {
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
+    aResponse.enableCaching (60);
+    aResponse.setStatus (HttpServletResponse.SC_NOT_FOUND);
+
+    final MockHttpServletResponse aHttpResponse = new MockHttpServletResponse ();
+    aResponse.applyToResponse (aHttpResponse);
+    assertEquals (HttpServletResponse.SC_NOT_FOUND, aHttpResponse.getStatus ());
+    // Unchanged behaviour: error responses without content don't get the Cache-Control header
+    assertNull (aHttpResponse.getHeader (CHttpHeader.CACHE_CONTROL));
   }
 }

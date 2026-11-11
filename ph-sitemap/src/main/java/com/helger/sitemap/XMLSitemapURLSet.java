@@ -44,7 +44,8 @@ import com.helger.xml.microdom.serialize.MicroWriter;
 public class XMLSitemapURLSet implements IHasLastModificationDateTime
 {
   public static final int MAX_URLS_PER_FILE = 50000;
-  public static final int MAX_FILE_SIZE = 10 * CGlobal.BYTES_PER_MEGABYTE;
+  /** Maximum uncompressed file size according to sitemaps.org (since 2016) */
+  public static final int MAX_FILE_SIZE = 50 * CGlobal.BYTES_PER_MEGABYTE;
 
   // 38: ?XML header
   // 60: <urlset xmlns...> element

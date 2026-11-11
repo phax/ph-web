@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringHelper;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.JSchException;
 
@@ -75,9 +76,22 @@ public class ScpFile
       File file = aFile;
       if (file.isDirectory ())
       {
+        // The name is provided by the remote server and must not escape the target directory
+        if (StringHelper.isEmpty (name) ||
+            ".".equals (name) ||
+            "..".equals (name) ||
+            name.indexOf ('/') >= 0 ||
+            name.indexOf ('\\') >= 0)
+          throw new IOException ("Invalid file name '" + name + "' received from remote server");
         file = new File (file, name);
       }
-      // attempt to set file mode... flakey in java 6 and below
+
+      try (final FileOutputStream to = new FileOutputStream (file))
+      {
+        StreamHelper.copyInputStreamToOutputStream (from, to);
+      }
+
+      // attempt to set file mode - after the file was created
       final int userPerm = Character.getNumericValue (mode.charAt (1));
       final int otherPerm = Character.getNumericValue (mode.charAt (3));
       if ((userPerm & 1) == 1)
@@ -100,11 +114,6 @@ public class ScpFile
         final boolean bSuccess = file.setReadable (true, bOwnerOnly);
         if (!bSuccess)
           LOGGER.debug ("Failed to call setReadable(true, " + bOwnerOnly + ") on " + file);
-      }
-
-      try (final FileOutputStream to = new FileOutputStream (file))
-      {
-        StreamHelper.copyInputStreamToOutputStream (from, to);
       }
     }
   }

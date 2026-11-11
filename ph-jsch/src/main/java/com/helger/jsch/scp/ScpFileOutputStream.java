@@ -39,8 +39,14 @@ public class ScpFileOutputStream extends OutputStream
   @Override
   public void close () throws IOException
   {
-    m_aOS.closeEntry ();
-    m_aOS.close ();
+    try
+    {
+      m_aOS.closeEntry ();
+    }
+    finally
+    {
+      m_aOS.close ();
+    }
   }
 
   @Override

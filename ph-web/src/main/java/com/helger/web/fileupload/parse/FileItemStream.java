@@ -129,7 +129,7 @@ public class FileItemStream implements IFileItemStream, Closeable
                                                                                         nCount,
                                                                                         nSizeMax,
                                                                                         m_sFieldName,
-                                                                                        m_sFieldName);
+                                                                                        m_sName);
           // Wrap as IO exception ;|
           throw new FileUploadIOException (ex);
         }

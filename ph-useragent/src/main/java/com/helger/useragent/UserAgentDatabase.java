@@ -29,8 +29,8 @@ import com.helger.annotation.style.PresentForCodeCoverage;
 import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.string.StringHelper;
-import com.helger.collection.commons.CommonsHashSet;
 import com.helger.collection.commons.ICommonsSet;
+import com.helger.collection.map.LRUSet;
 import com.helger.http.CHttpHeader;
 
 /**
@@ -41,11 +41,20 @@ import com.helger.http.CHttpHeader;
 @ThreadSafe
 public final class UserAgentDatabase
 {
+  /**
+   * The maximum number of unique user agents that are remembered. If the limit is reached, the
+   * eldest entry is removed when a new user agent is added. A removed user agent that is received
+   * again is considered new and the callback is invoked again.
+   *
+   * @since 11.5.0
+   */
+  public static final int MAX_UNIQUE_USER_AGENTS = 10_000;
+
   private static final Logger LOGGER = LoggerFactory.getLogger (UserAgentDatabase.class);
 
   private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
   @GuardedBy ("RW_LOCK")
-  private static final ICommonsSet <String> UNIQUE_USER_AGENTS = new CommonsHashSet <> ();
+  private static final LRUSet <String> UNIQUE_USER_AGENTS = new LRUSet <> (MAX_UNIQUE_USER_AGENTS);
   @GuardedBy ("RW_LOCK")
   private static Consumer <? super IUserAgent> s_aNewUserAgentCallback;
 

@@ -27,6 +27,7 @@ import com.helger.http.EHttpVersion;
 import com.helger.http.header.HttpHeaderMap;
 import com.helger.mime.EMimeContentType;
 import com.helger.servlet.SafeHttpServletRequest;
+import com.helger.servlet.logging.SensitiveHeaderHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.web.scope.IRequestWebScope;
 
@@ -62,12 +63,14 @@ public class XServletHandlerTRACE implements IXServletHandler
                                                   .append (' ')
                                                   .append (aSafeHttpRequest.getProtocol ())
                                                   .append (CHttp.EOL);
-    RequestHelper.forEachRequestHeader (aHttpRequest,
-                                        (sHeaderName, sHeaderValue) -> aSB.append (sHeaderName)
-                                                                          .append (": ")
-                                                                          .append (HttpHeaderMap.getUnifiedValue (sHeaderValue,
-                                                                                                                  true))
-                                                                          .append (CHttp.EOL));
+    RequestHelper.forEachRequestHeader (aHttpRequest, (sHeaderName, sHeaderValue) -> {
+      // Never echo credentials or session cookies (Cross-Site Tracing)
+      if (!SensitiveHeaderHelper.isSensitiveHeader (sHeaderName))
+        aSB.append (sHeaderName)
+           .append (": ")
+           .append (HttpHeaderMap.getUnifiedValue (sHeaderValue, true))
+           .append (CHttp.EOL);
+    });
 
     aHttpResponse.setContentType (CONTENT_TYPE);
     aHttpResponse.setContentLength (aSB.length ());

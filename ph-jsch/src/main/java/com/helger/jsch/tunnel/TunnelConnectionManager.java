@@ -123,8 +123,9 @@ public class TunnelConnectionManager implements Closeable
   @Override
   public void close ()
   {
-    for (final TunnelConnection tunnelConnection : m_aTunnelConnections)
-      StreamHelper.close (tunnelConnection);
+    if (m_aTunnelConnections != null)
+      for (final TunnelConnection tunnelConnection : m_aTunnelConnections)
+        StreamHelper.close (tunnelConnection);
   }
 
   /**
@@ -296,8 +297,13 @@ public class TunnelConnectionManager implements Closeable
         key.append (part);
 
         final String sKey = key.toString ();
-        if (sessionFactoryByPath.containsKey (sKey))
-          return sessionFactoryByPath.get (sKey);
+        final ISessionFactory aCachedSessionFactory = sessionFactoryByPath.get (sKey);
+        if (aCachedSessionFactory != null)
+        {
+          // Continue with the next hop based on the cached factory
+          sessionFactory = aCachedSessionFactory;
+          continue;
+        }
 
         final AbstractSessionFactoryBuilder builder;
         if (sessionFactory == null)
@@ -327,6 +333,7 @@ public class TunnelConnectionManager implements Closeable
         }
 
         sessionFactory = builder.build ();
+        sessionFactoryByPath.put (sKey, sessionFactory);
       }
       return sessionFactory;
     }

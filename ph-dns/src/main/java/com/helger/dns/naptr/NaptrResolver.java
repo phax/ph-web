@@ -151,7 +151,16 @@ public class NaptrResolver
       LOGGER.debug ("NAPTR regex: '" + sRegEx + "' - '" + sReplacement + "' - '" + sFlags + "'");
 
     final int nOptions = "i".equalsIgnoreCase (sFlags) ? Pattern.CASE_INSENSITIVE : 0;
-    final String ret = RegExHelper.stringReplacePattern (sRegEx, nOptions, sDomainName, sReplacement);
+    final String ret;
+    try
+    {
+      ret = RegExHelper.stringReplacePattern (sRegEx, nOptions, sDomainName, sReplacement);
+    }
+    catch (final IllegalArgumentException | IndexOutOfBoundsException ex)
+    {
+      LOGGER.warn ("NAPTR regex '" + sNaptrRegEx + "' - failed to apply: " + ex.getMessage ());
+      return null;
+    }
 
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("  NAPTR replacement: '" + sDomainName + "' -> '" + ret + "'");

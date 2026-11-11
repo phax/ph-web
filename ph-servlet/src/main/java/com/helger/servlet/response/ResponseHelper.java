@@ -18,9 +18,8 @@ package com.helger.servlet.response;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.jspecify.annotations.NonNull;
 
@@ -101,7 +100,7 @@ public final class ResponseHelper
   /**
    * Get the best suitable output stream for the given combination of request and response. If the
    * request supports gzip, the result is a {@link GZIPOutputStream}, if the request supports
-   * deflate or compress, the result will be a {@link ZipOutputStream}. If none of that matches, the
+   * deflate or compress, the result will be a {@link DeflaterOutputStream}. If none of that matches, the
    * regular response output stream is used
    *
    * @param aHttpRequest
@@ -141,9 +140,7 @@ public final class ResponseHelper
         {
           // Use Deflate
           aHttpResponse.setHeader (CHttpHeader.CONTENT_ENCODING, sDeflateEncoding);
-          aOS = new ZipOutputStream (aHttpResponse.getOutputStream ());
-          // A dummy ZIP entry is required!
-          ((ZipOutputStream) aOS).putNextEntry (new ZipEntry ("dummy name"));
+          aOS = new DeflaterOutputStream (aHttpResponse.getOutputStream ());
         }
       }
     }

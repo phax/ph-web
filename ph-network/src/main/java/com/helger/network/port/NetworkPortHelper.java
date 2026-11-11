@@ -109,7 +109,7 @@ public final class NetworkPortHelper
                    sHostName +
                    ":" +
                    nPort +
-                   " with timeouf of " +
+                   " with timeout of " +
                    nTimeoutMillisecs +
                    " ms");
 
@@ -131,14 +131,19 @@ public final class NetworkPortHelper
     }
     catch (final java.net.ConnectException ex)
     {
-      // E.g. for port 0
-      ret = ENetworkPortStatus.GENERIC_IO_ERROR;
+      // "Connection refused" or e.g. for port 0
+      final String sMsg = ex.getMessage ();
+      if (sMsg != null && sMsg.startsWith ("Connection refused"))
+        ret = ENetworkPortStatus.PORT_IS_CLOSED;
+      else
+        ret = ENetworkPortStatus.GENERIC_IO_ERROR;
     }
     catch (final IOException ex)
     {
       // Can also be:
       // Connection refused: connect
-      if (ex.getMessage ().startsWith ("Connection refused"))
+      final String sMsg = ex.getMessage ();
+      if (sMsg != null && sMsg.startsWith ("Connection refused"))
         ret = ENetworkPortStatus.PORT_IS_CLOSED;
       else
       {

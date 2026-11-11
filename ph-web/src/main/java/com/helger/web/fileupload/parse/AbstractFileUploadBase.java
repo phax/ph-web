@@ -650,7 +650,14 @@ public abstract class AbstractFileUploadBase
 
       // Content length may be -1 if not specified by sender
       m_aNotifier = new MultipartProgressNotifier (m_aListener, nContentLength);
-      m_aMulti = new MultipartStream (aIS, m_aBoundary, m_aNotifier);
+      try
+      {
+        m_aMulti = new MultipartStream (aIS, m_aBoundary, m_aNotifier);
+      }
+      catch (final IllegalArgumentException ex)
+      {
+        throw new FileUploadException ("the request was rejected because the multipart boundary is too long", ex);
+      }
       m_aMulti.setHeaderEncoding (sHeaderEncoding);
 
       m_bSkipPreamble = true;

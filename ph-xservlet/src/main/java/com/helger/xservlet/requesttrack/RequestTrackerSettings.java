@@ -37,8 +37,8 @@ public final class RequestTrackerSettings
   public static final long DEFAULT_LONG_RUNNING_REQUESTS_CHECK_INTERVAL_MILLISECONDS = 2 *
                                                                                        CGlobal.MILLISECONDS_PER_SECOND;
   /**
-   * The number of a seconds a request needs to run before it is considered "long running". Defaults
-   * to 30.
+   * The number of milliseconds a request needs to run before it is considered "long running". Defaults
+   * to 30 seconds.
    */
   public static final long DEFAULT_LONG_RUNNING_NOTIFICATION_MILLISECONDS = 30 * CGlobal.MILLISECONDS_PER_SECOND;
 
@@ -81,10 +81,10 @@ public final class RequestTrackerSettings
     return RW_LOCK.readLockedLong (() -> s_nLRCheckMilliseconds);
   }
 
-  public static void setLongRunningRequestCheckIntervalMilliseconds (@Nonnegative final long nSeconds)
+  public static void setLongRunningRequestCheckIntervalMilliseconds (@Nonnegative final long nMilliseconds)
   {
-    ValueEnforcer.isGT0 (nSeconds, "Seconds");
-    RW_LOCK.writeLocked (() -> s_nLRCheckMilliseconds = nSeconds);
+    ValueEnforcer.isGT0 (nMilliseconds, "Milliseconds");
+    RW_LOCK.writeLocked (() -> s_nLRCheckMilliseconds = nMilliseconds);
   }
 
   /**

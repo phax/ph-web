@@ -38,10 +38,10 @@ import com.helger.datetime.web.PDTWebDateHelper;
 @ThreadSafe
 public final class ResponseHelperSettings
 {
-  /** A special date that never expires */
+  /** A date in the past, so that the response is always considered expired */
   public static final LocalDateTime EXPIRES_NEVER_DATETIME = LocalDateTime.of (1995, Month.MAY, 6, 12, 0, 0);
 
-  /** The string representation of never expires date */
+  /** The string representation of the date in the past */
   public static final String EXPIRES_NEVER_STRING = PDTWebDateHelper.getAsStringRFC822 (EXPIRES_NEVER_DATETIME);
 
   /**

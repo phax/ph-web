@@ -96,11 +96,12 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {
     final SafeHttpServletRequest aSafeHttpRequest = SafeHttpServletRequest.wrap (aRequestWrapper);
     final LoggingRequest aLoggingRequest = new LoggingRequest ();
-    aLoggingRequest.setSender (aSafeHttpRequest.getLocalAddr ());
+    aLoggingRequest.setSender (aSafeHttpRequest.getRemoteAddr ());
     aLoggingRequest.setMethod (aSafeHttpRequest.getMethod ());
     aLoggingRequest.setPath (aSafeHttpRequest.getRequestURI ());
     aLoggingRequest.setParams (aRequestWrapper.isFormPost () ? null : aRequestWrapper.getParameters ());
-    aLoggingRequest.setHeaders (RequestHelper.getRequestHeaderMap (aRequestWrapper));
+    // Don't log credentials or session cookies
+    aLoggingRequest.setHeaders (SensitiveHeaderHelper.getMaskedHeaderMap (RequestHelper.getRequestHeaderMap (aRequestWrapper)));
     final String sContent = aRequestWrapper.getContent ();
     if (m_aLogger.isTraceEnabled () || m_nMaxContentSize <= 0)
     {
@@ -119,7 +120,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {
     final LoggingResponse aLoggingResponse = new LoggingResponse ();
     aLoggingResponse.setStatus (responseWrapper.getStatus ());
-    aLoggingResponse.setHeaders (ResponseHelper.getResponseHeaderMap (responseWrapper));
+    aLoggingResponse.setHeaders (SensitiveHeaderHelper.getMaskedHeaderMap (ResponseHelper.getResponseHeaderMap (responseWrapper)));
     final String content = responseWrapper.getContentAsString ();
     if (m_aLogger.isTraceEnabled () || m_nMaxContentSize <= 0)
     {

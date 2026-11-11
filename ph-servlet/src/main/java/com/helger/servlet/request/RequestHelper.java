@@ -221,7 +221,7 @@ public final class RequestHelper
     // Use the GlobalWebScope context path to build the result string instead of
     // "aHttpRequest.getRequestURI"!
     // Avoid exception on shutdown
-    final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPath (), "");
+    final String sContextPath = StringHelper.getNotNull (ServletContextPathHolder.getContextPathOrNull (), "");
 
     final String sServletPath = aSafeHttpRequest.getServletPath ();
     // Lacks the information about percent encoding
@@ -580,7 +580,7 @@ public final class RequestHelper
    * @param aHttpRequest
    *        The request to use. May not be <code>null</code>.
    * @return The full URI.
-   * @see #getURLDecoded(HttpServletRequest) getURL to retrieve the absolute URL
+   * @see #getURLEncoded(HttpServletRequest) getURL to retrieve the absolute URL
    * @since 9.1.10
    */
   @NonNull
@@ -733,7 +733,7 @@ public final class RequestHelper
   }
 
   /**
-   * Get a complete request header map as a copy.
+   * Invoke the provided consumer for each request header name and value.
    *
    * @param aHttpRequest
    *        The source HTTP request. May not be <code>null</code>.
@@ -841,7 +841,7 @@ public final class RequestHelper
 
   /**
    * @param aHttpRequest
-   *        he HTTP servlet request to extract the information from. May not be <code>null</code>.
+   *        The HTTP servlet request to extract the information from. May not be <code>null</code>.
    * @return SSL cipher suite or <code>null</code> if no such attribute is present
    */
   @Nullable
@@ -852,7 +852,7 @@ public final class RequestHelper
 
   /**
    * @param aHttpRequest
-   *        he HTTP servlet request to extract the information from. May not be <code>null</code>.
+   *        The HTTP servlet request to extract the information from. May not be <code>null</code>.
    * @return Bit size of the algorithm or <code>null</code> if no such attribute is present
    */
   @Nullable
@@ -999,7 +999,7 @@ public final class RequestHelper
    * header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
-   *        The HTTP request to be interpreted. May be <code>null</code>.
+   *        The HTTP request to be interpreted. May not be <code>null</code>.
    * @return <code>null</code> if the passed request does not contain a valid HTTP Basic
    *         Authentication header value.
    */
@@ -1017,7 +1017,7 @@ public final class RequestHelper
    * header {@link CHttpHeader#AUTHORIZATION}.
    *
    * @param aHttpRequest
-   *        The HTTP request to be interpreted. May be <code>null</code>.
+   *        The HTTP request to be interpreted. May not be <code>null</code>.
    * @return <code>null</code> if the passed request does not contain a valid HTTP Digest
    *         Authentication header value.
    */

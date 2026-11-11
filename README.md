@@ -11,13 +11,13 @@ Java library with common web stuff. It contains the following sub-projects:
 * ph-dns (since v9.2.1)
     * DNS client side helper methods based on dnsjava 
 * ph-network
-    * Contains general network related stuff like Authenticators, DNS helpers, port and proxy classes
+    * Contains general network related stuff like Authenticators, network interface, port and proxy classes
 * ph-useragent
     * Contains User-Agent/Browser related helpers 
 * ph-servlet
-    * Contains special javax.servlet related helpers 
+    * Contains special jakarta.servlet related helpers 
 * ph-mail
-    * Contains javax.mail related helpers
+    * Contains Jakarta Mail related helpers
 * ph-smtp
     * Contains helper classes for asynchronous mail (re-)sending
 * ph-httpclient
@@ -70,6 +70,47 @@ v11.5.0 - work in progress
 * Added the new `HttpClientSettings` property `disableAutomaticRetries` (configuration key `http.retry.automatic.disabled`) to disable all automatic retries of Apache HttpClient.
   Until now, a retry count of `0` still meant that Apache HttpClient used its default retry strategy (one retry, e.g. for HTTP status codes `429` and `503`, honouring any `Retry-After` value without a limit).
   This is useful if retries are handled on a higher level. By default nothing changes.
+* Security fixes:
+  * Fixed a possible endless loop in `MultipartStream` when a multipart boundary is too long for the processing buffer (the same issue as CVE-2014-0050 in Commons FileUpload). Such requests are now rejected with a `FileUploadException`.
+  * Fixed temporary upload files not being deleted at the end of a request when several files were uploaded under the same field name.
+  * Fixed a path traversal in `ScpFile.copyTo (File)`: file names sent by the remote server that are empty, `.`, `..` or contain `/` or `\` are now rejected with an `IOException`.
+  * The remote path of SCP commands is now single-quoted, so it is no longer interpreted by the remote shell. Note: shell expansion like `~` or globs no longer happens.
+  * `RequestLogger`, `LoggingFilter` and `UnifiedResponse` no longer log the values of the `Authorization`, `Proxy-Authorization`, `Cookie` and `Set-Cookie` headers or cookie values. Added the new class `SensitiveHeaderHelper` for this.
+  * The default `TRACE` handler of `AbstractXServlet` no longer echoes the `Authorization`, `Proxy-Authorization`, `Cookie` and `Set-Cookie` request headers.
+  * Errors in asynchronous XServlet request processing now result in HTTP status `500` with a generic plain text message, instead of status `200` with the exception details.
+  * `UnifiedResponse.setContentDispositionFilename` now replaces control characters (including CR and LF) in the filename.
+  * SMTP debug mode no longer logs the authentication exchange by default, so credentials are not written to stdout.
+    Added the new property `ISMTPSettings.isDebugSmtpAuth ()` (default `false`, XML attribute `debugsmtpauth`) to explicitly enable it again (`mail.debug.auth`). It is only effective if `isDebugSMTP ()` is enabled as well.
+  * The log message on immediate mail queue stop now shows the number of unsent mails instead of their full content.
+  * `UserAgentDatabase` and `UAProfileDatabase` now remember at most 10,000 unique entries (`MAX_UNIQUE_USER_AGENTS` and `MAX_UNIQUE_UA_PROFILES`), so that arbitrary request headers can no longer grow them without limit. They now use an `LRUSet`, so the eldest entries are removed when the limit is reached.
+* `XMLSitemapURLSet.MAX_FILE_SIZE` was increased from 10 MB to 50 MB, according to the current sitemaps.org specification
+* Fixed the "deflate" response encoding in `ResponseHelper.getBestSuitableOutputStream`: it now writes a zlib stream (`DeflaterOutputStream`) instead of a ZIP archive that clients could not decode
+* Fixed `ServletContextPathHolder.hasServletContextPath ()` checking the custom context path instead of the servlet context path
+* `SafeHttpServletRequest.getContextPath ()` and `RequestHelper.getRequestURIDecoded` no longer throw an exception if the context path holder is not initialised
+* Fixed `LoggingHttpServletRequestWrapper.getParameter` returning the string `"null"` instead of `null` for a missing parameter
+* `LoggingFilter` now logs the client address instead of the server address as the sender
+* `LoggingHttpServletResponseWrapper` now reuses one `PrintWriter` and flushes it before reading the content, so that output written via `getWriter ()` is no longer lost
+* `LoggingServletInputStream.isFinished ()` now only returns `true` once all content was read
+* Fixed the `If-Unmodified-Since` handling of `XServletHandlerToSimpleHandler` according to RFC 9110 section 13.1.4: a resource modified after the provided date now results in `412 Precondition Failed`, an unmodified resource is processed normally (previously both cases could result in `304 Not Modified`). It is now evaluated before `If-Modified-Since` and `If-None-Match` (RFC 9110 section 13.2.2).
+* `IXServletLowLevelFilter.afterRequest` is now called as documented, even if `beforeRequest` returned `BREAK`
+* `FileSizeLimitExceededException` now contains the correct file name
+* Fixed the debug connection manager of `HttpClientFactory` ignoring the configured connection request timeout
+* Fixed a `NullPointerException` in `HttpClientHelper.createCredentials (HttpProxyConfig)` if only a password but no user name is configured
+* Fixed `NetworkPortHelper.checkPortOpen` never returning `PORT_IS_CLOSED` for a refused connection, and a possible `NullPointerException` there
+* `NaptrResolver.getAppliedNAPTRRegEx` now returns `null` for an invalid regular expression or replacement from DNS, instead of throwing an exception
+* `DNSResolver.dnsResolve` now returns `null` for hosts that only resolve to an IPv6 address, instead of a wrong IPv4 address
+* Fixed SCP downloads reading past the end of a file entry, which could make the transfer hang. SCP writes exceeding the declared file size are now rejected.
+* `ScpConnection`, `ScpFileInputStream` and `ScpFileOutputStream` no longer leak the SSH session if opening or closing fails
+* `ScpFile.copyTo (File)` now applies the remote file mode after the local file was created
+* Fixed `ChannelSftpHelper.mkdir` creating relative directories under a duplicated working directory path
+* `TunnelConnectionManager.close ()` no longer throws a `NullPointerException` if no tunnel connections were set, and session factories for shared path prefixes are now reused
+* Reading back an email without a sender (e.g. from the failed mail queue) no longer throws a `NullPointerException`
+* `MailAPI.queueMails` no longer throws a `NullPointerException` if queuing failed without an exception (e.g. on thread interruption)
+* Generic SMTP send errors are now logged with the full exception instead of only its cause
+* `EmailGlobalSettings.enableJavaxMailDebugging` now targets the Angus Mail loggers and `isJavaxMailDebuggingEnabled ()` no longer throws a `NullPointerException`
+* `XMLSitemapURL` now rejects a NaN priority and no longer writes the priority in scientific notation (e.g. `1.0E-4`), which is not a valid `xs:decimal`
+* `UserAgent.toString ()` now includes the Konqueror information
+* Fixed various typos and copy-paste errors in Javadoc, log messages and documentation
 
 v11.4.8 - 2026-10-23
 * `UnifiedResponse` now also sends the `Cache-Control` header for non-error status codes without content (e.g. `304 Not Modified` or `204 No Content`).

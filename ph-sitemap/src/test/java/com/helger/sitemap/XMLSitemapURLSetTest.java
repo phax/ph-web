@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.helger.base.string.StringHelper;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.diagnostics.error.list.IErrorList;
 import com.helger.io.resource.ClassPathResource;
@@ -97,7 +98,11 @@ public final class XMLSitemapURLSetTest
 
     // Build a very lengthy item
     // Use a time with 3 digit milliseconds for known length
-    final XMLSitemapURL aLongURL = new XMLSitemapURL (ReadOnlyURL.of ("http://www.myverlonghostnamethatisunreasoanble.com/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/directory/filename?param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value&param=value#anchor"),
+    final XMLSitemapURL aLongURL = new XMLSitemapURL (ReadOnlyURL.of ("http://www.myverlonghostnamethatisunreasoanble.com/" +
+                                                                         StringHelper.getRepeated ("directory/", 100) +
+                                                                         "filename?" +
+                                                                         StringHelper.getRepeated ("param=value&", 50) +
+                                                                         "last=value#anchor"),
                                                       PDTFactory.getCurrentLocalDateTime ().withNano (123_000_000),
                                                       EXMLSitemapChangeFequency.NEVER,
                                                       Double.valueOf (1d / 9));
@@ -105,7 +110,7 @@ public final class XMLSitemapURLSetTest
 
     // How many of the lengthy items are needed to force an overflow?
     final int nExceedCount = ((XMLSitemapURLSet.MAX_FILE_SIZE - nEmptyLength) / nURLLength) + 1;
-    assertEquals (17050, nExceedCount);
+    assertEquals (26084, nExceedCount);
     assertTrue (nExceedCount < XMLSitemapURLSet.MAX_URLS_PER_FILE);
 
     // Add so many entries, that the limit is not exceeded

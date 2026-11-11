@@ -36,6 +36,7 @@ import com.helger.http.header.HttpHeaderMap;
 import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.ServletContextPathHolder;
 import com.helger.servlet.annotation.IsOffline;
+import com.helger.servlet.logging.SensitiveHeaderHelper;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -135,6 +136,7 @@ public final class RequestLogger
                                                @NonNull final StringBuilder aSB)
   {
     aSB.append ("Headers:\n");
+    // Also iterate the sensitive headers - we want all for debugging
     aRequestHeaderMap.forEachHeaderLine (x -> aSB.append ("  ").append (x).append ('\n'), true);
   }
 
@@ -182,7 +184,14 @@ public final class RequestLogger
     final Cookie [] aCookies = aSafeHttpRequest.getCookies ();
     if (aCookies != null)
       for (final Cookie aCookie : aCookies)
-        aSB.append ("  ").append (aCookie.getName ()).append (" = ").append (getCookieValue (aCookie)).append ('\n');
+      {
+        // Don't log the cookie values - they may contain the session ID
+        aSB.append ("  ")
+           .append (aCookie.getName ())
+           .append (" = ")
+           .append (SensitiveHeaderHelper.MASKED_VALUE)
+           .append ('\n');
+      }
   }
 
   @NonNull

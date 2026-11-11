@@ -47,6 +47,7 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
   private static final String ATTR_CONNECTIONTIMEOUT = "connectiontimeout";
   private static final String ATTR_TIMEOUT = "timeout";
   private static final String ATTR_DEBUG_SMTP = "debugsmtp";
+  private static final String ATTR_DEBUG_SMTP_AUTH = "debugsmtpauth";
 
   @NonNull
   public static IMicroElement convertToMicroElementStatic (@NonNull final ISMTPSettings aSMTPSettings,
@@ -64,6 +65,7 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
     eSMTPSettings.setAttribute (ATTR_CONNECTIONTIMEOUT, aSMTPSettings.getConnectionTimeoutMilliSecs ());
     eSMTPSettings.setAttribute (ATTR_TIMEOUT, aSMTPSettings.getTimeoutMilliSecs ());
     eSMTPSettings.setAttribute (ATTR_DEBUG_SMTP, aSMTPSettings.isDebugSMTP ());
+    eSMTPSettings.setAttribute (ATTR_DEBUG_SMTP_AUTH, aSMTPSettings.isDebugSmtpAuth ());
     return eSMTPSettings;
   }
 
@@ -109,16 +111,21 @@ public final class SMTPSettingsMicroTypeConverter implements IMicroTypeConverter
     final String sDebugSMTP = eSMTPSettings.getAttributeValue (ATTR_DEBUG_SMTP);
     final boolean bDebugSMTP = StringParser.parseBool (sDebugSMTP, EmailGlobalSettings.isDebugSMTP ());
 
-    return new SMTPSettings (sHost,
-                             nPort,
-                             sUser,
-                             sPassword,
-                             aCharset,
-                             bSSLEnabled,
-                             bSTARTTLSEnabled,
-                             nConnectionTimeoutMilliSecs,
-                             nTimeoutMilliSecs,
-                             bDebugSMTP);
+    final String sDebugSmtpAuth = eSMTPSettings.getAttributeValue (ATTR_DEBUG_SMTP_AUTH);
+    final boolean bDebugSmtpAuth = StringParser.parseBool (sDebugSmtpAuth, false);
+
+    final SMTPSettings ret = new SMTPSettings (sHost,
+                                               nPort,
+                                               sUser,
+                                               sPassword,
+                                               aCharset,
+                                               bSSLEnabled,
+                                               bSTARTTLSEnabled,
+                                               nConnectionTimeoutMilliSecs,
+                                               nTimeoutMilliSecs,
+                                               bDebugSMTP);
+    ret.setDebugSmtpAuth (bDebugSmtpAuth);
+    return ret;
   }
 
   /*

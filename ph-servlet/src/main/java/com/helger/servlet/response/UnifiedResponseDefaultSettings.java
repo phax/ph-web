@@ -50,7 +50,7 @@ public final class UnifiedResponseDefaultSettings
 {
   /** By default HTTP header value unification is enabled */
   public static final boolean DEFAULT_HTTP_HEADER_VALUES_UNIFIED = true;
-  /** By default HTTP header value unification is disabled */
+  /** By default HTTP header value quoting is disabled */
   public static final boolean DEFAULT_HTTP_HEADER_VALUES_QUOTE_IF_NECESSARY = false;
 
   private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();

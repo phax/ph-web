@@ -320,8 +320,11 @@ public final class MailAPI
       if (!bWasQueued)
       {
         // Mail was not queued - put in failed mail queue
+        // The exception is null if queuing failed without an exception (e.g. on interruption)
+        final Exception aRealException = aException != null ? aException
+                                                            : new MailSendException ("Email could not be queued");
         aSMTPQueue.getFailedMailQueue ()
-                  .add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aException)));
+                  .add (new FailedMailData (aSMTPSettings, aEmailData, new MailTransportError (aRealException)));
       }
     }
     return nQueuedMails;

@@ -16,6 +16,7 @@
  */
 package com.helger.dns.resolve;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -117,14 +118,14 @@ public final class DNSResolver
    *
    * @param sHostName
    *        The host name.
-   * @return The resolved IP address as String or <code>null</code> if the host name could not be
-   *         resolved.
+   * @return The resolved IPv4 address as String or <code>null</code> if the host name could not be
+   *         resolved to an IPv4 address.
    */
   @Nullable
   public static String dnsResolve (@NonNull final String sHostName)
   {
     final InetAddress aAddress = resolveByName (sHostName);
-    if (aAddress == null)
+    if (!(aAddress instanceof Inet4Address))
       return null;
     return new IPV4Addr (aAddress.getAddress ()).getAsString ();
   }

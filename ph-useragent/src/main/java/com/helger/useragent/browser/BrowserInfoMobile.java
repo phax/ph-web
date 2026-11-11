@@ -25,7 +25,7 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.base.version.Version;
 
 /**
- * Special browser info for Web Spider user agents.
+ * Special browser info for mobile user agents.
  *
  * @author Philip Helger
  */

@@ -125,7 +125,8 @@ public final class EmailDataMicroTypeConverter implements IMicroTypeConverter <E
     final EmailData aEmailData = new EmailData (eEmailType);
 
     final IMicroElement eFrom = eEmailData.getFirstChildElement (ELEMENT_FROM);
-    aEmailData.setFrom (_readEmailAddress (eFrom));
+    if (eFrom != null)
+      aEmailData.setFrom (_readEmailAddress (eFrom));
 
     for (final IMicroElement eReplyTo : eEmailData.getAllChildElements (ELEMENT_REPLYTO))
       aEmailData.replyTo ().add (_readEmailAddress (eReplyTo));

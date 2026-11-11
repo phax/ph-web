@@ -120,6 +120,21 @@ public interface ISMTPSettings
   boolean isDebugSMTP ();
 
   /**
+   * Check if the SMTP authentication exchange should also be logged. This is only relevant if
+   * {@link #isDebugSMTP()} is <code>true</code>.<br>
+   * <b>Attention:</b> if enabled, the credentials (user name and password, only Base64 encoded) are
+   * written to the debug output. Use for local debugging only.
+   *
+   * @return <code>true</code> to also debug the SMTP authentication. By default this is
+   *         <code>false</code>.
+   * @since 11.5.0
+   */
+  default boolean isDebugSmtpAuth ()
+  {
+    return false;
+  }
+
+  /**
    * @return <code>true</code> if the minimum number of fields are defined, that are required for
    *         sending.
    */

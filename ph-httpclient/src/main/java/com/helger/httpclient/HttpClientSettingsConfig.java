@@ -407,7 +407,7 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return The interval in which a retry should happen. Only relevant is retry count &gt; 0.
+     * @return The interval in which a retry should happen. Only relevant if retry count &gt; 0.
      * @see #getRetryCount()
      */
     @Nullable
@@ -1140,8 +1140,7 @@ public class HttpClientSettingsConfig
    *        The {@link IConfig} object to used as the source of the values. May not be
    *        <code>null</code>.
    * @param aPrefixes
-   *        The configuration prefixes to be used. If this value may neither be <code>null</code>
-   *        nor empty, it will be used as the constant prefix.
+   *        The configuration prefixes to be used. May neither be <code>null</code> nor empty.
    */
   public static final void assignConfigValues (@NonNull final HttpClientSettings aHCS,
                                                @NonNull final IConfigWithFallback aConfig,

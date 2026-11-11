@@ -17,14 +17,13 @@
 package com.helger.servlet.logging;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
 
 class LoggingServletInputStream extends AbstractServletInputStream
 {
-  private final InputStream m_aIS;
+  private final NonBlockingByteArrayInputStream m_aIS;
 
   LoggingServletInputStream (final byte [] content)
   {
@@ -34,7 +33,7 @@ class LoggingServletInputStream extends AbstractServletInputStream
   @Override
   public boolean isFinished ()
   {
-    return true;
+    return m_aIS.available () == 0;
   }
 
   @Override

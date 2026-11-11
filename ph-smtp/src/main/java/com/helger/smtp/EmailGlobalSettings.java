@@ -415,8 +415,8 @@ public final class EmailGlobalSettings
    */
   public static void enableJavaxMailDebugging (final boolean bDebug)
   {
-    java.util.logging.Logger.getLogger ("com.sun.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
-    java.util.logging.Logger.getLogger ("com.sun.mail.smtp.protocol").setLevel (bDebug ? Level.FINEST : Level.INFO);
+    java.util.logging.Logger.getLogger ("org.eclipse.angus.mail.smtp").setLevel (bDebug ? Level.FINEST : Level.INFO);
+    java.util.logging.Logger.getLogger ("org.eclipse.angus.mail.smtp.protocol").setLevel (bDebug ? Level.FINEST : Level.INFO);
     SystemProperties.setPropertyValue ("mail.socket.debug", bDebug);
     SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVA_SECURITY_DEBUG, bDebug ? "certpath" : null);
     SystemProperties.setPropertyValue (CSystemProperty.SYSTEM_PROPERTY_JAVAX_NET_DEBUG, bDebug ? "trustmanager" : null);
@@ -427,7 +427,7 @@ public final class EmailGlobalSettings
    */
   public static boolean isJavaxMailDebuggingEnabled ()
   {
-    return java.util.logging.Logger.getLogger ("com.sun.mail.smtp").getLevel ().equals (Level.FINEST);
+    return Level.FINEST.equals (java.util.logging.Logger.getLogger ("org.eclipse.angus.mail.smtp").getLevel ());
   }
 
   /**

@@ -51,7 +51,7 @@ public final class UserAgentDecryptor
    *
    * @param sUserAgent
    *        The user agent string to parse.
-   * @return A list than can contain {@link ReadOnlyPair}, {@link String} and {@link ICommonsList}
+   * @return A list that can contain {@link UsetAgentKeyValuePair}, {@link String} and {@link ICommonsList}
    *         of String objects.
    */
   @NonNull

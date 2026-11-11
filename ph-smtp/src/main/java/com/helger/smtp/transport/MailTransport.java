@@ -187,7 +187,8 @@ public final class MailTransport
 
     // Debug flags
     ret.put ("mail.debug", Boolean.toString (aSettings.isDebugSMTP ()));
-    ret.put ("mail.debug.auth", Boolean.toString (aSettings.isDebugSMTP ()));
+    // Only log the authentication (incl. credentials) if explicitly enabled
+    ret.put ("mail.debug.auth", Boolean.toString (aSettings.isDebugSMTP () && aSettings.isDebugSmtpAuth ()));
 
     return ret;
   }
@@ -293,11 +294,11 @@ public final class MailTransport
 
             // Main transmit - always throws an exception
             aTransport.sendMessage (aMimeMessage, aMimeMessage.getAllRecipients ());
-            throw new IllegalStateException ("Never expected to come beyong sendMessage!");
+            throw new IllegalStateException ("Never expected to come beyond sendMessage!");
           }
           catch (final SendFailedException ex)
           {
-            if (EmailGlobalSettings.isDebugSMTP ())
+            if (m_aSMTPSettings.isDebugSMTP ())
               LOGGER.error ("Error send mail - SendFailedException", ex);
 
             /*
@@ -382,7 +383,7 @@ public final class MailTransport
           }
           catch (final MessagingException ex)
           {
-            if (EmailGlobalSettings.isDebugSMTP ())
+            if (m_aSMTPSettings.isDebugSMTP ())
               LOGGER.error ("Error send mail - MessagingException", ex);
 
             final ICommonsOrderedSet <MailSendDetails> aInvalid = new CommonsLinkedHashSet <> ();

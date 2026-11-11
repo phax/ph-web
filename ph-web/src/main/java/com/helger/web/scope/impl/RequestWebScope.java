@@ -372,6 +372,10 @@ public class RequestWebScope extends AbstractScope implements IRequestWebScope
     for (final Object o : params ().values ())
       if (o instanceof final IFileItem aFileItem)
         aFileItem.onEndOfRequest ();
+      else
+        if (o instanceof final IFileItem [] aFileItems)
+          for (final IFileItem aFileItem : aFileItems)
+            aFileItem.onEndOfRequest ();
 
     if (ScopeHelper.isDebugRequestScopeLifeCycle ())
       LOGGER.info ("Destroyed request web scope '" + getID () + "' of class " + ClassHelper.getClassLocalName (this),

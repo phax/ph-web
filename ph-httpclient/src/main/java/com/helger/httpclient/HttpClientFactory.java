@@ -140,7 +140,7 @@ public class HttpClientFactory implements IHttpClientProvider
     public LeaseRequest lease (final String id, final HttpRoute route, final Timeout requestTimeout, final Object state)
     {
       LOGGER.info (m_sPrefix + "lease(" + id + ", " + route + ", " + requestTimeout + ", " + state + ")");
-      return m_aConnMgr.lease (id, route, state);
+      return m_aConnMgr.lease (id, route, requestTimeout, state);
     }
 
     public void connect (final ConnectionEndpoint endpoint,
@@ -240,7 +240,7 @@ public class HttpClientFactory implements IHttpClientProvider
 
     public void upgrade (final AsyncConnectionEndpoint endpoint, final Object attachment, final HttpContext context)
     {
-      LOGGER.info (m_sPrefix + "release(" + endpoint + ", " + attachment + ", " + context + ")");
+      LOGGER.info (m_sPrefix + "upgrade(" + endpoint + ", " + attachment + ", " + context + ")");
       m_aConnMgr.upgrade (endpoint, attachment, context);
     }
   }

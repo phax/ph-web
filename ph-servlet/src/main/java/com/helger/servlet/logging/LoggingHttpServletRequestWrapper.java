@@ -94,7 +94,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     final String [] aValues = m_aParameterMap.get (sName);
     if (aValues != null && aValues.length > 0)
       return aValues[0];
-    return Arrays.toString (aValues);
+    return null;
   }
 
   @Override

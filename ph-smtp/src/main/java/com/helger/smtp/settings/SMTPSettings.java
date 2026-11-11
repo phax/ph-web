@@ -51,6 +51,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
   private long m_nConnectionTimeoutMilliSecs;
   private long m_nTimeoutMilliSecs;
   private boolean m_bDebugSMTP;
+  private boolean m_bDebugSmtpAuth = false;
 
   /**
    * Constructor which copies settings from another object
@@ -70,6 +71,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
           aOther.getConnectionTimeoutMilliSecs (),
           aOther.getTimeoutMilliSecs (),
           aOther.isDebugSMTP ());
+    setDebugSmtpAuth (aOther.isDebugSmtpAuth ());
   }
 
   /**
@@ -342,6 +344,33 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
     return EChange.CHANGED;
   }
 
+  @Override
+  public boolean isDebugSmtpAuth ()
+  {
+    return m_bDebugSmtpAuth;
+  }
+
+  /**
+   * Enable or disable the debugging of the SMTP authentication. This is only relevant if
+   * {@link #isDebugSMTP()} is <code>true</code>.<br>
+   * <b>Attention:</b> if enabled, the credentials (user name and password, only Base64 encoded) are
+   * written to the debug output. Use for local debugging only.
+   *
+   * @param bDebugSmtpAuth
+   *        <code>true</code> to also debug the SMTP authentication, <code>false</code> to disable
+   *        it.
+   * @return {@link EChange}
+   * @since 11.5.0
+   */
+  @NonNull
+  public EChange setDebugSmtpAuth (final boolean bDebugSmtpAuth)
+  {
+    if (m_bDebugSmtpAuth == bDebugSmtpAuth)
+      return EChange.UNCHANGED;
+    m_bDebugSmtpAuth = bDebugSmtpAuth;
+    return EChange.CHANGED;
+  }
+
   public boolean areRequiredFieldsSet ()
   {
     return StringHelper.isNotEmpty (m_sHostName);
@@ -370,7 +399,8 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
            m_bSTARTTLSEnabled == rhs.m_bSTARTTLSEnabled &&
            m_nConnectionTimeoutMilliSecs == rhs.m_nConnectionTimeoutMilliSecs &&
            m_nTimeoutMilliSecs == rhs.m_nTimeoutMilliSecs &&
-           m_bDebugSMTP == rhs.m_bDebugSMTP;
+           m_bDebugSMTP == rhs.m_bDebugSMTP &&
+           m_bDebugSmtpAuth == rhs.m_bDebugSmtpAuth;
   }
 
   @Override
@@ -386,6 +416,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
                                        .append (m_nConnectionTimeoutMilliSecs)
                                        .append (m_nTimeoutMilliSecs)
                                        .append (m_bDebugSMTP)
+                                       .append (m_bDebugSmtpAuth)
                                        .getHashCode ();
   }
 
@@ -402,6 +433,7 @@ public class SMTPSettings implements ISMTPSettings, ICloneable <SMTPSettings>
                                        .append ("connectionTimeout", m_nConnectionTimeoutMilliSecs)
                                        .append ("timeout", m_nTimeoutMilliSecs)
                                        .append ("debugSMTP", m_bDebugSMTP)
+                                       .append ("debugSmtpAuth", m_bDebugSmtpAuth)
                                        .getToString ();
   }
 }

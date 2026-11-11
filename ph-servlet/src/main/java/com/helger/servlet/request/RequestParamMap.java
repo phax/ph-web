@@ -72,8 +72,8 @@ public class RequestParamMap implements IRequestParamMap
   {}
 
   /**
-   * This constructor is private, because it does not call the {@link #put(String, Object)} method
-   * which does the main string parsing!
+   * Note: this constructor does not call the {@link #put(String, Object)} method which does the
+   * main string parsing!
    *
    * @param aMap
    *        The map to use. May not be <code>null</code>.

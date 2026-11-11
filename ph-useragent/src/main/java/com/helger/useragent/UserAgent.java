@@ -411,7 +411,7 @@ public class UserAgent implements IUserAgent
     {
       final String sApp = ApplicationUserAgentManager.getFromUserAgent (m_sFullUserAgent);
       if (sApp == null)
-        m_aInfoApplication = BrowserInfoSpider.IS_IT_NOT_SPIDER;
+        m_aInfoApplication = BrowserInfo.IS_IT_NOT;
       else
         m_aInfoApplication = new BrowserInfo (EBrowserType.APPLICATION, Version.DEFAULT_VERSION);
     }
@@ -430,6 +430,7 @@ public class UserAgent implements IUserAgent
                                        .append ("Chrome", getInfoChrome ())
                                        .append ("Vivaldi", getInfoVivaldi ())
                                        .append ("Lynx", getInfoLynx ())
+                                       .append ("Konqueror", getInfoKonqueror ())
                                        .append ("Gecko based", getInfoGeckoBased ())
                                        .append ("Webkit based", getInfoWebKitBased ())
                                        .append ("Mobile", getInfoMobile ())

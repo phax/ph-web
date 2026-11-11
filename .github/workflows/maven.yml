@@ -15,7 +15,8 @@
 # limitations under the License.
 #
 
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# This workflow builds the project with Maven on Java 17, 21 and 25 and deploys SNAPSHOT versions to Maven Central
+# on pushes to the default branch (Java 17 build only)
 # For more information see: https://github.com/actions/setup-java#apache-maven-with-a-settings-path
 
 name: Maven deploy Snapshots

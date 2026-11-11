@@ -110,7 +110,7 @@ public class MultipartStream
   public static final byte DASH = 0x2D;
 
   /**
-   * The maximum length of <code>header-part</code> that will be processed (20 kilobytes = 10240
+   * The maximum length of <code>header-part</code> that will be processed (20 kilobytes = 20480
    * bytes.).
    */
   public static final int HEADER_PART_SIZE_MAX = 20 * CGlobal.BYTES_PER_KILOBYTE;
@@ -218,15 +218,19 @@ public class MultipartStream
                           final int nBufSize,
                           final MultipartProgressNotifier aNotifier)
   {
+    // We prepend CR/LF to the boundary to chop trailing CR/LF from
+    // body-data tokens.
+    m_nBoundaryLength = aBoundary.length + BOUNDARY_PREFIX.length;
+    if (nBufSize < m_nBoundaryLength + 1)
+      throw new IllegalArgumentException ("The buffer size specified for the MultipartStream is too small for the boundary of length " +
+                                          aBoundary.length);
+
     m_aIS = aIS;
     m_nBufSize = nBufSize;
     m_aBuffer = new byte [nBufSize];
     m_aNotifier = aNotifier;
 
-    // We prepend CR/LF to the boundary to chop trailing CR/LF from
-    // body-data tokens.
-    m_aBoundary = new byte [aBoundary.length + BOUNDARY_PREFIX.length];
-    m_nBoundaryLength = aBoundary.length + BOUNDARY_PREFIX.length;
+    m_aBoundary = new byte [m_nBoundaryLength];
     m_nKeepRegion = m_aBoundary.length;
     System.arraycopy (BOUNDARY_PREFIX, 0, m_aBoundary, 0, BOUNDARY_PREFIX.length);
     System.arraycopy (aBoundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, aBoundary.length);

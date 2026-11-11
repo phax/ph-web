@@ -60,7 +60,7 @@ public final class ChannelSftpHelper
 
       if ((aAttrs.getFlags () & SftpATTRS.SSH_FILEXFER_ATTR_PERMISSIONS) == 0)
       {
-        LOGGER.warn ("Unexpected directory flag: " + aAttrs.getFlags () + " - persmissions not present?");
+        LOGGER.warn ("Unexpected directory flag: " + aAttrs.getFlags () + " - permissions not present?");
         return false;
       }
 
@@ -96,12 +96,8 @@ public final class ChannelSftpHelper
       // Special handling for first part
       if (!StringHelper.startsWith (sDirName, '/'))
       {
+        // Keep the leading slash, so that the result is an absolute path
         String sPwd = aChannel.pwd ();
-
-        // Avoid leading slash
-        if (StringHelper.startsWith (sPwd, '/'))
-          sPwd = sPwd.substring (1);
-
         if (StringHelper.isNotEmpty (sPwd))
         {
           // Append only if something is present

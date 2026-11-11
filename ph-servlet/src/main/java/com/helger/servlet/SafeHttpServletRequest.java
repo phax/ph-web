@@ -99,7 +99,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   {
     super (aHttpRequest);
     ValueEnforcer.isFalse (() -> aHttpRequest instanceof SafeHttpServletRequest,
-                           "The wrapped HttpServletRequest must nor be a Safe one");
+                           "The wrapped HttpServletRequest must not be a Safe one");
     m_aDelegate = aHttpRequest;
   }
 
@@ -822,7 +822,7 @@ public class SafeHttpServletRequest extends HttpServletRequestWrapper
   @NonNull
   public String getContextPath ()
   {
-    return getContextPath (ServletContextPathHolder.getContextPath ());
+    return getContextPath (ServletContextPathHolder.getContextPathOrNull ());
   }
 
   @Nullable

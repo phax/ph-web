@@ -139,7 +139,7 @@ public class ProxySelectorProxySettingsManager extends ProxySelector
   public void connectFailed (@NonNull final URI aURI, @NonNull final SocketAddress aAddr, @NonNull final IOException ex)
   {
     ValueEnforcer.notNull (aURI, "URI");
-    ValueEnforcer.notNull (aAddr, "SockerAddr");
+    ValueEnforcer.notNull (aAddr, "SocketAddr");
     ValueEnforcer.notNull (ex, "Exception");
 
     LOGGER.info ("Connection to '" + aURI + "' using proxy " + aAddr + " failed", ex);

@@ -27,6 +27,7 @@ import com.helger.base.tostring.ToStringGenerator;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.http.EHttpMethod;
 import com.helger.http.EHttpVersion;
+import com.helger.mime.CMimeType;
 import com.helger.servlet.SafeHttpServletRequest;
 import com.helger.servlet.async.AsyncServletRunnerDefault;
 import com.helger.servlet.async.ExtAsyncContext;
@@ -131,11 +132,16 @@ public final class XServletAsyncHandler implements IXServletHandler
 
         try
         {
-          final String sErrorMsg = "Internal error processing your request. Please try again later. Technical details: " +
-                                   ex.getClass ().getName () +
-                                   ":" +
-                                   ex.getMessage ();
-          aExtAsyncCtx.getResponse ().getWriter ().write (sErrorMsg);
+          final HttpServletResponse aAsyncResponse = aExtAsyncCtx.getResponse ();
+          if (!aAsyncResponse.isCommitted ())
+          {
+            // Don't expose technical details to the client
+            // Keep already set headers (e.g. security headers from filters)
+            aAsyncResponse.resetBuffer ();
+            aAsyncResponse.setStatus (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            aAsyncResponse.setContentType (CMimeType.TEXT_PLAIN.getAsString ());
+            aAsyncResponse.getWriter ().write ("Internal error processing your request. Please try again later.");
+          }
         }
         catch (final Exception ex2)
         {

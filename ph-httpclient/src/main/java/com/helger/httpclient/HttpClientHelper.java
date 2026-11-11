@@ -134,7 +134,7 @@ public final class HttpClientHelper
   @Nullable
   public static Credentials createCredentials (@Nullable final HttpProxyConfig aProxyConfig)
   {
-    if (aProxyConfig != null && aProxyConfig.hasUserNameOrPassword ())
+    if (aProxyConfig != null && StringHelper.isNotEmpty (aProxyConfig.getUserName ()))
       return new UsernamePasswordCredentials (aProxyConfig.getUserName (), aProxyConfig.getPasswordAsCharArray ());
     return null;
   }

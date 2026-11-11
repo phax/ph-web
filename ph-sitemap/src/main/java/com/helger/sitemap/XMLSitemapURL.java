@@ -16,6 +16,7 @@
  */
 package com.helger.sitemap;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.jspecify.annotations.NonNull;
@@ -81,7 +82,12 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
   {
     ValueEnforcer.notNull (aLocation, "Location");
     if (aPriority != null)
+    {
+      // NaN would pass the range check
+      if (Double.isNaN (aPriority.doubleValue ()))
+        throw new IllegalArgumentException ("Priority must be a number");
       ValueEnforcer.isBetweenInclusive (aPriority.doubleValue (), "Priority", MIN_PRIORITY, MAX_PRIORITY);
+    }
 
     m_sLocation = aLocation.getAsString ();
     if (m_sLocation.length () > LOCATION_MAX_LENGTH)
@@ -90,7 +96,8 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
     m_sLastMod = PDTWebDateHelper.getAsStringXSD (m_aLastModification);
     m_eChangeFreq = eChangeFreq;
     m_dPriority = aPriority == null ? DEFAULT_PRIORITY : aPriority.doubleValue ();
-    m_sPriority = aPriority == null ? null : aPriority.toString ();
+    // Avoid the scientific notation (e.g. "1.0E-4") which is not a valid xs:decimal
+    m_sPriority = aPriority == null ? null : BigDecimal.valueOf (aPriority.doubleValue ()).toPlainString ();
     m_nOutputLength = _buildEstimatedOutputLength ();
   }
 
@@ -125,7 +132,7 @@ public class XMLSitemapURL implements IHasLastModificationDateTime
     {
       // 23 == length of formatted date
       // YYYY-MM-DDThh:mm:ss.sss
-      // The milliseconds have beteween 1 and 9 fraction digits
+      // The milliseconds have between 1 and 9 fraction digits
       ret += _getTagOutputLength (ELEMENT_LASTMOD) + m_sLastMod.length ();
     }
 

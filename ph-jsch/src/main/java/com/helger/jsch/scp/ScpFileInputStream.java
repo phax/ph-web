@@ -74,7 +74,13 @@ public class ScpFileInputStream extends InputStream
   {
     if (LOGGER.isDebugEnabled ())
       LOGGER.debug ("Closing ScpInputStream");
-    m_aIS.closeEntry ();
-    m_aIS.close ();
+    try
+    {
+      m_aIS.closeEntry ();
+    }
+    finally
+    {
+      m_aIS.close ();
+    }
   }
 }

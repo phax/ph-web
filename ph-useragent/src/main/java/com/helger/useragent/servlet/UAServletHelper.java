@@ -102,11 +102,11 @@ public final class UAServletHelper
   }
 
   /**
-   * Get the user agent object from the given HTTP request.
+   * Get the UA profile object from the given HTTP request.
    *
    * @param aHttpRequest
    *        The HTTP request to extract the information from.
-   * @return A non-<code>null</code> user agent object.
+   * @return A non-<code>null</code> UA profile object.
    */
   @NonNull
   public static UAProfile getUAProfile (@NonNull final HttpServletRequest aHttpRequest)

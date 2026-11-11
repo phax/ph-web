@@ -44,7 +44,7 @@ import jakarta.mail.internet.MimeMessage;
  */
 public class LoggingTransportListener implements IEmailDataTransportListener
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingConnectionListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (LoggingTransportListener.class);
 
   private final IErrorLevel m_aErrorLevel;
 

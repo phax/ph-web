@@ -70,6 +70,12 @@ public final class SMTPSettingsTest
     assertEquals (5000, aSettings.getConnectionTimeoutMilliSecs ());
     assertEquals (1200, aSettings.getTimeoutMilliSecs ());
     assertFalse (aSettings.isDebugSMTP ());
+    assertFalse (aSettings.isDebugSmtpAuth ());
+    XMLTestHelper.testMicroTypeConversion (aSettings);
+
+    aSettings.setDebugSmtpAuth (true);
+    assertTrue (aSettings.isDebugSmtpAuth ());
+    assertTrue (aSettings.getClone ().isDebugSmtpAuth ());
     XMLTestHelper.testMicroTypeConversion (aSettings);
 
     aSettings = new SMTPSettings ("mail.example.com");

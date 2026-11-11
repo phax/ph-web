@@ -47,6 +47,7 @@ import com.helger.base.io.stream.StreamHelper;
 import com.helger.base.numeric.mutable.MutableLong;
 import com.helger.base.state.EChange;
 import com.helger.base.string.StringHelper;
+import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsLinkedHashMap;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsMap;
@@ -65,6 +66,7 @@ import com.helger.mime.CMimeType;
 import com.helger.mime.IMimeType;
 import com.helger.mime.parse.MimeTypeParser;
 import com.helger.servlet.ServletSettings;
+import com.helger.servlet.logging.SensitiveHeaderHelper;
 import com.helger.servlet.request.RequestHelper;
 import com.helger.url.ISimpleURL;
 import com.helger.url.protocol.URLProtocolRegistry;
@@ -84,7 +86,7 @@ public class UnifiedResponse
 {
   /** By default content is not allowed on redirect */
   public static final boolean DEFAULT_ALLOW_CONTENT_ON_REDIRECT = false;
-  /** By default content is not allowed for status codes */
+  /** By default content is allowed for status codes */
   public static final boolean DEFAULT_ALLOW_CONTENT_ON_STATUS_CODE = true;
   /** Default content disposition type is Attachment */
   public static final EContentDispositionType DEFAULT_CONTENT_DISPOSITION_TYPE = EContentDispositionType.ATTACHMENT;
@@ -155,7 +157,7 @@ public class UnifiedResponse
    */
   private boolean m_bAlreadyEmittedRequestHeaders = false;
 
-  /** This maps keeps all the response headers for later emitting. */
+  /** This maps keeps all the request headers for later emitting. */
   private final HttpHeaderMap m_aRequestHeaderMap;
 
   /**
@@ -242,13 +244,18 @@ public class UnifiedResponse
       if (!m_bAlreadyEmittedRequestHeaders)
       {
         final StringBuilder aSB = new StringBuilder ();
+        // Don't log credentials or cookie values
         aSB.append ("  Request Headers: " +
-                    m_aRequestHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+                    SensitiveHeaderHelper.getMaskedHeaderMap (m_aRequestHeaderMap)
+                                         .getAllHeaders ()
+                                         .getSortedByKey (Comparator.naturalOrder ()));
         if (m_aCookies != null && m_aCookies.isNotEmpty ())
-          aSB.append ("  Request Cookies: " + m_aCookies.getSortedByKey (Comparator.naturalOrder ()));
+          aSB.append ("\n  Response Cookie names: " + m_aCookies.copyOfKeySet ().getSorted (Comparator.naturalOrder ()));
         if (m_aResponseHeaderMap.isNotEmpty ())
           aSB.append ("\n  Response Headers: " +
-                      m_aResponseHeaderMap.getAllHeaders ().getSortedByKey (Comparator.naturalOrder ()));
+                      SensitiveHeaderHelper.getMaskedHeaderMap (m_aResponseHeaderMap)
+                                           .getAllHeaders ()
+                                           .getSortedByKey (Comparator.naturalOrder ()));
 
         LOGGER.warn (aSB.toString ());
         m_bAlreadyEmittedRequestHeaders = true;
@@ -624,10 +631,12 @@ public class UnifiedResponse
     ValueEnforcer.notEmpty (sFilename, "Filename");
 
     // Ensure that a valid filename is used
+    // -> Replace all control characters (incl. CR and LF) to avoid header injection
+    final String sFilenameNoCtrl = RegExHelper.stringReplacePattern ("[\\x00-\\x1F\\x7F]", sFilename, "_");
     // -> Strip all paths and replace all invalid characters
-    final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilename));
+    final String sFilenameToUse = FilenameHelper.getWithoutPath (FilenameHelper.getAsSecureValidFilename (sFilenameNoCtrl));
     if (!sFilename.equals (sFilenameToUse))
-      logWarn ("Content-Dispostion filename was internally modified from '" +
+      logWarn ("Content-Disposition filename was internally modified from '" +
                sFilename +
                "' to '" +
                sFilenameToUse +
@@ -640,11 +649,11 @@ public class UnifiedResponse
       if (m_aContentDispositionEncoder == null)
         m_aContentDispositionEncoder = StandardCharsets.ISO_8859_1.newEncoder ();
       if (!m_aContentDispositionEncoder.canEncode (sFilenameToUse))
-        logError ("Content-Dispostion filename '" + sFilenameToUse + "' cannot be encoded to ISO-8859-1!");
+        logError ("Content-Disposition filename '" + sFilenameToUse + "' cannot be encoded to ISO-8859-1!");
     }
     // Are we overwriting?
     if (m_sContentDispositionFilename != null)
-      logInfo ("Overwriting Content-Dispostion filename from '" +
+      logInfo ("Overwriting Content-Disposition filename from '" +
                m_sContentDispositionFilename +
                "' to '" +
                sFilenameToUse +
@@ -987,7 +996,7 @@ public class UnifiedResponse
     else
     {
       if (m_bWarnOnDuplicateCookies && m_aCookies.containsKey (sKey))
-        logWarn ("Overwriting cookie '" + sKey + "' with the new value '" + aCookie.getValue () + "'");
+        logWarn ("Overwriting cookie '" + sKey + "' with a new value");
     }
     m_aCookies.put (sKey, aCookie);
     return this;
@@ -1113,9 +1122,8 @@ public class UnifiedResponse
   }
 
   /**
-   * When specifying <code>false</code>, this method uses a special response header to prevent
-   * certain browsers from MIME-sniffing a response away from the declared content-type. When
-   * passing <code>true</code>, that header is removed.
+   * Set the HTTP Strict Transport Security (HSTS) response header, which tells the browser to only
+   * access this host via HTTPS.
    *
    * @param nMaxAgeSeconds
    *        number of seconds, after the reception of the STS header field, during which the UA
@@ -1137,7 +1145,7 @@ public class UnifiedResponse
   }
 
   /**
-   * Remove the X-Frame-Options HTTP header if it is present.
+   * Remove the Strict-Transport-Security HTTP header if it is present.
    *
    * @return this
    * @since 6.0.5
@@ -1512,7 +1520,7 @@ public class UnifiedResponse
         if (m_aCacheControl != null)
           logInfo ("Ignoring provided Cache-Control because a redirect is specified!");
         if (m_sContentDispositionFilename != null)
-          logWarn ("Ignoring provided Content-Dispostion filename because a redirect is specified!");
+          logWarn ("Ignoring provided Content-Disposition filename because a redirect is specified!");
         if (m_aMimeType != null)
           logWarn ("Ignoring provided MimeType because a redirect is specified!");
         if (m_aCharset != null)
@@ -1581,7 +1589,7 @@ public class UnifiedResponse
         if (m_aCacheControl != null && bIsErrorStatusCode)
           logInfo ("Ignoring provided Cache-Control because an error status code is specified!");
         if (m_sContentDispositionFilename != null)
-          logWarn ("Ignoring provided Content-Dispostion filename because a status code is specified!");
+          logWarn ("Ignoring provided Content-Disposition filename because a status code is specified!");
         if (m_aMimeType != null)
           logWarn ("Ignoring provided MimeType because a status code is specified!");
         if (m_aCharset != null)

@@ -32,6 +32,7 @@ import com.helger.annotation.Nonnegative;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.string.StringReplace;
 import com.helger.collection.stack.NonBlockingStack;
 import com.helger.jsch.session.ISessionFactory;
 import com.jcraft.jsch.ChannelExec;
@@ -70,25 +71,39 @@ public class ScpConnection implements Closeable
       m_aSession.connect ();
     }
 
-    final String sCommand = _getCommand (eScpMode, eCopyMode, sPath);
-    m_aChannel = (ChannelExec) m_aSession.openChannel ("exec");
+    ChannelExec aChannel = null;
+    try
+    {
+      final String sCommand = _getCommand (eScpMode, eCopyMode, sPath);
+      aChannel = (ChannelExec) m_aSession.openChannel ("exec");
 
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("setting exec command to '" + sCommand + "'");
-    m_aChannel.setCommand (sCommand);
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("setting exec command to '" + sCommand + "'");
+      aChannel.setCommand (sCommand);
 
-    if (LOGGER.isDebugEnabled ())
-      LOGGER.debug ("connecting channel");
-    m_aChannel.connect ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("connecting channel");
+      aChannel.connect ();
 
-    m_aOS = m_aChannel.getOutputStream ();
-    m_aIS = m_aChannel.getInputStream ();
+      m_aChannel = aChannel;
+      m_aOS = aChannel.getOutputStream ();
+      m_aIS = aChannel.getInputStream ();
 
-    if (eScpMode == EScpMode.FROM)
-      _writeAck ();
-    else
-      if (eScpMode == EScpMode.TO)
-        _checkAck ();
+      if (eScpMode == EScpMode.FROM)
+        _writeAck ();
+      else
+        if (eScpMode == EScpMode.TO)
+          _checkAck ();
+    }
+    catch (final JSchException | IOException | RuntimeException ex)
+    {
+      // Don't leak the channel and the session
+      if (aChannel != null && aChannel.isConnected ())
+        aChannel.disconnect ();
+      if (m_aSession.isConnected ())
+        m_aSession.disconnect ();
+      throw ex;
+    }
   }
 
   @NonNull
@@ -105,7 +120,8 @@ public class ScpConnection implements Closeable
     };
     if (eCopyMode == ECopyMode.RECURSIVE)
       aSB.append ('r');
-    return aSB.append (' ').append (sPath).toString ();
+    // Quote the path, as it is interpreted by the remote shell
+    return aSB.append (" '").append (StringReplace.replaceAll (sPath, "'", "'\\''")).append ('\'').toString ();
   }
 
   /**
@@ -484,7 +500,9 @@ public class ScpConnection implements Closeable
       if (_isComplete ())
         return -1;
 
-      final int nBytesRead = m_aIS.read (aBuf, nOfs, nLen);
+      // Never read beyond the end of the entry
+      final int nMaxLen = (int) Math.min (nLen, m_aEntry.getSize () - m_nIOCount);
+      final int nBytesRead = m_aIS.read (aBuf, nOfs, nMaxLen);
       if (nBytesRead > 0)
         _increment (nBytesRead);
       return nBytesRead;
@@ -525,7 +543,7 @@ public class ScpConnection implements Closeable
 
     private void _increment (@Nonnegative final int n) throws IOException
     {
-      if (_isComplete ())
+      if (m_nIOCount + n > m_aEntry.getSize ())
         throw new IOException ("too many bytes written for file " + m_aEntry.getName ());
       m_nIOCount += n;
     }

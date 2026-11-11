@@ -509,7 +509,7 @@ public abstract class AbstractXServlet extends HttpServlet
       if (aFilter.beforeRequest (aHttpRequest, aHttpResponseWrapper, eHttpVersion, eHttpMethod).isBreak ())
       {
         bInvokeHandler = false;
-        return;
+        break;
       }
 
     boolean bIsHandledAsync = false;
@@ -573,7 +573,7 @@ public abstract class AbstractXServlet extends HttpServlet
         }
         catch (final ServletException | IOException ex)
         {
-          LOGGER.error ("Exception in low-level filter afterRequest of " + aFilter + " - re-thrown", ex);
+          LOGGER.error ("Exception in low-level filter afterRequest of " + aFilter + " - caught and ignored", ex);
           // Don't re-throw in finally
           // throw ex;
         }

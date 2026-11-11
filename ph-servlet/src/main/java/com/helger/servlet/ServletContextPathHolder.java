@@ -91,7 +91,7 @@ public final class ServletContextPathHolder
    */
   public static boolean hasServletContextPath ()
   {
-    return s_sCustomContextPath != null;
+    return s_sServletContextPath != null;
   }
 
   /**

@@ -41,11 +41,11 @@ import com.helger.base.url.URLHelper;
 import com.helger.cache.regex.RegExHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.CommonsHashMap;
-import com.helger.collection.commons.CommonsHashSet;
 import com.helger.collection.commons.ICommonsCollection;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.collection.commons.ICommonsMap;
 import com.helger.collection.commons.ICommonsSet;
+import com.helger.collection.map.LRUSet;
 import com.helger.http.CHttpHeader;
 
 /**
@@ -58,11 +58,20 @@ public final class UAProfileDatabase
 {
   public static final int EXPECTED_MD5_DIGEST_LENGTH = 16;
 
+  /**
+   * The maximum number of unique UA profiles that are remembered. If the limit is reached, the
+   * eldest entry is removed when a new UA profile is added. A removed UA profile that is received
+   * again is considered new and the callback is invoked again.
+   *
+   * @since 11.5.0
+   */
+  public static final int MAX_UNIQUE_UA_PROFILES = 10_000;
+
   private static final Logger LOGGER = LoggerFactory.getLogger (UAProfileDatabase.class);
 
   private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
   @GuardedBy ("RW_LOCK")
-  private static final ICommonsSet <UAProfile> UNIQUE_UA_PROFILES = new CommonsHashSet <> ();
+  private static final LRUSet <UAProfile> UNIQUE_UA_PROFILES = new LRUSet <> (MAX_UNIQUE_UA_PROFILES);
   @GuardedBy ("RW_LOCK")
   private static Consumer <? super UAProfile> s_aNewUAProfileCallback;
 

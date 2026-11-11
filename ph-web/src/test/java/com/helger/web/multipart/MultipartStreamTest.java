@@ -41,12 +41,24 @@ public final class MultipartStreamTest
     final byte [] aContents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
     final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
     final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
-    final int nBufSize = aBoundary.length;
+    // Boundary plus CR LF DASH DASH plus one byte
+    final int nBufSize = aBoundary.length + 5;
     final MultipartStream ms = new MultipartStream (aIS,
                                                     aBoundary,
                                                     nBufSize,
                                                     new MultipartProgressNotifier (null, aContents.length));
     assertNotNull (ms);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testSmallBuffer ()
+  {
+    final String sStrData = "foobar";
+    final byte [] aContents = sStrData.getBytes (StandardCharsets.ISO_8859_1);
+    final InputStream aIS = new NonBlockingByteArrayInputStream (aContents);
+    final byte [] aBoundary = BOUNDARY_TEXT.getBytes (StandardCharsets.ISO_8859_1);
+    final int nBufSize = aBoundary.length;
+    new MultipartStream (aIS, aBoundary, nBufSize, new MultipartProgressNotifier (null, aContents.length));
   }
 
   @Test

@@ -18,6 +18,7 @@ package com.helger.xservlet.handler.simple;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
@@ -117,6 +118,27 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
     {
       m_aStatsHasLastModification.increment ();
 
+      // Get the If-Unmodified-Since date header - evaluated first, see RFC 9110 section 13.2.2
+      final long nRequestIfUnmodifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_UNMODIFIED_SINCE);
+      if (nRequestIfUnmodifiedSince >= 0)
+      {
+        final LocalDateTime aRequestIfUnmodifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfUnmodifiedSince);
+        // HTTP dates have a precision of seconds only
+        if (aLastModification.truncatedTo (ChronoUnit.SECONDS).compareTo (aRequestIfUnmodifiedSince) > 0)
+        {
+          if (LOGGER.isDebugEnabled ())
+            LOGGER.debug ("Requested resource was modified after the If-Unmodified-Since date: " +
+                          aRequestScope.getPathWithinServlet ());
+
+          // Was modified since the passed time - precondition failed (RFC 9110 section 13.1.4)
+          m_aStatsModifiedIfUnmodifiedSince.increment ();
+          aUnifiedResponse.setStatus (HttpServletResponse.SC_PRECONDITION_FAILED);
+          return EContinue.BREAK;
+        }
+        // Was not modified - proceed normally
+        m_aStatsNotModifiedIfUnmodifiedSince.increment ();
+      }
+
       // Get the If-Modified-Since date header
       final long nRequestIfModifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_MODIFIED_SINCE);
       if (nRequestIfModifiedSince >= 0)
@@ -129,25 +151,10 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
 
           // Was not modified since the passed time
           m_aStatsNotModifiedIfModifiedSince.increment ();
+          aUnifiedResponse.setStatus (HttpServletResponse.SC_NOT_MODIFIED);
           return EContinue.BREAK;
         }
         m_aStatsModifiedIfModifiedSince.increment ();
-      }
-      // Get the If-Unmodified-Since date header
-      final long nRequestIfUnmodifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_UNMODIFIED_SINCE);
-      if (nRequestIfUnmodifiedSince >= 0)
-      {
-        final LocalDateTime aRequestIfUnmodifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfUnmodifiedSince);
-        if (aLastModification.compareTo (aRequestIfUnmodifiedSince) >= 0)
-        {
-          if (LOGGER.isDebugEnabled ())
-            LOGGER.debug ("Requested resource was not modified: " + aRequestScope.getPathWithinServlet ());
-
-          // Was not modified since the passed time
-          m_aStatsNotModifiedIfUnmodifiedSince.increment ();
-          return EContinue.BREAK;
-        }
-        m_aStatsModifiedIfUnmodifiedSince.increment ();
       }
       // No If-Modified-Since request header present, set the Last-Modified
       // header for later reuse
@@ -180,6 +187,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
 
               // We have a matching ETag
               m_aStatsNotModifiedIfNonMatch.increment ();
+              aUnifiedResponse.setStatus (HttpServletResponse.SC_NOT_MODIFIED);
               return EContinue.BREAK;
             }
         }
@@ -217,8 +225,7 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
       if (eHttpMethod == EHttpMethod.GET || eHttpMethod == EHttpMethod.HEAD)
         if (_handleETag (aHttpRequest, aRequestScope, aUnifiedResponse).isBreak ())
         {
-          // ETag present in request
-          aUnifiedResponse.setStatus (HttpServletResponse.SC_NOT_MODIFIED);
+          // Conditional request was answered - the status code was already set
           bExecute = false;
         }
       if (bExecute)

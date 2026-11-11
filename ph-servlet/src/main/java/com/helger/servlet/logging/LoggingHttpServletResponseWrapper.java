@@ -38,6 +38,7 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
 {
   private final LoggingServletOutpuStream m_aOS = new LoggingServletOutpuStream ();
   private final HttpServletResponse m_aDelegate;
+  private PrintWriter m_aWriter;
 
   public LoggingHttpServletResponseWrapper (@NonNull final HttpServletResponse aDelegate)
   {
@@ -56,7 +57,10 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   @NonNull
   public PrintWriter getWriter () throws IOException
   {
-    return new PrintWriter (StreamHelper.createWriter (m_aOS.m_aBAOS, _getCharset ()));
+    // Use the same writer for all calls, so that it can be flushed before the content is read
+    if (m_aWriter == null)
+      m_aWriter = new PrintWriter (StreamHelper.createWriter (m_aOS.m_aBAOS, _getCharset ()));
+    return m_aWriter;
   }
 
   @NonNull
@@ -66,9 +70,16 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
     return CharsetHelper.getCharsetFromNameOrDefault (sResponseEncoding, StandardCharsets.UTF_8);
   }
 
+  private void _flushWriter ()
+  {
+    if (m_aWriter != null)
+      m_aWriter.flush ();
+  }
+
   @NonNull
   public String getContentAsString ()
   {
+    _flushWriter ();
     return m_aOS.m_aBAOS.getAsString (_getCharset ());
   }
 
@@ -76,11 +87,13 @@ public class LoggingHttpServletResponseWrapper extends HttpServletResponseWrappe
   @ReturnsMutableCopy
   public byte [] getContentAsBytes ()
   {
+    _flushWriter ();
     return m_aOS.m_aBAOS.toByteArray ();
   }
 
   public void writeContentTo (@NonNull final OutputStream aOS) throws IOException
   {
+    _flushWriter ();
     if (!m_aDelegate.isCommitted () && m_aOS.m_aBAOS.isNotEmpty ())
       m_aOS.m_aBAOS.writeTo (aOS);
   }

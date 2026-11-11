@@ -17,6 +17,7 @@
 package com.helger.web.scope.multipart;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
 
 import org.jspecify.annotations.NonNull;
@@ -48,13 +49,22 @@ import jakarta.servlet.http.HttpServletRequest;
 public final class RequestMultipartHelper
 {
   /**
-   * The maximum size of a single upload request (in bytes). Applications that need to accept larger
-   * uploads should configure their own limit via
-   * {@link com.helger.web.fileupload.parse.AbstractFileUploadBase#setSizeMax(long)}.
+   * The default maximum size of a single upload request (in bytes). It can be changed via
+   * {@link #setMaxRequestSize(long)}.
    */
   public static final long MAX_REQUEST_SIZE = 100 * CGlobal.BYTES_PER_MEGABYTE;
 
+  /**
+   * The default maximum number of parts (files and form fields) of a single upload request. It can
+   * be changed via {@link #setMaxPartCount(long)}.
+   *
+   * @since 11.5.0
+   */
+  public static final long DEFAULT_MAX_PART_COUNT = 1_000;
+
   private static final Logger LOGGER = LoggerFactory.getLogger (RequestMultipartHelper.class);
+  private static final AtomicLong MAX_REQUEST_SIZE_CONFIGURED = new AtomicLong (MAX_REQUEST_SIZE);
+  private static final AtomicLong MAX_PART_COUNT = new AtomicLong (DEFAULT_MAX_PART_COUNT);
   private static final IFileItemFactoryProviderSPI PROVIDER;
 
   static
@@ -71,6 +81,51 @@ public final class RequestMultipartHelper
 
   private RequestMultipartHelper ()
   {}
+
+  /**
+   * @return The maximum size of a single upload request in bytes. A value &lt; 0 means unlimited.
+   *         Default is {@link #MAX_REQUEST_SIZE}.
+   * @since 11.5.0
+   */
+  public static long getMaxRequestSize ()
+  {
+    return MAX_REQUEST_SIZE_CONFIGURED.get ();
+  }
+
+  /**
+   * Set the maximum size of a single upload request.
+   *
+   * @param nMaxRequestSize
+   *        The maximum size in bytes. A value &lt; 0 means unlimited.
+   * @since 11.5.0
+   */
+  public static void setMaxRequestSize (final long nMaxRequestSize)
+  {
+    MAX_REQUEST_SIZE_CONFIGURED.set (nMaxRequestSize);
+  }
+
+  /**
+   * @return The maximum number of parts (files and form fields) of a single upload request. A value
+   *         &le; 0 means unlimited. Default is {@link #DEFAULT_MAX_PART_COUNT}.
+   * @since 11.5.0
+   */
+  public static long getMaxPartCount ()
+  {
+    return MAX_PART_COUNT.get ();
+  }
+
+  /**
+   * Set the maximum number of parts (files and form fields) of a single upload request. Requests
+   * with more parts are not processed.
+   *
+   * @param nMaxPartCount
+   *        The maximum number of parts. A value &le; 0 means unlimited.
+   * @since 11.5.0
+   */
+  public static void setMaxPartCount (final long nMaxPartCount)
+  {
+    MAX_PART_COUNT.set (nMaxPartCount);
+  }
 
   /**
    * Parse the provided servlet request as multipart, if the Content-Type starts with
@@ -109,7 +164,8 @@ public final class RequestMultipartHelper
     {
       // Setup the ServletFileUpload....
       final ServletFileUpload aUpload = new ServletFileUpload (PROVIDER.getFileItemFactory ());
-      aUpload.setSizeMax (MAX_REQUEST_SIZE);
+      aUpload.setSizeMax (getMaxRequestSize ());
+      aUpload.setFileCountMax (getMaxPartCount ());
       aUpload.setHeaderEncoding (CWeb.CHARSET_REQUEST_OBJ.name ());
       final IProgressListener aProgressListener = ProgressListenerProvider.getProgressListener ();
       if (aProgressListener != null)

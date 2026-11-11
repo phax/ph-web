@@ -31,6 +31,7 @@ import com.helger.base.io.nonblocking.NonBlockingByteArrayOutputStream;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.servlet.mock.MockHttpServletRequest;
 import com.helger.web.fileupload.IFileItem;
+import com.helger.web.fileupload.exception.FileCountLimitExceededException;
 import com.helger.web.fileupload.exception.FileSizeLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.parse.AbstractFileUploadTestCase;
@@ -98,6 +99,46 @@ public final class SizesFuncTest extends AbstractFileUploadTestCase
         }
       }
       assertFalse (fileIter.hasNext ());
+    }
+  }
+
+  @Test
+  public void testFileCountLimit () throws FileUploadException
+  {
+    final StringBuilder aSB = new StringBuilder ();
+    for (int i = 0; i < 3; ++i)
+      aSB.append ("-----1234\r\n")
+         .append ("Content-Disposition: form-data; name=\"field" + i + "\"\r\n")
+         .append ("\r\n")
+         .append ("value" + i + "\r\n");
+    aSB.append ("-----1234--\r\n");
+    final byte [] aRequest = aSB.toString ().getBytes (StandardCharsets.US_ASCII);
+
+    // Exactly at the limit
+    ServletFileUpload aUpload = new ServletFileUpload (new DiskFileItemFactory (10240));
+    aUpload.setFileCountMax (3);
+    List <IFileItem> aFileItems = aUpload.parseRequest (new MockHttpServletRequest ().setContent (aRequest)
+                                                                                     .setContentType (CONTENT_TYPE));
+    assertEquals (3, aFileItems.size ());
+
+    // Unlimited
+    aUpload = new ServletFileUpload (new DiskFileItemFactory (10240));
+    aUpload.setFileCountMax (0);
+    aFileItems = aUpload.parseRequest (new MockHttpServletRequest ().setContent (aRequest)
+                                                                    .setContentType (CONTENT_TYPE));
+    assertEquals (3, aFileItems.size ());
+
+    // Exceeded
+    aUpload = new ServletFileUpload (new DiskFileItemFactory (10240));
+    aUpload.setFileCountMax (2);
+    try
+    {
+      aUpload.parseRequest (new MockHttpServletRequest ().setContent (aRequest).setContentType (CONTENT_TYPE));
+      fail ();
+    }
+    catch (final FileCountLimitExceededException ex)
+    {
+      assertEquals (2, ex.getPermittedSize ());
     }
   }
 

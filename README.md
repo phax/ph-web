@@ -75,6 +75,9 @@ v11.5.0 - 2026-11-11
   * Fixed a possible endless loop in `MultipartStream` when a multipart boundary is too long for the processing buffer (the same issue as CVE-2014-0050 in Commons FileUpload). Such requests are now rejected with a `FileUploadException`.
   * Fixed temporary upload files not being deleted at the end of a request when several files were uploaded under the same field name.
   * `DiskFileItemFactory` no longer keeps every temporary file name until shutdown: an entry is removed as soon as its `DiskFileItem` deletes or moves the file. Form field items are deleted directly after their value was read. Added a new `DiskFileItem` constructor with a release handler.
+  * Added a limit for the number of parts (files and form fields) of a multipart request, to prevent resource exhaustion with many tiny parts (similar to CVE-2023-24998 in Commons FileUpload).
+    `AbstractFileUploadBase.setFileCountMax (long)` sets it (default: unlimited) and throws the new `FileCountLimitExceededException` if it is exceeded.
+    `RequestMultipartHelper` uses a default of 1,000 parts, configurable via `setMaxPartCount (long)`. The maximum request size (default 100 MB) is now configurable via `setMaxRequestSize (long)`.
   * Fixed a path traversal in `ScpFile.copyTo (File)`: file names sent by the remote server that are empty, `.`, `..` or contain `/` or `\` are now rejected with an `IOException`.
   * The remote path of SCP commands is now single-quoted, so it is no longer interpreted by the remote shell. Note: shell expansion like `~` or globs no longer happens.
   * `RequestLogger`, `LoggingFilter` and `UnifiedResponse` no longer log the values of the `Authorization`, `Proxy-Authorization`, `Cookie` and `Set-Cookie` headers or cookie values. Added the new class `SensitiveHeaderHelper` for this.

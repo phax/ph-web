@@ -43,6 +43,7 @@ import com.helger.web.fileupload.IFileItemHeadersSupport;
 import com.helger.web.fileupload.IFileItemIterator;
 import com.helger.web.fileupload.IFileItemStream;
 import com.helger.web.fileupload.IRequestContext;
+import com.helger.web.fileupload.exception.FileCountLimitExceededException;
 import com.helger.web.fileupload.exception.FileUploadException;
 import com.helger.web.fileupload.exception.FileUploadIOException;
 import com.helger.web.fileupload.exception.IOFileUploadException;
@@ -89,6 +90,12 @@ public abstract class AbstractFileUploadBase
    * value &le; 0 indicates no maximum.
    */
   private long m_nFileSizeMax = -1;
+
+  /**
+   * The maximum number of parts (files and form fields) permitted in a single request. A value
+   * &le; 0 indicates no maximum.
+   */
+  private long m_nFileCountMax = -1;
 
   /**
    * The content encoding to use when reading part headers.
@@ -162,6 +169,34 @@ public abstract class AbstractFileUploadBase
   public void setFileSizeMax (final long nFileSizeMax)
   {
     m_nFileSizeMax = nFileSizeMax;
+  }
+
+  /**
+   * Returns the maximum number of parts (files and form fields) allowed in a single request.
+   *
+   * @return The maximum number of parts. A value &le; 0 means unlimited.
+   * @see #setFileCountMax(long)
+   * @since 11.5.0
+   */
+  @CheckForSigned
+  public long getFileCountMax ()
+  {
+    return m_nFileCountMax;
+  }
+
+  /**
+   * Sets the maximum number of parts (files and form fields) allowed in a single request. If the
+   * limit is exceeded, {@link #parseRequest(IRequestContext)} throws a
+   * {@link FileCountLimitExceededException}.
+   *
+   * @param nFileCountMax
+   *        The maximum number of parts. A value &le; 0 means unlimited.
+   * @see #getFileCountMax()
+   * @since 11.5.0
+   */
+  public void setFileCountMax (final long nFileCountMax)
+  {
+    m_nFileCountMax = nFileCountMax;
   }
 
   /**
@@ -257,6 +292,15 @@ public abstract class AbstractFileUploadBase
         throw new IllegalStateException ("No FileItemFactory has been set.");
       while (aItemIter.hasNext ())
       {
+        if (m_nFileCountMax > 0 && aItems.size () >= m_nFileCountMax)
+        {
+          // Check before the next item is created
+          throw new FileCountLimitExceededException ("The request contains more than the maximum permitted number of " +
+                                                     m_nFileCountMax +
+                                                     " parts",
+                                                     aItems.size () + 1L,
+                                                     m_nFileCountMax);
+        }
         final IFileItemStream aFileItemStream = aItemIter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
         final IFileItem aFileItem = aFileItemFactory.createItem (aFileItemStream.getFieldName (),

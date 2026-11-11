@@ -113,6 +113,10 @@ public final class HttpClientSettingsConfigTest
     aMap.put ("test10.http.timeout.connectionrequest", "4321ms");
     aMap.put ("test10.http.timeout.connect", "21s");
     aMap.put ("test10.http.timeout.response", "34m");
+    aMap.put ("test10.http.connection.validate-after-inactivity", "3s");
+    aMap.put ("test10.http.connection.evict-idle-after", "1m");
+    aMap.put ("test10.http.connection.evict-expired", "true");
+    aMap.put ("test10.http.retry.automatic.disabled", "true");
     return new ConfigWithFallback (new ConfigurationSourceFunction (aMap::get));
   }
 
@@ -126,6 +130,10 @@ public final class HttpClientSettingsConfigTest
     assertEquals (Timeout.ofMilliseconds (4321), aHCS.getConnectionRequestTimeout ());
     assertEquals (Timeout.ofSeconds (21), aHCS.getConnectTimeout ());
     assertEquals (Timeout.ofMinutes (34), aHCS.getResponseTimeout ());
+    assertEquals (Duration.ofSeconds (3), aHCS.getValidateAfterInactivity ());
+    assertEquals (Duration.ofMinutes (1), aHCS.getEvictIdleConnectionsAfter ());
+    assertTrue (aHCS.isEvictExpiredConnections ());
+    assertTrue (aHCS.isDisableAutomaticRetries ());
   }
 
   @Test

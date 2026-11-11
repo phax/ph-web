@@ -63,6 +63,14 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
+v11.5.0 - work in progress
+* Added the new `HttpClientSettings` properties `validateAfterInactivity`, `evictIdleConnectionsAfter` and `evictExpiredConnections` to reduce stale pooled connections (a common cause of `NoHttpResponseException`).
+  They can also be set via the configuration keys `http.connection.validate-after-inactivity`, `http.connection.evict-idle-after` and `http.connection.evict-expired`.
+  By default nothing changes: the validation period of Apache HttpClient is kept and no background eviction happens.
+* Added the new `HttpClientSettings` property `disableAutomaticRetries` (configuration key `http.retry.automatic.disabled`) to disable all automatic retries of Apache HttpClient.
+  Until now, a retry count of `0` still meant that Apache HttpClient used its default retry strategy (one retry, e.g. for HTTP status codes `429` and `503`, honouring any `Retry-After` value without a limit).
+  This is useful if retries are handled on a higher level. By default nothing changes.
+
 v11.4.8 - 2026-10-23
 * `UnifiedResponse` now also sends the `Cache-Control` header for non-error status codes without content (e.g. `304 Not Modified` or `204 No Content`).
   Previously it was silently dropped, but RFC 9110 requires a `304` to carry the same `Cache-Control` as the respective `200` response.

@@ -429,6 +429,20 @@ public class HttpClientSettingsConfig
       return _findBoolean ("http.retry.always", bDefault);
     }
 
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether all automatic retries of Apache HttpClient should be disabled. Reads
+     *         <code>http.retry.automatic.disabled</code>. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     * @since 11.5.0
+     */
+    @NonNull
+    public ETriState getDisableAutomaticRetries (final boolean bDefault)
+    {
+      return _findBoolean ("http.retry.automatic.disabled", bDefault);
+    }
+
     @Nullable
     private Timeout _findTimeout (@NonNull final String sPrefix, @Nullable final String... aLocalSubKeys)
     {
@@ -513,6 +527,44 @@ public class HttpClientSettingsConfig
     public ETriState getProtocolUpgradeEnabled (final boolean bDefault)
     {
       return _findBoolean ("http.protocol-upgrade.enabled", bDefault);
+    }
+
+    /**
+     * @return The period of inactivity after which a pooled connection is validated. Reads
+     *         <code>http.connection.validate-after-inactivity</code>. May be <code>null</code> if
+     *         not configured.
+     * @since 11.5.0
+     */
+    @Nullable
+    public Duration getValidateAfterInactivity ()
+    {
+      return _findDuration ("http.connection.validate-after-inactivity");
+    }
+
+    /**
+     * @return The maximum idle time after which a pooled connection is evicted. Reads
+     *         <code>http.connection.evict-idle-after</code>. May be <code>null</code> if not
+     *         configured.
+     * @since 11.5.0
+     */
+    @Nullable
+    public Duration getEvictIdleConnectionsAfter ()
+    {
+      return _findDuration ("http.connection.evict-idle-after");
+    }
+
+    /**
+     * @param bDefault
+     *        The default value to be used if the configuration value cannot be parsed as a boolean.
+     * @return Whether expired pooled connections should be evicted. Reads
+     *         <code>http.connection.evict-expired</code>. Never <code>null</code>; may be
+     *         {@link ETriState#UNDEFINED} if not configured.
+     * @since 11.5.0
+     */
+    @NonNull
+    public ETriState getEvictExpiredConnections (final boolean bDefault)
+    {
+      return _findBoolean ("http.connection.evict-expired", bDefault);
     }
 
     /**
@@ -706,6 +758,8 @@ public class HttpClientSettingsConfig
    * <li><code>http.retry.count</code> - number of retries (int)</li>
    * <li><code>http.retry.interval</code> - interval between retries (duration)</li>
    * <li><code>http.retry.always</code> - whether retries should always be performed (boolean)</li>
+   * <li><code>http.retry.automatic.disabled</code> - whether all automatic retries of Apache
+   * HttpClient are disabled (boolean)</li>
    * </ul>
    *
    * @param aHCS
@@ -740,6 +794,68 @@ public class HttpClientSettingsConfig
       if (LOGGER.isDebugEnabled ())
         LOGGER.debug ("Setting configured HttpClientSettings.retryAlways(" + b + ")");
       aHCS.setRetryAlways (b);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eDisableAutomaticRetries = aHCC.getDisableAutomaticRetries (aHCS.isDisableAutomaticRetries ());
+    if (eDisableAutomaticRetries.isDefined ())
+    {
+      final boolean b = eDisableAutomaticRetries.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.disableAutomaticRetries(" + b + ")");
+      aHCS.setDisableAutomaticRetries (b);
+    }
+  }
+
+  /**
+   * Assign connection pool related configuration values. The primary configuration parameters
+   * consumed are:
+   * <ul>
+   * <li><code>http.connection.validate-after-inactivity</code> - period of inactivity after which a
+   * pooled connection is validated (duration)</li>
+   * <li><code>http.connection.evict-idle-after</code> - maximum idle time after which a pooled
+   * connection is evicted (duration)</li>
+   * <li><code>http.connection.evict-expired</code> - whether expired pooled connections are evicted
+   * (boolean)</li>
+   * </ul>
+   *
+   * @param aHCS
+   *        The {@link HttpClientSettings} to be configured. May not be <code>null</code>.
+   * @param aHCC
+   *        The configuration source. May not be <code>null</code>.
+   * @since 11.5.0
+   */
+  public static void assignConfigValuesForConnectionPool (@NonNull final HttpClientSettings aHCS,
+                                                          @NonNull final HttpClientConfig aHCC)
+  {
+    final Duration aValidateAfterInactivity = aHCC.getValidateAfterInactivity ();
+    if (aValidateAfterInactivity != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.validateAfterInactivity(" +
+                      aValidateAfterInactivity +
+                      ")");
+      aHCS.setValidateAfterInactivity (aValidateAfterInactivity);
+    }
+
+    final Duration aEvictIdleConnectionsAfter = aHCC.getEvictIdleConnectionsAfter ();
+    if (aEvictIdleConnectionsAfter != null)
+    {
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.evictIdleConnectionsAfter(" +
+                      aEvictIdleConnectionsAfter +
+                      ")");
+      aHCS.setEvictIdleConnectionsAfter (aEvictIdleConnectionsAfter);
+    }
+
+    // Use existing value as fallback to avoid changing to default
+    final ETriState eEvictExpiredConnections = aHCC.getEvictExpiredConnections (aHCS.isEvictExpiredConnections ());
+    if (eEvictExpiredConnections.isDefined ())
+    {
+      final boolean b = eEvictExpiredConnections.getAsBooleanValue ();
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("Setting configured HttpClientSettings.evictExpiredConnections(" + b + ")");
+      aHCS.setEvictExpiredConnections (b);
     }
   }
 
@@ -968,6 +1084,8 @@ public class HttpClientSettingsConfig
    * <li><code>http.retry.count</code> - number of retries (int)</li>
    * <li><code>http.retry.interval</code> - interval between retries (duration)</li>
    * <li><code>http.retry.always</code> - whether to always retry (boolean)</li>
+   * <li><code>http.retry.automatic.disabled</code> - whether all automatic retries of Apache
+   * HttpClient are disabled (boolean)</li>
    * </ul>
    * </li>
    * <li>Timeouts:
@@ -975,6 +1093,16 @@ public class HttpClientSettingsConfig
    * <li><code>http.timeout.connectionrequest</code> - connection request timeout (duration)</li>
    * <li><code>http.timeout.connect</code> - connect timeout (duration)</li>
    * <li><code>http.timeout.response</code> - response/read timeout (duration)</li>
+   * </ul>
+   * </li>
+   * <li>Connection pool:
+   * <ul>
+   * <li><code>http.connection.validate-after-inactivity</code> - period of inactivity after which a
+   * pooled connection is validated (duration)</li>
+   * <li><code>http.connection.evict-idle-after</code> - maximum idle time after which a pooled
+   * connection is evicted (duration)</li>
+   * <li><code>http.connection.evict-expired</code> - whether expired pooled connections are evicted
+   * (boolean)</li>
    * </ul>
    * </li>
    * <li>TLS:
@@ -1037,6 +1165,9 @@ public class HttpClientSettingsConfig
 
       // Timeouts
       assignConfigValuesForTimeouts (aHCS, aHCC);
+
+      // Connection pool
+      assignConfigValuesForConnectionPool (aHCS, aHCC);
 
       // TLS stuff
       assignConfigValuesForTLS (aHCS, aHCC);

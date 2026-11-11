@@ -64,6 +64,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final int DEFAULT_RETRY_COUNT = 0;
   public static final Duration DEFAULT_RETRY_INTERVAL = Duration.ofSeconds (1);
   public static final boolean DEFAULT_RETRY_ALWAYS = false;
+  public static final boolean DEFAULT_DISABLE_AUTOMATIC_RETRIES = false;
   public static final Timeout DEFAULT_CONNECTION_REQUEST_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_CONNECT_TIMEOUT = Timeout.ofSeconds (5);
   public static final Timeout DEFAULT_RESPONSE_TIMEOUT = Timeout.ofSeconds (10);
@@ -76,6 +77,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   public static final ERevocationCheckMode DEFAULT_REVOCATION_CHECK_MODE = ERevocationCheckMode.NONE;
   @Deprecated (forRemoval = true, since = "11.4.0")
   public static final boolean DEFAULT_REVOCATION_CHECK_SOFT_FAIL = false;
+  public static final boolean DEFAULT_EVICT_EXPIRED_CONNECTIONS = false;
 
   private final boolean m_bUseSystemProperties = DEFAULT_USE_SYSTEM_PROPERTIES;
   private boolean m_bUseDNSClientCache = DEFAULT_USE_DNS_CACHE;
@@ -94,6 +96,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private int m_nRetryCount = DEFAULT_RETRY_COUNT;
   private Duration m_aRetryInterval = DEFAULT_RETRY_INTERVAL;
   private boolean m_bRetryAlways = DEFAULT_RETRY_ALWAYS;
+  private boolean m_bDisableAutomaticRetries = DEFAULT_DISABLE_AUTOMATIC_RETRIES;
 
   private Timeout m_aConnectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT;
   private Timeout m_aConnectTimeout = DEFAULT_CONNECT_TIMEOUT;
@@ -105,6 +108,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
   private boolean m_bProtocolUpgradeEnabled = DEFAULT_PROTOCOL_UPGRADE_ENABLED;
   private ERevocationCheckMode m_eRevocationCheckMode = DEFAULT_REVOCATION_CHECK_MODE;
   private boolean m_bRevocationCheckSoftFail = CertificateRevocationCheckerDefaults.isAllowSoftFail ();
+  private Duration m_aValidateAfterInactivity;
+  private Duration m_aEvictIdleConnectionsAfter;
+  private boolean m_bEvictExpiredConnections = DEFAULT_EVICT_EXPIRED_CONNECTIONS;
 
   /**
    * Default constructor.
@@ -144,6 +150,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setRetryCount (aSource.getRetryCount ());
     setRetryInterval (aSource.getRetryInterval ());
     setRetryAlways (aSource.isRetryAlways ());
+    setDisableAutomaticRetries (aSource.isDisableAutomaticRetries ());
     setConnectionRequestTimeout (aSource.getConnectionRequestTimeout ());
     setConnectTimeout (aSource.getConnectTimeout ());
     setResponseTimeout (aSource.getResponseTimeout ());
@@ -153,6 +160,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     setProtocolUpgradeEnabled (aSource.isProtocolUpgradeEnabled ());
     setRevocationCheckMode (aSource.getRevocationCheckMode ());
     setRevocationCheckSoftFail (aSource.isRevocationCheckSoftFail ());
+    setValidateAfterInactivity (aSource.getValidateAfterInactivity ());
+    setEvictIdleConnectionsAfter (aSource.getEvictIdleConnectionsAfter ());
+    setEvictExpiredConnections (aSource.isEvictExpiredConnections ());
     return this;
   }
 
@@ -369,6 +379,29 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
+  public final boolean isDisableAutomaticRetries ()
+  {
+    return m_bDisableAutomaticRetries;
+  }
+
+  /**
+   * Enable or disable all automatic retries of Apache HttpClient. If no retries are configured
+   * (retry count 0), Apache HttpClient still uses its default retry strategy (one retry, e.g. for
+   * HTTP status codes 429 and 503). Disabling it is useful, if retries are handled on a higher
+   * level. If this is enabled, the retry count is ignored.
+   *
+   * @param bDisableAutomaticRetries
+   *        <code>true</code> to disable all automatic retries, <code>false</code> to keep them.
+   * @return this for chaining
+   * @since 11.5.0
+   */
+  @NonNull
+  public final HttpClientSettings setDisableAutomaticRetries (final boolean bDisableAutomaticRetries)
+  {
+    m_bDisableAutomaticRetries = bDisableAutomaticRetries;
+    return this;
+  }
+
   @NonNull
   public final Timeout getConnectionRequestTimeout ()
   {
@@ -555,6 +588,88 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
     return this;
   }
 
+  @Nullable
+  public final Duration getValidateAfterInactivity ()
+  {
+    return m_aValidateAfterInactivity;
+  }
+
+  @Nullable
+  public final TimeValue getValidateAfterInactivityAsTimeValue ()
+  {
+    return m_aValidateAfterInactivity == null ? null : TimeValue.ofMilliseconds (m_aValidateAfterInactivity.toMillis ());
+  }
+
+  /**
+   * Set the period of inactivity after which a pooled persistent connection is validated before it
+   * is leased again. This helps to detect stale (half-closed) connections, that would otherwise
+   * lead to a <code>NoHttpResponseException</code>.
+   *
+   * @param aValidateAfterInactivity
+   *        The period to use. May be <code>null</code> to use the default of Apache HttpClient.
+   * @return this for chaining
+   * @since 11.5.0
+   */
+  @NonNull
+  public final HttpClientSettings setValidateAfterInactivity (@Nullable final Duration aValidateAfterInactivity)
+  {
+    m_aValidateAfterInactivity = aValidateAfterInactivity;
+    return this;
+  }
+
+  @Nullable
+  public final Duration getEvictIdleConnectionsAfter ()
+  {
+    return m_aEvictIdleConnectionsAfter;
+  }
+
+  @Nullable
+  public final TimeValue getEvictIdleConnectionsAfterAsTimeValue ()
+  {
+    return m_aEvictIdleConnectionsAfter == null ? null
+                                                : TimeValue.ofMilliseconds (m_aEvictIdleConnectionsAfter.toMillis ());
+  }
+
+  /**
+   * Set the maximum time a pooled connection may stay idle before a background thread evicts it.
+   * Note: the background thread is only started, if the connection manager is not wrapped for
+   * debugging purposes.
+   *
+   * @param aEvictIdleConnectionsAfter
+   *        The maximum idle time. May be <code>null</code> to disable the eviction of idle
+   *        connections.
+   * @return this for chaining
+   * @since 11.5.0
+   */
+  @NonNull
+  public final HttpClientSettings setEvictIdleConnectionsAfter (@Nullable final Duration aEvictIdleConnectionsAfter)
+  {
+    m_aEvictIdleConnectionsAfter = aEvictIdleConnectionsAfter;
+    return this;
+  }
+
+  public final boolean isEvictExpiredConnections ()
+  {
+    return m_bEvictExpiredConnections;
+  }
+
+  /**
+   * Enable or disable the eviction of expired pooled connections by a background thread. Note: the
+   * background thread is only started, if the connection manager is not wrapped for debugging
+   * purposes.
+   *
+   * @param bEvictExpiredConnections
+   *        <code>true</code> to evict expired connections, <code>false</code> if not.
+   * @return this for chaining
+   * @since 11.5.0
+   */
+  @NonNull
+  public final HttpClientSettings setEvictExpiredConnections (final boolean bEvictExpiredConnections)
+  {
+    m_bEvictExpiredConnections = bEvictExpiredConnections;
+    return this;
+  }
+
   @NonNull
   @ReturnsMutableCopy
   public HttpClientSettings getClone ()
@@ -576,6 +691,7 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("RetryCount", m_nRetryCount)
                                        .append ("RetryInterval", m_aRetryInterval)
                                        .append ("RetryAlways", m_bRetryAlways)
+                                       .append ("DisableAutomaticRetries", m_bDisableAutomaticRetries)
                                        .append ("ConnectionRequestTimeout", m_aConnectionRequestTimeout)
                                        .append ("ConnectionTimeout", m_aConnectTimeout)
                                        .append ("ResponseTimeout", m_aResponseTimeout)
@@ -585,6 +701,9 @@ public class HttpClientSettings implements IHttpClientSettings, ICloneable <Http
                                        .append ("ProtocolUpgradeEnabled", m_bProtocolUpgradeEnabled)
                                        .append ("RevocationCheckMode", m_eRevocationCheckMode)
                                        .append ("RevocationCheckSoftFail", m_bRevocationCheckSoftFail)
+                                       .append ("ValidateAfterInactivity", m_aValidateAfterInactivity)
+                                       .append ("EvictIdleConnectionsAfter", m_aEvictIdleConnectionsAfter)
+                                       .append ("EvictExpiredConnections", m_bEvictExpiredConnections)
                                        .getToString ();
   }
 }

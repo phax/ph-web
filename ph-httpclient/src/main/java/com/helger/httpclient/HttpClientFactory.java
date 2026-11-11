@@ -794,7 +794,12 @@ public class HttpClientFactory implements IHttpClientProvider
 
   public ConnectionConfig.@NonNull Builder createConnectionConfigBuilder ()
   {
-    return ConnectionConfig.custom ().setConnectTimeout (m_aSettings.getConnectTimeout ());
+    final ConnectionConfig.Builder ret = ConnectionConfig.custom ().setConnectTimeout (m_aSettings.getConnectTimeout ());
+    // Only set if defined, to keep the Apache HttpClient default otherwise
+    final TimeValue aValidateAfterInactivity = m_aSettings.getValidateAfterInactivityAsTimeValue ();
+    if (aValidateAfterInactivity != null)
+      ret.setValidateAfterInactivity (aValidateAfterInactivity);
+    return ret;
   }
 
   @NonNull
@@ -983,10 +988,20 @@ public class HttpClientFactory implements IHttpClientProvider
     ret.addRequestInterceptorLast (new RequestAddCookies ());
 
     // Set retry handler (if needed)
-    if (m_aSettings.hasRetries ())
-      ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
-                                                        m_aSettings.getRetryIntervalAsTimeValue (),
-                                                        m_aSettings.isRetryAlways ()));
+    if (m_aSettings.isDisableAutomaticRetries ())
+      ret.disableAutomaticRetries ();
+    else
+      if (m_aSettings.hasRetries ())
+        ret.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
+                                                          m_aSettings.getRetryIntervalAsTimeValue (),
+                                                          m_aSettings.isRetryAlways ()));
+
+    // Evict stale connections in the background (if needed)
+    if (m_aSettings.isEvictExpiredConnections ())
+      ret.evictExpiredConnections ();
+    final TimeValue aEvictIdleConnectionsAfter = m_aSettings.getEvictIdleConnectionsAfterAsTimeValue ();
+    if (aEvictIdleConnectionsAfter != null)
+      ret.evictIdleConnections (aEvictIdleConnectionsAfter);
 
     // Set user agent (if any)
     if (m_aSettings.hasUserAgent ())
@@ -1030,10 +1045,20 @@ public class HttpClientFactory implements IHttpClientProvider
     aBuilder.addRequestInterceptorLast (new RequestAddCookies ());
 
     // Set retry handler (if needed)
-    if (m_aSettings.hasRetries ())
-      aBuilder.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
-                                                             m_aSettings.getRetryIntervalAsTimeValue (),
-                                                             m_aSettings.isRetryAlways ()));
+    if (m_aSettings.isDisableAutomaticRetries ())
+      aBuilder.disableAutomaticRetries ();
+    else
+      if (m_aSettings.hasRetries ())
+        aBuilder.setRetryStrategy (createRequestRetryStrategy (m_aSettings.getRetryCount (),
+                                                               m_aSettings.getRetryIntervalAsTimeValue (),
+                                                               m_aSettings.isRetryAlways ()));
+
+    // Evict stale connections in the background (if needed)
+    if (m_aSettings.isEvictExpiredConnections ())
+      aBuilder.evictExpiredConnections ();
+    final TimeValue aEvictIdleConnectionsAfter = m_aSettings.getEvictIdleConnectionsAfterAsTimeValue ();
+    if (aEvictIdleConnectionsAfter != null)
+      aBuilder.evictIdleConnections (aEvictIdleConnectionsAfter);
 
     // Set user agent (if any)
     if (m_aSettings.hasUserAgent ())

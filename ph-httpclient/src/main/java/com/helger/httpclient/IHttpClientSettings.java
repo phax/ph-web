@@ -124,6 +124,15 @@ public interface IHttpClientSettings
   boolean isRetryAlways ();
 
   /**
+   * @return <code>true</code> if all automatic retries of Apache HttpClient are disabled. This is
+   *         relevant, because if no retries are configured (retry count 0), Apache HttpClient
+   *         still uses its default retry strategy (one retry, e.g. for HTTP status codes 429 and
+   *         503). <code>false</code> to keep that behaviour.
+   * @since 11.5.0
+   */
+  boolean isDisableAutomaticRetries ();
+
+  /**
    * @return The connection request timeout in milliseconds. A value of 0 means "indefinite". Never
    *         <code>null</code>.
    */
@@ -193,4 +202,28 @@ public interface IHttpClientSettings
    * @since 11.3.0
    */
   boolean isRevocationCheckSoftFail ();
+
+  /**
+   * @return The period of inactivity after which a pooled persistent connection is validated before
+   *         it is leased again. This helps to detect stale (half-closed) connections. May be
+   *         <code>null</code> to use the default of Apache HttpClient.
+   * @since 11.5.0
+   */
+  @Nullable
+  Duration getValidateAfterInactivity ();
+
+  /**
+   * @return The maximum time a pooled connection may stay idle before a background thread evicts
+   *         it. May be <code>null</code> to disable the eviction of idle connections.
+   * @since 11.5.0
+   */
+  @Nullable
+  Duration getEvictIdleConnectionsAfter ();
+
+  /**
+   * @return <code>true</code> if a background thread should evict expired pooled connections,
+   *         <code>false</code> if not.
+   * @since 11.5.0
+   */
+  boolean isEvictExpiredConnections ();
 }

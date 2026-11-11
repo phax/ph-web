@@ -20,8 +20,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 
 import javax.net.ssl.SSLContext;
 
@@ -47,6 +49,18 @@ public final class HttpClientSettingsTest
 
     x.setUserAgent ("bla");
     assertEquals ("bla", x.getClone ().getUserAgent ());
+
+    x.setValidateAfterInactivity (Duration.ofSeconds (3));
+    assertEquals (Duration.ofSeconds (3), x.getClone ().getValidateAfterInactivity ());
+
+    x.setEvictIdleConnectionsAfter (Duration.ofMinutes (1));
+    assertEquals (Duration.ofMinutes (1), x.getClone ().getEvictIdleConnectionsAfter ());
+
+    x.setEvictExpiredConnections (true);
+    assertTrue (x.getClone ().isEvictExpiredConnections ());
+
+    x.setDisableAutomaticRetries (true);
+    assertTrue (x.getClone ().isDisableAutomaticRetries ());
   }
 
   @Test

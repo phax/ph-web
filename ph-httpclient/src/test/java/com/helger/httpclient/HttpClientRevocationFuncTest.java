@@ -22,11 +22,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 import javax.net.ssl.SSLHandshakeException;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.core5.http.ContentType;
+import org.junit.Assume;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,6 +132,15 @@ public final class HttpClientRevocationFuncTest
                                                new ResponseHandlerString (ContentType.TEXT_HTML));
       assertNotNull (sResponse);
       LOGGER.info ("Successfully connected to revoked.badssl.com with NONE revocation checking (expected)");
+    }
+    catch (final InterruptedIOException | ConnectException | UnknownHostException ex)
+    {
+      // External service not reachable - skip instead of failing
+      LOGGER.warn ("revoked.badssl.com is not reachable - skipping test: " +
+                   ex.getClass ().getName () +
+                   " - " +
+                   ex.getMessage ());
+      Assume.assumeNoException (ex);
     }
   }
 

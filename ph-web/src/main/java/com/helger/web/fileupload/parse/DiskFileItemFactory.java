@@ -30,7 +30,9 @@ import com.helger.annotation.style.VisibleForTesting;
 import com.helger.base.concurrent.SimpleReadWriteLock;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.CommonsLinkedHashSet;
 import com.helger.collection.commons.ICommonsList;
+import com.helger.collection.commons.ICommonsOrderedSet;
 import com.helger.io.file.FileIOError;
 import com.helger.io.file.FileOperations;
 import com.helger.web.fileupload.IFileItemFactory;
@@ -75,7 +77,11 @@ public class DiskFileItemFactory implements IFileItemFactory
    */
   private final int m_nSizeThreshold;
 
-  private final ICommonsList <File> m_aTempFiles = new CommonsArrayList <> ();
+  /**
+   * All temporary files that were not yet deleted. Entries are removed as soon as the file item
+   * deletes or moves its temporary file.
+   */
+  private final ICommonsOrderedSet <File> m_aTempFiles = new CommonsLinkedHashSet <> ();
 
   @VisibleForTesting
   public DiskFileItemFactory (@Nonnegative final int nSizeThreshold)
@@ -111,6 +117,11 @@ public class DiskFileItemFactory implements IFileItemFactory
     m_aRWLock.writeLockedBoolean (() -> m_aTempFiles.add (aFile));
   }
 
+  private void _removeTempFile (@NonNull final File aFile)
+  {
+    m_aRWLock.writeLockedBoolean (() -> m_aTempFiles.remove (aFile));
+  }
+
   /**
    * Create a new {@link com.helger.web.fileupload.parse.DiskFileItem} instance from the supplied
    * parameters and the local factory configuration.
@@ -136,7 +147,8 @@ public class DiskFileItemFactory implements IFileItemFactory
                                                      bIsFormField,
                                                      sFileName,
                                                      m_nSizeThreshold,
-                                                     m_aRepository);
+                                                     m_aRepository,
+                                                     this::_removeTempFile);
     // Add the temp file - may be non-existing if the size is below the
     // threshold
     _addTempFile (aFileItem.getTempFile ());
@@ -147,13 +159,13 @@ public class DiskFileItemFactory implements IFileItemFactory
   @ReturnsMutableCopy
   public ICommonsList <File> getAllTemporaryFiles ()
   {
-    return m_aRWLock.readLockedGet (m_aTempFiles::getClone);
+    return m_aRWLock.readLockedGet (() -> new CommonsArrayList <> (m_aTempFiles));
   }
 
   public void deleteAllTemporaryFiles ()
   {
     final ICommonsList <File> aTempFiles = m_aRWLock.writeLockedGet (() -> {
-      final ICommonsList <File> ret = m_aTempFiles.getClone ();
+      final ICommonsList <File> ret = new CommonsArrayList <> (m_aTempFiles);
       m_aTempFiles.clear ();
       return ret;
     });

@@ -27,6 +27,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -173,6 +174,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   private IFileItemHeaders m_aHeaders;
 
   /**
+   * Optional handler that is invoked when the temporary file is no longer needed.
+   */
+  private final Consumer <File> m_aTempFileReleasedHandler;
+
+  /**
    * Constructs a new <code>DiskFileItem</code> instance.
    *
    * @param sFieldName
@@ -197,6 +203,40 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
                        @Nonnegative final int nSizeThreshold,
                        @Nullable final File aRepository)
   {
+    this (sFieldName, sContentType, bIsFormField, sFilename, nSizeThreshold, aRepository, null);
+  }
+
+  /**
+   * Constructs a new <code>DiskFileItem</code> instance.
+   *
+   * @param sFieldName
+   *        The name of the form field.
+   * @param sContentType
+   *        The content type passed by the browser or <code>null</code> if not specified.
+   * @param bIsFormField
+   *        Whether or not this item is a plain form field, as opposed to a file upload.
+   * @param sFilename
+   *        The original filename in the user's file system, or <code>null</code> if not specified.
+   * @param nSizeThreshold
+   *        The threshold, in bytes, below which items will be retained in memory and above which
+   *        they will be stored as a file.
+   * @param aRepository
+   *        The data repository, which is the directory in which files will be created, should the
+   *        item size exceed the threshold. <code>null</code> means default temp directory.
+   * @param aTempFileReleasedHandler
+   *        An optional handler that is invoked with the temporary file, after it was deleted or
+   *        moved away, so that it is no longer needed. May be <code>null</code>.
+   * @since 11.5.0
+   */
+  public DiskFileItem (@Nullable final String sFieldName,
+                       @Nullable final String sContentType,
+                       final boolean bIsFormField,
+                       @Nullable final String sFilename,
+                       @Nonnegative final int nSizeThreshold,
+                       @Nullable final File aRepository,
+                       @Nullable final Consumer <File> aTempFileReleasedHandler)
+  {
+    m_aTempFileReleasedHandler = aTempFileReleasedHandler;
     m_sFieldName = sFieldName;
     m_sContentType = sContentType;
     m_bIsFormField = bIsFormField;
@@ -309,6 +349,12 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
       m_aTempFile = new File (m_aTempDir, sTempFileName);
     }
     return m_aTempFile;
+  }
+
+  private void _onTempFileReleased ()
+  {
+    if (m_aTempFileReleasedHandler != null && m_aTempFile != null)
+      m_aTempFileReleasedHandler.accept (m_aTempFile);
   }
 
   private void _ensureCachedContentIsPresent ()
@@ -495,7 +541,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
        * file.
        */
       if (FileOperations.renameFile (aOutputFile, aDstFile).isSuccess ())
+      {
+        // The temporary file was moved away
+        _onTempFileReleased ();
         return ESuccess.SUCCESS;
+      }
 
       // Copying needed
       return FileOperations.copyFile (aOutputFile, aDstFile);
@@ -518,8 +568,12 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
     {
       final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
       if (aIOError.isFailure ())
+      {
         LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+        return;
+      }
     }
+    _onTempFileReleased ();
   }
 
   /**
@@ -618,9 +672,20 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   {
     if (m_aDFOS != null)
     {
-      LOGGER.info ("Deleting temporary DiskFileItem " + m_aDFOS.getFile ());
-      FileOperations.deleteFileIfExisting (m_aDFOS.getFile ());
+      final File aTempFile = m_aDFOS.getFile ();
+      if (aTempFile.exists ())
+      {
+        LOGGER.info ("Deleting temporary DiskFileItem " + aTempFile);
+        final FileIOError aIOError = FileOperations.deleteFileIfExisting (aTempFile);
+        if (aIOError.isFailure ())
+        {
+          // Keep it registered, so that it can be deleted later
+          LOGGER.error ("Failed to delete temporary file " + aTempFile + " with error " + aIOError.toString ());
+          return;
+        }
+      }
     }
+    _onTempFileReleased ();
   }
 
   @Override

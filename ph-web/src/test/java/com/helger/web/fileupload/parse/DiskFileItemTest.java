@@ -185,6 +185,37 @@ public final class DiskFileItemTest
   }
 
   @Test
+  public void testTemporaryFilesAreReleased () throws IOException
+  {
+    final DiskFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);
+    final byte [] aContent = _createContentBytes (THRESHOLD + 1);
+
+    // On disk, released at end of request
+    final DiskFileItem aItem1 = aFactory.createItem ("field", CT_TEXT, false, "a.txt");
+    try (final OutputStream aOS = aItem1.getOutputStream ())
+    {
+      aOS.write (aContent);
+    }
+    assertFalse (aItem1.isInMemory ());
+    assertTrue (aItem1.getStoreLocation ().exists ());
+
+    // In memory, released via delete
+    final DiskFileItem aItem2 = aFactory.createItem ("field2", CT_TEXT, true, null);
+    try (final OutputStream aOS = aItem2.getOutputStream ())
+    {
+      aOS.write (aContent, 0, 1);
+    }
+    assertEquals (2, aFactory.getAllTemporaryFiles ().size ());
+
+    aItem1.onEndOfRequest ();
+    assertFalse (aItem1.getStoreLocation ().exists ());
+    assertEquals (1, aFactory.getAllTemporaryFiles ().size ());
+
+    aItem2.delete ();
+    assertTrue (aFactory.getAllTemporaryFiles ().isEmpty ());
+  }
+
+  @Test
   public void testGetNameSecureNormalFilename ()
   {
     final IFileItemFactory aFactory = new DiskFileItemFactory (THRESHOLD);

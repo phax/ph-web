@@ -129,6 +129,8 @@ public final class RequestMultipartHelper
           // charset from the content type is used!
           aFormFields.computeIfAbsent (aFileItem.getFieldName (), k -> new CommonsArrayList <> ())
                      .add (aFileItem.getString (CWeb.CHARSET_REQUEST_OBJ));
+          // The value was extracted - the item itself is no longer needed
+          aFileItem.delete ();
         }
         else
           aFormFiles.computeIfAbsent (aFileItem.getFieldName (), k -> new CommonsArrayList <> ()).add (aFileItem);

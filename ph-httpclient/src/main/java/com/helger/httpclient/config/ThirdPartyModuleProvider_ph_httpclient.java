@@ -33,16 +33,20 @@ import com.helger.base.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_httpclient implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule HTTP_CORE = new ThirdPartyModule ("Apache HttpComponents Core",
-                                                                          "Apache",
-                                                                          ELicense.APACHE2,
-                                                                          new Version (5, 4, 4),
-                                                                          "https://hc.apache.org/");
-  public static final IThirdPartyModule HTTP_CLIENT = new ThirdPartyModule ("Apache HttpComponents Client",
-                                                                            "Apache",
-                                                                            ELicense.APACHE2,
-                                                                            new Version (5, 6, 5),
-                                                                            "https://hc.apache.org/");
+  public static final IThirdPartyModule HTTP_CORE = ThirdPartyModule.builder ()
+                                                                    .displayName ("Apache HttpComponents Core")
+                                                                    .copyrightOwner ("Apache")
+                                                                    .license (ELicense.APACHE2)
+                                                                    .version (new Version (5, 4, 4))
+                                                                    .webSiteUrl ("https://hc.apache.org/")
+                                                                    .build ();
+  public static final IThirdPartyModule HTTP_CLIENT = ThirdPartyModule.builder ()
+                                                                      .displayName ("Apache HttpComponents Client")
+                                                                      .copyrightOwner ("Apache")
+                                                                      .license (ELicense.APACHE2)
+                                                                      .version (new Version (5, 6, 5))
+                                                                      .webSiteUrl ("https://hc.apache.org/")
+                                                                      .build ();
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

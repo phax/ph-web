@@ -33,11 +33,13 @@ import com.helger.base.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_mail implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule ANGUS_MAIL = new ThirdPartyModule ("Angus Mail",
-                                                                           "Eclipse Foundation",
-                                                                           ELicense.EPL20,
-                                                                           new Version (2, 0, 5),
-                                                                           "https://eclipse-ee4j.github.io/angus-mail/");
+  public static final IThirdPartyModule ANGUS_MAIL = ThirdPartyModule.builder ()
+                                                                     .displayName ("Angus Mail")
+                                                                     .copyrightOwner ("Eclipse Foundation")
+                                                                     .license (ELicense.EPL20)
+                                                                     .version (new Version (2, 0, 5))
+                                                                     .copyrightOwner ("https://eclipse-ee4j.github.io/angus-mail/")
+                                                                     .build ();
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

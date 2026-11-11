@@ -33,11 +33,13 @@ import com.helger.base.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_dns implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule DNSJAVA = new ThirdPartyModule ("dnsjava",
-                                                                        "Brian Wellington",
-                                                                        ELicense.BSD,
-                                                                        new Version (3, 7, 1),
-                                                                        "https://github.com/dnsjava/dnsjava");
+  public static final IThirdPartyModule DNSJAVA = ThirdPartyModule.builder ()
+                                                                  .displayName ("dnsjava")
+                                                                  .copyrightOwner ("Brian Wellington")
+                                                                  .license (ELicense.BSD)
+                                                                  .version (new Version (3, 7, 1))
+                                                                  .webSiteUrl ("https://github.com/dnsjava/dnsjava")
+                                                                  .build ();
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

@@ -33,11 +33,13 @@ import com.helger.base.version.Version;
 @IsSPIImplementation
 public final class ThirdPartyModuleProvider_ph_jsch implements IThirdPartyModuleProviderSPI
 {
-  public static final IThirdPartyModule JSCH = new ThirdPartyModule ("JSch",
-                                                                     "Matthias Wiedemann",
-                                                                     ELicense.BSD,
-                                                                     new Version (2, 28, 8),
-                                                                     "https://github.com/mwiede/jsch");
+  public static final IThirdPartyModule JSCH = ThirdPartyModule.builder ()
+                                                               .displayName ("JSch")
+                                                               .copyrightOwner ("Matthias Wiedemann")
+                                                               .license (ELicense.BSD)
+                                                               .version (new Version (2, 28, 8))
+                                                               .webSiteUrl ("https://github.com/mwiede/jsch")
+                                                               .build ();
 
   @Nullable
   public IThirdPartyModule [] getAllThirdPartyModules ()

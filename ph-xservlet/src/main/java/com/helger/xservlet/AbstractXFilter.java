@@ -185,7 +185,7 @@ public abstract class AbstractXFilter extends AbstractHttpServletFilter
         {
           // Continue request processing
           m_aCounterRequestsBeforeContinue.increment ();
-          aChain.doFilter (aHttpRequest, aHttpResponse);
+          aChain.doFilter (aHttpRequest, aHttpResponseWrapper);
           onFilterAfter (aHttpRequest, aHttpResponseWrapper, aRequestScope);
         }
         else

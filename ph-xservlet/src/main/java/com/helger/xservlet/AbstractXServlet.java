@@ -69,7 +69,6 @@ import com.helger.xservlet.forcedredirect.ForcedRedirectManager;
 import com.helger.xservlet.handler.IXServletHandler;
 import com.helger.xservlet.handler.XServletHandlerOPTIONS;
 import com.helger.xservlet.handler.XServletHandlerRegistry;
-import com.helger.xservlet.handler.XServletHandlerTRACE;
 import com.helger.xservlet.servletstatus.ServletStatusManager;
 
 import jakarta.servlet.ServletConfig;
@@ -157,9 +156,6 @@ public abstract class AbstractXServlet extends HttpServlet
    */
   public AbstractXServlet ()
   {
-    // This handler is always the same, so it is registered here for convenience
-    m_aHandlerRegistry.registerHandler (EHttpMethod.TRACE, new XServletHandlerTRACE (), false);
-
     // Default HEAD handler -> invoke with GET
     m_aHandlerRegistry.registerHandler (EHttpMethod.HEAD,
                                         (aHttpRequest, aHttpResponse, eHttpVersion, eHttpMethod, aRequestScope) -> {

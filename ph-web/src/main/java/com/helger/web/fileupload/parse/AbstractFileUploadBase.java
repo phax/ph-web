@@ -86,7 +86,7 @@ public abstract class AbstractFileUploadBase
 
   /**
    * The maximum size permitted for a single uploaded file, as opposed to {@link #m_nSizeMax}. A
-   * value of -1 indicates no maximum.
+   * value &le; 0 indicates no maximum.
    */
   private long m_nFileSizeMax = -1;
 
@@ -144,7 +144,7 @@ public abstract class AbstractFileUploadBase
    * {@link #getSizeMax()}.
    *
    * @see #setFileSizeMax(long)
-   * @return Maximum size of a single uploaded file.
+   * @return Maximum size of a single uploaded file. A value &le; 0 means unlimited.
    */
   @CheckForSigned
   public long getFileSizeMax ()
@@ -157,7 +157,7 @@ public abstract class AbstractFileUploadBase
    *
    * @see #getFileSizeMax()
    * @param nFileSizeMax
-   *        Maximum size of a single uploaded file.
+   *        Maximum size of a single uploaded file. A value &le; 0 means unlimited.
    */
   public void setFileSizeMax (final long nFileSizeMax)
   {

@@ -18,34 +18,50 @@ package com.helger.servlet.logging;
 
 import java.io.IOException;
 
+import org.jspecify.annotations.Nullable;
+
 import com.helger.base.io.nonblocking.NonBlockingByteArrayInputStream;
 import com.helger.servlet.io.AbstractServletInputStream;
+
+import jakarta.servlet.ServletInputStream;
 
 class LoggingServletInputStream extends AbstractServletInputStream
 {
   private final NonBlockingByteArrayInputStream m_aIS;
+  private final ServletInputStream m_aRemainingIS;
 
-  LoggingServletInputStream (final byte [] content)
+  /**
+   * @param content
+   *        The buffered content that is returned first.
+   * @param aRemainingIS
+   *        The original input stream that delivers the content that was not buffered. May be
+   *        <code>null</code> if the complete content was buffered.
+   */
+  LoggingServletInputStream (final byte [] content, @Nullable final ServletInputStream aRemainingIS)
   {
     m_aIS = new NonBlockingByteArrayInputStream (content);
+    m_aRemainingIS = aRemainingIS;
   }
 
   @Override
   public boolean isFinished ()
   {
-    return m_aIS.available () == 0;
+    return m_aIS.available () == 0 && (m_aRemainingIS == null || m_aRemainingIS.isFinished ());
   }
 
   @Override
   public boolean isReady ()
   {
-    return true;
+    return m_aIS.available () > 0 || m_aRemainingIS == null || m_aRemainingIS.isReady ();
   }
 
   @Override
   public int read () throws IOException
   {
-    return m_aIS.read ();
+    final int ret = m_aIS.read ();
+    if (ret >= 0 || m_aRemainingIS == null)
+      return ret;
+    return m_aRemainingIS.read ();
   }
 
   @Override
@@ -53,5 +69,7 @@ class LoggingServletInputStream extends AbstractServletInputStream
   {
     super.close ();
     m_aIS.close ();
+    if (m_aRemainingIS != null)
+      m_aRemainingIS.close ();
   }
 }

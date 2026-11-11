@@ -33,9 +33,10 @@ import org.jspecify.annotations.Nullable;
 
 import com.helger.annotation.style.CodingStyleguideUnaware;
 import com.helger.annotation.style.ReturnsMutableCopy;
+import com.helger.base.CGlobal;
 import com.helger.base.array.ArrayHelper;
 import com.helger.base.charset.CharsetHelper;
-import com.helger.base.io.stream.StreamHelper;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsHashMap;
 import com.helger.collection.commons.ICommonsMap;
@@ -48,17 +49,47 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 
 public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
 {
+  /**
+   * The default maximum number of request body bytes that are buffered in memory for logging.
+   *
+   * @since 11.5.0
+   */
+  public static final int DEFAULT_MAX_BUFFERED_CONTENT_SIZE = CGlobal.BYTES_PER_MEGABYTE;
+
   private static final String FORM_CONTENT_TYPE = CMimeType.APPLICATION_X_WWW_FORM_URLENCODED.getAsString ();
   private static final String METHOD_POST = EHttpMethod.POST.getName ();
 
+  private final int m_nMaxBufferedContentSize;
   private byte [] m_aContent;
+  private ServletInputStream m_aRemainingIS;
   @CodingStyleguideUnaware
   private final Map <String, String []> m_aParameterMap;
   private final HttpServletRequest m_aDelegate;
 
   public LoggingHttpServletRequestWrapper (@NonNull final HttpServletRequest aRequest)
   {
+    this (aRequest, DEFAULT_MAX_BUFFERED_CONTENT_SIZE);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param aRequest
+   *        The request to wrap. May not be <code>null</code>.
+   * @param nMaxBufferedContentSize
+   *        The maximum number of request body bytes to buffer in memory for logging. Must be &gt; 0.
+   *        The remaining body is not logged, but still passed on unmodified.
+   * @since 11.5.0
+   */
+  public LoggingHttpServletRequestWrapper (@NonNull final HttpServletRequest aRequest,
+                                           final int nMaxBufferedContentSize)
+  {
     super (aRequest);
+    ValueEnforcer.isBetweenInclusive (nMaxBufferedContentSize,
+                                      "MaxBufferedContentSize",
+                                      1,
+                                      Integer.MAX_VALUE - 1);
+    m_nMaxBufferedContentSize = nMaxBufferedContentSize;
     m_aDelegate = aRequest;
     if (isFormPost ())
       m_aParameterMap = aRequest.getParameterMap ();
@@ -72,7 +103,7 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
     if (ArrayHelper.isEmpty (m_aContent))
       return m_aDelegate.getInputStream ();
 
-    return new LoggingServletInputStream (m_aContent);
+    return new LoggingServletInputStream (m_aContent, m_aRemainingIS);
   }
 
   @Override
@@ -142,8 +173,18 @@ public class LoggingHttpServletRequestWrapper extends HttpServletRequestWrapper
       final String sNormalizedContent;
       if (m_aParameterMap.isEmpty ())
       {
-        m_aContent = StreamHelper.getAllBytes (m_aDelegate.getInputStream ());
-        sNormalizedContent = new String (m_aContent, _getCharset ());
+        // Only buffer a limited amount of data to avoid memory exhaustion
+        final ServletInputStream aIS = m_aDelegate.getInputStream ();
+        m_aContent = aIS.readNBytes (m_nMaxBufferedContentSize + 1);
+        if (m_aContent.length > m_nMaxBufferedContentSize)
+        {
+          // The rest of the body is passed on from the original stream
+          m_aRemainingIS = aIS;
+          sNormalizedContent = new String (m_aContent, 0, m_nMaxBufferedContentSize, _getCharset ()) +
+                               " [TRUNCATED]";
+        }
+        else
+          sNormalizedContent = new String (m_aContent, _getCharset ());
       }
       else
       {

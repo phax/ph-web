@@ -46,6 +46,7 @@ public class LoggingFilter extends AbstractHttpServletFilter
 
   private Logger m_aLogger = LoggerFactory.getLogger (getClass ());
   private int m_nMaxContentSize = 1024;
+  private int m_nMaxBufferedContentSize = LoggingHttpServletRequestWrapper.DEFAULT_MAX_BUFFERED_CONTENT_SIZE;
   private final ICommonsSet <String> m_aExcludedPaths = new CommonsHashSet <> ();
   private String m_sRequestPrefix = "REQUEST: ";
   private String m_sResponsePrefix = "RESPONSE: ";
@@ -76,6 +77,10 @@ public class LoggingFilter extends AbstractHttpServletFilter
     final String sMaxContentSize = aFilterConfig.getInitParameter ("maxContentSize");
     if (sMaxContentSize != null)
       m_nMaxContentSize = Integer.parseInt (sMaxContentSize);
+
+    final String sMaxBufferedContentSize = aFilterConfig.getInitParameter ("maxBufferedContentSize");
+    if (sMaxBufferedContentSize != null)
+      m_nMaxBufferedContentSize = Integer.parseInt (sMaxBufferedContentSize);
 
     final String sExcludedPaths = aFilterConfig.getInitParameter ("excludedPaths");
     if (StringHelper.isNotEmpty (sExcludedPaths))
@@ -168,7 +173,8 @@ public class LoggingFilter extends AbstractHttpServletFilter
   {
     if (isLogRequest (aHttpRequest, aHttpResponse))
     {
-      final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest);
+      final LoggingHttpServletRequestWrapper aRequestWrapper = new LoggingHttpServletRequestWrapper (aHttpRequest,
+                                                                                                     m_nMaxBufferedContentSize);
       final LoggingHttpServletResponseWrapper aResponseWrapper = new LoggingHttpServletResponseWrapper (aHttpResponse);
 
       m_aLogger.info (m_sRequestPrefix + getRequestDescription (aRequestWrapper));

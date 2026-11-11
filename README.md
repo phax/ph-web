@@ -64,6 +64,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 # News and noteworthy
 
 v11.5.0 - work in progress
+* Requires at least ph-commons 12.6.0
 * Added the new `HttpClientSettings` properties `validateAfterInactivity`, `evictIdleConnectionsAfter` and `evictExpiredConnections` to reduce stale pooled connections (a common cause of `NoHttpResponseException`).
   They can also be set via the configuration keys `http.connection.validate-after-inactivity`, `http.connection.evict-idle-after` and `http.connection.evict-expired`.
   By default nothing changes: the validation period of Apache HttpClient is kept and no background eviction happens.
@@ -92,6 +93,12 @@ v11.5.0 - work in progress
 * `LoggingHttpServletResponseWrapper` now reuses one `PrintWriter` and flushes it before reading the content, so that output written via `getWriter ()` is no longer lost
 * `LoggingServletInputStream.isFinished ()` now only returns `true` once all content was read
 * Fixed the `If-Unmodified-Since` handling of `XServletHandlerToSimpleHandler` according to RFC 9110 section 13.1.4: a resource modified after the provided date now results in `412 Precondition Failed`, an unmodified resource is processed normally (previously both cases could result in `304 Not Modified`). It is now evaluated before `If-Modified-Since` and `If-None-Match` (RFC 9110 section 13.2.2).
+* `XServletHandlerToSimpleHandler` now ignores `If-Modified-Since` if `If-None-Match` is present (RFC 9110 section 13.1.3)
+* Fixed the statistics counter names of `XServletHandlerToSimpleHandler` from `if-unon-match` to `if-none-match`
+* `AbstractXServlet` no longer registers a default `TRACE` handler - `TRACE` requests now result in `405 Method Not Allowed`. `XServletHandlerTRACE` can still be registered manually.
+* Fixed `AbstractXFilter` passing the original response instead of the status aware response wrapper down the filter chain
+* `LoggingHttpServletRequestWrapper` now buffers at most 1 MB of the request body in memory (new constructor parameter and `LoggingFilter` init parameter `maxBufferedContentSize`). The remaining body is passed on unmodified but not logged.
+* Clarified in the Javadoc of `AbstractFileUploadBase` that a file size maximum &le; 0 means unlimited
 * `IXServletLowLevelFilter.afterRequest` is now called as documented, even if `beforeRequest` returned `BREAK`
 * `FileSizeLimitExceededException` now contains the correct file name
 * Fixed the debug connection manager of `HttpClientFactory` ignoring the configured connection request timeout

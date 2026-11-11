@@ -69,9 +69,9 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
   private final IMutableStatisticsHandlerCounter m_aStatsModifiedIfUnmodifiedSince = StatisticsManager.getCounterHandler (getClass ().getName () +
                                                                                                                           "$modified.if-unmodified-since");
   private final IMutableStatisticsHandlerCounter m_aStatsNotModifiedIfNonMatch = StatisticsManager.getCounterHandler (getClass ().getName () +
-                                                                                                                      "$notmodified.if-unon-match");
+                                                                                                                      "$notmodified.if-none-match");
   private final IMutableStatisticsHandlerCounter m_aStatsModifiedIfNonMatch = StatisticsManager.getCounterHandler (getClass ().getName () +
-                                                                                                                   "$modified.if-unon-match");
+                                                                                                                   "$modified.if-none-match");
 
   private final IXServletSimpleHandler m_aSimpleHandler;
 
@@ -139,8 +139,11 @@ public final class XServletHandlerToSimpleHandler implements IXServletHandler
         m_aStatsNotModifiedIfUnmodifiedSince.increment ();
       }
 
-      // Get the If-Modified-Since date header
-      final long nRequestIfModifiedSince = aSafeHttpRequest.getDateHeader (CHttpHeader.IF_MODIFIED_SINCE);
+      // Get the If-Modified-Since date header - must be ignored if If-None-Match is present, see RFC
+      // 9110 section 13.1.3
+      final boolean bHasIfNoneMatch = aSafeHttpRequest.getHeader (CHttpHeader.IF_NON_MATCH) != null;
+      final long nRequestIfModifiedSince = bHasIfNoneMatch ? -1
+                                                           : aSafeHttpRequest.getDateHeader (CHttpHeader.IF_MODIFIED_SINCE);
       if (nRequestIfModifiedSince >= 0)
       {
         final LocalDateTime aRequestIfModifiedSince = CHttp.convertMillisToLocalDateTime (nRequestIfModifiedSince);

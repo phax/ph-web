@@ -63,7 +63,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.5.0 - work in progress
+v11.5.0 - 2026-11-11
 * Requires at least ph-commons 12.6.0
 * Added the new `HttpClientSettings` properties `validateAfterInactivity`, `evictIdleConnectionsAfter` and `evictExpiredConnections` to reduce stale pooled connections (a common cause of `NoHttpResponseException`).
   They can also be set via the configuration keys `http.connection.validate-after-inactivity`, `http.connection.evict-idle-after` and `http.connection.evict-expired`.

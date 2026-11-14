@@ -27,7 +27,7 @@ mvn test -pl ph-network -Dtest=com.helger.network.port.NetworkPortHelperTest
 
 ## Module Structure
 
-11 modules with key dependency relationships:
+12 modules with key dependency relationships:
 
 - **ph-network** — base networking (authenticators, network interfaces, ports, proxies)
 - **ph-dns** — DNS helpers on top of dnsjava
@@ -40,6 +40,7 @@ mvn test -pl ph-network -Dtest=com.helger.network.port.NetworkPortHelperTest
 - **ph-xservlet** — extended servlet framework (XServlet); depends on ph-web
 - **ph-sitemap** — XML sitemap generation
 - **ph-jsch** — SSH/SCP/SFTP via JSch fork (mwiede/jsch)
+- **ph-web-bom** — Bill of Materials with all ph-web artifacts; to be imported by consumers instead of `ph-web-parent-pom`
 
 ## Code Conventions
 

@@ -30,6 +30,8 @@ Java library with common web stuff. It contains the following sub-projects:
     * Contains an extended Servlet framework (XServlet is just a name I gave it internally and not an official name)
 * ph-jsch (since v9.2.0)
     * Helper around JSch - for SSH, SCP and SFTP connections  
+* ph-web-bom (since v11.5.1)
+    * Bill of Materials (BOM) containing all ph-web artifacts
 
 Previous modules:
 * ph-http (was moved to ph-commons for their v12)
@@ -52,16 +54,22 @@ or to use it as a BOM put that in your `<dependencyManagement>` section:
 ```xml
 <dependency>
   <groupId>com.helger.web</groupId>
-  <artifactId>ph-web-parent-pom</artifactId>
+  <artifactId>ph-web-bom</artifactId>
   <version>x.y.z</version>
   <type>pom</type>
   <scope>import</scope>
 </dependency>
 ```
 
+Note: prior to v11.5.1 there was no dedicated BOM and `ph-web-parent-pom` had to be imported instead.
+
 Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
+
+v11.5.1 - 2026-11-14
+* Added the new BOM artifact `ph-web-bom` that contains only the ph-web artifacts.
+  It should be used instead of `ph-web-parent-pom` for importing.
 
 v11.5.0 - 2026-11-11
 * Requires at least ph-commons 12.6.0

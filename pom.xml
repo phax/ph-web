@@ -67,7 +67,7 @@
     <commons-codec.version>1.19.0</commons-codec.version>
     <dnsjava.version>3.7.1</dnsjava.version>
     <httpclient.version>5.6.5</httpclient.version>
-    <httpcore.version>5.4.4</httpcore.version>
+    <httpcore.version>5.5</httpcore.version>
     <jsch.version>2.28.8</jsch.version>
   </properties>
   

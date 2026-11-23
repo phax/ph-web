@@ -199,7 +199,7 @@ public class ExtendedHttpResponseException extends HttpResponseException
     final Charset aCharset = HttpClientHelper.getCharset (aContentType);
 
     // Consume entity
-    final byte [] aResponseBody = EntityUtils.toByteArray (aEntity);
+    final byte [] aResponseBody = EntityUtils.toByteArray (aEntity, Integer.MAX_VALUE);
 
     return new ExtendedHttpResponseException (aStatusLine, aHttpResponse, aResponseBody, aCharset);
   }

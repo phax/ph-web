@@ -211,7 +211,7 @@ public final class HttpClientHelper
   public static String entityToString (@NonNull final HttpEntity aEntity,
                                        @NonNull final Charset aCharset) throws IOException
   {
-    final byte [] ret = EntityUtils.toByteArray (aEntity);
+    final byte [] ret = EntityUtils.toByteArray (aEntity, Integer.MAX_VALUE);
     return ret == null ? null : new String (ret, aCharset);
   }
 }

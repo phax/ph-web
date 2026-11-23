@@ -25,6 +25,9 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import com.helger.annotation.Nonnegative;
+import com.helger.base.enforce.ValueEnforcer;
+
 /**
  * Convert a valid HTTP response to a byte array.
  *
@@ -32,6 +35,30 @@ import org.jspecify.annotations.Nullable;
  */
 public class ResponseHandlerByteArray implements HttpClientResponseHandler <byte []>
 {
+  private final int m_nMaxResponseLength;
+
+  public ResponseHandlerByteArray ()
+  {
+    this (Integer.MAX_VALUE);
+  }
+
+  public ResponseHandlerByteArray (@Nonnegative final int nMaxResponseLength)
+  {
+    ValueEnforcer.isGT0 (nMaxResponseLength, "MaxResponseLength");
+    m_nMaxResponseLength = nMaxResponseLength;
+  }
+
+  @Nonnegative
+  public final int getMaxResponseLength ()
+  {
+    return m_nMaxResponseLength;
+  }
+
+  public final boolean hasDefaultMaxResponseLength ()
+  {
+    return m_nMaxResponseLength != Integer.MAX_VALUE;
+  }
+
   @Nullable
   public byte [] handleResponse (@NonNull final ClassicHttpResponse aHttpResponse) throws IOException
   {
@@ -39,6 +66,6 @@ public class ResponseHandlerByteArray implements HttpClientResponseHandler <byte
     if (aEntity == null)
       return null;
 
-    return EntityUtils.toByteArray (aEntity);
+    return EntityUtils.toByteArray (aEntity, m_nMaxResponseLength);
   }
 }

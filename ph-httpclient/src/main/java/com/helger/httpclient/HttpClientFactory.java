@@ -619,7 +619,7 @@ public class HttpClientFactory implements IHttpClientProvider
         if (aSSLContext == null)
         {
           // No custom SSLContext and no (successful) revocation context - use system default
-          aSSLContext = SSLContexts.createSystemDefault ();
+          aSSLContext = SSLContexts.createDefault ();
         }
       }
 
@@ -794,7 +794,8 @@ public class HttpClientFactory implements IHttpClientProvider
 
   public ConnectionConfig.@NonNull Builder createConnectionConfigBuilder ()
   {
-    final ConnectionConfig.Builder ret = ConnectionConfig.custom ().setConnectTimeout (m_aSettings.getConnectTimeout ());
+    final ConnectionConfig.Builder ret = ConnectionConfig.custom ()
+                                                         .setConnectTimeout (m_aSettings.getConnectTimeout ());
     // Only set if defined, to keep the Apache HttpClient default otherwise
     final TimeValue aValidateAfterInactivity = m_aSettings.getValidateAfterInactivityAsTimeValue ();
     if (aValidateAfterInactivity != null)

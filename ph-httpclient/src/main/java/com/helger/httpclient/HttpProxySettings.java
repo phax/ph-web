@@ -131,8 +131,9 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
   }
 
   /**
-   * @return The set of all host names and IP addresses for which no proxy should be used. Never
-   *         <code>null</code> and mutable.
+   * @return The set of all host names and IP addresses for which no proxy should be used. Host
+   *         names and IP addresses are compared exactly - wildcards like <code>*</code> (e.g.
+   *         <code>192.168.*</code>) are not supported. Never <code>null</code> and mutable.
    */
   @NonNull
   @ReturnsMutableObject
@@ -167,7 +168,9 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    *
    * @param sDefinition
    *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
-   *        trimmed text between pipes is interpreted as a host name.
+   *        trimmed text between pipes is interpreted as a host name. Wildcards like
+   *        <code>*</code> (e.g. <code>192.168.*</code>) are not supported - every host name or IP
+   *        address must be listed explicitly.
    * @return this for chaining
    */
   @NonNull
@@ -185,7 +188,9 @@ public class HttpProxySettings implements IHttpProxySettings, ICloneable <HttpPr
    *
    * @param sDefinition
    *        The definition string. May be <code>null</code> or empty or invalid. Every non-empty
-   *        trimmed text between pipes is interpreted as a host name.
+   *        trimmed text between pipes is interpreted as a host name. Wildcards like
+   *        <code>*</code> (e.g. <code>192.168.*</code>) are not supported - every host name or IP
+   *        address must be listed explicitly.
    * @return this for chaining
    * @see #addNonProxyHostsFromPipeString(String)
    * @since 10.0.0

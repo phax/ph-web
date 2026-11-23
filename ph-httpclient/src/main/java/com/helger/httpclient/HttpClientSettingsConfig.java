@@ -290,8 +290,9 @@ public class HttpClientSettingsConfig
     }
 
     /**
-     * @return A pipe separated list of non-proxy hosts. E.g. <code>localhost|127.0.0.1</code>. May
-     *         be <code>null</code>.
+     * @return A pipe separated list of non-proxy hosts. E.g. <code>localhost|127.0.0.1</code>.
+     *         Wildcards like <code>*</code> (e.g. <code>192.168.*</code>) are not supported. May be
+     *         <code>null</code>.
      */
     @Nullable
     public String getNonProxyHosts ()
@@ -710,7 +711,8 @@ public class HttpClientSettingsConfig
    * <li><code>http.proxy.port</code> - HTTP proxy port</li>
    * <li><code>http.proxy.username</code> - HTTP proxy user name</li>
    * <li><code>http.proxy.password</code> - HTTP proxy password</li>
-   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts</li>
+   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts; wildcards
+   * like <code>*</code> are not supported</li>
    * </ul>
    *
    * @param aProxySettings
@@ -1076,7 +1078,8 @@ public class HttpClientSettingsConfig
    * <li><code>http.proxy.port</code> - HTTP proxy port</li>
    * <li><code>http.proxy.username</code> - HTTP proxy user name</li>
    * <li><code>http.proxy.password</code> - HTTP proxy password</li>
-   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts</li>
+   * <li><code>http.proxy.nonProxyHosts</code> - pipe separated list of non-proxy hosts; wildcards
+   * like <code>*</code> are not supported</li>
    * </ul>
    * </li>
    * <li>Retry:

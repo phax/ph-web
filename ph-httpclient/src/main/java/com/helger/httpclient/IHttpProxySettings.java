@@ -63,7 +63,9 @@ public interface IHttpProxySettings
 
   /**
    * @return The mutable original set of all host names and IP addresses for which no proxy should
-   *         be used. Never <code>null</code> and mutable.
+   *         be used. Host names and IP addresses are compared exactly - wildcards like
+   *         <code>*</code> (e.g. <code>192.168.*</code>) are not supported. Never <code>null</code>
+   *         and mutable.
    */
   @NonNull
   @ReturnsMutableObject

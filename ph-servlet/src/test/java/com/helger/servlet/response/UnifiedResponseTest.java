@@ -21,6 +21,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 import org.junit.Test;
 
 import com.helger.collection.commons.ICommonsList;
@@ -94,6 +98,20 @@ public final class UnifiedResponseTest
       aResponse.removeCustomResponseHeaders (sName);
       assertFalse (aResponse.responseHeaderMap ().containsHeaders (sName));
     }
+  }
+
+  @Test
+  public void testSetLastModifiedOffsetDateTime () throws Exception
+  {
+    final UnifiedResponse aResponse = UnifiedResponse.createSimple (new MockHttpServletRequest ());
+    aResponse.disableCaching ();
+    // 2026-10-25 02:30 exists twice in Central Europe - with the offset it is unambiguous
+    aResponse.setLastModified (OffsetDateTime.of (2026, 10, 25, 2, 30, 0, 0, ZoneOffset.ofHours (1)));
+    aResponse.setContentAndCharset ("x", StandardCharsets.UTF_8);
+
+    final MockHttpServletResponse aHttpResponse = new MockHttpServletResponse ();
+    aResponse.applyToResponse (aHttpResponse);
+    assertEquals ("Sun, 25 Oct 2026 01:30:00 GMT", aHttpResponse.getHeader (CHttpHeader.LAST_MODIFIED));
   }
 
   @Test

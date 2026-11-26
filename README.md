@@ -69,6 +69,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 v11.5.2 - work in progress
 * Documented that the non-proxy hosts (`http.proxy.nonProxyHosts`) are compared exactly and do not support wildcards like `192.168.*`
+* Added `UnifiedResponse.setLastModified (OffsetDateTime)`, which is unambiguous during a daylight saving time change
 
 v11.5.1 - 2026-11-14
 * Added the new BOM artifact `ph-web-bom` that contains only the ph-web artifacts.

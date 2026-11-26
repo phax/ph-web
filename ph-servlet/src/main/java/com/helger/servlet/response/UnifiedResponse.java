@@ -23,6 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -528,6 +530,29 @@ public class UnifiedResponse
       logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
 
     m_aResponseHeaderMap.setDateHeader (CHttpHeader.LAST_MODIFIED, aDT);
+    return this;
+  }
+
+  /**
+   * Set the <code>Last-Modified</code> response header. Other than
+   * {@link #setLastModified(LocalDateTime)} the provided value is unambiguous, because it contains
+   * the offset - so it is also correct during a daylight saving time change.
+   *
+   * @param aDT
+   *        The last modification date time. May not be <code>null</code>.
+   * @return this for chaining
+   * @since 11.5.2
+   */
+  @NonNull
+  public final UnifiedResponse setLastModified (@NonNull final OffsetDateTime aDT)
+  {
+    ValueEnforcer.notNull (aDT, "DateTime");
+
+    if (m_eHttpMethod != EHttpMethod.GET && m_eHttpMethod != EHttpMethod.HEAD)
+      logWarn ("Setting Last-Modified on a non GET or HEAD request may have no impact!");
+
+    // Convert to UTC explicitly, because HTTP dates are always in GMT
+    m_aResponseHeaderMap.setDateHeader (CHttpHeader.LAST_MODIFIED, aDT.atZoneSameInstant (ZoneOffset.UTC));
     return this;
   }
 

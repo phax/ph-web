@@ -67,7 +67,7 @@ Note: prior to v9.3.0 the Maven groupId was `com.helger`.
 
 # News and noteworthy
 
-v11.5.2 - work in progress
+v11.5.2 - 2026-11-27
 * Documented that the non-proxy hosts (`http.proxy.nonProxyHosts`) are compared exactly and do not support wildcards like `192.168.*`
 * Added `UnifiedResponse.setLastModified (OffsetDateTime)`, which is unambiguous during a daylight saving time change
 

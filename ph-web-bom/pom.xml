@@ -27,7 +27,7 @@
   </parent>
   <groupId>com.helger.web</groupId>
   <artifactId>ph-web-bom</artifactId>
-  <version>11.5.2-SNAPSHOT</version>
+  <version>11.5.2</version>
   <packaging>pom</packaging>
   <name>ph-web-bom</name>
   <description>Bill of Materials for all ph-web artifacts</description>
@@ -111,4 +111,8 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <scm>
+    <tag>ph-web-parent-pom-11.5.2</tag>
+  </scm>
 </project>
